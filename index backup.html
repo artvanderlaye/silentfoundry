@@ -808,7 +808,7 @@
     /* Top grid: left | gold divider | right */
     .eng-top {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1fr 1px 1fr;
       gap: 0;
       align-items: end;
       margin-bottom: 52px;
@@ -1743,9 +1743,11 @@
     <!-- ENGINEERING CAROUSEL -->
     <style>
       .eng-car-wrap { position:relative; overflow:hidden; width:100%; margin-top:80px; }
-      .eng-car-track { display:flex; gap:2px; }
+      .eng-car-track { display:flex; gap:2px; animation:eng-car-scroll 40s linear infinite; }
+      .eng-car-track.paused { animation-play-state:paused; }
+      @keyframes eng-car-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
       .eng-car-slide { flex:0 0 calc(50vw - 1px); position:relative; overflow:hidden; }
-      .eng-car-slide img { width:100%; aspect-ratio:16/4; object-fit:cover; display:block; filter:brightness(0.6); transition:filter 0.4s ease; }
+      .eng-car-slide img { width:100%; aspect-ratio:16/6; object-fit:cover; display:block; filter:brightness(0.6); transition:filter 0.4s ease; }
       .eng-car-slide:hover img { filter:brightness(0.82); }
       .eng-car-info { position:absolute; bottom:0; left:0; right:0; padding:28px 24px 20px; background:linear-gradient(to top,rgba(10,10,10,0.88),transparent); }
       .eng-car-tag { font-size:0.52rem; letter-spacing:0.22em; text-transform:uppercase; color:#c8a96e; display:block; margin-bottom:4px; }
@@ -1786,14 +1788,21 @@
       function engCarStep(dir) {
         var t = document.getElementById('engCarTrack');
         if (!t) return;
+        t.classList.add('paused');
         var sw = t.querySelector('.eng-car-slide').offsetWidth + 2;
         var cur = new DOMMatrix(getComputedStyle(t).transform).m41 || 0;
         var next = cur - (dir * sw);
         var total = sw * 9;
         if (next < -total) next += total;
         if (next > 0) next -= total;
-        t.style.transition = 'transform 0.45s ease';
         t.style.transform = 'translateX(' + next + 'px)';
+        t.style.animation = 'none';
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function() {
+          t.style.animation = '';
+          t.style.transform = '';
+          t.classList.remove('paused');
+        }, 3000);
       }
     </script>
 
