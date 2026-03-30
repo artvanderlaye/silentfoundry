@@ -50,40 +50,16 @@ if (toggle && mobileMenu) {
 // ── NAV SCROLL FADE ──
 const nav = document.querySelector('nav');
 let lastScroll = 0;
+let fadeTimer;
 
 window.addEventListener('scroll', () => {
   const currentScroll = window.scrollY;
+
   if (currentScroll > 80) {
     nav.classList.add('scrolled');
   } else {
     nav.classList.remove('scrolled');
   }
+
   lastScroll = currentScroll;
 }, { passive: true });
-
-// ── HERO HEADLINE FIT ──
-// Makes both headline lines always share the same left and right edges
-// automatically, regardless of text content or screen size
-function fitHeadline() {
-  const top = document.querySelector('.hero-headline-top');
-  const bot = document.querySelector('.hero-headline-bottom');
-  if (!top || !bot) return;
-
-  // Reset any previous transform so we measure natural width
-  top.style.transform = 'none';
-
-  const topW = top.getBoundingClientRect().width;
-  const botW = bot.getBoundingClientRect().width;
-
-  if (topW === 0 || botW === 0) return;
-
-  const scale = botW / topW;
-  top.style.transform = `scaleX(${scale})`;
-  top.style.transformOrigin = 'left top';
-}
-
-// Run on load and on every resize
-window.addEventListener('load', fitHeadline);
-window.addEventListener('resize', fitHeadline);
-// Also run immediately in case fonts are already loaded
-fitHeadline();
