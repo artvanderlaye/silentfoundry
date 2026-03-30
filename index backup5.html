@@ -1361,443 +1361,92 @@
       </div>
     </div>
 
-    <!-- ENGINEERING SECTION SWITCHER -->
-    <style>
-      .es-opt { display:none; }
-      .es-opt.active { display:block; }
-      #es-switcher {
-        display:flex; gap:10px; align-items:center;
-        padding:14px 48px;
-        background:rgba(10,10,10,0.98);
-        border-top:1px solid rgba(200,169,110,0.12);
-        border-bottom:1px solid rgba(200,169,110,0.12);
-        flex-wrap:wrap;
-      }
-      #es-switcher .sw-label { font-family:'DM Sans',sans-serif; font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(244,241,236,0.3); margin-right:6px; }
-      .es-btn { font-family:'Bebas Neue',sans-serif; font-size:0.85rem; letter-spacing:0.1em; padding:5px 16px; border:1px solid rgba(200,169,110,0.25); background:transparent; color:rgba(244,241,236,0.4); cursor:pointer; transition:all 0.2s; }
-      .es-btn:hover { color:#c8a96e; border-color:rgba(200,169,110,0.6); }
-      .es-btn.active { background:rgba(200,169,110,0.12); color:#c8a96e; border-color:#c8a96e; }
+    <!-- ENGINEERING SECTION -->
+    <div class="eng-section reveal">
 
-      /* Shared carousel styles */
-      .es-carousel-wrap { position:relative; overflow:hidden; width:100%; }
-      .es-carousel-track { display:flex; gap:2px; will-change:transform; animation:es-scroll 40s linear infinite; }
-      .es-carousel-track.paused { animation-play-state:paused; }
-      @keyframes es-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-      .es-slide { flex:0 0 calc(33.333vw - 2px); max-width:560px; min-width:280px; position:relative; overflow:hidden; }
-      .es-slide img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; filter:brightness(0.65); transition:filter 0.4s; }
-      .es-slide:hover img { filter:brightness(0.85); }
-      .es-slide-info { position:absolute; bottom:0; left:0; right:0; padding:20px 20px 16px; background:linear-gradient(to top,rgba(10,10,10,0.9),transparent); }
-      .es-slide-tag { font-size:0.55rem; letter-spacing:0.22em; text-transform:uppercase; color:#c8a96e; display:block; margin-bottom:3px; }
-      .es-slide-name { font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.82); }
-      .es-btn-prev,.es-btn-next { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:rgba(10,10,10,0.7); border:0.5px solid rgba(200,169,110,0.25); color:rgba(244,241,236,0.7); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1rem; transition:all 0.2s; }
-      .es-btn-prev { left:16px; }
-      .es-btn-next { right:16px; }
-      .es-btn-prev:hover,.es-btn-next:hover { background:rgba(200,169,110,0.15); border-color:#c8a96e; color:#c8a96e; }
-
-      /* Cream variants — override image info text */
-      .es-cream .es-slide-info { background:linear-gradient(to top,rgba(237,232,224,0.95),transparent); }
-      .es-cream .es-slide-tag { color:#8a6e3a; }
-      .es-cream .es-slide-name { color:rgba(10,10,10,0.75); }
-    </style>
-
-    <!-- Reusable carousel HTML snippet via JS -->
-    <script>
-      function esCarousel(id) {
-        return `<div style="position:relative;">
-          <button class="es-btn-prev" onclick="esStep('${id}',-1)">&#8592;</button>
-          <button class="es-btn-next" onclick="esStep('${id}',1)">&#8594;</button>
-          <div class="es-carousel-wrap"><div class="es-carousel-track" id="${id}">
-            <div class="es-slide"><img src="battery_gold.png" style="object-position:center top"/><div class="es-slide-info"><span class="es-slide-tag">Engineering Drawing</span><span class="es-slide-name">Battery Pack Layout</span></div></div>
-            <div class="es-slide"><img src="6D44EE49-2285-4AA6-B846-2620B8F917EB_1_102_o.jpeg"/><div class="es-slide-info"><span class="es-slide-tag">Electronics</span><span class="es-slide-name">PCB Layout — VCU v1.6</span></div></div>
-            <div class="es-slide"><img src="cad-screen.jpg"/><div class="es-slide-info"><span class="es-slide-tag">3D Modelling</span><span class="es-slide-name">CAD Digital Twin</span></div></div>
-            <div class="es-slide"><img src="frame_factory-157.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Engineering</span><span class="es-slide-name">CAM Toolpath Programming</span></div></div>
-            <div class="es-slide"><img src="cnc_1-14.jpg"/><div class="es-slide-info"><span class="es-slide-tag">CNC Machining</span><span class="es-slide-name">Aluminium Billet Cut</span></div></div>
-            <div class="es-slide"><img src="cnc-cutting.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Precision Cutting</span><span class="es-slide-name">5-Axis Machining</span></div></div>
-            <div class="es-slide"><img src="frame_factory-413.png"/><div class="es-slide-info"><span class="es-slide-tag">Tooling</span><span class="es-slide-name">CNC Bed Setup</span></div></div>
-            <div class="es-slide"><img src="prototype_assembly.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Assembly</span><span class="es-slide-name">Battery Cell Integration</span></div></div>
-            <div class="es-slide"><img src="frame_factory-285.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Fabrication</span><span class="es-slide-name">Frame Tube Bending</span></div></div>
-            <div class="es-slide"><img src="battery_gold.png" style="object-position:center top"/><div class="es-slide-info"><span class="es-slide-tag">Engineering Drawing</span><span class="es-slide-name">Battery Pack Layout</span></div></div>
-            <div class="es-slide"><img src="6D44EE49-2285-4AA6-B846-2620B8F917EB_1_102_o.jpeg"/><div class="es-slide-info"><span class="es-slide-tag">Electronics</span><span class="es-slide-name">PCB Layout — VCU v1.6</span></div></div>
-            <div class="es-slide"><img src="cad-screen.jpg"/><div class="es-slide-info"><span class="es-slide-tag">3D Modelling</span><span class="es-slide-name">CAD Digital Twin</span></div></div>
-            <div class="es-slide"><img src="frame_factory-157.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Engineering</span><span class="es-slide-name">CAM Toolpath Programming</span></div></div>
-            <div class="es-slide"><img src="cnc_1-14.jpg"/><div class="es-slide-info"><span class="es-slide-tag">CNC Machining</span><span class="es-slide-name">Aluminium Billet Cut</span></div></div>
-            <div class="es-slide"><img src="cnc-cutting.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Precision Cutting</span><span class="es-slide-name">5-Axis Machining</span></div></div>
-            <div class="es-slide"><img src="frame_factory-413.png"/><div class="es-slide-info"><span class="es-slide-tag">Tooling</span><span class="es-slide-name">CNC Bed Setup</span></div></div>
-            <div class="es-slide"><img src="prototype_assembly.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Assembly</span><span class="es-slide-name">Battery Cell Integration</span></div></div>
-            <div class="es-slide"><img src="frame_factory-285.jpg"/><div class="es-slide-info"><span class="es-slide-tag">Fabrication</span><span class="es-slide-name">Frame Tube Bending</span></div></div>
-          </div></div></div>`;
-      }
-      function esStep(id,dir){
-        const t=document.getElementById(id);
-        if(!t)return;
-        t.classList.add('paused');
-        const sw=t.querySelector('.es-slide').offsetWidth+2;
-        const cur=new DOMMatrix(getComputedStyle(t).transform).m41||0;
-        let next=cur-(dir*sw);
-        const total=sw*9;
-        if(next<-total)next+=total;
-        if(next>0)next-=total;
-        t.style.transform=`translateX(${next}px)`;
-        t.style.animation='none';
-        clearTimeout(t._timer);
-        t._timer=setTimeout(()=>{t.style.animation='';t.style.transform='';t.classList.remove('paused');},3000);
-      }
-      function esSwitch(i){
-        document.querySelectorAll('.es-opt').forEach((el,idx)=>el.classList.toggle('active',idx===i));
-        document.querySelectorAll('.es-btn').forEach((btn,idx)=>btn.classList.toggle('active',idx===i));
-      }
-    </script>
-
-    <div id="es-switcher">
-      <span class="sw-label">Engineering</span>
-      <button class="es-btn active" onclick="esSwitch(0)">D1</button>
-      <button class="es-btn" onclick="esSwitch(1)">D2</button>
-      <button class="es-btn" onclick="esSwitch(2)">D3</button>
-      <button class="es-btn" onclick="esSwitch(3)">D4</button>
-      <button class="es-btn" onclick="esSwitch(4)">D5</button>
-      <button class="es-btn" onclick="esSwitch(5)">C1</button>
-      <button class="es-btn" onclick="esSwitch(6)">C2</button>
-      <button class="es-btn" onclick="esSwitch(7)">C3</button>
-      <button class="es-btn" onclick="esSwitch(8)">C4</button>
-      <button class="es-btn" onclick="esSwitch(9)">C5</button>
-    </div>
-
-    <!-- ══ DARK 1: Current layout cleaned up — headline left, specs right, wide carousel ══ -->
-    <div class="es-opt active" id="es-0">
-    <div class="eng-section" style="padding-top:80px;margin-top:0;border-top:none;">
+      <!-- Top: headline + body + pills LEFT | gold line | specs RIGHT -->
       <div class="eng-top">
         <div class="eng-left">
           <p class="label" style="color:var(--accent);margin-bottom:20px;">In-House Engineering</p>
           <h2 class="eng-headline">We don't brief<br/>studios. We build<br/>the files.</h2>
           <p class="eng-body">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack — mechanical, electrical, and manufacturing. Every product leaves our hands production-ready.</p>
+          <div class="eng-pills">
+            <span class="eng-pill">Mechanical CAD</span>
+            <span class="eng-pill">Electronics & PCB</span>
+            <span class="eng-pill">CNC & Tooling</span>
+            <span class="eng-pill">Industrial Design</span>
+            <div class="eng-pills-break"></div>
+            <span class="eng-pill">Firmware</span>
+            <span class="eng-pill">DFM</span>
+            <span class="eng-pill">Supply Chain</span>
+            <span class="eng-pill">Prototyping</span>
+            <span class="eng-pill">Systems Integration</span>
+            <div class="eng-pills-break"></div>
+            <span class="eng-pill">Thermal Management</span>
+            <span class="eng-pill">Structural Analysis</span>
+            <span class="eng-pill">Battery Systems</span>
+            <span class="eng-pill">Homologation</span>
+            <span class="eng-pill">Wiring Harness</span>
+          </div>
         </div>
+
         <div class="eng-top-divider"></div>
+
         <div class="eng-specs">
-          <div class="eng-spec-row"><span class="eng-spec-label">Product Categories</span><span class="eng-spec-val">EV · Consumer · Lifestyle</span></div>
-          <div class="eng-spec-row"><span class="eng-spec-label">Engineering Disciplines</span><span class="eng-spec-val">Mechanical · Electrical · Software</span></div>
-          <div class="eng-spec-row"><span class="eng-spec-label">Manufacturing</span><span class="eng-spec-val">CNC · Casting · Sheet Metal</span></div>
-          <div class="eng-spec-row"><span class="eng-spec-label">Team Background</span><span class="eng-spec-val">Ex-Yamaha · Automotive · Aerospace</span></div>
-          <div class="eng-spec-row"><span class="eng-spec-label">Pipeline</span><span class="eng-spec-val">Concept → CAD → CNC → Production</span></div>
+          <div class="eng-spec-row">
+            <span class="eng-spec-label">Product Categories</span>
+            <span class="eng-spec-val">EV · Consumer · Lifestyle</span>
+          </div>
+          <div class="eng-spec-row">
+            <span class="eng-spec-label">Engineering Disciplines</span>
+            <span class="eng-spec-val">Mechanical · Electrical · Software</span>
+          </div>
+          <div class="eng-spec-row">
+            <span class="eng-spec-label">Manufacturing</span>
+            <span class="eng-spec-val">CNC · Casting · Sheet Metal</span>
+          </div>
+          <div class="eng-spec-row">
+            <span class="eng-spec-label">Team Background</span>
+            <span class="eng-spec-val">Ex-Yamaha · Automotive · Aerospace</span>
+          </div>
+          <div class="eng-spec-row">
+            <span class="eng-spec-label">Pipeline</span>
+            <span class="eng-spec-val">Concept → CAD → CNC → Production</span>
+          </div>
         </div>
       </div>
-      <div id="es-car-d1"></div>
-    </div>
-    </div>
 
-    <!-- ══ DARK 2: Full-width headline above, specs as horizontal bar, then full-bleed carousel ══ -->
-    <div class="es-opt" id="es-1">
-    <section style="padding:80px 48px 0;background:var(--black);">
-      <p class="label" style="color:var(--accent);margin-bottom:16px;">In-House Engineering</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:48px;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We build<br/>the files.</h2>
-        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack. Every product leaves our hands production-ready.</p>
-      </div>
-      <!-- Specs as horizontal bar -->
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(200,169,110,0.12);margin-bottom:0;">
-        <div style="padding:20px 0;border-right:1px solid rgba(244,241,236,0.05);">
-          <div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:6px;">Categories</div>
-          <div style="font-size:0.8rem;color:rgba(244,241,236,0.6);">EV · Consumer · Lifestyle</div>
-        </div>
-        <div style="padding:20px 24px;border-right:1px solid rgba(244,241,236,0.05);">
-          <div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:6px;">Disciplines</div>
-          <div style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Mechanical · Electrical · Software</div>
-        </div>
-        <div style="padding:20px 24px;border-right:1px solid rgba(244,241,236,0.05);">
-          <div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:6px;">Manufacturing</div>
-          <div style="font-size:0.8rem;color:rgba(244,241,236,0.6);">CNC · Casting · Sheet Metal</div>
-        </div>
-        <div style="padding:20px 24px;border-right:1px solid rgba(244,241,236,0.05);">
-          <div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:6px;">Team</div>
-          <div style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Ex-Yamaha · Automotive</div>
-        </div>
-        <div style="padding:20px 24px;">
-          <div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:6px;">Pipeline</div>
-          <div style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Concept → CAD → CNC → Production</div>
+      <!-- Infinite carousel with prev/next buttons -->
+      <div class="eng-carousel-outer">
+        <button class="eng-carousel-btn eng-carousel-btn-prev" onclick="engCarouselStep(-1)" aria-label="Previous">&#8592;</button>
+        <button class="eng-carousel-btn eng-carousel-btn-next" onclick="engCarouselStep(1)" aria-label="Next">&#8594;</button>
+        <div class="eng-carousel-wrap" id="engWrap">
+          <div class="eng-carousel-track" id="engTrack">
+            <!-- Set 1 -->
+            <div class="eng-slide"><img src="battery_gold.png" alt="Engineering Drawing" style="object-position:center top;" /><div class="eng-slide-info"><span class="eng-slide-num">01</span><span class="eng-slide-tag">Engineering Drawing</span><span class="eng-slide-name">Battery Pack Layout</span></div></div>
+            <div class="eng-slide"><img src="6D44EE49-2285-4AA6-B846-2620B8F917EB_1_102_o.jpeg" alt="PCB Layout" /><div class="eng-slide-info"><span class="eng-slide-num">02</span><span class="eng-slide-tag">Electronics</span><span class="eng-slide-name">PCB Layout — VCU v1.6</span></div></div>
+            <div class="eng-slide"><img src="cad-screen.jpg" alt="CAD 3D Model" /><div class="eng-slide-info"><span class="eng-slide-num">03</span><span class="eng-slide-tag">3D Modelling</span><span class="eng-slide-name">CAD Digital Twin</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-157.jpg" alt="Engineer at workstation" /><div class="eng-slide-info"><span class="eng-slide-num">04</span><span class="eng-slide-tag">Engineering</span><span class="eng-slide-name">CAM Toolpath Programming</span></div></div>
+            <div class="eng-slide"><img src="cnc_1-14.jpg" alt="CNC machined part" /><div class="eng-slide-info"><span class="eng-slide-num">05</span><span class="eng-slide-tag">CNC Machining</span><span class="eng-slide-name">Aluminium Billet Cut</span></div></div>
+            <div class="eng-slide"><img src="cnc-cutting.jpg" alt="CNC cutting" /><div class="eng-slide-info"><span class="eng-slide-num">06</span><span class="eng-slide-tag">Precision Cutting</span><span class="eng-slide-name">5-Axis Machining</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-413.png" alt="CNC bed" /><div class="eng-slide-info"><span class="eng-slide-num">07</span><span class="eng-slide-tag">Tooling</span><span class="eng-slide-name">CNC Bed Setup</span></div></div>
+            <div class="eng-slide"><img src="prototype_assembly.jpg" alt="Prototype assembly" /><div class="eng-slide-info"><span class="eng-slide-num">08</span><span class="eng-slide-tag">Assembly</span><span class="eng-slide-name">Battery Cell Integration</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-285.jpg" alt="Tube bending" /><div class="eng-slide-info"><span class="eng-slide-num">09</span><span class="eng-slide-tag">Fabrication</span><span class="eng-slide-name">Frame Tube Bending</span></div></div>
+            <!-- Set 2 — duplicate for seamless loop -->
+            <div class="eng-slide"><img src="battery_gold.png" alt="Engineering Drawing" style="object-position:center top;" /><div class="eng-slide-info"><span class="eng-slide-num">01</span><span class="eng-slide-tag">Engineering Drawing</span><span class="eng-slide-name">Battery Pack Layout</span></div></div>
+            <div class="eng-slide"><img src="6D44EE49-2285-4AA6-B846-2620B8F917EB_1_102_o.jpeg" alt="PCB Layout" /><div class="eng-slide-info"><span class="eng-slide-num">02</span><span class="eng-slide-tag">Electronics</span><span class="eng-slide-name">PCB Layout — VCU v1.6</span></div></div>
+            <div class="eng-slide"><img src="cad-screen.jpg" alt="CAD 3D Model" /><div class="eng-slide-info"><span class="eng-slide-num">03</span><span class="eng-slide-tag">3D Modelling</span><span class="eng-slide-name">CAD Digital Twin</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-157.jpg" alt="Engineer at workstation" /><div class="eng-slide-info"><span class="eng-slide-num">04</span><span class="eng-slide-tag">Engineering</span><span class="eng-slide-name">CAM Toolpath Programming</span></div></div>
+            <div class="eng-slide"><img src="cnc_1-14.jpg" alt="CNC machined part" /><div class="eng-slide-info"><span class="eng-slide-num">05</span><span class="eng-slide-tag">CNC Machining</span><span class="eng-slide-name">Aluminium Billet Cut</span></div></div>
+            <div class="eng-slide"><img src="cnc-cutting.jpg" alt="CNC cutting" /><div class="eng-slide-info"><span class="eng-slide-num">06</span><span class="eng-slide-tag">Precision Cutting</span><span class="eng-slide-name">5-Axis Machining</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-413.png" alt="CNC bed" /><div class="eng-slide-info"><span class="eng-slide-num">07</span><span class="eng-slide-tag">Tooling</span><span class="eng-slide-name">CNC Bed Setup</span></div></div>
+            <div class="eng-slide"><img src="prototype_assembly.jpg" alt="Prototype assembly" /><div class="eng-slide-info"><span class="eng-slide-num">08</span><span class="eng-slide-tag">Assembly</span><span class="eng-slide-name">Battery Cell Integration</span></div></div>
+            <div class="eng-slide"><img src="frame_factory-285.jpg" alt="Tube bending" /><div class="eng-slide-info"><span class="eng-slide-num">09</span><span class="eng-slide-tag">Fabrication</span><span class="eng-slide-name">Frame Tube Bending</span></div></div>
+          </div>
         </div>
       </div>
-    </section>
-    <div id="es-car-d2" style="margin-top:0;"></div>
+
     </div>
-
-    <!-- ══ DARK 3: Split — large image left fixed, scrolling content right ══ -->
-    <div class="es-opt" id="es-2">
-    <section style="padding:0;background:var(--black);">
-      <div style="display:grid;grid-template-columns:1fr 1fr;min-height:600px;">
-        <div style="position:relative;overflow:hidden;">
-          <img src="cnc_1-14.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.5);position:absolute;inset:0;" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to right,transparent 70%,rgba(10,10,10,0.95));"></div>
-        </div>
-        <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;">
-          <p class="label" style="color:var(--accent);margin-bottom:20px;">In-House Engineering</p>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.85);line-height:0.9;margin-bottom:24px;">We don't brief<br/>studios. We build<br/>the files.</h2>
-          <p style="font-size:0.9rem;line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;margin-bottom:40px;">From custom PCB layouts to 6061 aluminium battery enclosures — mechanical, electrical, and manufacturing. Every product leaves our hands production-ready.</p>
-          <div style="display:flex;flex-direction:column;gap:0;">
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);">
-              <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Product Categories</span>
-              <span style="font-size:0.8rem;color:rgba(244,241,236,0.6);">EV · Consumer · Lifestyle</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);">
-              <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Engineering</span>
-              <span style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Mechanical · Electrical · Software</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);">
-              <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Manufacturing</span>
-              <span style="font-size:0.8rem;color:rgba(244,241,236,0.6);">CNC · Casting · Sheet Metal</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);">
-              <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Team Background</span>
-              <span style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Ex-Yamaha · Automotive · Aerospace</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;">
-              <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Pipeline</span>
-              <span style="font-size:0.8rem;color:rgba(244,241,236,0.6);">Concept → CAD → CNC → Production</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-d3"></div>
-    </section>
-    </div>
-
-    <!-- ══ DARK 4: Stacked — big number stats across top, headline full-width, carousel full-bleed ══ -->
-    <div class="es-opt" id="es-3">
-    <section style="padding:0;background:var(--black);">
-      <!-- Gold metric bar -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(200,169,110,0.1);">
-        <div style="padding:32px 48px;border-right:1px solid rgba(200,169,110,0.08);">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#c8a96e;line-height:1;margin-bottom:4px;">3</div>
-          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Engineering Disciplines</div>
-        </div>
-        <div style="padding:32px 48px;border-right:1px solid rgba(200,169,110,0.08);">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#c8a96e;line-height:1;margin-bottom:4px;">7+</div>
-          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Years In Factory</div>
-        </div>
-        <div style="padding:32px 48px;border-right:1px solid rgba(200,169,110,0.08);">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#c8a96e;line-height:1;margin-bottom:4px;">100%</div>
-          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Production-Ready Output</div>
-        </div>
-        <div style="padding:32px 48px;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:#c8a96e;line-height:1;margin-bottom:4px;">0</div>
-          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Studios Briefed</div>
-        </div>
-      </div>
-      <!-- Headline + body -->
-      <div style="padding:64px 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;border-bottom:1px solid rgba(200,169,110,0.08);">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We don't brief<br/>studios.<br/>We build<br/>the files.</h2>
-        <div>
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.45);font-weight:300;margin-bottom:32px;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack — mechanical, electrical, and manufacturing.</p>
-          <div style="display:flex;flex-direction:column;gap:0;">
-            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Manufacturing</span><span style="font-size:0.78rem;color:rgba(244,241,236,0.6);">CNC · Casting · Sheet Metal</span></div>
-            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid rgba(244,241,236,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Team</span><span style="font-size:0.78rem;color:rgba(244,241,236,0.6);">Ex-Yamaha · Automotive · Aerospace</span></div>
-            <div style="display:flex;justify-content:space-between;padding:10px 0;"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Pipeline</span><span style="font-size:0.78rem;color:rgba(244,241,236,0.6);">Concept → CAD → CNC → Production</span></div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-d4"></div>
-    </section>
-    </div>
-
-    <!-- ══ DARK 5: Minimal dark — large ghost headline, specs inline, full-bleed carousel ══ -->
-    <div class="es-opt" id="es-4">
-    <section style="padding:0;background:var(--black);">
-      <div style="padding:80px 48px 56px;">
-        <p class="label" style="color:var(--accent);margin-bottom:24px;">In-House Engineering</p>
-        <!-- Ghost large headline -->
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.06);line-height:0.88;margin-bottom:-0.5em;pointer-events:none;user-select:none;">Build<br/>The Files.</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;padding-top:24px;border-top:1px solid rgba(200,169,110,0.08);position:relative;z-index:1;">
-          <div>
-            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,3rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.92;margin-bottom:16px;">We don't brief studios.<br/>We build the files.</h3>
-            <p style="font-size:0.9rem;line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">From custom PCB layouts to 6061 aluminium battery enclosures — the full stack, owned in-house.</p>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 32px;">
-            <div>
-              <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:4px;">Categories</div>
-              <div style="font-size:0.78rem;color:rgba(244,241,236,0.55);">EV · Consumer · Lifestyle</div>
-            </div>
-            <div>
-              <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:4px;">Disciplines</div>
-              <div style="font-size:0.78rem;color:rgba(244,241,236,0.55);">Mechanical · Electrical · Software</div>
-            </div>
-            <div>
-              <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:4px;">Manufacturing</div>
-              <div style="font-size:0.78rem;color:rgba(244,241,236,0.55);">CNC · Casting · Sheet Metal</div>
-            </div>
-            <div>
-              <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:4px;">Team</div>
-              <div style="font-size:0.78rem;color:rgba(244,241,236,0.55);">Ex-Yamaha · Automotive</div>
-            </div>
-            <div style="grid-column:1/-1;">
-              <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:4px;">Pipeline</div>
-              <div style="font-size:0.78rem;color:rgba(244,241,236,0.55);">Concept → CAD → CNC → Production</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-d5"></div>
-    </section>
-    </div>
-
-    <!-- ══ CREAM 1: Clean editorial — label top, headline left, specs right table, cream carousel ══ -->
-    <div class="es-opt es-cream" id="es-5">
-    <section style="padding:80px 48px 0;background:var(--cream);">
-      <p class="label" style="color:#8a6e3a;margin-bottom:24px;">In-House Engineering</p>
-      <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-bottom:56px;">
-        <div style="padding-right:64px;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,10,10,0.75);line-height:0.88;margin-bottom:20px;">We don't brief<br/>studios. We build<br/>the files.</h2>
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack — mechanical, electrical, and manufacturing. Every product leaves our hands production-ready.</p>
-        </div>
-        <div style="background:rgba(10,10,10,0.08);"></div>
-        <div style="padding-left:64px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.08);"><span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Product Categories</span><span style="font-size:0.82rem;color:rgba(10,10,10,0.65);">EV · Consumer · Lifestyle</span></div>
-          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.08);"><span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Engineering</span><span style="font-size:0.82rem;color:rgba(10,10,10,0.65);">Mechanical · Electrical · Software</span></div>
-          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.08);"><span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Manufacturing</span><span style="font-size:0.82rem;color:rgba(10,10,10,0.65);">CNC · Casting · Sheet Metal</span></div>
-          <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.08);"><span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Team Background</span><span style="font-size:0.82rem;color:rgba(10,10,10,0.65);">Ex-Yamaha · Automotive · Aerospace</span></div>
-          <div style="display:flex;justify-content:space-between;padding:14px 0;"><span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Pipeline</span><span style="font-size:0.82rem;color:rgba(10,10,10,0.65);">Concept → CAD → CNC → Production</span></div>
-        </div>
-      </div>
-    </section>
-    <div id="es-car-c1" style="background:var(--cream);"></div>
-    </div>
-
-    <!-- ══ CREAM 2: Full-width headline + body stacked, horizontal spec bar, carousel ══ -->
-    <div class="es-opt es-cream" id="es-6">
-    <section style="padding:0;background:var(--cream);">
-      <div style="padding:80px 48px 56px;">
-        <p class="label" style="color:#8a6e3a;margin-bottom:16px;">In-House Engineering</p>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,9rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;margin-bottom:28px;">We build<br/>the files.</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:48px;">
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack — mechanical, electrical, and manufacturing.</p>
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">Every product leaves our hands production-ready. We don't brief studios. We own the files — from concept through to factory floor.</p>
-        </div>
-        <!-- Horizontal spec bar -->
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid rgba(138,110,58,0.2);">
-          <div style="padding:20px 0;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Categories</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);">EV · Consumer · Lifestyle</div>
-          </div>
-          <div style="padding:20px 24px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Disciplines</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);">Mechanical · Electrical · Software</div>
-          </div>
-          <div style="padding:20px 24px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Manufacturing</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);">CNC · Casting · Sheet Metal</div>
-          </div>
-          <div style="padding:20px 24px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Team</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);">Ex-Yamaha · Automotive</div>
-          </div>
-          <div style="padding:20px 24px;">
-            <div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Pipeline</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);">Concept → CAD → CNC → Production</div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-c2"></div>
-    </section>
-    </div>
-
-    <!-- ══ CREAM 3: Three-column — label/headline col, body col, specs col ══ -->
-    <div class="es-opt es-cream" id="es-7">
-    <section style="padding:0;background:var(--cream);">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;min-height:400px;border-bottom:1px solid rgba(10,10,10,0.07);">
-        <div style="padding:72px 48px;border-right:1px solid rgba(10,10,10,0.07);">
-          <p class="label" style="color:#8a6e3a;margin-bottom:20px;">In-House Engineering</p>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,3.5vw,3.8rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,10,10,0.75);line-height:0.9;">We don't brief<br/>studios.<br/>We build<br/>the files.</h2>
-        </div>
-        <div style="padding:72px 48px;border-right:1px solid rgba(10,10,10,0.07);display:flex;flex-direction:column;justify-content:center;">
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;margin-bottom:20px;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack.</p>
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">Every product leaves our hands production-ready. No agencies. No briefs. Just files.</p>
-        </div>
-        <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:center;">
-          <div style="display:flex;flex-direction:column;gap:0;">
-            <div style="padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:4px;">Product Categories</div><div style="font-size:0.8rem;color:rgba(10,10,10,0.6);">EV · Consumer · Lifestyle</div></div>
-            <div style="padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:4px;">Engineering</div><div style="font-size:0.8rem;color:rgba(10,10,10,0.6);">Mechanical · Electrical · Software</div></div>
-            <div style="padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:4px;">Manufacturing</div><div style="font-size:0.8rem;color:rgba(10,10,10,0.6);">CNC · Casting · Sheet Metal</div></div>
-            <div style="padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:4px;">Team</div><div style="font-size:0.8rem;color:rgba(10,10,10,0.6);">Ex-Yamaha · Automotive · Aerospace</div></div>
-            <div style="padding:12px 0;"><div style="font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;margin-bottom:4px;">Pipeline</div><div style="font-size:0.8rem;color:rgba(10,10,10,0.6);">Concept → CAD → CNC → Production</div></div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-c3"></div>
-    </section>
-    </div>
-
-    <!-- ══ CREAM 4: Case study style — left label column, right content, cream throughout ══ -->
-    <div class="es-opt es-cream" id="es-8">
-    <section style="padding:80px 48px 0;background:var(--cream);">
-      <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
-        <span style="font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;">In-House Engineering</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,10,10,0.75);line-height:0.9;">We don't brief studios.<br/>We build the files.</h2>
-          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;padding-top:8px;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack. Every product leaves our hands production-ready.</p>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:0;padding-bottom:48px;">
-        <span style="font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;">Capabilities</span>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid rgba(10,10,10,0.08);">
-          <div style="padding:20px 20px 20px 0;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Categories</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);line-height:1.5;">EV · Consumer · Lifestyle</div>
-          </div>
-          <div style="padding:20px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Disciplines</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);line-height:1.5;">Mechanical · Electrical · Software</div>
-          </div>
-          <div style="padding:20px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Manufacturing</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);line-height:1.5;">CNC · Casting · Sheet Metal</div>
-          </div>
-          <div style="padding:20px;border-right:1px solid rgba(10,10,10,0.06);">
-            <div style="font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Team</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);line-height:1.5;">Ex-Yamaha · Automotive</div>
-          </div>
-          <div style="padding:20px;">
-            <div style="font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:6px;">Pipeline</div>
-            <div style="font-size:0.78rem;color:rgba(10,10,10,0.6);line-height:1.5;">Concept → CAD → CNC → Production</div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <div id="es-car-c4" style="background:var(--cream);"></div>
-    </div>
-
-    <!-- ══ CREAM 5: Indented box on cream — white card with content inside, cream bg ══ -->
-    <div class="es-opt es-cream" id="es-9">
-    <section style="padding:48px;background:var(--cream);">
-      <div style="background:#f9f7f3;border:1px solid rgba(10,10,10,0.08);padding:64px;">
-        <p class="label" style="color:#8a6e3a;margin-bottom:20px;">In-House Engineering</p>
-        <div style="display:grid;grid-template-columns:1fr 1px 1fr;gap:0;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.07);">
-          <div style="padding-right:56px;">
-            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(10,10,10,0.75);line-height:0.9;margin-bottom:20px;">We don't brief<br/>studios. We build<br/>the files.</h2>
-            <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">From custom PCB layouts to 6061 aluminium battery enclosures, our team owns the full engineering stack. Every product leaves our hands production-ready.</p>
-          </div>
-          <div style="background:rgba(10,10,10,0.07);"></div>
-          <div style="padding-left:56px;display:flex;flex-direction:column;justify-content:center;">
-            <div style="display:flex;flex-direction:column;gap:0;">
-              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Product Categories</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">EV · Consumer · Lifestyle</span></div>
-              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Engineering</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Mechanical · Electrical · Software</span></div>
-              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Manufacturing</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">CNC · Casting · Sheet Metal</span></div>
-              <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Team Background</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Ex-Yamaha · Automotive · Aerospace</span></div>
-              <div style="display:flex;justify-content:space-between;padding:12px 0;"><span style="font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Pipeline</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Concept → CAD → CNC → Production</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="es-car-c5" style="margin:0 -48px;"></div>
-    </section>
-    </div>
-
-    <script>
-      // Inject carousels into each option
-      const carIds = ['es-car-d1','es-car-d2','es-car-d3','es-car-d4','es-car-d5','es-car-c1','es-car-c2','es-car-c3','es-car-c4','es-car-c5'];
-      carIds.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.innerHTML = esCarousel(id+'t');
-      });
-    </script>
-
-    </div><!-- close eng-section -->
   </section>
 
   <!-- FACTORY IMAGE BREAK -->
