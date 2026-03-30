@@ -9,7 +9,6 @@ revealElements.forEach(el => {
 
 // Then apply animation if IntersectionObserver available
 if ('IntersectionObserver' in window) {
-  // Reset for animation
   revealElements.forEach(el => {
     el.style.opacity = '';
     el.style.transform = '';
@@ -62,14 +61,14 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── HERO HEADLINE FIT ──
-// Makes both headline lines always share the same left and right edges
-// automatically, regardless of text content or screen size
+// Stretches the top line to always match the bottom line width
+// Runs after fonts are loaded so measurements are accurate
 function fitHeadline() {
   const top = document.querySelector('.hero-headline-top');
   const bot = document.querySelector('.hero-headline-bottom');
   if (!top || !bot) return;
 
-  // Reset any previous transform so we measure natural width
+  // Reset transform before measuring
   top.style.transform = 'none';
 
   const topW = top.getBoundingClientRect().width;
@@ -77,13 +76,15 @@ function fitHeadline() {
 
   if (topW === 0 || botW === 0) return;
 
-  const scale = botW / topW;
-  top.style.transform = `scaleX(${scale})`;
+  top.style.transform = `scaleX(${botW / topW})`;
   top.style.transformOrigin = 'left top';
 }
 
-// Run on load and on every resize
-window.addEventListener('load', fitHeadline);
+// document.fonts.ready waits for Bebas Neue to load before measuring
+if (document.fonts) {
+  document.fonts.ready.then(fitHeadline);
+} else {
+  window.addEventListener('load', fitHeadline);
+}
+
 window.addEventListener('resize', fitHeadline);
-// Also run immediately in case fonts are already loaded
-fitHeadline();
