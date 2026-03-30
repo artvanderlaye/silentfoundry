@@ -1,13 +1,11 @@
 // ── SCROLL REVEAL ──
 const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
 
-// Make all visible immediately as fallback
 revealElements.forEach(el => {
   el.style.opacity = '1';
   el.style.transform = 'none';
 });
 
-// Then apply animation if IntersectionObserver available
 if ('IntersectionObserver' in window) {
   revealElements.forEach(el => {
     el.style.opacity = '';
@@ -61,18 +59,23 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── HERO HEADLINE FIT ──
-// Stretches the top line to always match the bottom line width
-// Runs after fonts are loaded so measurements are accurate
+// Stretches top line to match bottom line width exactly
 function fitHeadline() {
   const top = document.querySelector('.hero-headline-top');
   const bot = document.querySelector('.hero-headline-bottom');
   if (!top || !bot) return;
 
-  // Reset transform before measuring
+  // Temporarily set inline-block to get true text width (not container width)
   top.style.transform = 'none';
+  top.style.display = 'inline-block';
+  bot.style.display = 'inline-block';
 
   const topW = top.getBoundingClientRect().width;
   const botW = bot.getBoundingClientRect().width;
+
+  // Restore block display then apply scale
+  top.style.display = 'block';
+  bot.style.display = 'block';
 
   if (topW === 0 || botW === 0) return;
 
@@ -80,11 +83,5 @@ function fitHeadline() {
   top.style.transformOrigin = 'left top';
 }
 
-// document.fonts.ready waits for Bebas Neue to load before measuring
-if (document.fonts) {
-  document.fonts.ready.then(fitHeadline);
-} else {
-  window.addEventListener('load', fitHeadline);
-}
-
+document.fonts.ready.then(fitHeadline);
 window.addEventListener('resize', fitHeadline);
