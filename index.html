@@ -115,32 +115,13 @@
       animation: pulse-line 2s infinite;
     }
     @keyframes pulse-line { 0%,100%{opacity:0.4}50%{opacity:1} }
-    /* ── SECTION SCROLL INDICATORS ── */
-    .section-scroll {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      position: absolute;
-      bottom: 32px;
-      right: 48px;
-      z-index: 10;
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .section-scroll span {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      writing-mode: vertical-rl;
-      color: var(--mid);
-      opacity: 0.5;
-    }
-    .section-scroll-line {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-      animation: pulse-line 2s infinite;
-    }
-    
+
+    /* ── SECTIONS ── */
+    section { padding: 120px 48px; }
 
     .section-title {
       font-family: var(--font-display);
@@ -1152,7 +1133,8 @@
   </style>
 
   <style>
-    
+    @media(max-width:768px){
+      .ps-opt section { padding:0 !important; }
       .ps-opt [style*="grid-template-columns:1fr 1fr"],[style*="grid-template-columns: 1fr 1fr"] { display:block !important; }
       .ps-opt [style*="grid-template-columns:200px"] { display:block !important; }
       .ps-opt [style*="padding:80px"],[style*="padding:72px"],[style*="padding:64px"] { padding:40px 20px !important; }
@@ -1162,7 +1144,11 @@
     }
   </style>
   <style>
-    
+    @media(max-width:768px){
+      /* M5 hero */
+      .ms-opt section > div:first-child { min-height:50vw !important; }
+      /* Collapse all 2-col grids in M5 */
+      .ms-opt [style*="grid-template-columns:1fr 1fr"] { display:block !important; }
       .ms-opt [style*="grid-template-columns:200px"] { display:block !important; }
       .ms-opt [style*="grid-template-columns:repeat(4"] { grid-template-columns:1fr 1fr !important; }
       /* Padding reduction */
@@ -1182,7 +1168,8 @@
     }
   </style>
   <style>
-    
+    @media(max-width:768px){
+      .eng-section { padding:40px 20px !important; }
       .eng-top { grid-template-columns:1fr !important; gap:32px !important; }
       .eng-top-divider { display:none !important; }
       .eng-headline { font-size:clamp(2.5rem,9vw,4rem) !important; }
@@ -1197,7 +1184,9 @@
     }
   </style>
   <style>
-    
+    @media(max-width:768px){
+      /* V16 left/right split → stack */
+      .fp-opt [style*="grid-template-columns:1fr 2fr"] { display:block !important; }
       .fp-opt [style*="grid-template-columns:2fr 1fr"] { display:block !important; }
       /* 3-col product grid → single col */
       .fp-opt [style*="grid-template-columns:1fr 1fr 1fr"] { grid-template-columns:1fr 1fr !important; }
@@ -1221,7 +1210,8 @@
     }
   </style>
   <style>
-    
+    @media(max-width:768px){
+      .cs-opt [style*="grid-template-columns:1fr 1fr"] { display:block !important; }
       .cs-opt [style*="grid-template-columns:1fr 1fr 1fr"] { display:block !important; }
       .cs-opt [style*="padding:80px"],[style*="padding:72px"],[style*="padding:64px"] { padding:40px 20px !important; }
       .cs-opt [style*="gap:80px"],[style*="gap:64px"] { gap:24px !important; }
@@ -1230,30 +1220,6 @@
       .cs-opt [style*="max-width:460px"],[style*="max-width:400px"] { max-width:100% !important; }
     }
   </style>
-
-    @media(max-width:768px){
-      .section-scroll { display:none; } }
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── SECTIONS ── */
-    section { padding: 120px 48px;
-      .ps-opt section { padding:0 !important;
-      /* M5 hero */
-      .ms-opt section > div:first-child { min-height:50vw !important; }
-      /* Collapse all 2-col grids in M5 */
-      .ms-opt [style*="grid-template-columns:1fr 1fr"] { display:block !important;
-      .eng-section { padding:40px 20px !important;
-      /* V16 left/right split → stack */
-      .fp-opt [style*="grid-template-columns:1fr 2fr"] { display:block !important;
-      .cs-opt [style*="grid-template-columns:1fr 1fr"] { display:block !important;
-      #ms-sw { padding:12px 20px; }
-      .mc-hero img{aspect-ratio:4/3;
-      .ec2-slide { flex:0 0 calc(100vw - 2px); }
-      #es2-sw { padding:12px 20px; }
-    }
 </head>
 <body>
 <!-- MOBILE MENU -->
@@ -1261,6 +1227,7 @@
     <a href="index.html">Home</a>
     <a href="index.html#how">How It Works</a>
     <a href="index.html#funds">Funds</a>
+    <a href="index.html#featured">Projects</a>
     <a href="sf-team.html">Team</a>
     <a href="sf-contact.html">Contact</a>
   </div>
@@ -1274,6 +1241,7 @@
     <ul class="nav-links">
       <li><a href="#how">How It Works</a></li>
       <li><a href="#funds">Investors</a></li>
+      <li><a href="#featured">Projects</a></li>
       <li><a href="sf-team.html">Team</a></li>
       <li><a href="sf-contact.html">Contact</a></li>
     </ul>
@@ -1383,19 +1351,19 @@
     <!-- Three-stage strip -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid rgba(200,169,110,0.1);">
       <div style="padding:48px;border-right:1px solid rgba(200,169,110,0.08);position:relative;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.18);position:absolute;top:24px;right:24px;line-height:1;">01</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.06);position:absolute;top:24px;right:24px;line-height:1;">01</div>
         <span style="font-size:0.5rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:block;margin-bottom:16px;">DNA</span>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.7);line-height:0.95;margin-bottom:12px;">Brand Equity.<br/>Identified.</div>
         <p style="font-size:0.75rem;line-height:1.6;color:rgba(244,241,236,0.3);">Heritage. Audience. Authenticity. The intangible assets that make a brand worth building on.</p>
       </div>
       <div style="padding:48px;border-right:1px solid rgba(200,169,110,0.08);position:relative;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.18);position:absolute;top:24px;right:24px;line-height:1;">02</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.06);position:absolute;top:24px;right:24px;line-height:1;">02</div>
         <span style="font-size:0.5rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:block;margin-bottom:16px;">Engineering</span>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.7);line-height:0.95;margin-bottom:12px;">CAD.<br/>Built to spec.</div>
         <p style="font-size:0.75rem;line-height:1.6;color:rgba(244,241,236,0.3);">From brand cue to engineering rule. Geometry, material, finish — every decision governed.</p>
       </div>
       <div style="padding:48px;position:relative;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.18);position:absolute;top:24px;right:24px;line-height:1;">03</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;color:rgba(200,169,110,0.06);position:absolute;top:24px;right:24px;line-height:1;">03</div>
         <span style="font-size:0.5rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:block;margin-bottom:16px;">Production</span>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.7);line-height:0.95;margin-bottom:12px;">Real product.<br/>Production-ready.</div>
         <p style="font-size:0.75rem;line-height:1.6;color:rgba(244,241,236,0.3);">Not a render. A product system with proven unit economics, ready to scale or sell.</p>
@@ -1448,7 +1416,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:56px;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">DNA Translation</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We industrialize<br/>brand soul.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We industrialize<br/>brand soul.</h2>
         </div>
         <div style="padding-bottom:8px;">
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:12px;">Not logo-slapping. Real product translation.</p>
@@ -1513,7 +1481,7 @@
     <div style="padding:72px 48px 56px;border-bottom:2px solid rgba(138,110,58,0.15);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">DNA Translation</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">We industrialize<br/>brand soul.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">We industrialize<br/>brand soul.</h2>
         <div>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.4);margin-bottom:8px;">Not logo-slapping. Real product translation.</p>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">From cue to object.</p>
@@ -1552,7 +1520,7 @@
   <section style="padding:0;background:var(--black);">
     <div style="padding:96px 48px 80px;">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">Silent Foundry</span>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.86;margin-bottom:40px;">Brand DNA.<br/>Built Properly.</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.86;margin-bottom:40px;">Brand DNA.<br/>Built Properly.</h2>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:64px;">Engineered. &nbsp;&nbsp;Manufacturable. &nbsp;&nbsp;Exit-ready.</p>
       <!-- 3 stage labels -->
       <div style="display:grid;grid-template-columns:repeat(3,auto) 1fr;gap:0 48px;align-items:baseline;border-top:1px solid rgba(200,169,110,0.1);padding-top:40px;">
@@ -1583,7 +1551,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:72px;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:28px;">Silent Foundry</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;">Brand DNA.<br/>Built Properly.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8.5rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;">Brand DNA.<br/>Built Properly.</h2>
         </div>
 
       </div>
@@ -1615,7 +1583,7 @@
     <div style="padding:80px 48px 64px;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">The Silent Foundry Engine</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We build<br/>product systems.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">We build<br/>product systems.</h2>
         <div>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:8px;">Hardware, structure, and repeat value.</p>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">From brand equity to operating asset.</p>
@@ -1658,7 +1626,7 @@
     <div style="padding:80px 48px 0;border-bottom:2px solid rgba(138,110,58,0.15);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:24px;">The Silent Foundry Engine</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;padding-bottom:56px;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">We build<br/>product systems.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">We build<br/>product systems.</h2>
         <div>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);margin-bottom:8px;">Hardware, structure, and repeat value.</p>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">From brand equity to operating asset.</p>
@@ -1711,7 +1679,7 @@
     .msb { font-family:'Bebas Neue',sans-serif; font-size:0.82rem; letter-spacing:0.1em; padding:4px 14px; border:1px solid rgba(200,169,110,0.22); background:transparent; color:rgba(244,241,236,0.38); cursor:pointer; transition:all 0.2s; }
     .msb:hover { color:#c8a96e; border-color:rgba(200,169,110,0.55); }
     .msb.active { background:rgba(200,169,110,0.1); color:#c8a96e; border-color:#c8a96e; }
-    
+    @media(max-width:768px){ #ms-sw { padding:12px 20px; } }
   </style>
   <script>
     function msSwitch(i){
@@ -1743,8 +1711,8 @@
     .mc-hero-content{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr 1px 0.9fr;align-items:center;padding:0 72px;z-index:1;gap:0;}
     .mc-hero-left{padding-right:72px;}
     .mc-hero-eyebrow{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.8);display:block;margin-bottom:14px;}
-    .mc-hero-title{font-family:var(--font-display);font-size:clamp(2.8rem,5vw,5.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.92);line-height:0.88;margin-bottom:20px;}
-    .mc-hero-body{font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.6);max-width:400px;font-weight:300;}
+    .mc-hero-title{font-family:var(--font-display);font-size:clamp(3rem,5.5vw,6rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.92);line-height:0.88;margin-bottom:20px;}
+    .mc-hero-body{font-size:clamp(0.85rem,1vw,0.98rem);line-height:1.8;color:rgba(244,241,236,0.6);max-width:400px;font-weight:300;}
     .mc-hero-div{background:linear-gradient(to bottom,transparent,rgba(200,169,110,0.18),transparent);}
     .mc-hero-right{padding-left:56px;display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;}
     .mc-metric-val{font-family:var(--font-display);font-size:2.4rem;letter-spacing:0.06em;color:#c8a96e;display:block;line-height:1;}
@@ -1756,7 +1724,8 @@
     .mc-after{background:#111;display:grid;grid-template-columns:1fr 1fr;min-height:400px;}
     .mc-after-cell{overflow:hidden;position:relative;}
     .mc-after-cell img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.82);}
-    
+    @media(max-width:768px){
+      .mc-hero img{aspect-ratio:4/3;}
       .mc-hero-content{grid-template-columns:1fr;padding:24px;align-items:flex-end;}
       .mc-hero-div{display:none;}
       .mc-hero-right{display:none;}
@@ -1826,7 +1795,7 @@
       <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,transparent 60%);"></div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:48px;z-index:1;">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.7);display:block;margin-bottom:16px;">Case Study — Marshall Amplification</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;color:rgba(244,241,236,0.88);line-height:0.86;margin-bottom:0;">Rock &amp; Roll<br/>Never Dies.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;color:rgba(244,241,236,0.88);line-height:0.86;margin-bottom:0;">Rock &amp; Roll<br/>Never Dies.</h2>
       </div>
       <div style="position:absolute;top:48px;right:48px;z-index:1;display:flex;gap:32px;">
         <div style="text-align:right;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">$1.1B</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.35);">Acquired 2025</span></div>
@@ -1864,7 +1833,7 @@
     <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Case Study</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Rock &amp; Roll<br/>Never Dies.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Rock &amp; Roll<br/>Never Dies.</h2>
         <div>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:16px;">60+ years of heritage. A shrinking core market. Zound extracted the soul and rebuilt it across new categories.</p>
           <div style="display:flex;gap:32px;">
@@ -1907,10 +1876,10 @@
   <section style="padding:0;background:#111008;">
     <div style="display:grid;grid-template-columns:1fr 1fr;min-height:60vh;">
       <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bebas Neue',sans-serif;font-size:20vw;color:rgba(200,169,110,0.18);line-height:0.8;pointer-events:none;user-select:none;">Rock</div>
+        <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bebas Neue',sans-serif;font-size:20vw;color:rgba(200,169,110,0.03);line-height:0.8;pointer-events:none;user-select:none;">Rock</div>
         <div style="position:relative;z-index:1;">
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.6);display:block;margin-bottom:20px;">Case Study — Marshall Amplification</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);">Rock &amp; Roll<br/>Never Dies.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);">Rock &amp; Roll<br/>Never Dies.</h2>
         </div>
         <div style="position:relative;z-index:1;">
           <p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;margin-bottom:28px;">60+ years of heritage. Zound extracted the soul and rebuilt it across new categories. $1.1B acquisition.</p>
@@ -1972,7 +1941,7 @@
         <div style="padding:56px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid rgba(200,169,110,0.08);">
           <div>
             <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Case Study — Marshall Amplification</span>
-            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:20px;">Rock &amp; Roll<br/>Never Dies.</h2>
+            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:20px;">Rock &amp; Roll<br/>Never Dies.</h2>
             <p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;">60+ years of heritage. Zound's insight: extract the soul, rebuild in new categories. $1.1B acquisition.</p>
           </div>
           <div style="display:flex;gap:24px;">
@@ -2012,7 +1981,7 @@
 
   <!-- M5: Cream with dark hero, DNA 2-col with descriptions, closing stat bar -->
   <div class="ms-opt active">
-  <section style="padding:0;position:relative;">
+  <section style="padding:0;">
     <div style="position:relative;overflow:hidden;min-height:60vh;background:var(--black);">
       <img src="images-1.jpeg" style="width:100%;height:100%;object-fit:cover;object-position:center 35%;filter:brightness(0.25);position:absolute;inset:0;display:block;" />
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:64px;">
@@ -2021,10 +1990,9 @@
       </div>
     </div>
     <div style="background:var(--cream);padding:64px 48px;">
-      <div style="margin-bottom:16px;"><span style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;">The Heritage Trap</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">60+ years of heritage. A shrinking core market. Zound's insight: don't redesign the product. Extract the soul, take it somewhere new. They identified six physical and sensory cues — the tolex texture, the brass knobs, the toggle weight, the tuned character, the attitude — and systematically translated each one into a new product category. Not logo-slapping. Genuine DNA engineering at scale.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;line-height:1;">$1.1B</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Acquired 2025</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;line-height:1;">$4B+</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Expanded Market</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;line-height:1;">60+</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Years Heritage</span></div>
@@ -2034,12 +2002,12 @@
       <!-- DNA 2-col -->
       <div style="margin-bottom:16px;"><span style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;">DNA Extraction</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
-        <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.06);padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Tactile</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Pebbled Tolex</span></div>
-        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Physical</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Brass Knobs</span></div>
-        <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.06);padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Mechanical</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Toggle Click</span></div>
-        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Acoustic</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Tuned Character</span></div>
-        <div style="display:flex;justify-content:space-between;padding:14px 0;padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Intangible</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Stage Presence</span></div>
-        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">CMF</span><span style="font-family:'DM Sans',sans-serif;font-size:clamp(0.9rem,1.2vw,1.05rem);font-weight:300;letter-spacing:0.02em;text-transform:none;color:rgba(10,10,10,0.6);">Black + Brass</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.06);padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Tactile</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Pebbled Tolex</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Physical</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Brass Knobs</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(10,10,10,0.06);padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Mechanical</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Toggle Click</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Acoustic</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Tuned Character</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0;padding-right:48px;margin-right:48px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">Intangible</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Stage Presence</span></div>
+        <div style="display:flex;justify-content:space-between;padding:14px 0 14px 48px;"><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;">CMF</span><span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.6);">Black + Brass</span></div>
       </div>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">This is the model we replicate. What took Zound years, we do in weeks.</p>
     </div>
@@ -2065,7 +2033,7 @@
             <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;line-height:1;">$4B+</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Market</span></div>
           </div>
         </div>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);text-align:right;">Rock &amp; Roll<br/>Never Dies.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);text-align:right;">Rock &amp; Roll<br/>Never Dies.</h2>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid rgba(200,169,110,0.06);">
@@ -2100,10 +2068,10 @@
       <div style="padding:80px 64px;display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Case Study — Marshall Amplification</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">Rock &amp; Roll<br/>Never Dies.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">Rock &amp; Roll<br/>Never Dies.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.38);font-weight:300;">60+ years of heritage. Zound extracted the soul and rebuilt it. Personal audio, home speakers, headphones. $1.1B acquisition.</p>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">$1.1B</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Acquired</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">$4B+</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Market</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">60+</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Years</span></div>
@@ -2140,7 +2108,7 @@
   <section style="padding:0;background:var(--cream);">
     <div style="padding:80px 48px 64px;text-align:center;border-bottom:2px solid rgba(138,110,58,0.15);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Case Study — Marshall Amplification</span>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.86;color:rgba(10,10,10,0.72);margin-bottom:24px;">Rock &amp; Roll<br/>Never Dies.</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(10,10,10,0.72);margin-bottom:24px;">Rock &amp; Roll<br/>Never Dies.</h2>
       <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.45);font-weight:300;max-width:600px;margin:0 auto 32px;">60+ years of heritage. Zound extracted the soul and rebuilt it across new categories. $1.1B acquisition.</p>
       <div style="display:inline-flex;gap:48px;">
         <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;line-height:1;">$1.1B</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Acquired</span></div>
@@ -2174,7 +2142,7 @@
     <div style="padding:80px 48px 64px;">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Case Study — Marshall Amplification</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:56px;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">Rock &amp; Roll<br/>Never Dies.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">Rock &amp; Roll<br/>Never Dies.</h2>
         <div>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.4);font-weight:300;margin-bottom:24px;">Zound extracted the soul of a 60-year heritage brand and rebuilt it across new categories. $1.1B acquisition.</p>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">This is the model we replicate.</p>
@@ -2211,7 +2179,7 @@
       <div style="padding:64px;border-bottom:1px solid rgba(10,10,10,0.07);">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Case Study — Marshall Amplification</span>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Rock &amp; Roll<br/>Never Dies.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Rock &amp; Roll<br/>Never Dies.</h2>
           <div>
             <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:24px;">Zound extracted the soul of a 60-year brand and rebuilt it. Personal audio, home speakers, headphones. $1.1B acquisition.</p>
             <div style="display:flex;gap:20px;">
@@ -2327,7 +2295,10 @@
     .ec2-btn { position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(10,10,10,0.65);border:0.5px solid rgba(200,169,110,0.25);color:rgba(244,241,236,0.7);width:52px;height:52px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all 0.2s; }
     .ec2-btn:hover { background:rgba(200,169,110,0.15);border-color:#c8a96e;color:#c8a96e; }
     .ec2-prev { left:20px; } .ec2-next { right:20px; }
-    
+    @media(max-width:768px){
+      .ec2-slide { flex:0 0 calc(100vw - 2px); }
+      #es2-sw { padding:12px 20px; }
+    }
   </style>
   <script>
     var _ec2slides = [
@@ -2398,22 +2369,29 @@
         <div class="eng-spec-row"><span class="eng-spec-label">Team Background</span><span class="eng-spec-val">Ex-Yamaha · Automotive · Aerospace</span></div>
         <div class="eng-spec-row"><span class="eng-spec-label">Pipeline</span><span class="eng-spec-val">Concept → CAD → CNC → Production</span></div>
       </div>
-      <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:8px;">
-        <span class="eng-pill">CNC Machining</span>
-        <span class="eng-pill">5-Axis Milling</span>
-        <span class="eng-pill">Sheet Metal</span>
-        <span class="eng-pill">Die Casting</span>
-        <span class="eng-pill">PCB Design</span>
-        <span class="eng-pill">Firmware</span>
-        <span class="eng-pill">Battery Systems</span>
-        <span class="eng-pill">Motor Controllers</span>
-        <span class="eng-pill">Mechanical CAD</span>
-        <span class="eng-pill">Prototyping</span>
-        <span class="eng-pill">Tooling</span>
-        <span class="eng-pill">Factory Liaison</span>
-      </div>
     </div>
     <div id="e0" style="margin-top:80px;"></div>
+    <div style="padding:32px 48px 40px;display:flex;flex-wrap:wrap;gap:8px;border-top:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);align-self:center;margin-right:8px;white-space:nowrap;">Capabilities</span>
+      <span class="eng-pill">CNC Machining</span>
+      <span class="eng-pill">5-Axis Milling</span>
+      <span class="eng-pill">Sheet Metal</span>
+      <span class="eng-pill">Die Casting</span>
+      <span class="eng-pill">Injection Moulding</span>
+      <span class="eng-pill">PCB Design</span>
+      <span class="eng-pill">Firmware</span>
+      <span class="eng-pill">Battery Systems</span>
+      <span class="eng-pill">BMS Engineering</span>
+      <span class="eng-pill">Motor Controllers</span>
+      <span class="eng-pill">Mechanical CAD</span>
+      <span class="eng-pill">DFM Review</span>
+      <span class="eng-pill">Prototyping</span>
+      <span class="eng-pill">Tooling</span>
+      <span class="eng-pill">Factory Liaison</span>
+      <span class="eng-pill">Supply Chain</span>
+      <span class="eng-pill">Quality Control</span>
+      <span class="eng-pill">Certifications</span>
+    </div>
   </div>
   </div>
 
@@ -2423,7 +2401,7 @@
     <div style="padding:80px 48px 56px;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;">In-House Engineering</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build the files.</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.4);font-weight:300;">From PCB layouts to 6061 aluminium enclosures — mechanical, electrical, manufacturing. Production-ready, every time.</p>
       </div>
     </div>
@@ -2455,7 +2433,7 @@
         </div>
         <div style="background:rgba(10,10,10,0.07);"></div>
         <div style="padding-left:56px;display:flex;flex-direction:column;justify-content:center;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);margin-bottom:16px;">We build<br/>the files.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);margin-bottom:16px;">We build<br/>the files.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;">From PCB layouts to 6061 aluminium enclosures — production-ready, every time.</p>
         </div>
       </div>
@@ -2467,11 +2445,11 @@
   <!-- E3: Warm dark, giant ghost headline, compact specs, full-bleed carousel -->
   <div class="es2-opt">
   <section style="padding:0;background:#111008;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:0;left:0;right:0;font-family:'Bebas Neue',sans-serif;font-size:20vw;color:rgba(200,169,110,0.18);line-height:0.85;pointer-events:none;user-select:none;letter-spacing:-0.02em;">Build.</div>
+    <div style="position:absolute;top:0;left:0;right:0;font-family:'Bebas Neue',sans-serif;font-size:20vw;color:rgba(200,169,110,0.04);line-height:0.85;pointer-events:none;user-select:none;letter-spacing:-0.02em;">Build.</div>
     <div style="padding:80px 48px 56px;position:relative;z-index:1;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">In-House Engineering</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We don't brief studios.<br/>We build the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We don't brief studios.<br/>We build the files.</h2>
         <div style="display:flex;flex-direction:column;gap:0;">
           <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(244,241,236,0.06);"><span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Categories</span><span style="font-size:0.8rem;color:rgba(244,241,236,0.55);">EV · Consumer · Lifestyle</span></div>
           <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(244,241,236,0.06);"><span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Disciplines</span><span style="font-size:0.8rem;color:rgba(244,241,236,0.55);">Mechanical · Electrical · Software</span></div>
@@ -2523,7 +2501,7 @@
   <section style="padding:0;background:#1c1a14;">
     <div style="padding:72px 48px 56px;text-align:center;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">In-House Engineering</span>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);margin-bottom:20px;">We don't brief studios.<br/>We build the files.</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);margin-bottom:20px;">We don't brief studios.<br/>We build the files.</h2>
       <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;max-width:600px;margin:0 auto;">From PCB layouts to 6061 aluminium enclosures — the full stack, owned in-house. Production-ready, every time.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid rgba(200,169,110,0.06);">
@@ -2547,7 +2525,7 @@
       </div>
       <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:center;">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;">In-House Engineering</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:20px;">We don't brief studios.<br/>We build the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4.5vw,5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:20px;">We don't brief studios.<br/>We build the files.</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.4);font-weight:300;margin-bottom:32px;">From PCB layouts to 6061 aluminium enclosures — the full stack, owned in-house.</p>
         <div style="display:flex;flex-direction:column;gap:0;">
           <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(244,241,236,0.06);"><span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Categories</span><span style="font-size:0.8rem;color:rgba(244,241,236,0.55);">EV · Consumer · Lifestyle</span></div>
@@ -2567,7 +2545,7 @@
     <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">In-House Engineering</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">We build the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">We build the files.</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;">From PCB layouts to 6061 aluminium enclosures. Every product leaves our hands production-ready.</p>
       </div>
     </div>
@@ -2597,7 +2575,7 @@
     <div style="padding:56px 48px;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">In-House Engineering</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We don't brief studios.<br/>We build the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We don't brief studios.<br/>We build the files.</h2>
         <div>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.38);font-weight:300;margin-bottom:24px;">From PCB layouts to 6061 aluminium enclosures — production-ready, every time.</p>
           <div style="display:flex;flex-wrap:wrap;gap:0;">
@@ -2621,7 +2599,7 @@
       <div style="padding:56px 64px;border-bottom:1px solid rgba(200,169,110,0.12);">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;">In-House Engineering</span>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build<br/>the files.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build<br/>the files.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.4);font-weight:300;">From PCB layouts to 6061 aluminium enclosures — mechanical, electrical, manufacturing. Production-ready, every time.</p>
         </div>
       </div>
@@ -2643,7 +2621,7 @@
     <div style="border-top:3px solid rgba(138,110,58,0.3);padding-top:48px;margin-bottom:48px;">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">In-House Engineering</span>
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:start;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.86;color:rgba(10,10,10,0.72);">We build<br/>the files.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;line-height:0.86;color:rgba(10,10,10,0.72);">We build<br/>the files.</h2>
         <div style="padding-top:8px;">
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:28px;">From PCB layouts to 6061 aluminium enclosures — production-ready, every time.</p>
           <div style="display:flex;flex-direction:column;gap:0;">
@@ -2760,7 +2738,7 @@
   <style>
     .sw2-wrap { padding: 120px 48px 60px; }
     .sw2-eyebrow { font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:16px; }
-    .sw2-title { font-family:var(--font-display); font-size:clamp(3.2rem,6vw,7rem); letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.85); line-height:0.88; }
+    .sw2-title { font-family:var(--font-display); font-size:clamp(3.5rem,6vw,7rem); letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.85); line-height:0.88; }
     .sw2-body { font-size:clamp(0.9rem,1.2vw,1.05rem); line-height:1.8; color:rgba(244,241,236,0.5); font-weight:300; }
     .sw2-pill { display:inline-block; padding:5px 14px; border:0.5px solid rgba(200,169,110,0.3); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin:0 4px 4px 0; }
     .sw2-sep { padding:20px 0 16px; }
@@ -2852,7 +2830,7 @@
       <!-- Overlay text -->
       <div style="position:absolute;bottom:48px;left:48px;z-index:10;">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.7);display:block;margin-bottom:12px;">Featured Project</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.9);line-height:0.86;">Switch 2.0</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.9);line-height:0.86;">Switch 2.0</h2>
       </div>
       <div style="position:absolute;bottom:48px;right:48px;z-index:10;text-align:right;">
         <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.45);">Seven rules. Infinite objects.</p>
@@ -2891,7 +2869,7 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;min-height:60vh;">
       <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--cream);">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Featured Project</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;margin-bottom:24px;">Switch<br/>2.0</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;margin-bottom:24px;">Switch<br/>2.0</h2>
         <p style="font-size:0.88rem;line-height:1.7;color:rgba(10,10,10,0.45);font-weight:300;max-width:360px;">Seven rules. Infinite objects. One recognisable identity.</p>
       </div>
       <div style="position:relative;overflow:hidden;min-height:60vh;">
@@ -2935,10 +2913,10 @@
   <section style="padding:0;background:#111008;">
     <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;">
       <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
-        <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bebas Neue',sans-serif;font-size:22vw;color:rgba(200,169,110,0.18);line-height:0.8;pointer-events:none;user-select:none;">SW</div>
+        <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bebas Neue',sans-serif;font-size:22vw;color:rgba(200,169,110,0.04);line-height:0.8;pointer-events:none;user-select:none;">SW</div>
         <div style="position:relative;z-index:1;">
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Featured Project</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">Switch 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6.5rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">Switch 2.0</h2>
         </div>
         <div style="position:relative;z-index:1;">
           <div style="display:flex;gap:32px;margin-bottom:32px;">
@@ -2987,7 +2965,7 @@
     <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">Featured Project</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
-        <div><h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;margin-bottom:16px;">Switch 2.0</h2><p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p></div>
+        <div><h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;margin-bottom:16px;">Switch 2.0</h2><p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p></div>
         <div style="position:relative;overflow:hidden;aspect-ratio:4/3;">
           <div class="fcar-slides" id="c4s">
             <div class="c4-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
@@ -3080,7 +3058,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Featured Project</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.86;">Switch 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.86;">Switch 2.0</h2>
         </div>
         <div style="padding-bottom:8px;">
           <p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;margin-bottom:24px;">Seven rules. Infinite objects. One recognisable identity.</p>
@@ -3127,7 +3105,7 @@
       <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px solid rgba(138,110,58,0.15);">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Featured Project</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;">Switch<br/>2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;">Switch<br/>2.0</h2>
         </div>
         <div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
@@ -3226,7 +3204,7 @@
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,7vw,8rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.85);line-height:0.86;margin-bottom:32px;">Switch<br/>2.0</h2>
           <p style="font-size:0.82rem;line-height:1.75;color:rgba(244,241,236,0.35);font-weight:300;max-width:320px;">Seven rules. Infinite objects. One recognisable identity.</p>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
           <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Top Speed</span></div>
@@ -3331,7 +3309,7 @@
       <div style="padding:64px 56px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(200,169,110,0.08);">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;">Featured Project</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:480px;">In 2025, we acquired the SWITCH brand and assets: a premium electric motorcycle platform with strong product DNA and clear room to expand. Now being relaunched around a larger market opportunity.</p>
         </div>
         <div style="display:flex;gap:32px;">
@@ -3393,7 +3371,7 @@
         <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.45);">Asset Acquisition — 2025</span>
       </div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:56px 48px;z-index:10;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,transparent 80%);">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.82;color:rgba(244,241,236,0.88);margin-bottom:16px;">SWITCH 2.0</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);text-transform:uppercase;line-height:0.82;color:rgba(244,241,236,0.88);margin-bottom:16px;">SWITCH 2.0</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.5);font-weight:300;max-width:600px;">Acquired 2025. A premium electric motorcycle platform with strong DNA and clear room to expand. Relaunching around a larger market opportunity.</p>
       </div>
       <div class="fcar-dots" style="bottom:24px;right:48px;left:auto;transform:none;"><button class="c12-dot fdot active" onclick="c12Go(0)"></button><button class="c12-dot fdot" onclick="c12Go(1)"></button><button class="c12-dot fdot" onclick="c12Go(2)"></button><button class="c12-dot fdot" onclick="c12Go(3)"></button></div>
@@ -3440,7 +3418,7 @@
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;">Featured Project — Asset Acquisition 2025</span>
           <img src="Logo_escrambler.jpg" style="height:40px;width:auto;display:block;margin-bottom:20px;filter:brightness(0);" />
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
         </div>
         <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8px;">
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:24px;">In 2025, we acquired the SWITCH brand and assets — a premium electric motorcycle platform with strong product DNA and clear room to expand beyond its original niche.</p>
@@ -3486,7 +3464,7 @@
       <div style="background:var(--black);padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <img src="Switch-logo-colour.png" style="height:36px;width:auto;display:block;margin-bottom:32px;" />
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p>
         </div>
         <div>
@@ -3532,7 +3510,7 @@
     <div style="padding:72px 48px 56px;text-align:center;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Asset Acquisition 2025 — Featured Project</span>
       <img src="Switch-logo-colour.png" style="height:48px;width:auto;display:block;margin:0 auto 20px;" />
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
       <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;max-width:560px;margin:20px auto 32px;">Acquired 2025. A premium electric motorcycle platform — relaunching around a larger opportunity and stronger unit economics.</p>
       <div style="display:inline-flex;gap:40px;">
         <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
@@ -3591,8 +3569,8 @@
     <div style="display:grid;grid-template-columns:1fr 2fr;min-height:60vh;">
       <div style="padding:56px;background:#0d0d0d;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(0,180,216,0.12);">
         <div>
-          <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.7);display:block;margin-bottom:12px;">Featured Project</span>
-          <img src="Switch-logo-white_2.png" style="height:32px;width:auto;display:block;margin-bottom:8px;" />
+          <span style="font-size:0.42rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.25);display:block;margin-bottom:12px;">Featured Project</span>
+          <img src="Switch-logo-colour.png" style="height:32px;width:auto;display:block;margin-bottom:8px;" />
           <img src="Logo_escrambler.jpg" style="height:16px;width:auto;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
           <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,180,216,0.6);display:block;margin-bottom:16px;">Asset Acquisition 2025</span>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;margin-bottom:12px;">A premium electric motorcycle platform with strong product DNA and clear room to expand. Relaunching around a larger opportunity.</p>
@@ -3627,7 +3605,15 @@
       <div style="position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;padding:16px;display:block;" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Amp</span></div></div>
     </div>
     <!-- Logos + DNA row -->
-
+    <div style="padding:20px 40px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;border-top:1px solid rgba(0,180,216,0.06);">
+        <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.2);white-space:nowrap;">As Seen On</span>
+        <div style="display:flex;gap:16px;align-items:center;filter:invert(1) brightness(2);opacity:0.25;flex-wrap:wrap;">
+          <img src="HYPEBEAST-png-logo.png" style="height:13px;width:auto;" />
+          <img src="designboom-logo-png.png" style="height:10px;width:auto;" />
+          <img src="hi-consumption-logo.png" style="height:12px;width:auto;" />
+          <img src="uncrate-logo-r-1.png" style="height:12px;width:auto;" />
+        </div>
+    </div>
   </section>
   </div>
 
@@ -3641,7 +3627,7 @@
           <img src="Switch-logo-colour.png" style="height:28px;width:auto;display:block;" />
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;">In 2025, we acquired the SWITCH brand and assets. A premium platform with strong DNA, now relaunching around a larger market opportunity.</p>
         </div>
       </div>
@@ -3682,13 +3668,13 @@
   <div class="fp-opt">
   <section style="padding:0;background:var(--black);">
     <div style="padding:80px 48px 64px;position:relative;overflow:hidden;border-bottom:1px solid rgba(200,169,110,0.06);">
-      <div style="position:absolute;top:20px;right:0;font-family:'Bebas Neue',sans-serif;font-size:14vw;color:rgba(200,169,110,0.18);line-height:0.8;pointer-events:none;user-select:none;white-space:nowrap;">SWITCH</div>
+      <div style="position:absolute;top:20px;right:0;font-family:'Bebas Neue',sans-serif;font-size:14vw;color:rgba(200,169,110,0.04);line-height:0.8;pointer-events:none;user-select:none;white-space:nowrap;">SWITCH</div>
       <div style="position:relative;z-index:1;">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Asset Acquisition 2025 — Featured Project</span>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:40px;">
           <div>
             <img src="Logo_escrambler.jpg" style="height:32px;width:auto;display:block;margin-bottom:16px;filter:invert(1) brightness(0.8);" />
-            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
+            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
           </div>
           <div>
             <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.38);font-weight:300;margin-bottom:16px;">In 2025, we acquired the SWITCH brand and assets. A premium electric motorcycle platform — relaunching around a larger market opportunity and stronger unit economics.</p>
@@ -3741,7 +3727,7 @@
             <span style="color:rgba(200,169,110,0.3);">×</span>
             <img src="Logo_escrambler.jpg" style="height:20px;width:auto;display:block;filter:invert(1) brightness(0.8);" />
           </div>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">In 2025, we acquired the SWITCH brand and assets: a premium electric motorcycle platform with strong product DNA and clear room to expand. Relaunching around a larger market opportunity.</p>
         </div>
         <div>
@@ -3788,7 +3774,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:40px;">
         <div>
           <img src="Switch-logo-colour.png" style="height:36px;width:auto;display:block;margin-bottom:20px;" />
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:20px;">SWITCH 2.0</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:20px;">SWITCH 2.0</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">Asset acquired 2025. A premium electric motorcycle platform — relaunching around a larger market opportunity and stronger unit economics.</p>
         </div>
         <div>
@@ -3928,7 +3914,7 @@
       <div style="padding:80px 64px;display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;">China Creative Strategy</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:28px;">We turn brand DNA into China-ready product concepts.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:28px;">We turn brand DNA into China-ready product concepts.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:460px;">Premium hardware concepts, built as selective systems around authentic brands.</p>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-top:1px solid rgba(200,169,110,0.1);padding-top:40px;">
@@ -3963,7 +3949,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:64px;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Selective Expansion</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Not more products.<br/>Better systems.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">Not more products.<br/>Better systems.</h2>
         </div>
         <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8px;">
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:16px;">One hero product. The right adjacencies. A stronger China story.</p>
@@ -4035,7 +4021,7 @@
     <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:56px;padding-bottom:56px;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">From Brand Equity to Product Opportunity</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build the product vision before the market sees it.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">We build the product vision before the market sees it.</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;padding-bottom:6px;">We translate authentic brand DNA into selective hardware concepts designed for premium positioning and China market relevance.</p>
       </div>
     </div>
@@ -4073,7 +4059,7 @@
   <section style="padding:0;background:var(--black);">
     <div style="padding:80px 48px 0;">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;">New Categories, Properly Built</span>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:32px;">We do not make<br/>more stuff.<br/>We define<br/>better categories.</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:32px;">We do not make<br/>more stuff.<br/>We define<br/>better categories.</h2>
       <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;max-width:600px;margin-bottom:48px;">Our concepts combine premium hardware, brand authenticity, and ecosystem logic to create stronger opportunities for China.</p>
       <div style="margin-bottom:56px;">
         <span style="display:inline-block;padding:5px 14px;border:0.5px solid rgba(200,169,110,0.3);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#c8a96e;margin:0 4px 4px 0;">Category Creation</span>
@@ -4098,7 +4084,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">More Than Hardware</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">The product is only part of the system.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">The product is only part of the system.</h2>
         </div>
         <div>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:24px;">We build hardware concepts that connect with audience, content, service, and culture — then shape them into stronger China opportunities.</p>
@@ -4138,7 +4124,7 @@
       <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Strategic Concept Development</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:24px;">Creative enough to excite. Structured enough to sell.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:24px;">Creative enough to excite. Structured enough to sell.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;max-width:400px;">Each concept is built around authentic brand DNA, selective product logic, and a credible pathway into China.</p>
         </div>
         <div style="display:flex;flex-direction:column;gap:0;">
@@ -4168,7 +4154,7 @@
       <div style="background:var(--black);padding:80px 64px;display:flex;flex-direction:column;justify-content:space-between;">
         <div>
           <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Built for China Relevance</span>
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,5vw,5.5rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:28px;">We shape the concept before we shape the venture.</h2>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:28px;">We shape the concept before we shape the venture.</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;max-width:400px;">We develop premium hardware ideas around authentic brands, then refine them into selective opportunities that make sense in China.</p>
         </div>
         <div>
@@ -4196,7 +4182,7 @@
     <div style="padding:80px 48px 0;border-bottom:1px solid rgba(200,169,110,0.08);">
       <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">The Front End of the Venture</span>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;padding-bottom:56px;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.2rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">This is where product vision becomes strategic value.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);">This is where product vision becomes strategic value.</h2>
         <div>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;margin-bottom:16px;">We develop new hardware concepts around authentic brands, build coherent systems around them, and position the opportunity for China.</p>
           <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">A stronger concept creates a stronger deal.</p>
@@ -4233,10 +4219,10 @@
   <div class="cs-opt">
   <section style="padding:0;background:var(--black);">
     <div style="padding:96px 48px 72px;position:relative;overflow:hidden;">
-      <div style="position:absolute;top:40px;left:0;right:0;font-family:'Bebas Neue',sans-serif;font-size:18vw;color:rgba(200,169,110,0.18);text-align:center;text-transform:uppercase;line-height:0.8;pointer-events:none;user-select:none;letter-spacing:-0.01em;">China</div>
+      <div style="position:absolute;top:40px;left:0;right:0;font-family:'Bebas Neue',sans-serif;font-size:18vw;color:rgba(200,169,110,0.04);text-align:center;text-transform:uppercase;line-height:0.8;pointer-events:none;user-select:none;letter-spacing:-0.01em;">China</div>
       <div style="position:relative;z-index:1;">
         <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:28px;">China Creative Strategy</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,10rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:32px;">Brand DNA,<br/>translated into<br/>product opportunity.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.82);margin-bottom:32px;">Brand DNA,<br/>translated into<br/>product opportunity.</h2>
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.35);font-weight:300;max-width:520px;margin-bottom:56px;">We develop premium hardware concepts that expand authentic brands and shape them for China relevance.</p>
         <div style="display:flex;align-items:baseline;gap:48px;border-top:1px solid rgba(200,169,110,0.1);padding-top:40px;">
           <div><span style="font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">01</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.5);">Native Concepts</span></div>
@@ -4337,8 +4323,8 @@
       <h5>Navigate</h5>
       <a href="sf-team.html">Team</a>
       <a href="sf-contact.html">Contact</a>
-      <a href="legal.html#privacy">Privacy Policy</a>
-      <a href="legal.html#terms">Terms of Use</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
     </div>
     <div class="footer-col reveal reveal-delay-2">
       <h5>Hong Kong</h5>
