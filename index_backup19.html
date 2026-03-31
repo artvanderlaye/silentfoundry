@@ -1147,35 +1147,32 @@
       max-width: 500px;
     }
   
-    /* ── PERSISTENT SCROLL INDICATOR ── */
-    .scroll-indicator {
-      position: fixed;
-      bottom: 48px;
+    /* ── SECTION SCROLL INDICATOR ── */
+    .section-scroll {
+      position: absolute;
+      bottom: 32px;
       right: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      z-index: 50;
+      z-index: 10;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.6s ease;
     }
-    .scroll-indicator.visible { opacity: 1; }
-    .scroll-indicator-line {
+    .section-scroll-line {
       width: 1px;
-      height: 56px;
+      height: 48px;
       background: linear-gradient(to bottom, var(--accent), transparent);
       animation: pulse-line 2s infinite;
     }
-    .scroll-indicator span {
-      font-size: 0.58rem;
+    .section-scroll span {
+      font-size: 0.6rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       writing-mode: vertical-rl;
       color: var(--mid);
     }
-    @media(max-width:768px){ .scroll-indicator { display:none; } }
+    @media(max-width:768px){ .section-scroll { display:none; } }
   </style>
 
   <style>
@@ -2062,6 +2059,7 @@
       <img src="71gXnSa8ogL__AC_UF1000_1000_QL80_.jpg" style="width:100%;aspect-ratio:1/1;object-fit:contain;background:#111;padding:20px;display:block;" />
       <img src="MarshallActonIIIBluetoothSpeakers_6_jpg.webp" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.75);" />
     </div>
+      <div class="section-scroll"><div class="section-scroll-line"></div><span>Continue</span></div>
   </section>
   </div>
 
@@ -2413,25 +2411,25 @@
         <div class="eng-spec-row"><span class="eng-spec-label">Manufacturing</span><span class="eng-spec-val">CNC · Casting · Sheet Metal</span></div>
         <div class="eng-spec-row"><span class="eng-spec-label">Team Background</span><span class="eng-spec-val">Ex-Yamaha · Automotive · Aerospace</span></div>
         <div class="eng-spec-row"><span class="eng-spec-label">Pipeline</span><span class="eng-spec-val">Concept → CAD → CNC → Production</span></div>
-        <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:6px;width:100%;">
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">CNC Machining</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">5-Axis Milling</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Sheet Metal</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Die Casting</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">PCB Design</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Firmware</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Battery Systems</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Motor Controllers</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Mechanical CAD</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Prototyping</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Tooling</span>
-          <span class="eng-pill" style="flex:1 1 calc(50% - 3px);text-align:center;">Factory Liaison</span>
+        <div class="eng-pills" style="margin-top:24px;padding-left:0;">
+          <span class="eng-pill">CNC Machining</span>
+          <span class="eng-pill">5-Axis Milling</span>
+          <span class="eng-pill">Sheet Metal</span>
+          <span class="eng-pill">Die Casting</span>
+          <span class="eng-pill">PCB Design</span>
+          <span class="eng-pill">Firmware</span>
+          <span class="eng-pill">Battery Systems</span>
+          <span class="eng-pill">Motor Controllers</span>
+          <span class="eng-pill">Mechanical CAD</span>
+          <span class="eng-pill">Prototyping</span>
+          <span class="eng-pill">Tooling</span>
+          <span class="eng-pill">Factory Liaison</span>
         </div>
       </div>
     </div>
     <div id="e0" style="margin-top:80px;"></div>
   </div>
-      
+      <div class="section-scroll" style="position:relative"><div class="section-scroll" style="position:relative-line"></div><span>Continue</span></div>
   </div>
 
   <!-- E1: Pure black, full-bleed headline, specs as horizontal bar, large carousel -->
@@ -4347,10 +4345,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="reveal">
-      <a href="index.html" style="text-decoration:none;display:flex;flex-direction:column;line-height:0.84;letter-spacing:0.06em;font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(244,241,236,0.7);margin-bottom:8px;">
-        <span>Silent</span>
-        <span>Foundry<span style="font-size:0.3em;vertical-align:top;margin-top:0.05em;display:inline-block;letter-spacing:0;">®</span></span>
-      </a>
+      <div class="footer-brand">SilentFoundry®</div>
       <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
     <div class="footer-col reveal reveal-delay-1">
@@ -4374,28 +4369,6 @@
     <span>sfg.</span>
   </div>
 
-
-  <!-- PERSISTENT SCROLL INDICATOR -->
-  <div class="scroll-indicator" id="scrollIndicator">
-    <div class="scroll-indicator-line"></div>
-    <span>Scroll</span>
-  </div>
-  <script>
-    (function(){
-      var el = document.getElementById('scrollIndicator');
-      if(!el) return;
-      var shown = false;
-      function check(){
-        var atBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
-        var atTop = window.scrollY < 50;
-        if(!atBottom && !atTop){ if(!shown){ el.classList.add('visible'); shown=true; } }
-        else { el.classList.remove('visible'); shown=false; }
-      }
-      window.addEventListener('scroll', check, {passive:true});
-      setTimeout(function(){ el.classList.add('visible'); }, 1800);
-      setTimeout(check, 100);
-    })();
-  </script>
   <script src="sf-scripts.js"></script>
   <script>
   // ── CAROUSEL MANUAL STEP ──
