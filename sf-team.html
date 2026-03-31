@@ -1,368 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Team — SilentFoundry®</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="sf-styles.css" />
-  <style>
-    /* ── HERO ── */
-    .hero {
-      padding: 180px 48px 100px;
-      border-bottom: 1px solid rgba(244,241,236,0.08);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: 'TEAM';
-      position: absolute;
-      right: -20px; top: 50%;
-      transform: translateY(-50%);
-      font-family: var(--font-display);
-      font-size: 22vw;
-      color: rgba(244,241,236,0.025);
-      line-height: 1;
-      pointer-events: none;
-    }
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadein 1s 0.3s forwards;
-    }
-    .hero h1 em {
-      font-family: var(--font-serif);
-      font-style: italic;
-      color: var(--accent);
-      font-size: 0.88em;
-    }
-    .hero-label {
-      opacity: 0;
-      animation: fadein 1s 0.1s forwards;
-    }
-    .hero-sub {
-      margin-top: 40px;
-      max-width: 500px;
-      font-size: 1rem;
-      line-height: 1.7;
-      color: rgba(244,241,236,0.55);
-      opacity: 0;
-      animation: fadein 1s 0.5s forwards;
-    }
-    .nav-links a {
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      font-weight: 300;
-    }
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team — SilentFoundry®</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sf-styles.css" />
+<style>
+  :root{--black:#0a0a0a;--white:#f4f1ec;--cream:#ede8e0;--accent:#c8a96e;--gold:#8a6e3a;--mid:#6b6560;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;}
 
-    /* ── TEAM SECTION ── */
-    .team-section { padding: 100px 48px 140px; }
+  .team-hero{padding:120px 48px 80px;border-bottom:1px solid rgba(200,169,110,0.1);}
+  .team-hero .label{font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;}
+  .team-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);margin-bottom:16px;}
+  .team-hero p{font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:600px;}
 
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 64px;
-    }
+  .marquee-wrap{overflow:hidden;background:var(--cream);padding:18px 0;border-bottom:1px solid rgba(10,10,10,0.08);}
+  .marquee-track{display:flex;gap:48px;white-space:nowrap;animation:marquee 30s linear infinite;}
+  .marquee-track span{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.45);font-weight:300;}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    .member {
-      position: relative;
-      overflow: hidden;
-      background: #111;
-      cursor: default;
-    }
-    .member-img-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 3/4;
-    }
-    .member-img-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      display: block;
-      filter: grayscale(20%) brightness(0.85);
-      transition: transform 0.7s ease, filter 0.5s ease;
-    }
-    .member:hover .member-img-wrap img {
-      transform: scale(1.05);
-      filter: grayscale(0%) brightness(0.95);
-    }
-    .member-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.5) 50%, transparent 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 28px;
-      transition: background 0.4s ease;
-    }
-    .member-bio {
-      font-size: 0.8rem;
-      line-height: 1.7;
-      color: rgba(244,241,236,0.65);
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, opacity 0.4s ease;
-      opacity: 0;
-      margin-bottom: 0;
-    }
-    .member:hover .member-bio { max-height: 200px; opacity: 1; margin-bottom: 12px; }
-    .member-name {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      letter-spacing: 0.04em;
-      line-height: 1;
-      color: var(--white);
-      margin-bottom: 6px;
-    }
-    .member-role {
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-    }
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0;}
+  .team-card{padding:48px 40px;border:1px solid rgba(200,169,110,0.06);position:relative;transition:border-color 0.3s;}
+  .team-card:hover{border-color:rgba(200,169,110,0.2);}
+  .team-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--accent);transition:height 0.4s ease;}
+  .team-card:hover::before{height:100%;}
+  .team-role{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:12px;}
+  .team-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);display:block;margin-bottom:6px;line-height:1;}
+  .team-title{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(200,169,110,0.6);display:block;margin-bottom:20px;}
+  .team-bio{font-size:0.82rem;line-height:1.75;color:rgba(244,241,236,0.4);font-weight:300;}
 
-    /* ── JOIN CARD ── */
-    .join-card {
-      background: var(--accent);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 48px 36px;
-      min-height: 400px;
-      position: relative;
-      overflow: hidden;
-    }
-    .join-card::before {
-      content: '+';
-      position: absolute;
-      right: 16px; bottom: -20px;
-      font-family: var(--font-display);
-      font-size: 12rem;
-      color: rgba(10,10,10,0.08);
-      line-height: 1;
-    }
-    .join-card h3 {
-      font-family: var(--font-display);
-      font-size: 3rem;
-      letter-spacing: 0.04em;
-      color: var(--black);
-      line-height: 0.95;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .join-card p {
-      font-size: 0.88rem;
-      line-height: 1.75;
-      color: rgba(10,10,10,0.65);
-      max-width: 260px;
-      position: relative;
-      margin-bottom: 32px;
-    }
-    .join-btn {
-      display: inline-block;
-      padding: 14px 36px;
-      border: 2px solid var(--black);
-      color: var(--black);
-      text-decoration: none;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      position: relative;
-      transition: background 0.25s, color 0.25s;
-    }
-    .join-btn:hover { background: var(--black); color: var(--accent); }
+  .team-join{padding:80px 48px;background:#0d0d0d;border-top:1px solid rgba(200,169,110,0.08);}
+  .team-join .label{font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;}
+  .team-join h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);margin-bottom:16px;}
+  .team-join p{font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;max-width:500px;margin-bottom:32px;}
+  .btn{display:inline-block;padding:14px 32px;border:1px solid rgba(200,169,110,0.4);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);text-decoration:none;transition:all 0.2s;}
+  .btn:hover{background:rgba(200,169,110,0.1);border-color:var(--accent);}
 
-    /* ══════════════════════════════
-       MOBILE
-       ══════════════════════════════ */
-    @media (max-width: 900px) {
-      .hero { padding: 140px 24px 80px; }
-      .team-section { padding: 64px 24px 100px; }
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 540px) {
-      .team-grid { grid-template-columns: 1fr; }
-      .member-bio { max-height: 200px !important; opacity: 1 !important; margin-bottom: 12px !important; }
-    }
-  </style>
+  footer{background:#060606;padding:56px 48px 32px;border-top:1px solid rgba(200,169,110,0.08);}
+  .footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:rgba(244,241,236,0.7);display:block;margin-bottom:8px;}
+  .footer-tagline{font-size:0.78rem;line-height:1.65;color:rgba(244,241,236,0.3);font-weight:300;max-width:280px;}
+  .footer-col h4{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.5);margin-bottom:16px;}
+  .footer-col a{display:block;font-size:0.82rem;color:rgba(244,241,236,0.35);text-decoration:none;margin-bottom:10px;transition:color 0.2s;font-weight:300;}
+  .footer-col a:hover{color:var(--accent);}
+  .footer-bottom{border-top:1px solid rgba(244,241,236,0.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-copy{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.2);}
+
+  @media(max-width:900px){.team-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.team-grid{grid-template-columns:1fr;}.team-hero{padding:80px 24px 56px;}.team-join{padding:56px 24px;}footer{padding:48px 24px 28px;}.footer-inner{grid-template-columns:1fr;gap:32px;}}
+</style>
 </head>
 <body>
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu">
-    <a href="index.html">Home</a>
-    <a href="index.html#how">How It Works</a>
-    <a href="index.html#funds">Investors</a>
-    <a href="sf-team.html">Team</a>
-    <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
+<nav>
+  <a href="index.html" class="nav-logo">SilentFoundry®</a>
+  <ul class="nav-links">
+    <li><a href="sf-team.html" class="active">Team</a></li>
+    <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="team-hero">
+  <span class="label">The People Behind It</span>
+  <h1>The Team.</h1>
+  <p>A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>
+</div>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
+    <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
   </div>
+</div>
 
-  <!-- NAV -->
-  <nav>
-    <a href="index.html" class="nav-logo">SilentFoundry®</a>
-    <ul class="nav-links">
-      <li><a href="index.html#how">How It Works</a></li>
-      <li><a href="index.html#funds">Investors</a></li>
-      <li><a href="sf-team.html" class="active">Team</a></li>
-      <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- HERO -->
-  <div class="hero">
-    <p class="label hero-label">The People Behind It</p>
-    <h1>The<br/><em>team.</em></h1>
-    <p class="hero-sub">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>
+<div class="team-grid">
+  <div class="team-card">
+    <span class="team-role">Co-Founder</span>
+    <span class="team-name">Michel Riis Eriksen</span>
+    <span class="team-title">Head of Design</span>
+    <p class="team-bio">Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products. Degree in Industrial Design, University of Kolding.</p>
   </div>
+  <div class="team-card">
+    <span class="team-role">Co-Founder</span>
+    <span class="team-name">Matthew Waddick</span>
+    <span class="team-title">CEO</span>
+    <p class="team-bio">Entrepreneur and founder with experience building multiple startups. Focuses on supply chain strategy, factory partnerships, international relationships, and capital raising.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Co-Founder</span>
+    <span class="team-name">James Cooper</span>
+    <span class="team-title">Head of Creative Strategy</span>
+    <p class="team-bio">Creative strategist with experience across Australia's leading creative agencies. Leads brand development, concept direction, and translation of brand identity into scalable product platforms.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Partnerships — Greater China</span>
+    <span class="team-name">Amanda Wang 王馨莹</span>
+    <span class="team-title">China Partnerships</span>
+    <p class="team-bio">Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Design & Brand</span>
+    <span class="team-name">James Terry</span>
+    <span class="team-title">Graphic Design & Brand Strategy</span>
+    <p class="team-bio">Senior graphic designer and brand strategist. Previously ran one of Melbourne's leading design agencies. Specializes in brand systems, visual identity, and product communication design.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Board</span>
+    <span class="team-name">Mark Chennells</span>
+    <span class="team-title">Finance & Capital Strategy</span>
+    <p class="team-bio">Sits on the board and oversees financial modelling, capital strategy, and business structuring. Extensive experience across public companies, private ventures, and early-stage startups.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Engineering</span>
+    <span class="team-name">Danny Zhang</span>
+    <span class="team-title">Head of Engineering</span>
+    <p class="team-bio">Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories. Degree from University of Nottingham.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">Digital</span>
+    <span class="team-name">Anders</span>
+    <span class="team-title">Head of Digital</span>
+    <p class="team-bio">Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development. Degree in Digital Marketing, University of Kolding.</p>
+  </div>
+  <div class="team-card">
+    <span class="team-role">AI Systems</span>
+    <span class="team-name">Ian</span>
+    <span class="team-title">Head of AI</span>
+    <p class="team-bio">Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation supporting the development pipeline.</p>
+  </div>
+</div>
 
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
-      <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
+<div class="team-grid" style="margin-top:0;">
+  <div class="team-card" style="background:var(--accent);border-color:transparent;grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:40px;padding:48px 40px;">
+    <div>
+      <span class="team-role" style="color:rgba(10,10,10,0.5);">Opportunities</span>
+      <span class="team-name" style="color:var(--black);">Join the Team.</span>
+      <p class="team-bio" style="color:rgba(10,10,10,0.6);max-width:480px;margin-top:12px;">We're always looking for talented people — designers, engineers, strategists, and operators who want to work at the intersection of brand, product, and capital.</p>
     </div>
+    <a href="sf-contact.html" target="_blank" style="display:inline-block;padding:14px 32px;border:1.5px solid rgba(10,10,10,0.4);color:var(--black);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;white-space:nowrap;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all 0.2s;" onmouseover="this.style.background='rgba(10,10,10,0.08)'" onmouseout="this.style.background='transparent'">Get in Touch</a>
   </div>
+</div>
 
-  <!-- TEAM GRID -->
-  <section class="team-section">
-    <div class="team-grid">
 
-      <div class="member reveal reveal-delay-1">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/bf21b137-da23-40ea-b0b5-3e7eb0e5b2e0/master+at+work+draft-18.jpg" alt="Michel Riis Eriksen" />
-          <div class="member-overlay">
-            <p class="member-bio">Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products. Degree in Industrial Design, University of Kolding.</p>
-            <div class="member-name">Michel Riis Eriksen</div>
-            <div class="member-role">Co-Founder / Head of Design</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-2">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/00aecd7e-d84c-4676-9d70-d71eef514dc4/profile+pic+3-16.jpg" alt="Amanda Wang" />
-          <div class="member-overlay">
-            <p class="member-bio">Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.</p>
-            <div class="member-name">王馨莹 Amanda Wang</div>
-            <div class="member-role">Partnerships — Greater China</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-3">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/0fd98ce0-8960-4f64-8054-f54cacc79670/coronet+rnd+1-106.jpg" alt="James Cooper" />
-          <div class="member-overlay">
-            <p class="member-bio">Creative strategist with experience across Australia's leading creative agencies. Leads brand development, concept direction, and translation of brand identity into scalable product platforms.</p>
-            <div class="member-name">James Cooper</div>
-            <div class="member-role">Co-Founder / Head of Creative Strategy</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-1">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/b569c4a9-f1ec-4750-a903-86e4c5e1b7e3/profile+pic.jpg" alt="Matthew Waddick" />
-          <div class="member-overlay">
-            <p class="member-bio">Entrepreneur and founder with experience building multiple startups. Focuses on supply chain strategy, factory partnerships, international relationships, and capital raising.</p>
-            <div class="member-name">Matthew Waddick</div>
-            <div class="member-role">Co-Founder / CEO</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-2">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/a5880916-08dd-4168-843c-fbfb1aec89bd/James-Terry-head-shot+copy-png.png" alt="James Terry" />
-          <div class="member-overlay">
-            <p class="member-bio">Senior graphic designer and brand strategist. Previously ran one of Melbourne's leading design agencies. Specializes in brand systems, visual identity, and product communication design.</p>
-            <div class="member-name">James Terry</div>
-            <div class="member-role">Graphic Design & Brand Strategy</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-3">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/4639a4a1-a075-493f-baa6-40e8369ae254/Mark+Chennells-bw.png" alt="Mark Chennells" />
-          <div class="member-overlay">
-            <p class="member-bio">Sits on the board and oversees financial modelling, capital strategy, and business structuring. Extensive experience across public companies, private ventures, and early-stage startups.</p>
-            <div class="member-name">Mark Chennells</div>
-            <div class="member-role">Finance & Capital Strategy</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-1">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/66a59e46-1a13-43af-9fe3-515f86f7a16f/danny.jpeg" alt="Danny Zhang" />
-          <div class="member-overlay">
-            <p class="member-bio">Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories. Degree from University of Nottingham.</p>
-            <div class="member-name">Danny Zhang</div>
-            <div class="member-role">Head of Engineering</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-2">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/b466c86d-3cb1-4efe-80ed-b156d71f43e8/Screenshot+2026-03-15+at+13.22.11.png" alt="Anders" />
-          <div class="member-overlay">
-            <p class="member-bio">Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development. Degree in Digital Marketing, University of Kolding.</p>
-            <div class="member-name">Anders</div>
-            <div class="member-role">Head of Digital</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal reveal-delay-3">
-        <div class="member-img-wrap">
-          <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7867a4eb-1af0-4f49-80c6-3d1c5ed24867/ian.jpg" alt="Ian" />
-          <div class="member-overlay">
-            <p class="member-bio">Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation supporting the development pipeline.</p>
-            <div class="member-name">Ian</div>
-            <div class="member-role">Head of AI</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="member reveal" style="background:#111;display:flex;flex-direction:column;justify-content:flex-end;min-height:400px;position:relative;overflow:hidden;">
-        <div style="position:absolute;inset:0;background:rgba(200,169,110,0.06);"></div>
-        <div style="position:absolute;right:20px;bottom:-10px;font-family:'Bebas Neue',sans-serif;font-size:8rem;color:rgba(200,169,110,0.06);line-height:1;pointer-events:none;">+</div>
-        <div style="padding:28px;position:relative;z-index:1;">
-          <div class="member-name" style="margin-bottom:8px;">Join the team.</div>
-          <div class="member-role" style="margin-bottom:16px;">Talent & Partnerships</div>
-          <p style="font-size:0.8rem;line-height:1.7;color:rgba(244,241,236,0.5);margin-bottom:20px;">We're always looking for talent. High-performing, cross-border, and driven.</p>
-          <a href="sf-contact.html" style="display:inline-block;padding:10px 24px;border:1px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='#c8a96e';this.style.background='rgba(200,169,110,0.1)'" onmouseout="this.style.borderColor='rgba(200,169,110,0.4)';this.style.background='transparent'">Get in Touch</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- FOOTER -->
   <footer>
     <div class="reveal">
       <div class="footer-brand">SilentFoundry®</div>
@@ -371,17 +156,24 @@
     <div class="footer-col reveal reveal-delay-1">
       <h5>Navigate</h5>
       <a href="index.html">Home</a>
+      <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
       <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
       <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
       <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use</a>
     </div>
-
+    <div class="footer-col reveal reveal-delay-2">
+      <h5>Hong Kong</h5>
+      <address>史维骑有限公司<br/>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road, Wanchai</address>
+    </div>
+    <div class="footer-col reveal reveal-delay-3">
+      <h5>Shanghai</h5>
+      <address>上海酷圣贸易有限公司<br/>Room 333, 3/F, Building 1<br/>No. 2001 Yanggao North Road<br/>China (Shanghai) FTZ</address>
+    </div>
   </footer>
   <div class="footer-bottom">
     <span>© 2026 SilentFoundry Group. All rights reserved.</span>
     <span>sfg.</span>
   </div>
 
-  <script src="sf-scripts.js"></script>
 </body>
 </html>
