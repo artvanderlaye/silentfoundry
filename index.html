@@ -2275,8 +2275,84 @@
   </section>
 
 
-  <!-- FEATURED PROJECT -->
-  <section style="padding:0;background:var(--black);">
+  <!-- SWITCH 2.0 FEATURED SECTION -->
+  <section id="featured" style="padding:0;">
+  <style>
+    .fp-opt { display:none; }
+    .fp-opt.active { display:block; }
+    #fp-sw {
+      display:flex; gap:8px; align-items:center;
+      padding:12px 48px;
+      background:rgba(10,10,10,0.98);
+      border-top:1px solid rgba(200,169,110,0.12);
+      border-bottom:1px solid rgba(200,169,110,0.12);
+      flex-wrap:wrap; position:sticky; top:0; z-index:50;
+    }
+    #fp-sw .fpl { font-family:'DM Sans',sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,236,0.28); margin-right:4px; }
+    .fpb { font-family:'Bebas Neue',sans-serif; font-size:0.82rem; letter-spacing:0.1em; padding:4px 14px; border:1px solid rgba(200,169,110,0.22); background:transparent; color:rgba(244,241,236,0.38); cursor:pointer; transition:all 0.2s; }
+    .fpb:hover { color:#c8a96e; border-color:rgba(200,169,110,0.55); }
+    .fpb.active { background:rgba(200,169,110,0.1); color:#c8a96e; border-color:#c8a96e; }
+
+    /* Shared carousel */
+    .fcar-slides { position:absolute; inset:0; }
+    .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
+    .fcar-slide.active { opacity:1; pointer-events:auto; }
+    .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
+    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:rgba(10,10,10,0.7); border:0.5px solid rgba(200,169,110,0.3); color:rgba(244,241,236,0.7); width:44px; height:44px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .fcar-btn:hover { background:rgba(200,169,110,0.15); border-color:#c8a96e; color:#c8a96e; }
+    .fcar-prev { left:14px; } .fcar-next { right:14px; }
+    .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
+    .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
+    .fdot.active { background:#c8a96e; }
+  </style>
+
+  <script>
+    function fpSwitch(i){
+      document.querySelectorAll('.fp-opt').forEach(function(el,idx){el.classList.toggle('active',idx===i);});
+      document.querySelectorAll('.fpb').forEach(function(btn,idx){btn.classList.toggle('active',idx===i);});
+    }
+    // Generic carousel factory
+    function makeCar(prefix,total){
+      var idx=0;
+      window[prefix+'Step']=function(d){idx=(idx+d+total)%total;window[prefix+'Go'](idx);};
+      window[prefix+'Go']=function(i){
+        idx=i;
+        document.querySelectorAll('.'+prefix+'-slide').forEach(function(s,j){s.classList.toggle('active',j===i);});
+        document.querySelectorAll('.'+prefix+'-dot').forEach(function(d,j){d.classList.toggle('active',j===i);});
+      };
+    }
+    document.addEventListener('DOMContentLoaded',function(){
+      ['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'].forEach(function(p){makeCar(p,4);});
+    });
+  </script>
+
+  <div id="fp-sw">
+    <span class="fpl">Featured Project</span>
+    <button class="fpb" onclick="fpSwitch(0)">V16</button>
+    <button class="fpb" onclick="fpSwitch(1)">V1</button>
+    <button class="fpb" onclick="fpSwitch(2)">V2</button>
+    <button class="fpb" onclick="fpSwitch(3)">V3</button>
+    <button class="fpb" onclick="fpSwitch(4)">V4</button>
+    <button class="fpb" onclick="fpSwitch(5)">V5</button>
+    <button class="fpb" onclick="fpSwitch(6)">V6</button>
+    <button class="fpb" onclick="fpSwitch(7)">V7</button>
+    <button class="fpb" onclick="fpSwitch(8)">V8</button>
+    <button class="fpb" onclick="fpSwitch(9)">V9</button>
+    <button class="fpb" onclick="fpSwitch(10)">V10</button>
+    <button class="fpb" onclick="fpSwitch(11)">V11</button>
+    <button class="fpb" onclick="fpSwitch(12)">V12</button>
+    <button class="fpb" onclick="fpSwitch(13)">V13</button>
+    <button class="fpb" onclick="fpSwitch(14)">V14</button>
+    <button class="fpb" onclick="fpSwitch(15)">V15</button>
+    <button class="fpb active" onclick="fpSwitch(16)">Original</button>
+    <button class="fpb" onclick="fpSwitch(17)">V17</button>
+    <button class="fpb" onclick="fpSwitch(18)">V18</button>
+    <button class="fpb" onclick="fpSwitch(19)">V19</button>
+    <button class="fpb" onclick="fpSwitch(20)">V20</button>
+  </div>
+
+  <!-- ORIGINAL -->
+  <div class="fp-opt">
   <style>
     .sw2-wrap { padding: 120px 48px 60px; }
     .sw2-eyebrow { font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:16px; }
@@ -2308,33 +2384,7 @@
     .v4-prod-cat { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:6px; }
     .v4-prod-name { font-family:var(--font-display); font-size:1.4rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.82); margin-bottom:8px; }
     .v4-prod-desc { font-size:0.8rem; line-height:1.65; color:rgba(244,241,236,0.4); }
-    /* Carousel styles */
-    .fcar-slides { position:absolute; inset:0; }
-    .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
-    .fcar-slide.active { opacity:1; pointer-events:auto; }
-    .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
-    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:rgba(10,10,10,0.7); border:0.5px solid rgba(200,169,110,0.3); color:rgba(244,241,236,0.7); width:44px; height:44px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-    .fcar-btn:hover { background:rgba(200,169,110,0.15); border-color:#c8a96e; color:#c8a96e; }
-    .fcar-prev { left:14px; } .fcar-next { right:14px; }
-    .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
-    .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
-    .fdot.active { background:#c8a96e; }
-    @media(max-width:900px){ .v4-hero { grid-template-columns:1fr; } }
   </style>
-  <script>
-    function makeCar(prefix,total){
-      var idx=0;
-      window[prefix+'Step']=function(d){idx=(idx+d+total)%total;window[prefix+'Go'](idx);};
-      window[prefix+'Go']=function(i){
-        idx=i;
-        document.querySelectorAll('.'+prefix+'-slide').forEach(function(s,j){s.classList.toggle('active',j===i);});
-        document.querySelectorAll('.'+prefix+'-dot').forEach(function(d,j){d.classList.toggle('active',j===i);});
-      };
-    }
-    document.addEventListener('DOMContentLoaded',function(){
-      makeCar('c0',4);
-    });
-  </script>
   <div class="sw2-wrap reveal">
     <div class="v4-hero">
       <div class="v4-hero-left">
@@ -2379,8 +2429,1034 @@
       <div class="v4-prod"><div class="v4-prod-img"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" /></div><div class="v4-prod-body"><span class="v4-prod-cat">Technology · AI</span><div class="v4-prod-name">Robotics</div><div class="v4-prod-desc">Swingarm facet logic becomes joint geometry. Block mass becomes the torso. SWITCH blue on sensors.</div></div></div>
     </div>
   </div>
-  </section>
+  </div>
 
+  <!-- V1: Black — full-bleed hero image top, metrics inline, DNA rules labels only, products full-bleed no text -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--black);">
+    <!-- Full-bleed hero -->
+    <div style="position:relative;height:70vh;overflow:hidden;">
+      <div class="fcar-slides" id="c1s">
+        <div class="c1-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+        <div class="c1-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+        <div class="c1-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+        <div class="c1-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c1Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c1Step(1)">&#8594;</button>
+      <div class="fcar-dots"><button class="c1-dot fdot active" onclick="c1Go(0)"></button><button class="c1-dot fdot" onclick="c1Go(1)"></button><button class="c1-dot fdot" onclick="c1Go(2)"></button><button class="c1-dot fdot" onclick="c1Go(3)"></button></div>
+      <!-- Overlay text -->
+      <div style="position:absolute;bottom:48px;left:48px;z-index:10;">
+        <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.7);display:block;margin-bottom:12px;">Featured Project</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.9);line-height:0.86;">Switch 2.0</h2>
+      </div>
+      <div style="position:absolute;bottom:48px;right:48px;z-index:10;text-align:right;">
+        <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.45);">Seven rules. Infinite objects.</p>
+      </div>
+    </div>
+    <!-- Inline metric strip -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(200,169,110,0.08);">
+      <div style="padding:24px 48px;border-right:1px solid rgba(200,169,110,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+      <div style="padding:24px 48px;border-right:1px solid rgba(200,169,110,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+      <div style="padding:24px 48px;border-right:1px solid rgba(200,169,110,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Top Speed</span></div>
+      <div style="padding:24px 48px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">DNA Rules</span></div>
+    </div>
+    <!-- DNA rules — labels only horizontal strip -->
+    <div style="display:flex;align-items:center;padding:20px 48px;gap:0;border-bottom:1px solid rgba(200,169,110,0.06);">
+      <span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-right:32px;white-space:nowrap;">Switch DNA</span>
+      <div style="display:flex;gap:0;flex:1;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.5);padding:0 24px;border-right:1px solid rgba(244,241,236,0.06);">Industrial Honesty</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.5);padding:0 24px;border-right:1px solid rgba(244,241,236,0.06);">Rectilinear Mass</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.5);padding:0 24px;border-right:1px solid rgba(244,241,236,0.06);">Tube Logic</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.5);padding:0 24px;border-right:1px solid rgba(244,241,236,0.06);">45° Chamfers</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.5);padding:0 24px;">CMF Binary</span>
+      </div>
+    </div>
+    <!-- Products full-bleed, image only with title overlay -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:4px;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:4px;">Home · Living</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:4px;">Technology · AI</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V2: Cream — editorial layout, headline massive, DNA as numbered row, products cream bg -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--cream);">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:60vh;">
+      <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:flex-end;background:var(--cream);">
+        <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Featured Project</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;margin-bottom:24px;">Switch<br/>2.0</h2>
+        <p style="font-size:0.88rem;line-height:1.7;color:rgba(10,10,10,0.45);font-weight:300;max-width:360px;">Seven rules. Infinite objects. One recognisable identity.</p>
+      </div>
+      <div style="position:relative;overflow:hidden;min-height:60vh;">
+        <div class="fcar-slides" id="c2s">
+          <div class="c2-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c2-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c2-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c2-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c2Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c2Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c2-dot fdot active" onclick="c2Go(0)"></button><button class="c2-dot fdot" onclick="c2Go(1)"></button><button class="c2-dot fdot" onclick="c2Go(2)"></button><button class="c2-dot fdot" onclick="c2Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- Metric strip cream -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid rgba(138,110,58,0.15);border-bottom:1px solid rgba(10,10,10,0.07);">
+      <div style="padding:24px 48px;border-right:1px solid rgba(10,10,10,0.07);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;">13kWh</span><span style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Battery</span></div>
+      <div style="padding:24px 48px;border-right:1px solid rgba(10,10,10,0.07);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;">175km</span><span style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Range</span></div>
+      <div style="padding:24px 48px;border-right:1px solid rgba(10,10,10,0.07);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;">170km/h</span><span style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Top Speed</span></div>
+      <div style="padding:24px 48px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#8a6e3a;display:block;">07</span><span style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">DNA Rules</span></div>
+    </div>
+    <!-- DNA numbered row cream -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid rgba(10,10,10,0.07);">
+      <div style="padding:32px 24px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:8px;">01</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Industrial Honesty</span></div>
+      <div style="padding:32px 24px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:8px;">02</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Rectilinear Mass</span></div>
+      <div style="padding:32px 24px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:8px;">03</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Tube Logic</span></div>
+      <div style="padding:32px 24px;border-right:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:8px;">04</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">45° Chamfers</span></div>
+      <div style="padding:32px 24px;"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:8px;">05</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">CMF Binary</span></div>
+    </div>
+    <!-- Products cream, image + title only -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;background:#f4f1ec;"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.7);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;background:#f4f1ec;"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Home · Living</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.7);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;background:#f4f1ec;"><span style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Technology · AI</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.7);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V3: Warm dark #111008 — giant ghost headline, carousel right, DNA as single horizontal line -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#111008;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;">
+      <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;">
+        <div style="position:absolute;bottom:-20px;left:-10px;font-family:'Bebas Neue',sans-serif;font-size:22vw;color:rgba(200,169,110,0.04);line-height:0.8;pointer-events:none;user-select:none;">SW</div>
+        <div style="position:relative;z-index:1;">
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Featured Project</span>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6.5rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;">Switch 2.0</h2>
+        </div>
+        <div style="position:relative;z-index:1;">
+          <div style="display:flex;gap:32px;margin-bottom:32px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Top Speed</span></div>
+          </div>
+          <p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c3s">
+          <div class="c3-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c3-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c3-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c3-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c3Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c3Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c3-dot fdot active" onclick="c3Go(0)"></button><button class="c3-dot fdot" onclick="c3Go(1)"></button><button class="c3-dot fdot" onclick="c3Go(2)"></button><button class="c3-dot fdot" onclick="c3Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- DNA single line -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-top:1px solid rgba(200,169,110,0.08);border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.4);">Switch DNA</span>
+      <div style="display:flex;gap:32px;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.4);">Industrial Honesty</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.4);">Rectilinear Mass</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.4);">Tube Logic</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.4);">45° Chamfers</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.4);">CMF Binary</span>
+      </div>
+    </div>
+    <!-- Products dark, image+label only -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(17,16,8,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(17,16,8,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(17,16,8,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V4: Charcoal #1a1917 — case study O7 layout, left label grid, large image right, compact DNA -->
+  <div class="fp-opt">
+  <section style="padding:64px 48px;background:#1a1917;">
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">Featured Project</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+        <div><h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.88;margin-bottom:16px;">Switch 2.0</h2><p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p></div>
+        <div style="position:relative;overflow:hidden;aspect-ratio:4/3;">
+          <div class="fcar-slides" id="c4s">
+            <div class="c4-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+            <div class="c4-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+            <div class="c4-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+            <div class="c4-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+          </div>
+          <button class="fcar-btn fcar-prev" style="width:36px;height:36px;" onclick="c4Step(-1)">&#8592;</button>
+          <button class="fcar-btn fcar-next" style="width:36px;height:36px;" onclick="c4Step(1)">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">Metrics</span>
+      <div style="display:flex;gap:48px;align-items:baseline;">
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Top Speed</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">DNA Rules</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">DNA Rules</span>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;">
+        <div><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">01</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.6);">Industrial Honesty</span></div>
+        <div><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">02</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.6);">Rectilinear Mass</span></div>
+        <div><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">03</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.6);">Tube Logic</span></div>
+        <div><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">04</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.6);">45° Chamfers</span></div>
+        <div><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;">05</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.88rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.6);">CMF Binary</span></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;">
+      <span style="font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);padding-top:6px;">DNA In the Wild</span>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+        <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.6);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(26,25,23,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Music Ecosystem</span></div></div>
+        <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.6);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(26,25,23,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Kitchen System</span></div></div>
+        <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.6);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(26,25,23,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Robotics</span></div></div>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V5: Pure black — split 50/50 hero, no metrics bar, DNA as gold numbered strip, products 16/9 -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--black);">
+    <div style="display:grid;grid-template-columns:1fr 1fr;">
+      <div style="padding:80px 64px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(200,169,110,0.08);">
+        <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Featured Project</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,7vw,8rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.85);line-height:0.86;margin-bottom:32px;">Switch<br/>2.0</h2>
+        <p style="font-size:0.85rem;line-height:1.75;color:rgba(244,241,236,0.38);font-weight:300;margin-bottom:40px;">Seven rules. Infinite objects. One recognisable identity.</p>
+        <div style="display:flex;gap:24px;">
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;">13kWh</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;">175km</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;">170km/h</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Top Speed</span></div>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;min-height:60vh;">
+        <div class="fcar-slides" id="c5s">
+          <div class="c5-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c5-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c5-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+          <div class="c5-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c5Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c5Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c5-dot fdot active" onclick="c5Go(0)"></button><button class="c5-dot fdot" onclick="c5Go(1)"></button><button class="c5-dot fdot" onclick="c5Go(2)"></button><button class="c5-dot fdot" onclick="c5Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- DNA gold numbered strip -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid rgba(200,169,110,0.1);">
+      <div style="padding:28px 32px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(200,169,110,0.15);display:block;line-height:1;">01</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.55);">Industrial Honesty</span></div>
+      <div style="padding:28px 32px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(200,169,110,0.15);display:block;line-height:1;">02</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.55);">Rectilinear Mass</span></div>
+      <div style="padding:28px 32px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(200,169,110,0.15);display:block;line-height:1;">03</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.55);">Tube Logic</span></div>
+      <div style="padding:28px 32px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(200,169,110,0.15);display:block;line-height:1;">04</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.55);">45° Chamfers</span></div>
+      <div style="padding:28px 32px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(200,169,110,0.15);display:block;line-height:1;">05</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.55);">CMF Binary</span></div>
+    </div>
+    <!-- Products 16/9 -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border-top:1px solid rgba(200,169,110,0.06);">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Home · Living</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Technology · AI</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V6: Deep olive #1c1a14 — headline top full width, bordered card, products as wide 2-up -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#1c1a14;">
+    <div style="padding:72px 48px 56px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Featured Project</span>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.86;">Switch 2.0</h2>
+        </div>
+        <div style="padding-bottom:8px;">
+          <p style="font-size:0.82rem;line-height:1.7;color:rgba(244,241,236,0.35);font-weight:300;margin-bottom:24px;">Seven rules. Infinite objects. One recognisable identity.</p>
+          <div style="display:flex;gap:24px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Top Speed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Hero carousel full width -->
+    <div style="position:relative;overflow:hidden;height:55vh;">
+      <div class="fcar-slides" id="c6s">
+        <div class="c6-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+        <div class="c6-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+        <div class="c6-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+        <div class="c6-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c6Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c6Step(1)">&#8594;</button>
+      <div class="fcar-dots"><button class="c6-dot fdot active" onclick="c6Go(0)"></button><button class="c6-dot fdot" onclick="c6Go(1)"></button><button class="c6-dot fdot" onclick="c6Go(2)"></button><button class="c6-dot fdot" onclick="c6Go(3)"></button></div>
+    </div>
+    <!-- DNA + products combined -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;border-top:1px solid rgba(200,169,110,0.08);">
+      <div style="padding:24px 24px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.45);display:block;margin-bottom:4px;">01 Industrial Honesty</span></div>
+      <div style="padding:24px 24px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.45);display:block;margin-bottom:4px;">02 Rectilinear Mass</span></div>
+      <div style="padding:24px 24px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.45);display:block;margin-bottom:4px;">03 Tube Logic</span></div>
+      <div style="padding:24px 24px;border-right:1px solid rgba(200,169,110,0.06);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.45);display:block;margin-bottom:4px;">04 45° Chamfers</span></div>
+      <div style="padding:24px 24px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.45);display:block;margin-bottom:4px;">05 CMF Binary</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(28,26,20,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(28,26,20,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(28,26,20,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V7: Cream — minimal, headline + image only top, DNA invisible, products tall portrait -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--cream);">
+    <div style="display:grid;grid-template-columns:2fr 3fr;min-height:65vh;">
+      <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:2px solid rgba(138,110,58,0.15);">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Featured Project</span>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,8rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.86;">Switch<br/>2.0</h2>
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">13kWh</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">175km</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">170km/h</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Top Speed</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">07</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">DNA Rules</span></div>
+          </div>
+          <p style="font-size:0.78rem;line-height:1.7;color:rgba(10,10,10,0.4);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c7s">
+          <div class="c7-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c7-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c7-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c7-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c7Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c7Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c7-dot fdot active" onclick="c7Go(0)"></button><button class="c7-dot fdot" onclick="c7Go(1)"></button><button class="c7-dot fdot" onclick="c7Go(2)"></button><button class="c7-dot fdot" onclick="c7Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- DNA minimal row -->
+    <div style="display:flex;gap:0;border-top:1px solid rgba(10,10,10,0.08);border-bottom:1px solid rgba(10,10,10,0.08);">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.35);padding:16px 48px;border-right:1px solid rgba(10,10,10,0.06);">Industrial Honesty</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.35);padding:16px 32px;border-right:1px solid rgba(10,10,10,0.06);">Rectilinear Mass</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.35);padding:16px 32px;border-right:1px solid rgba(10,10,10,0.06);">Tube Logic</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.35);padding:16px 32px;border-right:1px solid rgba(10,10,10,0.06);">45° Chamfers</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.35);padding:16px 32px;">CMF Binary</span>
+    </div>
+    <!-- Products cream, square -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(10,10,10,0.07);">
+      <div style="background:var(--cream);"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Music Ecosystem</span></div></div>
+      <div style="background:var(--cream);"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Home · Living</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Kitchen System</span></div></div>
+      <div style="background:var(--cream);"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Technology · AI</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V8: Mid-tone #2a2825 — full bleed hero, compact text block bottom left, DNA as ticker -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#2a2825;">
+    <div style="position:relative;height:75vh;overflow:hidden;">
+      <div class="fcar-slides" id="c8s">
+        <div class="c8-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);" /></div>
+        <div class="c8-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);" /></div>
+        <div class="c8-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);" /></div>
+        <div class="c8-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c8Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c8Step(1)">&#8594;</button>
+      <div class="fcar-dots"><button class="c8-dot fdot active" onclick="c8Go(0)"></button><button class="c8-dot fdot" onclick="c8Go(1)"></button><button class="c8-dot fdot" onclick="c8Go(2)"></button><button class="c8-dot fdot" onclick="c8Go(3)"></button></div>
+      <div style="position:absolute;top:48px;left:48px;z-index:10;"><span style="font-size:0.52rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.6);display:block;margin-bottom:12px;">Featured Project</span></div>
+      <div style="position:absolute;bottom:48px;left:48px;z-index:10;">
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,10vw,12rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.88);line-height:0.82;">Switch<br/>2.0</h2>
+      </div>
+      <div style="position:absolute;bottom:48px;right:48px;z-index:10;text-align:right;">
+        <div style="display:flex;gap:20px;justify-content:flex-end;margin-bottom:8px;">
+          <div style="text-align:right;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+          <div style="text-align:right;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+          <div style="text-align:right;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Speed</span></div>
+        </div>
+        <p style="font-size:0.72rem;color:rgba(244,241,236,0.35);font-weight:300;">Seven rules. Infinite objects.</p>
+      </div>
+    </div>
+    <!-- DNA strip -->
+    <div style="display:flex;align-items:center;padding:14px 48px;gap:32px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);white-space:nowrap;">Switch DNA</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">Industrial Honesty</span>
+      <span style="color:rgba(200,169,110,0.2);">·</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">Rectilinear Mass</span>
+      <span style="color:rgba(200,169,110,0.2);">·</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">Tube Logic</span>
+      <span style="color:rgba(200,169,110,0.2);">·</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">45° Chamfers</span>
+      <span style="color:rgba(200,169,110,0.2);">·</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">CMF Binary</span>
+    </div>
+    <!-- Products -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(42,40,37,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(42,40,37,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.55);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(42,40,37,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V9: Black/cream split — left black text, right cream with image, DNA as bottom border -->
+  <div class="fp-opt">
+  <section style="padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:70vh;">
+      <div style="background:var(--black);padding:80px 64px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Featured Project</span>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,7vw,8rem);letter-spacing:0.05em;text-transform:uppercase;color:rgba(244,241,236,0.85);line-height:0.86;margin-bottom:32px;">Switch<br/>2.0</h2>
+          <p style="font-size:0.82rem;line-height:1.75;color:rgba(244,241,236,0.35);font-weight:300;max-width:320px;">Seven rules. Infinite objects. One recognisable identity.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px 32px;">
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Top Speed</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">DNA Rules</span></div>
+        </div>
+      </div>
+      <div style="background:var(--cream);position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c9s">
+          <div class="c9-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c9-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c9-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div class="c9-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c9Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c9Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c9-dot fdot active" onclick="c9Go(0)"></button><button class="c9-dot fdot" onclick="c9Go(1)"></button><button class="c9-dot fdot" onclick="c9Go(2)"></button><button class="c9-dot fdot" onclick="c9Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- DNA row -->
+    <div style="display:flex;background:#0d0d0d;border-top:1px solid rgba(200,169,110,0.08);border-bottom:1px solid rgba(200,169,110,0.08);">
+      <div style="padding:16px 48px;border-right:1px solid rgba(200,169,110,0.06);flex:1;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.4);">01 Industrial Honesty</span></div>
+      <div style="padding:16px 32px;border-right:1px solid rgba(200,169,110,0.06);flex:1;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.4);">02 Rectilinear Mass</span></div>
+      <div style="padding:16px 32px;border-right:1px solid rgba(200,169,110,0.06);flex:1;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.4);">03 Tube Logic</span></div>
+      <div style="padding:16px 32px;border-right:1px solid rgba(200,169,110,0.06);flex:1;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.4);">04 45° Chamfers</span></div>
+      <div style="padding:16px 32px;flex:1;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.4);">05 CMF Binary</span></div>
+    </div>
+    <!-- Products -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:#0a0a0a;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Home · Living</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Technology · AI</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V10: Black — ultra minimal, massive type, no metrics shown, single product strip -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--black);">
+    <div style="padding:80px 48px 64px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Featured Project</span>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,12vw,14rem);letter-spacing:0.03em;text-transform:uppercase;color:rgba(244,241,236,0.82);line-height:0.82;margin-bottom:0;">Switch<br/>2.0</h2>
+    </div>
+    <!-- Full-width carousel -->
+    <div style="position:relative;height:60vh;overflow:hidden;">
+      <div class="fcar-slides" id="c10s">
+        <div class="c10-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c10-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c10-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c10-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c10Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c10Step(1)">&#8594;</button>
+      <div style="position:absolute;bottom:24px;left:48px;z-index:10;"><p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.4);">Seven rules. Infinite objects. One recognisable identity.</p></div>
+      <div class="fcar-dots" style="bottom:24px;"><button class="c10-dot fdot active" onclick="c10Go(0)"></button><button class="c10-dot fdot" onclick="c10Go(1)"></button><button class="c10-dot fdot" onclick="c10Go(2)"></button><button class="c10-dot fdot" onclick="c10Go(3)"></button></div>
+    </div>
+    <!-- DNA strip -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-top:1px solid rgba(200,169,110,0.06);border-bottom:1px solid rgba(200,169,110,0.06);">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Industrial Honesty</span>
+      <span style="color:rgba(200,169,110,0.15);">—</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Rectilinear Mass</span>
+      <span style="color:rgba(200,169,110,0.15);">—</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Tube Logic</span>
+      <span style="color:rgba(200,169,110,0.15);">—</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.3);">45° Chamfers</span>
+      <span style="color:rgba(200,169,110,0.15);">—</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(244,241,236,0.3);">CMF Binary</span>
+    </div>
+    <!-- Products tight 3-col -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_27__2025_at_08_47_24_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Music Ecosystem</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Nov_28__2025_at_08_23_59_AM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Kitchen System</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="ChatGPT_Image_Dec_3__2025_at_06_21_33_PM.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.5);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Robotics</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <script>
+  (function(){
+    document.querySelectorAll('.fp-opt').forEach(function(opt,oi){
+      var prefix='c'+oi;
+      var total=4;
+      var idx=0;
+      var slides=opt.querySelectorAll('.'+prefix+'-slide');
+      var dots=opt.querySelectorAll('.'+prefix+'-dot');
+      window[prefix+'Step']=function(d){idx=(idx+d+total)%total;go();};
+      window[prefix+'Go']=function(i){idx=i;go();};
+      function go(){slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});dots.forEach(function(d,j){d.classList.toggle('active',j===idx);});}
+    });
+  })();
+  </script>
+
+
+  <!-- V11: Dark, 2025 acquisition hero, SWITCH logo prominent, new images, logos embedded -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--black);">
+    <!-- Acquisition header bar -->
+    <div style="padding:16px 48px;background:#0d0d0d;border-bottom:1px solid rgba(200,169,110,0.1);display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.5);">Asset Acquisition — 2025</span>
+      <img src="Switch-logo-colour.png" style="height:28px;width:auto;display:block;filter:brightness(0.9);" />
+    </div>
+    <div style="display:grid;grid-template-columns:3fr 2fr;min-height:55vh;">
+      <div style="padding:64px 56px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(200,169,110,0.08);">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;">Featured Project</span>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:480px;">In 2025, we acquired the SWITCH brand and assets: a premium electric motorcycle platform with strong product DNA and clear room to expand. Now being relaunched around a larger market opportunity.</p>
+        </div>
+        <div style="display:flex;gap:32px;">
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">2025</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Acquired</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">DNA Rules</span></div>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c11s">
+          <div class="c11-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+          <div class="c11-slide fcar-slide"><img src="snowboard.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);" /></div>
+          <div class="c11-slide fcar-slide"><img src="guitar.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.8);" /></div>
+          <div class="c11-slide fcar-slide"><img src="Upscaled_amp.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.85);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c11Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c11Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c11-dot fdot active" onclick="c11Go(0)"></button><button class="c11-dot fdot" onclick="c11Go(1)"></button><button class="c11-dot fdot" onclick="c11Go(2)"></button><button class="c11-dot fdot" onclick="c11Go(3)"></button></div>
+      </div>
+    </div>
+    <!-- New product images -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-top:1px solid rgba(200,169,110,0.06);">
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.75);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Snow · Lifestyle</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">SWITCH Snowboard</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.75);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">SWITCH Guitar</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.85);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;">Audio · Amplification</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.88);">SWITCH Amp</span></div></div>
+    </div>
+    <!-- Logos embedded -->
+    <div style="padding:28px 48px;background:#0d0d0d;border-top:1px solid rgba(200,169,110,0.06);">
+      <span style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.25);display:block;margin-bottom:16px;">As Seen On</span>
+      <div style="display:flex;gap:32px;align-items:center;flex-wrap:wrap;opacity:0.4;filter:invert(1) brightness(2);">
+        <img src="HYPEBEAST-png-logo.png" alt="Hypebeast" style="height:18px;width:auto;" />
+        <img src="designboom-logo-png.png" alt="Designboom" style="height:14px;width:auto;" />
+        <img src="hi-consumption-logo.png" alt="HiConsumption" style="height:16px;width:auto;" />
+        <img src="uncrate-logo-r-1.png" alt="Uncrate" style="height:16px;width:auto;" />
+        <img src="bikeexif-logo-black-png.png" alt="BikeEXIF" style="height:16px;width:auto;" />
+        <img src="cropped-electrek-logo11.png" alt="Electrek" style="height:16px;width:auto;" />
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V12: SWITCH brand colours — dark with blue accents, full-bleed hero, acquisition message -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#0a0a0a;">
+    <div style="position:relative;overflow:hidden;min-height:70vh;">
+      <div class="fcar-slides" id="c12s">
+        <div class="c12-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45);" /></div>
+        <div class="c12-slide fcar-slide"><img src="guitar.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.5);" /></div>
+        <div class="c12-slide fcar-slide"><img src="snowboard.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.5);" /></div>
+        <div class="c12-slide fcar-slide"><img src="Upscaled_amp.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c12Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c12Step(1)">&#8594;</button>
+      <!-- SWITCH logo and eyebrow -->
+      <div style="position:absolute;top:40px;left:48px;z-index:10;">
+        <img src="Switch-logo-colour.png" style="height:40px;width:auto;display:block;" />
+      </div>
+      <div style="position:absolute;top:40px;right:48px;z-index:10;">
+        <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.45);">Asset Acquisition — 2025</span>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:56px 48px;z-index:10;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,transparent 80%);">
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,11rem);text-transform:uppercase;line-height:0.82;color:rgba(244,241,236,0.88);margin-bottom:16px;">SWITCH 2.0</h2>
+        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.5);font-weight:300;max-width:600px;">Acquired 2025. A premium electric motorcycle platform with strong DNA and clear room to expand. Relaunching around a larger market opportunity.</p>
+      </div>
+      <div class="fcar-dots" style="bottom:24px;right:48px;left:auto;transform:none;"><button class="c12-dot fdot active" onclick="c12Go(0)"></button><button class="c12-dot fdot" onclick="c12Go(1)"></button><button class="c12-dot fdot" onclick="c12Go(2)"></button><button class="c12-dot fdot" onclick="c12Go(3)"></button></div>
+    </div>
+    <!-- SWITCH blue accent bar -->
+    <div style="height:3px;background:linear-gradient(to right,#00b4d8,rgba(0,180,216,0));"></div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(0,180,216,0.1);">
+      <div style="padding:24px 40px;border-right:1px solid rgba(0,180,216,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#00b4d8;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+      <div style="padding:24px 40px;border-right:1px solid rgba(0,180,216,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#00b4d8;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+      <div style="padding:24px 40px;border-right:1px solid rgba(0,180,216,0.08);"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#00b4d8;display:block;line-height:1;">170km/h</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Top Speed</span></div>
+      <div style="padding:24px 40px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#00b4d8;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">DNA Rules</span></div>
+    </div>
+    <!-- DNA rules inline -->
+    <div style="display:flex;align-items:center;padding:14px 48px;gap:0;border-bottom:1px solid rgba(0,180,216,0.06);">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);white-space:nowrap;margin-right:24px;">Switch DNA</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.35);">Industrial Honesty · Rectilinear Mass · Tube Logic · 45° Chamfers · CMF Binary</span>
+    </div>
+    <!-- Products with SWITCH branding -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;">
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.7);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.92),transparent);"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;display:block;">Snow</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Board</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.7);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.92),transparent);"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;display:block;">Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Guitar</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;background:#f5f5f5;display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.92),transparent);"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;display:block;">Audio</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Amp</span></div></div>
+    </div>
+    <!-- Press logos -->
+    <div style="padding:24px 48px;background:#0d0d0d;display:flex;gap:28px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.2);white-space:nowrap;">As Seen On</span>
+      <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap;filter:invert(1) brightness(2);opacity:0.35;">
+        <img src="HYPEBEAST-png-logo.png" style="height:16px;width:auto;" />
+        <img src="designboom-logo-png.png" style="height:12px;width:auto;" />
+        <img src="hi-consumption-logo.png" style="height:14px;width:auto;" />
+        <img src="uncrate-logo-r-1.png" style="height:14px;width:auto;" />
+        <img src="bikeexif-logo-black-png.png" style="height:14px;width:auto;" />
+        <img src="cropped-electrek-logo11.png" style="height:14px;width:auto;" />
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V13: Cream editorial, ESCRAMBLER logo featured, logos as credential strip -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--cream);">
+    <div style="padding:64px 48px;border-bottom:2px solid rgba(138,110,58,0.15);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;">Featured Project — Asset Acquisition 2025</span>
+          <img src="Logo_escrambler.jpg" style="height:40px;width:auto;display:block;margin-bottom:20px;filter:brightness(0);" />
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:8px;">
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.45);font-weight:300;margin-bottom:24px;">In 2025, we acquired the SWITCH brand and assets — a premium electric motorcycle platform with strong product DNA and clear room to expand beyond its original niche.</p>
+          <div style="display:flex;gap:24px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">2025</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Acquired</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#8a6e3a;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Rules</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Press logos as credential strip -->
+    <div style="padding:20px 48px;background:#f0ece4;border-bottom:1px solid rgba(10,10,10,0.07);display:flex;gap:32px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.3);white-space:nowrap;">As Seen On</span>
+      <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;opacity:0.4;filter:brightness(0);">
+        <img src="HYPEBEAST-png-logo.png" style="height:16px;width:auto;" />
+        <img src="designboom-logo-png.png" style="height:12px;width:auto;" />
+        <img src="hi-consumption-logo.png" style="height:14px;width:auto;" />
+        <img src="uncrate-logo-r-1.png" style="height:14px;width:auto;" />
+        <img src="bikeexif-logo-black-png.png" style="height:14px;width:auto;" />
+        <img src="cropped-electrek-logo11.png" style="height:14px;width:auto;" />
+        <img src="gessato.png" style="height:14px;width:auto;" />
+      </div>
+    </div>
+    <!-- New product images on cream -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(10,10,10,0.08);">
+      <div style="background:var(--cream);"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Snow · Lifestyle</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Snowboard</span></div></div>
+      <div style="background:var(--cream);"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Guitar</span></div></div>
+      <div style="background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;padding:20px;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Amplification</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Amp</span></div></div>
+    </div>
+    <!-- DNA rules -->
+    <div style="padding:20px 48px;background:#e8e4dc;display:flex;gap:0;flex-wrap:wrap;">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.3);align-self:center;margin-right:24px;white-space:nowrap;">Switch DNA</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.4);">Industrial Honesty · Rectilinear Mass · Tube Logic · 45° Chamfers · CMF Binary</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- V14: Split dark/light, SWITCH logo left, acquisition story right, product trio below -->
+  <div class="fp-opt">
+  <section style="padding:0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:60vh;">
+      <div style="background:var(--black);padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <img src="Switch-logo-colour.png" style="height:36px;width:auto;display:block;margin-bottom:32px;" />
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">Seven rules. Infinite objects. One recognisable identity.</p>
+        </div>
+        <div>
+          <div style="display:flex;gap:24px;margin-bottom:20px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Rules</span></div>
+          </div>
+          <!-- Logos dark -->
+          <div style="display:flex;gap:20px;align-items:center;filter:invert(1) brightness(2);opacity:0.3;flex-wrap:wrap;">
+            <img src="HYPEBEAST-png-logo.png" style="height:14px;width:auto;" />
+            <img src="designboom-logo-png.png" style="height:11px;width:auto;" />
+            <img src="hi-consumption-logo.png" style="height:13px;width:auto;" />
+            <img src="uncrate-logo-r-1.png" style="height:13px;width:auto;" />
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--cream);padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;">
+        <div>
+          <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;">Asset Acquisition — 2025</span>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;margin-bottom:24px;">In 2025, we acquired the SWITCH brand and assets: a premium electric motorcycle platform with strong product DNA and clear room to expand beyond its original niche.</p>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.5);font-weight:300;">Now being relaunched around a larger market opportunity and stronger unit economics.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(10,10,10,0.08);padding-top:24px;">
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a6e3a;">Industrial Honesty</span><span style="font-size:0.78rem;color:rgba(10,10,10,0.5);">No fake surfaces.</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(10,10,10,0.06);"><span style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a6e3a;">Rectilinear Mass</span><span style="font-size:0.78rem;color:rgba(10,10,10,0.5);">Block geometry.</span></div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;"><span style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a6e3a;">CMF Binary</span><span style="font-size:0.78rem;color:rgba(10,10,10,0.5);">Brushed aluminium + matte black.</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;">
+      <div style="position:relative;overflow:hidden;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.6);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Snowboard</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="guitar.jpg" style="width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(0.6);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Guitar</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:16/9;object-fit:contain;padding:16px;display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.5),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">SWITCH Amp</span></div></div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V15–V20 placeholders with strong variation -->
+  <!-- V15: Deep olive, SWITCH logo centred hero, 3-col product grid on olive -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#1c1a14;">
+    <div style="padding:72px 48px 56px;text-align:center;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:20px;">Asset Acquisition 2025 — Featured Project</span>
+      <img src="Switch-logo-colour.png" style="height:48px;width:auto;display:block;margin:0 auto 20px;" />
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
+      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.38);font-weight:300;max-width:560px;margin:20px auto 32px;">Acquired 2025. A premium electric motorcycle platform — relaunching around a larger opportunity and stronger unit economics.</p>
+      <div style="display:inline-flex;gap:40px;">
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Battery</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Range</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;">170km/h</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Speed</span></div>
+        <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Rules</span></div>
+      </div>
+    </div>
+    <!-- Carousel -->
+    <div style="position:relative;overflow:hidden;height:clamp(280px,35vw,500px);">
+      <div class="fcar-slides" id="c15s">
+        <div class="c15-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c15-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c15-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        <div class="c15-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_55.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c15Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c15Step(1)">&#8594;</button>
+      <div class="fcar-dots"><button class="c15-dot fdot active" onclick="c15Go(0)"></button><button class="c15-dot fdot" onclick="c15Go(1)"></button><button class="c15-dot fdot" onclick="c15Go(2)"></button><button class="c15-dot fdot" onclick="c15Go(3)"></button></div>
+    </div>
+    <!-- DNA + new products -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-top:1px solid rgba(200,169,110,0.06);">
+      <div style="padding:32px 32px;border-right:1px solid rgba(200,169,110,0.06);">
+        <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:8px;">DNA In the Wild</span>
+        <img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:brightness(0.7);margin-bottom:12px;" />
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.65);">Snow · Lifestyle</span>
+      </div>
+      <div style="padding:32px 32px;border-right:1px solid rgba(200,169,110,0.06);">
+        <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:8px;">DNA In the Wild</span>
+        <img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:brightness(0.7);margin-bottom:12px;" />
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.65);">Audio · Music</span>
+      </div>
+      <div style="padding:32px 32px;">
+        <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:8px;">DNA In the Wild</span>
+        <img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;background:#f5f5f5;display:block;margin-bottom:12px;" />
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.65);">Audio · Amplification</span>
+      </div>
+    </div>
+    <!-- Logos on olive -->
+    <div style="padding:20px 48px;border-top:1px solid rgba(200,169,110,0.06);display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.35);white-space:nowrap;margin-right:12px;">As Seen On</span>
+      <div style="display:flex;gap:20px;align-items:center;filter:invert(1) brightness(2);opacity:0.25;flex-wrap:wrap;">
+        <img src="HYPEBEAST-png-logo.png" style="height:14px;width:auto;" />
+        <img src="designboom-logo-png.png" style="height:11px;width:auto;" />
+        <img src="hi-consumption-logo.png" style="height:13px;width:auto;" />
+        <img src="uncrate-logo-r-1.png" style="height:13px;width:auto;" />
+        <img src="bikeexif-logo-black-png.png" style="height:13px;width:auto;" />
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <!-- V16: Black, SWITCH colour system, hero product focus, acquisition block prominent -->
+  <div class="fp-opt active">
+  <section style="padding:0;background:var(--black);">
+    <div style="display:grid;grid-template-columns:1fr 2fr;min-height:60vh;">
+      <div style="padding:56px;background:#0d0d0d;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(0,180,216,0.12);">
+        <div>
+          <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.7);display:block;margin-bottom:12px;">Featured Project</span>
+          <img src="Switch-logo-white_2.png" style="height:32px;width:auto;display:block;margin-bottom:8px;mix-blend-mode:screen;" />
+          <img src="Logo_escrambler.jpg" style="height:16px;width:auto;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
+          <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(0,180,216,0.6);display:block;margin-bottom:16px;">Asset Acquisition 2025</span>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;margin-bottom:12px;">A premium electric motorcycle platform with strong product DNA and clear room to expand. Relaunching around a larger opportunity.</p>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.35);font-weight:300;">In 2025, we acquired the SWITCH brand and assets. The platform has proven unit economics and a clear pathway into adjacent categories.</p>
+        </div>
+        <div>
+          <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(0,180,216,0.12);padding-top:24px;">
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(0,180,216,0.08);"><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.45);">Battery</span><span style="font-size:0.82rem;color:rgba(244,241,236,0.55);">13kWh</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(0,180,216,0.08);"><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.45);">Range</span><span style="font-size:0.82rem;color:rgba(244,241,236,0.55);">175km</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(0,180,216,0.08);"><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.45);">Top Speed</span><span style="font-size:0.82rem;color:rgba(244,241,236,0.55);">170km/h</span></div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;"><span style="font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.45);">DNA Rules</span><span style="font-size:0.82rem;color:rgba(244,241,236,0.55);">07</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c16s">
+          <div class="c16-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7);" /></div>
+          <div class="c16-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7);" /></div>
+          <div class="c16-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.7);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c16Step(1)">&#8594;</button>
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#00b4d8,transparent);"></div>
+
+        <div class="fcar-dots" style="bottom:20px;right:24px;left:auto;transform:none;"><button class="c16-dot fdot active" onclick="c16Go(0)"></button><button class="c16-dot fdot" onclick="c16Go(1)"></button><button class="c16-dot fdot" onclick="c16Go(2)"></button></div>
+      </div>
+    </div>
+    <!-- New products with SWITCH blue -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-top:1px solid rgba(0,180,216,0.1);">
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.65);display:block;" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Snowboard</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#0d0d0d;"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.65);display:block;" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Guitar</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;padding:16px;display:block;" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Amp</span></div></div>
+    </div>
+    <!-- Logos + DNA row -->
+  </section>
+  </div>
+
+  <!-- V17: Cream, large acquisition message centred, O7 grid products -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--cream);">
+    <div style="padding:80px 48px;border-bottom:2px solid rgba(138,110,58,0.15);">
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
+        <div>
+          <span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:12px;">Featured Project</span>
+          <img src="Switch-logo-colour.png" style="height:28px;width:auto;display:block;" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:end;">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.72);">SWITCH 2.0</h2>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.45);font-weight:300;">In 2025, we acquired the SWITCH brand and assets. A premium platform with strong DNA, now relaunching around a larger market opportunity.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(10,10,10,0.08);">
+        <span style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Metrics</span>
+        <div style="display:flex;gap:40px;align-items:baseline;">
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#8a6e3a;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Battery</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#8a6e3a;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Range</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#8a6e3a;display:block;line-height:1;">170km/h</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Speed</span></div>
+          <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#8a6e3a;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.35);">DNA Rules</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:48px;">
+        <span style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">As Seen On</span>
+        <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;filter:brightness(0);opacity:0.4;">
+          <img src="HYPEBEAST-png-logo.png" style="height:18px;width:auto;" />
+          <img src="designboom-logo-png.png" style="height:14px;width:auto;" />
+          <img src="hi-consumption-logo.png" style="height:16px;width:auto;" />
+          <img src="uncrate-logo-r-1.png" style="height:16px;width:auto;" />
+          <img src="bikeexif-logo-black-png.png" style="height:16px;width:auto;" />
+          <img src="cropped-electrek-logo11.png" style="height:16px;width:auto;" />
+          <img src="gessato.png" style="height:16px;width:auto;" />
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(10,10,10,0.08);">
+      <div style="background:var(--cream);overflow:hidden;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Snow · Lifestyle</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Snowboard</span></div></div>
+      <div style="background:var(--cream);overflow:hidden;"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Guitar</span></div></div>
+      <div style="background:#f5f5f5;overflow:hidden;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;padding:20px;display:block;" /><div style="padding:20px 24px;"><span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:4px;">Audio · Amplification</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.65);">SWITCH Amp</span></div></div>
+    </div>
+    <div style="padding:20px 48px;background:#e8e4dc;">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">Seven rules. Infinite objects. One recognisable identity.</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- V18: Ultra minimal black, ESCRAMBLER wordmark, ghost headline, logos subtle -->
+  <div class="fp-opt">
+  <section style="padding:0;background:var(--black);">
+    <div style="padding:80px 48px 64px;position:relative;overflow:hidden;border-bottom:1px solid rgba(200,169,110,0.06);">
+      <div style="position:absolute;top:20px;right:0;font-family:'Bebas Neue',sans-serif;font-size:14vw;color:rgba(200,169,110,0.04);line-height:0.8;pointer-events:none;user-select:none;white-space:nowrap;">SWITCH</div>
+      <div style="position:relative;z-index:1;">
+        <span style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Asset Acquisition 2025 — Featured Project</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:40px;">
+          <div>
+            <img src="Logo_escrambler.jpg" style="height:32px;width:auto;display:block;margin-bottom:16px;filter:invert(1) brightness(0.8);" />
+            <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,8vw,9rem);text-transform:uppercase;line-height:0.86;color:rgba(244,241,236,0.82);">SWITCH 2.0</h2>
+          </div>
+          <div>
+            <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(244,241,236,0.38);font-weight:300;margin-bottom:16px;">In 2025, we acquired the SWITCH brand and assets. A premium electric motorcycle platform — relaunching around a larger market opportunity and stronger unit economics.</p>
+            <p style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">Seven rules. Infinite objects. One recognisable identity.</p>
+          </div>
+        </div>
+        <!-- Logos minimal -->
+        <div style="display:flex;gap:24px;align-items:center;filter:invert(1) brightness(2);opacity:0.2;flex-wrap:wrap;">
+          <img src="HYPEBEAST-png-logo.png" style="height:16px;width:auto;" />
+          <img src="designboom-logo-png.png" style="height:12px;width:auto;" />
+          <img src="hi-consumption-logo.png" style="height:14px;width:auto;" />
+          <img src="uncrate-logo-r-1.png" style="height:14px;width:auto;" />
+          <img src="bikeexif-logo-black-png.png" style="height:14px;width:auto;" />
+          <img src="cropped-electrek-logo11.png" style="height:14px;width:auto;" />
+        </div>
+      </div>
+    </div>
+    <!-- Full-bleed product images -->
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:2px;">
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c18s" style="height:400px;">
+          <div class="c18-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+          <div class="c18-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+          <div class="c18-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.6);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c18Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c18Step(1)">&#8594;</button>
+      </div>
+      <div style="display:grid;grid-template-rows:1fr 1fr;gap:2px;">
+        <div style="overflow:hidden;background:#f5f5f5;height:200px;"><img src="snowboard.jpg" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.85);" /></div>
+        <div style="overflow:hidden;background:#f5f5f5;height:200px;"><img src="guitar.jpg" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.75);" /></div>
+      </div>
+      <div style="overflow:hidden;background:#f5f5f5;height:402px;"><img src="Upscaled_amp.png" style="width:100%;height:100%;object-fit:contain;padding:24px;display:block;" /></div>
+    </div>
+    <div style="display:flex;align-items:center;padding:16px 48px;gap:24px;border-top:1px solid rgba(200,169,110,0.06);">
+      <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.35);white-space:nowrap;">Switch DNA</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.3);">Industrial Honesty · Rectilinear Mass · Tube Logic · 45° Chamfers · CMF Binary</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- V19: Warm dark #111008, acquisition message prominent, SWITCH+ESCRAMBLER logos -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#111008;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;">
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid rgba(200,169,110,0.08);">
+        <div>
+          <div style="display:flex;gap:16px;align-items:center;margin-bottom:28px;">
+            <img src="Switch-logo-colour.png" style="height:28px;width:auto;display:block;" />
+            <span style="color:rgba(200,169,110,0.3);">×</span>
+            <img src="Logo_escrambler.jpg" style="height:20px;width:auto;display:block;filter:invert(1) brightness(0.8);" />
+          </div>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5.5vw,6rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:24px;">SWITCH 2.0</h2>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">In 2025, we acquired the SWITCH brand and assets: a premium electric motorcycle platform with strong product DNA and clear room to expand. Relaunching around a larger market opportunity.</p>
+        </div>
+        <div>
+          <div style="display:flex;gap:24px;margin-bottom:20px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Rules</span></div>
+          </div>
+          <!-- Logos -->
+          <div style="display:flex;gap:16px;align-items:center;filter:invert(1) brightness(2);opacity:0.25;flex-wrap:wrap;">
+            <img src="HYPEBEAST-png-logo.png" style="height:14px;width:auto;" />
+            <img src="designboom-logo-png.png" style="height:11px;width:auto;" />
+            <img src="hi-consumption-logo.png" style="height:13px;width:auto;" />
+            <img src="uncrate-logo-r-1.png" style="height:13px;width:auto;" />
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;">
+        <div class="fcar-slides" id="c19s">
+          <div class="c19-slide fcar-slide active"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+          <div class="c19-slide fcar-slide"><img src="WechatIMG32.jpeg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+          <div class="c19-slide fcar-slide"><img src="Screenshot_2026-03-29_at_00_04_40.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.65);" /></div>
+        </div>
+        <button class="fcar-btn fcar-prev" onclick="c19Step(-1)">&#8592;</button>
+        <button class="fcar-btn fcar-next" onclick="c19Step(1)">&#8594;</button>
+        <div class="fcar-dots"><button class="c19-dot fdot active" onclick="c19Go(0)"></button><button class="c19-dot fdot" onclick="c19Go(1)"></button><button class="c19-dot fdot" onclick="c19Go(2)"></button></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;border-top:1px solid rgba(200,169,110,0.06);">
+      <div style="position:relative;overflow:hidden;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.65);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(17,16,8,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">SWITCH Board</span></div></div>
+      <div style="position:relative;overflow:hidden;"><img src="guitar.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.65);display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(17,16,8,0.92),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);">SWITCH Guitar</span></div></div>
+      <div style="position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:4/3;object-fit:contain;padding:16px;display:block;" /><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(17,16,8,0.75),transparent);"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">SWITCH Amp</span></div></div>
+    </div>
+    <div style="padding:18px 48px;border-top:1px solid rgba(200,169,110,0.06);">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(200,169,110,0.35);">Industrial Honesty · Rectilinear Mass · Tube Logic · 45° Chamfers · CMF Binary</span>
+    </div>
+  </section>
+  </div>
+
+  <!-- V20: Mid-tone, magazine-style layout, large logos, all three new images hero -->
+  <div class="fp-opt">
+  <section style="padding:0;background:#2a2825;">
+    <div style="padding:64px 48px;border-bottom:1px solid rgba(200,169,110,0.08);">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-bottom:40px;">
+        <div>
+          <img src="Switch-logo-colour.png" style="height:36px;width:auto;display:block;margin-bottom:20px;" />
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,6vw,7rem);text-transform:uppercase;line-height:0.88;color:rgba(244,241,236,0.85);margin-bottom:20px;">SWITCH 2.0</h2>
+          <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.4);font-weight:300;">Asset acquired 2025. A premium electric motorcycle platform — relaunching around a larger market opportunity and stronger unit economics.</p>
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">13kWh</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Battery</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">175km</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Range</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">170km/h</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">Speed</span></div>
+            <div><span style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#c8a96e;display:block;line-height:1;">07</span><span style="font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.28);">DNA Rules</span></div>
+          </div>
+          <!-- Press logos larger and more integrated -->
+          <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:12px;">As Seen On</span>
+          <div style="display:flex;gap:20px;align-items:center;filter:invert(1) brightness(2);opacity:0.3;flex-wrap:wrap;">
+            <img src="HYPEBEAST-png-logo.png" style="height:18px;width:auto;" />
+            <img src="designboom-logo-png.png" style="height:13px;width:auto;" />
+            <img src="hi-consumption-logo.png" style="height:15px;width:auto;" />
+            <img src="uncrate-logo-r-1.png" style="height:15px;width:auto;" />
+            <img src="bikeexif-logo-black-png.png" style="height:15px;width:auto;" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Hero new products full width -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;">
+      <div style="position:relative;overflow:hidden;background:#332f2b;">
+        <img src="snowboard.jpg" style="width:100%;aspect-ratio:3/4;object-fit:cover;filter:brightness(0.65);display:block;" />
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(42,40,37,0.95),transparent);">
+          <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:6px;">Snow · Lifestyle</span>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Snowboard</span>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;background:#332f2b;">
+        <img src="guitar.jpg" style="width:100%;aspect-ratio:3/4;object-fit:cover;filter:brightness(0.65);display:block;" />
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(42,40,37,0.95),transparent);">
+          <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:6px;">Audio · Music</span>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">SWITCH Guitar</span>
+        </div>
+      </div>
+      <div style="position:relative;overflow:hidden;background:#f5f5f5;">
+        <img src="Upscaled_amp.png" style="width:100%;aspect-ratio:3/4;object-fit:contain;padding:24px;display:block;" />
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(to top,rgba(245,245,245,0.9),transparent);">
+          <span style="font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:6px;">Audio · Amplification</span>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);">SWITCH Amp</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:20px 48px;background:#332f2b;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;">Seven rules. Infinite objects. One recognisable identity.</span>
+      <img src="Logo_escrambler.jpg" style="height:18px;width:auto;filter:invert(1) brightness(0.6);opacity:0.5;" />
+    </div>
+  </section>
+  </div>
+
+  <script>
+  (function(){
+    var prefixes=['c11','c12','c15','c16','c18','c19'];
+    prefixes.forEach(function(p){
+      var total=p==='c18'||p==='c16'||p==='c19'?3:4;
+      var idx=0;
+      var slides,dots;
+      window[p+'Step']=function(d){idx=(idx+d+total)%total;go();};
+      window[p+'Go']=function(i){idx=i;go();};
+      function go(){
+        slides=document.querySelectorAll('.'+p+'-slide');
+        dots=document.querySelectorAll('.'+p+'-dot');
+        slides.forEach(function(s,j){s.classList.toggle('active',j===idx);});
+        dots.forEach(function(d,j){d.classList.toggle('active',j===idx);});
+      }
+    });
+  })();
+  </script>
+
+
+  </section>
   <!-- LOGOS -->
   <div class="logos">
     <p class="label reveal">As Seen On</p>
