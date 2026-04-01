@@ -3474,6 +3474,20 @@
 
 
   <!-- FEATURED PROJECT -->
+  <script>
+    function makeCar(prefix,total){
+      var idx=0;
+      window[prefix+'Step']=function(d){idx=(idx+d+total)%total;window[prefix+'Go'](idx);};
+      window[prefix+'Go']=function(i){
+        idx=i;
+        document.querySelectorAll('.'+prefix+'-slide').forEach(function(s,j){s.classList.toggle('active',j===i);});
+        document.querySelectorAll('.'+prefix+'-dot').forEach(function(d,j){d.classList.toggle('active',j===i);});
+      };
+    }
+    document.addEventListener('DOMContentLoaded',function(){
+      ['c0'].forEach(function(p){makeCar(p,4);});
+    });
+  </script>
 <style>
     .sw2-wrap { padding: 120px 48px 60px; }
     .sw2-eyebrow { font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:16px; }
