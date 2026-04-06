@@ -1963,3 +1963,415 @@
   </section>
 
 
+  <!-- VALUE -->
+<!-- VALUE L1: Title embedded as first card slot -->
+  <section class="value" style="padding-top:120px;padding-bottom:160px;background:#ede8e0 !important;">
+    <p class="label reveal" style="margin-bottom:48px;color:#8a6e3a;">Value Creation</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+      <div style="padding:56px 48px;background:rgba(200,169,110,0.08);border:1px solid rgba(200,169,110,0.25);display:flex;flex-direction:column;justify-content:center;grid-row:span 2;">
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side.</h2>
+      </div>
+      <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands <span class="val-icon" style="font-size:1.2rem;color:var(--accent);font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">New revenue and premium product expansion without building the full product engine in-house.</p>
+      </div>
+      <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Factories <span class="val-icon" style="font-size:1.2rem;color:var(--accent);font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Premium, authentic demand backed by clearer specifications, stronger engineering, and tighter execution.</p>
+      </div>
+      <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Operators <span class="val-icon" style="font-size:1.2rem;color:var(--accent);font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Turnkey international brands and product systems that can be localised and scaled for domestic markets.</p>
+      </div>
+      <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Investors <span class="val-icon" style="font-size:1.2rem;color:var(--accent);font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Earlier, clearer liquidity paths through strategic sales, mergers, and acquisitions.</p>
+      </div>
+    </div>
+    <script>
+    function toggleValueCard(card) {
+      var body = card.querySelector('.val-body');
+      var icon = card.querySelector('.val-icon');
+      var isOpen = body.style.maxHeight && body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+      // Close all
+      document.querySelectorAll('.val-body').forEach(function(b){ b.style.maxHeight='0'; b.style.opacity='0'; b.style.marginTop='0'; });
+      document.querySelectorAll('.val-icon').forEach(function(i){ i.style.transform='rotate(0deg)'; });
+      if (!isOpen) {
+        body.style.maxHeight = '160px';
+        body.style.opacity = '1';
+        body.style.marginTop = '12px';
+        icon.style.transform = 'rotate(45deg)';
+      }
+    }
+    </script>
+  </section>
+
+
+  <!-- SWITCH 2.0 FEATURED SECTION -->
+  <section id="featured" style="padding:0;">
+  <style>
+    .fp-opt { display:none; }
+    .fp-opt.active { display:block; }
+    #fp-sw {
+      display:flex; gap:8px; align-items:center;
+      padding:12px 48px;
+      background:rgba(10,10,10,0.98);
+      border-top:1px solid rgba(200,169,110,0.12);
+      border-bottom:1px solid rgba(200,169,110,0.12);
+      flex-wrap:wrap; position:sticky; top:0; z-index:50;
+    }
+    #fp-sw .fpl { font-family:'DM Sans',sans-serif; font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(244,241,236,0.28); margin-right:4px; }
+    .fpb { font-family:'Bebas Neue',sans-serif; font-size:0.82rem; letter-spacing:0.1em; padding:4px 14px; border:1px solid rgba(200,169,110,0.22); background:transparent; color:rgba(244,241,236,0.38); cursor:pointer; transition:all 0.2s; }
+    .fpb:hover { color:#c8a96e; border-color:rgba(200,169,110,0.55); }
+    .fpb.active { background:rgba(200,169,110,0.1); color:#c8a96e; border-color:#c8a96e; }
+
+    /* Shared carousel */
+    .fcar-slides { position:absolute; inset:0; }
+    .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
+    .fcar-slide.active { opacity:1; pointer-events:auto; }
+    .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
+    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:rgba(10,10,10,0.7); border:0.5px solid rgba(200,169,110,0.3); color:rgba(244,241,236,0.7); width:44px; height:44px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    #c16s-wrap { position:relative; }
+    #c16s-wrap .fcar-btn { opacity:0; transition:opacity 0.3s; }
+    #c16s-wrap:hover .fcar-btn { opacity:1; }
+    .fcar-btn:hover { background:rgba(200,169,110,0.15); border-color:#c8a96e; color:#c8a96e; }
+    .fcar-prev { left:14px; } .fcar-next { right:14px; }
+    .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
+    .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
+    .fdot.active { background:#c8a96e; }
+  </style>
+
+  <script>
+    function fpSwitch(i){
+      document.querySelectorAll('.fp-opt').forEach(function(el,idx){el.classList.toggle('active',idx===i);});
+      document.querySelectorAll('.fpb').forEach(function(btn,idx){btn.classList.toggle('active',idx===i);});
+    }
+    // Generic carousel factory
+    function makeCar(prefix,total){
+      var idx=0;
+      window[prefix+'Step']=function(d){idx=(idx+d+total)%total;window[prefix+'Go'](idx);};
+      window[prefix+'Go']=function(i){
+        idx=i;
+        document.querySelectorAll('.'+prefix+'-slide').forEach(function(s,j){s.classList.toggle('active',j===i);});
+        document.querySelectorAll('.'+prefix+'-dot').forEach(function(d,j){d.classList.toggle('active',j===i);});
+      };
+    }
+    document.addEventListener('DOMContentLoaded',function(){
+      ['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'].forEach(function(p){makeCar(p,4);});
+      makeCar('c16',3);
+      // Override c16Go to toggle overlay
+      var _c16Go = window.c16Go;
+      window.c16Go = function(i){
+        _c16Go(i);
+        var overlay = document.getElementById('c16-overlay');
+        if(overlay){ overlay.style.opacity = i===0 ? '1' : '0'; overlay.style.pointerEvents = i===0 ? 'auto' : 'none'; }
+      };
+    });
+  </script>
+
+
+  <!-- FEATURED PROJECT — V16 -->
+  <div class="fp-opt active">
+  <section style="padding:0;background:var(--black);">
+    <div id="c16s-wrap" style="position:relative;overflow:hidden;min-height:85vh;">
+      <div class="fcar-slides" id="c16s" style="position:absolute;inset:0;">
+        <div class="c16-slide fcar-slide active" style="position:absolute;inset:0;"><img src="Screenshot_2026-03-29_at_00_05_04.png" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55);" /></div>
+        <div class="c16-slide fcar-slide" style="position:absolute;inset:0;"><img src="SWITCH_eSCRAMBLER_bike-6.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.72);" /></div>
+        <div class="c16-slide fcar-slide" style="position:absolute;inset:0;"><img src="eSCRAMBLER_dirt-13.jpg" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.72);" /></div>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,20,30,0.75) 0%,rgba(10,10,10,0.35) 45%,rgba(10,10,10,0.02) 75%,transparent 100%);pointer-events:none;z-index:1;"></div>
+      <!-- Unified bottom-left overlay — slide 1 only -->
+      <div id="c16-overlay" style="position:absolute;bottom:48px;left:48px;z-index:2;transition:opacity 0.4s ease;">
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project</span>
+        <img src="Switchlogowhite2.png" style="height:32px;max-width:200px;width:auto;object-fit:contain;display:block;margin-bottom:6px;mix-blend-mode:screen;" />
+        <img src="Logo_escrambler.jpg" style="height:14px;max-width:120px;width:auto;object-fit:contain;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
+        <p style="font-size:clamp(0.85rem,1vw,0.95rem);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle platform. Now being relaunched around a broader opportunity.</p>
+        <div style="display:flex;gap:28px;">
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
+        </div>
+      </div>
+      <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
+      <button class="fcar-btn fcar-next" onclick="c16Step(1)">&#8594;</button>
+      <!-- Animated electric top line -->
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;z-index:3;overflow:hidden;">
+        <div id="switch-electric-line" style="width:100%;height:100%;background:linear-gradient(to right,transparent 0%,rgba(0,180,216,0.3) 20%,#00b4d8 50%,rgba(0,180,216,0.3) 80%,transparent 100%);background-size:200% 100%;animation:electric-sweep 3s ease-in-out infinite;"></div>
+      </div>
+      <div class="fcar-dots" style="bottom:20px;right:24px;left:auto;transform:none;z-index:3;"><button class="c16-dot fdot active" onclick="c16Go(0)"></button><button class="c16-dot fdot" onclick="c16Go(1)"></button><button class="c16-dot fdot" onclick="c16Go(2)"></button></div>
+    </div>
+    <!-- THE ACQUISITION -->
+    <div style="background:var(--cream);padding:64px 48px;border-bottom:1px solid rgba(0,180,216,0.2);"><div class="mw-wrap">
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition</span>
+        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry acquired SWITCH in 2025 not just as a motorcycle brand, but as a proven design and engineering system. The geometry, materials, and manufacturing logic are transferable. The same platform that built the eScrambler can seed a snowboard, a guitar, an amp. This is not a rebrand. It is a system extension.</p>
+      </div>
+    </div></div>
+    <!-- SWITCH DNA BLOCK -->
+    <div style="background:var(--cream);padding:96px 48px;border-top:1px solid rgba(0,180,216,0.2);"><div class="mw-wrap">
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(0,180,216,0.2);">
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Brand DNA</span>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Geometry</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Clean planes, controlled mass, no decorative surfacing.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Structure</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Tubes, welds, and mounting logic stay visible.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Materials</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Real metal, matte black polymer, and visible hardware.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Detail</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, and fastener rhythm create the language.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Identity</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Nothing fake. Nothing hidden. Every move has a job.</p></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">The System</span>
+        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand. A proven design and engineering system that extends into any hardware category that shares the same geometry, materials, and manufacturing logic.</p>
+      </div>
+    </div></div>
+    <!-- New products with SWITCH blue -->
+    <style>
+      .concept-carousel { position:relative; overflow:hidden; border-top:1px solid rgba(0,180,216,0.2); }
+      .concept-track { display:flex; transition:transform 0.4s ease; }
+      .cslide { flex:0 0 33.333%; min-width:0; }
+      .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:rgba(10,10,10,0.7); border:0.5px solid rgba(0,180,216,0.3); color:rgba(244,241,236,0.7); width:48px; height:48px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+      .concept-btn:hover { background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; }
+      .concept-prev { left:14px; } .concept-next { right:14px; }
+    </style>
+    <div class="concept-carousel" id="conceptCar">
+      <div class="concept-track" id="conceptTrack">
+        <div class="cslide" style="flex:0 0 33.333%;min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Adventure</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Snowboard</span></div></div><div class="cslide" style="flex:0 0 33.333%;min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="guitar.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Guitar</span></div></div><div class="cslide" style="flex:0 0 33.333%;min-width:0;position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:1/1;object-fit:contain;padding:16px;display:block;filter:brightness(1);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Electronic</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Amp</span></div></div><div class="cslide" style="flex:0 0 33.333%;min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="switch_battery.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Energy</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Battery Pack</span></div></div><div class="cslide" style="flex:0 0 33.333%;min-width:0;position:relative;overflow:hidden;background:#f0f0f0;"><img src="switch_speaker.png" style="width:100%;aspect-ratio:1/1;object-fit:contain;padding:16px;display:block;filter:brightness(1);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Audio</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Speaker</span></div></div>
+      </div>
+      <button class="concept-btn concept-prev" onclick="conceptStep(-1)">&#8592;</button>
+      <button class="concept-btn concept-next" onclick="conceptStep(1)">&#8594;</button>
+    </div>
+    <script>
+    (function(){
+      var track = document.getElementById('conceptTrack');
+      var total = 5;
+      var visible = 3;
+      var idx = 0;
+      function update(){
+        track.style.transform = 'translateX(-' + (idx * (100/visible)) + '%)';
+      }
+      window.conceptStep = function(d){
+        idx = Math.max(0, Math.min(idx + d, total - visible));
+        update();
+      };
+    })();
+    </script>
+    <!-- Logos + DNA row -->
+  </section>
+
+
+  <!-- LOGOS -->
+  <div class="logos">
+    <p class="label reveal" style="color:#00b4d8;">As Seen On</p>
+    <div class="logo-grid">
+      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7d29fed7-7d14-4abb-b12d-1b58b47e193c/HYPEBEAST-png-logo.png" alt="Hypebeast" />
+      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e9427ed1-f206-425e-ab38-603d7da7c150/designboom-logo-png.png" alt="Designboom" style="max-height:48px;opacity:0.35;" />
+      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/81e969d5-7723-4fcd-bbb9-5f16e4e1c237/hi-consumption-logo.png" alt="Hi Consumption" />
+      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/394a7990-a252-4858-9c74-2b19f9b35603/uncrate-logo-r-1.png" alt="Uncrate" />
+      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ee7b81b0-5a05-4db7-9bb4-cff5634abf53/bikeexif-logo-black-png.png" alt="Bike EXIF" />
+      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/5f327e67-83af-450b-86d0-3d56a99eb567/trendhunter_logo-png.png" alt="Trendhunter" style="max-height:44px;opacity:0.35;" />
+      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/89a6f087-5ee5-45b7-9fa2-3fe0d6a09a49/cropped-electrek-logo11.png" alt="Electrek" />
+      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/77cd5272-89c6-462d-9822-2088cd17a303/gessato.png" alt="Gessato" />
+      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/d6cc1702-a912-4aca-8efb-e598febf19e7/daily-hunt-logo-png.png" alt="Daily Hunt" style="transform:scale(2.2); transform-origin:center;" />
+      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/4c1bac0d-c8fa-4ed3-9550-1a2940814eab/Silodrome.png" alt="Silodrome" style="transform:scale(1.8); transform-origin:center;" style="transform:scale(1.8); transform-origin:center;" />
+      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/c0d6afba-7150-447e-8f2d-b6bceca40b35/Blessthisstuff-grey.png" alt="Bless This Stuff" style="max-height:44px;opacity:0.35;" />
+      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ccbb2b4f-d984-429e-9824-5d2339f35ed5/THE-COOLECTOR-logo-texture-2.png" alt="The Coolector" style="max-height:44px;opacity:0.35;" />
+    </div>
+  </div>
+
+
+
+
+
+  <!-- FUNDS -->
+  <section class="funds" id="funds">
+    <p class="label reveal">Two Investment Paths</p>
+    <h2 class="section-title reveal">Same engine,<br/><em>different</em> ownership.</h2>
+    <style>
+      .fund-expand { font-size:0.82rem; line-height:1.75; color:rgba(10,10,10,0.45); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
+      .fund-card:hover .fund-expand { max-height:160px; opacity:1; }
+    </style>
+    <div class="funds-grid">
+      <div class="fund-card reveal reveal-delay-1">
+        <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e3fb1837-73e8-4dd7-bdf0-9d2e68d83582/e70a2636f73da2c6c55b80c7d2dec8ca56fa48ea04b5b80a7139f7d2bf13dc9e.jpg" alt="Fund A" />
+        <div class="fund-body">
+          <p class="fund-tag">Fund A</p>
+          <h3>Proprietary</h3>
+          <p>We invest in our own brands and companies, where we control the IP, product system, and long-term value creation.</p>
+          <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships, and long-term value creation. We carry the risk and the upside.</div>
+        </div>
+      </div>
+      <div class="fund-card reveal reveal-delay-2">
+        <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/9cc29928-94be-49b9-a4e4-c87ff6f41e92/640+%282%29.png" alt="Fund B" />
+        <div class="fund-body">
+          <p class="fund-tag">Fund B</p>
+          <h3>Partnership</h3>
+          <p>We back external brands through flexible structures — from product translation and licensing to full investments and acquisitions.</p>
+          <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
+        </div>
+      </div>
+      <div class="fund-card reveal reveal-delay-3">
+        <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/2b0a4fc5-52b9-46f7-bdfd-4a444e612091/Bali-Uluwatu.jpg" alt="Exits" />
+        <div class="fund-body">
+          <p class="fund-tag">Exits</p>
+          <h3>Liquidity</h3>
+          <p>We build toward earlier, cleaner exit pathways — transferable value that can be sold, licensed, or rolled into larger strategic groups.</p>
+          <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale, licensing, strategic roll-up, or other forms of exit. The goal is optionality, not a single mandatory outcome.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together</p>
+    <style>
+      @keyframes shimmer-product {
+        0%   { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+      .cta-product-word {
+        display: inline;
+        background: linear-gradient(
+          90deg,
+          rgba(10,10,10,0.45) 0%,
+          rgba(10,10,10,0.45) 35%,
+          rgba(10,10,10,0.82) 48%,
+          rgba(10,10,10,0.95) 50%,
+          rgba(10,10,10,0.82) 52%,
+          rgba(10,10,10,0.45) 65%,
+          rgba(10,10,10,0.45) 100%
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer-product 4s linear infinite;
+        font-family: var(--font-display);
+        font-style: normal;
+        letter-spacing: 0.14em;
+      }
+    </style>
+    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span></h2>
+    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.</p>
+    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="reveal">
+      <a href="index.html" style="text-decoration:none;display:flex;flex-direction:column;line-height:0.84;letter-spacing:0.06em;font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(244,241,236,0.7);margin-bottom:8px;">
+        <span>Silent</span>
+        <span>Foundry<span style="font-size:0.3em;vertical-align:top;margin-top:0.05em;display:inline-block;letter-spacing:0;">®</span></span>
+      </a>
+      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
+    </div>
+    <div class="footer-col reveal reveal-delay-1">
+      <h5>Navigate</h5>
+      <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
+      <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
+      <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use</a>
+    </div>
+    <div class="footer-col reveal reveal-delay-2">
+      <h5>Hong Kong</h5>
+      <address>史维骑有限公司<br/>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road, Wanchai</address>
+    </div>
+    <div class="footer-col reveal reveal-delay-3">
+      <h5>Shanghai</h5>
+      <address>上海酷圣贸易有限公司<br/>Room 333, 3/F, Building 1<br/>No. 2001 Yanggao North Road<br/>China (Shanghai) FTZ</address>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2026 SilentFoundry Group. All rights reserved.</span>
+    <span>sfg.</span>
+  </div>
+
+
+  <!-- PERSISTENT SCROLL INDICATOR -->
+  <div class="scroll-indicator" id="scrollIndicator">
+    <div class="scroll-indicator-line"></div>
+    <span>Scroll</span>
+  </div>
+  <script>
+    (function(){
+      var el = document.getElementById('scrollIndicator');
+      if(!el) return;
+      var shown = false;
+      function check(){
+        var atBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
+        var atTop = window.scrollY < 50;
+        if(!atBottom && !atTop){ if(!shown){ el.classList.add('visible'); shown=true; } }
+        else { el.classList.remove('visible'); shown=false; }
+      }
+      window.addEventListener('scroll', check, {passive:true});
+      setTimeout(function(){ el.classList.add('visible'); }, 1800);
+      setTimeout(check, 100);
+    })();
+  </script>
+  <script src="sf-scripts.js"></script>
+  <script>
+  // ── CAROUSEL MANUAL STEP ──
+  (function() {
+    var track = document.getElementById('engTrack');
+    if (!track) return;
+    var slideW = 0;
+    var manualOffset = 0;
+
+    function getSlideWidth() {
+      var slide = track.querySelector('.eng-slide');
+      if (!slide) return 0;
+      return slide.offsetWidth + 2;
+    }
+
+    window.engCarouselStep = function(dir) {
+      if (!slideW) slideW = getSlideWidth();
+      // Pause auto-scroll
+      track.classList.add('paused');
+      // Get current translate from animation or manual
+      var style = window.getComputedStyle(track);
+      var matrix = style.transform;
+      var currentX = 0;
+      if (matrix && matrix !== 'none') {
+        var m = matrix.match(/matrix.*\((.+)\)/);
+        if (m) currentX = parseFloat(m[1].split(', ')[6] || 0);
+      }
+      manualOffset = currentX - (dir * slideW);
+      // Clamp so we don't go past the half-point (one full set)
+      var totalWidth = slideW * 9;
+      if (manualOffset < -totalWidth) manualOffset = manualOffset + totalWidth;
+      if (manualOffset > 0) manualOffset = manualOffset - totalWidth;
+      track.style.transform = 'translateX(' + manualOffset + 'px)';
+      track.style.animation = 'none';
+      // Resume auto-scroll after 3s of inactivity
+      clearTimeout(window._engTimer);
+      window._engTimer = setTimeout(function() {
+        // Reset animation from current position
+        var pct = Math.abs(manualOffset) / totalWidth;
+        var remaining = (1 - pct) * 40;
+        track.style.animation = 'none';
+        track.style.transform = 'translateX(' + manualOffset + 'px)';
+        // Use a keyframe restart trick
+        track.classList.remove('paused');
+        track.style.animation = '';
+        track.style.transform = '';
+      }, 3000);
+    };
+  })();
+
+  function toggleAccordion(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.accordion-icon');
+    const isOpen = body.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
+    // Open this one if it was closed
+    if (!isOpen) {
+      body.classList.add('open');
+      icon.classList.add('open');
+    }
+  }
+  </script>
+</body>
+</html>
