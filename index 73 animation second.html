@@ -1440,7 +1440,21 @@
   <button class="vb-btn active" id="vb1" onclick="setVersion(1)">V1 — Static</button>
   <button class="vb-btn" id="vb2" onclick="setVersion(2)">V2 — Animated</button>
 </div>
-<script>var currentVersion = 1;</script>
+<script>
+  var currentVersion = 1;
+  function setVersion(v) {
+    currentVersion = v;
+    document.getElementById('vb1').classList.toggle('active', v === 1);
+    document.getElementById('vb2').classList.toggle('active', v === 2);
+    if (v === 2) {
+      document.body.classList.add('v2-animated');
+      initCounters();
+    } else {
+      document.body.classList.remove('v2-animated');
+      resetCounters();
+    }
+  }
+</script>
 
 <!-- MOBILE MENU -->
   <div class="mobile-menu">
@@ -2256,13 +2270,56 @@ body.v2-animated { cursor: none; }
               height 0.35s cubic-bezier(0.25,0.46,0.45,0.94),
               opacity 0.2s;
 }
-body.v2-animated #sf-cursor { display: block !important; }
-body.v2-animated #sf-cursor-ring { display: block !important; }
+body.v2-animated #sf-cursor,
+body.v2-animated #sf-cursor-ring { display: block; }
 body.v2-animated.cursor-hover #sf-cursor { width: 14px; height: 14px; background: #c8a96e; }
 body.v2-animated.cursor-hover #sf-cursor-ring { width: 56px; height: 56px; border-color: rgba(200,169,110,0.4); }
 body.v2-animated.cursor-link #sf-cursor { width: 6px; height: 6px; }
 body.v2-animated.cursor-link #sf-cursor-ring { width: 28px; height: 28px; border-color: #c8a96e; }
 
+/* ── PAGE LOAD INTRO ── */
+#sf-intro {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  z-index: 99990;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+  pointer-events: none;
+}
+#sf-intro .intro-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  color: rgba(244,241,236,0.0);
+  transform: skewX(-4deg);
+  transform-origin: left center;
+  line-height: 0.76;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: none;
+}
+#sf-intro .intro-logo span {
+  font-size: 72px;
+  letter-spacing: 0.06em;
+  -webkit-text-stroke: 0.5px rgba(244,241,236,0.9);
+  display: block;
+  overflow: hidden;
+}
+#sf-intro .intro-line {
+  width: 0;
+  height: 1px;
+  background: rgba(200,169,110,0.6);
+  margin: 16px 0;
+  transition: width 0.6s ease;
+}
+#sf-intro.intro-out {
+  animation: introOut 0.8s cubic-bezier(0.76,0,0.24,1) forwards;
+}
+@keyframes introOut {
+  0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-100%); }
 }
 
@@ -2282,17 +2339,36 @@ body.v2-animated.cursor-link #sf-cursor-ring { width: 28px; height: 28px; border
   background: linear-gradient(to bottom, transparent, #c8a96e 20%, #c8a96e 80%, transparent);
   transition: height 0.1s linear;
 }
-body.v2-animated #sf-progress { display: block !important; }
+body.v2-animated #sf-progress { display: block; }
 
+/* ── STICKY SECTION LABEL ── */
+#sf-section-label {
+  display: none;
+  position: fixed;
+  bottom: 32px;
+  left: 48px;
+  z-index: 500;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(200,169,110,0.45);
+  transition: opacity 0.4s, transform 0.4s;
+}
+#sf-section-label.changing {
+  opacity: 0;
+  transform: translateY(4px);
+}
+body.v2-animated #sf-section-label { display: block; }
 
 /* ── ROTATING BADGE ── */
 #sf-badge {
   display: none;
   position: fixed;
   bottom: 80px;
-  right: 80px;
+  right: 48px;
   z-index: 500;
-  width: 100px; height: 100px;
+  width: 90px; height: 90px;
   animation: badgeSpin 12s linear infinite;
 }
 #sf-badge svg text { fill: rgba(200,169,110,0.55); font-size: 10.5px; font-family: 'DM Sans', sans-serif; letter-spacing: 2.5px; }
@@ -2388,12 +2464,10 @@ body.v2-animated .nav-links a.nav-active { opacity: 1; color: #c8a96e !important
   color: rgba(200,169,110,0.5);
 }
 #sf-status-dot {
-  width: 7px; height: 7px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: #4caf50;
-  flex-shrink: 0;
   animation: statusPulse 2s ease-in-out infinite;
-  box-shadow: 0 0 0 0 rgba(76,175,80,0.5);
 }
 body.v2-animated #sf-status { display: flex; }
 @keyframes statusPulse {
@@ -2415,20 +2489,26 @@ body.v2-animated { scroll-behavior: auto; }
 <div id="sf-cursor"></div>
 <div id="sf-cursor-ring"></div>
 <div id="sf-progress"><div id="sf-progress-fill"></div></div>
-
+<div id="sf-section-label">Welcome</div>
 <div id="sf-badge">
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
+  <svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <path id="circle-path" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"/>
+      <path id="circle-path" d="M 45,45 m -32,0 a 32,32 0 1,1 64,0 a 32,32 0 1,1 -64,0"/>
     </defs>
-    <text style="fill:rgba(200,169,110,0.6);font-size:9px;font-family:'DM Sans',sans-serif;letter-spacing:3px;">
-      <textPath href="#circle-path" startOffset="0%">SILENT FOUNDRY + VENTURE STUDIO + CROSS-BORDER +</textPath>
+    <text>
+      <textPath href="#circle-path">SILENT FOUNDRY® • CROSS-BORDER VENTURE STUDIO •</textPath>
     </text>
   </svg>
 </div>
 <div id="sf-status"><div id="sf-status-dot"></div><span>Open for 2026 partnerships</span></div>
 
-
+<div id="sf-intro">
+  <div class="intro-logo">
+    <span id="intro-silent">Silent</span>
+    <span id="intro-foundry">Foundry</span>
+  </div>
+  <div class="intro-line" id="intro-line"></div>
+</div>
 
 <script>
 // ══════════════════════════════════════
@@ -2506,7 +2586,7 @@ function initCounters() {
 // ── HEADLINE REVEAL ──
 function initHeadlines() {
   // Wrap hero headline lines
-  document.querySelectorAll('.hero-headline-top, .hero-headline-bottom, .mc-hero-title').forEach(function(el) {
+  document.querySelectorAll('.hero-headline-top, .hero-headline-bottom, .mc-hero-title, .section-title').forEach(function(el) {
     if (el.classList.contains('v2-headline-done')) return;
     el.classList.add('v2-headline-done');
     var text = el.innerHTML;
@@ -2527,7 +2607,7 @@ function initHeadlines() {
     });
   }, { threshold: 0.2 });
 
-  document.querySelectorAll('.hero-headline-top, .hero-headline-bottom, .mc-hero-title').forEach(function(el) {
+  document.querySelectorAll('.hero-headline-top, .hero-headline-bottom, .mc-hero-title, .section-title').forEach(function(el) {
     headlineObserver.observe(el);
   });
 }
@@ -2567,7 +2647,7 @@ function destroyImageWipes() {
 
 // ── IMAGE HOVER SCALE ──
 function initImageHovers() {
-  document.querySelectorAll('.mc-hero, .factory-solo').forEach(function(el) {
+  document.querySelectorAll('.mc-hero, .fund-card, .factory-solo, .logos .logo-grid img').forEach(function(el) {
     el.classList.add('v2-img-hover');
   });
   document.querySelectorAll('.concept-carousel .cslide img').forEach(function(el) {
@@ -2615,9 +2695,64 @@ window.addEventListener('scroll', function() {
   var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
   if (progressFill) progressFill.style.height = pct + '%';
   updateSectionLabel(scrollTop);
+  updateNavHighlight(scrollTop);
 }, { passive: true });
 
-// Nav highlight handled by V1
+// ── STICKY SECTION LABEL ──
+var sections = [
+  { id: 'hero', label: 'Silent Foundry' },
+  { selector: '.wwd-section', label: 'What We Do' },
+  { selector: '.case-study', label: 'Marshall — DNA Translation' },
+  { selector: '#how', label: 'How It Works' },
+  { selector: '.factory-solo', label: 'Engineering' },
+  { selector: '.china-grid', label: 'China Translation' },
+  { selector: '.value', label: 'Value Creation' },
+  { selector: '#featured', label: 'Featured Project — SWITCH' },
+  { selector: '.logos', label: 'As Seen On' },
+  { selector: '.funds', label: 'Investment Structure' },
+  { selector: '.cta', label: 'Let's Build Together' },
+];
+var labelEl = document.getElementById('sf-section-label');
+var currentLabel = '';
+
+function updateSectionLabel(scrollTop) {
+  var active = 'Silent Foundry';
+  sections.forEach(function(s) {
+    var el = s.id ? document.getElementById(s.id) : document.querySelector(s.selector);
+    if (!el) return;
+    var rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight * 0.5) active = s.label;
+  });
+  if (active !== currentLabel) {
+    if (labelEl) {
+      labelEl.classList.add('changing');
+      setTimeout(function() {
+        labelEl.textContent = active;
+        labelEl.classList.remove('changing');
+        currentLabel = active;
+      }, 200);
+    }
+  }
+}
+
+// ── NAV HIGHLIGHT ON SCROLL ──
+function updateNavHighlight(scrollTop) {
+  var anchors = [
+    { id: 'how', selector: 'a[href="#how"]' },
+    { id: 'funds', selector: 'a[href="#funds"]' },
+  ];
+  anchors.forEach(function(a) {
+    var section = document.getElementById(a.id);
+    var link = document.querySelector('.nav-links ' + a.selector);
+    if (!section || !link) return;
+    var rect = section.getBoundingClientRect();
+    if (rect.top <= 120 && rect.bottom > 120) {
+      link.classList.add('nav-active');
+    } else {
+      link.classList.remove('nav-active');
+    }
+  });
+}
 
 // ── SMOOTH SCROLL ──
 function smoothScrollTo(target, duration) {
@@ -2645,6 +2780,36 @@ function initSmoothScroll() {
   });
 }
 
+// ── PAGE LOAD INTRO ──
+function runIntro() {
+  var intro = document.getElementById('sf-intro');
+  var silent = document.getElementById('intro-silent');
+  var foundry = document.getElementById('intro-foundry');
+  var line = document.getElementById('intro-line');
+  if (!intro) return;
+
+  intro.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  // Animate in
+  setTimeout(function() {
+    silent.style.color = 'rgba(244,241,236,0.9)';
+    silent.style.transition = 'color 0.5s ease';
+  }, 200);
+  setTimeout(function() {
+    foundry.style.color = 'rgba(244,241,236,0.9)';
+    foundry.style.transition = 'color 0.5s ease';
+    line.style.width = '120px';
+  }, 500);
+  setTimeout(function() {
+    intro.classList.add('intro-out');
+    document.body.style.overflow = '';
+  }, 1600);
+  setTimeout(function() {
+    intro.style.display = 'none';
+  }, 2400);
+}
+
 // ── MAIN INIT / DESTROY ──
 function initV2() {
   v2Active = true;
@@ -2653,6 +2818,7 @@ function initV2() {
   initImageWipes();
   initImageHovers();
   initSmoothScroll();
+  runIntro();
 }
 
 function destroyV2() {
@@ -2663,6 +2829,8 @@ function destroyV2() {
   destroyImageHovers();
   document.querySelectorAll('.nav-active').forEach(function(el){ el.classList.remove('nav-active'); });
   if (progressFill) progressFill.style.height = '0%';
+  var intro = document.getElementById('sf-intro');
+  if (intro) { intro.style.display = 'none'; intro.classList.remove('intro-out'); }
   document.body.style.overflow = '';
 }
 
