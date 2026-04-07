@@ -273,9 +273,9 @@
       .form-row { grid-template-columns: 1fr; }
     }
   <style>
-  /* ── NAV LINKS V1.1 SPEC ── */
+  /* ── NAV LINKS V1.1 ── */
   .nav-links a {
-    font-family: var(--font-body) !important;
+    font-family: 'DM Sans', sans-serif !important;
     font-size: 0.72rem !important;
     letter-spacing: 0.14em !important;
     text-transform: uppercase !important;
@@ -284,6 +284,7 @@
     opacity: 1 !important;
     position: relative;
     transition: color 0.2s, text-shadow 0.3s !important;
+    text-decoration: none;
   }
   .nav-links a::after {
     content: '';
@@ -299,26 +300,23 @@
     text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
     opacity: 1 !important;
   }
-  /* ── LOGO FADE ON SCROLL ── */
-  .nav-logo {
-    transition: opacity 0.5s ease, font-size 0.5s ease;
-  }
-  .nav-logo span {
-    transition: font-size 0.5s ease;
-  }
-  body.nav-logo-hidden .nav-logo {
-    opacity: 0 !important;
-    pointer-events: none;
-  }
   /* ── LOGO STAMP ── */
-  @keyframes logoStampShared {
+  @keyframes sharedLogoStamp {
     0%   { transform: skewX(-4deg) scale(1.14); opacity: 0; }
     60%  { transform: skewX(-4deg) scale(0.98); opacity: 1; }
     80%  { transform: skewX(-4deg) scale(1.01); }
     100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
   }
   .nav-logo.do-stamp {
-    animation: logoStampShared 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation: sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    transform-origin: left center;
+  }
+  nav { align-items: center !important; }
+  .nav-logo { position: relative; flex-shrink: 0; min-width: 120px; transition: opacity 0.5s ease; }
+  /* ── LOGO FADE NEAR FOOTER ── */
+  body.logo-fading .nav-logo {
+    opacity: 0 !important;
+    pointer-events: none;
   }
 </style>
 </style>
@@ -584,9 +582,8 @@
   </script>
 <script>
 (function() {
-  // Logo stamp once on load
   var stamped = false;
-  function stampLogo() {
+  window.addEventListener('DOMContentLoaded', function() {
     if (stamped) return;
     stamped = true;
     var logo = document.querySelector('.nav-logo');
@@ -594,21 +591,18 @@
     logo.classList.remove('do-stamp');
     void logo.offsetWidth;
     logo.classList.add('do-stamp');
-  }
-  window.addEventListener('DOMContentLoaded', stampLogo);
-
-  // Logo fade out near footer
+  });
   window.addEventListener('scroll', function() {
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (!footer || !logo) return;
     var footerTop = footer.getBoundingClientRect().top;
-    var windowH = window.innerHeight;
-    // Start fading when footer is 200px from bottom of viewport
-    if (footerTop < windowH + 200) {
-      document.body.classList.add('nav-logo-hidden');
+    if (footerTop < window.innerHeight + 150) {
+      logo.style.opacity = '0';
+      logo.style.pointerEvents = 'none';
     } else {
-      document.body.classList.remove('nav-logo-hidden');
+      logo.style.opacity = '';
+      logo.style.pointerEvents = '';
     }
   }, { passive: true });
 })();

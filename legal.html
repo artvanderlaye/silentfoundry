@@ -37,7 +37,9 @@
     nav{padding:16px 24px;}
   }
 <style>
-  .legal-nav-link {
+  .nav-logo { transition: opacity 0.5s ease; position: relative; flex-shrink: 0; min-width: 120px; }
+  .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+  .nav-links a {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.72rem;
     letter-spacing: 0.14em;
@@ -48,7 +50,7 @@
     position: relative;
     transition: color 0.2s, text-shadow 0.3s;
   }
-  .legal-nav-link::after {
+  .nav-links a::after {
     content: '';
     position: absolute;
     bottom: -2px; left: 0;
@@ -56,44 +58,38 @@
     background: #c8a96e;
     transition: width 0.3s ease;
   }
-  .legal-nav-link:hover::after { width: 100%; }
-  .legal-nav-link:hover {
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover {
     color: #c8a96e;
     text-shadow: 0 0 12px rgba(200,169,110,0.3);
   }
-  .nav-logo {
-    transition: opacity 0.5s ease;
-  }
-  body.nav-logo-hidden .nav-logo {
-    opacity: 0 !important;
-    pointer-events: none;
-  }
-  @keyframes logoStampShared {
+  @keyframes sharedLogoStamp {
     0%   { transform: skewX(-4deg) scale(1.14); opacity: 0; }
     60%  { transform: skewX(-4deg) scale(0.98); opacity: 1; }
     80%  { transform: skewX(-4deg) scale(1.01); }
     100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
   }
   .nav-logo.do-stamp {
-    animation: logoStampShared 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation: sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    transform-origin: left center;
   }
 </style>
 </style>
 </head>
 <body>
 
-<nav style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;transition:opacity 0.4s ease;background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%);">
-  <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;">
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%);transition:opacity 0.4s ease;">
+  <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;">
     <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
     <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
   </a>
-  <ul style="display:flex;gap:36px;list-style:none;align-items:center;">
-    <li><a href="index.html" class="legal-nav-link">Home</a></li>
-    <li><a href="sf-team.html" class="legal-nav-link">Team</a></li>
-    <li><a href="sf-contact.html" class="legal-nav-link">Contact</a></li>
+  <ul class="nav-links" style="display:flex;gap:36px;list-style:none;align-items:center;">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="sf-team.html">Team</a></li>
+    <li><a href="sf-contact.html">Contact</a></li>
   </ul>
 </nav>
-<div style="height:100px;"></div>
+<div style="height:110px;"></div>
 
 <div class="container">
 
@@ -208,3 +204,37 @@
     </div>
   </div>
   <div style="borde
+  <div style="border-top:1px solid rgba(200,169,110,0.06);padding-top:24px;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.2);">© 2026 SilentFoundry Group. All rights reserved.</span>
+    <span style="font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.2);">sfg.</span>
+  </div>
+</footer>
+<script>
+(function() {
+  var stamped = false;
+  window.addEventListener('DOMContentLoaded', function() {
+    if (stamped) return;
+    stamped = true;
+    var logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+    logo.classList.remove('do-stamp');
+    void logo.offsetWidth;
+    logo.classList.add('do-stamp');
+  });
+  window.addEventListener('scroll', function() {
+    var footer = document.querySelector('footer');
+    var logo = document.querySelector('.nav-logo');
+    if (!footer || !logo) return;
+    var footerTop = footer.getBoundingClientRect().top;
+    if (footerTop < window.innerHeight + 150) {
+      logo.style.opacity = '0';
+      logo.style.pointerEvents = 'none';
+    } else {
+      logo.style.opacity = '';
+      logo.style.pointerEvents = '';
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
