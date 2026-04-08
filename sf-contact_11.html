@@ -54,7 +54,7 @@
 
     /* ── CONTACT BODY ── */
     .contact-body {
-      padding: 160px 48px 200px;
+      padding: 120px 48px 160px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 100px;
@@ -197,7 +197,7 @@
     .offices {
       background: var(--cream);
       color: var(--black);
-      padding: 120px 48px 140px;
+      padding: 100px 48px;
     }
     .offices .label { color: #8a6e3a; }
     .offices-grid {
@@ -361,12 +361,6 @@ nav.scrolled:hover { opacity: 1; }
 /* Logo scroll shrink */
 .nav-logo span { transition: font-size 0.5s ease; }
 nav.scrolled .nav-logo span { font-size: 42px !important; }
-/* Logo hide on last section */
-body.hide-logo .nav-logo {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: opacity 0.5s ease !important;
-}
 </style>
 </head>
 <body>
@@ -636,19 +630,106 @@ body.hide-logo .nav-logo {
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (!footer || !logo) return;
-    );
+    var footerTop = footer.getBoundingClientRect().top;
+    if (footerTop < window.innerHeight * 0.6) {
+      logo.style.opacity = '0';
+      logo.style.pointerEvents = 'none';
+    } else {
+      logo.style.opacity = '';
+      logo.style.pointerEvents = '';
+    }
+  }, { passive: true });
 })();
 </script>
 
-  // Hide logo when approaching footer
+<!-- PERSISTENT UI -->
+<div id="pg-status" style="display:flex;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.55);">
+  <div style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:pgPulse 2s ease-in-out infinite;"></div>
+  <span>Open for 2026 partnerships</span>
+</div>
+<div id="pg-badge" style="position:fixed;bottom:56px;left:50%;z-index:599;pointer-events:none;width:78px;height:78px;">
+  <svg viewBox="0 0 78 78" width="78" height="78">
+    <defs><path id="pg-cp" d="M 39,39 m -27,0 a 27,27 0 1,1 54,0 a 27,27 0 1,1 -54,0"/></defs>
+    <text style="fill:rgba(200,169,110,0.6);font-size:7px;font-family:'DM Sans',sans-serif;letter-spacing:3.18px;">
+      <textPath href="#pg-cp" startOffset="0%">SILENT FOUNDRY VENTURES</textPath>
+    </text>
+  </svg>
+</div>
+<div id="pg-scroll-indicator" style="position:fixed;bottom:48px;right:48px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:50;opacity:0;transition:opacity 0.6s ease;pointer-events:none;">
+  <div style="width:1px;height:56px;background:linear-gradient(to bottom,#c8a96e,transparent);animation:pgPulse 2s infinite;"></div>
+  <span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;writing-mode:vertical-rl;color:#6b6560;animation:pgPulse 2s infinite;">Scroll</span>
+</div>
+<div id="pg-cursor" style="display:block;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s;"></div>
+<div id="pg-cursor-dot" style="display:block;position:fixed;width:4px;height:4px;background:#c8a96e;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);"></div>
+<div id="pg-cursor-ring" style="display:block;position:fixed;width:38px;height:38px;border:1px solid rgba(200,169,110,0.25);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s ease,height 0.4s ease;"></div>
+<style>
+  body { cursor: none !important; }
+  @keyframes pgPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+  @keyframes pgSpin { from{transform:translateX(-50%) rotate(0deg)} to{transform:translateX(-50%) rotate(360deg)} }
+  @keyframes pgSpinMobile { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+  #pg-badge { animation: pgSpin 14s linear infinite; }
+  @media(max-width:768px){
+    #pg-badge { left:auto !important; right:16px !important; bottom:72px !important; animation:pgSpinMobile 14s linear infinite !important; }
+  }
+</style>
+<script>
+(function(){
+  var cur = document.getElementById('pg-cursor');
+  var dot = document.getElementById('pg-cursor-dot');
+  var ring = document.getElementById('pg-cursor-ring');
+  var si = document.getElementById('pg-scroll-indicator');
+  var cx=window.innerWidth/2, cy=window.innerHeight/2;
+  var rx=cx, ry=cy;
+  document.addEventListener('mousemove', function(e){
+    cx=e.clientX; cy=e.clientY;
+    cur.style.left=cx+'px'; cur.style.top=cy+'px';
+    dot.style.left=cx+'px'; dot.style.top=cy+'px';
+  });
+  (function animRing(){ rx+=(cx-rx)*0.12; ry+=(cy-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+  document.addEventListener('mouseover', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='42px'; cur.style.height='42px'; }});
+  document.addEventListener('mouseout',  function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='20px'; cur.style.height='20px'; }});
+  // Scroll indicator — show after scrolling past hero
+  if (si) {
+    window.addEventListener('scroll', function(){
+      var heroEl = document.querySelector('.team-hero, .hero-label, .hero');
+      var heroGone = heroEl ? heroEl.getBoundingClientRect().bottom < 0 : window.scrollY > window.innerHeight;
+      var atBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
+      si.style.opacity = (heroGone && !atBottom) ? '0.6' : '0';
+    }, {passive:true});
+  }
+})();
+</script>
+<script>
+(function(){
+  // Stamp logo once
+  var stamped = false;
+  window.addEventListener('DOMContentLoaded', function(){
+    if (stamped) return; stamped = true;
+    var logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+    logo.classList.remove('do-stamp');
+    void logo.offsetWidth;
+    logo.classList.add('do-stamp');
+  });
+  // Nav scroll fade
+  var nav = document.querySelector('nav');
   window.addEventListener('scroll', function(){
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
+    // Logo fade near footer
     var footer = document.querySelector('footer');
-    var lastSection = document.querySelector('.cta, section:last-of-type, footer');
-    if (footer && lastSection) {
-      var top = lastSection.getBoundingClientRect().top;
-      document.body.classList.toggle('hide-logo', top < window.innerHeight * 0.6);
+    var logo = document.querySelector('.nav-logo');
+    if (footer && logo){
+      var ft = footer.getBoundingClientRect().top;
+      if (ft < window.innerHeight * 0.85){
+        logo.style.opacity = '0';
+        logo.style.pointerEvents = 'none';
+      } else {
+        logo.style.opacity = '';
+        logo.style.pointerEvents = '';
+      }
     }
   }, {passive:true});
-
+})();
+</script>
 </body>
 </html>
