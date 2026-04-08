@@ -273,91 +273,45 @@
       .form-row { grid-template-columns: 1fr; }
     }
   <style>
-/* ── SHARED NAV — matches index exactly ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 48px;
-  transition: opacity 0.4s ease;
-  overflow: visible;
-}
-nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
-  pointer-events: none;
-}
-nav.scrolled { opacity: 0.3; }
-nav.scrolled:hover { opacity: 1; }
-.nav-logo {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: center;
-  transform: skewX(-4deg);
-  transform-origin: left center;
-  line-height: 0.76;
-  transition: opacity 0.5s ease;
-  /* Fixed width prevents stamp from shifting links */
-  width: 140px;
-  overflow: visible;
-}
-@keyframes sharedLogoStamp {
-  0%   { transform: skewX(-4deg) scale(1.08); opacity: 0; }
-  60%  { transform: skewX(-4deg) scale(0.99); opacity: 1; }
-  100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
-}
-.nav-logo.do-stamp {
-  animation: sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.nav-links {
-  display: flex;
-  gap: 36px;
-  list-style: none;
-  position: relative;
-  z-index: 1;
-  align-items: center;
-  align-self: center;
-}
-.nav-links a {
-  font-family: 'DM Sans', sans-serif !important;
-  font-size: 0.72rem !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  font-weight: 300 !important;
-  color: rgba(244,241,236,0.5) !important;
-  opacity: 1 !important;
-  position: relative;
-  text-decoration: none;
-  transition: color 0.2s, text-shadow 0.3s !important;
-}
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left: 0;
-  width: 0; height: 1px;
-  background: #c8a96e;
-  transition: width 0.3s ease;
-}
-.nav-links a:hover::after { width: 100%; }
-.nav-links a:hover, .nav-links a.active {
-  color: #c8a96e !important;
-  text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
-}
-@media (max-width: 900px) {
-  nav { padding: 14px 24px; }
-  .nav-links { display: none; }
-  .nav-toggle { display: flex; }
-}
+  /* ── NAV V1.1 — matches index exactly ── */
+  .nav-links a {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    font-weight: 300 !important;
+    color: rgba(244,241,236,0.5) !important;
+    opacity: 1 !important;
+    position: relative;
+    transition: color 0.2s, text-shadow 0.3s !important;
+    text-decoration: none;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 0; height: 1px;
+    background: #c8a96e;
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover, .nav-links a.active {
+    color: #c8a96e !important;
+    text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
+    opacity: 1 !important;
+  }
+  /* ── LOGO FIXED WIDTH — prevents stamp from shifting links ── */
+  nav { display:flex; align-items:center; justify-content:space-between; padding:14px 48px; position:fixed; top:0; left:0; right:0; z-index:100; transition:opacity 0.4s ease; }
+  nav::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%); pointer-events:none; }
+  nav.scrolled { opacity: 0.3; }
+  nav.scrolled:hover { opacity: 1; }
+  .nav-logo { position:relative; z-index:1; flex-shrink:0; width:130px; transition:opacity 0.5s ease; transform:skewX(-4deg); transform-origin:left center; line-height:0.76; }
+  @keyframes sharedStamp {
+    0%   { transform: skewX(-4deg) scale(1.08); opacity:0; }
+    60%  { transform: skewX(-4deg) scale(0.99); opacity:1; }
+    100% { transform: skewX(-4deg) scale(1);    opacity:1; }
+  }
+  .nav-logo.stamping { animation: sharedStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
 </style>
 </style>
 </head>
@@ -371,22 +325,21 @@ nav.scrolled:hover { opacity: 1; }
   </div>
 
   <!-- NAV -->
-  <!-- NAV -->
   <nav>
-    <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;position:relative;z-index:1;">
-        <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
-        <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
-      </a>
-        <ul class="nav-links">
+    <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;">
+      <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
+      <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
+    </a>
+    <ul class="nav-links">
       <li><a href="index.html#how">How It Works</a></li>
       <li><a href="index.html#funds">Investors</a></li>
       <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
       <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
+      <li style="display:flex;gap:6px;align-items:center;">
+        <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;">中文</button>
+        <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;">EN</button>
+      </li>
     </ul>
-    <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;">
-      <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;">中文</button>
-      <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;">EN</button>
-    </div>
     <button class="nav-toggle" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -401,8 +354,9 @@ nav.scrolled:hover { opacity: 1; }
   <!-- MARQUEE -->
   <div class="marquee-wrap">
     <div class="marquee-track">
-    <span>Partner Brands</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Investors</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Factory Partners</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Operators</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Talent</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Partner Brands</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Investors</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Factory Partners</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Operators</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span><span>Talent</span><span class="mq-sep"><svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;opacity:0.6"><path d="M1 7 C4 2, 7 2, 9 5 S14 8, 17 3" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg></span>
-  </div>
+      <span>Partner Brands</span><span>·</span><span>Investors</span><span>·</span><span>Factory Partners</span><span>·</span><span>Operators</span><span>·</span><span>Talent</span><span>·</span>
+      <span>Partner Brands</span><span>·</span><span>Investors</span><span>·</span><span>Factory Partners</span><span>·</span><span>Operators</span><span>·</span><span>Talent</span><span>·</span>
+    </div>
   </div>
 
   <!-- CONTACT BODY -->
@@ -639,35 +593,29 @@ nav.scrolled:hover { opacity: 1; }
   }, { passive: true });
 })();
 </script>
-
-<!-- PERSISTENT UI -->
-<div id="pg-status" style="display:flex;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.55);">
-  <div style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:pgPulse 2s ease-in-out infinite;"></div>
+<!-- PERSISTENT UI — matches index -->
+<div id="pg-status" style="display:flex;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.55);">
+  <div style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:pgStatusPulse 2s ease-in-out infinite;"></div>
   <span>Open for 2026 partnerships</span>
 </div>
-<div id="pg-badge" style="position:fixed;bottom:56px;left:50%;z-index:599;pointer-events:none;width:78px;height:78px;">
-  <svg viewBox="0 0 78 78" width="78" height="78">
-    <defs><path id="pg-cp" d="M 39,39 m -27,0 a 27,27 0 1,1 54,0 a 27,27 0 1,1 -54,0"/></defs>
-    <text style="fill:rgba(200,169,110,0.6);font-size:7px;font-family:'DM Sans',sans-serif;letter-spacing:2.8px;">
-      <textPath href="#pg-cp" startOffset="0%">SILENT FOUNDRY VENTURES</textPath>
+<div id="pg-badge" style="display:block;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:80px;height:80px;animation:pgBadgeSpin 14s linear infinite;">
+  <svg viewBox="0 0 80 80" width="80" height="80">
+    <defs><path id="pg-circle" d="M 40,40 m -28,0 a 28,28 0 1,1 56,0 a 28,28 0 1,1 -56,0"/></defs>
+    <text style="fill:rgba(200,169,110,0.6);font-size:7.5px;font-family:'DM Sans',sans-serif;letter-spacing:3px;">
+      <textPath href="#pg-circle" startOffset="0%">SILENT FOUNDRY VENTURES +</textPath>
     </text>
   </svg>
 </div>
-<div id="pg-scroll-indicator" style="position:fixed;bottom:48px;right:48px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:50;opacity:0;transition:opacity 0.6s ease;pointer-events:none;">
-  <div style="width:1px;height:56px;background:linear-gradient(to bottom,#c8a96e,transparent);animation:pgPulse 2s infinite;"></div>
-  <span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;writing-mode:vertical-rl;color:#6b6560;animation:pgPulse 2s infinite;">Scroll</span>
-</div>
-<div id="pg-cursor" style="display:block;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s;"></div>
+<div id="pg-cursor" style="display:block;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s ease,height 0.3s ease;"></div>
 <div id="pg-cursor-dot" style="display:block;position:fixed;width:4px;height:4px;background:#c8a96e;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);"></div>
 <div id="pg-cursor-ring" style="display:block;position:fixed;width:38px;height:38px;border:1px solid rgba(200,169,110,0.25);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s ease,height 0.4s ease;"></div>
 <style>
   body { cursor: none !important; }
-  @keyframes pgPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
-  @keyframes pgSpin { from{transform:translateX(-50%) rotate(0deg)} to{transform:translateX(-50%) rotate(360deg)} }
-  @keyframes pgSpinMobile { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  #pg-badge { animation: pgSpin 14s linear infinite; }
-  @media(max-width:768px){
-    #pg-badge { left:auto !important; right:16px !important; bottom:72px !important; animation:pgSpinMobile 14s linear infinite !important; }
+  @keyframes pgStatusPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+  @keyframes pgBadgeSpin { from{transform:translateX(-50%) rotate(0deg)} to{transform:translateX(-50%) rotate(360deg)} }
+  @media(max-width:768px) {
+    #pg-badge { left:auto !important; right:16px !important; bottom:72px !important; transform:none !important; animation:pgBadgeSpinMobile 14s linear infinite !important; }
+    @keyframes pgBadgeSpinMobile { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
   }
 </style>
 <script>
@@ -675,56 +623,33 @@ nav.scrolled:hover { opacity: 1; }
   var cur = document.getElementById('pg-cursor');
   var dot = document.getElementById('pg-cursor-dot');
   var ring = document.getElementById('pg-cursor-ring');
-  var si = document.getElementById('pg-scroll-indicator');
-  var cx=window.innerWidth/2, cy=window.innerHeight/2;
-  var rx=cx, ry=cy;
+  var curX=window.innerWidth/2, curY=window.innerHeight/2;
+  var ringX=curX, ringY=curY;
   document.addEventListener('mousemove', function(e){
-    cx=e.clientX; cy=e.clientY;
-    cur.style.left=cx+'px'; cur.style.top=cy+'px';
-    dot.style.left=cx+'px'; dot.style.top=cy+'px';
+    curX=e.clientX; curY=e.clientY;
+    cur.style.left=curX+'px'; cur.style.top=curY+'px';
+    dot.style.left=curX+'px'; dot.style.top=curY+'px';
   });
-  (function animRing(){ rx+=(cx-rx)*0.12; ry+=(cy-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
-  document.addEventListener('mouseover', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='42px'; cur.style.height='42px'; }});
-  document.addEventListener('mouseout',  function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='20px'; cur.style.height='20px'; }});
-  // Scroll indicator — show after scrolling past hero
-  if (si) {
-    window.addEventListener('scroll', function(){
-      var heroEl = document.querySelector('.team-hero, .hero-label, .hero');
-      var heroGone = heroEl ? heroEl.getBoundingClientRect().bottom < 0 : window.scrollY > window.innerHeight;
-      var atBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
-      si.style.opacity = (heroGone && !atBottom) ? '0.6' : '0';
-    }, {passive:true});
-  }
-})();
-</script>
-<script>
-(function(){
-  // Stamp logo once
-  var stamped = false;
+  function animRing(){ ringX+=(curX-ringX)*0.12; ringY+=(curY-ringY)*0.12; ring.style.left=ringX+'px'; ring.style.top=ringY+'px'; requestAnimationFrame(animRing); }
+  animRing();
+  document.addEventListener('mouseover', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='42px'; cur.style.height='42px'; } });
+  document.addEventListener('mouseout', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='20px'; cur.style.height='20px'; } });
+  // Logo stamp
   window.addEventListener('DOMContentLoaded', function(){
-    if (stamped) return; stamped = true;
     var logo = document.querySelector('.nav-logo');
-    if (!logo) return;
-    logo.classList.remove('do-stamp');
-    void logo.offsetWidth;
-    logo.classList.add('do-stamp');
+    if(logo){ logo.classList.remove('stamping'); void logo.offsetWidth; logo.classList.add('stamping'); }
   });
-  // Nav scroll fade
+  // Logo fade near footer + nav scroll
   var nav = document.querySelector('nav');
   window.addEventListener('scroll', function(){
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
-    // Logo fade near footer
+    var scrolled = window.scrollY > 60;
+    if(nav) nav.classList.toggle('scrolled', scrolled);
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
-    if (footer && logo){
-      var ft = footer.getBoundingClientRect().top;
-      if (ft < window.innerHeight * 0.85){
-        logo.style.opacity = '0';
-        logo.style.pointerEvents = 'none';
-      } else {
-        logo.style.opacity = '';
-        logo.style.pointerEvents = '';
-      }
+    if(footer && logo){
+      var footerTop = footer.getBoundingClientRect().top;
+      if(footerTop < window.innerHeight * 0.85){ logo.style.opacity='0'; logo.style.pointerEvents='none'; }
+      else { logo.style.opacity=''; logo.style.pointerEvents=''; }
     }
   }, {passive:true});
 })();

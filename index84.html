@@ -1856,11 +1856,11 @@
     .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
     .fcar-slide.active { opacity:1; pointer-events:auto; }
     .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
-    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:transparent; border:none; color:rgba(244,241,236,0.45); width:44px; height:44px; cursor:pointer; font-size:1.4rem; display:flex; align-items:center; justify-content:center; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:rgba(10,10,10,0.25); border:0.5px solid rgba(244,241,236,0.2); color:rgba(244,241,236,0.5); width:36px; height:36px; cursor:pointer; font-size:0.9rem; display:flex; align-items:center; justify-content:center; transition:all 0.3s; backdrop-filter:blur(4px); }
     #c16s-wrap { position:relative; }
     #c16s-wrap .fcar-btn { opacity:0; transition:opacity 0.3s; }
     #c16s-wrap:hover .fcar-btn { opacity:1; }
-    .fcar-btn:hover { color:rgba(244,241,236,0.9); }
+    .fcar-btn:hover { background:rgba(200,169,110,0.1); border-color:rgba(200,169,110,0.4); color:rgba(200,169,110,0.8); }
     .fcar-prev { left:14px; } .fcar-next { right:14px; }
     .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
     .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
@@ -1958,7 +1958,7 @@
       .concept-carousel { position:relative; overflow:hidden; border-top:1px solid rgba(0,180,216,0.2); }
       .concept-track { display:flex; transition:transform 0.4s ease; }
       .cslide { flex:0 0 33.333%; min-width:0; }
-      .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:transparent; border:none; color:rgba(0,180,216,0.5); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+      .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:rgba(10,10,10,0.25); border:0.5px solid rgba(0,180,216,0.2); color:rgba(0,180,216,0.5); width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.9rem; transition:all 0.3s; backdrop-filter:blur(4px); }
       .concept-btn:hover { background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; }
       .concept-prev { left:14px; } .concept-next { right:14px; }
     </style>
@@ -2220,7 +2220,7 @@
   <svg viewBox="0 0 90 90" width="90" height="90">
     <defs><path id="v11-circle-path" d="M 45,45 m -32,0 a 32,32 0 1,1 64,0 a 32,32 0 1,1 -64,0"/></defs>
     <text style="fill:rgba(200,169,110,0.6);font-size:8.5px;font-family:'DM Sans',sans-serif;letter-spacing:3.2px;">
-      <textPath href="#v11-circle-path" startOffset="0%">SILENT FOUNDRY VENTURES</textPath>
+      <textPath href="#v11-circle-path" startOffset="0%">SILENT FOUNDRY VENTURES +</textPath>
     </text>
   </svg>
 </div>
@@ -2265,13 +2265,7 @@ body.v11-active .nav-logo.v11-stamp {
   transform-origin: left center;
 }
 body.v11-active nav { align-items: center !important; }
-body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 140px; overflow: visible; }
-/* Stamp uses transform only — no layout change */
-@keyframes v11LogoStamp {
-  0%   { transform: skewX(-4deg) scale(1.08); opacity: 0; }
-  60%  { transform: skewX(-4deg) scale(0.99); opacity: 1; }
-  100% { transform: skewX(-4deg) scale(1); opacity: 1; }
-}
+body.v11-active .nav-logo { position: relative; flex-shrink: 0; min-width: 120px; }
 
 /* ── 6. NAV HOVER — underline + glow ── */
 body.v11-active .nav-links a {
@@ -2387,23 +2381,23 @@ body.v11-active .accordion-body.open p {
 /* handled in JS */
 
 /* ── 21. CHINA ACCORDION ── */
-/* China grid — left image locked via absolute positioning */
+/* China grid locked columns */
 body.v11-active .china-grid {
-  position: relative !important;
+  grid-template-rows: 1fr !important;
+  align-items: stretch !important;
 }
 body.v11-active .china-grid > div:first-child {
-  position: relative !important;
+  position: sticky !important;
+  top: 0 !important;
+  align-self: stretch !important;
   min-height: 500px !important;
-  overflow: hidden !important;
 }
 body.v11-active .china-grid > div:first-child img {
+  position: absolute !important;
+  inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: center !important;
-}
-body.v11-active .china-grid > div:last-child {
-  overflow: hidden !important;
 }
 
 body.v11-active .ch-body.ch-open {
@@ -2514,7 +2508,7 @@ body.v11-active #v11-badge {
     left: auto !important;
     right: 16px !important;
     bottom: 72px !important;
-    transform: translateX(0) !important;
+    transform: none !important;
     animation: v11BadgeSpinMobile 14s linear infinite !important;
   }
 }
@@ -2882,7 +2876,7 @@ body.v11-active #v11-badge {
     var positions = new Float32Array(pointCount * 3);
     var geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    var lineMat = new THREE.LineBasicMaterial({ color: 0x00b4d8, transparent: true, opacity: 0.9, linewidth: 3 });
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x00b4d8, transparent: true, opacity: 0.85 });
     var waveLine = new THREE.Line(geo, lineMat);
     scene.add(waveLine);
 
