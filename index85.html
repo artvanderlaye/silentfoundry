@@ -2212,14 +2212,14 @@
 
 <!-- V1.1 DOM elements -->
 <div id="v11-status" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.55);">
-  <div id="v11-status-dot" style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:v11DotPulse 2s ease-in-out infinite;"></div>
+  <div id="v11-status-dot" style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;transition:background 0.6s ease;"></div>
   <span id="v11-status-text">Open for 2026 partnerships</span>
 </div>
 
-<div id="v11-badge" style="display:none;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:78px;height:78px;transition:filter 0.6s ease;">
-  <svg viewBox="0 0 78 78" width="78" height="78">
-    <defs><path id="v11-circle-path" d="M 39,39 m -27,0 a 27,27 0 1,1 54,0 a 27,27 0 1,1 -54,0"/></defs>
-    <text style="fill:rgba(200,169,110,0.6);font-size:7px;font-family:'DM Sans',sans-serif;letter-spacing:3.18px;">
+<div id="v11-badge" style="display:none;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:80px;height:80px;transition:filter 0.6s ease;">
+  <svg viewBox="0 0 90 90" width="90" height="90">
+    <defs><path id="v11-circle-path" d="M 45,45 m -32,0 a 32,32 0 1,1 64,0 a 32,32 0 1,1 -64,0"/></defs>
+    <text style="fill:rgba(200,169,110,0.6);font-size:8.5px;font-family:'DM Sans',sans-serif;letter-spacing:3.2px;">
       <textPath href="#v11-circle-path" startOffset="0%">SILENT FOUNDRY VENTURES</textPath>
     </text>
   </svg>
@@ -2387,28 +2387,23 @@ body.v11-active .accordion-body.open p {
 /* handled in JS */
 
 /* ── 21. CHINA ACCORDION ── */
-/* China grid — fixed height, image fully locked */
+/* China grid — left image locked via absolute positioning */
 body.v11-active .china-grid {
-  height: 600px !important;
-  min-height: unset !important;
-  align-items: stretch !important;
+  position: relative !important;
 }
 body.v11-active .china-grid > div:first-child {
-  height: 100% !important;
-  overflow: hidden !important;
   position: relative !important;
-  flex-shrink: 0 !important;
+  min-height: 500px !important;
+  overflow: hidden !important;
 }
 body.v11-active .china-grid > div:first-child img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   object-position: center !important;
-  display: block !important;
 }
 body.v11-active .china-grid > div:last-child {
-  height: 100% !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
 }
 
 body.v11-active .ch-body.ch-open {
@@ -2447,7 +2442,8 @@ body.v11-active.v11-switch-zone #v11-status-dot { background: #00b4d8 !important
 body.v11-active.v11-switch-zone #v11-badge svg text { fill: rgba(0,180,216,0.6) !important; }
 body.v11-active.v11-switch-zone .scroll-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .hero-scroll span { color: #00b4d8 !important; transition: none !important; }
-/* nav stays SF colours in switch zone */
+body.v11-active.v11-switch-zone .nav-logo span { -webkit-text-stroke-color: rgba(0,180,216,0.7) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .nav-links a { color: rgba(0,180,216,0.5) !important; transition: none !important; }
 body.v11-active.v11-switch-zone #v11-cursor { border-color: rgba(0,180,216,0.8) !important; transition: none !important; }
 body.v11-active.v11-switch-zone #v11-cursor-dot { background: #00b4d8 !important; transition: none !important; }
 body.v11-active.v11-switch-zone #v11-cursor-ring { border-color: rgba(0,180,216,0.25) !important; transition: none !important; }
@@ -2501,10 +2497,6 @@ body.v11-active.v11-cursor-hover #v11-cursor-ring {
   width: 58px; height: 58px;
 }
 
-@keyframes v11DotPulse {
-  0%,100% { opacity:0.6; transform:scale(1); }
-  50% { opacity:1; transform:scale(1.35); }
-}
 /* ── BADGE SPIN ── */
 @keyframes v11BadgeSpin {
   from { transform: translateX(-50%) rotate(0deg); }
@@ -2851,28 +2843,16 @@ body.v11-active #v11-badge {
   function initV11SwitchZone() {
     var featured = document.getElementById('featured');
     var logos = document.querySelector('.logos');
-    var funds = document.getElementById('funds');
     if (!featured) return;
-    var switchTargets = [featured, logos].filter(Boolean);
+    var targets = [featured, logos].filter(Boolean);
     function checkZone() {
       if (!v11Active) return;
-      if (funds) {
-        var fr = funds.getBoundingClientRect();
-        if (fr.top < window.innerHeight * 0.5) {
-          document.body.classList.remove('v11-switch-zone');
-          return;
-        }
-      }
-      var anyVisible = switchTargets.some(function(t) {
+      var anyVisible = targets.some(function(t) {
         var r = t.getBoundingClientRect();
-        return r.bottom > 0 && r.top < window.innerHeight;
+        return r.bottom > 50 && r.top < window.innerHeight - 50;
       });
-      if (anyVisible) {
-        document.body.classList.add('v11-switch-zone');
-        document.body.classList.remove('v11-cream-zone');
-      } else {
-        document.body.classList.remove('v11-switch-zone');
-      }
+      document.body.classList.toggle('v11-switch-zone', anyVisible);
+      if (anyVisible) document.body.classList.remove('v11-cream-zone');
     }
     window.addEventListener('scroll', checkZone, { passive: true });
     checkZone();
