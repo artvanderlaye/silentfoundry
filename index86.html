@@ -2292,42 +2292,24 @@ body.v11-active .nav-links a:hover {
   text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
 }
 
-/* ── 7. BRAND SOUL SWEEP — comet tail, feathered, continuous ── */
+/* ── 7. BRAND SOUL SWEEP ── */
 body.v11-active .hero-headline-bottom {
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 body.v11-active .hero-headline-bottom::after {
   content: '';
   position: absolute;
-  top: -30%; left: -80%;
-  width: 120%; height: 160%;
-  /* Comet tail: bright leading edge, dissolves behind, feathered top/bottom */
-  background:
-    linear-gradient(90deg,
-      transparent 0%,
-      rgba(244,241,236,0.01) 20%,
-      rgba(244,241,236,0.04) 55%,
-      rgba(244,241,236,0.10) 75%,
-      rgba(244,241,236,0.14) 88%,
-      rgba(244,241,236,0.18) 95%,
-      rgba(244,241,236,0.08) 100%
-    ),
-    linear-gradient(180deg,
-      transparent 0%,
-      rgba(255,255,255,0.3) 30%,
-      rgba(255,255,255,0.3) 70%,
-      transparent 100%
-    );
-  background-blend-mode: multiply;
-  animation: v11SoulSweep 7s linear infinite;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(244,241,236,0.07), transparent);
+  animation: v11LightSweep 6s ease-in-out infinite;
   pointer-events: none;
-  mask-image: linear-gradient(180deg, transparent 0%, white 25%, white 75%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, white 25%, white 75%, transparent 100%);
 }
-@keyframes v11SoulSweep {
-  0%   { left: -120%; }
-  100% { left: 120%; }
+@keyframes v11LightSweep {
+  0%   { left: -60%; }
+  50%  { left: 100%; }
+  100% { left: 100%; }
 }
 
 /* ── 9. SCROLL TEXT PULSE ── */
@@ -2456,19 +2438,9 @@ body.v11-active .fund-expand {
   transition: max-height 0.5s ease, opacity 0.4s ease !important;
 }
 
-/* ── PERSISTENT UI FADE NEAR FOOTER ── */
-body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition: opacity 0.5s ease !important; pointer-events: none !important; }
-body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
-body.v11-active.v11-footer-zone #v11-cursor { opacity: 0 !important; }
-body.v11-active.v11-footer-zone #v11-cursor-dot { opacity: 0 !important; }
-body.v11-active.v11-footer-zone #v11-cursor-ring { opacity: 0 !important; }
-
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
-/* Status dot always visible — slight opacity on cream */
-body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.55) !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.65) !important; transition: none !important; }
 body.v11-active.v11-cream-zone #v11-status-dot { background: #4caf50 !important; transition: none !important; }
-/* Always show status dot */
-body.v11-active #v11-status { display: flex !important; }
 
 /* ── 26. SWITCH SECTION CYAN — INSTANT SNAP ── */
 body.v11-active.v11-switch-zone #v11-status-dot { background: #00b4d8 !important; transition: none !important; }
@@ -2635,20 +2607,15 @@ body.v11-active #v11-badge {
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (footer && logo) {
-      // Fade logo when CTA section enters viewport
-      var cta = document.querySelector('.cta');
-      var fadeEl = cta || footer;
-      var fadeTop = fadeEl.getBoundingClientRect().top;
-      if (fadeTop < window.innerHeight * 0.7) {
+      var footerTop = footer.getBoundingClientRect().top;
+      var threshold = window.innerHeight * 0.85;
+      if (footerTop < threshold) {
         logo.style.opacity = '0';
         logo.style.pointerEvents = 'none';
       } else {
         logo.style.opacity = '';
         logo.style.pointerEvents = '';
       }
-      // Fade persistent UI near footer
-      var footerRect = footer.getBoundingClientRect();
-      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.8);
     }
   }, { passive: true });
 
@@ -2884,18 +2851,23 @@ body.v11-active #v11-badge {
   function initV11SwitchZone() {
     var featured = document.getElementById('featured');
     var logos = document.querySelector('.logos');
+    var funds = document.getElementById('funds');
     if (!featured) return;
+    var switchTargets = [featured, logos].filter(Boolean);
     function checkZone() {
       if (!v11Active) return;
-      // Pure position check — instant snap, no observer delay
-      var inZone = false;
-      var fr = featured.getBoundingClientRect();
-      if (fr.bottom > 0 && fr.top < window.innerHeight) inZone = true;
-      if (!inZone && logos) {
-        var lr = logos.getBoundingClientRect();
-        if (lr.bottom > 0 && lr.top < window.innerHeight) inZone = true;
+      if (funds) {
+        var fr = funds.getBoundingClientRect();
+        if (fr.top < window.innerHeight * 0.5) {
+          document.body.classList.remove('v11-switch-zone');
+          return;
+        }
       }
-      if (inZone) {
+      var anyVisible = switchTargets.some(function(t) {
+        var r = t.getBoundingClientRect();
+        return r.bottom > 0 && r.top < window.innerHeight;
+      });
+      if (anyVisible) {
         document.body.classList.add('v11-switch-zone');
         document.body.classList.remove('v11-cream-zone');
       } else {
