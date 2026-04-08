@@ -12,7 +12,7 @@
 <style>
 
   @keyframes fadein { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-  .team-hero { padding:180px 48px 100px; border-bottom:1px solid rgba(200,169,110,0.1); }
+  .team-hero { padding:140px 48px 100px; border-bottom:1px solid rgba(200,169,110,0.1); }
   .team-hero .label { font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;opacity:0;animation:fadein 1s 0.1s forwards; }
   .team-hero h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);margin-bottom:16px;opacity:0;animation:fadein 1s 0.3s forwards; }
   .team-hero p { font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:600px;opacity:0;animation:fadein 1s 0.5s forwards; }
@@ -26,7 +26,7 @@
   .member:hover .member-bio { max-height:200px;opacity:1;margin-bottom:12px; }
   .member-name { font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.04em;line-height:1;color:var(--white);margin-bottom:6px; }
   .member-role { font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent); }
-  .join-card { background:var(--accent);grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:40px;padding:80px 64px;position:relative;overflow:hidden; }
+  .join-card { background:var(--accent);grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:40px;padding:56px 48px;position:relative;overflow:hidden; }
   .join-card::before { content:'+';position:absolute;right:32px;bottom:-20px;font-family:'Bebas Neue',sans-serif;font-size:14rem;color:rgba(10,10,10,0.06);line-height:1;pointer-events:none; }
   .join-label { font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:10px; }
   .join-name { font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--black);line-height:1;margin-bottom:12px; }
@@ -38,7 +38,7 @@
   @media(max-width:900px) { .team-grid{grid-template-columns:repeat(2,1fr);} .team-hero{padding:120px 24px 80px;} .join-card{flex-direction:column;align-items:flex-start;padding:40px 24px;} }
   @media(max-width:540px) { .team-grid{grid-template-columns:1fr;} .member-bio{max-height:200px!important;opacity:1!important;margin-bottom:12px!important;} }
 <style>
-  /* ── NAV V1.1 — matches index exactly ── */
+  /* ── NAV LINKS V1.1 ── */
   .nav-links a {
     font-family: 'DM Sans', sans-serif !important;
     font-size: 0.72rem !important;
@@ -61,22 +61,28 @@
   }
   .nav-links a:hover::after { width: 100%; }
   .nav-links a:hover, .nav-links a.active {
-    color: #c8a96e !important;
+    color: var(--accent) !important;
     text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
     opacity: 1 !important;
   }
-  /* ── LOGO FIXED WIDTH — prevents stamp from shifting links ── */
-  nav { display:flex; align-items:center; justify-content:space-between; padding:14px 48px; position:fixed; top:0; left:0; right:0; z-index:100; transition:opacity 0.4s ease; }
-  nav::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%); pointer-events:none; }
-  nav.scrolled { opacity: 0.3; }
-  nav.scrolled:hover { opacity: 1; }
-  .nav-logo { position:relative; z-index:1; flex-shrink:0; width:130px; transition:opacity 0.5s ease; transform:skewX(-4deg); transform-origin:left center; line-height:0.76; }
-  @keyframes sharedStamp {
-    0%   { transform: skewX(-4deg) scale(1.08); opacity:0; }
-    60%  { transform: skewX(-4deg) scale(0.99); opacity:1; }
-    100% { transform: skewX(-4deg) scale(1);    opacity:1; }
+  /* ── LOGO STAMP ── */
+  @keyframes sharedLogoStamp {
+    0%   { transform: skewX(-4deg) scale(1.14); opacity: 0; }
+    60%  { transform: skewX(-4deg) scale(0.98); opacity: 1; }
+    80%  { transform: skewX(-4deg) scale(1.01); }
+    100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
   }
-  .nav-logo.stamping { animation: sharedStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+  .nav-logo.do-stamp {
+    animation: sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+    transform-origin: left center;
+  }
+  nav { align-items: center !important; }
+  .nav-logo { position: relative; flex-shrink: 0; min-width: 120px; transition: opacity 0.5s ease; }
+  /* ── LOGO FADE NEAR FOOTER ── */
+  body.logo-fading .nav-logo {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
 </style>
 </style>
 </head>
@@ -113,7 +119,8 @@
 
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <span>Industrial Design</span><span class="mq-sep">·</span><span>Engineering</span><span class="mq-sep">·</span><span>Brand Strategy</span><span class="mq-sep">·</span><span>Capital Markets</span><span class="mq-sep">·</span><span>China Partnerships</span><span class="mq-sep">·</span><span>AI Systems</span><span class="mq-sep">·</span><span>Industrial Design</span><span class="mq-sep">·</span><span>Engineering</span><span class="mq-sep">·</span><span>Brand Strategy</span><span class="mq-sep">·</span><span>Capital Markets</span><span class="mq-sep">·</span><span>China Partnerships</span><span class="mq-sep">·</span><span>AI Systems</span><span class="mq-sep">·</span>
+    <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
+    <span>Industrial Design</span><span>·</span><span>Engineering</span><span>·</span><span>Brand Strategy</span><span>·</span><span>Capital Markets</span><span>·</span><span>China Partnerships</span><span>·</span><span>AI Systems</span><span>·</span>
   </div>
 </div>
 
@@ -287,67 +294,6 @@
       logo.style.pointerEvents = '';
     }
   }, { passive: true });
-})();
-</script>
-<!-- PERSISTENT UI — matches index -->
-<div id="pg-status" style="display:flex;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.55);">
-  <div style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:pgStatusPulse 2s ease-in-out infinite;"></div>
-  <span>Open for 2026 partnerships</span>
-</div>
-<div id="pg-badge" style="display:block;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:80px;height:80px;animation:pgBadgeSpin 14s linear infinite;">
-  <svg viewBox="0 0 80 80" width="80" height="80">
-    <defs><path id="pg-circle" d="M 40,40 m -28,0 a 28,28 0 1,1 56,0 a 28,28 0 1,1 -56,0"/></defs>
-    <text style="fill:rgba(200,169,110,0.6);font-size:7.5px;font-family:'DM Sans',sans-serif;letter-spacing:3px;">
-      <textPath href="#pg-circle" startOffset="0%">SILENT FOUNDRY VENTURES +</textPath>
-    </text>
-  </svg>
-</div>
-<div id="pg-cursor" style="display:block;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s ease,height 0.3s ease;"></div>
-<div id="pg-cursor-dot" style="display:block;position:fixed;width:4px;height:4px;background:#c8a96e;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);"></div>
-<div id="pg-cursor-ring" style="display:block;position:fixed;width:38px;height:38px;border:1px solid rgba(200,169,110,0.25);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s ease,height 0.4s ease;"></div>
-<style>
-  body { cursor: none !important; }
-  @keyframes pgStatusPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
-  @keyframes pgBadgeSpin { from{transform:translateX(-50%) rotate(0deg)} to{transform:translateX(-50%) rotate(360deg)} }
-  @media(max-width:768px) {
-    #pg-badge { left:auto !important; right:16px !important; bottom:72px !important; transform:none !important; animation:pgBadgeSpinMobile 14s linear infinite !important; }
-    @keyframes pgBadgeSpinMobile { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  }
-</style>
-<script>
-(function(){
-  var cur = document.getElementById('pg-cursor');
-  var dot = document.getElementById('pg-cursor-dot');
-  var ring = document.getElementById('pg-cursor-ring');
-  var curX=window.innerWidth/2, curY=window.innerHeight/2;
-  var ringX=curX, ringY=curY;
-  document.addEventListener('mousemove', function(e){
-    curX=e.clientX; curY=e.clientY;
-    cur.style.left=curX+'px'; cur.style.top=curY+'px';
-    dot.style.left=curX+'px'; dot.style.top=curY+'px';
-  });
-  function animRing(){ ringX+=(curX-ringX)*0.12; ringY+=(curY-ringY)*0.12; ring.style.left=ringX+'px'; ring.style.top=ringY+'px'; requestAnimationFrame(animRing); }
-  animRing();
-  document.addEventListener('mouseover', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='42px'; cur.style.height='42px'; } });
-  document.addEventListener('mouseout', function(e){ if(e.target.matches('a,button,[onclick]')){ cur.style.width='20px'; cur.style.height='20px'; } });
-  // Logo stamp
-  window.addEventListener('DOMContentLoaded', function(){
-    var logo = document.querySelector('.nav-logo');
-    if(logo){ logo.classList.remove('stamping'); void logo.offsetWidth; logo.classList.add('stamping'); }
-  });
-  // Logo fade near footer + nav scroll
-  var nav = document.querySelector('nav');
-  window.addEventListener('scroll', function(){
-    var scrolled = window.scrollY > 60;
-    if(nav) nav.classList.toggle('scrolled', scrolled);
-    var footer = document.querySelector('footer');
-    var logo = document.querySelector('.nav-logo');
-    if(footer && logo){
-      var footerTop = footer.getBoundingClientRect().top;
-      if(footerTop < window.innerHeight * 0.85){ logo.style.opacity='0'; logo.style.pointerEvents='none'; }
-      else { logo.style.opacity=''; logo.style.pointerEvents=''; }
-    }
-  }, {passive:true});
 })();
 </script>
 </body>
