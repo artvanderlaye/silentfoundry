@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Silent Foundry</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23c9a84c"/><text x="50" y="67" font-family="Arial,sans-serif" font-weight="bold" font-size="44" text-anchor="middle" fill="%230a0a0a">SF</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1185,7 +1185,6 @@
       animation: pulse-line 2s infinite;
     }
     @media(max-width:768px){
-      .china-section-wrap, .china-grid { overflow:hidden !important; }
       .china-grid { grid-template-columns:1fr !important; min-height:auto !important; height:auto !important; }
       .china-grid > div:first-child { min-height:55vw !important; position:relative !important; overflow:hidden !important; }
       .china-grid > div:first-child img { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; object-fit:cover !important; }
@@ -2114,7 +2113,7 @@
     </div>
   </footer>
   <div class="footer-bottom">
-    <span>© 2026 Silent Foundry Group. All rights reserved.</span>
+    <span>© 2026 SilentFoundry Group. All rights reserved.</span>
 
   </div>
 
@@ -2142,20 +2141,13 @@
   </script>
   <script src="sf-scripts.js"></script>
 <script>
-// Smooth anchor scroll — wait for full init
 window.addEventListener('load', function() {
-  var hash = window.location.hash || sessionStorage.getItem('sf_scroll_target');
-  sessionStorage.removeItem('sf_scroll_target');
-  if (hash) {
-    var target = document.querySelector(hash);
+  if (window.location.hash) {
+    var target = document.querySelector(window.location.hash);
     if (target) {
-      requestAnimationFrame(function(){
-        requestAnimationFrame(function(){
-          setTimeout(function(){
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 600);
-        });
-      });
+      setTimeout(function() {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 400);
     }
   }
 });
@@ -2265,7 +2257,7 @@ body.v11-active #v11-badge { display: block !important; }
 
 /* ── LOGO HIDE ON CTA ── */
 body.v11-active .nav-logo {
-  transition: opacity 1.5s ease;
+  transition: opacity 0.9s ease;
 }
 body.v11-active.v11-hide-logo .nav-logo {
   opacity: 0 !important;
@@ -2349,7 +2341,26 @@ body.v11-active .hero-headline-bottom::after {
   pointer-events: none;
   border-radius: 50%;
 }
-/* INDUSTRIALISING pulse injected via JS to avoid scaleX conflict */
+body.v11-active .hero-headline-top::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 110%; height: 220%;
+  background: radial-gradient(ellipse at center, rgba(244,241,236,0.04) 0%, rgba(244,241,236,0.02) 40%, transparent 70%);
+  animation: v11IndustrialPulse 5.5s ease-in-out 1.2s infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+body.v11-active .hero-headline-top::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 150%; height: 280%;
+  background: radial-gradient(ellipse at center, rgba(244,241,236,0.025) 0%, rgba(244,241,236,0.01) 35%, transparent 65%);
+  animation: v11IndustrialPulse 5.5s ease-in-out 2.8s infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
 @keyframes v11SoulPulse {
   0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0; }
   12%  { transform: translate(-50%,-50%) scale(0.88); opacity: 1; }
@@ -2382,7 +2393,7 @@ body.v11-active .wwd-cards > div {
 
 /* ── MARSHALL HERO ZOOM ── */
 body.v11-active .mc-hero { overflow: hidden; }
-body.v11-active .mc-hero:hover img { transform: scale(1.015); }
+body.v11-active .mc-hero:hover img { transform: scale(1.03); }
 
 /* ── 12. CASE STUDY IMAGE ZOOM ── */
 body.v11-active .case-img img {
@@ -2440,33 +2451,27 @@ body.v11-active .accordion-body.open p {
 
 /* ── 21. CHINA ACCORDION ── */
 /* China grid — fixed height, image fully locked */
-/* China section overflow containment */
-body.v11-active .china-grid ~ * { position: relative; }
-
-/* China grid — left image in own layer, immune to accordion reflow */
 body.v11-active .china-grid {
-  position: relative !important;
-  min-height: 600px !important;
+  height: 600px !important;
+  min-height: unset !important;
   align-items: stretch !important;
 }
 body.v11-active .china-grid > div:first-child {
-  position: sticky !important;
-  top: 0 !important;
+  height: 100% !important;
   overflow: hidden !important;
-  align-self: flex-start !important;
-  min-height: 600px !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
 }
 body.v11-active .china-grid > div:first-child img {
   width: 100% !important;
   height: 100% !important;
-  min-height: 600px !important;
   object-fit: cover !important;
   object-position: center !important;
   display: block !important;
 }
 body.v11-active .china-grid > div:last-child {
+  height: 100% !important;
   overflow: visible !important;
-  min-height: 600px !important;
 }
 
 body.v11-active .ch-body.ch-open {
@@ -2591,12 +2596,6 @@ body.v11-active #v11-badge {
   #v11-cursor, #v11-cursor-dot, #v11-cursor-ring {
     display: none !important;
   }
-  nav > div[style*="gap:8px"] {
-    position: absolute !important;
-    right: 58px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-  }
 }
 @media (hover: none), (pointer: coarse) {
   body { cursor: auto !important; }
@@ -2607,13 +2606,12 @@ body.v11-active #v11-badge {
     left: auto !important;
     right: 16px !important;
     animation: v11BadgeSpinMobile 14s linear infinite !important;
-    bottom: 60px !important;
+    bottom: 82px !important;
   }
   #v11-status {
-    bottom: 8px !important;
-    font-size: 0.50rem !important;
-    color: rgba(244,241,236,0.88) !important;
-    gap: 5px !important;
+    bottom: 14px !important;
+    font-size: 0.54rem !important;
+    color: rgba(244,241,236,0.85) !important;
   }
 }
 </style>
@@ -2721,24 +2719,6 @@ body.v11-active #v11-badge {
   }
 
   // ── BLUEPRINT GRID (V8) ──
-  // Inject INDUSTRIALISING pulse div (avoids scaleX conflict)
-  function initV11IndustrialPulse() {
-    var existing = document.getElementById('v11-industrial-pulse');
-    if (existing) existing.remove();
-    var top = document.querySelector('.hero-headline-top');
-    if (!top) return;
-    var pulseDiv = document.createElement('div');
-    pulseDiv.id = 'v11-industrial-pulse';
-    pulseDiv.style.cssText = 'position:absolute;top:50%;left:50%;width:110%;height:280%;transform:translate(-50%,-50%) scale(0.75);border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(ellipse at center,rgba(244,241,236,0.04) 0%,rgba(244,241,236,0.018) 40%,transparent 70%);animation:v11IndustrialPulse 5.5s ease-in-out 1.2s infinite;';
-    top.style.position = 'relative';
-    top.style.overflow = 'visible';
-    top.appendChild(pulseDiv);
-    var pulseDiv2 = document.createElement('div');
-    pulseDiv2.id = 'v11-industrial-pulse2';
-    pulseDiv2.style.cssText = 'position:absolute;top:50%;left:50%;width:160%;height:380%;transform:translate(-50%,-50%) scale(0.5);border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(ellipse at center,rgba(244,241,236,0.022) 0%,rgba(244,241,236,0.009) 35%,transparent 65%);animation:v11IndustrialPulse 5.5s ease-in-out 2.8s infinite;';
-    top.appendChild(pulseDiv2);
-  }
-
   function initV11Blueprint() {
     var hero = document.querySelector('.hero');
     if (!hero || !window.THREE) return;
@@ -2801,7 +2781,7 @@ body.v11-active #v11-badge {
     if (existing) existing.remove();
     var canvas = document.createElement('canvas');
     canvas.id = 'v11-eq-canvas';
-    canvas.style.cssText = 'position:absolute;bottom:12px;right:12px;width:140px;height:72px;pointer-events:none;z-index:5;display:none;opacity:0.9;';
+    canvas.style.cssText = 'position:absolute;bottom:4px;left:0;right:0;width:100%;height:72px;pointer-events:none;z-index:5;display:none;opacity:0.85;';
     container.style.position = 'relative';
     container.appendChild(canvas);
 
@@ -2828,7 +2808,7 @@ body.v11-active #v11-badge {
       requestAnimationFrame(animateEq);
       var t = Date.now()*0.002;
       bars.forEach(function(bar, i) {
-        var h = 0.04 + Math.abs(Math.sin(t * 1.5 + i*0.28))*1.8 + Math.abs(Math.sin(t*2.3 + i*0.18))*0.8 + Math.abs(Math.sin(t*0.9 + i*0.45))*0.5;
+        var h = 0.05 + Math.abs(Math.sin(t * 1.3 + i*0.28))*1.1 + Math.abs(Math.sin(t*2.1 + i*0.18))*0.5 + Math.abs(Math.sin(t*0.7 + i*0.45))*0.3;
         var pos = bar.geometry.attributes.position;
         pos.array[4] = h; pos.needsUpdate = true;
       });
@@ -2983,8 +2963,8 @@ body.v11-active #v11-badge {
       }
     }
     window.addEventListener('scroll', checkZone, { passive: true });
-    window.addEventListener('touchstart', checkZone, { passive: true });
-    checkZone();
+    // Also run on RAF for precision
+    (function rafCheck(){ checkZone(); requestAnimationFrame(rafCheck); })();
   }
 
   // ── SWITCH SINE WAVE ──
@@ -3144,7 +3124,6 @@ body.v11-active #v11-badge {
     v11Active = true;
     document.body.classList.add('v11-active');
     stampLogo();
-    initV11IndustrialPulse();
     initV11Blueprint();
     initV11Equaliser();
     initV11AccordionReveal();
