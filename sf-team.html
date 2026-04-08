@@ -11,10 +11,10 @@
 <style>
 
   @keyframes fadein { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-  .team-hero { padding:160px 48px 160px; border-bottom:1px solid rgba(200,169,110,0.1); }
+  .team-hero { padding:160px 48px 80px; border-bottom:1px solid rgba(200,169,110,0.1); }
   .team-hero .label { font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;opacity:0;animation:fadein 1s 0.1s forwards; }
   .team-hero h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);margin-bottom:16px;opacity:0;animation:fadein 1s 0.3s forwards; }
-  .team-hero p { font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:600px;opacity:0;animation:fadein 1s 0.5s forwards; }
+  .team-hero p { font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:600px;opacity:0;animation:fadein 1s 0.5s forwards;margin-bottom:0; }
   .team-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:2px; }
   .member { position:relative;overflow:hidden;background:#111;cursor:default; }
   .member-img-wrap { position:relative;overflow:hidden;aspect-ratio:3/4; }
@@ -147,12 +147,7 @@ body.hide-logo .nav-logo {
         <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
         <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
       </a>
-        <ul class="nav-links">
-      <li><a href="index.html#how" onclick="sessionStorage.setItem('sf_scroll_target','#how')">How It Works</a></li>
-      <li><a href="index.html#funds" onclick="sessionStorage.setItem('sf_scroll_target','#funds')">Investors</a></li>
-      <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
-      <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
-    </ul>
+    
     <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;">
       <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;">中文</button>
       <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;">EN</button>
@@ -336,7 +331,8 @@ body.hide-logo .nav-logo {
     if (!footer || !logo) return;
     var ftop = footer.getBoundingClientRect().top;
     logo.style.transition = 'opacity 1.5s ease';
-    if (ftop < window.innerHeight) {
+    var nearBottom = (window.scrollY + window.innerHeight) >= (document.body.scrollHeight - 300);
+    if (nearBottom) {
       logo.style.opacity = '0';
       logo.style.pointerEvents = 'none';
     } else {

@@ -90,16 +90,11 @@ footer { background:#060606; padding:56px 64px 32px; border-top:1px solid rgba(2
 </div>
 
 <nav id="legal-nav">
-  <a href="index.html" class="nav-logo" id="legal-logo">
+  <a href="index.html" class="nav-logo" id="legal-logo" style="text-decoration:none;">
     <span>Silent</span>
     <span>Foundry</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="index.html#how" onclick="sessionStorage.setItem('sf_scroll_target','#how')">How It Works</a></li>
-    <li><a href="index.html#funds" onclick="sessionStorage.setItem('sf_scroll_target','#funds')">Investors</a></li>
-    <li><a href="sf-team.html" target="_blank">Team</a></li>
-    <li><a href="sf-contact.html" target="_blank">Contact</a></li>
-  </ul>
+
   <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;margin-left:6px;">
     <button style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;">中文</button>
     <button style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;">EN</button>
@@ -209,10 +204,7 @@ footer { background:#060606; padding:56px 64px 32px; border-top:1px solid rgba(2
 <footer>
   <div class="footer-grid" style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;">
     <div>
-      <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:12px;">
-        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
-      </a>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.1em;color:rgba(244,241,236,0.7);margin-bottom:8px;">Silent Foundry</div>
       <p style="font-size:0.78rem;line-height:1.65;color:rgba(244,241,236,0.3);font-weight:300;max-width:280px;">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
     <div>
@@ -258,7 +250,8 @@ footer { background:#060606; padding:56px 64px 32px; border-top:1px solid rgba(2
     if (footer && logo) {
       var ft = footer.getBoundingClientRect().top;
       logo.style.transition = 'opacity 1.5s ease';
-      if (ft < window.innerHeight) {
+      var nearBottom = (window.scrollY + window.innerHeight) >= (document.body.scrollHeight - 300);
+      if (nearBottom) {
         logo.style.opacity = '0';
         logo.style.pointerEvents = 'none';
       } else {
