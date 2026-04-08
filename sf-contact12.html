@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact — SilentFoundry®</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23c9a84c"/><text x="50" y="67" font-family="Arial,sans-serif" font-weight="bold" font-size="44" text-anchor="middle" fill="%230a0a0a">SF</text></svg>">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -527,7 +527,7 @@ body.hide-logo .nav-logo {
     </div>
 
     <!-- FORM -->
-    <div class="form-wrap reveal">
+    <div class="form-wrap reveal-right">
       <h2>Send a message</h2>
       <p>Fill in the form and we'll get back to you within 48 hours.</p>
 
@@ -600,6 +600,7 @@ body.hide-logo .nav-logo {
   </footer>
   <div class="footer-bottom">
     <span>© 2026 SilentFoundry Group. All rights reserved.</span>
+    <span>sfg.</span>
   </div>
 
   <script src="sf-scripts.js"></script>
@@ -620,34 +621,34 @@ body.hide-logo .nav-logo {
     }
   </script>
 <script>
-(function(){
-  var nav = document.querySelector('nav');
-  window.addEventListener('scroll', function(){
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, {passive:true});
+(function() {
   var stamped = false;
-  window.addEventListener('DOMContentLoaded', function(){
-    if (stamped) return; stamped = true;
+  window.addEventListener('DOMContentLoaded', function() {
+    if (stamped) return;
+    stamped = true;
     var logo = document.querySelector('.nav-logo');
     if (!logo) return;
     logo.classList.remove('do-stamp');
     void logo.offsetWidth;
     logo.classList.add('do-stamp');
   });
-  window.addEventListener('scroll', function(){
+  window.addEventListener('scroll', function() {
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (!footer || !logo) return;
-    var ftop = footer.getBoundingClientRect().top;
-    if (ftop < window.innerHeight * 0.65) {
-      logo.style.opacity = '0';
-      logo.style.pointerEvents = 'none';
-      logo.style.transition = 'opacity 0.9s ease';
-    } else {
-      logo.style.opacity = '';
-      logo.style.pointerEvents = '';
-    }
-  }, {passive:true});
+    );
 })();
 </script>
+
+  // Hide logo when approaching footer
+  window.addEventListener('scroll', function(){
+    var footer = document.querySelector('footer');
+    var lastSection = document.querySelector('.cta, section:last-of-type, footer');
+    if (footer && lastSection) {
+      var top = lastSection.getBoundingClientRect().top;
+      document.body.classList.toggle('hide-logo', top < window.innerHeight * 0.6);
+    }
+  }, {passive:true});
+
 </body>
+</html>

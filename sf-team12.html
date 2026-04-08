@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team — Silent Foundry</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23c9a84c"/><text x="50" y="67" font-family="Arial,sans-serif" font-weight="bold" font-size="44" text-anchor="middle" fill="%230a0a0a">SF</text></svg>">
+<title>Team — SilentFoundry®</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css" />
 <style>
 
   @keyframes fadein { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-  .team-hero { padding:240px 48px 160px; border-bottom:1px solid rgba(200,169,110,0.1); }
+  .team-hero { padding:200px 48px 120px; border-bottom:1px solid rgba(200,169,110,0.1); }
   .team-hero .label { font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:24px;opacity:0;animation:fadein 1s 0.1s forwards; }
   .team-hero h1 { font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.82);margin-bottom:16px;opacity:0;animation:fadein 1s 0.3s forwards; }
   .team-hero p { font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(244,241,236,0.45);font-weight:300;max-width:600px;opacity:0;animation:fadein 1s 0.5s forwards; }
@@ -312,39 +313,41 @@ body.hide-logo .nav-logo {
 </footer>
 <div class="footer-bottom">
   <span>© 2026 SilentFoundry Group. All rights reserved.</span>
+  <span>sfg.</span>
 </div>
 
 <script src="sf-scripts.js"></script>
 <script>
-(function(){
-  var nav = document.querySelector('nav');
-  window.addEventListener('scroll', function(){
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, {passive:true});
+(function() {
+  // Logo stamp once
   var stamped = false;
-  window.addEventListener('DOMContentLoaded', function(){
-    if (stamped) return; stamped = true;
+  window.addEventListener('DOMContentLoaded', function() {
+    if (stamped) return;
+    stamped = true;
     var logo = document.querySelector('.nav-logo');
     if (!logo) return;
     logo.classList.remove('do-stamp');
     void logo.offsetWidth;
     logo.classList.add('do-stamp');
   });
-  window.addEventListener('scroll', function(){
+  // Logo fade near footer
+  window.addEventListener('scroll', function() {
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (!footer || !logo) return;
-    var ftop = footer.getBoundingClientRect().top;
-    if (ftop < window.innerHeight * 0.65) {
-      logo.style.opacity = '0';
-      logo.style.pointerEvents = 'none';
-      logo.style.transition = 'opacity 0.9s ease';
-    } else {
-      logo.style.opacity = '';
-      logo.style.pointerEvents = '';
-    }
-  }, {passive:true});
+    );
 })();
 </script>
+
+  // Hide logo when approaching footer
+  window.addEventListener('scroll', function(){
+    var footer = document.querySelector('footer');
+    var lastSection = document.querySelector('.cta, section:last-of-type, footer');
+    if (footer && lastSection) {
+      var top = lastSection.getBoundingClientRect().top;
+      document.body.classList.toggle('hide-logo', top < window.innerHeight * 0.6);
+    }
+  }, {passive:true});
+
 </body>
 </html>

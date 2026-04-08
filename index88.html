@@ -1172,7 +1172,7 @@
       opacity: 0;
       transition: opacity 0.6s ease;
     }
-    .scroll-indicator.visible { opacity: 0.6; }
+    .scroll-indicator.visible { opacity: 0.6; transition: opacity 0.6s ease; }
     .scroll-indicator-line {
       width: 1px;
       height: 56px;
@@ -1188,8 +1188,11 @@
       animation: pulse-line 2s infinite;
     }
     @media(max-width:768px){
-      .china-grid { grid-template-columns:1fr !important; min-height:auto !important; }
-      .china-grid > div:first-child { min-height:280px; }
+      .china-grid { grid-template-columns:1fr !important; min-height:auto !important; height:auto !important; }
+      .china-grid > div:first-child { min-height:55vw !important; position:relative !important; overflow:hidden !important; }
+      .china-grid > div:first-child img { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; object-fit:cover !important; }
+      .china-grid > div:last-child { height:auto !important; overflow:visible !important; padding:40px 24px !important; }
+      .china-accordion { margin-top:24px !important; }
       .china-grid > div:last-child { padding:40px 24px !important; } .scroll-indicator { display:none; } }
   </style>
 
@@ -1360,14 +1363,16 @@
       .section-title { font-size:clamp(2.5rem,9vw,4rem) !important; }
 
       /* ── SWITCH HERO MOBILE ── */
-      #c16s-wrap { min-height:70vw !important; width:100% !important; }
+      #c16s-wrap { min-height:90vw !important; width:100% !important; }
+      .cslide { flex:0 0 85% !important; }
+      .concept-carousel { overflow:hidden; }
       .fp-opt section { width:100% !important; overflow:hidden !important; }
       [style*="padding:0 48px;z-index:2"] { padding:24px !important; justify-content:flex-start !important; padding-top:40px !important; }
       #c16s-wrap .fcar-slides { position:absolute !important; inset:0 !important; height:100% !important; }
       #c16s-wrap .fcar-btn { opacity:1 !important; }
 
       /* ── SWITCH SPECS MOBILE ── */
-      [style*="font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8"] { font-size:1rem !important; }
+      [style*="font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8"] { font-size:1rem !important; }
       [style*="bottom:24px;right:24px;display:flex;gap:28px"] { bottom:12px !important; right:12px !important; gap:12px !important; }
 
       /* ── ENGINEERING MOBILE GAP ── */
@@ -1394,117 +1399,23 @@
   </style>
 </head>
 <body>
+
+
 <!-- MOBILE MENU -->
   <div class="mobile-menu">
     <a href="index.html">Home</a>
     <a href="index.html#how">How It Works</a>
-    <a href="index.html#funds">Funds</a>
     <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
     <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
   </div>
 
   <!-- NAV -->
   <nav>
-    <div style="position:relative;z-index:1;">
-      <style>
-        .logo-opt { display:none; }
-        .logo-opt.active { display:flex; flex-direction:column; justify-content:center; line-height:0.84; text-decoration:none; }
-        #logo-sw-bar {
-          position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:200;
-          display:flex; gap:4px; flex-wrap:wrap; justify-content:center;
-          background:rgba(10,10,10,0.98); padding:10px 16px;
-          border:1px solid rgba(200,169,110,0.2);
-          opacity:1; pointer-events:auto; max-width:90vw;
-        }
-        .lgb { font-family:'Bebas Neue',sans-serif; font-size:0.72rem; letter-spacing:0.1em; padding:3px 10px; border:1px solid rgba(200,169,110,0.2); background:transparent; color:rgba(244,241,236,0.35); cursor:pointer; transition:all 0.2s; }
-        .lgb:hover { color:#c8a96e; border-color:rgba(200,169,110,0.5); }
-        .lgb.active { background:rgba(200,169,110,0.1); color:#c8a96e; border-color:#c8a96e; }
-      </style>
-      <script>
-        function logoSwitch(i){
-          document.querySelectorAll('.logo-opt').forEach(function(el,idx){el.classList.toggle('active',idx===i);});
-          document.querySelectorAll('.lgb').forEach(function(btn,idx){btn.classList.toggle('active',idx===i);});
-        }
-      </script>
-
-      <!-- Logo options -->
-
-      <!-- 2: Skew -4deg — base skew -->
-      <a href="index.html" class="logo-opt active" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
+    <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;position:relative;z-index:1;">
+        <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
+        <span style="font-size:63px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
       </a>
-
-      <!-- 3: Skew -6deg — stronger -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-6deg);transform-origin:left center;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 5: Skew -4deg, tight tracking -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;">
-        <span style="font-size:42px;letter-spacing:0.01em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.01em;">Foundry</span>
-      </a>
-
-      <!-- 8: Skew -4deg, larger 52px -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;">
-        <span style="font-size:52px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:52px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 12: Skew -5deg aggressive -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-5deg);transform-origin:left center;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 13: Skew -4deg, line-height 0.78 -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.78 !important;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 16: Skew -4deg, zero letter-spacing -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;">
-        <span style="font-size:42px;letter-spacing:0em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0em;">Foundry</span>
-      </a>
-
-      <!-- 20: Skew -4deg, condensed line-height 0.76 -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76 !important;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 22: Skew -6deg, condensed line-height 0.76 -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-6deg);transform-origin:left center;line-height:0.76 !important;">
-        <span style="font-size:42px;letter-spacing:0.06em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;">Foundry</span>
-      </a>
-
-      <!-- 25: Skew -5deg, condensed line-height 0.72, tight tracking -->
-      <a href="index.html" class="logo-opt" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-5deg);transform-origin:left center;line-height:0.72 !important;">
-        <span style="font-size:42px;letter-spacing:0.04em;">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.04em;">Foundry</span>
-      </a>
-
-      <!-- Switcher bar (appears on hover over logo area) -->
-      <div id="logo-sw-bar">
-        <button class="lgb active" onclick="logoSwitch(0)">2</button>
-        <button class="lgb" onclick="logoSwitch(1)">3</button>
-        <button class="lgb" onclick="logoSwitch(2)">5</button>
-        <button class="lgb" onclick="logoSwitch(3)">8</button>
-        <button class="lgb" onclick="logoSwitch(4)">12</button>
-        <button class="lgb" onclick="logoSwitch(5)">13</button>
-        <button class="lgb" onclick="logoSwitch(6)">16</button>
-        <button class="lgb" onclick="logoSwitch(7)">20</button>
-        <button class="lgb" onclick="logoSwitch(8)">22</button>
-        <button class="lgb" onclick="logoSwitch(9)">25</button>
-      </div>
-    </div>
-    </div>
-    <ul class="nav-links">
+        <ul class="nav-links">
       <li><a href="#how">How It Works</a></li>
       <li><a href="#funds">Investors</a></li>
       <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
@@ -1580,7 +1491,7 @@
 <!-- CASE STUDY — Marshall -->
   <style>
     .mc-hero{position:relative;overflow:hidden;}
-    .mc-hero img{width:100%;aspect-ratio:16/6;object-fit:cover;object-position:center 35%;filter:brightness(0.38);display:block;}
+    .mc-hero img{width:100%;aspect-ratio:16/6;object-fit:cover;object-position:center 35%;filter:brightness(0.38);display:block;transition:transform 0.8s ease;}
     .mc-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,0.88) 0%,rgba(10,10,10,0.72) 45%,rgba(10,10,10,0.1) 70%,transparent 85%);pointer-events:none;}
     .mc-hero-content{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr 1px 0.9fr;align-items:center;padding:0 72px;z-index:1;gap:0;}
     .mc-hero-left{padding-right:72px;}
@@ -1828,32 +1739,52 @@
   
     <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;position:relative;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;position:relative;z-index:1;" class="china-grid">
-      <div style="position:relative;overflow:hidden;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;position:relative;z-index:1;align-items:stretch;" class="china-grid">
+      <div style="position:relative;overflow:hidden;min-height:500px;">
         <img src="china_concept.jpg" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.85);display:block;" />
       </div>
-      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;background:#ede8e0;">
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;background:#ede8e0;overflow:hidden;">
         <div>
           <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity into China-fit product and business concepts designed to work with local operators.</p>
         </div>
-        <div style="display:flex;flex-direction:column;gap:0;margin-top:48px;">
-          <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(10,10,10,0.08);">
-            <span style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Concept Development</span>
-            <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);">Brand-right for China</span>
+        <div class="china-accordion" style="margin-top:48px;display:flex;flex-direction:column;gap:0;">
+          <div class="ch-item" style="border-bottom:1px solid rgba(10,10,10,0.08);">
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
+            </div>
+            <div class="ch-body" style="max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;padding-left:0;">
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China</p>
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(10,10,10,0.08);">
-            <span style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.35);">System Design</span>
-            <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);">Product + service logic</span>
+          <div class="ch-item" style="border-bottom:1px solid rgba(10,10,10,0.08);">
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
+            </div>
+            <div class="ch-body" style="max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;padding-left:0;">
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic</p>
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(10,10,10,0.08);">
-            <span style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Commercial Model</span>
-            <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);">Hero + recurring layer</span>
+          <div class="ch-item" style="border-bottom:1px solid rgba(10,10,10,0.08);">
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
+            </div>
+            <div class="ch-body" style="max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;padding-left:0;">
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer</p>
+            </div>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:16px 0;">
-            <span style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Market Pathway</span>
-            <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);">Built with local operators</span>
+          <div class="ch-item">
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
+            </div>
+            <div class="ch-body" style="max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;padding-left:0;">
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1929,15 +1860,17 @@
     .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
     .fcar-slide.active { opacity:1; pointer-events:auto; }
     .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
-    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:rgba(10,10,10,0.7); border:0.5px solid rgba(200,169,110,0.3); color:rgba(244,241,236,0.7); width:44px; height:44px; cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:transparent; border:none; color:rgba(244,241,236,0.45); width:44px; height:44px; cursor:pointer; font-size:1.4rem; display:flex; align-items:center; justify-content:center; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
     #c16s-wrap { position:relative; }
     #c16s-wrap .fcar-btn { opacity:0; transition:opacity 0.3s; }
     #c16s-wrap:hover .fcar-btn { opacity:1; }
-    .fcar-btn:hover { background:rgba(200,169,110,0.15); border-color:#c8a96e; color:#c8a96e; }
+    .fcar-btn:hover { color:rgba(244,241,236,0.9); }
     .fcar-prev { left:14px; } .fcar-next { right:14px; }
     .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
     .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
     .fdot.active { background:#c8a96e; }
+    #c16s-wrap .fdot.active { background:#00b4d8; }
+    #c16s-wrap .fdot { background:rgba(0,180,216,0.25); }
   </style>
 
   <script>
@@ -1986,16 +1919,16 @@
         <img src="Logo_escrambler.jpg" style="height:14px;max-width:120px;width:auto;object-fit:contain;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
         <p style="font-size:clamp(0.85rem,1vw,0.95rem);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle, now being relaunched around a larger opportunity.</p>
         <div style="display:flex;gap:28px;">
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
         </div>
       </div>
       <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
       <button class="fcar-btn fcar-next" onclick="c16Step(1)">&#8594;</button>
       <!-- Animated electric top line -->
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;z-index:3;overflow:hidden;">
-        <div id="switch-electric-line" style="width:100%;height:100%;background:linear-gradient(to right,transparent 0%,rgba(0,180,216,0.3) 20%,#00b4d8 50%,rgba(0,180,216,0.3) 80%,transparent 100%);background-size:200% 100%;animation:electric-sweep 3s ease-in-out infinite;"></div>
+      <div style="position:absolute;top:0;left:0;right:0;height:5px;z-index:3;overflow:hidden;">
+        <div id="switch-electric-line" style="width:100%;height:100%;background:linear-gradient(to right,transparent 0%,rgba(0,180,216,0.55) 20%,#00b4d8 50%,rgba(0,180,216,0.55) 80%,transparent 100%);background-size:200% 100%;animation:electric-sweep 3s ease-in-out infinite;"></div>
       </div>
       <div class="fcar-dots" style="bottom:20px;right:24px;left:auto;transform:none;z-index:3;"><button class="c16-dot fdot active" onclick="c16Go(0)"></button><button class="c16-dot fdot" onclick="c16Go(1)"></button><button class="c16-dot fdot" onclick="c16Go(2)"></button></div>
     </div>
@@ -2029,7 +1962,7 @@
       .concept-carousel { position:relative; overflow:hidden; border-top:1px solid rgba(0,180,216,0.2); }
       .concept-track { display:flex; transition:transform 0.4s ease; }
       .cslide { flex:0 0 33.333%; min-width:0; }
-      .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:rgba(10,10,10,0.7); border:0.5px solid rgba(0,180,216,0.3); color:rgba(244,241,236,0.7); width:48px; height:48px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; transition:all 0.2s; }
+      .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:transparent; border:none; color:rgba(0,180,216,0.5); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
       .concept-btn:hover { background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; }
       .concept-prev { left:14px; } .concept-next { right:14px; }
     </style>
@@ -2084,7 +2017,7 @@
 
   <!-- FUNDS -->
   <section class="funds" id="funds">
-    <p class="label reveal">Two Investment Paths</p>
+    <p class="label reveal">Investment Paths</p>
     <h2 class="section-title reveal">Same engine,<br/><em>different</em> ownership.</h2>
     <style>
       .fund-expand { font-size:0.88rem; line-height:1.75; color:rgba(10,10,10,0.6); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
@@ -2159,9 +2092,9 @@
   <!-- FOOTER -->
   <footer>
     <div class="reveal">
-      <a href="index.html" style="text-decoration:none;display:flex;flex-direction:column;line-height:0.84;letter-spacing:0.06em;font-family:'Bebas Neue',sans-serif;font-size:42px;color:rgba(244,241,236,0.7);margin-bottom:8px;">
-        <span>Silent</span>
-        <span>Foundry<span style="font-size:0.3em;vertical-align:top;margin-top:0.05em;display:inline-block;letter-spacing:0;">®</span></span>
+      <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:8px;">
+        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
+        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
       </a>
       <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
@@ -2183,7 +2116,7 @@
   </footer>
   <div class="footer-bottom">
     <span>© 2026 SilentFoundry Group. All rights reserved.</span>
-    <span>sfg.</span>
+
   </div>
 
 
@@ -2199,12 +2132,12 @@
       var shown = false;
       function check(){
         var atBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100;
-        var atTop = window.scrollY < 50;
-        if(!atBottom && !atTop){ if(!shown){ el.classList.add('visible'); shown=true; } }
+        var heroScrollEl = document.querySelector('.hero-scroll');
+        var heroGone = heroScrollEl ? heroScrollEl.getBoundingClientRect().bottom < 0 : window.scrollY > window.innerHeight;
+        if(!atBottom && heroGone){ if(!shown){ el.classList.add('visible'); shown=true; } }
         else { el.classList.remove('visible'); shown=false; }
       }
       window.addEventListener('scroll', check, {passive:true});
-      setTimeout(function(){ el.classList.add('visible'); }, 1800);
       setTimeout(check, 100);
     })();
   </script>
@@ -2272,5 +2205,906 @@
     }
   }
   </script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- ══════════════════════════════════════════════════════
+     V1.1 — REFINED EFFECTS
+     ══════════════════════════════════════════════════════ -->
+
+<!-- V1.1 DOM elements -->
+<div id="v11-status" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.75);">
+  <div id="v11-status-dot" style="width:6px;height:6px;border-radius:50%;background:#4caf50;flex-shrink:0;animation:v11DotPulse 2s ease-in-out infinite;"></div>
+  <span id="v11-status-text">Open for 2026 partnerships</span>
+</div>
+
+<div id="v11-badge" style="display:none;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:78px;height:78px;transition:filter 0.6s ease;">
+  <svg viewBox="0 0 78 78" width="78" height="78">
+    <defs><path id="v11-circle-path" d="M 39,39 m -27,0 a 27,27 0 1,1 54,0 a 27,27 0 1,1 -54,0"/></defs>
+    <text style="fill:rgba(200,169,110,0.6);font-size:7px;font-family:'DM Sans',sans-serif;letter-spacing:3.18px;">
+      <textPath href="#v11-circle-path" startOffset="0%">SILENT FOUNDRY VENTURES</textPath>
+    </text>
+  </svg>
+</div>
+
+<div id="v11-cursor" style="display:none;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s ease,height 0.3s ease,border-color 0.3s,top 0.08s linear,left 0.08s linear;"></div>
+<div id="v11-cursor-dot" style="display:none;position:fixed;width:4px;height:4px;background:#c8a96e;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:background 0.6s ease;"></div>
+<div id="v11-cursor-ring" style="display:none;position:fixed;width:38px;height:38px;border:1px solid rgba(200,169,110,0.25);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(0.25,0.46,0.45,0.94),height 0.4s cubic-bezier(0.25,0.46,0.45,0.94),top 0.18s ease-out,left 0.18s ease-out,border-color 0.6s ease;"></div>
+
+<div id="v11-how-glow" style="display:none;position:absolute;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left 0.3s ease,top 0.3s ease;"></div>
+
+<style>
+/* ── V1.1 ACTIVE GUARD ── */
+body.v11-active { cursor: none !important; }
+body.v11-active #v11-status,
+body.v11-active #v11-badge,
+body.v11-active #v11-cursor,
+body.v11-active #v11-cursor-dot,
+body.v11-active #v11-cursor-ring { display: flex !important; }
+body.v11-active #v11-badge { display: block !important; }
+
+/* ── LOGO HIDE ON CTA ── */
+body.v11-active.v11-hide-logo .nav-logo {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.5s ease !important;
+}
+
+/* ── 2. LOGO SCROLL SHRINK — smooth ── */
+body.v11-active .nav-logo {
+  transition: font-size 0.5s ease, opacity 0.4s;
+}
+body.v11-active .nav-logo span {
+  transition: font-size 0.5s ease, letter-spacing 0.5s ease, line-height 0.5s ease;
+  display: block;
+}
+body.v11-active.v11-scrolled .nav-logo span {
+  font-size: 42px !important;
+}
+
+/* ── 5. LOGO STAMP ON LOAD ── */
+@keyframes v11LogoStamp {
+  0%   { transform: skewX(-4deg) scale(1.14); opacity: 0; }
+  60%  { transform: skewX(-4deg) scale(0.98); opacity: 1; }
+  80%  { transform: skewX(-4deg) scale(1.01); }
+  100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
+}
+body.v11-active .nav-logo.v11-stamp {
+  animation: v11LogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+  transform-origin: left center;
+}
+body.v11-active nav { align-items: center !important; }
+body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 140px; overflow: visible; }
+/* Stamp uses transform only — no layout change */
+@keyframes v11LogoStamp {
+  0%   { transform: skewX(-4deg) scale(1.08); opacity: 0; }
+  60%  { transform: skewX(-4deg) scale(0.99); opacity: 1; }
+  100% { transform: skewX(-4deg) scale(1); opacity: 1; }
+}
+
+/* ── 6. NAV HOVER — underline + glow ── */
+body.v11-active .nav-links a {
+  position: relative;
+  transition: opacity 0.2s, color 0.2s, text-shadow 0.3s !important;
+}
+body.v11-active .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: #c8a96e;
+  transition: width 0.3s ease;
+}
+body.v11-active .nav-links a:hover::after { width: 100%; }
+body.v11-active .nav-links a:hover {
+  opacity: 1 !important;
+  text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
+}
+
+/* ── 7. BRAND SOUL — radiates from the words ── */
+body.v11-active .hero-headline-bottom {
+  position: relative;
+  overflow: visible;
+}
+/* Soul radiates outward from the text like energy released */
+body.v11-active .hero-headline-bottom::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 200%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: radial-gradient(ellipse at center,
+    rgba(244,241,236,0.06) 0%,
+    rgba(244,241,236,0.03) 40%,
+    transparent 70%
+  );
+  animation: v11SoulPulse 4s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+body.v11-active .hero-headline-bottom::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 140%; height: 300%;
+  transform: translate(-50%, -50%) scale(0.5);
+  background: radial-gradient(ellipse at center,
+    rgba(244,241,236,0.04) 0%,
+    rgba(244,241,236,0.015) 35%,
+    transparent 65%
+  );
+  animation: v11SoulPulse 4s ease-in-out 0.8s infinite;
+  pointer-events: none;
+  border-radius: 50%;
+}
+@keyframes v11SoulPulse {
+  0%   { transform: translate(-50%,-50%) scale(0.7); opacity: 0; }
+  15%  { transform: translate(-50%,-50%) scale(0.9); opacity: 1; }
+  30%  { transform: translate(-50%,-50%) scale(1.0); opacity: 0.6; }
+  60%  { transform: translate(-50%,-50%) scale(1.4); opacity: 0.15; }
+  100% { transform: translate(-50%,-50%) scale(1.8); opacity: 0; }
+}
+
+/* ── 9. SCROLL TEXT PULSE ── */
+body.v11-active .hero-scroll span {
+  animation: pulse-line 2s infinite;
+}
+
+/* ── 10. MARQUEE FIX — seamless ── */
+body.v11-active .marquee-track {
+  animation-timing-function: linear !important;
+  animation-iteration-count: infinite !important;
+}
+
+/* ── 11. WHY NOW — gold line under each box ── */
+body.v11-active .wwd-cards > div {
+  border-bottom: 1px solid rgba(200,169,110,0.3) !important;
+}
+
+/* ── MARSHALL HERO ZOOM ── */
+body.v11-active .mc-hero { overflow: hidden; }
+body.v11-active .mc-hero:hover img { transform: scale(1.03); }
+
+/* ── 12. CASE STUDY IMAGE ZOOM ── */
+body.v11-active .case-img img {
+  transition: transform 0.8s ease !important;
+}
+body.v11-active .case-img:hover img {
+  transform: scale(1.025) !important;
+}
+
+/* ── 14. MARSHALL METRICS HOVER ── */
+body.v11-active .mc-metric-val {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), color 0.3s;
+  cursor: default;
+}
+body.v11-active .mc-hero-right > div:hover .mc-metric-val {
+  transform: scale(1.1);
+  color: #c8a96e;
+}
+
+/* ── 15. DNA GRID ROW GAP — Marshall + SWITCH ── */
+body.v11-active [style*="grid-template-columns:repeat(3,1fr);gap:24px"] {
+  row-gap: 36px !important;
+}
+
+/* ── 17. HOW IT WORKS ACCORDION — open item background ── */
+body.v11-active .accordion-item.open-item {
+  background: rgba(200,169,110,0.04);
+  border-radius: 2px;
+  transition: background 0.4s ease;
+}
+
+/* ── 18. ACCORDION SCROLL REVEAL ── */
+body.v11-active .accordion-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+body.v11-active .accordion-item.v11-acc-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 19. ACCORDION BODY SMOOTH FADE ── */
+body.v11-active .accordion-body p {
+  opacity: 0;
+  transition: opacity 0.4s ease 0.15s;
+}
+body.v11-active .accordion-body.open p {
+  opacity: 1;
+}
+
+/* ── 20. ENGINEERING BACKGROUND PARALLAX ── */
+/* handled in JS */
+
+/* ── 21. CHINA ACCORDION ── */
+/* China grid — fixed height, image fully locked */
+body.v11-active .china-grid {
+  height: 600px !important;
+  min-height: unset !important;
+  align-items: stretch !important;
+}
+body.v11-active .china-grid > div:first-child {
+  height: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+}
+body.v11-active .china-grid > div:first-child img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+body.v11-active .china-grid > div:last-child {
+  height: 100% !important;
+  overflow-y: auto !important;
+}
+
+body.v11-active .ch-body.ch-open {
+  max-height: 200px !important;
+  opacity: 1 !important;
+}
+body.v11-active .ch-icon.ch-open {
+  transform: rotate(45deg);
+}
+body.v11-active .ch-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+body.v11-active .ch-item.v11-ch-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── 22. VALUE CARD SMOOTH EXPAND ── */
+body.v11-active .val-body {
+  transition: max-height 0.5s ease, opacity 0.4s ease 0.1s !important;
+}
+
+/* ── 23. FUND EXPAND SMOOTH ── */
+body.v11-active .fund-expand {
+  transition: max-height 0.5s ease, opacity 0.4s ease !important;
+}
+
+/* ── PERSISTENT UI FADE NEAR FOOTER ── */
+body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition: opacity 0.5s ease !important; pointer-events: none !important; }
+body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
+body.v11-active.v11-footer-zone #v11-cursor { opacity: 0 !important; }
+body.v11-active.v11-footer-zone #v11-cursor-dot { opacity: 0 !important; }
+body.v11-active.v11-footer-zone #v11-cursor-ring { opacity: 0 !important; }
+
+/* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
+/* Status dot always visible — slight opacity on cream */
+body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.55) !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-status-dot { background: #4caf50 !important; transition: none !important; }
+/* Always show status dot */
+body.v11-active #v11-status { display: flex !important; }
+
+/* ── 26. SWITCH SECTION CYAN — INSTANT SNAP ── */
+body.v11-active.v11-switch-zone #v11-status-dot { background: #00b4d8 !important; transition: none !important; }
+body.v11-active.v11-switch-zone #v11-badge svg text { fill: rgba(0,180,216,0.6) !important; }
+body.v11-active.v11-switch-zone .scroll-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .hero-scroll span { color: #00b4d8 !important; transition: none !important; }
+/* nav stays SF colours in switch zone */
+body.v11-active.v11-switch-zone #v11-cursor { border-color: rgba(0,180,216,0.8) !important; transition: none !important; }
+body.v11-active.v11-switch-zone #v11-cursor-dot { background: #00b4d8 !important; transition: none !important; }
+body.v11-active.v11-switch-zone #v11-cursor-ring { border-color: rgba(0,180,216,0.25) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .scroll-indicator-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .scroll-indicator span { color: #00b4d8 !important; transition: none !important; }
+body.v11-active.v11-switch-zone .fcar-btn { border-color: rgba(0,180,216,0.4) !important; color: rgba(0,180,216,0.8) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .fcar-btn:hover { background: rgba(0,180,216,0.15) !important; border-color: #00b4d8 !important; color: #00b4d8 !important; }
+body.v11-active.v11-switch-zone .concept-btn { border-color: rgba(0,180,216,0.4) !important; color: rgba(0,180,216,0.8) !important; transition: none !important; }
+body.v11-active.v11-switch-zone .concept-btn:hover { background: rgba(0,180,216,0.15) !important; border-color: #00b4d8 !important; color: #00b4d8 !important; }
+
+/* ── 28. FEATURED PROJECT BOTTOM IMAGES HOVER ZOOM ── */
+body.v11-active .cslide {
+  overflow: hidden;
+}
+body.v11-active .cslide img {
+  transition: transform 1s ease !important;
+}
+body.v11-active .cslide:hover img {
+  transform: scale(1.02) !important;
+}
+
+/* ── 29. INVESTMENT PATHS — V5 hover ── */
+body.v11-active .fund-img {
+  transition: transform 0.8s ease, filter 0.8s ease !important;
+}
+body.v11-active .fund-card:hover .fund-img {
+  transform: scale(1.04) !important;
+  filter: brightness(0.95) saturate(1.05) !important;
+}
+
+/* ── 30. FUND CARD SCROLL REVEAL STAGGER ── */
+body.v11-active .fund-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1) !important;
+}
+body.v11-active .fund-card.v11-fund-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+body.v11-active .fund-card:nth-child(1) { transition-delay: 0s !important; }
+body.v11-active .fund-card:nth-child(2) { transition-delay: 0.18s !important; }
+body.v11-active .fund-card:nth-child(3) { transition-delay: 0.36s !important; }
+
+/* ── CURSOR HOVER STATE ── */
+body.v11-active.v11-cursor-hover #v11-cursor {
+  width: 42px; height: 42px;
+  border-color: rgba(200,169,110,0.4);
+}
+body.v11-active.v11-cursor-hover #v11-cursor-ring {
+  width: 58px; height: 58px;
+}
+
+@keyframes v11DotPulse {
+  0%,100% { opacity:0.6; transform:scale(1); }
+  50% { opacity:1; transform:scale(1.35); }
+}
+/* ── BADGE SPIN ── */
+@keyframes v11BadgeSpin {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to   { transform: translateX(-50%) rotate(360deg); }
+}
+@keyframes v11BadgeSpinMobile {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+body.v11-active #v11-badge {
+  animation: v11BadgeSpin 14s linear infinite;
+}
+@media (max-width: 768px) {
+  /* Hide cursor on mobile */
+  body.v11-active { cursor: auto !important; }
+  #v11-cursor, #v11-cursor-dot, #v11-cursor-ring {
+    display: none !important;
+  }
+  body.v11-active #v11-badge {
+    left: auto !important;
+    right: 16px !important;
+    bottom: 72px !important;
+    animation: v11BadgeSpinMobile 14s linear infinite !important;
+  }
+}
+</style>
+
+<script>
+(function() {
+  var v11Active = false;
+  var v11ScrollTimeout = null;
+  var v11SwitchTimeout = null;
+  var v11Observers = [];
+  var v11LogoStamped = false;
+
+  // ── CURSOR ──
+  var cur = document.getElementById('v11-cursor');
+  var curDot = document.getElementById('v11-cursor-dot');
+  var curRing = document.getElementById('v11-cursor-ring');
+  var curX = window.innerWidth/2, curY = window.innerHeight/2;
+  var ringX = curX, ringY = curY;
+
+  document.addEventListener('mousemove', function(e) {
+    if (!v11Active) return;
+    curX = e.clientX; curY = e.clientY;
+    cur.style.left = curX + 'px'; cur.style.top = curY + 'px';
+    curDot.style.left = curX + 'px'; curDot.style.top = curY + 'px';
+  });
+
+  // Lagging ring
+  function animateRing() {
+    if (!v11Active) { requestAnimationFrame(animateRing); return; }
+    ringX += (curX - ringX) * 0.12;
+    ringY += (curY - ringY) * 0.12;
+    curRing.style.left = ringX + 'px';
+    curRing.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.addEventListener('mouseover', function(e) {
+    if (!v11Active) return;
+    if (e.target.matches('a,button,[onclick]')) document.body.classList.add('v11-cursor-hover');
+  });
+  document.addEventListener('mouseout', function(e) {
+    if (!v11Active) return;
+    if (e.target.matches('a,button,[onclick]')) document.body.classList.remove('v11-cursor-hover');
+  });
+
+  // ── CREAM ZONE DETECTION ──
+  var creamSelectors = ['.wwd-section', '.china-grid', '.value'];
+  function updateCreamZone() {
+    if (!v11Active) return;
+    var inSwitch = document.body.classList.contains('v11-switch-zone');
+    if (inSwitch) {
+      document.body.classList.remove('v11-cream-zone');
+      return;
+    }
+    var inCream = false;
+    creamSelectors.forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        var r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
+          inCream = true;
+        }
+      });
+    });
+    // Also check cream inline backgrounds
+    document.querySelectorAll('[style*="background:var(--cream)"], [style*="background:#ede8e0"]').forEach(function(el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
+        inCream = true;
+      }
+    });
+    document.body.classList.toggle('v11-cream-zone', inCream);
+  }
+
+  // ── LOGO SCROLL SHRINK + FADE NEAR FOOTER ──
+  window.addEventListener('scroll', function() {
+    if (!v11Active) return;
+    updateCreamZone();
+    var scrolled = window.scrollY > 60;
+    document.body.classList.toggle('v11-scrolled', scrolled);
+    var footer = document.querySelector('footer');
+    var logo = document.querySelector('.nav-logo');
+    if (footer && logo) {
+      // Hide logo when CTA section starts entering viewport
+      var cta = document.querySelector('.cta');
+      if (cta) {
+        var ctaTop = cta.getBoundingClientRect().top;
+        document.body.classList.toggle('v11-hide-logo', ctaTop < window.innerHeight * 0.6);
+      }
+      // Fade persistent UI near footer
+      var footerRect = footer.getBoundingClientRect();
+      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.75);
+    }
+  }, { passive: true });
+
+  // ── LOGO STAMP ON LOAD (once) ──
+  function stampLogo() {
+    if (v11LogoStamped) return;
+    v11LogoStamped = true;
+    var logo = document.querySelector('.nav-logo');
+    if (!logo) return;
+    logo.classList.remove('v11-stamp');
+    void logo.offsetWidth;
+    logo.classList.add('v11-stamp');
+  }
+
+  // ── BLUEPRINT GRID (V8) ──
+  function initV11Blueprint() {
+    var hero = document.querySelector('.hero');
+    if (!hero || !window.THREE) return;
+    var existing = document.getElementById('v11-blueprint-canvas');
+    if (existing) existing.remove();
+    var canvas = document.createElement('canvas');
+    canvas.id = 'v11-blueprint-canvas';
+    canvas.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;display:block;opacity:0.18;';
+    hero.style.position = 'relative';
+    hero.insertBefore(canvas, hero.firstChild);
+    var W = hero.offsetWidth, H = hero.offsetHeight;
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-W/100, W/100, H/100*0.8, -H/100*0.8, 0.1, 100);
+    camera.position.z = 5;
+    var mat = new THREE.LineBasicMaterial({ color: 0xc8a96e, transparent: true, opacity: 0.4 });
+    var group = new THREE.Group();
+    var cols = Math.ceil(W/60), rows = Math.ceil(H/60);
+    var lines = [];
+    for (var r = -rows; r <= rows; r++) {
+      var pts = [new THREE.Vector3(-cols, r*0.6, 0), new THREE.Vector3(cols, r*0.6, 0)];
+      var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat.clone());
+      line.scale.x = 0;
+      group.add(line);
+      lines.push({ mesh: line, delay: Math.abs(r) * 80, axis: 'x' });
+    }
+    for (var c = -cols; c <= cols; c++) {
+      var pts2 = [new THREE.Vector3(c, -rows*0.6, 0), new THREE.Vector3(c, rows*0.6, 0)];
+      var line2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts2), mat.clone());
+      line2.scale.y = 0;
+      group.add(line2);
+      lines.push({ mesh: line2, delay: Math.abs(c) * 60 + 200, axis: 'y' });
+    }
+    scene.add(group);
+    var startTime = Date.now();
+    function animateBp() {
+      if (!v11Active) return;
+      requestAnimationFrame(animateBp);
+      var elapsed = Date.now() - startTime;
+      lines.forEach(function(l) {
+        var progress = Math.min(1, (elapsed - l.delay) / 1200);
+        if (progress > 0) {
+          if (l.axis === 'x') l.mesh.scale.x = progress;
+          else l.mesh.scale.y = progress;
+        }
+      });
+      renderer.render(scene, camera);
+    }
+    animateBp();
+  }
+
+  // ── MARSHALL EQUALISER BARS ──
+  function initV11Equaliser() {
+    var container = document.querySelector('.mc-hero');
+    if (!container || !window.THREE) return;
+    var existing = document.getElementById('v11-eq-canvas');
+    if (existing) existing.remove();
+    var canvas = document.createElement('canvas');
+    canvas.id = 'v11-eq-canvas';
+    canvas.style.cssText = 'position:absolute;bottom:4px;left:0;right:0;width:100%;height:72px;pointer-events:none;z-index:5;display:none;opacity:0.85;';
+    container.style.position = 'relative';
+    container.appendChild(canvas);
+
+    var W = container.offsetWidth || 400, H = 72;
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-W/100, W/100, H/100, -H/100, 0.1, 100);
+    camera.position.z = 5;
+    var bars = [], barCount = 48;
+    for (var i = 0; i < barCount; i++) {
+      var geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,-H/100,0), new THREE.Vector3(0,0,0)]);
+      var m = new THREE.LineBasicMaterial({ color: 0xc8a96e, transparent: true, opacity: 0.6 });
+      var ln = new THREE.Line(geo, m);
+      ln.position.x = (i/(barCount-1))*(W/50) - W/100;
+      scene.add(ln);
+      bars.push(ln);
+    }
+    var eqActive = false;
+    function animateEq() {
+      if (!v11Active || !eqActive) return;
+      requestAnimationFrame(animateEq);
+      var t = Date.now()*0.002;
+      bars.forEach(function(bar, i) {
+        var h = 0.05 + Math.abs(Math.sin(t * 1.3 + i*0.28))*1.1 + Math.abs(Math.sin(t*2.1 + i*0.18))*0.5 + Math.abs(Math.sin(t*0.7 + i*0.45))*0.3;
+        var pos = bar.geometry.attributes.position;
+        pos.array[4] = h; pos.needsUpdate = true;
+      });
+      renderer.render(scene, camera);
+    }
+
+    // Activate when in view
+    var eqObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active) {
+          canvas.style.display = 'block';
+          if (!eqActive) { eqActive = true; animateEq(); }
+        }
+      });
+    }, { threshold: 0.3 });
+    eqObs.observe(container);
+    v11Observers.push(eqObs);
+  }
+
+  // ── ACCORDION SCROLL REVEAL ──
+  function initV11AccordionReveal() {
+    var items = document.querySelectorAll('.accordion-item');
+    if (!items.length) return;
+    var accObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active) {
+          var idx = Array.from(items).indexOf(entry.target);
+          setTimeout(function() {
+            entry.target.classList.add('v11-acc-revealed');
+          }, idx * 100);
+          accObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    items.forEach(function(item) { accObs.observe(item); });
+    v11Observers.push(accObs);
+  }
+
+  // ── ACCORDION OPEN ITEM BACKGROUND ──
+  function initV11AccordionBg() {
+    document.querySelectorAll('.accordion-header').forEach(function(header) {
+      var origClick = header.getAttribute('onclick');
+      header.addEventListener('click', function() {
+        setTimeout(function() {
+          document.querySelectorAll('.accordion-item').forEach(function(item) {
+            var body = item.querySelector('.accordion-body');
+            item.classList.toggle('open-item', body && body.classList.contains('open'));
+          });
+        }, 50);
+      });
+    });
+  }
+
+  // ── HOW IT WORKS CURSOR GLOW ──
+  function initV11HowGlow() {
+    var howSection = document.getElementById('how');
+    var glow = document.getElementById('v11-how-glow');
+    if (!howSection || !glow) return;
+    howSection.style.position = 'relative';
+    howSection.insertBefore(glow, howSection.firstChild);
+    howSection.addEventListener('mousemove', function(e) {
+      if (!v11Active) return;
+      var rect = howSection.getBoundingClientRect();
+      glow.style.display = 'block';
+      glow.style.left = (e.clientX - rect.left) + 'px';
+      glow.style.top = (e.clientY - rect.top) + 'px';
+    });
+    howSection.addEventListener('mouseleave', function() {
+      glow.style.display = 'none';
+    });
+  }
+
+  // ── ENGINEERING PARALLAX ──
+  function initV11EngineeringParallax() {
+    window.addEventListener('scroll', function() {
+      if (!v11Active) return;
+      var scrollY = window.scrollY;
+      document.querySelectorAll('[style*="background-attachment:fixed"]').forEach(function(el) {
+        el.style.backgroundPositionY = 'calc(center + ' + (scrollY * 0.03) + 'px)';
+      });
+    }, { passive: true });
+  }
+
+  // ── CHINA ACCORDION ──
+  window.toggleChina = function(header) {
+    var item = header.parentElement;
+    var body = item.querySelector('.ch-body');
+    var icon = header.querySelector('.ch-icon');
+    var eyebrow = header.querySelector('.ch-eyebrow');
+    var sweep = eyebrow ? eyebrow.querySelector('.ch-sweep') : null;
+    var isOpen = body.classList.contains('ch-open');
+    // Close all
+    document.querySelectorAll('.ch-body').forEach(function(b) { b.classList.remove('ch-open'); b.style.maxHeight = '0'; b.style.opacity = '0'; });
+    document.querySelectorAll('.ch-icon').forEach(function(i) { i.classList.remove('ch-open'); });
+    if (!isOpen) {
+      body.classList.add('ch-open');
+      body.style.maxHeight = '120px';
+      body.style.opacity = '1';
+      icon.classList.add('ch-open');
+      // Sweep once
+      if (sweep && !sweep.dataset.swept) {
+        sweep.dataset.swept = '1';
+        sweep.style.transition = 'transform 0.8s ease';
+        sweep.style.transform = 'translateX(200%)';
+      }
+    }
+  };
+
+  function initV11ChinaReveal() {
+    var items = document.querySelectorAll('.ch-item');
+    if (!items.length) return;
+    var chObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active) {
+          var idx = Array.from(items).indexOf(entry.target);
+          setTimeout(function() {
+            entry.target.classList.add('v11-ch-revealed');
+          }, idx * 120);
+          chObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    items.forEach(function(item) { chObs.observe(item); });
+    v11Observers.push(chObs);
+  }
+
+  // ── SWITCH SECTION CYAN ZONE ──
+  function initV11SwitchZone() {
+    var featured = document.getElementById('featured');
+    var logos = document.querySelector('.logos');
+    if (!featured) return;
+    function checkZone() {
+      if (!v11Active) return;
+      var inZone = false;
+      var fr = featured.getBoundingClientRect();
+      if (fr.bottom > 0 && fr.top < window.innerHeight) inZone = true;
+      if (!inZone && logos) {
+        var lr = logos.getBoundingClientRect();
+        if (lr.bottom > 0 && lr.top < window.innerHeight) inZone = true;
+      }
+      // Snap instantly — set class synchronously
+      if (inZone) {
+        if (!document.body.classList.contains('v11-switch-zone')) {
+          document.body.classList.add('v11-switch-zone');
+          document.body.classList.remove('v11-cream-zone');
+        }
+      } else {
+        if (document.body.classList.contains('v11-switch-zone')) {
+          document.body.classList.remove('v11-switch-zone');
+        }
+      }
+    }
+    window.addEventListener('scroll', checkZone, { passive: true });
+    // Also run on RAF for precision
+    (function rafCheck(){ checkZone(); requestAnimationFrame(rafCheck); })();
+  }
+
+  // ── SWITCH SINE WAVE ──
+  function initV11SineWave() {
+    var featured = document.getElementById('featured');
+    if (!featured || !window.THREE) return;
+    var existing = document.getElementById('v11-sine-canvas');
+    if (existing) existing.remove();
+    var canvas = document.createElement('canvas');
+    canvas.id = 'v11-sine-canvas';
+    canvas.style.cssText = 'position:absolute;top:20px;right:20px;width:160px;height:65px;pointer-events:none;z-index:10;display:none;opacity:0.85;';
+    var wrap = featured.querySelector('#c16s-wrap');
+    if (wrap) { wrap.style.position = 'relative'; wrap.appendChild(canvas); }
+    else { featured.style.position = 'relative'; featured.appendChild(canvas); }
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(160, 65);
+    renderer.setClearColor(0x000000, 0);
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-1.5, 1.5, 0.7, -0.7, 0.1, 10);
+    camera.position.z = 5;
+    var pointCount = 60;
+    var positions = new Float32Array(pointCount * 3);
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x00b4d8, transparent: true, opacity: 0.9, linewidth: 3 });
+    var waveLine = new THREE.Line(geo, lineMat);
+    scene.add(waveLine);
+
+    var sineActive = false;
+    function animateSine() {
+      if (!v11Active || !sineActive) return;
+      requestAnimationFrame(animateSine);
+      var t = Date.now() * 0.001;
+      var pos = waveLine.geometry.attributes.position;
+      for (var i = 0; i < pointCount; i++) {
+        var x = (i / (pointCount - 1)) * 3 - 1.5;
+        var y = Math.sin(i * 0.35 + t * 1.2) * 0.12 + Math.sin(i * 0.18 + t * 0.7) * 0.06;
+        pos.array[i*3]   = x;
+        pos.array[i*3+1] = y;
+        pos.array[i*3+2] = 0;
+      }
+      pos.needsUpdate = true;
+      renderer.render(scene, camera);
+    }
+
+    var sineObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active) {
+          canvas.style.display = 'block';
+          if (!sineActive) { sineActive = true; animateSine(); }
+        }
+      });
+    }, { threshold: 0.1 });
+    sineObs.observe(featured);
+    v11Observers.push(sineObs);
+  }
+
+  // ── SPEC COUNTER SMOOTH ──
+  function initV11Counters() {
+    var specEls = document.querySelectorAll('#c16-overlay span[style*="1.9rem"]');
+    var origVals = [];
+    specEls.forEach(function(el) { origVals.push(el.textContent); });
+
+    function animateInt(el, target, suffix, duration) {
+      var start = null;
+      var numTarget = parseFloat(target);
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var val = Math.round(eased * numTarget);
+        el.textContent = val + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
+    }
+
+    var counted = false;
+    var cntObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active && !counted) {
+          counted = true;
+          // 13kWh, 150km, 135km/h
+          var data = [
+            { target: '13', suffix: 'kWh' },
+            { target: '150', suffix: 'km' },
+            { target: '135', suffix: 'km/h' }
+          ];
+          specEls.forEach(function(el, i) {
+            if (data[i]) animateInt(el, data[i].target, data[i].suffix, 2400);
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    var featured = document.getElementById('featured');
+    if (featured) cntObs.observe(featured);
+    v11Observers.push(cntObs);
+  }
+
+  // ── FUND CARD STAGGER REVEAL ──
+  function initV11FundReveal() {
+    var cards = document.querySelectorAll('.fund-card');
+    if (!cards.length) return;
+    var fundObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && v11Active) {
+          entry.target.classList.add('v11-fund-revealed');
+          fundObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    cards.forEach(function(c) { fundObs.observe(c); });
+    v11Observers.push(fundObs);
+  }
+
+  // ── MARQUEE FIX ──
+  function initV11Marquee() {
+    var track = document.querySelector('.marquee-track');
+    if (!track) return;
+    var style = window.getComputedStyle(track);
+    track.style.animationTimingFunction = 'linear';
+    track.style.animationIterationCount = 'infinite';
+  }
+
+  // ── DESTROY ──
+  function destroyV11() {
+    v11Active = false;
+    document.body.classList.remove('v11-active','v11-scrolled','v11-switch-zone','v11-cursor-hover');
+    v11Observers.forEach(function(o) { try { o.disconnect(); } catch(e) {} });
+    v11Observers = [];
+    var bp = document.getElementById('v11-blueprint-canvas');
+    if (bp) bp.remove();
+    var eq = document.getElementById('v11-eq-canvas');
+    if (eq) eq.remove();
+    var sw = document.getElementById('v11-sine-canvas');
+    if (sw) sw.remove();
+    document.querySelectorAll('.accordion-item').forEach(function(i) {
+      i.classList.remove('v11-acc-revealed','open-item');
+      i.style.opacity = ''; i.style.transform = '';
+    });
+    document.querySelectorAll('.ch-item').forEach(function(i) {
+      i.classList.remove('v11-ch-revealed');
+      i.style.opacity = ''; i.style.transform = '';
+    });
+    document.querySelectorAll('.fund-card').forEach(function(c) {
+      c.classList.remove('v11-fund-revealed');
+      c.style.opacity = ''; c.style.transform = '';
+    });
+    document.querySelector('.nav-logo') && document.querySelector('.nav-logo').classList.remove('v11-stamp');
+  }
+
+  // ── INIT ──
+  function initV11() {
+    v11Active = true;
+    document.body.classList.add('v11-active');
+    stampLogo();
+    initV11Blueprint();
+    initV11Equaliser();
+    initV11AccordionReveal();
+    initV11AccordionBg();
+    initV11HowGlow();
+    initV11EngineeringParallax();
+    initV11ChinaReveal();
+    initV11SwitchZone();
+    initV11SineWave();
+    initV11Counters();
+    initV11FundReveal();
+    initV11Marquee();
+  }
+
+  // ── AUTO-INIT V1.1 ON PAGE LOAD ──
+  window.addEventListener('DOMContentLoaded', function() {
+    initV11();
+  });
+
+})();
+</script>
+<!-- ══ END V1.1 ══ -->
+
 </body>
-</html>
