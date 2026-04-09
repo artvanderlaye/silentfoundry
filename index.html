@@ -1836,9 +1836,9 @@
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;" class="cpl-d1-imgs">
-      <img src="china-1.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
-      <img src="china-2.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
-      <img src="china-3.jpg" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
+      <img src="china-1.jpg" id="chinaImg1" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
+      <img src="china-2.jpg" id="chinaImg2" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
+      <img src="china-3.jpg" id="chinaImg3" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:brightness(0.88);display:block;" />
     </div>
   </div>
 </section>
@@ -3292,5 +3292,24 @@ body.v11-active #v11-badge {
 })();
 </script>
 <!-- ══ END V1.1 ══ -->
+
+
+<script>
+(function(){
+  var exts = ['jpg','jpeg','png','webp'];
+  ['chinaImg1','chinaImg2','chinaImg3'].forEach(function(id){
+    var img = document.getElementById(id);
+    if(!img) return;
+    var base = img.src.replace(/\.[^.]+$/, '');
+    var tried = 0;
+    img.onerror = function(){
+      tried++;
+      if(tried < exts.length){
+        img.src = base + '.' + exts[tried];
+      }
+    };
+  });
+})();
+</script>
 
 </body>
