@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Silent Foundry</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1740,19 +1738,19 @@
     <div style="height:108px;position:relative;"></div>
   </div>
   
-    <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;position:relative;">
+    <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;position:relative;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;min-height:65vh;position:relative;z-index:1;align-items:stretch;" class="china-grid">
       <div style="position:relative;overflow:hidden;min-height:500px;">
-        <img src="michel_design_china.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.88);display:block;will-change:transform;" />
+        <img src="michel_design_china.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.88);display:block;" />
       </div>
-      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:space-between;background:#ede8e0;overflow:hidden;">
+      <div style="padding:72px 56px;display:flex;flex-direction:column;justify-content:flex-start;gap:48px;background:#ede8e0;overflow:hidden;">
         <div>
           <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
           <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity into China-fit product and business concepts designed to work with local operators.</p>
         </div>
-        <div class="china-accordion" style="margin-top:48px;display:flex;flex-direction:column;gap:0;">
+        <div class="china-accordion" style="display:flex;flex-direction:column;gap:0;">
           <div class="ch-item" style="border-bottom:1px solid rgba(10,10,10,0.08);">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;cursor:pointer;">
               <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
@@ -1860,13 +1858,14 @@
 
     /* Shared carousel */
     .fcar-slides { position:absolute; inset:0; }
-    .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; }
-    .fcar-slide.active { opacity:1; pointer-events:auto; }
+    .fcar-slide { position:absolute; inset:0; opacity:0; transition:opacity 0.5s; pointer-events:none; visibility:hidden; }
+    .fcar-slide.active { opacity:1; pointer-events:auto; visibility:visible; }
     .fcar-slide img { width:100%; height:100%; object-fit:cover; display:block; }
     .fcar-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:20; background:transparent; border:none; color:rgba(244,241,236,0.45); width:44px; height:44px; cursor:pointer; font-size:1.4rem; display:flex; align-items:center; justify-content:center; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
     #c16s-wrap { position:relative; }
     #c16s-wrap .fcar-btn { opacity:0.35; transition:opacity 0.3s; }
     #c16s-wrap:hover .fcar-btn { opacity:0.8; }
+    @media(hover:none),(pointer:coarse) { #c16s-wrap .fcar-btn { opacity:0.7 !important; } }
     .fcar-btn:hover { color:rgba(244,241,236,0.9); }
     .fcar-prev { left:14px; } .fcar-next { right:14px; }
     .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
@@ -1894,6 +1893,52 @@
     document.addEventListener('DOMContentLoaded',function(){
       ['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10'].forEach(function(p){makeCar(p,4);});
       makeCar('c16',3);
+
+      // Always-on SWITCH spec counter
+      (function(){
+        var specEls = document.querySelectorAll('#c16-overlay span[style*="1.9rem"]');
+        if (!specEls.length) return;
+        var data = [
+          { target: 13, suffix: 'kWh' },
+          { target: 150, suffix: 'km' },
+          { target: 135, suffix: 'km/h' }
+        ];
+        var counted = false;
+        function animateInt(el, target, suffix, duration) {
+          var start = null;
+          function step(ts) {
+            if (!start) start = ts;
+            var progress = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(eased * target) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = target + suffix;
+          }
+          requestAnimationFrame(step);
+        }
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting && !counted) {
+              counted = true;
+              specEls.forEach(function(el, i){ if(data[i]) animateInt(el, data[i].target, data[i].suffix, 2000); });
+            }
+          });
+        }, { threshold: 0.3 });
+        var wrap = document.getElementById('c16s-wrap');
+        if (wrap) obs.observe(wrap);
+      })();
+      // Touch swipe for c16 carousel
+      (function(){
+        var wrap = document.getElementById('c16s-wrap');
+        if (!wrap) return;
+        var tsx=0, tsy=0;
+        wrap.addEventListener('touchstart',function(e){ tsx=e.touches[0].clientX; tsy=e.touches[0].clientY; },{passive:true});
+        wrap.addEventListener('touchend',function(e){
+          var dx=e.changedTouches[0].clientX-tsx;
+          var dy=e.changedTouches[0].clientY-tsy;
+          if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){ c16Step(dx<0?1:-1); }
+        },{passive:true});
+      })();
       // Override c16Go to toggle overlay
       var _c16Go = window.c16Go;
       window.c16Go = function(i){
@@ -1966,8 +2011,7 @@
       .concept-track { display:flex; transition:transform 0.4s ease; }
       .cslide { flex:0 0 33.333%; min-width:0; }
       .concept-btn { position:absolute; top:50%; transform:translateY(-50%); z-index:10; background:transparent; border:none; color:rgba(244,241,236,0.4); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.4rem; transition:color 0.2s; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
-      .concept-btn { border: 0.5px solid rgba(200,169,110,0.0); transition: background 0.2s, border-color 0.2s, color 0.2s; }
-      .concept-btn:hover { background:rgba(200,169,110,0.12); border:0.5px solid rgba(200,169,110,0.5); color:rgba(244,241,236,0.9); }
+      .concept-btn:hover { background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; }
       .concept-prev { left:14px; } .concept-next { right:14px; }
     </style>
     <div class="concept-carousel" id="conceptCar">
@@ -1987,7 +2031,7 @@
         track.style.transform = 'translateX(-' + (idx * (100/visible)) + '%)';
       }
       window.conceptStep = function(d){
-        idx = ((idx + d) % (total - visible + 1) + (total - visible + 1)) % (total - visible + 1);
+        idx = Math.max(0, Math.min(idx + d, total - visible));
         update();
       };
     })();
@@ -2111,7 +2155,7 @@
     </div>
     <div class="footer-col reveal reveal-delay-2">
       <h5>Hong Kong</h5>
-      <address>Silent Foundry<br/>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road, Wanchai</address>
+      <address>史维骑有限公司<br/>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road, Wanchai</address>
     </div>
     <div class="footer-col reveal reveal-delay-3">
       <h5>Shanghai</h5>
@@ -2240,7 +2284,7 @@ window.addEventListener('load', function() {
 <!-- V1.1 DOM elements -->
 <div id="v11-status" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);">
   <div id="v11-status-dot" style="width:6px;height:6px;border-radius:50%;background:#c8a96e;flex-shrink:0;animation:v11DotPulse 2s ease-in-out infinite;opacity:1;"></div>
-  <span id="v11-status-text" style="opacity:0.6;">Open for 2026 partnerships</span>
+  <span id="v11-status-text">Open for 2026 partnerships</span>
 </div>
 
 <div id="v11-badge" style="display:none;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:78px;height:78px;transition:filter 0.6s ease;">
@@ -2508,15 +2552,14 @@ body.v11-active .fund-expand {
 /* ── PERSISTENT UI FADE NEAR FOOTER ── */
 body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition: opacity 0.5s ease !important; pointer-events: none !important; }
 body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
+body.v11-active.v11-footer-zone #v11-cursor { opacity: 0 !important; }
+body.v11-active.v11-footer-zone #v11-cursor-dot { opacity: 0 !important; }
+body.v11-active.v11-footer-zone #v11-cursor-ring { opacity: 0 !important; }
 
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
 /* Status dot always visible — slight opacity on cream */
 body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.45) !important; transition: none !important; }
 body.v11-active.v11-cream-zone #v11-status-dot { background: #c8a96e !important; transition: none !important; }
-/* Dark cursor on gold CTA sections */
-body.v11-active.v11-cta-zone #v11-cursor { border-color: rgba(10,10,10,0.7) !important; }
-body.v11-active.v11-cta-zone #v11-cursor-dot { background: rgba(10,10,10,0.7) !important; }
-body.v11-active.v11-cta-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.3) !important; }
 /* Always show status dot */
 body.v11-active #v11-status { display: flex !important; }
 
@@ -2717,13 +2760,6 @@ body.v11-active #v11-badge {
       // Fade persistent UI near footer
       var footerRect = footer.getBoundingClientRect();
       document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.75);
-      // CTA zone - dark cursor on gold sections
-      var ctaEl = document.querySelector('.cta');
-      if (ctaEl) {
-        var ctaRect = ctaEl.getBoundingClientRect();
-        var inCta = ctaRect.top < window.innerHeight && ctaRect.bottom > 0;
-        document.body.classList.toggle('v11-cta-zone', inCta);
-      }
     }
   }, { passive: true });
 
