@@ -358,14 +358,6 @@ nav.scrolled:hover { opacity: 1; }
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
 }
-  @media (max-width: 900px) {
-    nav > div[style*="gap:8px"] {
-      position: absolute !important;
-      right: 58px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-    }
-  }
 /* Logo scroll shrink */
 .nav-logo span { transition: font-size 0.5s ease; }
 nav.scrolled .nav-logo span { font-size: 42px !important; }
@@ -605,7 +597,7 @@ body.hide-logo .nav-logo {
     </div>
     <div class="footer-col reveal reveal-delay-3">
       <h5>Shanghai</h5>
-      <address>Silent Foundry<br/>Room 333, 3/F, Building 1<br/>No. 2001 Yanggao North Road<br/>China (Shanghai) FTZ</address>
+      <address>上海酷圣贸易有限公司<br/>Room 333, 3/F, Building 1<br/>No. 2001 Yanggao North Road<br/>China (Shanghai) FTZ</address>
     </div>
   </footer>
   <div class="footer-bottom">
@@ -643,18 +635,14 @@ body.hide-logo .nav-logo {
     logo.classList.remove('do-stamp');
     void logo.offsetWidth;
     logo.classList.add('do-stamp');
-    logo.addEventListener('animationend', function() {
-      logo.classList.remove('do-stamp');
-    }, { once: true });
-    setTimeout(function() { logo.classList.remove('do-stamp'); }, 1000);
   });
   window.addEventListener('scroll', function(){
     var footer = document.querySelector('footer');
     var logo = document.querySelector('.nav-logo');
     if (!footer || !logo) return;
-    var ftop = footer.getBoundingClientRect().top;
     logo.style.transition = 'opacity 0.6s ease';
-    var nearBottom = footer.getBoundingClientRect().top < window.innerHeight;
+    var ftop = footer.getBoundingClientRect().top;
+    var nearBottom = ftop < window.innerHeight;
     if (nearBottom) {
       logo.style.opacity = '0';
       logo.style.pointerEvents = 'none';
@@ -682,6 +670,7 @@ body.hide-logo .nav-logo {
   @media(hover:none),(pointer:coarse) {
     body { cursor:auto !important; }
     #pg-cur,#pg-cur-dot,#pg-cur-ring { display:none !important; }
+    body { cursor: auto !important; }
     #pg-badge { left:auto !important; right:16px !important; bottom:72px !important; animation:pgSpinMobile 14s linear infinite !important; }
     #pg-status { bottom:10px !important; font-size:0.52rem !important; }
   }
