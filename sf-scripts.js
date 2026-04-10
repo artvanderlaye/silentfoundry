@@ -144,11 +144,23 @@ window.addEventListener('resize', fitHeadline);
         '.cs-ddna { display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; }',
         '.cs-ddna-k { font-family:'+DS+'; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:2px; }',
         '.cs-ddna-v { font-family:'+DS+'; font-size:'+BODY_SIZE+'; color:rgba(10,10,10,.55); font-weight:300; line-height:1.5; }',
-        '.cs-dside { display:flex; flex-direction:column; padding-left:0; }',
+        '.cs-dside { display:flex; flex-direction:column; }',
         '.cs-dside-hero { width:100%; object-fit:cover; display:block; filter:brightness(.84) saturate(.88); flex-shrink:0; }',
         '.cs-dside-mid { display:grid; grid-template-columns:1fr 1fr; gap:3px; margin-top:3px; flex-shrink:0; }',
         '.cs-dside-mid img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; filter:brightness(.8) saturate(.82); }',
-        '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }'
+        '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }',
+        /* mobile */
+        '@media(max-width:768px){',
+        '  .csw { padding:40px 24px; }',
+        '  .cs-dbody { grid-template-columns:1fr; }',
+        '  .cs-dmain { padding-right:0; border-right:none; border-bottom:1px solid rgba(138,110,58,.15); padding-bottom:32px; margin-bottom:32px; }',
+        '  .cs-dmets { grid-template-columns:repeat(2,1fr); gap:12px 0; }',
+        '  .cs-ddna { grid-template-columns:1fr; }',
+        '  .cs-dside { flex-direction:row; flex-wrap:wrap; gap:3px; margin-top:0; }',
+        '  .cs-dside-hero { width:100%; aspect-ratio:16/9; flex-shrink:0; }',
+        '  .cs-dside-mid { width:100%; margin-top:0; }',
+        '  .cs-dside-result { width:100%; flex:none; aspect-ratio:16/9; min-height:0; margin-top:0; }',
+        '}'
       ].join('\n');
 
       var html = '<section class="case-study csw">'
