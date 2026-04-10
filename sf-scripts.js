@@ -148,7 +148,7 @@ window.addEventListener('resize', fitHeadline);
     4: {
       name: 'Void — Pure Black / White Only',
       bg:    '#080808', bg2: '#0c0c0c', bg3: '#111111',
-      acc:   'rgba(255,255,255,0.65)', accD: 'rgba(255,255,255,0.2)', accT: 'rgba(0,0,0,0.6)',
+      acc:   'rgba(255,255,255,0.65)', accD: 'rgba(255,255,255,0.3)', accT: 'rgba(0,0,0,0.6)',
       hi:    'rgba(255,255,255,0.9)', mid: 'rgba(255,255,255,0.5)', lo: 'rgba(255,255,255,0.25)',
       dhi:   'rgba(255,255,255,0.88)', dmid: 'rgba(255,255,255,0.5)', dlo: 'rgba(255,255,255,0.25)',
       mqBg:  '#1a1a1a', mqTx: 'rgba(255,255,255,0.7)',
@@ -232,7 +232,7 @@ window.addEventListener('resize', fitHeadline);
     10: {
       name: 'Blanche — Inverted / Cream World',
       bg:    '#f0ece4', bg2: '#ece8e0', bg3: '#e6e2da',
-      acc:   '#2a2520', accD: 'rgba(42,37,32,0.25)', accT: '#1a1512',
+      acc:   '#2a2520', accD: 'rgba(42,37,32,0.3)', accT: '#1a1512',
       hi:    'rgba(30,25,20,0.88)', mid: 'rgba(30,25,20,0.52)', lo: 'rgba(30,25,20,0.3)',
       dhi:   'rgba(30,25,20,0.85)', dmid: 'rgba(30,25,20,0.52)', dlo: 'rgba(30,25,20,0.3)',
       mqBg:  '#2a2520', mqTx: '#f0ece4',
@@ -301,7 +301,7 @@ window.addEventListener('resize', fitHeadline);
       name: 'Marshall — Linen / Warm Light',
       marshallOnly: true,
       bg:    '#f5efe4', bg2: '#efe9de', bg3: '#e8e2d6',
-      acc:   '#7a6040', accD: 'rgba(122,96,64,0.25)', accT: '#5a4428',
+      acc:   '#7a6040', accD: 'rgba(122,96,64,0.3)', accT: '#5a4428',
       hi:    'rgba(28,22,14,0.88)', mid: 'rgba(28,22,14,0.52)', lo: 'rgba(28,22,14,0.3)',
       dhi:   'rgba(28,22,14,0.85)', dmid: 'rgba(28,22,14,0.52)', dlo: 'rgba(28,22,14,0.3)',
       imgF:  'brightness(0.85) saturate(0.7) sepia(0.15)',
@@ -663,7 +663,7 @@ nav { background: rgba(240,236,228,0.97) !important; }
     var all = document.querySelectorAll('[style*="!important"]');
     all.forEach(function(el) {
       // Skip SWITCH section always
-      if (el.closest('#featured')) return;
+      try { if (el.closest && el.closest('#featured')) return; } catch(e) {}
 
       var orig = el.getAttribute('style');
       if (!orig) return;
