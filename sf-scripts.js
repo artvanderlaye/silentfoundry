@@ -115,7 +115,6 @@ window.addEventListener('resize', fitHeadline);
     imgs: {
       amp:       'amp_marshall_original.jpeg',
       headphone: '614BCLPutVL-1__SL1000_.jpg',
-      speaker:   '71gXnSa8ogL__AC_UF1000_1000_QL80_.jpg',
       acton:     'MarshallActonIIIBluetoothSpeakers_6_jpg.webp',
       bluetooth: 'marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif'
     }
@@ -129,80 +128,68 @@ window.addEventListener('resize', fitHeadline);
 
     3: { name: '03 \u2014 Dossier / Investment Memo', build: function() {
       var css = [
-        /* outer bg */
-        '.csw { background:#f4f2ee; }',
+        /* outer — matches site padding */
+        '.csw { background:#f4f2ee; padding:64px 48px; }',
 
-        /* top bar — compact */
-        '.cs-dtop { padding:14px 32px; border-bottom:1px solid rgba(10,10,10,.12); background:#ece8e0; display:flex; flex-direction:column; gap:2px; }',
-        '.cs-dfrom { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.35); font-weight:300; }',
-        '.cs-dname { font-family:'+BN+'; font-size:1.4rem; letter-spacing:.14em; color:rgba(10,10,10,.75); line-height:1; }',
-        '.cs-dref  { font-family:'+DS+'; font-size:.46rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(138,110,58,.6); font-weight:300; }',
-
-        /* body grid — left content + right sidebar */
+        /* two-col body — left content + right sidebar, stretch to same height */
         '.cs-dbody { display:grid; grid-template-columns:1fr 380px; align-items:stretch; }',
 
-        /* left column — gold right border = the continuity line */
-        '.cs-dmain { padding:36px 44px; border-right:2px solid rgba(138,110,58,.22); display:flex; flex-direction:column; gap:0; }',
+        /* left — gold right border = visual continuity line */
+        '.cs-dmain { padding-right:48px; border-right:2px solid rgba(138,110,58,.22); display:flex; flex-direction:column; }',
 
         /* sections */
         '.cs-dsec { padding-bottom:28px; margin-bottom:28px; border-bottom:1px solid rgba(10,10,10,.07); }',
         '.cs-dsec:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }',
 
-        /* section labels */
-        '.cs-dslabel { font-family:'+DS+'; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(138,110,58,.6); font-weight:300; display:block; margin-bottom:10px; }',
+        /* section labels — dark ink, no gold */
+        '.cs-dslabel { font-family:'+DS+'; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; }',
 
         /* overview */
-        '.cs-dey { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(138,110,58,.55); font-weight:300; display:block; margin-bottom:6px; }',
+        '.cs-dey { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }',
         '.cs-dh  { font-family:'+BN+'; font-size:clamp(2.2rem,3.5vw,4rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:12px; }',
         '.cs-dp  { font-family:'+DS+'; font-size:.92rem; line-height:1.85; color:rgba(10,10,10,.48); font-weight:300; }',
 
-        /* key numbers — horizontal */
+        /* key numbers — horizontal, compact, dark ink */
         '.cs-dmets { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }',
-        '.cs-dmet  { padding:8px 0; border-right:1px solid rgba(138,110,58,.12); padding-right:16px; margin-right:16px; }',
-        '.cs-dmet:last-child { border-right:none; }',
-        '.cs-dmetv { font-family:'+BN+'; font-size:1.8rem; letter-spacing:.06em; color:rgba(138,110,58,.72); display:block; line-height:1; }',
-        '.cs-dmetl { font-family:'+DS+'; font-size:.42rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(10,10,10,.3); display:block; margin-top:2px; font-weight:300; }',
+        '.cs-dmet  { padding-right:16px; margin-right:16px; border-right:1px solid rgba(10,10,10,.1); }',
+        '.cs-dmet:last-child { border-right:none; padding-right:0; margin-right:0; }',
+        '.cs-dmetv { font-family:'+BN+'; font-size:1.4rem; letter-spacing:.06em; color:rgba(10,10,10,.72); display:block; line-height:1; }',
+        '.cs-dmetl { font-family:'+DS+'; font-size:.4rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(10,10,10,.32); display:block; margin-top:2px; font-weight:300; }',
 
-        /* brand dna grid */
+        /* brand dna — dark ink */
         '.cs-ddna { display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; }',
-        '.cs-ddna-k { font-family:'+DS+'; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(138,110,58,.6); font-weight:300; display:block; margin-bottom:2px; }',
-        '.cs-ddna-v { font-family:'+DS+'; font-size:.88rem; color:rgba(10,10,10,.46); font-weight:300; line-height:1.5; }',
+        '.cs-ddna-k { font-family:'+DS+'; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:2px; }',
+        '.cs-ddna-v { font-family:'+DS+'; font-size:.88rem; color:rgba(10,10,10,.52); font-weight:300; line-height:1.5; }',
 
-        /* right image sidebar — fills full height, flush bottom */
-        '.cs-dside { background:#e8e3d8; display:flex; flex-direction:column; }',
+        /* right sidebar — fills full column height */
+        '.cs-dside { display:flex; flex-direction:column; padding-left:0; }',
 
-        /* hero image — origin story */
-        '.cs-dside-hero { width:100%; aspect-ratio:3/2; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); flex-shrink:0; }',
+        /* each image row aligns with a content section via flex */
+        /* hero — aligns with overview (eyebrow + title) */
+        '.cs-dside-hero { width:100%; object-fit:cover; display:block; filter:brightness(.84) saturate(.88); flex-shrink:0; }',
 
-        /* middle — 2 product images */
+        /* mid — aligns with translation section */
         '.cs-dside-mid { display:grid; grid-template-columns:1fr 1fr; gap:3px; margin-top:3px; flex-shrink:0; }',
         '.cs-dside-mid img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; filter:brightness(.8) saturate(.82); }',
 
-        /* bottom — result image, fills remaining space */
-        '.cs-dside-result { width:100%; flex:1; min-height:160px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }'
+        /* result — fills remaining height, aligns with The Result */
+        '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }'
       ].join('\n');
 
       var html = '<section class="case-study csw">'
-
-        /* top bar */
-        + '<div class="cs-dtop">'
-        +   '<span class="cs-dfrom">Silent Foundry \u2014 Brand Translation Division</span>'
-        +   '<span class="cs-dname">Marshall Amplification</span>'
-        +   '<span class="cs-dref">Reference CS-001 \u00b7 Brand DNA Translation \u00b7 2024</span>'
-        + '</div>'
-
-        /* body */
         + '<div class="cs-dbody">'
 
         /* left */
         +   '<div class="cs-dmain">'
 
+        /* overview — eyebrow aligns with top of hero image */
         +     '<div class="cs-dsec">'
         +       '<span class="cs-dey">'+D.eyebrow+'</span>'
         +       '<div class="cs-dh">'+D.title+'</div>'
         +       '<p class="cs-dp">'+D.body+'</p>'
         +     '</div>'
 
+        /* key numbers */
         +     '<div class="cs-dsec">'
         +       '<span class="cs-dslabel">Key Numbers</span>'
         +       '<div class="cs-dmets">'
@@ -210,11 +197,13 @@ window.addEventListener('resize', fitHeadline);
         +       '</div>'
         +     '</div>'
 
+        /* translation — aligns with 2 product images */
         +     '<div class="cs-dsec">'
         +       '<span class="cs-dslabel">Translation</span>'
         +       '<p class="cs-dp">'+D.translation+'</p>'
         +     '</div>'
 
+        /* brand dna */
         +     '<div class="cs-dsec">'
         +       '<span class="cs-dslabel">Brand DNA</span>'
         +       '<div class="cs-ddna">'
@@ -222,6 +211,7 @@ window.addEventListener('resize', fitHeadline);
         +       '</div>'
         +     '</div>'
 
+        /* the result — aligns with bluetooth image */
         +     '<div class="cs-dsec">'
         +       '<span class="cs-dslabel">The Result</span>'
         +       '<p class="cs-dp">'+D.result+'</p>'
@@ -229,9 +219,9 @@ window.addEventListener('resize', fitHeadline);
 
         +   '</div>'
 
-        /* right sidebar — origin → translation → result */
+        /* right sidebar: origin → translation → result */
         +   '<div class="cs-dside">'
-        +     '<img class="cs-dside-hero" src="'+D.imgs.amp+'" alt=""/>'
+        +     '<img class="cs-dside-hero" src="'+D.imgs.amp+'" style="aspect-ratio:3/2" alt=""/>'
         +     '<div class="cs-dside-mid">'
         +       '<img src="'+D.imgs.headphone+'" alt=""/>'
         +       '<img src="'+D.imgs.acton+'" alt=""/>'
@@ -246,7 +236,6 @@ window.addEventListener('resize', fitHeadline);
     }}
   };
 
-  /* ── ENGINE ── */
   function apply(id) {
     var f = FORMATS[id];
     if (!f) return;
