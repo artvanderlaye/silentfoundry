@@ -201,7 +201,7 @@ window.addEventListener('resize', fitHeadline);
         +   '</div>'
         + '</div>'
         + '<div class="cs-row-right cs-row-right-r1">'
-        +   '<img src="marshall-hero.jpg" style="filter:brightness(.84) saturate(.88);" alt=""/>'
+        +   '<img src="marshall-hero.png" style="filter:brightness(.84) saturate(.88);" alt=""/>'
         + '</div>'
 
         /* ROW 2: Brand DNA | 2-up */
