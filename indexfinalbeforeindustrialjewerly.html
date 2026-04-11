@@ -1618,167 +1618,6 @@ div[style*="grid-template-columns:repeat(3,1fr)"] p {
 }
 
 </style>
-
-<!-- ── INDUSTRIAL JEWELRY SYSTEM ── -->
-<style id="ij-css">
-/* ── JEWELRY BASE ── */
-.ij-gold {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(200,169,110,0.28);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-  pointer-events: none;
-}
-.ij-grey {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(180,175,168,0.22);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-.ij-white {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(244,241,236,0.15);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-.ij-dark {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(10,10,10,0.2);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-/* Hover reveal — parent hover brightens symbol */
-*:hover > .ij-gold, *:hover .ij-gold { color: rgba(200,169,110,0.65); text-shadow: 0 0 8px rgba(200,169,110,0.25); }
-*:hover > .ij-grey, *:hover .ij-grey { color: rgba(180,175,168,0.55); }
-*:hover > .ij-white, *:hover .ij-white { color: rgba(244,241,236,0.4); }
-*:hover > .ij-dark, *:hover .ij-dark { color: rgba(10,10,10,0.45); }
-
-/* Corner/margin absolute positions */
-.ij-corner {
-  position: absolute;
-  font-family: 'Courier New', monospace;
-  font-size: 0.3rem;
-  letter-spacing: 0.12em;
-  pointer-events: none;
-  z-index: 2;
-  line-height: 1;
-}
-.ij-tl { top: 12px; left: 12px; }
-.ij-tr { top: 12px; right: 12px; }
-.ij-bl { bottom: 12px; left: 12px; }
-.ij-br { bottom: 12px; right: 12px; }
-
-/* ── SWITCHER STATES ── */
-/* S0 = Original — all jewelry hidden */
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-gold,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-grey,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-white,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-dark,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-corner,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-abs {
-  display: none !important;
-}
-
-/* S1 — Sparse Gold: only ij-gold text annotations, no corners/margins */
-body.ij-s1 .ij-grey,
-body.ij-s1 .ij-white,
-body.ij-s1 .ij-dark,
-body.ij-s1 .ij-corner,
-body.ij-s1 .ij-abs { display: none !important; }
-body.ij-s1 .ij-gold { display: inline !important; }
-
-/* S2 — Dense Gold: gold + dark (cream sections), no corners/grey */
-body.ij-s2 .ij-grey,
-body.ij-s2 .ij-white,
-body.ij-s2 .ij-corner,
-body.ij-s2 .ij-abs { display: none !important; }
-body.ij-s2 .ij-gold,
-body.ij-s2 .ij-dark { display: inline !important; }
-
-/* S3 — Mixed colours: gold + dark + grey, no corners */
-body.ij-s3 .ij-white,
-body.ij-s3 .ij-corner,
-body.ij-s3 .ij-abs { display: none !important; }
-body.ij-s3 .ij-gold,
-body.ij-s3 .ij-dark,
-body.ij-s3 .ij-grey { display: inline !important; }
-
-/* S4 — Full 218: everything */
-body.ij-s4 .ij-gold,
-body.ij-s4 .ij-dark,
-body.ij-s4 .ij-grey,
-body.ij-s4 .ij-white,
-body.ij-s4 .ij-corner,
-body.ij-s4 .ij-abs { display: inline !important; }
-body.ij-s4 .ij-corner { display: block !important; }
-
-/* ── FLOATING SWITCHER ── */
-#ij-switcher {
-  position: fixed;
-  bottom: 28px;
-  right: 48px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: rgba(10,10,10,0.92);
-  border: 0.5px solid rgba(200,169,110,0.2);
-  padding: 5px 8px;
-  backdrop-filter: blur(8px);
-}
-.ij-sbtn {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: rgba(244,241,236,0.25);
-  background: none;
-  border: none;
-  padding: 3px 6px;
-  cursor: pointer;
-  transition: color 0.2s;
-  white-space: nowrap;
-}
-.ij-sbtn:hover { color: rgba(200,169,110,0.7); }
-.ij-sbtn.ij-on { color: #c8a96e; }
-.ij-sdiv { width: 1px; height: 10px; background: rgba(200,169,110,0.15); margin: 0 2px; }
-</style>
-
-<div id="ij-switcher">
-  <button class="ij-sbtn ij-on" onclick="ijSet(0)">⌀ Original</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(1)">S1 · Sparse</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(2)">S2 · Dense</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(3)">S3 · Mixed</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(4)">S4 · Full</button>
-</div>
-
-<script id="ij-js">
-function ijSet(n){
-  document.body.classList.remove('ij-s1','ij-s2','ij-s3','ij-s4');
-  document.querySelectorAll('.ij-sbtn').forEach(function(b){b.classList.remove('ij-on');});
-  if(n>0) document.body.classList.add('ij-s'+n);
-  document.querySelectorAll('.ij-sbtn')[n].classList.add('ij-on');
-  try{localStorage.setItem('ij-state',n);}catch(e){}
-}
-var _ijs=0;try{_ijs=parseInt(localStorage.getItem('ij-state'))||0;}catch(e){}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){ijSet(_ijs);});}
-else{ijSet(_ijs);}
-</script>
-
 </head>
 <body>
 
@@ -1786,20 +1625,20 @@ else{ijSet(_ijs);}
 <!-- MOBILE MENU -->
   <div class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="index.html#how">How It Works<<span class="ij-gold">∥</span><span class="ij-grey">∥</span>/a>
-    <a href="sf-team.html" target="_blank" rel="noopener">Team<<span class="ij-grey">⊞</span>/a>
-    <a href="sf-contact.html" target="_blank" rel="noopener">Contact<<span class="ij-grey">→|←</span>/a>
+    <a href="index.html#how">How It Works</a>
+    <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
+    <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
   </div>
 
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;position:relative;z-index:1;">
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent<<span class="ij-gold">⌀</span>/span>
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry<<span class="ij-gold">⌀</span>/span>
+        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
+        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
       </a>
         <ul class="nav-links">
       <li><a href="#how">How It Works</a></li>
-      <li><a href="#funds">Investors<<span class="ij-dark">⊞</span><span class="ij-grey">±</span>/a></li>
+      <li><a href="#funds">Investors</a></li>
       <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
       <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
     </ul>
@@ -1813,13 +1652,13 @@ else{ijSet(_ijs);}
   </nav>
 
   <!-- HERO -->
-  <section class="hero"><span class="ij-corner ij-white" style="position:absolute;top:40%;left:20px;font-family:'Courier New',monospace;font-size:0.3rem;letter-spacing:0.1em;color:rgba(244,241,236,0.1);pointer-events:none;z-index:2;writing-mode:vertical-rl;">± ⌀ °</span><span class="ij-corner ij-white" style="position:absolute;top:40%;right:20px;font-family:'Courier New',monospace;font-size:0.3rem;letter-spacing:0.1em;color:rgba(244,241,236,0.1);pointer-events:none;z-index:2;writing-mode:vertical-rl;">⊙ ∥ ▽</span><span class="ij-corner ij-br ij-grey">REF. ⌀3×M6</span><span class="ij-corner ij-bl ij-white">GND ↧</span><span class="ij-corner ij-tr ij-white">¬</span><span class="ij-corner ij-tl ij-white">⌐</span>
+  <section class="hero">
     <div class="hero-bg"></div>
-    <p class="hero-eyebrow">A cross-border<span class="ij-dark">↕</span> venture studio<span class="ij-white">⌙</span></p>
-    <h1 class="hero-headline"><span class="hero-headline-top">INDUSTRIALISING<span class="ij-gold">→|←</span></span><span class="hero-headline-bottom">BRAND SOUL<span class="ij-gold">±0.001</span></span></h1>
+    <p class="hero-eyebrow">A cross-border venture studio</p>
+    <h1 class="hero-headline"><span class="hero-headline-top">INDUSTRIALISING</span><span class="hero-headline-bottom">BRAND SOUL</span></h1>
     <div class="hero-scroll">
       <div class="scroll-line"></div>
-      <span>Scroll<<span class="ij-white">↧</span>/span>
+      <span>Scroll</span>
     </div>
   </section>
 
@@ -1844,26 +1683,26 @@ else{ijSet(_ijs);}
   })();
   </script>
 
-  <!-- WHAT WE DO + WHY NOW<span class="ij-corner ij-br ij-dark">TOL: ±0.001</span><span class="ij-corner ij-bl ij-dark">FINISH: ▽▽▽</span><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">01.0</span> — Combined section -->
+  <!-- WHAT WE DO + WHY NOW — Combined section -->
   <style>
   </style>
   <section class="wwd-section" style="padding:64px 48px 32px;background:var(--cream);"><div class="mw-wrap">
     <!-- WHAT WE DO -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(138,110,58,0.1);">
-      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">What We Do<<span class="ij-dark">⊞</span>/span>
+      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">What We Do</span>
       <div class="wwd-body" style="display:grid;grid-template-columns:1fr;gap:0;align-items:start;">
-        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry is a cross-border industrial M&amp;A venture studio that translates brand equity<span class="ij-dark">▽▽▽</span> into premium products<span class="ij-dark">⌀</span>. We use a micro-PE<span class="ij-dark">⊞</span>/SPV structure<span class="ij-dark">⌐</span> to build our own brands and selectively partner with authentic, high-DNA brands to turn them into product systems<span class="ij-dark">→|←</span>. Our ventures are built on strong unit economics<span class="ij-dark">±</span> and credible paths to licensing, partnership, or acquisition<span class="ij-dark">↧</span>.</p>
+        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry is a cross-border industrial M&amp;A venture studio that translates brand equity into premium products. We use a micro-PE/SPV structure to build our own brands and selectively partner with authentic, high-DNA brands to turn them into product systems. Our ventures are built on strong unit economics and credible paths to licensing, partnership, or acquisition.</p>
       </div>
     </div>
     <!-- WHY NOW -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:32px;">
-      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Why Now<<span class="ij-dark">¬</span><span class="ij-dark">¬</span>/span>
-      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy<span class="ij-dark">¬</span> but product is still hard<span class="ij-dark">⊥</span>. Most brands have demand<span class="ij-dark">↕</span> but no industrial product system. A single product is not enough<span class="ij-dark">→|←</span>. And most ventures are not structured for liquidity<span class="ij-dark">↧</span>.</p>
+      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Why Now</span>
+      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy but product is still hard. Most brands have demand but no industrial product system. A single product is not enough. And most ventures are not structured for liquidity.</p>
     </div>
   </div></section>
 
 
-<!-- CASE STUDY — Marshall --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">02.0</span><span class="ij-corner ij-br ij-dark">▽▽▽ ±0.001</span><span class="ij-corner ij-bl ij-dark">REF: CS-001</span><span class="ij-corner ij-tr ij-dark">SPEC: ⌀3×M6</span>
+<!-- CASE STUDY — Marshall -->
 <style>
   .csw { background-color:#e8e2d9; }
   .cs-wrap { padding-top:48px; padding-bottom:48px; }
@@ -1910,16 +1749,16 @@ else{ijSet(_ijs);}
 
       <!-- ROW 1: Situation + Numbers | Concert image -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dey">Case Study — Marshall DNA Translation<span class="ij-dark">1:2</span></span>
-        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies<span class="ij-dark">⊙</span></div>
-        <p class="cs-dp">By 2010, Marshall&#8217;s core market was shrinking<span class="ij-dark">↕</span>. The brand still had strong equity, but the legacy guitar amplifier category<span class="ij-dark">⌀</span> was no longer enough.</p>
+        <span class="cs-dey">Case Study — Marshall DNA Translation</span>
+        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies</div>
+        <p class="cs-dp">By 2010, Marshall&#8217;s core market was shrinking. The brand still had strong equity, but the legacy guitar amplifier category was no longer enough.</p>
         <div style="margin-top:12px;">
           <span class="cs-dslabel">Key Numbers</span>
           <div class="cs-dmets">
-            <div class="cs-dmet"><span class="cs-dmetv">1962<<span class="ij-dark">°</span>/span><span class="cs-dmetl">Founded</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">60+<<span class="ij-dark">∥</span>/span><span class="cs-dmetl">Years of Heritage</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$4B+<<span class="ij-dark">↕</span>/span><span class="cs-dmetl">Expanded Market</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$1.1B<<span class="ij-dark">±0.001</span>/span><span class="cs-dmetl">Acquired in 2025</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">1962</span><span class="cs-dmetl">Founded</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">60+</span><span class="cs-dmetl">Years of Heritage</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">$4B+</span><span class="cs-dmetl">Expanded Market</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">$1.1B</span><span class="cs-dmetl">Acquired in 2025</span></div>
           </div>
         </div>
       </div>
@@ -1929,14 +1768,14 @@ else{ijSet(_ijs);}
 
       <!-- ROW 2: Brand DNA | 2-up images -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dslabel">Brand DNA<<span class="ij-gold">▽▽▽</span><span class="ij-dark">▽▽▽</span>/span>
+        <span class="cs-dslabel">Brand DNA</span>
         <div class="cs-ddna">
-          <div><span class="cs-ddna-k">Tactile<<span class="ij-dark">▽▽▽</span>/span><span class="cs-ddna-v">Pebbled tolex amp texture</span></div>
-          <div><span class="cs-ddna-k">Physical<<span class="ij-dark">⌙</span>/span><span class="cs-ddna-v">Weighted brass knobs<span class="ij-dark">⌙</span> and metal controls</span></div>
+          <div><span class="cs-ddna-k">Tactile</span><span class="cs-ddna-v">Pebbled tolex amp texture</span></div>
+          <div><span class="cs-ddna-k">Physical</span><span class="cs-ddna-v">Weighted brass knobs and metal controls</span></div>
           <div><span class="cs-ddna-k">Mechanical</span><span class="cs-ddna-v">Toggle-click switch</span></div>
-          <div><span class="cs-ddna-k">Acoustic<<span class="ij-dark">∠</span>/span><span class="cs-ddna-v">The sound was tuned to feel recognisably Marshall</span></div>
+          <div><span class="cs-ddna-k">Acoustic</span><span class="cs-ddna-v">The sound was tuned to feel recognisably Marshall</span></div>
           <div><span class="cs-ddna-k">Intangible</span><span class="cs-ddna-v">The speakers kept the original stage presence</span></div>
-          <div><span class="cs-ddna-k">CMF<<span class="ij-gold">±</span><span class="ij-dark">±</span>/span><span class="cs-ddna-v">Colour, material, and finish<span class="ij-dark">▽</span> were applied consistently</span></div>
+          <div><span class="cs-ddna-k">CMF</span><span class="cs-ddna-v">Colour, material, and finish were applied consistently</span></div>
         </div>
       </div>
       <div class="cs-row-right cs-gap-bottom">
@@ -1948,8 +1787,8 @@ else{ijSet(_ijs);}
 
       <!-- ROW 3: Translation + Result | Bluetooth image -->
       <div class="cs-row-left">
-        <span class="cs-dslabel">Translation<<span class="ij-dark">⊙</span>/span>
-        <p class="cs-dp">Marshall moved beyond amplifiers into headphones, speakers<span class="ij-dark">→|←</span>, and home audio. This was not merch or logo licensing<span class="ij-dark">¬</span>. It was real product-level DNA translation<span class="ij-dark">1:2</span> into a larger category.<br/><br/>Marshall expanded into a much larger category without losing what made<span class="ij-dark">∥</span> the brand distinctive<span class="ij-dark">▽▽▽</span>. Stronger relevance in China<span class="ij-dark">→|←</span><span class="ij-dark">→|←</span>. A $1.1B acquisition<span class="ij-dark">↧</span> in early 2025.</p>
+        <span class="cs-dslabel">Translation</span>
+        <p class="cs-dp">Marshall moved beyond amplifiers into headphones, speakers, and home audio. This was not merch or logo licensing. It was real product-level DNA translation into a larger category.<br/><br/>Marshall expanded into a much larger category without losing what made the brand distinctive. Stronger relevance in China. A $1.1B acquisition in early 2025.</p>
       </div>
       <div class="cs-row-right cs-show-mobile">
         <img src="marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="filter:brightness(.82) saturate(.85);" alt=""/>
@@ -1959,67 +1798,67 @@ else{ijSet(_ijs);}
   </div>
 </section>
 
-<!-- THESIS QUOTE --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">03.0</span><span class="ij-corner ij-br ij-dark">⊥</span><span class="ij-corner ij-tr ij-dark">¬</span><span class="ij-corner ij-tl ij-dark">⌐</span>
+<!-- THESIS QUOTE -->
   <section style="padding:100px 48px;background:#ede8e0;text-align:center;">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
       <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">The Foundry Thesis</span>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;">The best products<span class="ij-dark">⌙</span></p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;">Won't be invented<span class="ij-dark">∥</span></p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;">They'll be extracted<span class="ij-dark">⌀</span></p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;">The best products</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;">Won't be invented</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;">They'll be extracted</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;">
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
-        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.28);">Matthew, Silent Foundry<span class="ij-dark">±0.001</span></p>
+        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.28);">Matthew, Silent Foundry</p>
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
       </div>
     </div>
   </section>
 
 <!-- P7: How It Works -->
-  <section id="how" style="padding:80px 48px;background:var(--black);"><span class="ij-corner ij-br ij-grey">TOL: ±0.001</span><span class="ij-corner ij-bl ij-grey">FINISH: ▽▽▽</span>
+  <section id="how" style="padding:80px 48px;background:var(--black);">
     <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
       <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;align-self:start;padding-top:28px;">How It Works</span>
       <div class="accordion-steps" style="margin-top:0;">
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">01</span><span class="ij-gold">∠</span><span class="accordion-title">Identify</span></div>
-            <span class="accordion-icon">∠</span>
+            <div class="accordion-left"><span class="accordion-num">01</span><span class="accordion-title">Identify</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We find the right brands or concepts to build around. That includes creators, celebrity-backed brands<span class="ij-gold">⌐</span>, heritage names, premium service businesses, and other high-DNA concepts<span class="ij-gold">∠</span> with clear room to expand. We use the same process for our own ventures.</p></div>
+          <div class="accordion-body"><p>We find the right brands or concepts to build around. That includes creators, celebrity-backed brands, heritage names, premium service businesses, and other high-DNA concepts with clear room to expand. We use the same process for our own ventures.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">02</span><span class="ij-gold">∥</span><span class="accordion-title">Select</span></div>
-            <span class="accordion-icon">∥</span>
+            <div class="accordion-left"><span class="accordion-num">02</span><span class="accordion-title">Select</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We choose the opportunities where the fit is strongest. We use AI, internal market analysis<span class="ij-gold">¬</span>, and China trend tracking to find the right match between brand, category, product direction, timing, and local demand. Then we focus our outreach where the commercial case is strongest<span class="ij-gold">⊥</span>.</p></div>
+          <div class="accordion-body"><p>We choose the opportunities where the fit is strongest. We use AI, internal market analysis, and China trend tracking to find the right match between brand, category, product direction, timing, and local demand. Then we focus our outreach where the commercial case is strongest.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">03</span><span class="ij-gold">▽</span><span class="accordion-title">Design</span></div>
-            <span class="accordion-icon">▽</span>
+            <div class="accordion-left"><span class="accordion-num">03</span><span class="accordion-title">Design</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We decide what the product should be and how the brand should take physical form. This includes the creative direction behind it: what to build, why it fits, how it should feel<span class="ij-gold">▽</span>, and how the system can grow<span class="ij-gold">↕</span> beyond a single object.</p></div>
+          <div class="accordion-body"><p>We decide what the product should be and how the brand should take physical form. This includes the creative direction behind it: what to build, why it fits, how it should feel, and how the system can grow beyond a single object.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">04</span><span class="ij-gold">⊞</span><span class="accordion-title">Structure<<span class="ij-gold">⊥</span>/span></div>
-            <span class="accordion-icon">⊞</span>
+            <div class="accordion-left"><span class="accordion-num">04</span><span class="accordion-title">Structure</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We set up the commercial, operating, and financing model around the opportunity. That includes rights, incentives, ownership, operator involvement, manufacturing pathways<span class="ij-gold">⌙</span>, and the broader execution framework. Where it makes sense, we can also help finance projects through our investor and family office network<span class="ij-gold">↕</span>.</p></div>
+          <div class="accordion-body"><p>We set up the commercial, operating, and financing model around the opportunity. That includes rights, incentives, ownership, operator involvement, manufacturing pathways, and the broader execution framework. Where it makes sense, we can also help finance projects through our investor and family office network.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">05</span><span class="ij-gold">⊥</span><span class="accordion-title">Execute</span></div>
-            <span class="accordion-icon">⊥</span>
+            <div class="accordion-left"><span class="accordion-num">05</span><span class="accordion-title">Execute</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We turn the concept into a real product and bring it to market. That includes industrial design<span class="ij-gold">⌀</span>, engineering, prototyping, sourcing<span class="ij-gold">▽</span>, cross-border manufacturing<span class="ij-gold">⌀3×M6</span>, and rollout with operators in China<span class="ij-gold">→|←</span>.</p></div>
+          <div class="accordion-body"><p>We turn the concept into a real product and bring it to market. That includes industrial design, engineering, prototyping, sourcing, cross-border manufacturing, and rollout with operators in China.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">06</span><span class="ij-gold">↕</span><span class="accordion-title">Scale</span></div>
-            <span class="accordion-icon">↕</span>
+            <div class="accordion-left"><span class="accordion-num">06</span><span class="accordion-title">Scale</span></div>
+            <span class="accordion-icon">+</span>
           </div>
-          <div class="accordion-body"><p>We build beyond the first product. Once proven, the model can grow into new products, new categories<span class="ij-gold">↕</span>, and new commercial paths. The goal is a platform<span class="ij-gold">⊞</span>, not a one-off object<span class="ij-gold">⊞</span>.</p></div>
+          <div class="accordion-body"><p>We build beyond the first product. Once proven, the model can grow into new products, new categories, and new commercial paths. The goal is a platform, not a one-off object.</p></div>
         </div>
       </div>
     </div></div>
@@ -2028,7 +1867,7 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- ENGINEERING SWITCHER --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">04.0</span><span class="ij-corner ij-br ij-dark">TOL: ±0.001</span><span class="ij-corner ij-bl ij-dark">SPEC_01: ⊙</span><span class="ij-corner ij-tr ij-dark">MATL: ⌀3×M6</span>
+  <!-- ENGINEERING SWITCHER -->
   <style>
     .es2-opt { display:none; }
     .es2-opt.active { display:block; }
@@ -2100,11 +1939,11 @@ else{ijSet(_ijs);}
     <div style="padding:64px 0;margin-bottom:0;">
       <div class="mw-wrap"><div class="we-build-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;align-items:stretch;">
         <div style="padding-right:56px;display:flex;flex-direction:column;justify-content:flex-start;border:1px solid rgba(10,10,10,0.1);padding:32px;">
-          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">We build the files.<<span class="ij-dark">⌙</span>/p>
+          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">We build the files.</p>
           <p class="we-build-body" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">From PCB layouts to production tooling, we build the files that take products into production. We turn brand DNA into real CAD, working prototypes, and manufacturable products. Our team works across industrial design, mechanical engineering, electronics, prototyping, tooling, supply chain management, and QC, so the product that gets made still reflects the original idea.</p>
         </div>
         <div style="background:rgba(10,10,10,0.03);padding:32px;">
-          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">Manufacturing 2.0<<span class="ij-dark">⌀3×M6</span>/p>
+          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">Manufacturing 2.0</p>
           <div style="display:flex;flex-direction:column;gap:0;">
             <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Re-Skin</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Proven Platforms · Premium Feel · Lower Capex<span class="sf-eng-sym">▽▽▽ · ±0.001</span></span></div>
             <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Development</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">CAD · DFM · Prototyping · Supply Chain<span class="sf-eng-sym">⌀ · 1:2 · ↧</span></span></div>
@@ -2119,7 +1958,7 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- FACTORY IMAGE BREAK --><span class="ij-corner ij-tl ij-dark">⌐</span><span class="ij-corner ij-tr ij-dark">¬</span>
+  <!-- FACTORY IMAGE BREAK -->
   <div style="position:relative;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;"></div>
     <div style="height:60px;position:relative;"></div>
@@ -2183,50 +2022,50 @@ else{ijSet(_ijs);}
   .cpl-d1-imgs img:nth-child(2), .cpl-d1-imgs img:nth-child(3) { display:none !important; }
 }
 </style>
-<section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><span class="ij-corner ij-tr ij-dark">ISO: 1:2</span><span class="ij-corner ij-br ij-dark">⌀ ± °</span><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
+<section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:48px 56px 48px;align-items:start;" class="cpl-d1-top">
       <div class="cpl-china-left">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation<span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">05.0</span><<span class="ij-dark">→|←</span>/span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,2.8vw,3.2rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China<<span class="ij-dark">1:2</span>/h2>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity<span class="ij-dark">→|←</span> into China-fit product and business concepts<span class="ij-dark">⊞</span> designed to work with local operators.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,2.8vw,3.2rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity into China-fit product and business concepts designed to work with local operators.</p>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:flex-start;">
         <div class="china-accordion cpl-china-acc" style="margin-top:0;">
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<<span class="ij-dark">⌐</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⌐</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture<span class="ij-dark">∠</span>, and channel logic<span class="ij-dark">∥</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture, and channel logic.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<<span class="ij-dark">⊞</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⊞</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales<span class="ij-dark">↧</span> — so every touchpoint is manufacturable<span class="ij-dark">⌀</span> and governed.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales — so every touchpoint is manufacturable and governed.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<<span class="ij-dark">±</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">±</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer<span class="ij-dark">↕</span> — subscriptions, accessories, or service contracts<span class="ij-dark">↕</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer — subscriptions, accessories, or service contracts.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<<span class="ij-dark">↧</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">↧</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture<span class="ij-dark">∥</span> — so the brand enters China with the right partner and the right terms<span class="ij-dark">→|←</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture — so the brand enters China with the right partner and the right terms.</p>
             </div>
           </div>
         </div>
@@ -2241,30 +2080,30 @@ else{ijSet(_ijs);}
 </section>
 
 
-  <!-- VALUE --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">06.0</span><span class="ij-corner ij-br ij-dark">FINISH: ▽▽▽</span><span class="ij-corner ij-bl ij-dark">⊙ ⌀ ∥</span><span class="ij-corner ij-tr ij-dark">MATL: ±0.001</span>
+  <!-- VALUE -->
 <!-- VALUE L1: Title embedded as first card slot -->
   <section class="value" style="padding-top:120px;padding-bottom:160px;background:#ede8e0 !important;background-image:url('cad_texture.jpeg') !important;background-size:cover !important;background-position:center !important;background-attachment:fixed !important;position:relative;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
-    <p class="label" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation<<span class="ij-dark">∥</span>/p>
+    <p class="label" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;z-index:1;">
       <div style="padding:56px 48px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);display:flex;flex-direction:column;justify-content:center;grid-row:span 2;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side<span class="ij-dark">∥</span></h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side</h2>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands<span class="ij-dark">∠</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">New revenue and premium product<span class="ij-dark">↕</span> expansion without building the full product engine<span class="ij-dark">⌙</span> in-house<span class="ij-dark">⌙</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">New revenue and premium product expansion without building the full product engine in-house.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Factories<span class="ij-dark">⊥</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Premium, authentic demand<span class="ij-dark">⊙</span> backed by clearer specifications<span class="ij-dark">±</span>, stronger engineering, and tighter execution<span class="ij-dark">⊥</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Factories <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Premium, authentic demand backed by clearer specifications, stronger engineering, and tighter execution.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Operators<span class="ij-dark">↕</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Turnkey international brands and product systems that can be localised and scaled<span class="ij-dark">→|←</span> for domestic markets<span class="ij-dark">→|←</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Operators <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Turnkey international brands and product systems that can be localised and scaled for domestic markets.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Investors<span class="ij-dark">⊞</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Earlier, clearer liquidity paths through strategic sales, mergers<span class="ij-dark">↧</span>, and acquisitions<span class="ij-dark">↧</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Investors <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Earlier, clearer liquidity paths through strategic sales, mergers, and acquisitions.</p>
       </div>
     </div>
     <script>
@@ -2286,7 +2125,7 @@ else{ijSet(_ijs);}
   </section>
 
 
-  <!-- SWITCH 2.0 FEATURED SECTION --><span class="ij-corner ij-tl ij-grey" style="font-size:0.28rem;letter-spacing:0.2em;">07.0</span><span class="ij-corner ij-br ij-grey">TOL: ±0.001</span><span class="ij-corner ij-bl ij-grey">REF: SW-001</span><span class="ij-corner ij-tr ij-grey">SPEC: ⌀ ± ▽</span>
+  <!-- SWITCH 2.0 FEATURED SECTION -->
   <section id="featured" style="padding:0;">
   <style>
     .fp-opt { display:none; }
@@ -2363,14 +2202,14 @@ else{ijSet(_ijs);}
       <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,20,30,0.75) 0%,rgba(10,10,10,0.35) 45%,rgba(10,10,10,0.02) 75%,transparent 100%);pointer-events:none;z-index:1;"></div>
       <!-- Unified bottom-left overlay — slide 1 only -->
       <div id="c16-overlay" style="position:absolute;bottom:48px;left:48px;z-index:2;transition:opacity 0.4s ease;">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project<<span class="ij-gold">⌀</span>/span>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project</span>
         <img src="Switchlogowhite2.png" style="height:32px;max-width:200px;width:auto;object-fit:contain;display:block;margin-bottom:6px;mix-blend-mode:screen;" id="switch-logo-img" />
         <img src="Logo_escrambler.jpg" style="height:14px;max-width:120px;width:auto;object-fit:contain;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
         <p class="fp-body-text" style="font-size:clamp(0.85rem,1vw,0.95rem);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle, now being relaunched around a larger opportunity.</p>
         <div style="display:flex;gap:28px;">
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh<<span class="ij-gold">⌀</span>/span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km<<span class="ij-gold">↕</span>/span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h<<span class="ij-gold">∥</span>/span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
         </div>
       </div>
       <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
@@ -2384,8 +2223,8 @@ else{ijSet(_ijs);}
     <!-- THE ACQUISITION -->
     <div style="background:var(--cream);padding:64px 48px;"><div class="mw-wrap">
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:20px;border-bottom:1px solid rgba(0,180,216,0.2);">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition<<span class="ij-gold">1:2</span>/span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA<span class="ij-gold">⌙</span>. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand<span class="ij-gold">▽▽▽</span>. Its geometry, materials, and manufacturing language can extend far beyond the bike itself<span class="ij-gold">↕</span><span class="ij-gold">↕</span>. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product<span class="ij-gold">⌀</span><span class="ij-gold">⌀</span>.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition</span>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand. Its geometry, materials, and manufacturing language can extend far beyond the bike itself. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product.</p>
       </div>
     </div></div>
     <!-- SWITCH DNA BLOCK -->
@@ -2393,17 +2232,17 @@ else{ijSet(_ijs);}
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(0,180,216,0.2);">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Brand DNA</span>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form<<span class="ij-gold">∠</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
           <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Structure</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Exposed tubes, welds, brackets, and visible fasteners.</p></div>
           <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">CMF</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Brushed aluminum, abs, and restrained functional colors.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details<<span class="ij-gold">⌙</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance<<span class="ij-gold">↕</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing<<span class="ij-gold">⌀3×M6</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Hardware As A Service<<span class="ij-gold">⌀3×M6</span>/span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic<span class="ij-gold">⌀3×M6</span>.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Hardware As A Service</span>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic.</p>
       </div>
     </div></div>
     <!-- New products with SWITCH blue -->
@@ -2484,9 +2323,9 @@ else{ijSet(_ijs);}
   </section>
 
 
-  <!-- LOGOS --><span class="ij-corner ij-tl ij-grey">⌐</span><span class="ij-corner ij-tr ij-grey">¬</span>
+  <!-- LOGOS -->
   <div class="logos">
-    <p class="label reveal" style="color:#00b4d8;">As Seen On<<span class="ij-grey">▽▽▽</span>/p>
+    <p class="label reveal" style="color:#00b4d8;">As Seen On</p>
     <div class="logo-grid">
       <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7d29fed7-7d14-4abb-b12d-1b58b47e193c/HYPEBEAST-png-logo.png" alt="Hypebeast" />
       <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e9427ed1-f206-425e-ab38-603d7da7c150/designboom-logo-png.png" alt="Designboom" style="max-height:48px;opacity:0.35;" />
@@ -2507,10 +2346,10 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- FUNDS --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">08.0</span><span class="ij-corner ij-br ij-dark">VER: ±0.001</span><span class="ij-corner ij-tr ij-dark">TYPE: ⌀ RISK: ± OUTPUT: ↕</span>
+  <!-- FUNDS -->
   <section class="funds" id="funds">
-    <p class="label reveal">Investment Paths<<span class="ij-dark">⌀</span>/p>
-    <h2 class="section-title">Same engine<br/><em>different</em> ownership.<span class="ij-dark">∥</span></h2>
+    <p class="label reveal">Investment Paths</p>
+    <h2 class="section-title">Same engine<br/><em>different</em> ownership.</h2>
     <style>
       .fund-expand { font-size:0.88rem; line-height:1.75; color:rgba(10,10,10,0.6); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
       .fund-card:hover .fund-expand { max-height:160px; opacity:1; }
@@ -2519,36 +2358,36 @@ else{ijSet(_ijs);}
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e3fb1837-73e8-4dd7-bdf0-9d2e68d83582/e70a2636f73da2c6c55b80c7d2dec8ca56fa48ea04b5b80a7139f7d2bf13dc9e.jpg" alt="Fund A" />
         <div class="fund-body">
-          <p class="fund-tag">Fund A<<span class="ij-dark">⌐</span>/p>
-          <h3>Proprietary<<span class="ij-dark">⊞</span>/h3>
-          <p>We invest in our own brands and companies, where we control the IP, product system<span class="ij-dark">⊞</span>, and long-term value creation<span class="ij-dark">∥</span><span class="ij-dark">↕</span>.</p>
-          <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships<span class="ij-dark">⊞</span>, and long-term value creation. We carry the risk and the upside.</div>
+          <p class="fund-tag">Fund A</p>
+          <h3>Proprietary</h3>
+          <p>We invest in our own brands and companies, where we control the IP, product system, and long-term value creation.</p>
+          <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships, and long-term value creation. We carry the risk and the upside.</div>
         </div>
       </div>
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/9cc29928-94be-49b9-a4e4-c87ff6f41e92/640+%282%29.png" alt="Fund B" />
         <div class="fund-body">
-          <p class="fund-tag">Fund B<<span class="ij-dark">¬</span>/p>
-          <h3>Partnership<<span class="ij-dark">→|←</span>/h3>
-          <p>We back external brands through flexible structures — from product translation and licensing<span class="ij-dark">1:2</span> to full investments and acquisitions.</p>
-          <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more<span class="ij-dark">1:2</span> involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
+          <p class="fund-tag">Fund B</p>
+          <h3>Partnership</h3>
+          <p>We back external brands through flexible structures — from product translation and licensing to full investments and acquisitions.</p>
+          <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
         </div>
       </div>
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/2b0a4fc5-52b9-46f7-bdfd-4a444e612091/Bali-Uluwatu.jpg" alt="Exits" />
         <div class="fund-body">
-          <p class="fund-tag">Exits<<span class="ij-dark">GND ↧</span>/p>
-          <h3>Liquidity<<span class="ij-dark">↕</span>/h3>
-          <p>We build toward earlier, cleaner exit pathways — transferable value<span class="ij-dark">→|←</span> that can be sold, licensed, or rolled into larger strategic groups.</p>
-          <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale<span class="ij-dark">↧</span>, licensing, strategic roll-up, or other forms of exit. The goal is optionality<span class="ij-dark">⌐</span>, not a single mandatory outcome<span class="ij-dark">⌐</span>.</div>
+          <p class="fund-tag">Exits</p>
+          <h3>Liquidity</h3>
+          <p>We build toward earlier, cleaner exit pathways — transferable value that can be sold, licensed, or rolled into larger strategic groups.</p>
+          <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale, licensing, strategic roll-up, or other forms of exit. The goal is optionality, not a single mandatory outcome.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA --><span class="ij-corner ij-tl ij-grey" style="font-size:0.28rem;letter-spacing:0.2em;">09.0</span><span class="ij-corner ij-br ij-grey">¬</span><span class="ij-corner ij-tr ij-grey">SPEC: ⌀3×M6</span><span class="ij-corner ij-tl ij-grey">⌐</span>
+  <!-- CTA -->
   <section class="cta">
-    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together<<span class="ij-gold">⌀</span>/p>
+    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together</p>
     <style>
       @keyframes shimmer-product {
         0%   { background-position: -200% center; }
@@ -2576,33 +2415,33 @@ else{ijSet(_ijs);}
         letter-spacing: 0.14em;
       }
     </style>
-    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product<span class="ij-gold">1:2</span>?</span></h2>
-    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth<span class="ij-gold">▽▽▽</span><span class="ij-gold">▽▽▽</span> industrializing<span class="ij-gold">⌙</span>, let's talk.</p>
-    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership<<span class="ij-gold">→|←</span>/a>
+    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span></h2>
+    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.</p>
+    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership</a>
   </section>
 
-  <!-- FOOTER --><span class="ij-corner ij-br ij-grey">VER: 2026.04.±</span><span class="ij-corner ij-bl ij-grey">GND ↧</span>
+  <!-- FOOTER -->
   <footer>
     <div class="reveal">
       <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:8px;">
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
       </a>
-      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into<span class="ij-gold">⊙</span> real products<span class="ij-gold">⌀</span>.</p>
+      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
     <div class="footer-col">
-      <h5>Navigate<<span class="ij-gold">→</span>/h5>
+      <h5>Navigate</h5>
       <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
       <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
-      <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy<<span class="ij-grey">⊞</span>/a>
-      <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use<<span class="ij-grey">⌐</span>/a>
+      <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use</a>
     </div>
     <div class="footer-col">
-      <h5>Hong Kong<<span class="ij-gold">↧</span>/h5>
+      <h5>Hong Kong</h5>
       <address>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road<br/>Wanchai</address>
     </div>
     <div class="footer-col">
-      <h5>Shanghai<<span class="ij-gold">↧</span>/h5>
+      <h5>Shanghai</h5>
       <address>Room 333, 3/F<br/>Building 1, No. 2001<br/>Yanggao North Road<br/>Free Trade Zone</address>
     </div>
     <svg class="sf-footer-triangle" width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2610,7 +2449,7 @@ else{ijSet(_ijs);}
   </svg>
 </footer>
   <div class="footer-bottom">
-    <span>© 2026 Silent Foundry Group<span class="ij-gold">⌀3×M6</span>. All rights reserved.</span>
+    <span>© 2026 Silent Foundry Group. All rights reserved.</span>
 
   </div>
 
