@@ -200,7 +200,7 @@ window.addEventListener('resize', fitHeadline);
         +     '</div>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-row-right cs-row-right-r1 cs-gap-bottom">'
+        + '<div class="cs-row-right cs-row-right-r1">'
         +   '<img src="marshall-hero.jpg" style="filter:brightness(.84) saturate(.88);" alt=""/>'
         + '</div>'
 
