@@ -75,7 +75,7 @@ body.v11-active nav * { cursor: none !important; }
     .hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('hero1.png');
+      background-image: url('https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/d3800cd0-b166-4d4d-acae-185c89d7d2bc/speaker-4.jpg');
       background-size: cover;
       background-position: center;
       filter: brightness(0.35);
@@ -1142,8 +1142,7 @@ body.v11-active nav * { cursor: none !important; }
       font-size: 0.75rem;
       letter-spacing: 0.25em;
       color: rgba(200,169,110,0.5);
-      min-width: 36px;
-      padding-right: 8px;
+      min-width: 28px;
     }
     .accordion-title {
       font-family: var(--font-display);
@@ -1465,27 +1464,6 @@ body.v11-active nav * { cursor: none !important; }
     </div>
   </section>
 
-  <!-- HERO IMAGE FALLBACK -->
-  <script>
-  (function(){
-    var formats = ['hero1.png','hero1.jpg','hero1.jpeg','hero1.webp'];
-    var idx = 0;
-    function tryNext() {
-      if (idx >= formats.length) return;
-      var img = new Image();
-      img.onload = function() {
-        document.querySelector('.hero-bg').style.backgroundImage = "url('" + formats[idx] + "')";
-      };
-      img.onerror = function() {
-        idx++;
-        tryNext();
-      };
-      img.src = formats[idx];
-    }
-    tryNext();
-  })();
-  </script>
-
   <!-- WHAT WE DO + WHY NOW — Combined section -->
   <style>
   </style>
@@ -1797,7 +1775,7 @@ body.v11-active nav * { cursor: none !important; }
 </style>
 <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:56px 56px 48px;" class="cpl-d1-top">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:72px 56px 48px;" class="cpl-d1-top">
       <div class="cpl-china-left">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
@@ -2000,7 +1978,6 @@ body.v11-active nav * { cursor: none !important; }
         <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand. Its geometry, materials, and manufacturing language can extend far beyond the bike itself. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product.</p>
       </div>
     </div></div>
-    <div style="width:100%;height:1px;background:rgba(0,180,216,0.2);"></div>
     <!-- SWITCH DNA BLOCK -->
     <div style="background:var(--cream);padding:96px 48px;"><div class="mw-wrap">
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(0,180,216,0.2);">
@@ -2525,10 +2502,14 @@ body.v11-active .accordion-item.open-item {
 }
 
 /* ── 18. ACCORDION SCROLL REVEAL ── */
-/* accordion reveal removed — items visible by default */
 body.v11-active .accordion-item {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+body.v11-active .accordion-item.v11-acc-revealed {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
 }
 
 /* ── 19. ACCORDION BODY SMOOTH FADE ── */
@@ -2609,11 +2590,6 @@ body.v11-active .fund-expand {
 body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition: opacity 0.5s ease !important; pointer-events: none !important; }
 body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
 
-/* ── CREAM ZONE CURSOR ── */
-body.v11-active.v11-cream-zone #v11-cursor { border-color: rgba(10,10,10,0.35) !important; transition: border-color 0.3s ease !important; }
-body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.6) !important; transition: background 0.3s ease !important; }
-body.v11-active.v11-cream-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.2) !important; transition: border-color 0.3s ease !important; }
-
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
 /* Status dot always visible — slight opacity on cream */
 body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.45) !important; transition: none !important; }
@@ -2621,7 +2597,7 @@ body.v11-active.v11-cream-zone #v11-status-dot { background: #c8a96e !important;
 /* Dark cursor on gold CTA sections */
 body.v11-active.v11-cta-zone #v11-cursor { border-color: rgba(10,10,10,0.7) !important; }
 body.v11-active #v11-cursor-dot { background: #c8a96e; }
-body.v11-active #v11-cursor-ring { border-color: rgba(200,169,110,0.5); }
+body.v11-active #v11-cursor-ring { border-color: rgba(200,169,110,0.25); }
 body.v11-active.v11-cta-zone #v11-cursor-dot { background: rgba(10,10,10,0.7) !important; }
 body.v11-active.v11-cta-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.3) !important; }
 body.v11-active.v11-footer-zone #v11-cursor { border-color: rgba(244,241,236,0.6) !important; transition: border-color 0.3s ease !important; }

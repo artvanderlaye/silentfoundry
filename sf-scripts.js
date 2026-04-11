@@ -130,12 +130,12 @@ window.addEventListener('resize', fitHeadline);
         /* flat cream background */
         '.csw { background-color:#e8e2d9; position:relative; }',
         '.csw::before { content:none; }',
-        '.cs-dbody { position:relative; z-index:1; display:grid; grid-template-columns:1fr 380px; align-items:stretch; border-top:1px solid rgba(138,110,58,0.18); }',
-        '.cs-dleft { padding:48px 48px 48px 48px; display:flex; flex-direction:column; justify-content:center; }',
+        '.cs-dbody { position:relative; z-index:1; display:grid; grid-template-columns:1fr 380px; align-items:stretch; }',
+        '.cs-dleft { padding:32px 40px; display:flex; flex-direction:column; justify-content:center; }',
         '.cs-dright { overflow:hidden; }',
-        '.cs-dright img { width:100%; height:100%; object-fit:cover; display:block; }',
-        '.cs-dsec { padding-bottom:0; margin-bottom:0; }',
-        '.cs-drow-divider { grid-column:1/-1; height:1px; background:rgba(138,110,58,0.18); }',
+        '.cs-dsec { padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid rgba(138,110,58,0.15); }',
+        '.cs-dsec:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }',
+        '.cs-drow-gap { display:grid; grid-template-columns:1fr 1fr; gap:3px; height:100%; }',
         '.cs-dslabel { font-family:'+DS+'; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; }',
         '.cs-dey { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }',
         '.cs-dh  { font-family:'+BN+'; font-size:clamp(2.2rem,3.5vw,4rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:12px; }',
@@ -155,15 +155,23 @@ window.addEventListener('resize', fitHeadline);
         '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }',
         '@media(max-width:768px){',
         '  .cs-dbody { grid-template-columns:1fr; }',
-        '  .cs-dleft { padding:32px 24px; }',
+        '  .cs-dleft { padding:28px 24px; }',
         '  .cs-dright { display:none; }',
-        '  .cs-drow-divider { display:none; }',
+        '  .cs-dright.cs-mobile-show { display:block; }',
+        '  .cs-dright.cs-mobile-show img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }',
         '  .cs-dmets { grid-template-columns:repeat(2,1fr); gap:12px 0; }',
         '  .cs-ddna { grid-template-columns:1fr; }',
         '}'
       ].join('\n');
 
+      /* top section boundary divider — outside grid */
+      var dividerTop = '<div style="width:100%;height:1px;background:rgba(138,110,58,0.18);"></div>';
+      var dividerBottom = '<div style="width:100%;height:1px;background:rgba(138,110,58,0.18);"></div>';
+
       var html = '<section class="case-study csw">'
+        + dividerTop
+
+        /* grid starts here */
         + '<div class="cs-dbody">'
 
         /* ROW 1: Situation + Numbers | Amp image */
@@ -173,22 +181,23 @@ window.addEventListener('resize', fitHeadline);
         +     '<div class="cs-dh">'+D.title+'</div>'
         +     '<p class="cs-dp">'+D.body+'</p>'
         +   '</div>'
-        +   '<div class="cs-dsec" style="margin-top:28px;">'
+        +   '<div class="cs-dsec" style="margin-top:4px;">'
         +     '<span class="cs-dslabel">Key Numbers</span>'
         +     '<div class="cs-dmets">'
         + D.metrics.map(function(m){ return '<div class="cs-dmet"><span class="cs-dmetv">'+m.val+'</span><span class="cs-dmetl">'+m.lbl+'</span></div>'; }).join('')
         +     '</div>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-dright">'
+        + '<div class="cs-dright" style="height:auto;">'
         +   '<img src="'+D.imgs.amp+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.84) saturate(.88);" alt=""/>'
         + '</div>'
 
-        /* DIVIDER 1 */
-        + '<div class="cs-drow-divider"></div>'
+        /* row divider — left column line only, right side gap */
+        + '<div style="padding:0 40px;border-top:1px solid rgba(138,110,58,0.15);"></div>'
+        + '<div style="height:3px;background:#e8e2d9;"></div>'
 
         /* ROW 2: Brand DNA | 2-up images */
-        + '<div class="cs-dleft" style="padding-top:28px;">'
+        + '<div class="cs-dleft">'
         +   '<div class="cs-dsec">'
         +     '<span class="cs-dslabel">Brand DNA</span>'
         +     '<div class="cs-ddna">'
@@ -203,28 +212,27 @@ window.addEventListener('resize', fitHeadline);
         +   '</div>'
         + '</div>'
 
-        /* DIVIDER 2 */
-        + '<div class="cs-drow-divider"></div>'
+        /* row divider */
+        + '<div style="padding:0 40px;border-top:1px solid rgba(138,110,58,0.15);"></div>'
+        + '<div style="height:3px;background:#e8e2d9;"></div>'
 
-        /* ROW 3: Translation + Result | Bluetooth image */
-        + '<div class="cs-dleft" style="padding-top:28px;">'
+        /* ROW 3: Translation + Result | Bluetooth image (shown on mobile too) */
+        + '<div class="cs-dleft">'
         +   '<div class="cs-dsec">'
         +     '<span class="cs-dslabel">Translation</span>'
         +     '<p class="cs-dp">'+D.translation+'</p>'
         +   '</div>'
-        +   '<div class="cs-dsec" style="margin-top:28px;">'
+        +   '<div style="margin-top:4px;">'
         +     '<span class="cs-dslabel">The Result</span>'
         +     '<p class="cs-dp">'+D.result+'</p>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-dright">'
+        + '<div class="cs-dright cs-mobile-show">'
         +   '<img src="'+D.imgs.bluetooth+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.85);" alt=""/>'
         + '</div>'
 
-        /* BOTTOM DIVIDER */
-        + '<div class="cs-drow-divider"></div>'
-
-        + '</div>'
+        + '</div>' /* end cs-dbody */
+        + dividerBottom
         + '</section>';
 
       return { css: css, html: html };
