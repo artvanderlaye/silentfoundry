@@ -3572,164 +3572,100 @@ body.v11-active #v11-badge {
   }
 })();
 </script>
-<!-- ═══════════════════════════════════════════════════════════════
-     SILENT FOUNDRY — INDUSTRIAL JEWELRY SYSTEM
-     180 animations: 15 sections × 2 per direction × 6 directions
-     All design elements ≥ 78px minimum
-     ═══════════════════════════════════════════════════════════════ -->
+
+
+<!-- ═══════════════════════════════════════════════════
+     SILENT FOUNDRY — INDUSTRIAL JEWELRY SYSTEM v2
+     Single shared RAF loop — no browser crashes
+     180 animations: 15 sections × 2 × 6 directions
+     All elements ≥ 78px minimum
+     ═══════════════════════════════════════════════════ -->
 
 <style id="ij-css">
-/* ── BASE TEXT SYMBOL SIZE ── */
-.ij-base { font-size: 0.55em !important; }
+.ij-base { font-size:0.55em !important; }
+.ij-d1,.ij-d2,.ij-d3,.ij-d4,.ij-d5,.ij-d6 { display:none !important; }
+body.ij-d1 .ij-d1,body.ij-d2 .ij-d2,body.ij-d3 .ij-d3,
+body.ij-d4 .ij-d4,body.ij-d5 .ij-d5,body.ij-d6 .ij-d6 { display:block !important; }
+body.ij-d1 svg.ij-d1,body.ij-d2 svg.ij-d2,body.ij-d3 svg.ij-d3,
+body.ij-d4 svg.ij-d4,body.ij-d5 svg.ij-d5,body.ij-d6 svg.ij-d6 { display:block !important; }
+body.ij-d1 canvas.ij-d1,body.ij-d2 canvas.ij-d2,body.ij-d3 canvas.ij-d3,
+body.ij-d4 canvas.ij-d4,body.ij-d5 canvas.ij-d5,body.ij-d6 canvas.ij-d6 { display:block !important; }
 
-/* ── HIDE ALL LAYERS BY DEFAULT ── */
-.ij-d1,.ij-d2,.ij-d3,.ij-d4,.ij-d5,.ij-d6 {
-  display:none !important;
-}
-body.ij-d1 .ij-d1 { display:block !important; }
-body.ij-d2 .ij-d2 { display:block !important; }
-body.ij-d3 .ij-d3 { display:block !important; }
-body.ij-d4 .ij-d4 { display:block !important; }
-body.ij-d5 .ij-d5 { display:block !important; }
-body.ij-d6 .ij-d6 { display:block !important; }
-
-/* Canvases and SVGs need display:block override */
-body.ij-d1 canvas.ij-d1,body.ij-d1 svg.ij-d1 { display:block !important; }
-body.ij-d2 canvas.ij-d2,body.ij-d2 svg.ij-d2 { display:block !important; }
-body.ij-d3 canvas.ij-d3,body.ij-d3 svg.ij-d3 { display:block !important; }
-body.ij-d4 canvas.ij-d4,body.ij-d4 svg.ij-d4 { display:block !important; }
-body.ij-d5 canvas.ij-d5,body.ij-d5 svg.ij-d5 { display:block !important; }
-body.ij-d6 canvas.ij-d6,body.ij-d6 svg.ij-d6 { display:block !important; }
-
-/* ── SWITCHER ── */
-#ij-sw {
-  position:fixed;bottom:24px;right:48px;z-index:9999;
-  display:flex;align-items:center;gap:1px;
-  background:rgba(10,10,10,0.95);
-  border:0.5px solid rgba(200,169,110,0.2);
-  padding:5px 8px;backdrop-filter:blur(10px);
-}
-.ij-btn {
-  font-family:'Courier New',monospace;font-size:0.5rem;
-  letter-spacing:0.06em;color:rgba(244,241,236,0.22);
-  background:none;border:none;padding:3px 7px;cursor:pointer;
-  transition:color 0.18s;white-space:nowrap;
-}
+/* SWITCHER */
+#ij-sw{position:fixed;bottom:24px;right:48px;z-index:9999;display:flex;align-items:center;gap:1px;background:rgba(10,10,10,0.95);border:0.5px solid rgba(200,169,110,0.2);padding:5px 8px;backdrop-filter:blur(10px);}
+.ij-btn{font-family:'Courier New',monospace;font-size:0.5rem;letter-spacing:0.06em;color:rgba(244,241,236,0.22);background:none;border:none;padding:3px 7px;cursor:pointer;transition:color 0.18s;white-space:nowrap;}
 .ij-btn:hover{color:rgba(200,169,110,0.7);}
 .ij-btn.on{color:#c8a96e;}
 .ij-div{width:1px;height:10px;background:rgba(200,169,110,0.15);margin:0 2px;}
 
-/* ── ANIMATIONS ── */
+/* ANIMATIONS */
 @keyframes ijRot{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes ijRotCCW{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
-@keyframes ijPulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:0.9;transform:scale(1.06)}}
-@keyframes ijFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes ijBreathe{0%,100%{opacity:0.3;transform:scale(0.95)}50%{opacity:0.8;transform:scale(1.05)}}
-@keyframes ijBlink{0%,100%{opacity:0.2}50%{opacity:0.7}}
-@keyframes ijFlicker{0%,100%{opacity:0.15}25%{opacity:0.7}50%{opacity:0.1}75%{opacity:0.8}}
-@keyframes ijDraw{from{stroke-dashoffset:2000}to{stroke-dashoffset:0}}
+@keyframes ijRotR{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+@keyframes ijPulse{0%,100%{opacity:0.35;transform:scale(0.97)}50%{opacity:0.85;transform:scale(1.03)}}
+@keyframes ijFloat{0%,100%{transform:translateY(0px)}50%{transform:translateY(-12px)}}
+@keyframes ijBreathe{0%,100%{opacity:0.25}50%{opacity:0.75}}
+@keyframes ijBlink{0%,100%{opacity:0.15}50%{opacity:0.6}}
+@keyframes ijFlicker{0%,100%{opacity:0.1}20%{opacity:0.7}50%{opacity:0.05}80%{opacity:0.8}}
+@keyframes ijDraw{from{stroke-dashoffset:3000}to{stroke-dashoffset:0}}
 @keyframes ijFadeIn{from{opacity:0}to{opacity:1}}
-@keyframes ijScanH{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
-@keyframes ijScanV{0%{transform:translateY(-110%)}100%{transform:translateY(110%)}}
 @keyframes ijTicker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes ijOrbit0{from{transform:rotate(0deg) translateX(90px) rotate(0deg)}to{transform:rotate(360deg) translateX(90px) rotate(-360deg)}}
-@keyframes ijOrbit1{from{transform:rotate(120deg) translateX(90px) rotate(-120deg)}to{transform:rotate(480deg) translateX(90px) rotate(-480deg)}}
-@keyframes ijOrbit2{from{transform:rotate(240deg) translateX(90px) rotate(-240deg)}to{transform:rotate(600deg) translateX(90px) rotate(-600deg)}}
-@keyframes ijOrbit0b{from{transform:rotate(0deg) translateX(130px) rotate(0deg)}to{transform:rotate(360deg) translateX(130px) rotate(-360deg)}}
-@keyframes ijOrbit1b{from{transform:rotate(90deg) translateX(130px) rotate(-90deg)}to{transform:rotate(450deg) translateX(130px) rotate(-450deg)}}
-@keyframes ijOrbit2b{from{transform:rotate(180deg) translateX(130px) rotate(-180deg)}to{transform:rotate(540deg) translateX(130px) rotate(-540deg)}}
-@keyframes ijOrbit3b{from{transform:rotate(270deg) translateX(130px) rotate(-270deg)}to{transform:rotate(630deg) translateX(130px) rotate(-630deg)}}
-@keyframes ijExpandH{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
-@keyframes ijBracketTL{from{width:0;height:0}to{width:20px;height:20px}}
-
-/* ── WATERMARK BASE ── */
-.ij-wm {
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-}
-.ij-wm span {
-  font-family:'Courier New',monospace;
-  font-size:clamp(78px,15vw,200px);
-  letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;
-}
-/* Dark section watermarks */
-.hero .ij-wm span,.csw .ij-wm span,#how .ij-wm span,
-.cta .ij-wm span,#featured .ij-wm span,.logos .ij-wm span {
-  color:rgba(244,241,236,0.025);
-}
-/* Cream section watermarks */
-.wwd-section .ij-wm span,.value .ij-wm span,.funds .ij-wm span,
-section[style*="padding:100px"] .ij-wm span,.eng-section .ij-wm span {
-  color:rgba(10,10,10,0.025);
+@keyframes ijOrbit{
+  0%{transform:rotate(0deg) translateX(var(--r,90px)) rotate(0deg)}
+  100%{transform:rotate(360deg) translateX(var(--r,90px)) rotate(-360deg)}
 }
 
-/* ── ORBIT RING ── */
-.ij-orbit-wrap {
-  position:absolute;top:50%;left:50%;
-  width:0;height:0;pointer-events:none;z-index:1;
-}
-.ij-orbit-sym {
-  position:absolute;
-  font-family:'Courier New',monospace;
-  font-size:clamp(12px,1.2vw,16px);
-  letter-spacing:0.08em;
-}
+/* WATERMARK */
+.ij-wm{position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.ij-wm span{font-family:'Courier New',monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;}
+.hero .ij-wm span,#how .ij-wm span,.cta .ij-wm span,#featured .ij-wm span,.logos .ij-wm span{color:rgba(244,241,236,0.025);}
+.wwd-section .ij-wm span,.value .ij-wm span,.funds .ij-wm span,.csw .ij-wm span,.eng-section .ij-wm span{color:rgba(10,10,10,0.022);}
+.ij-wm span:not([style]){color:rgba(10,10,10,0.02);}
 
-/* ── DIMENSION SVG ── */
-.ij-dim {
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;z-index:2;overflow:visible;
-}
+/* ORBIT */
+.ij-orbit{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:1;}
+.ij-os{position:absolute;font-family:'Courier New',monospace;font-size:clamp(12px,1vw,15px);letter-spacing:0.08em;animation:ijOrbit 14s linear infinite;}
 
-/* ── CORNER BRACKETS ── */
-.ij-br-wrap { position:absolute;inset:0;pointer-events:none;z-index:3; }
-.ij-br {
-  position:absolute;width:20px;height:20px;
-}
-.ij-br-tl{top:10px;left:10px;border-top:1px solid rgba(200,169,110,0.22);border-left:1px solid rgba(200,169,110,0.22);}
-.ij-br-tr{top:10px;right:10px;border-top:1px solid rgba(200,169,110,0.22);border-right:1px solid rgba(200,169,110,0.22);}
-.ij-br-bl{bottom:10px;left:10px;border-bottom:1px solid rgba(200,169,110,0.22);border-left:1px solid rgba(200,169,110,0.22);}
-.ij-br-br{bottom:10px;right:10px;border-bottom:1px solid rgba(200,169,110,0.22);border-right:1px solid rgba(200,169,110,0.22);}
+/* DIMENSION SVG */
+.ij-dim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible;}
 
-/* ── RULER ── */
-.ij-ruler {
-  position:absolute;pointer-events:none;z-index:3;
-  display:flex;justify-content:space-around;align-items:center;
-  font-family:'Courier New',monospace;
-  font-size:clamp(10px,0.8vw,13px);
-  letter-spacing:0.1em;overflow:hidden;
-}
-.ij-ruler-h{left:0;right:0;height:18px;}
-.ij-ruler-v{top:0;bottom:0;width:18px;flex-direction:column;}
+/* CORNER BRACKETS */
+.ij-bwrap{position:absolute;inset:0;pointer-events:none;z-index:2;}
+.ij-b{position:absolute;width:22px;height:22px;}
+.ij-btl{top:10px;left:10px;border-top:1px solid rgba(200,169,110,0.22);border-left:1px solid rgba(200,169,110,0.22);animation:ijFadeIn 0.7s ease-out both;}
+.ij-btr{top:10px;right:10px;border-top:1px solid rgba(200,169,110,0.22);border-right:1px solid rgba(200,169,110,0.22);animation:ijFadeIn 0.7s ease-out 0.1s both;}
+.ij-bbl{bottom:10px;left:10px;border-bottom:1px solid rgba(200,169,110,0.22);border-left:1px solid rgba(200,169,110,0.22);animation:ijFadeIn 0.7s ease-out 0.2s both;}
+.ij-bbr{bottom:10px;right:10px;border-bottom:1px solid rgba(200,169,110,0.22);border-right:1px solid rgba(200,169,110,0.22);animation:ijFadeIn 0.7s ease-out 0.3s both;}
 
-/* ── BLUEPRINT GRID ── */
-.ij-grid {
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-}
+/* RULER */
+.ij-ruler{position:absolute;pointer-events:none;z-index:2;display:flex;justify-content:space-around;align-items:center;font-family:'Courier New',monospace;font-size:clamp(10px,0.75vw,12px);letter-spacing:0.1em;animation:ijFadeIn 0.8s ease-out 0.2s both;}
+.ij-rh{left:0;right:0;height:20px;}
+.ij-rv{top:0;bottom:0;width:20px;flex-direction:column;}
 
-/* ── SECTION CUT ── */
-.ij-cut {
-  position:relative;height:2px;overflow:visible;
-  display:flex;align-items:center;justify-content:center;z-index:10;
-}
-.ij-cut::before,.ij-cut::after {
-  content:'';position:absolute;top:50%;height:1px;width:45%;
-}
-.ij-cut::before{left:0;background:linear-gradient(to right,transparent,rgba(200,169,110,0.3));}
-.ij-cut::after{right:0;background:linear-gradient(to left,transparent,rgba(200,169,110,0.3));}
-.ij-cut-lbl {
-  font-family:'Courier New',monospace;
-  font-size:clamp(10px,0.75vw,12px);
-  letter-spacing:0.18em;color:rgba(200,169,110,0.4);
-  background:inherit;padding:0 8px;position:relative;z-index:1;
-  white-space:nowrap;animation:ijBlink 3s ease-in-out infinite;
-}
+/* BLUEPRINT GRID */
+.ij-grid{position:absolute;inset:0;pointer-events:none;z-index:0;}
 
-/* ── SPINNING BADGE SVG (≥78px) ── */
-.ij-badge-wrap {
-  position:absolute;pointer-events:none;z-index:3;
-  width:88px;height:88px;
-}
+/* SECTION CUT */
+.ij-cut{position:relative;height:2px;overflow:visible;display:flex;align-items:center;justify-content:center;z-index:10;}
+.ij-cut::before,.ij-cut::after{content:'';position:absolute;top:50%;height:1px;width:44%;}
+.ij-cut::before{left:0;background:linear-gradient(to right,transparent,rgba(200,169,110,0.28));}
+.ij-cut::after{right:0;background:linear-gradient(to left,transparent,rgba(200,169,110,0.28));}
+.ij-cutl{font-family:'Courier New',monospace;font-size:clamp(10px,0.75vw,12px);letter-spacing:0.18em;color:rgba(200,169,110,0.38);padding:0 8px;position:relative;z-index:1;white-space:nowrap;animation:ijBlink 3s ease-in-out infinite;}
+
+/* BADGE ≥78px */
+.ij-badge{position:absolute;pointer-events:none;z-index:3;width:88px;height:88px;}
+
+/* CANVAS — always transparent bg */
+canvas.ij-d4,canvas.ij-d6{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;background:transparent;}
+
+/* MATRIX */
+.ij-matrix{position:absolute;inset:0;pointer-events:none;z-index:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);overflow:hidden;}
+
+/* TICKER */
+.ij-ticker{position:absolute;left:0;right:0;bottom:0;height:18px;overflow:hidden;white-space:nowrap;pointer-events:none;z-index:2;}
+.ij-ti{display:inline-block;font-family:'Courier New',monospace;font-size:clamp(10px,0.7vw,11px);letter-spacing:0.18em;animation:ijTicker 28s linear infinite;}
+
+/* CORNER ANNOTATIONS */
+.ij-ca{position:absolute;font-family:'Courier New',monospace;font-size:clamp(10px,0.8vw,12px);letter-spacing:0.12em;pointer-events:none;z-index:2;animation:ijBlink 3s ease-in-out infinite;}
 </style>
 
 <div id="ij-sw">
@@ -3752,547 +3688,482 @@ section[style*="padding:100px"] .ij-wm span,.eng-section .ij-wm span {
 (function(){
 'use strict';
 
-var SYMS = ['⌀','±0.001','⊥','↧','⌐','¬','▽','→|←','↕','⊞','⌀3×M6','⊙','⌙','∠','∥','±','°'];
-
-// Section config: selector, symbols (contextual), isDark, cutLabel
-var SECS = [
-  {s:'.hero',          syms:['⌀','±0.001','⊙','°','∥'],  dark:true,  cut:'A—A ⊥',  wm:'⌀',   wmAnim:'ijRot',    grid:40},
-  {s:'.wwd-section',   syms:['⊞','⌐','→|←','±','⌙'],    dark:false, cut:'B—B →|←',wm:'⊞',   wmAnim:'ijPulse',  grid:32},
-  {s:'section[style*="padding:100px"]', syms:['⌙','⌀','¬','°','±'], dark:false, cut:'C—C ⌙', wm:'⌙', wmAnim:'ijFloat', grid:28},
-  {s:'.csw',           syms:['▽','⌙','±0.001','→|←','⊥'],dark:false, cut:'D—D ±',  wm:'±0.001',wmAnim:'ijBreathe',grid:24},
-  {s:'#how',           syms:['∥','⊞','↕','⊥','∠'],       dark:true,  cut:'E—E ∥',  wm:'∥',   wmAnim:'ijPulse',  grid:36},
-  {s:'.eng-section',   syms:['⌀3×M6','⌙','⊥','∠','±0.001'],dark:false,cut:'F—F ⌀3×M6',wm:'⌀3×M6',wmAnim:'ijRot',grid:20},
-  {s:'section[style*="cad_texture"]', syms:['→|←','⌀','±','∥','⊞'], dark:false, cut:'G—G ⌀', wm:'→|←', wmAnim:'ijFloat', grid:40},
-  {s:'.value',         syms:['⊙','⊞','∠','⊥','↕'],       dark:false, cut:'H—H ⊙',  wm:'⊙',   wmAnim:'ijBreathe',grid:28},
-  {s:'#featured',      syms:['∠','▽','⌙','⌀3×M6','±'],   dark:true,  cut:'I—I ∠',  wm:'∠',   wmAnim:'ijRot',    grid:36},
-  {s:'section[style*="Switch DNA"]',syms:['▽','±','⊥','∠','⌙'],dark:true,cut:'J—J ▽▽▽',wm:'▽',wmAnim:'ijPulse',grid:24},
-  {s:'.logos',         syms:['▽','⌀','⊙','∥','°'],        dark:true,  cut:'K—K ⌀',  wm:'⌀',   wmAnim:'ijFloat',  grid:40},
-  {s:'.funds',         syms:['⌐','¬','↧','⌀','±0.001'],   dark:false, cut:'L—L ⌐',  wm:'⌐',   wmAnim:'ijRot',    grid:32},
-  {s:'.cta',           syms:['°','⌀','⊙','∥','▽'],        dark:true,  cut:'M—M °',  wm:'°',   wmAnim:'ijBreathe',grid:28},
-  {s:'footer',         syms:['↧','⌀3×M6','±','⊞','⌐'],   dark:true,  cut:'N—N ↧',  wm:'↧',   wmAnim:'ijFloat',  grid:20},
+// ── SECTION CONFIGS ──
+var SECS=[
+  {s:'.hero',           syms:['⌀','±0.001','⊙','°','∥'],   dark:true,  cut:'A—A ⊥',    wm:'⌀',      wa:'ijRot',     grid:40},
+  {s:'.wwd-section',    syms:['⊞','⌐','→|←','±','⌙'],     dark:false, cut:'B—B →|←',  wm:'⊞',      wa:'ijPulse',   grid:32},
+  {s:'section[style*="padding:100px"]', syms:['⌙','⌀','¬','°','±'],dark:false,cut:'C—C ⌙',wm:'⌙',wa:'ijFloat',grid:28},
+  {s:'.csw',            syms:['▽','⌙','±0.001','→|←','⊥'], dark:false, cut:'D—D ±',    wm:'±0.001', wa:'ijBreathe', grid:24},
+  {s:'#how',            syms:['∥','⊞','↕','⊥','∠'],        dark:true,  cut:'E—E ∥',    wm:'∥',      wa:'ijPulse',   grid:36},
+  {s:'.eng-section',    syms:['⌀3×M6','⌙','⊥','∠','±0.001'],dark:false,cut:'F—F ⌀3×M6',wm:'⌀3×M6',wa:'ijRot',    grid:20},
+  {s:'section[style*="cad_texture"]',syms:['→|←','⌀','±','∥','⊞'],dark:false,cut:'G—G ⌀',wm:'→|←',wa:'ijFloat',  grid:40},
+  {s:'.value',          syms:['⊙','⊞','∠','⊥','↕'],        dark:false, cut:'H—H ⊙',    wm:'⊙',      wa:'ijBreathe', grid:28},
+  {s:'#featured',       syms:['∠','▽','⌙','⌀3×M6','±'],    dark:true,  cut:'I—I ∠',    wm:'∠',      wa:'ijRot',     grid:36},
+  {s:'.logos',          syms:['▽','⌀','⊙','∥','°'],         dark:true,  cut:'J—J ▽',    wm:'▽',      wa:'ijPulse',   grid:40},
+  {s:'.funds',          syms:['⌐','¬','↧','⌀','±0.001'],    dark:false, cut:'K—K ⌐',    wm:'⌐',      wa:'ijRot',     grid:32},
+  {s:'.cta',            syms:['°','⌀','⊙','∥','▽'],         dark:true,  cut:'L—L °',    wm:'°',      wa:'ijBreathe', grid:28},
+  {s:'footer',          syms:['↧','⌀3×M6','±','⊞','⌐'],    dark:true,  cut:'M—N ↧',    wm:'↧',      wa:'ijFloat',   grid:20},
 ];
 
-// Fallback for Switch DNA section
-function getSec(cfg) {
-  var el = document.querySelector(cfg.s);
-  if (!el && cfg.s.includes('Switch DNA')) {
-    // Try alternative selectors
-    var fp = document.getElementById('featured');
-    if (fp) return fp.nextElementSibling || fp;
+var kills=[];
+var sharedRAF=null;
+var allCanvases=[];
+
+function mk(t){return document.createElement(t);}
+function mkS(t){return document.createElementNS('http://www.w3.org/2000/svg',t);}
+function sc(cfg,a){return cfg.dark?'rgba(200,169,110,'+a+')':'rgba(10,10,10,'+a+')';}
+function rel(el){if(window.getComputedStyle(el).position==='static'){el.style.position='relative';return true;}return false;}
+
+// SINGLE SHARED RAF LOOP — drives ALL canvases
+function startSharedRAF(){
+  if(sharedRAF) return;
+  var t=0;
+  function loop(){
+    t+=0.008;
+    allCanvases.forEach(function(item){
+      try{ item.fn(t,item.ctx,item.W,item.H,item.cfg,item.particles); }catch(e){}
+    });
+    sharedRAF=requestAnimationFrame(loop);
   }
-  return el;
+  sharedRAF=requestAnimationFrame(loop);
 }
 
-var kills = [];
-
-function mk(tag){ return document.createElement(tag); }
-function mkSVG(tag){ return document.createElementNS('http://www.w3.org/2000/svg', tag); }
-
-function ensureRel(el){
-  var p = window.getComputedStyle(el).position;
-  if(p==='static'){ el.style.position='relative'; return true; }
-  return false;
+function stopSharedRAF(){
+  if(sharedRAF){cancelAnimationFrame(sharedRAF);sharedRAF=null;}
+  allCanvases=[];
 }
 
-function goldDark(el, opacity){
-  return 'rgba(200,169,110,'+opacity+')';
-}
-function symColor(cfg, opacity){
-  return cfg.dark
-    ? 'rgba(200,169,110,'+opacity+')'
-    : 'rgba(10,10,10,'+opacity+')';
-}
-
-// ── KILL ALL ──
 function killAll(){
+  stopSharedRAF();
   kills.forEach(function(fn){try{fn();}catch(e){}});
   kills=[];
   document.querySelectorAll('.ij-cut').forEach(function(e){e.remove();});
 }
 
-// ══════════════════════════════════════════════════════
-// D1 — ANIMATED SVG WATERMARKS + ORBITING RINGS
-// ══════════════════════════════════════════════════════
+// Register canvas for shared loop
+function addCanvas(canvas,cfg,drawFn,particles){
+  var ctx=canvas.getContext('2d');
+  var W=canvas.offsetWidth||canvas.parentElement.offsetWidth||900;
+  var H=canvas.offsetHeight||canvas.parentElement.offsetHeight||500;
+  canvas.width=W; canvas.height=H;
+  allCanvases.push({ctx:ctx,W:W,H:H,cfg:cfg,fn:drawFn,particles:particles});
+}
+
+// ══════════════════════════════
+// D1 — WATERMARKS + ORBIT RINGS
+// ══════════════════════════════
 function initD1(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
 
-    // ANIM 1: Large rotating watermark (≥78px via CSS clamp)
-    var wm = mk('div');
-    wm.className='ij-d1 ij-wm';
-    var sp = mk('span');
-    sp.style.animation = cfg.wmAnim+' '+(20+si*2)+'s linear infinite';
-    sp.textContent = cfg.wm;
-    wm.appendChild(sp);
-    el.insertBefore(wm, el.firstChild);
+    // ANIM 1: Large watermark symbol rotating/pulsing/floating
+    var wm=mk('div'); wm.className='ij-d1 ij-wm';
+    var sp=mk('span');
+    sp.style.animation=cfg.wa+' '+(18+si*2)+'s linear infinite';
+    sp.textContent=cfg.wm; wm.appendChild(sp);
+    el.insertBefore(wm,el.firstChild);
 
-    // ANIM 2: Orbiting symbol ring (3 or 4 symbols, orbit radius 90-130px ≥78px diameter)
-    var orbitWrap = mk('div');
-    orbitWrap.className='ij-d1 ij-orbit-wrap';
-    var orbSyms = cfg.syms.slice(0,3);
-    orbSyms.forEach(function(sym, oi){
-      var dot = mk('span');
-      dot.className='ij-orbit-sym';
-      dot.style.animation = 'ijOrbit'+oi+' '+(12+oi*3)+'s linear infinite';
-      dot.style.color = symColor(cfg, 0.22);
-      dot.textContent = sym;
-      orbitWrap.appendChild(dot);
+    // ANIM 2: Orbiting symbols (inner ring 90px radius + outer ring 130px)
+    var ow=mk('div'); ow.className='ij-d1 ij-orbit';
+    // Inner ring — 3 symbols at 120° apart
+    cfg.syms.slice(0,3).forEach(function(sym,oi){
+      var d=mk('span'); d.className='ij-os';
+      d.style.setProperty('--r','90px');
+      d.style.animationDuration=(12+oi*2)+'s';
+      d.style.animationDelay=(-oi*4)+'s';
+      d.style.color=sc(cfg,0.25);
+      d.textContent=sym;
+      ow.appendChild(d);
     });
-    // Second outer orbit
-    var orbitWrap2 = mk('div');
-    orbitWrap2.className='ij-d1 ij-orbit-wrap';
-    cfg.syms.slice(3,6).forEach(function(sym, oi){
-      var dot = mk('span');
-      dot.className='ij-orbit-sym';
-      dot.style.animation = 'ijOrbit'+oi+'b '+(18+oi*4)+'s linear infinite reverse';
-      dot.style.color = symColor(cfg, 0.15);
-      dot.textContent = sym||cfg.syms[oi];
-      orbitWrap2.appendChild(dot);
+    // Outer ring — 4 symbols, slower, reverse
+    var ow2=mk('div'); ow2.className='ij-d1 ij-orbit';
+    cfg.syms.forEach(function(sym,oi){
+      var d=mk('span'); d.className='ij-os';
+      d.style.setProperty('--r','130px');
+      d.style.animationDuration=(20+oi*3)+'s';
+      d.style.animationDelay=(-oi*5)+'s';
+      d.style.animationDirection='reverse';
+      d.style.color=sc(cfg,0.15);
+      d.textContent=sym;
+      ow2.appendChild(d);
     });
-    el.appendChild(orbitWrap);
-    el.appendChild(orbitWrap2);
-
-    kills.push(function(){
-      wm.remove(); orbitWrap.remove(); orbitWrap2.remove();
-      if(fixed) el.style.position='';
-    });
+    el.appendChild(ow); el.appendChild(ow2);
+    kills.push(function(){wm.remove();ow.remove();ow2.remove();if(f)el.style.position='';});
   });
 }
 
-// ══════════════════════════════════════════════════════
-// D2 — DIMENSION LINES + MEASUREMENT CALLOUTS
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════
+// D2 — DIMENSION LINES
+// ══════════════════════════════
 function initD2(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
-    var c = symColor(cfg, 0.18);
-    var cLight = symColor(cfg, 0.1);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
+    var c=sc(cfg,0.18);
 
-    // ANIM 1: Animated SVG dimension lines drawing in
-    var svg = mkSVG('svg');
+    // ANIM 1: SVG horizontal + vertical dimension lines drawing in
+    var svg=mkS('svg');
     svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible;';
     svg.classList.add('ij-d2');
-
-    // Horizontal line with arrows and label
-    var y1pct = 75 + (si%3)*5;
-    var line1 = mkSVG('line');
-    line1.setAttribute('x1','5%'); line1.setAttribute('y1',y1pct+'%');
-    line1.setAttribute('x2','95%'); line1.setAttribute('y2',y1pct+'%');
-    line1.setAttribute('stroke', goldDark(el,0.15));
-    line1.setAttribute('stroke-width','0.8');
-    line1.setAttribute('stroke-dasharray','2000');
-    line1.setAttribute('stroke-dashoffset','2000');
-    line1.style.animation='ijDraw '+(1.5+si*0.1)+'s ease-out '+(si*0.05)+'s forwards';
-    svg.appendChild(line1);
-
-    // Left tick
-    var lt = mkSVG('line');
-    lt.setAttribute('x1','5%');lt.setAttribute('y1',(y1pct-1.5)+'%');
-    lt.setAttribute('x2','5%');lt.setAttribute('y2',(y1pct+1.5)+'%');
-    lt.setAttribute('stroke',goldDark(el,0.2));lt.setAttribute('stroke-width','0.8');
-    svg.appendChild(lt);
-    // Right tick
-    var rt = lt.cloneNode(); rt.setAttribute('x1','95%'); rt.setAttribute('x2','95%'); svg.appendChild(rt);
-
-    // Centre symbol label (≥78px font = too big, use proportional)
-    var lbl1 = mkSVG('text');
-    lbl1.setAttribute('x','50%'); lbl1.setAttribute('y',(y1pct-2)+'%');
-    lbl1.setAttribute('text-anchor','middle');
-    lbl1.setAttribute('font-family',"'Courier New',monospace");
-    lbl1.setAttribute('font-size','11');
-    lbl1.setAttribute('fill',goldDark(el,0.3));
-    lbl1.style.animation='ijFadeIn 0.8s ease-out '+(0.8+si*0.05)+'s both';
-    lbl1.textContent = cfg.syms[0];
-    svg.appendChild(lbl1);
-
-    // ANIM 2: Vertical dimension line on right side
-    var x2pct = 92;
-    var vline = mkSVG('line');
-    vline.setAttribute('x1',x2pct+'%'); vline.setAttribute('y1','5%');
-    vline.setAttribute('x2',x2pct+'%'); vline.setAttribute('y2','95%');
-    vline.setAttribute('stroke',goldDark(el,0.1));
-    vline.setAttribute('stroke-width','0.6');
-    vline.setAttribute('stroke-dasharray','2000'); vline.setAttribute('stroke-dashoffset','2000');
-    vline.style.animation='ijDraw '+(2+si*0.1)+'s ease-out '+(0.2+si*0.05)+'s forwards';
-    svg.appendChild(vline);
-
-    // Top + bottom ticks on vertical
-    ['5%','95%'].forEach(function(yp){
-      var t2 = mkSVG('line');
-      t2.setAttribute('x1',(x2pct-1.5)+'%'); t2.setAttribute('y1',yp);
-      t2.setAttribute('x2',(x2pct+1.5)+'%'); t2.setAttribute('y2',yp);
-      t2.setAttribute('stroke',goldDark(el,0.18)); t2.setAttribute('stroke-width','0.8');
-      svg.appendChild(t2);
+    var yp=70+(si%4)*5;
+    // Horizontal line
+    var hl=mkS('line');
+    hl.setAttribute('x1','5%');hl.setAttribute('y1',yp+'%');
+    hl.setAttribute('x2','95%');hl.setAttribute('y2',yp+'%');
+    hl.setAttribute('stroke','rgba(200,169,110,0.2)');hl.setAttribute('stroke-width','0.8');
+    hl.setAttribute('stroke-dasharray','3000');hl.setAttribute('stroke-dashoffset','3000');
+    hl.style.animation='ijDraw '+(1.4+si*0.08)+'s ease-out forwards';
+    svg.appendChild(hl);
+    // End ticks
+    ['5%','95%'].forEach(function(xp){
+      var t=mkS('line');
+      t.setAttribute('x1',xp);t.setAttribute('y1',(yp-1.5)+'%');
+      t.setAttribute('x2',xp);t.setAttribute('y2',(yp+1.5)+'%');
+      t.setAttribute('stroke','rgba(200,169,110,0.25)');t.setAttribute('stroke-width','0.8');
+      svg.appendChild(t);
     });
-
-    // Vertical label
-    var vlbl = mkSVG('text');
-    vlbl.setAttribute('x',(x2pct+2)+'%'); vlbl.setAttribute('y','50%');
-    vlbl.setAttribute('text-anchor','middle');
-    vlbl.setAttribute('font-family',"'Courier New',monospace");
-    vlbl.setAttribute('font-size','10');
-    vlbl.setAttribute('fill',goldDark(el,0.25));
-    vlbl.setAttribute('transform','rotate(90,'+(x2pct+2)+'% 50%)');
-    vlbl.style.animation='ijFadeIn 0.8s ease-out '+(1+si*0.05)+'s both';
-    vlbl.textContent = cfg.syms[1];
-    svg.appendChild(vlbl);
-
-    // Extra: dashed cross lines per section
-    var diag = mkSVG('line');
-    diag.setAttribute('x1','5%'); diag.setAttribute('y1','5%');
-    diag.setAttribute('x2','95%'); diag.setAttribute('y2','95%');
-    diag.setAttribute('stroke',goldDark(el,0.04));
-    diag.setAttribute('stroke-width','0.5');
-    diag.setAttribute('stroke-dasharray','4 12');
-    svg.appendChild(diag);
-
-    // Small tick labels along horizontal line
-    [25,50,75].forEach(function(xp, ti){
-      var tl = mkSVG('text');
-      tl.setAttribute('x',xp+'%'); tl.setAttribute('y',(y1pct+4)+'%');
+    // Centre label
+    var lbl=mkS('text');
+    lbl.setAttribute('x','50%');lbl.setAttribute('y',(yp-2)+'%');
+    lbl.setAttribute('text-anchor','middle');
+    lbl.setAttribute('font-family',"'Courier New',monospace");
+    lbl.setAttribute('font-size','12');
+    lbl.setAttribute('fill','rgba(200,169,110,0.35)');
+    lbl.style.animation='ijFadeIn 0.8s ease-out '+(0.8+si*0.05)+'s both';
+    lbl.textContent=cfg.syms[0];
+    svg.appendChild(lbl);
+    // Tick labels at quarters
+    [25,75].forEach(function(xp,ti){
+      var tl=mkS('text');
+      tl.setAttribute('x',xp+'%');tl.setAttribute('y',(yp+4)+'%');
       tl.setAttribute('text-anchor','middle');
       tl.setAttribute('font-family',"'Courier New',monospace");
-      tl.setAttribute('font-size','8');
-      tl.setAttribute('fill',goldDark(el,0.18));
+      tl.setAttribute('font-size','9');
+      tl.setAttribute('fill','rgba(200,169,110,0.2)');
       tl.style.animation='ijFadeIn 0.6s ease-out '+(1.2+ti*0.15)+'s both';
-      tl.textContent = cfg.syms[(ti+2)%cfg.syms.length];
+      tl.textContent=cfg.syms[ti+1]||cfg.syms[0];
       svg.appendChild(tl);
     });
 
+    // ANIM 2: Vertical dimension line right side
+    var vl=mkS('line');
+    vl.setAttribute('x1','93%');vl.setAttribute('y1','5%');
+    vl.setAttribute('x2','93%');vl.setAttribute('y2','95%');
+    vl.setAttribute('stroke','rgba(200,169,110,0.12)');vl.setAttribute('stroke-width','0.6');
+    vl.setAttribute('stroke-dasharray','3000');vl.setAttribute('stroke-dashoffset','3000');
+    vl.style.animation='ijDraw '+(1.8+si*0.08)+'s ease-out '+(0.2+si*0.03)+'s forwards';
+    svg.appendChild(vl);
+    ['5%','95%'].forEach(function(yp2){
+      var t=mkS('line');
+      t.setAttribute('x1','91%');t.setAttribute('y1',yp2);
+      t.setAttribute('x2','95%');t.setAttribute('y2',yp2);
+      t.setAttribute('stroke','rgba(200,169,110,0.2)');t.setAttribute('stroke-width','0.7');
+      svg.appendChild(t);
+    });
+    var vlbl=mkS('text');
+    vlbl.setAttribute('x','97%');vlbl.setAttribute('y','50%');
+    vlbl.setAttribute('text-anchor','middle');
+    vlbl.setAttribute('font-family',"'Courier New',monospace");
+    vlbl.setAttribute('font-size','11');
+    vlbl.setAttribute('fill','rgba(200,169,110,0.3)');
+    vlbl.setAttribute('transform','rotate(90 '+(93+4)+'% 50%)');
+    vlbl.style.animation='ijFadeIn 0.8s ease-out '+(1+si*0.04)+'s both';
+    vlbl.textContent=cfg.syms[2]||cfg.syms[0];
+    svg.appendChild(vlbl);
+
+    // Dashed diagonal ghost line
+    var dl=mkS('line');
+    dl.setAttribute('x1','5%');dl.setAttribute('y1','10%');
+    dl.setAttribute('x2','95%');dl.setAttribute('y2','90%');
+    dl.setAttribute('stroke','rgba(200,169,110,0.04)');dl.setAttribute('stroke-width','0.5');
+    dl.setAttribute('stroke-dasharray','4 14');
+    svg.appendChild(dl);
+
     el.appendChild(svg);
-    kills.push(function(){svg.remove(); if(fixed)el.style.position='';});
+    kills.push(function(){svg.remove();if(f)el.style.position='';});
   });
 }
 
-// ══════════════════════════════════════════════════════
-// D3 — CSS CORNER BRACKETS + TICK RULERS
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════
+// D3 — CORNER BRACKETS + RULERS
+// ══════════════════════════════
 function initD3(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
-    var c = symColor(cfg, 0.2);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
+    var c=sc(cfg,0.2);
 
-    // ANIM 1: Corner bracket L-shapes (animated fade in)
-    var bwrap = mk('div');
-    bwrap.className='ij-d3 ij-br-wrap';
-    ['tl','tr','bl','br'].forEach(function(pos){
-      var b = mk('div');
-      b.className = 'ij-br ij-br-'+pos;
-      b.style.animation = 'ijFadeIn 0.6s ease-out '+(si*0.04)+'s both';
-      bwrap.appendChild(b);
+    // ANIM 1: Corner bracket L-shapes (4 corners, staggered fade in)
+    var bw=mk('div'); bw.className='ij-d3 ij-bwrap';
+    ['btl','btr','bbl','bbr'].forEach(function(cls,ci){
+      var b=mk('div'); b.className='ij-b ij-'+cls;
+      b.style.animationDelay=(si*0.04+ci*0.08)+'s';
+      bw.appendChild(b);
     });
-    // Extended corner lines (40px, ≥78px if we count both arms)
-    ['tl','tr','bl','br'].forEach(function(pos){
-      var ext = mk('div');
-      ext.className = 'ij-br ij-br-'+pos;
-      ext.style.cssText += 'width:40px;height:40px;opacity:0.4;';
-      ext.style.animation = 'ijFadeIn 0.9s ease-out '+(0.3+si*0.04)+'s both';
-      bwrap.appendChild(ext);
-    });
-    el.appendChild(bwrap);
+    el.appendChild(bw);
 
-    // ANIM 2: Horizontal tick ruler at top
-    var ruler = mk('div');
-    ruler.className='ij-d3 ij-ruler ij-ruler-h';
-    ruler.style.top='0';
-    ruler.style.color = c;
-    ruler.style.animation = 'ijFadeIn 0.8s ease-out '+(0.2+si*0.04)+'s both';
+    // ANIM 2a: Top horizontal ruler with symbol ticks
+    var rh=mk('div'); rh.className='ij-d3 ij-ruler ij-rh';
+    rh.style.top='0'; rh.style.color=c;
+    rh.style.animationDelay=(0.2+si*0.04)+'s';
     cfg.syms.forEach(function(sym){
-      var t = mk('span');
-      t.style.cssText='font-family:"Courier New",monospace;font-size:clamp(10px,0.75vw,12px);color:'+c+';padding:0 2px;';
-      t.textContent = sym;
-      ruler.appendChild(t);
+      var t=mk('span');
+      t.style.cssText='font-family:"Courier New",monospace;font-size:clamp(10px,0.75vw,12px);color:'+c+';padding:0 4px;';
+      t.textContent=sym; rh.appendChild(t);
     });
-    el.appendChild(ruler);
+    el.appendChild(rh);
 
-    // ANIM 2b: Vertical right ruler
-    var rulerV = mk('div');
-    rulerV.className='ij-d3 ij-ruler ij-ruler-v';
-    rulerV.style.right='0';
-    rulerV.style.color=c;
-    rulerV.style.animation='ijFadeIn 0.8s ease-out '+(0.4+si*0.04)+'s both';
+    // ANIM 2b: Right vertical ruler
+    var rv=mk('div'); rv.className='ij-d3 ij-ruler ij-rv';
+    rv.style.right='0'; rv.style.color=c;
+    rv.style.animationDelay=(0.4+si*0.04)+'s';
     cfg.syms.slice().reverse().forEach(function(sym){
-      var t = mk('span');
-      t.style.cssText='font-family:"Courier New",monospace;font-size:clamp(10px,0.7vw,11px);color:'+c+';transform:rotate(90deg);display:block;white-space:nowrap;';
-      t.textContent = sym;
-      rulerV.appendChild(t);
+      var t=mk('span');
+      t.style.cssText='font-family:"Courier New",monospace;font-size:clamp(9px,0.65vw,11px);color:'+c+';writing-mode:vertical-rl;padding:2px 0;';
+      t.textContent=sym; rv.appendChild(t);
     });
-    el.appendChild(rulerV);
+    el.appendChild(rv);
 
-    kills.push(function(){bwrap.remove();ruler.remove();rulerV.remove();if(fixed)el.style.position='';});
+    // Corner symbol annotations
+    var corners=[
+      {css:'top:28px;left:28px;',sym:cfg.syms[0]},
+      {css:'top:28px;right:28px;',sym:cfg.syms[1]},
+      {css:'bottom:28px;left:28px;',sym:cfg.syms[2]},
+      {css:'bottom:28px;right:28px;',sym:cfg.syms[3]||cfg.syms[0]},
+    ];
+    var caEls=[];
+    corners.forEach(function(corner,ci){
+      var ca=mk('span'); ca.className='ij-d3 ij-ca';
+      ca.style.cssText+=corner.css;
+      ca.style.color=c;
+      ca.style.animationDelay=(0.5+si*0.04+ci*0.12)+'s';
+      ca.textContent=corner.sym;
+      el.appendChild(ca); caEls.push(ca);
+    });
+
+    kills.push(function(){bw.remove();rh.remove();rv.remove();caEls.forEach(function(e){e.remove();});if(f)el.style.position='';});
   });
 }
 
-// ══════════════════════════════════════════════════════
-// D4 — 3D CANVAS DEPTH FIELDS + SYMBOL MATRICES
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════
+// D4 — 3D CANVAS + SYMBOL MATRIX (SINGLE RAF)
+// ══════════════════════════════
 function initD4(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
 
-    // ANIM 1: 3D perspective canvas
-    var c = mk('canvas');
-    c.className='ij-d4';
-    c.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;';
-    c.width = el.offsetWidth||900; c.height = el.offsetHeight||500;
-    el.insertBefore(c, el.firstChild);
-    var ctx = c.getContext('2d');
-    var W=c.width, H=c.height;
-    // 3D particles
+    // ANIM 1: Single canvas per section — 3D particles (shared RAF)
+    var cv=mk('canvas'); cv.className='ij-d4';
+    cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;background:transparent;';
+    el.insertBefore(cv,el.firstChild);
     var pts=[];
-    for(var i=0;i<35;i++){
+    for(var i=0;i<25;i++){
       pts.push({
-        x:(Math.random()-0.5)*1000,y:(Math.random()-0.5)*600,z:Math.random()*800+100,
-        vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.3,vz:(Math.random()-0.5)*0.8,
-        sym:cfg.syms[i%cfg.syms.length]
+        x:(Math.random()-0.5)*900,y:(Math.random()-0.5)*500,z:Math.random()*700+100,
+        vx:(Math.random()-0.5)*0.35,vy:(Math.random()-0.5)*0.25,vz:(Math.random()-0.5)*0.7,
+        sym:cfg.syms[i%cfg.syms.length],ph:Math.random()*Math.PI*2
       });
     }
-    var raf1;
-    function draw3d(){
+    addCanvas(cv,cfg,function(t,ctx,W,H,cfg2,particles){
       ctx.clearRect(0,0,W,H);
-      pts.forEach(function(p){
-        p.x+=p.vx; p.y+=p.vy; p.z+=p.vz;
-        if(p.z<80)p.z=900; if(p.z>900)p.z=80;
-        var scale=400/p.z;
-        var sx=W/2+p.x*scale, sy=H/2+p.y*scale;
-        if(sx<-30||sx>W+30||sy<-30||sy>H+30) return;
-        var alpha=Math.min(0.1,(1-p.z/900)*0.12);
-        var sz=Math.max(10,scale*14);
-        ctx.font=sz+'px "Courier New",monospace';
-        ctx.fillStyle=symColor(cfg,alpha);
+      particles.forEach(function(p){
+        p.x+=p.vx;p.y+=p.vy;p.z+=p.vz;
+        if(p.z<80)p.z=800;if(p.z>800)p.z=80;
+        var s=350/p.z;
+        var sx=W/2+p.x*s,sy=H/2+p.y*s;
+        if(sx<-30||sx>W+30||sy<-30||sy>H+30)return;
+        var a=Math.min(0.09,(1-p.z/800)*0.11)*(0.7+0.3*Math.sin(t*30+p.ph));
+        var fs=Math.max(10,s*13);
+        ctx.font=fs+'px "Courier New",monospace';
+        ctx.fillStyle=sc(cfg2,a);
         ctx.fillText(p.sym,sx,sy);
       });
-      raf1=requestAnimationFrame(draw3d);
-    }
-    draw3d();
+    },pts);
 
-    // ANIM 2: Symbol matrix grid (8×4, ≥78px per cell area)
-    var matrix = mk('div');
-    matrix.className='ij-d4';
-    matrix.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);overflow:hidden;';
+    // ANIM 2: Symbol matrix grid (8×4)
+    var mx=mk('div'); mx.className='ij-d4 ij-matrix';
     for(var mi=0;mi<32;mi++){
       var cell=mk('span');
-      var show=Math.random()>0.55;
-      var delay=(Math.random()*5).toFixed(1);
-      var dur=(2+Math.random()*5).toFixed(1);
-      cell.style.cssText='font-family:"Courier New",monospace;font-size:clamp(12px,1.2vw,16px);color:'+symColor(cfg,show?0.06+Math.random()*0.04:0)+';display:flex;align-items:center;justify-content:center;animation:ijFlicker '+dur+'s ease-in-out infinite;animation-delay:'+delay+'s;';
+      var show=Math.random()>0.5;
+      var delay=(Math.random()*6).toFixed(1);
+      var dur=(2+Math.random()*6).toFixed(1);
+      cell.style.cssText='font-family:"Courier New",monospace;font-size:clamp(11px,1.1vw,15px);display:flex;align-items:center;justify-content:center;animation:ijFlicker '+dur+'s ease-in-out infinite;animation-delay:'+delay+'s;color:'+sc(cfg,show?0.055:0.005)+';';
       cell.textContent=cfg.syms[mi%cfg.syms.length];
-      matrix.appendChild(cell);
+      mx.appendChild(cell);
     }
-    el.appendChild(matrix);
+    el.appendChild(mx);
 
-    kills.push(function(){cancelAnimationFrame(raf1);c.remove();matrix.remove();if(fixed)el.style.position='';});
+    kills.push(function(){cv.remove();mx.remove();if(f)el.style.position='';});
   });
+  startSharedRAF();
 }
 
-// ══════════════════════════════════════════════════════
-// D5 — SECTION CUT INDICATORS + BLUEPRINT GRID PULSES
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════
+// D5 — SECTION CUTS + BLUEPRINT GRIDS
+// ══════════════════════════════
 function initD5(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
 
-    // ANIM 1: Blueprint grid overlay (different spacing per section)
-    var grid = mk('div');
-    grid.className='ij-d5 ij-grid';
-    var sp = cfg.grid;
+    // ANIM 1: Blueprint grid (different spacing per section)
+    var sp=cfg.grid;
+    var grid=mk('div'); grid.className='ij-d5 ij-grid';
     grid.style.backgroundImage=
       'repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,rgba(200,169,110,0.04) '+(sp-1)+'px,rgba(200,169,110,0.04) '+sp+'px),'+
       'repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,rgba(200,169,110,0.04) '+(sp-1)+'px,rgba(200,169,110,0.04) '+sp+'px)';
-    grid.style.animation='ijBreathe '+(3+si%5)+'s ease-in-out infinite;animation-delay:'+(si*0.3)+'s';
+    grid.style.animation='ijBreathe '+(3+si%5)+'s ease-in-out infinite;animation-delay:'+(si*0.25)+'s';
     el.appendChild(grid);
 
-    // Grid corner annotations (≥78px area equivalent)
-    var corners=[
-      {s:'top:8px;left:8px;',sym:cfg.syms[0]},
-      {s:'top:8px;right:8px;',sym:cfg.syms[1]},
-      {s:'bottom:8px;left:8px;',sym:cfg.syms[2]},
-      {s:'bottom:8px;right:8px;',sym:cfg.syms[3]||cfg.syms[0]},
-    ];
-    var cornerEls=[];
-    corners.forEach(function(corner){
-      var sp2=mk('span');
-      sp2.className='ij-d5';
-      sp2.style.cssText='position:absolute;'+corner.s+'font-family:"Courier New",monospace;font-size:clamp(11px,0.9vw,14px);color:'+symColor(cfg,0.25)+';letter-spacing:0.12em;pointer-events:none;z-index:2;animation:ijBlink '+(3+si%4)+'s ease-in-out infinite;animation-delay:'+(si*0.2)+'s;';
-      sp2.textContent=corner.sym;
-      el.appendChild(sp2);
-      cornerEls.push(sp2);
+    // Grid corner blink annotations
+    var caEls=[];
+    [{css:'top:10px;left:10px;',sym:cfg.syms[0]},{css:'top:10px;right:10px;',sym:cfg.syms[1]},
+     {css:'bottom:10px;left:10px;',sym:cfg.syms[2]},{css:'bottom:10px;right:10px;',sym:cfg.syms[3]||cfg.syms[0]}
+    ].forEach(function(corner,ci){
+      var ca=mk('span'); ca.className='ij-d5 ij-ca';
+      ca.style.cssText+=corner.css;
+      ca.style.color=sc(cfg,0.28);
+      ca.style.animationDelay=(si*0.15+ci*0.3)+'s';
+      ca.textContent=corner.sym;
+      el.appendChild(ca); caEls.push(ca);
     });
 
-    // ANIM 2: Section cut line AFTER this section
-    var cutLine=mk('div');
-    cutLine.className='ij-d5 ij-cut';
-    var cutLbl=mk('span');
-    cutLbl.className='ij-cut-lbl';
-    cutLbl.textContent=cfg.cut;
-    cutLine.appendChild(cutLbl);
-    if(el.nextElementSibling){
-      el.parentNode.insertBefore(cutLine,el.nextElementSibling);
-    } else {
-      el.parentNode.appendChild(cutLine);
-    }
+    // ANIM 2: Section cut line after this section
+    var cut=mk('div'); cut.className='ij-d5 ij-cut';
+    var lbl=mk('span'); lbl.className='ij-cutl'; lbl.textContent=cfg.cut;
+    cut.appendChild(lbl);
+    var next=el.nextElementSibling;
+    if(next) el.parentNode.insertBefore(cut,next);
+    else el.parentNode.appendChild(cut);
 
-    kills.push(function(){
-      grid.remove();
-      cornerEls.forEach(function(e){e.remove();});
-      cutLine.remove();
-      if(fixed)el.style.position='';
-    });
+    kills.push(function(){grid.remove();caEls.forEach(function(e){e.remove();});cut.remove();if(f)el.style.position='';});
   });
 }
 
-// ══════════════════════════════════════════════════════
-// D6 — IMAGE OVERLAYS + SYMBOL PARTICLE SYSTEMS
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════
+// D6 — PARTICLES + IMAGE OVERLAYS + BADGES (SINGLE RAF)
+// ══════════════════════════════
 function initD6(){
-  SECS.forEach(function(cfg, si){
-    var el = getSec(cfg); if(!el) return;
-    var fixed = ensureRel(el);
+  SECS.forEach(function(cfg,si){
+    var el=document.querySelector(cfg.s); if(!el) return;
+    var f=rel(el);
 
-    // ANIM 1: Canvas particle system (all symbols drift through section)
-    var cp=mk('canvas');
-    cp.className='ij-d6';
-    cp.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;';
-    cp.width=el.offsetWidth||900; cp.height=el.offsetHeight||500;
-    el.insertBefore(cp,el.firstChild);
-    var cpCtx=cp.getContext('2d');
-    var cpW=cp.width, cpH=cp.height;
-    var particles=[];
-    for(var pi=0;pi<40;pi++){
-      var angle=(pi/40)*Math.PI*2;
-      particles.push({
-        x:Math.random()*cpW, y:Math.random()*cpH,
-        vx:Math.cos(angle)*0.35, vy:Math.sin(angle)*0.25,
-        sym:cfg.syms[pi%cfg.syms.length],
-        size:Math.random()*10+clampSize(12,18),
-        alpha:Math.random()*0.06+0.02,
-        phase:Math.random()*Math.PI*2
+    // ANIM 1: Particle canvas (shared RAF)
+    var cv=mk('canvas'); cv.className='ij-d6';
+    cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;background:transparent;';
+    el.insertBefore(cv,el.firstChild);
+    var pts=[];
+    for(var i=0;i<30;i++){
+      var angle=(i/30)*Math.PI*2;
+      pts.push({
+        x:Math.random()*(el.offsetWidth||900),
+        y:Math.random()*(el.offsetHeight||500),
+        vx:Math.cos(angle)*0.3,vy:Math.sin(angle)*0.22,
+        sym:cfg.syms[i%cfg.syms.length],
+        sz:12+Math.random()*8,
+        a:Math.random()*0.05+0.015,
+        ph:Math.random()*Math.PI*2
       });
     }
-    var t=0, rafP;
-    function drawP(){
-      cpCtx.clearRect(0,0,cpW,cpH);
-      t+=0.008;
+    addCanvas(cv,cfg,function(t,ctx,W,H,cfg2,particles){
+      ctx.clearRect(0,0,W,H);
       particles.forEach(function(p){
-        p.x+=p.vx; p.y+=p.vy;
-        if(p.x<-30)p.x=cpW+30; if(p.x>cpW+30)p.x=-30;
-        if(p.y<-20)p.y=cpH+20; if(p.y>cpH+20)p.y=-20;
-        var a=p.alpha*(0.6+0.4*Math.sin(t*40+p.phase));
-        cpCtx.font=p.size+'px "Courier New",monospace';
-        cpCtx.fillStyle=symColor(cfg,a);
-        cpCtx.fillText(p.sym,p.x,p.y);
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<-25)p.x=W+25;if(p.x>W+25)p.x=-25;
+        if(p.y<-15)p.y=H+15;if(p.y>H+15)p.y=-15;
+        var a=p.a*(0.6+0.4*Math.sin(t*35+p.ph));
+        ctx.font=p.sz+'px "Courier New",monospace';
+        ctx.fillStyle=sc(cfg2,a);
+        ctx.fillText(p.sym,p.x,p.y);
       });
-      rafP=requestAnimationFrame(drawP);
-    }
-    drawP();
+    },pts);
 
-    // ANIM 2: SVG dimension overlay on images within this section
+    // ANIM 2: SVG dimension overlays on images in this section
     var imgs=el.querySelectorAll('img');
-    var imgOverlays=[];
-    imgs.forEach(function(img, ii){
+    var imgData=[];
+    imgs.forEach(function(img,ii){
       var wrap=img.parentElement;
-      var wPos=window.getComputedStyle(wrap).position;
-      if(wPos==='static') wrap.style.position='relative';
-      var ov=mkSVG('svg');
+      var wp=window.getComputedStyle(wrap).position;
+      if(wp==='static') wrap.style.position='relative';
+      var ov=mkS('svg');
       ov.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:visible;';
       ov.classList.add('ij-d6');
-      // Horizontal dimension line
-      var dl=mkSVG('line');
-      dl.setAttribute('x1','5%');dl.setAttribute('y1','90%');
-      dl.setAttribute('x2','95%');dl.setAttribute('y2','90%');
-      dl.setAttribute('stroke','rgba(200,169,110,0.25)');dl.setAttribute('stroke-width','0.7');
-      ov.appendChild(dl);
-      ['5%','95%'].forEach(function(xp){
-        var tick=mkSVG('line');
-        tick.setAttribute('x1',xp);tick.setAttribute('y1','87%');
-        tick.setAttribute('x2',xp);tick.setAttribute('y2','93%');
-        tick.setAttribute('stroke','rgba(200,169,110,0.25)');tick.setAttribute('stroke-width','0.7');
-        ov.appendChild(tick);
+      // Horizontal dim line at 88% height
+      var hl=mkS('line');
+      hl.setAttribute('x1','4%');hl.setAttribute('y1','88%');
+      hl.setAttribute('x2','96%');hl.setAttribute('y2','88%');
+      hl.setAttribute('stroke','rgba(200,169,110,0.28)');hl.setAttribute('stroke-width','0.7');
+      ov.appendChild(hl);
+      ['4%','96%'].forEach(function(xp){
+        var tk=mkS('line');
+        tk.setAttribute('x1',xp);tk.setAttribute('y1','85%');
+        tk.setAttribute('x2',xp);tk.setAttribute('y2','91%');
+        tk.setAttribute('stroke','rgba(200,169,110,0.28)');tk.setAttribute('stroke-width','0.7');
+        ov.appendChild(tk);
       });
-      var clbl=mkSVG('text');
-      clbl.setAttribute('x','50%');clbl.setAttribute('y','87%');
+      var clbl=mkS('text');
+      clbl.setAttribute('x','50%');clbl.setAttribute('y','84%');
       clbl.setAttribute('text-anchor','middle');
       clbl.setAttribute('font-family',"'Courier New',monospace");
-      clbl.setAttribute('font-size','10');
-      clbl.setAttribute('fill','rgba(200,169,110,0.4)');
+      clbl.setAttribute('font-size','11');
+      clbl.setAttribute('fill','rgba(200,169,110,0.45)');
       clbl.textContent=cfg.syms[ii%cfg.syms.length];
       ov.appendChild(clbl);
-      // Vertical line
-      var vl=mkSVG('line');
-      vl.setAttribute('x1','93%');vl.setAttribute('y1','5%');
-      vl.setAttribute('x2','93%');vl.setAttribute('y2','85%');
-      vl.setAttribute('stroke','rgba(200,169,110,0.18)');vl.setAttribute('stroke-width','0.6');
-      ov.appendChild(vl);
-      var vlbl2=mkSVG('text');
-      vlbl2.setAttribute('x','95%');vlbl2.setAttribute('y','45%');
-      vlbl2.setAttribute('text-anchor','start');
-      vlbl2.setAttribute('font-family',"'Courier New',monospace");
-      vlbl2.setAttribute('font-size','9');
-      vlbl2.setAttribute('fill','rgba(200,169,110,0.3)');
-      vlbl2.textContent=cfg.syms[(ii+1)%cfg.syms.length];
-      ov.appendChild(vlbl2);
       wrap.appendChild(ov);
-      imgOverlays.push({ov:ov,wrap:wrap,wPos:wPos});
+      imgData.push({ov:ov,wrap:wrap,wp:wp});
     });
 
-    // ANIM 2b: Spinning badge (88px, ≥78px) in corner of section
-    var badge=mk('div');
-    badge.className='ij-d6 ij-badge-wrap';
-    badge.style.cssText+=(si%2?'bottom:16px;right:16px;':'top:16px;right:16px;');
-    var bSvg=mkSVG('svg');
-    bSvg.setAttribute('viewBox','0 0 88 88');
-    bSvg.style.cssText='width:88px;height:88px;animation:ijRot '+(15+si*2)+'s linear infinite;';
-    var defs=mkSVG('defs');
-    var pathEl=mkSVG('path');
-    var pid='bd6'+si;
+    // ANIM 2b: Spinning badge ≥78px in section corner
+    var badge=mk('div'); badge.className='ij-d6 ij-badge';
+    badge.style.cssText+=(si%2===0?'bottom:20px;right:20px;':'top:20px;right:20px;');
+    var bs=mkS('svg');
+    bs.setAttribute('viewBox','0 0 88 88');
+    bs.style.cssText='width:88px;height:88px;animation:ijRot '+(14+si*2)+'s linear infinite;';
+    var pid='p6'+si;
+    var defs=mkS('defs');
+    var pathEl=mkS('path');
     pathEl.setAttribute('id',pid);
-    pathEl.setAttribute('d','M44,6 a38,38 0 1,1 -0.01,0');
+    pathEl.setAttribute('d','M44,7 a37,37 0 1,1 -0.01,0');
     defs.appendChild(pathEl);
-    bSvg.appendChild(defs);
-    var circle=mkSVG('circle');
-    circle.setAttribute('cx','44');circle.setAttribute('cy','44');circle.setAttribute('r','38');
-    circle.setAttribute('fill','none');circle.setAttribute('stroke','rgba(200,169,110,0.12)');circle.setAttribute('stroke-width','0.5');
-    bSvg.appendChild(circle);
-    var innerCircle=mkSVG('circle');
-    innerCircle.setAttribute('cx','44');innerCircle.setAttribute('cy','44');innerCircle.setAttribute('r','28');
-    innerCircle.setAttribute('fill','none');innerCircle.setAttribute('stroke','rgba(200,169,110,0.07)');innerCircle.setAttribute('stroke-width','0.5');
-    bSvg.appendChild(innerCircle);
-    var tpWrapper=mkSVG('text');
-    tpWrapper.setAttribute('font-family',"'Courier New',monospace");
-    tpWrapper.setAttribute('font-size','7');
-    tpWrapper.setAttribute('fill','rgba(200,169,110,0.28)');
-    var tp=mkSVG('textPath');
+    bs.appendChild(defs);
+    var circle=mkS('circle');
+    circle.setAttribute('cx','44');circle.setAttribute('cy','44');circle.setAttribute('r','37');
+    circle.setAttribute('fill','none');
+    circle.setAttribute('stroke','rgba(200,169,110,0.14)');
+    circle.setAttribute('stroke-width','0.6');
+    bs.appendChild(circle);
+    var tpEl=mkS('text');
+    tpEl.setAttribute('font-family',"'Courier New',monospace");
+    tpEl.setAttribute('font-size','7');
+    tpEl.setAttribute('fill',sc(cfg,0.3));
+    var tp=mkS('textPath');
     tp.setAttribute('href','#'+pid);tp.setAttribute('startOffset','0%');
-    tp.textContent=(cfg.syms.join(' · ')+' · ').repeat(2);
-    tpWrapper.appendChild(tp);
-    bSvg.appendChild(tpWrapper);
-    var cSym=mkSVG('text');
-    cSym.setAttribute('x','44');cSym.setAttribute('y','50');
-    cSym.setAttribute('text-anchor','middle');
-    cSym.setAttribute('font-family',"'Courier New',monospace");
-    cSym.setAttribute('font-size','16');
-    cSym.setAttribute('fill','rgba(200,169,110,0.22)');
-    cSym.textContent=cfg.syms[0];
-    bSvg.appendChild(cSym);
-    badge.appendChild(bSvg);
+    tp.textContent=(cfg.syms.join(' · ')+' · ').repeat(3);
+    tpEl.appendChild(tp);
+    bs.appendChild(tpEl);
+    var csym=mkS('text');
+    csym.setAttribute('x','44');csym.setAttribute('y','50');
+    csym.setAttribute('text-anchor','middle');
+    csym.setAttribute('font-family',"'Courier New',monospace");
+    csym.setAttribute('font-size','18');
+    csym.setAttribute('fill',sc(cfg,0.25));
+    csym.textContent=cfg.syms[0];
+    bs.appendChild(csym);
+    badge.appendChild(bs);
     el.appendChild(badge);
 
     kills.push(function(){
-      cancelAnimationFrame(rafP);cp.remove();badge.remove();
-      imgOverlays.forEach(function(o){o.ov.remove();if(o.wPos==='static')o.wrap.style.position='';});
-      if(fixed)el.style.position='';
+      cv.remove();badge.remove();
+      imgData.forEach(function(d){d.ov.remove();if(d.wp==='static')d.wrap.style.position='';});
+      if(f)el.style.position='';
     });
   });
+  startSharedRAF();
 }
 
-function clampSize(min,max){return min+(Math.random()*(max-min));}
-
-// ── MAIN SWITCHER ──
+// ── SWITCHER ──
 function ijSet(n){
   killAll();
   document.body.className=document.body.className.replace(/\bij-d\d\b/g,'').trim();
@@ -4309,8 +4180,7 @@ window.ijSet=ijSet;
 
 var saved=0;try{saved=parseInt(localStorage.getItem('ij'))||0;}catch(e){}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){ijSet(saved);});}
-else{setTimeout(function(){ijSet(saved);},200);}
-
+else{setTimeout(function(){ijSet(saved);},150);}
 })();
 </script>
 
