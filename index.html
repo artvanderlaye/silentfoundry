@@ -1488,1987 +1488,490 @@ body.v11-active nav * { cursor: none !important; }
   </script>
 
 
-<!-- ── VARIANT SELECTOR BAR ── -->
-<style id="sf-sel-css">
-#sf-selector {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9990;
-  background: rgba(10,10,10,0.96);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(200,169,110,0.12);
-  padding: 6px 48px;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-#sf-selector::-webkit-scrollbar { display: none; }
-.sf-sel-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.38rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(200,169,110,0.35);
-  margin-right: 10px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.sf-vbtn {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: rgba(244,241,236,0.18);
-  background: none;
-  border: 0.5px solid rgba(244,241,236,0.05);
-  padding: 3px 8px;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.sf-vbtn:hover { color: rgba(200,169,110,0.7); border-color: rgba(200,169,110,0.25); }
-.sf-vbtn.sf-active { color: #c8a96e; border-color: rgba(200,169,110,0.6); background: rgba(200,169,110,0.05); }
-/* Push page content down to account for fixed bar */
-body { padding-top: 36px !important; }
-@media(max-width: 768px) {
-  #sf-selector { padding: 5px 14px; }
-  .sf-vbtn { font-size: 0.65rem; padding: 2px 6px; }
-}
-/* Scroll progress - top right */
-#sf-progress {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 3px;
-  background: rgba(10,10,10,0.3);
-  z-index: 9991;
-  height: 100vh;
-}
-#sf-progress-fill {
-  width: 100%;
-  background: rgba(200,169,110,0.7);
-  height: 0%;
-  transition: height 0.05s linear;
-  box-shadow: 0 0 6px rgba(200,169,110,0.3);
-}
+<style id="sf-base">
+/* ── FLOATING SELECTOR BAR ── */
+#sf-bar{position:fixed;top:0;left:0;right:0;z-index:9990;background:rgba(10,10,10,0.97);backdrop-filter:blur(10px);border-bottom:1px solid rgba(200,169,110,0.1);padding:5px 40px;display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;}
+#sf-bar::-webkit-scrollbar{display:none;}
+.sf-lbl{font-family:'DM Sans',sans-serif;font-size:0.36rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-right:8px;white-space:nowrap;flex-shrink:0;}
+.sf-btn{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.07em;color:rgba(244,241,236,0.2);background:none;border:0.5px solid rgba(244,241,236,0.05);padding:3px 8px;cursor:pointer;transition:color 0.18s,border-color 0.18s;white-space:nowrap;flex-shrink:0;}
+.sf-btn:hover{color:rgba(200,169,110,0.7);border-color:rgba(200,169,110,0.3);}
+.sf-btn.on{color:#c8a96e;border-color:rgba(200,169,110,0.6);background:rgba(200,169,110,0.05);}
+body{padding-top:32px;}
+/* ── SCROLL PROGRESS TOP RIGHT ── */
+#sf-prog{position:fixed;top:0;right:0;width:2px;height:100vh;z-index:9991;background:rgba(10,10,10,0.2);}
+#sf-prog-fill{width:100%;height:0%;background:rgba(200,169,110,0.65);box-shadow:0 0 4px rgba(200,169,110,0.25);transition:height 0.04s linear;}
+/* ── REFINED TYPE — full site all variants ── */
+.wwd-section p,.wwd-grid p{font-size:clamp(0.76rem,0.92vw,0.86rem)!important;line-height:1.98!important;letter-spacing:0.01em!important;}
+.accordion-title{font-size:clamp(0.86rem,1.15vw,1.25rem)!important;letter-spacing:0.14em!important;}
+.funds .section-title,.funds h2.section-title{font-size:clamp(0.78rem,1vw,1.08rem)!important;letter-spacing:0.22em!important;}
+/* CTA refined */
+.cta-headline-sf{font-size:clamp(0.86rem,1.25vw,1.35rem)!important;letter-spacing:0.28em!important;}
+.cta-body-sf{font-size:clamp(0.68rem,0.8vw,0.78rem)!important;line-height:2.35!important;letter-spacing:0.04em!important;}
+/* Footer refined */
+footer .footer-col p,footer .footer-col a,footer .footer-tagline{font-size:clamp(0.7rem,0.85vw,0.8rem)!important;letter-spacing:0.04em!important;line-height:1.9!important;}
+/* ── GOLD SHIMMER on key words ── */
+@keyframes sfGlow{0%,100%{text-shadow:none;}50%{text-shadow:0 0 18px rgba(200,169,110,0.22);}}
+.sf-glow{animation:sfGlow 7s ease-in-out infinite;}
+/* ── WAVEFORM keyframes ── */
+@keyframes sfW0{0%,100%{height:3px}50%{height:26px}}
+@keyframes sfW1{0%,100%{height:9px}50%{height:32px}}
+@keyframes sfW2{0%,100%{height:16px}50%{height:6px}}
+@keyframes sfW3{0%,100%{height:6px}50%{height:20px}}
+@keyframes sfW4{0%,100%{height:20px}50%{height:4px}}
+/* ── ENGINEERING SYMBOL style ── */
+.sf-eng{font-family:'DM Sans',sans-serif;font-size:0.32rem;letter-spacing:0.16em;color:rgba(200,169,110,0.42);text-transform:uppercase;pointer-events:none;user-select:none;line-height:1.6;}
+.sf-eng-block{position:absolute;pointer-events:none;z-index:2;}
+/* ── THESIS section effects ── */
+.sf-thesis-obj{position:absolute;pointer-events:none;z-index:1;}
+/* ── MARSHALL case study treatment ── */
+.sf-cs-obj{position:absolute;pointer-events:none;z-index:2;}
+/* ── V01-V10 ISOMETRIC on Marshall ONLY ── */
+/* Applied via JS only to .csw */
 </style>
 
-<div id="sf-selector">
-  <span class="sf-sel-label">SN:001 — Variant</span>
-  <button class="sf-vbtn sf-active" onclick="sfSetVariant('00')">00 · Original</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('01')">01 · Blueprint</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('02')">02 · Machining</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('03')">03 · Scanline</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('04')">04 · Signal</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('05')">05 · Static</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('06')">06 · Vortex</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('07')">07 · Lightning</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('08')">08 · Weld</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('09')">09 · Radar</button>
-  <button class="sf-vbtn" onclick="sfSetVariant('10')">10 · Precision</button>
+<div id="sf-bar">
+  <span class="sf-lbl">SF · SN:001</span>
+  <button class="sf-btn on" onclick="sfV('00')">00 · Original</button>
+  <button class="sf-btn" onclick="sfV('01')">01 · Blueprint</button>
+  <button class="sf-btn" onclick="sfV('02')">02 · Machining</button>
+  <button class="sf-btn" onclick="sfV('03')">03 · Scanline</button>
+  <button class="sf-btn" onclick="sfV('04')">04 · Signal</button>
+  <button class="sf-btn" onclick="sfV('05')">05 · Static</button>
+  <button class="sf-btn" onclick="sfV('06')">06 · Vortex</button>
+  <button class="sf-btn" onclick="sfV('07')">07 · Lightning</button>
+  <button class="sf-btn" onclick="sfV('08')">08 · Weld</button>
+  <button class="sf-btn" onclick="sfV('09')">09 · Radar</button>
+  <button class="sf-btn" onclick="sfV('10')">10 · Precision</button>
 </div>
+<div id="sf-prog"><div id="sf-prog-fill"></div></div>
 
-<div id="sf-progress"><div id="sf-progress-fill"></div></div>
-
-<style id="sf-variants-css">
-
-/* ══════════════════════════════════════════════════════
-   SHARED — engineering symbol annotations
-   Small DM Sans labels, gold, scattered contextually
-══════════════════════════════════════════════════════ */
-.sf-sym {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.36rem;
-  letter-spacing: 0.15em;
-  color: rgba(200,169,110,0.35);
-  text-transform: uppercase;
-  display: inline-block;
-  pointer-events: none;
-  user-select: none;
-}
-.sf-sym-block {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-/* Gold shimmer on key words — all variants */
-.sf-shimmer {
-  position: relative;
-  display: inline;
-  background: linear-gradient(120deg, transparent 20%, rgba(200,169,110,0.18) 50%, transparent 80%);
-  background-size: 300%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: sfShimmer 6s ease-in-out infinite;
-}
-@keyframes sfShimmer {
-  0%, 100% { background-position: 200% 0; }
-  50% { background-position: -200% 0; }
-}
-/* Nav logo shimmer */
-.nav-logo .sf-logo-shimmer {
-  animation: sfLogoShimmer 8s ease-in-out infinite;
-}
-@keyframes sfLogoShimmer {
-  0%, 100% { text-shadow: none; }
-  50% { text-shadow: 0 0 20px rgba(200,169,110,0.25); }
-}
-/* Refined cursor — smoother, faster */
-#v11-cursor { transition: transform 0.08s ease !important; }
-#v11-cursor-dot { transition: left 0.04s ease, top 0.04s ease !important; }
-#v11-cursor-ring { transition: left 0.1s ease, top 0.1s ease, width 0.2s, height 0.2s !important; }
-
-/* ══════════════════════════════════════════════════════
-   REFINED TYPE SYSTEM — all variants
-   Smaller, more precise across WWD, How It Works,
-   Investment Paths, CTA
-══════════════════════════════════════════════════════ */
-.wwd-body-text {
-  font-size: clamp(0.78rem, 0.95vw, 0.88rem) !important;
-  line-height: 1.95 !important;
-  letter-spacing: 0.01em !important;
-}
-.accordion-title-refined {
-  font-size: clamp(0.88rem, 1.2vw, 1.3rem) !important;
-  letter-spacing: 0.14em !important;
-}
-.funds-title-refined {
-  font-size: clamp(0.8rem, 1.05vw, 1.1rem) !important;
-  letter-spacing: 0.2em !important;
-}
-.cta-headline-refined {
-  font-size: clamp(0.88rem, 1.3vw, 1.4rem) !important;
-  letter-spacing: 0.28em !important;
-}
-.cta-body-refined {
-  font-size: clamp(0.7rem, 0.82vw, 0.8rem) !important;
-  line-height: 2.3 !important;
-  letter-spacing: 0.04em !important;
-}
-
-/* ══════════════════════════════════════════════════════
-   MARSHALL WAVEFORM — all variants
-   Thin bars, grey/white, bottom-left column only
-══════════════════════════════════════════════════════ */
-.sf-marshall-wave {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 48%;
-  height: 40px;
-  display: flex;
-  align-items: flex-end;
-  gap: 1.5px;
-  padding: 0 0 0 2px;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-.sf-marshall-wave .sf-wbar {
-  width: 2px;
-  border-radius: 1px 1px 0 0;
-  background: rgba(200,196,188,0.35);
-  flex-shrink: 0;
-}
-@keyframes sfWB0{0%,100%{height:4px}50%{height:28px}}
-@keyframes sfWB1{0%,100%{height:10px}50%{height:34px}}
-@keyframes sfWB2{0%,100%{height:18px}50%{height:7px}}
-@keyframes sfWB3{0%,100%{height:7px}50%{height:22px}}
-@keyframes sfWB4{0%,100%{height:22px}50%{height:5px}}
-
-/* ══════════════════════════════════════════════════════
-   V01 — BLUEPRINT
-   Buzzing grid hero · dimension lines · datum marks
-   Blueprint grid on parallax sections
-══════════════════════════════════════════════════════ */
-[data-sfv="01"] .hero-bg { animation: slowzoom 20s ease-out forwards, sfV01HeroBuzz 0.08s steps(1) infinite !important; }
-@keyframes sfV01HeroBuzz {
-  0%   { filter: brightness(0.35); }
-  25%  { filter: brightness(0.35) contrast(1.02); }
-  50%  { filter: brightness(0.34); }
-  75%  { filter: brightness(0.36) contrast(1.01); }
-  100% { filter: brightness(0.35); }
-}
-[data-sfv="01"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(200,169,110,0.07) 39px, rgba(200,169,110,0.07) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(200,169,110,0.07) 39px, rgba(200,169,110,0.07) 40px);
-  pointer-events: none; z-index: 1;
-  animation: sfV01GridPulse 2s ease-in-out infinite;
-}
-@keyframes sfV01GridPulse {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-[data-sfv="01"] .cs-wrap { position: relative; }
-[data-sfv="01"] .cs-wrap::before {
-  content: "A—A  ⌀  ±0.001  TYP  REF";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="01"] #how { position: relative; }
-[data-sfv="01"] #how::before {
-  content: "N001  →  ×4  THRU";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="01"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="01"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  CHK  PN:SF-001";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="01"] .value { position: relative; }
-[data-sfv="01"] .value::before {
-  content: "MAX  MIN  TIR  ⊥  ∥";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="01"] .funds { position: relative; }
-[data-sfv="01"] .funds::before {
-  content: "QTY  REV  BSC  BOM";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="01"] .cta { position: relative; }
-[data-sfv="01"] .cta::before {
-  content: "SIG  CHK  APPROVED ✓";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="01"] footer { position: relative; }
-[data-sfv="01"] footer::before {
-  content: "NVG → SF  v1.6  SN:001";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-/* Dimension line decoration on WWD */
-[data-sfv="01"] .wwd-section { position: relative; }
-[data-sfv="01"] .wwd-section::after {
-  content: "REF  TYP  BOM";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V02 — MACHINING CHIPS
-   CNC debris hero · surface finish symbols · machining notation
-══════════════════════════════════════════════════════ */
-[data-sfv="02"] .cs-wrap::before {
-  content: "Ra 0.8  ▽▽▽  HRC  ANOD  BEAD";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="02"] .cs-wrap { position: relative; }
-[data-sfv="02"] #how::before {
-  content: "M6×1.0  THRU  CSK  CBORE";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="02"] #how { position: relative; }
-[data-sfv="02"] .eng-section { position: relative; }
-[data-sfv="02"] .eng-section::after {
-  content: "G54  F800  S3000  T1  XYZ";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="02"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent, transparent 8px,
-    rgba(200,169,110,0.04) 8px, rgba(200,169,110,0.04) 9px
-  );
-  pointer-events: none; z-index: 1;
-}
-[data-sfv="02"] .value { position: relative; }
-[data-sfv="02"] .value::before {
-  content: "AL  SS  ANOD  ▽▽";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="02"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="02"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "PN:SF-002  CHK  REV";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="02"] .funds { position: relative; }
-[data-sfv="02"] .funds::before {
-  content: "DXF  STL  BOM  QTY";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="02"] .wwd-section { position: relative; }
-[data-sfv="02"] .wwd-section::after {
-  content: "TYP  BSC  REF";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="02"] .cta { position: relative; }
-[data-sfv="02"] .cta::before {
-  content: "APPROVED ✓  SIG  CHK";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="02"] footer { position: relative; }
-[data-sfv="02"] footer::before {
-  content: "SF  NVG  v1.6  SN:002";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V03 — SCANLINE
-   Horizontal scanline hero · section cut lines · hidden lines
-══════════════════════════════════════════════════════ */
-[data-sfv="03"] .cs-wrap { position: relative; }
-[data-sfv="03"] .cs-wrap::before {
-  content: "A—A  SECTION CUT  ÷  NTS";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="03"] .divider {
-  background: none !important;
-  border-bottom: 1px dashed rgba(200,169,110,0.25) !important;
-  height: 1px !important;
-}
-[data-sfv="03"] #how { position: relative; }
-[data-sfv="03"] #how::before {
-  content: "— — —  —··—  —·—";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="03"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent, transparent 3px,
-    rgba(200,169,110,0.03) 3px, rgba(200,169,110,0.03) 4px
-  );
-  pointer-events: none; z-index: 1;
-  animation: sfV03Scan 3s linear infinite;
-}
-@keyframes sfV03Scan {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 40px; }
-}
-[data-sfv="03"] .value { position: relative; }
-[data-sfv="03"] .value::before {
-  content: "SCALE 1:2  ISO  DIN  JIS";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="03"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="03"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  ECO  REV";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="03"] .wwd-section { position: relative; }
-[data-sfv="03"] .wwd-section::after {
-  content: "REF  TYP  NTS";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="03"] .funds { position: relative; }
-[data-sfv="03"] .funds::before {
-  content: "QTY  BSC  BOM  REV";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="03"] .cta { position: relative; }
-[data-sfv="03"] .cta::before {
-  content: "SIG  CHK  SF-003";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="03"] footer { position: relative; }
-[data-sfv="03"] footer::before {
-  content: "NVG  SF  v1.6  SN:003";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V04 — SIGNAL / AUDIO
-   Oscilloscope hero · frequency notation · signal symbols
-══════════════════════════════════════════════════════ */
-[data-sfv="04"] .cs-wrap { position: relative; }
-[data-sfv="04"] .cs-wrap::before {
-  content: "SIG  GND  VCC  PWR  U1";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="04"] #how { position: relative; }
-[data-sfv="04"] #how::before {
-  content: "R1  C1  U1  ⏚  ≋";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="04"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  pointer-events: none; z-index: 1;
-}
-[data-sfv="04"] .wwd-section { position: relative; }
-[data-sfv="04"] .wwd-section::after {
-  content: "PWR  SIG  GND";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="04"] .value { position: relative; }
-[data-sfv="04"] .value::before {
-  content: "VCC  GND  SIG  R1";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="04"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="04"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  SIG  CHK";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="04"] .funds { position: relative; }
-[data-sfv="04"] .funds::before {
-  content: "BOM  QTY  PWR  REV";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="04"] .cta { position: relative; }
-[data-sfv="04"] .cta::before {
-  content: "SIG ON  CHK  SF-004";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="04"] footer { position: relative; }
-[data-sfv="04"] footer::before {
-  content: "SF  NVG  v1.6  SN:004";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V05 — STATIC / RAIN
-   Vertical falling data hero · centre lines · break lines
-══════════════════════════════════════════════════════ */
-[data-sfv="05"] .cs-wrap { position: relative; }
-[data-sfv="05"] .cs-wrap::before {
-  content: "—·—  ~ ≈  —··—  NTS";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="05"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent, transparent 19px,
-    rgba(200,169,110,0.05) 19px, rgba(200,169,110,0.05) 20px
-  );
-  pointer-events: none; z-index: 1;
-  animation: sfV05Rain 1s linear infinite;
-}
-@keyframes sfV05Rain {
-  0% { background-position: 0 0; }
-  100% { background-position: 0 -20px; }
-}
-[data-sfv="05"] .wwd-section { position: relative; }
-[data-sfv="05"] .wwd-section::after {
-  content: "≈  ~  —·—  BSC";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="05"] #how { position: relative; }
-[data-sfv="05"] #how::before {
-  content: "N001  N002  N003  →";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="05"] .value { position: relative; }
-[data-sfv="05"] .value::before {
-  content: "∑  √  ≡  ∥  ⊥";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="05"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="05"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "CHK  ECO  REV  PN:SF-005";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="05"] .funds { position: relative; }
-[data-sfv="05"] .funds::before {
-  content: "QTY  BOM  REV  DXF";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="05"] .cta { position: relative; }
-[data-sfv="05"] .cta::before {
-  content: "APPROVED ✓  SIG  CHK";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="05"] footer { position: relative; }
-[data-sfv="05"] footer::before {
-  content: "NVG  SF  v1.6  SN:005";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V06 — VORTEX
-   Orbital/vortex hero · concentricity · true position
-══════════════════════════════════════════════════════ */
-[data-sfv="06"] .cs-wrap { position: relative; }
-[data-sfv="06"] .cs-wrap::before {
-  content: "⊙  ⊚  ○  ⌓  ⊥";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="06"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(200,169,110,0.04) 0%, transparent 60%);
-  pointer-events: none; z-index: 1;
-  animation: sfV06Orbital 8s ease-in-out infinite;
-}
-@keyframes sfV06Orbital {
-  0%,100% { background-position: 50% 50%; opacity: 0.8; }
-  50% { background-position: 50% 50%; opacity: 1.2; }
-}
-[data-sfv="06"] .wwd-section { position: relative; }
-[data-sfv="06"] .wwd-section::after {
-  content: "⊙  ○  ⊚  TYP";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="06"] #how { position: relative; }
-[data-sfv="06"] #how::before {
-  content: "DOF  XYZ  →  ⌖";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="06"] .value { position: relative; }
-[data-sfv="06"] .value::before {
-  content: "⊙  ≡  ⊥  ∥  ∠";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="06"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="06"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  PN:SF-006";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="06"] .funds { position: relative; }
-[data-sfv="06"] .funds::before {
-  content: "QTY  BOM  REV  CHK";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="06"] .cta { position: relative; }
-[data-sfv="06"] .cta::before {
-  content: "SIG  CHK  SF-006  APPROVED ✓";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="06"] footer { position: relative; }
-[data-sfv="06"] footer::before {
-  content: "NVG  SF  v1.6  SN:006";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V07 — LIGHTNING
-   Electric arc hero · weld symbols · structural notation
-══════════════════════════════════════════════════════ */
-[data-sfv="07"] .cs-wrap { position: relative; }
-[data-sfv="07"] .cs-wrap::before {
-  content: "△  ⌒ ⌒  ///  △ WELD";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="07"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: repeating-linear-gradient(
-    60deg,
-    transparent, transparent 14px,
-    rgba(200,169,110,0.04) 14px, rgba(200,169,110,0.04) 15px
-  );
-  pointer-events: none; z-index: 1;
-}
-[data-sfv="07"] .wwd-section { position: relative; }
-[data-sfv="07"] .wwd-section::after {
-  content: "△  ///  TYP  REF";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="07"] #how { position: relative; }
-[data-sfv="07"] #how::before {
-  content: "N001  →  ×4  △";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="07"] .value { position: relative; }
-[data-sfv="07"] .value::before {
-  content: "△  ≡  ⊥  MAX  MIN";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="07"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="07"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  ECO  CHK";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="07"] .funds { position: relative; }
-[data-sfv="07"] .funds::before {
-  content: "BOM  QTY  REV  DXF";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="07"] .cta { position: relative; }
-[data-sfv="07"] .cta::before {
-  content: "SIG  CHK  APPROVED ✓  SF-007";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="07"] footer { position: relative; }
-[data-sfv="07"] footer::before {
-  content: "NVG  SF  v1.6  SN:007";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V08 — WELD SPARKS
-   Spark shower hero · fastener notation · assembly symbols
-══════════════════════════════════════════════════════ */
-[data-sfv="08"] .cs-wrap { position: relative; }
-[data-sfv="08"] .cs-wrap::before {
-  content: "M6×1.0  #8-32  ×4  THRU  ↧";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="08"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(circle at 20% 30%, rgba(200,169,110,0.04) 0%, transparent 30%),
-    radial-gradient(circle at 80% 70%, rgba(200,169,110,0.03) 0%, transparent 25%);
-  pointer-events: none; z-index: 1;
-}
-[data-sfv="08"] .wwd-section { position: relative; }
-[data-sfv="08"] .wwd-section::after {
-  content: "→  ×4  THRU  BSC";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="08"] #how { position: relative; }
-[data-sfv="08"] #how::before {
-  content: "CSK  CBORE  M6×1.0  ↧";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="08"] .value { position: relative; }
-[data-sfv="08"] .value::before {
-  content: "→  ×4  ≡  ⌐ ¬";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="08"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="08"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  CHK  PN:SF-008";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="08"] .funds { position: relative; }
-[data-sfv="08"] .funds::before {
-  content: "QTY  BOM  STL  DXF";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="08"] .cta { position: relative; }
-[data-sfv="08"] .cta::before {
-  content: "APPROVED ✓  SIG  CHK  SF-008";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="08"] footer { position: relative; }
-[data-sfv="08"] footer::before {
-  content: "NVG  SF  v1.6  SN:008";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V09 — RADAR
-   Radar sweep hero · navigational symbols · coordinate notation
-══════════════════════════════════════════════════════ */
-[data-sfv="09"] .cs-wrap { position: relative; }
-[data-sfv="09"] .cs-wrap::before {
-  content: "XYZ  DOF  ∠  ↗  °";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.3);
-  pointer-events: none;
-}
-[data-sfv="09"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    repeating-conic-gradient(from 0deg at 50% 50%, transparent 0deg, transparent 29deg, rgba(200,169,110,0.03) 30deg, transparent 31deg);
-  pointer-events: none; z-index: 1;
-  animation: sfV09RadarBg 12s linear infinite;
-}
-@keyframes sfV09RadarBg {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-[data-sfv="09"] .wwd-section { position: relative; }
-[data-sfv="09"] .wwd-section::after {
-  content: "XYZ  ∠  ↗  TYP";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="09"] #how { position: relative; }
-[data-sfv="09"] #how::before {
-  content: "N001  DOF  XYZ  →";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="09"] .value { position: relative; }
-[data-sfv="09"] .value::before {
-  content: "MAX  MIN  ∠  ↕  °";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="09"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="09"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  CHK  PN:SF-009";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.22);
-  pointer-events: none;
-}
-[data-sfv="09"] .funds { position: relative; }
-[data-sfv="09"] .funds::before {
-  content: "QTY  BOM  REV  XYZ";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="09"] .cta { position: relative; }
-[data-sfv="09"] .cta::before {
-  content: "SIG  CHK  APPROVED ✓";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-[data-sfv="09"] footer { position: relative; }
-[data-sfv="09"] footer::before {
-  content: "NVG  SF  v1.6  SN:009";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.2);
-  pointer-events: none;
-}
-
-/* ══════════════════════════════════════════════════════
-   V10 — PRECISION / INK BLEED
-   Ultra precise hero · dense symbol system · maximum notation
-══════════════════════════════════════════════════════ */
-[data-sfv="10"] .cs-wrap { position: relative; }
-[data-sfv="10"] .cs-wrap::before {
-  content: "⌀  ±0.001  Ra 0.8  ▽▽▽  A—A  HRC";
-  position: absolute; top: 12px; right: 16px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.33rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.35);
-  pointer-events: none;
-}
-[data-sfv="10"] [style*="cad_texture"]::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(200,169,110,0.05) 19px, rgba(200,169,110,0.05) 20px),
-    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(200,169,110,0.05) 19px, rgba(200,169,110,0.05) 20px);
-  pointer-events: none; z-index: 1;
-}
-[data-sfv="10"] .wwd-section { position: relative; }
-[data-sfv="10"] .wwd-section::after {
-  content: "⌀  ±0.001  TYP  REF  BSC  NTS";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="10"] #how { position: relative; }
-[data-sfv="10"] #how::before {
-  content: "N001  M6×1.0  THRU  ↧  CSK  ⌀";
-  position: absolute; top: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.2em; color: rgba(200,169,110,0.28);
-  pointer-events: none;
-}
-[data-sfv="10"] .value { position: relative; }
-[data-sfv="10"] .value::before {
-  content: "MAX  MIN  TIR  ⊥  ∥  ≡  ∠";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="10"] section[style*="background:#ede8e0;text-align:center"] { position: relative; }
-[data-sfv="10"] section[style*="background:#ede8e0;text-align:center"]::after {
-  content: "APPROVED ✓  CHK  ECO  REV  PN:SF-010";
-  position: absolute; bottom: 16px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.28);
-  pointer-events: none;
-}
-[data-sfv="10"] .funds { position: relative; }
-[data-sfv="10"] .funds::before {
-  content: "QTY  BOM  DXF  STL  REV  BSC";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="10"] .cta { position: relative; }
-[data-sfv="10"] .cta::before {
-  content: "APPROVED ✓  SIG  CHK  PN:SF-010  v1.6";
-  position: absolute; bottom: 24px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-[data-sfv="10"] footer { position: relative; }
-[data-sfv="10"] footer::before {
-  content: "NVG → SF  v1.6  SN:010  ⌀  ±0.001";
-  position: absolute; top: 20px; right: 48px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.3rem;
-  letter-spacing: 0.18em; color: rgba(200,169,110,0.25);
-  pointer-events: none;
-}
-/* V10 also gets the most refined type */
-[data-sfv="10"] .wwd-section p {
-  font-size: clamp(0.72rem, 0.9vw, 0.82rem) !important;
-  line-height: 2.1 !important;
-  letter-spacing: 0.015em !important;
-}
-[data-sfv="10"] .accordion-title {
-  font-size: clamp(0.82rem, 1.1vw, 1.2rem) !important;
-  letter-spacing: 0.18em !important;
-}
-
-/* V13 ARCHITECT — isometric grid on Marshall section only */
-[data-sfv="13"] .csw {
-  background-image:
-    linear-gradient(rgba(200,169,110,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,169,110,0.06) 1px, transparent 1px) !important;
-  background-size: 28px 28px !important;
-}
-
-</style>
-
-<style id="sf-wf-kf">
-@keyframes sfWB0{0%,100%{height:4px}50%{height:28px}}
-@keyframes sfWB1{0%,100%{height:10px}50%{height:34px}}
-@keyframes sfWB2{0%,100%{height:18px}50%{height:7px}}
-@keyframes sfWB3{0%,100%{height:7px}50%{height:22px}}
-@keyframes sfWB4{0%,100%{height:22px}50%{height:5px}}
-</style>
-<script id="sf-variants-js">
+<script id="sf-engine">
 (function(){
 'use strict';
-
-var current = '00';
-var cleanupFns = [];
+var cur='00', kills=[];
 
 // ── SCROLL PROGRESS ──
-window.addEventListener('scroll', function(){
-  var fill = document.getElementById('sf-progress-fill');
-  if(!fill) return;
-  var pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-  fill.style.height = Math.min(pct, 100) + '%';
-}, {passive:true});
+window.addEventListener('scroll',function(){
+  var f=document.getElementById('sf-prog-fill');
+  if(f) f.style.height=Math.min(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100,100)+'%';
+},{passive:true});
 
-// ── CURSOR REFINEMENT ──
+// ── REFINED CURSOR ──
 function refineCursor(){
-  var style = document.createElement('style');
-  style.id = 'sf-cursor-refined';
-  style.textContent = [
-    '#v11-cursor-dot{transition:left 0.04s cubic-bezier(0.16,1,0.3,1),top 0.04s cubic-bezier(0.16,1,0.3,1)!important;}',
-    '#v11-cursor-ring{transition:left 0.09s cubic-bezier(0.16,1,0.3,1),top 0.09s cubic-bezier(0.16,1,0.3,1),width 0.2s,height 0.2s!important;}',
-    '#v11-cursor{transition:left 0.14s cubic-bezier(0.16,1,0.3,1),top 0.14s cubic-bezier(0.16,1,0.3,1)!important;}'
-  ].join('');
-  document.head.appendChild(style);
+  var s=mk('style');s.id='sf-cr';
+  s.textContent='#v11-cursor-dot{transition:left 0.035s cubic-bezier(0.16,1,0.3,1),top 0.035s cubic-bezier(0.16,1,0.3,1)!important;}#v11-cursor-ring{transition:left 0.08s cubic-bezier(0.16,1,0.3,1),top 0.08s cubic-bezier(0.16,1,0.3,1)!important;}#v11-cursor{transition:left 0.13s cubic-bezier(0.16,1,0.3,1),top 0.13s cubic-bezier(0.16,1,0.3,1)!important;}';
+  document.head.appendChild(s);
+  kills.push(function(){var e=document.getElementById('sf-cr');if(e)e.remove();});
 }
 
 // ── GOLD SHIMMER on BRAND SOUL + nav logo ──
 function applyShimmer(){
-  // Find BRAND SOUL text
-  document.querySelectorAll('.hero-headline-bottom, .hero-headline-top').forEach(function(el){
-    el.style.backgroundImage = 'linear-gradient(120deg, transparent 20%, rgba(200,169,110,0.12) 50%, transparent 80%)';
-    el.style.backgroundSize = '400%';
-    el.style.backgroundClip = 'text';
-    el.style.webkitBackgroundClip = 'text';
-    el.style.animation = 'sfShimmer 7s ease-in-out infinite';
-    cleanupFns.push(function(){
-      el.style.backgroundImage = '';
-      el.style.backgroundSize = '';
-      el.style.backgroundClip = '';
-      el.style.webkitBackgroundClip = '';
-      el.style.animation = '';
+  document.querySelectorAll('.hero-headline-bottom,.hero-headline-top').forEach(function(el){
+    el.classList.add('sf-glow');
+    kills.push(function(){el.classList.remove('sf-glow');});
+  });
+  var logo=document.querySelector('.nav-logo');
+  if(logo){logo.classList.add('sf-glow');kills.push(function(){logo.classList.remove('sf-glow');});}
+}
+
+// ── CTA REFINED TYPE injection ──
+function refineCTA(){
+  document.querySelectorAll('.cta').forEach(function(cta){
+    cta.querySelectorAll('[style*="font-size:clamp(2"],[style*="font-size:clamp(3"]').forEach(function(el){
+      el.classList.add('cta-headline-sf');kills.push(function(){el.classList.remove('cta-headline-sf');});
+    });
+    cta.querySelectorAll('p[style*="line-height"]').forEach(function(el){
+      el.classList.add('cta-body-sf');kills.push(function(){el.classList.remove('cta-body-sf');});
     });
   });
-  // Nav logo
-  var logo = document.querySelector('.nav-logo');
-  if(logo){
-    logo.style.transition = 'text-shadow 0.5s ease';
-    var iv = setInterval(function(){
-      logo.style.textShadow = '0 0 20px rgba(200,169,110,0.2)';
-      setTimeout(function(){ logo.style.textShadow = 'none'; }, 3000);
-    }, 6000);
-    cleanupFns.push(function(){ clearInterval(iv); logo.style.textShadow = ''; });
-  }
 }
 
-// ── MARSHALL WAVEFORM ──
-function addMarshallWave(variant){
-  var csw = document.querySelector('.csw');
-  if(!csw) return;
-  var old = document.getElementById('sf-marshall-wave');
-  if(old) old.remove();
-
-  var wrap = document.createElement('div');
-  wrap.id = 'sf-marshall-wave';
-  wrap.className = 'sf-marshall-wave';
-  csw.style.position = 'relative';
-
-  // Different bar counts/styles per variant
-  var configs = {
-    '00':{bars:24, gap:'1.5px', width:'2px'},
-    '01':{bars:28, gap:'1px', width:'1.5px'},
-    '02':{bars:20, gap:'2px', width:'2.5px'},
-    '03':{bars:36, gap:'1px', width:'1px'},
-    '04':{bars:18, gap:'3px', width:'3px'},
-    '05':{bars:30, gap:'1px', width:'1.5px'},
-    '06':{bars:22, gap:'2px', width:'2px'},
-    '07':{bars:32, gap:'1px', width:'1.5px'},
-    '08':{bars:16, gap:'4px', width:'3.5px'},
-    '09':{bars:26, gap:'1.5px', width:'2px'},
-    '10':{bars:40, gap:'0.5px', width:'1px'}
-  };
-  var cfg = configs[variant] || configs['00'];
-
-  wrap.style.gap = cfg.gap;
-
-  for(var i=0; i<cfg.bars; i++){
-    var b = document.createElement('div');
-    b.className = 'sf-wbar';
-    b.style.width = cfg.width;
-    b.style.animation = 'sfWB' + (i%5) + ' ' + (0.6 + Math.random()*1.1) + 's ease-in-out infinite';
-    b.style.animationDelay = (i*0.05) + 's';
-    wrap.appendChild(b);
-  }
-  csw.appendChild(wrap);
-  cleanupFns.push(function(){ wrap.remove(); });
+// ── ENGINEERING SYMBOLS ──
+// Each section gets a visible symbol block
+// sym(selector, text, position: top/bottom, left/right offset)
+function sym(sel,txt,pos,xOff,yOff){
+  var el=document.querySelector(sel);if(!el)return;
+  var d=mk('div');d.className='sf-eng-block';
+  d.style.cssText=(pos==='top'?'top:'+(yOff||16)+'px;':'bottom:'+(yOff||14)+'px;')+
+    (xOff<0?'left:'+(Math.abs(xOff))+'px;':'right:'+xOff+'px;');
+  d.innerHTML='<span class="sf-eng">'+txt+'</span>';
+  el.style.position='relative';el.appendChild(d);
+  kills.push(function(){d.remove();});
 }
 
-// ── SECTION DATA VIZ OBJECTS ──
-// Each variant gets a unique canvas/SVG object per section
-// All significantly different visual languages
-
-var sectionViz = {
-
-  // ── V01 BLUEPRINT — geometric dimension lines on every section ──
-  '01': function(){
-    // Hero: buzzing grid canvas
-    heroCanvas(function(c, ctx, W, H){
-      var offset = 0;
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        ctx.strokeStyle = 'rgba(200,169,110,0.06)';
-        ctx.lineWidth = 0.5;
-        var spacing = 40;
-        var buzz = Math.sin(Date.now()*0.008)*1.5;
-        for(var x=0; x<W; x+=spacing){
-          ctx.beginPath();ctx.moveTo(x+buzz,0);ctx.lineTo(x+buzz,H);ctx.stroke();
-        }
-        for(var y=0; y<H; y+=spacing){
-          ctx.beginPath();ctx.moveTo(0,y+buzz);ctx.lineTo(W,y+buzz);ctx.stroke();
-        }
-        // Dimension tick marks
-        ctx.strokeStyle = 'rgba(200,169,110,0.15)';
-        ctx.lineWidth = 1;
-        for(var tx=0; tx<W; tx+=spacing*2){
-          ctx.beginPath();ctx.moveTo(tx,H/2-5);ctx.lineTo(tx,H/2+5);ctx.stroke();
-        }
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    // WWD: dimension arrow SVG
-    sectionSVG('.wwd-section', function(W,H){
-      return '<line x1="48" y1="'+H+'" x2="'+W*0.4+'" y2="'+H+'" stroke="rgba(200,169,110,0.2)" stroke-width="0.5" marker-end="url(#arr01)"/><line x1="'+(W-48)+'" y1="'+H+'" x2="'+W*0.6+'" y2="'+H+'" stroke="rgba(200,169,110,0.2)" stroke-width="0.5"/><defs><marker id="arr01" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto"><path d="M 0 0 L 4 2 L 0 4 Z" fill="rgba(200,169,110,0.4)"/></marker></defs>';
-    }, 20);
-
-    // Marshall: waveform handled separately
-    // Thesis: crosshair centre mark
-    thesisSVGMark('⊕', '±0.001');
-
-    // How It Works: step connector lines
-    howItWorksConnectors();
-
-    // Engineering: CNC path trace
-    engCanvasPath('blueprint');
-
-    // China: dimension bracket
-    chinaSVGBracket();
-
-    // Value: corner brackets on cards
-    valueCornerBrackets();
-
-    // SWITCH: dimension line
-    switchDimLine();
-
-    // Logos: scale bar
-    logoScaleBar();
-
-    // Funds: data annotation bars
-    fundsAnnotationBars('blueprint');
-
-    // CTA: approval stamp
-    ctaStamp();
-
-    // Footer: title block
-    footerTitleBlock();
+// Engineering symbol sets per variant — different selections
+var symSets={
+  '00':{
+    hero:'SF · v1.6 · SN:001',wwd:'REF · TYP · BOM',marshall:'Ra 0.8 · ▽▽▽ · HRC',
+    thesis:'APPROVED ✓ · CHK · PN:SF',how:'N001 · → · ×4',eng:'⌀ · ±0.001 · G54 · F800',
+    china:'ISO · DIN · JIS',value:'MAX · MIN · TIR',sw:'DOF · ⌐¬ · STL',
+    logos:'SCALE 1:1 · NTS',funds:'QTY · BOM · REV',cta:'SIG · CHK · APPROVED ✓',footer:'NVG→SF · v1.6 · SN:001'
   },
-
-  // ── V02 MACHINING — chip debris, tool paths ──
-  '02': function(){
-    // Hero: machining chips
-    heroCanvas(function(c, ctx, W, H){
-      var chips = [];
-      for(var i=0;i<80;i++){
-        chips.push({
-          x: Math.random()*W, y: Math.random()*H,
-          vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.6,
-          len: 4+Math.random()*12, angle: Math.random()*Math.PI,
-          curl: (Math.random()-0.5)*0.3,
-          opacity: Math.random()*0.35+0.05
-        });
-      }
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        chips.forEach(function(ch){
-          ch.x += ch.vx; ch.y += ch.vy; ch.angle += ch.curl*0.02;
-          if(ch.x<0)ch.x=W; if(ch.x>W)ch.x=0;
-          if(ch.y<0)ch.y=H; if(ch.y>H)ch.y=0;
-          ctx.save();
-          ctx.translate(ch.x,ch.y); ctx.rotate(ch.angle);
-          ctx.beginPath();
-          ctx.moveTo(0,0);
-          ctx.quadraticCurveTo(ch.len*0.5, -ch.len*0.3, ch.len, 0);
-          ctx.strokeStyle = 'rgba(200,169,110,'+ch.opacity+')';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-          ctx.restore();
-        });
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    // WWD: tool path lines
-    sectionSVGLine('.wwd-section', 'toolpath');
-    thesisSVGMark('Ra 0.8', '▽▽▽');
-    howItWorksConnectors();
-    engCanvasPath('toolpath');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('machining');
-    ctaStamp();
-    footerTitleBlock();
+  '01':{
+    hero:'SF · A—A · ÷ · SECTION CUT',wwd:'TYP · BSC · REF · NTS',marshall:'A—A · ⌀ · ±0.001 · TYP',
+    thesis:'CHK · ECO · PN:SF-001 · REV',how:'N001 · N002 · → · THRU',eng:'G54 · F800 · S3000 · T1 · XYZ',
+    china:'ISO · SCALE 1:2 · DIN',value:'MAX · MIN · ⊥ · ∥',sw:'DOF · ⌐¬ · DXF · STL',
+    logos:'SCALE 1:1 · REF',funds:'QTY · BOM · DXF · REV',cta:'APPROVED ✓ · SIG · SF-001',footer:'NVG→SF · v1.6 · SN:001'
   },
-
-  // ── V03 SCANLINE — horizontal sweep across every section ──
-  '03': function(){
-    // Hero: scanline sweep
-    heroCanvas(function(c, ctx, W, H){
-      var pos = 0;
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        // Multiple scanlines at different speeds
-        [1, 0.5, 0.25].forEach(function(speed, i){
-          var y = ((pos * speed) % H);
-          var alpha = [0.12, 0.06, 0.03][i];
-          var gradient = ctx.createLinearGradient(0,y-2,0,y+2);
-          gradient.addColorStop(0,'transparent');
-          gradient.addColorStop(0.5,'rgba(200,169,110,'+alpha+')');
-          gradient.addColorStop(1,'transparent');
-          ctx.fillStyle = gradient;
-          ctx.fillRect(0,y-2,W,4);
-        });
-        pos += 1.5;
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    // Every section gets a thin scanline SVG
-    ['  .wwd-section','.csw','#how','.value','.funds','.cta'].forEach(function(sel, i){
-      sectionScanlineDecor(sel, i*0.2);
-    });
-    thesisSVGMark('A—A', 'SECTION');
-    engCanvasPath('scanline');
-    chinaSVGBracket();
-    switchDimLine();
-    logoScaleBar();
-    ctaStamp();
-    footerTitleBlock();
+  '02':{
+    hero:'SF · Ra 0.8 · ▽▽▽ · BEAD',wwd:'TYP · AL · SS · ANOD',marshall:'Ra 0.8 · HRC · HB · ▽▽▽',
+    thesis:'APPROVED ✓ · CHK · PN:SF-002',how:'M6×1.0 · THRU · CSK · CBORE',eng:'G54 · F800 · S3000 · T1',
+    china:'JIS · ISO · SCALE 1:1',value:'AL · SS · ▽▽ · MAX',sw:'STL · DXF · ⌐¬ · BEAD',
+    logos:'NTS · SCALE 1:2',funds:'BOM · QTY · DXF · STL',cta:'APPROVED ✓ · SIG · CHK',footer:'NVG→SF · v1.6 · SN:002'
   },
-
-  // ── V04 SIGNAL — oscilloscope waves, frequency bars ──
-  '04': function(){
-    // Hero: oscilloscope wave
-    heroCanvas(function(c, ctx, W, H){
-      var offset = 0;
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        ctx.strokeStyle = 'rgba(200,169,110,0.15)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for(var x=0; x<W; x++){
-          var y = H/2 + Math.sin((x+offset)*0.02)*30 + Math.sin((x+offset)*0.05)*12 + Math.sin((x+offset)*0.11)*5;
-          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.stroke();
-        // Second wave
-        ctx.strokeStyle = 'rgba(200,169,110,0.07)';
-        ctx.beginPath();
-        for(var x2=0; x2<W; x2++){
-          var y2 = H/2 + Math.sin((x2+offset)*0.035)*50;
-          if(x2===0) ctx.moveTo(x2,y2); else ctx.lineTo(x2,y2);
-        }
-        ctx.stroke();
-        offset += 1;
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionOscilloscope('.wwd-section');
-    thesisSVGMark('SIG', 'U1 · R1');
-    howItWorksFreqBars();
-    engCanvasPath('signal');
-    chinaSVGBracket();
-    sectionFreqBars('.value');
-    switchDimLine();
-    logoScaleBar();
-    sectionFreqBars('.funds');
-    ctaStamp();
-    footerTitleBlock();
+  '03':{
+    hero:'SF · —·— · — — — · —··—',wwd:'—·— · ~ · ≈ · NTS',marshall:'÷ · A—A · SECTION · NTS',
+    thesis:'APPROVED ✓ · ECO · REV',how:'— — — · —·— · N001 · →',eng:'XYZ · F800 · G54 · M30',
+    china:'DIN · ISO · —·—',value:'∑ · √ · ≈ · ~',sw:'⌐¬ · DOF · STL',
+    logos:'NTS · ~ · ≈',funds:'QTY · REV · BSC',cta:'SIG · CHK · SF-003',footer:'NVG→SF · v1.6 · SN:003'
   },
-
-  // ── V05 STATIC/RAIN — vertical falling data ──
-  '05': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var columns = Math.floor(W/14);
-      var drops = new Array(columns).fill(0).map(function(){ return Math.random()*H; });
-      var chars = '±⌀°∥⊥∠REFTYPSFv1.6SN001BOMMAXMIN'.split('');
-      var raf;
-      (function anim(){
-        ctx.fillStyle = 'rgba(10,10,10,0.04)';
-        ctx.fillRect(0,0,W,H);
-        ctx.fillStyle = 'rgba(200,169,110,0.25)';
-        ctx.font = '9px DM Sans';
-        drops.forEach(function(drop,i){
-          var ch = chars[Math.floor(Math.random()*chars.length)];
-          ctx.fillText(ch, i*14, drop);
-          drops[i] = drop > H+10 ? 0 : drop + 12;
-        });
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionSVGLine('.wwd-section', 'rain');
-    thesisSVGMark('≈', '~');
-    howItWorksConnectors();
-    engCanvasPath('rain');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('static');
-    ctaStamp();
-    footerTitleBlock();
+  '04':{
+    hero:'SF · GND · VCC · SIG · U1',wwd:'PWR · SIG · GND · TYP',marshall:'R1 · C1 · U1 · SIG',
+    thesis:'APPROVED ✓ · SIG · PN:SF-004',how:'U1 · R1 · C1 · → · GND',eng:'PCB · VCC · GND · SIG · U1',
+    china:'SIG · GND · ISO',value:'VCC · MAX · MIN · ≡',sw:'U1 · PCB · DXF',
+    logos:'SIG · GND',funds:'QTY · BOM · PWR · SIG',cta:'SIG ON · APPROVED ✓ · CHK',footer:'NVG→SF · v1.6 · SN:004'
   },
-
-  // ── V06 VORTEX — orbital circles, concentricity ──
-  '06': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var angle = 0;
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        var cx = W/2, cy = H/2;
-        [120,90,60,40,20].forEach(function(r, i){
-          ctx.beginPath();
-          ctx.arc(cx, cy, r, 0, Math.PI*2);
-          ctx.strokeStyle = 'rgba(200,169,110,'+(0.04+i*0.015)+')';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        });
-        // Orbiting dot
-        var ox = cx + 100*Math.cos(angle);
-        var oy = cy + 100*Math.sin(angle);
-        ctx.beginPath(); ctx.arc(ox,oy,2,0,Math.PI*2);
-        ctx.fillStyle = 'rgba(200,169,110,0.4)'; ctx.fill();
-        // Spoke lines
-        for(var s=0;s<6;s++){
-          var a = angle + s*Math.PI/3;
-          ctx.beginPath();
-          ctx.moveTo(cx,cy);
-          ctx.lineTo(cx+120*Math.cos(a), cy+120*Math.sin(a));
-          ctx.strokeStyle = 'rgba(200,169,110,0.04)';
-          ctx.lineWidth = 0.5; ctx.stroke();
-        }
-        angle += 0.008;
-        raf = requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionConcentricRings('.wwd-section');
-    thesisSVGMark('⊙', '⊚');
-    howItWorksConnectors();
-    engCanvasPath('vortex');
-    chinaSVGBracket();
-    sectionConcentricRings('.value');
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('vortex');
-    ctaStamp();
-    footerTitleBlock();
+  '05':{
+    hero:'SF · ±0.001 · ⌀ · MATRIX',wwd:'≈ · ~ · —·— · BSC',marshall:'⌀ · ±0.001 · A—A · Ra',
+    thesis:'APPROVED ✓ · CHK · SF-005',how:'N001 · N002 · N003 · →',eng:'G54 · N001 · XYZ · F800',
+    china:'ISO · DIN · ≈',value:'∑ · √ · MAX · MIN',sw:'STL · DXF · ⌐¬',
+    logos:'NTS · SCALE 1:1',funds:'QTY · BOM · REV',cta:'APPROVED ✓ · SIG · CHK',footer:'NVG→SF · v1.6 · SN:005'
   },
-
-  // ── V07 LIGHTNING — electric arcs ──
-  '07': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var timeout;
-      function bolt(x1,y1,x2,y2,d){
-        if(d<=0)return;
-        var mx=(x1+x2)/2+(Math.random()-0.5)*80*d/3;
-        var my=(y1+y2)/2+(Math.random()-0.5)*60*d/3;
-        ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(mx,my);
-        ctx.strokeStyle='rgba(200,169,110,'+(0.2*d/3)+')';
-        ctx.lineWidth=d*0.4;ctx.stroke();
-        ctx.beginPath();ctx.moveTo(mx,my);ctx.lineTo(x2,y2);ctx.stroke();
-        if(Math.random()>0.6) bolt(mx,my,mx+(Math.random()-0.5)*60,my+30,d-1);
-      }
-      function strike(){
-        ctx.clearRect(0,0,W,H);
-        bolt(Math.random()*W, 0, Math.random()*W, H*0.8, 3);
-        setTimeout(function(){ctx.clearRect(0,0,W,H);}, 100);
-        timeout = setTimeout(strike, 3000+Math.random()*5000);
-      }
-      strike();
-      return function(){clearTimeout(timeout);};
-    });
-
-    sectionSVGLine('.wwd-section', 'lightning');
-    thesisSVGMark('△', '⌒ ⌒');
-    howItWorksConnectors();
-    engCanvasPath('lightning');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('lightning');
-    ctaStamp();
-    footerTitleBlock();
+  '06':{
+    hero:'SF · ⊙ · ⊚ · ○ · ⌓',wwd:'⊙ · ○ · ⊚ · TYP',marshall:'⊙ · ⌓ · ⊥ · ≡',
+    thesis:'APPROVED ✓ · ⊙ · PN:SF-006',how:'DOF · XYZ · ⌖ · ⊙',eng:'⌀ · ±0.001 · ⊙ · F800',
+    china:'⊙ · ISO · DIN',value:'⊥ · ∥ · ∠ · ≡',sw:'DOF · ⌐¬ · ⊙',
+    logos:'⊙ · SCALE 1:1',funds:'QTY · BOM · ⊙',cta:'APPROVED ✓ · SIG · ⊙',footer:'NVG→SF · v1.6 · SN:006'
   },
-
-  // ── V08 WELD SPARKS ──
-  '08': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var sparks = [];
-      function spawn(){
-        sparks.push({
-          x: W/2 + (Math.random()-0.5)*200,
-          y: H*0.4,
-          vx: (Math.random()-0.5)*5,
-          vy: -(Math.random()*6+2),
-          life: 1,
-          size: Math.random()*2+0.5
-        });
-      }
-      for(var i=0;i<40;i++) spawn();
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        sparks.forEach(function(s){
-          s.x+=s.vx; s.y+=s.vy; s.vy+=0.2; s.life-=0.018;
-          if(s.life<=0){ s.x=W/2+(Math.random()-0.5)*200; s.y=H*0.4; s.vx=(Math.random()-0.5)*5; s.vy=-(Math.random()*6+2); s.life=0.8+Math.random()*0.4; }
-          ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
-          ctx.fillStyle='rgba(200,169,110,'+s.life*0.5+')'; ctx.fill();
-        });
-        if(Math.random()<0.3) spawn();
-        if(sparks.length>80) sparks.splice(0,1);
-        raf=requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionSVGLine('.wwd-section', 'sparks');
-    thesisSVGMark('M6×1.0', '→ ×4');
-    howItWorksConnectors();
-    engCanvasPath('sparks');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('sparks');
-    ctaStamp();
-    footerTitleBlock();
+  '07':{
+    hero:'SF · △ · ⌒⌒ · WELD',wwd:'△ · /// · TYP · REF',marshall:'△ · ⌒⌒ · HRC · WELD',
+    thesis:'APPROVED ✓ · △ · ECO',how:'N001 · → · △ · ×4',eng:'△ · G54 · F800 · XYZ',
+    china:'ISO · △ · DIN',value:'△ · MAX · MIN · ≡',sw:'△ · STL · ⌐¬',
+    logos:'△ · SCALE 1:1',funds:'QTY · BOM · △',cta:'APPROVED ✓ · △ · CHK',footer:'NVG→SF · v1.6 · SN:007'
   },
-
-  // ── V09 RADAR — circular sweep ──
-  '09': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var angle = 0;
-      var cx = W/2, cy = H/2, r = Math.min(W,H)*0.45;
-      var blips = [];
-      for(var i=0;i<8;i++) blips.push({a:Math.random()*Math.PI*2, r:Math.random()*r*0.8, life:0});
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        // Rings
-        [1,0.75,0.5,0.25].forEach(function(f){
-          ctx.beginPath(); ctx.arc(cx,cy,r*f,0,Math.PI*2);
-          ctx.strokeStyle='rgba(200,169,110,0.05)'; ctx.lineWidth=0.5; ctx.stroke();
-        });
-        // Cross lines
-        ctx.strokeStyle='rgba(200,169,110,0.04)'; ctx.lineWidth=0.4;
-        ctx.beginPath();ctx.moveTo(cx-r,cy);ctx.lineTo(cx+r,cy);ctx.stroke();
-        ctx.beginPath();ctx.moveTo(cx,cy-r);ctx.lineTo(cx,cy+r);ctx.stroke();
-        // Sweep
-        var gradient = ctx.createConicalGradient ? null : null;
-        ctx.save();
-        ctx.translate(cx,cy);
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.arc(0,0,r,-0.4,0);
-        ctx.fillStyle='rgba(200,169,110,0.06)'; ctx.fill();
-        ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(r,0);
-        ctx.strokeStyle='rgba(200,169,110,0.2)'; ctx.lineWidth=1; ctx.stroke();
-        ctx.restore();
-        // Blips
-        blips.forEach(function(b){
-          var da = angle - b.a;
-          if(da < 0) da += Math.PI*2;
-          if(da < 0.5){ b.life = 1; }
-          b.life *= 0.98;
-          if(b.life > 0.1){
-            var bx = cx + b.r*Math.cos(b.a), by = cy + b.r*Math.sin(b.a);
-            ctx.beginPath(); ctx.arc(bx,by,2,0,Math.PI*2);
-            ctx.fillStyle='rgba(200,169,110,'+b.life*0.5+')'; ctx.fill();
-          }
-        });
-        angle += 0.012;
-        raf=requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionConcentricRings('.wwd-section');
-    thesisSVGMark('XYZ', '∠ °');
-    howItWorksConnectors();
-    engCanvasPath('radar');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('radar');
-    ctaStamp();
-    footerTitleBlock();
+  '08':{
+    hero:'SF · M6×1.0 · #8-32 · ×4',wwd:'→ · ×4 · THRU · BSC',marshall:'M6×1.0 · ↧ · CSK · CBORE',
+    thesis:'APPROVED ✓ · CHK · PN:SF-008',how:'M6×1.0 · CSK · CBORE · ↧',eng:'G54 · F800 · T1 · M30',
+    china:'ISO · M6×1.0 · DIN',value:'→ · ×4 · ≡ · ⌐¬',sw:'M6×1.0 · STL · DXF',
+    logos:'SCALE 1:1 · ↧',funds:'QTY · BOM · STL',cta:'APPROVED ✓ · SIG · M6×1.0',footer:'NVG→SF · v1.6 · SN:008'
   },
-
-  // ── V10 PRECISION / INK BLEED ──
-  '10': function(){
-    heroCanvas(function(c, ctx, W, H){
-      var noise = [];
-      for(var i=0;i<200;i++){
-        noise.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*30+5, opacity:0, growing:true, speed:0.002+Math.random()*0.004});
-      }
-      var raf;
-      (function anim(){
-        ctx.clearRect(0,0,W,H);
-        noise.forEach(function(n){
-          if(n.growing){ n.opacity+=n.speed; if(n.opacity>=0.06){n.growing=false;} }
-          else { n.opacity-=n.speed*0.5; if(n.opacity<=0){n.x=Math.random()*W;n.y=Math.random()*H;n.opacity=0;n.growing=true;} }
-          var gradient = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
-          gradient.addColorStop(0,'rgba(200,169,110,'+n.opacity+')');
-          gradient.addColorStop(1,'transparent');
-          ctx.fillStyle=gradient; ctx.fillRect(n.x-n.r,n.y-n.r,n.r*2,n.r*2);
-        });
-        raf=requestAnimationFrame(anim);
-      })();
-      return function(){cancelAnimationFrame(raf);};
-    });
-
-    sectionSVGLine('.wwd-section', 'precision');
-    thesisSVGMark('⌀', '±0.001');
-    howItWorksConnectors();
-    engCanvasPath('precision');
-    chinaSVGBracket();
-    valueCornerBrackets();
-    switchDimLine();
-    logoScaleBar();
-    fundsAnnotationBars('precision');
-    ctaStamp();
-    footerTitleBlock();
+  '09':{
+    hero:'SF · XYZ · ∠ · ↗ · DOF',wwd:'XYZ · ∠ · ↗ · TYP',marshall:'XYZ · DOF · ∠ · ↗',
+    thesis:'APPROVED ✓ · ↗ · PN:SF-009',how:'N001 · DOF · XYZ · →',eng:'XYZ · G54 · F800 · ∠',
+    china:'ISO · XYZ · DIN',value:'MAX · MIN · ∠ · ↕',sw:'DOF · XYZ · ⌐¬',
+    logos:'XYZ · SCALE 1:1',funds:'QTY · BOM · XYZ',cta:'APPROVED ✓ · SIG · ↗',footer:'NVG→SF · v1.6 · SN:009'
+  },
+  '10':{
+    hero:'SF · ⌀ · ±0.001 · Ra 0.8 · ▽▽▽',wwd:'⌀ · ±0.001 · TYP · REF · BSC · NTS',marshall:'⌀ · ±0.001 · Ra 0.8 · HRC · A—A · ▽▽▽',
+    thesis:'APPROVED ✓ · CHK · ECO · REV · PN:SF-010',how:'⌀ · M6×1.0 · THRU · ↧ · CSK · N001',eng:'⌀ · ±0.001 · G54 · F800 · S3000 · T1 · XYZ',
+    china:'ISO · DIN · JIS · SCALE 1:2 · ⌀',value:'MAX · MIN · TIR · ⊥ · ∥ · ≡ · ∠',sw:'DOF · ⌐¬ · STL · DXF · ⌀',
+    logos:'SCALE 1:1 · NTS · ⌀',funds:'QTY · BOM · DXF · STL · REV · BSC',cta:'APPROVED ✓ · SIG · CHK · PN:SF-010 · v1.6',footer:'NVG→SF · v1.6 · SN:010 · ⌀ · ±0.001'
   }
 };
 
-// ── SHARED SECTION VIZ HELPERS ──
-
-function heroCanvas(drawFn){
-  var hero = document.querySelector('.hero');
-  if(!hero) return;
-  var c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:2;';
-  hero.appendChild(c);
-  var W = c.width = hero.offsetWidth || window.innerWidth;
-  var H = c.height = hero.offsetHeight || window.innerHeight;
-  var ctx = c.getContext('2d');
-  var td = drawFn(c, ctx, W, H);
-  cleanupFns.push(function(){ if(td) td(); c.remove(); });
+function applySymbols(v){
+  var s=symSets[v]||symSets['00'];
+  // Hero - top left
+  sym('.hero',s.hero,'top',-40,48);
+  // WWD - bottom right
+  sym('.wwd-section',s.wwd,'bottom',48);
+  // Marshall - top right (will also get case study treatment)
+  sym('.csw',s.marshall,'top',48,16);
+  // Thesis - bottom right
+  sym('section[style*="padding:100px"]',s.thesis,'bottom',48);
+  // How It Works - top right
+  sym('#how',s.how,'top',48,24);
+  // Engineering - top right
+  sym('.eng-section',s.eng,'top',48,20);
+  // China
+  sym('.cpl-china-left',s.china,'bottom',16,12);
+  // Value
+  sym('.value',s.value,'top',48,20);
+  // Switch
+  sym('#featured',s.sw,'bottom',48,20);
+  // Logos
+  sym('.logos',s.logos,'bottom',48,10);
+  // Funds
+  sym('.funds',s.funds,'top',48,20);
+  // CTA
+  sym('.cta',s.cta,'bottom',48,24);
+  // Footer
+  sym('footer',s.footer,'top',48,16);
 }
 
-function thesisSVGMark(sym1, sym2){
-  var sec = document.querySelector('section[style*="background:#ede8e0;text-align:center"]');
+// ── THESIS SECTION EFFECTS ──
+// Each variant gets a unique ambient object in the Thesis section
+function applyThesis(v){
+  var sec=document.querySelector('section[style*="padding:100px"]');
   if(!sec) return;
-  var d = document.createElement('div');
-  d.className = 'sf-thesis-mark';
-  d.style.cssText = 'position:absolute;top:20px;left:48px;font-family:"DM Sans",sans-serif;font-size:0.32rem;letter-spacing:0.2em;color:rgba(200,169,110,0.28);pointer-events:none;';
-  d.textContent = sym1 + '  ' + sym2;
-  sec.style.position = 'relative';
-  sec.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
+  sec.style.position='relative';
+  sec.style.overflow='hidden';
 
-function howItWorksConnectors(){
-  // Add thin SVG connector lines between How It Works steps
-  var how = document.getElementById('how');
-  if(!how) return;
-  var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-  svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible;';
-  svg.setAttribute('viewBox','0 0 100 100');
-  svg.setAttribute('preserveAspectRatio','none');
-  var path = document.createElementNS('http://www.w3.org/2000/svg','path');
-  path.setAttribute('d','M 10 10 L 90 10 M 10 30 L 90 30 M 10 50 L 90 50 M 10 70 L 90 70');
-  path.setAttribute('stroke','rgba(200,169,110,0.06)');
-  path.setAttribute('stroke-width','0.3');
-  path.setAttribute('fill','none');
-  path.setAttribute('stroke-dasharray','2 4');
-  svg.appendChild(path);
-  how.style.position = 'relative';
-  how.appendChild(svg);
-  cleanupFns.push(function(){ svg.remove(); });
-}
+  var canvas=mk('canvas');
+  canvas.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0.4;';
+  canvas.width=sec.offsetWidth||800;
+  canvas.height=sec.offsetHeight||400;
+  var ctx=canvas.getContext('2d');
+  var W=canvas.width,H=canvas.height;
+  sec.insertBefore(canvas,sec.firstChild);
+  kills.push(function(){canvas.remove();});
 
-function howItWorksFreqBars(){
-  var how = document.getElementById('how');
-  if(!how) return;
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'position:absolute;bottom:0;left:48px;right:48px;height:24px;display:flex;align-items:flex-end;gap:3px;pointer-events:none;z-index:0;';
-  for(var i=0;i<40;i++){
-    var b = document.createElement('div');
-    b.style.cssText = 'flex:1;border-radius:1px 1px 0 0;background:rgba(200,169,110,0.12);';
-    b.style.animation = 'sfWB'+(i%5)+' '+(0.5+Math.random()*0.8)+'s ease-in-out infinite';
-    b.style.animationDelay = (i*0.04)+'s';
-    wrap.appendChild(b);
-  }
-  how.style.position = 'relative';
-  how.appendChild(wrap);
-  cleanupFns.push(function(){ wrap.remove(); });
-}
-
-function engCanvasPath(type){
-  var eng = document.querySelector('.eng-section');
-  if(!eng) return;
-  var c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:60px;pointer-events:none;z-index:1;opacity:0.4;';
-  eng.style.position = 'relative';
-  eng.appendChild(c);
-  c.width = eng.offsetWidth || 800;
-  c.height = 60;
-  var ctx = c.getContext('2d');
-  ctx.strokeStyle = 'rgba(200,169,110,0.4)';
-  ctx.lineWidth = 0.8;
-
-  if(type === 'blueprint' || type === 'toolpath' || type === 'precision'){
-    // CNC toolpath zigzag
-    ctx.beginPath();
-    for(var x=0; x<c.width; x+=20){
-      var y = x%40===0 ? 10 : 50;
-      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  var effects={
+    '00':function(){
+      // Simple dimension lines
+      ctx.strokeStyle='rgba(200,169,110,0.15)';ctx.lineWidth=0.5;
+      [[0,H/2,W,H/2],[W/2,0,W/2,H]].forEach(function(l){ctx.beginPath();ctx.moveTo(l[0],l[1]);ctx.lineTo(l[2],l[3]);ctx.stroke();});
+      ctx.beginPath();ctx.arc(W/2,H/2,80,0,Math.PI*2);ctx.stroke();
+    },
+    '01':function(){
+      // Blueprint grid
+      ctx.strokeStyle='rgba(200,169,110,0.08)';ctx.lineWidth=0.4;
+      for(var x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+      for(var y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+      ctx.strokeStyle='rgba(200,169,110,0.3)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(48,H/2);ctx.lineTo(W-48,H/2);ctx.stroke();
+      // Arrow heads
+      ctx.fillStyle='rgba(200,169,110,0.3)';
+      ctx.beginPath();ctx.moveTo(W-48,H/2);ctx.lineTo(W-58,H/2-5);ctx.lineTo(W-58,H/2+5);ctx.fill();
+      ctx.beginPath();ctx.moveTo(48,H/2);ctx.lineTo(58,H/2-5);ctx.lineTo(58,H/2+5);ctx.fill();
+    },
+    '02':function(){
+      // Machining chip pattern
+      for(var i=0;i<30;i++){
+        var x=Math.random()*W,y=Math.random()*H;
+        ctx.save();ctx.translate(x,y);ctx.rotate(Math.random()*Math.PI);
+        ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(8,-4,16,0);
+        ctx.strokeStyle='rgba(200,169,110,'+(0.05+Math.random()*0.1)+')';ctx.lineWidth=0.8;ctx.stroke();
+        ctx.restore();
+      }
+    },
+    '03':function(){
+      // Horizontal scan lines
+      for(var sy=0;sy<H;sy+=8){
+        ctx.beginPath();ctx.moveTo(0,sy);ctx.lineTo(W,sy);
+        ctx.strokeStyle='rgba(200,169,110,'+(0.02+Math.random()*0.04)+')';ctx.lineWidth=0.5;ctx.stroke();
+      }
+    },
+    '04':function(){
+      // Sine wave across
+      ctx.strokeStyle='rgba(200,169,110,0.2)';ctx.lineWidth=1;ctx.beginPath();
+      for(var x=0;x<W;x++){var y=H/2+Math.sin(x*0.03)*30;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+      ctx.stroke();
+      ctx.strokeStyle='rgba(200,169,110,0.08)';ctx.beginPath();
+      for(var x=0;x<W;x++){var y=H/2+Math.sin(x*0.06)*15;if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+      ctx.stroke();
+    },
+    '05':function(){
+      // Matrix style dots
+      ctx.fillStyle='rgba(200,169,110,0.12)';
+      for(var cx=20;cx<W;cx+=24){for(var cy=20;cy<H;cy+=24){if(Math.random()>0.6){ctx.beginPath();ctx.arc(cx,cy,1,0,Math.PI*2);ctx.fill();}}}
+    },
+    '06':function(){
+      // Concentric circles
+      [80,120,160,200].forEach(function(r){ctx.beginPath();ctx.arc(W/2,H/2,r,0,Math.PI*2);ctx.strokeStyle='rgba(200,169,110,0.08)';ctx.lineWidth=0.5;ctx.stroke();});
+      ctx.beginPath();ctx.arc(W/2,H/2,4,0,Math.PI*2);ctx.fillStyle='rgba(200,169,110,0.3)';ctx.fill();
+      // Spokes
+      for(var a=0;a<360;a+=45){var rad=a*Math.PI/180;ctx.beginPath();ctx.moveTo(W/2,H/2);ctx.lineTo(W/2+200*Math.cos(rad),H/2+200*Math.sin(rad));ctx.strokeStyle='rgba(200,169,110,0.05)';ctx.lineWidth=0.4;ctx.stroke();}
+    },
+    '07':function(){
+      // Weld symbol triangles scattered
+      for(var i=0;i<12;i++){
+        var x=48+Math.random()*(W-96),y=20+Math.random()*(H-40);
+        ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+10,y-12);ctx.lineTo(x+20,y);ctx.closePath();
+        ctx.strokeStyle='rgba(200,169,110,'+(0.08+Math.random()*0.12)+')';ctx.lineWidth=0.8;ctx.stroke();
+      }
+    },
+    '08':function(){
+      // Assembly arrows
+      for(var i=0;i<15;i++){
+        var x=60+Math.random()*(W-120),y=20+Math.random()*(H-40);
+        var a=Math.random()*Math.PI*2;
+        ctx.save();ctx.translate(x,y);ctx.rotate(a);
+        ctx.beginPath();ctx.moveTo(-15,0);ctx.lineTo(15,0);ctx.strokeStyle='rgba(200,169,110,0.1)';ctx.lineWidth=0.8;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(15,0);ctx.lineTo(8,-4);ctx.lineTo(8,4);ctx.closePath();ctx.fillStyle='rgba(200,169,110,0.1)';ctx.fill();
+        ctx.restore();
+      }
+    },
+    '09':function(){
+      // Radar rings
+      [60,100,140,180].forEach(function(r,i){ctx.beginPath();ctx.arc(W/2,H/2,r,0,Math.PI*2);ctx.strokeStyle='rgba(200,169,110,'+(0.06+i*0.02)+')';ctx.lineWidth=0.5;ctx.stroke();});
+      ctx.strokeStyle='rgba(200,169,110,0.08)';ctx.lineWidth=0.4;
+      ctx.beginPath();ctx.moveTo(W/2-180,H/2);ctx.lineTo(W/2+180,H/2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(W/2,H/2-180);ctx.lineTo(W/2,H/2+180);ctx.stroke();
+    },
+    '10':function(){
+      // Dense precision grid + dimension
+      ctx.strokeStyle='rgba(200,169,110,0.06)';ctx.lineWidth=0.3;
+      for(var x=0;x<W;x+=20){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+      for(var y=0;y<H;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+      ctx.strokeStyle='rgba(200,169,110,0.25)';ctx.lineWidth=0.8;
+      ctx.beginPath();ctx.moveTo(48,H-40);ctx.lineTo(W-48,H-40);ctx.stroke();
+      // Tick marks
+      for(var x=48;x<=W-48;x+=40){ctx.beginPath();ctx.moveTo(x,H-40-4);ctx.lineTo(x,H-40+4);ctx.stroke();}
     }
-    ctx.stroke();
-  } else if(type === 'signal'){
-    ctx.beginPath();
-    for(var sx=0; sx<c.width; sx++){
-      var sy = 30 + Math.sin(sx*0.04)*20;
-      if(sx===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
-    }
-    ctx.stroke();
-  } else {
-    ctx.beginPath();
-    for(var rx=0; rx<c.width; rx+=40){
-      ctx.moveTo(rx,0); ctx.lineTo(rx,60);
-    }
-    ctx.stroke();
-  }
-  cleanupFns.push(function(){ c.remove(); });
-}
-
-function chinaSVGBracket(){
-  var china = document.querySelector('.cpl-china-left');
-  if(!china) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:12px;right:12px;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.15em;color:rgba(200,169,110,0.3);pointer-events:none;';
-  d.textContent = 'ISO  JIS  DIN  SCALE 1:1';
-  china.style.position = 'relative';
-  china.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
-
-function valueCornerBrackets(){
-  document.querySelectorAll('.value-card').forEach(function(card){
-    var corners = [
-      'position:absolute;top:8px;left:8px;width:8px;height:8px;border-top:1px solid rgba(200,169,110,0.3);border-left:1px solid rgba(200,169,110,0.3);pointer-events:none;',
-      'position:absolute;top:8px;right:8px;width:8px;height:8px;border-top:1px solid rgba(200,169,110,0.3);border-right:1px solid rgba(200,169,110,0.3);pointer-events:none;',
-      'position:absolute;bottom:8px;left:8px;width:8px;height:8px;border-bottom:1px solid rgba(200,169,110,0.3);border-left:1px solid rgba(200,169,110,0.3);pointer-events:none;',
-      'position:absolute;bottom:8px;right:8px;width:8px;height:8px;border-bottom:1px solid rgba(200,169,110,0.3);border-right:1px solid rgba(200,169,110,0.3);pointer-events:none;'
-    ];
-    card.style.position = 'relative';
-    card.style.overflow = 'visible';
-    corners.forEach(function(css){
-      var br = document.createElement('div');
-      br.style.cssText = css;
-      card.appendChild(br);
-      cleanupFns.push(function(){ br.remove(); });
-    });
-  });
-}
-
-function switchDimLine(){
-  var sw = document.getElementById('featured');
-  if(!sw) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:20px;left:48px;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.2em;color:rgba(200,169,110,0.3);pointer-events:none;';
-  d.textContent = 'DOF  ⌐¬  STL  DXF  v1.6';
-  sw.style.position = 'relative';
-  sw.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
-
-function logoScaleBar(){
-  var logos = document.querySelector('.logos');
-  if(!logos) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:10px;right:48px;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.2em;color:rgba(200,169,110,0.2);pointer-events:none;';
-  d.textContent = 'SCALE 1:1  NTS  AS SEEN ON';
-  logos.style.position = 'relative';
-  logos.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
-
-function fundsAnnotationBars(type){
-  var funds = document.querySelector('.funds');
-  if(!funds) return;
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'position:absolute;bottom:0;left:0;right:0;height:20px;display:flex;align-items:flex-end;gap:2px;padding:0 48px;pointer-events:none;z-index:0;overflow:hidden;';
-  var bars = type === 'precision' ? 60 : type === 'machining' ? 20 : 35;
-  for(var i=0;i<bars;i++){
-    var b = document.createElement('div');
-    b.style.cssText = 'flex:1;border-radius:1px 1px 0 0;background:rgba(200,169,110,'+(type==='precision'?0.08:0.05)+');';
-    b.style.animation = 'sfWB'+(i%5)+' '+(0.8+Math.random()*1.2)+'s ease-in-out infinite';
-    b.style.animationDelay = (i*0.06)+'s';
-    wrap.appendChild(b);
-  }
-  funds.style.position = 'relative';
-  funds.appendChild(wrap);
-  cleanupFns.push(function(){ wrap.remove(); });
-}
-
-function ctaStamp(){
-  var cta = document.querySelector('.cta');
-  if(!cta) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;top:24px;left:48px;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.2em;color:rgba(200,169,110,0.2);pointer-events:none;';
-  d.textContent = 'APPROVED ✓  SIG:SF  CHK  PN:SF-PARTNER';
-  cta.style.position = 'relative';
-  cta.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
-
-function footerTitleBlock(){
-  var footer = document.querySelector('footer');
-  if(!footer) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;top:16px;right:48px;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.15em;color:rgba(200,169,110,0.18);pointer-events:none;text-align:right;line-height:1.8;';
-  d.innerHTML = 'SILENT FOUNDRY  PN:SF-001<br>v1.6  SN:' + String(Math.floor(Math.random()*999)+1).padStart(3,'0') + '  NVG→SF';
-  footer.style.position = 'relative';
-  footer.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
-
-function sectionSVGLine(selector, type){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:0;left:0;right:0;height:20px;pointer-events:none;z-index:0;overflow:hidden;';
-  var paths = {
-    toolpath: 'M 0 10 L 40 10 L 40 2 L 80 2 L 80 18 L 120 18 L 120 10',
-    lightning: 'M 0 10 L 30 4 L 50 16 L 70 2 L 90 14 L 110 8',
-    sparks: 'M 0 10 L 20 10 L 25 3 L 30 10 L 60 10 L 65 16 L 70 10',
-    rain: 'M 0 2 L 0 18 M 20 2 L 20 18 M 40 2 L 40 18 M 60 2 L 60 18',
-    precision: 'M 0 10 L 800 10',
-    blueprint: 'M 0 10 L 20 10 M 40 10 L 60 10 M 80 10 L 100 10'
   };
-  var pathD = paths[type] || paths['blueprint'];
-  d.innerHTML = '<svg width="100%" height="20" viewBox="0 0 800 20" preserveAspectRatio="none"><path d="'+pathD+'" stroke="rgba(200,169,110,0.15)" stroke-width="0.8" fill="none"/></svg>';
-  el.style.position = 'relative';
-  el.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
+  var fn=effects[v]||effects['00'];
+  if(fn) fn();
 }
 
-function sectionSVG(selector, pathFn, height){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var W = el.offsetWidth || 800;
-  var H = height || 20;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:0;left:0;right:0;height:'+H+'px;pointer-events:none;z-index:0;';
-  d.innerHTML = '<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">'+pathFn(W,H)+'</svg>';
-  el.style.position = 'relative';
-  el.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
+// ── HERO EFFECTS (matrix on V05 and V03 only) ──
+function applyHero(v){
+  var hero=document.querySelector('.hero');if(!hero)return;
+  if(v!=='05'&&v!=='03') return; // Only on V05 and V03
 
-function sectionScanlineDecor(selector, delay){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var line = document.createElement('div');
-  line.style.cssText = 'position:absolute;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,169,110,0.12),transparent);pointer-events:none;z-index:1;top:0;animation:sfScanDecor 4s linear infinite;animation-delay:'+delay+'s;';
-  if(!document.getElementById('sf-scan-kf')){
-    var s = document.createElement('style');
-    s.id = 'sf-scan-kf';
-    s.textContent = '@keyframes sfScanDecor{0%{top:0%;opacity:1}99%{top:100%;opacity:0.3}100%{top:0%;opacity:0}}';
-    document.head.appendChild(s);
-  }
-  el.style.position = 'relative';
-  el.style.overflow = 'hidden';
-  el.appendChild(line);
-  cleanupFns.push(function(){ line.remove(); });
-}
-
-function sectionOscilloscope(selector){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var c = document.createElement('canvas');
-  c.style.cssText = 'position:absolute;bottom:0;left:0;width:100%;height:40px;pointer-events:none;z-index:0;opacity:0.5;';
-  c.width = el.offsetWidth || 800;
-  c.height = 40;
-  var ctx = c.getContext('2d');
-  var offset = 0;
+  var c=mk('canvas');c.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3;';
+  hero.appendChild(c);
+  c.width=hero.offsetWidth||window.innerWidth;
+  c.height=hero.offsetHeight||window.innerHeight;
+  var ctx=c.getContext('2d'),W=c.width,H=c.height;
+  var cols=Math.floor(W/16);
+  var drops=Array.from({length:cols},function(){return Math.random()*H;});
+  var chars='±⌀°∥⊥∠REFTYPSFv1.6SN001BOMMAXMIN⌓⊙⊚'.split('');
   var raf;
   (function anim(){
-    ctx.clearRect(0,0,c.width,c.height);
-    ctx.strokeStyle = 'rgba(200,169,110,0.3)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for(var x=0; x<c.width; x++){
-      var y = 20 + Math.sin((x+offset)*0.03)*15;
-      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    offset += 1.5;
-    raf = requestAnimationFrame(anim);
+    ctx.fillStyle='rgba(10,10,10,0.06)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(200,169,110,'+(v==='05'?0.28:0.18)+')';
+    ctx.font='11px DM Sans';
+    drops.forEach(function(d,i){
+      ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*16,d);
+      drops[i]=d>H+10?0:d+14;
+    });
+    raf=requestAnimationFrame(anim);
   })();
-  el.style.position = 'relative';
-  el.appendChild(c);
-  cleanupFns.push(function(){ cancelAnimationFrame(raf); c.remove(); });
+  kills.push(function(){cancelAnimationFrame(raf);c.remove();});
 }
 
-function sectionFreqBars(selector){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var wrap = document.createElement('div');
-  wrap.style.cssText = 'position:absolute;bottom:0;left:0;right:0;height:30px;display:flex;align-items:flex-end;gap:1.5px;padding:0 48px;pointer-events:none;z-index:0;overflow:hidden;';
-  for(var i=0;i<50;i++){
-    var b = document.createElement('div');
-    b.style.cssText = 'flex:1;border-radius:1px 1px 0 0;background:rgba(200,169,110,0.08);';
-    b.style.animation = 'sfWB'+(i%5)+' '+(0.6+Math.random()*1)+'s ease-in-out infinite';
-    b.style.animationDelay = (i*0.05)+'s';
-    wrap.appendChild(b);
+// ── MARSHALL CASE STUDY TREATMENT ──
+// 10 different case study design objects — different per variant
+function applyMarshall(v){
+  var csw=document.querySelector('.csw');if(!csw)return;
+  csw.style.position='relative';csw.style.overflow='hidden';
+
+  // 1. Isometric grid — different intensities/styles per variant
+  var isoStyles={
+    '00':'rgba(200,169,110,0.06)',
+    '01':'rgba(200,169,110,0.08)',
+    '02':'rgba(200,169,110,0.05)',
+    '03':'rgba(200,169,110,0.07)',
+    '04':'rgba(200,169,110,0.06)',
+    '05':'rgba(200,169,110,0.09)',
+    '06':'rgba(200,169,110,0.05)',
+    '07':'rgba(200,169,110,0.08)',
+    '08':'rgba(200,169,110,0.06)',
+    '09':'rgba(200,169,110,0.07)',
+    '10':'rgba(200,169,110,0.1)'
+  };
+  var isoColor=isoStyles[v]||isoStyles['00'];
+
+  // Grid type varies per variant
+  var gridTypes={
+    '00':'square','01':'square','02':'diagonal','03':'scanline',
+    '04':'dots','05':'square','06':'radial','07':'diagonal',
+    '08':'square','09':'radial','10':'square'
+  };
+  var gridType=gridTypes[v]||'square';
+
+  var bgStyle='';
+  if(gridType==='square'){
+    bgStyle='repeating-linear-gradient(0deg,transparent,transparent 27px,'+isoColor+' 27px,'+isoColor+' 28px),repeating-linear-gradient(90deg,transparent,transparent 27px,'+isoColor+' 27px,'+isoColor+' 28px)';
+  } else if(gridType==='diagonal'){
+    bgStyle='repeating-linear-gradient(45deg,transparent,transparent 19px,'+isoColor+' 19px,'+isoColor+' 20px),repeating-linear-gradient(-45deg,transparent,transparent 19px,'+isoColor+' 19px,'+isoColor+' 20px)';
+  } else if(gridType==='scanline'){
+    bgStyle='repeating-linear-gradient(0deg,transparent,transparent 7px,'+isoColor+' 7px,'+isoColor+' 8px)';
+  } else if(gridType==='dots'){
+    bgStyle='radial-gradient(circle,'+isoColor+' 1px,transparent 1px)';
+  } else if(gridType==='radial'){
+    bgStyle='repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg,transparent 29deg,'+isoColor+' 30deg,transparent 31deg)';
   }
-  el.style.position = 'relative';
-  el.appendChild(wrap);
-  cleanupFns.push(function(){ wrap.remove(); });
-}
 
-function sectionConcentricRings(selector){
-  var el = document.querySelector(selector);
-  if(!el) return;
-  var d = document.createElement('div');
-  d.style.cssText = 'position:absolute;bottom:-40px;right:-40px;width:120px;height:120px;pointer-events:none;z-index:0;opacity:0.4;';
-  d.innerHTML = '<svg width="120" height="120" viewBox="0 0 120 120">'+
-    [50,38,26,14].map(function(r){ return '<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="rgba(200,169,110,0.15)" stroke-width="0.5"/>'; }).join('')+
-    '<circle cx="60" cy="60" r="3" fill="rgba(200,169,110,0.3)"/></svg>';
-  el.style.position = 'relative';
-  el.style.overflow = 'hidden';
-  el.appendChild(d);
-  cleanupFns.push(function(){ d.remove(); });
-}
+  var overlay=mk('div');
+  overlay.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;';
+  overlay.style.backgroundImage=bgStyle;
+  if(gridType==='dots') overlay.style.backgroundSize='20px 20px';
+  csw.insertBefore(overlay,csw.firstChild);
+  kills.push(function(){overlay.remove();});
 
-// ── APPLY REFINED TYPE ──
-function applyRefinedType(){
-  // WWD body text
-  document.querySelectorAll('.wwd-section p, .wwd-grid p').forEach(function(el){
-    el.style.fontSize = 'clamp(0.78rem, 0.95vw, 0.88rem)';
-    el.style.lineHeight = '1.95';
-    cleanupFns.push(function(){ el.style.fontSize=''; el.style.lineHeight=''; });
-  });
-  // Accordion titles
-  document.querySelectorAll('.accordion-title').forEach(function(el){
-    el.style.fontSize = 'clamp(0.88rem, 1.2vw, 1.3rem)';
-    cleanupFns.push(function(){ el.style.fontSize=''; });
-  });
-  // Investment paths title
-  document.querySelectorAll('.funds .section-title, .funds h2').forEach(function(el){
-    el.style.fontSize = 'clamp(0.8rem, 1.05vw, 1.1rem)';
-    el.style.letterSpacing = '0.2em';
-    cleanupFns.push(function(){ el.style.fontSize=''; el.style.letterSpacing=''; });
-  });
-  // CTA headline + body
-  document.querySelectorAll('.cta [style*="font-size:clamp(2"], .cta [style*="font-size:clamp(3"]').forEach(function(el){
-    el.style.setProperty('font-size', 'clamp(0.88rem, 1.3vw, 1.4rem)', 'important');
-    el.style.letterSpacing = '0.28em';
-    cleanupFns.push(function(){ el.style.removeProperty('font-size'); el.style.letterSpacing=''; });
-  });
-  document.querySelectorAll('.cta p[style*="line-height"]').forEach(function(el){
-    el.style.setProperty('font-size', 'clamp(0.7rem, 0.82vw, 0.8rem)', 'important');
-    el.style.lineHeight = '2.3';
-    cleanupFns.push(function(){ el.style.removeProperty('font-size'); el.style.lineHeight=''; });
-  });
-}
+  // 2. Waveform — 10 different positions/sizes/styles
+  var waveConfigs={
+    '00':{pos:'bottom-left',bars:24,h:36,w:'45%'},
+    '01':{pos:'top-left',bars:18,h:28,w:'35%'},
+    '02':{pos:'bottom-right',bars:30,h:44,w:'50%'},
+    '03':{pos:'top-right',bars:20,h:24,w:'40%'},
+    '04':{pos:'centre-bottom',bars:40,h:32,w:'80%'},
+    '05':{pos:'bottom-left',bars:16,h:20,w:'30%'},
+    '06':{pos:'full-width',bars:60,h:28,w:'100%'},
+    '07':{pos:'top-centre',bars:22,h:30,w:'60%'},
+    '08':{pos:'bottom-right',bars:14,h:48,w:'28%'},
+    '09':{pos:'centre-bottom',bars:35,h:36,w:'70%'},
+    '10':{pos:'full-width',bars:80,h:16,w:'100%'}
+  };
+  var wc=waveConfigs[v]||waveConfigs['00'];
+  var wWrap=mk('div');
+  wWrap.style.cssText='position:absolute;pointer-events:none;z-index:2;display:flex;align-items:flex-end;gap:1.5px;overflow:hidden;';
+  wWrap.style.height=wc.h+'px';wWrap.style.width=wc.w;
 
-// ── MAIN setVariant ──
-function sfSetVariant(v){
-  // Teardown
-  cleanupFns.forEach(function(fn){ try{ fn(); } catch(e){} });
-  cleanupFns = [];
-  // Remove data-sfv
-  document.body.removeAttribute('data-sfv');
-  // Update buttons
-  document.querySelectorAll('.sf-vbtn').forEach(function(b){ b.classList.remove('sf-active'); });
-  document.querySelectorAll('.sf-vbtn').forEach(function(b){
-    if(b.textContent.trim().slice(0,2) === v) b.classList.add('sf-active');
-  });
-  current = v;
-  if(v !== '00'){
-    document.body.setAttribute('data-sfv', v);
+  // Position
+  var posMap={
+    'bottom-left':'bottom:0;left:0;',
+    'bottom-right':'bottom:0;right:0;',
+    'top-left':'top:0;left:0;',
+    'top-right':'top:0;right:0;',
+    'centre-bottom':'bottom:0;left:50%;transform:translateX(-50%);',
+    'full-width':'bottom:0;left:0;',
+    'top-centre':'top:0;left:50%;transform:translateX(-50%);'
+  };
+  wWrap.style.cssText+=posMap[wc.pos]||posMap['bottom-left'];
+
+  for(var i=0;i<wc.bars;i++){
+    var b=mk('div');
+    b.style.cssText='flex:1;border-radius:1px 1px 0 0;background:rgba(190,185,178,0.3);min-width:1.5px;';
+    b.style.animation='sfW'+(i%5)+' '+(0.55+Math.random()*1)+'s ease-in-out infinite';
+    b.style.animationDelay=(i*0.045)+'s';
+    wWrap.appendChild(b);
   }
-  // Always apply these
+  csw.appendChild(wWrap);
+  kills.push(function(){wWrap.remove();});
+
+  // 3. Case study annotation label — position varies per variant
+  var annotPositions={
+    '00':'top:16px;left:16px;','01':'top:16px;right:48px;','02':'bottom:16px;left:16px;',
+    '03':'top:50%;left:16px;transform:translateY(-50%);','04':'top:16px;left:50%;transform:translateX(-50%);',
+    '05':'bottom:48px;right:48px;','06':'top:16px;right:16px;','07':'bottom:16px;right:16px;',
+    '08':'top:50%;right:16px;transform:translateY(-50%);','09':'bottom:16px;left:50%;transform:translateX(-50%);',
+    '10':'top:16px;left:16px;'
+  };
+  var annot=mk('div');
+  annot.style.cssText='position:absolute;pointer-events:none;z-index:3;font-family:"DM Sans",sans-serif;font-size:0.3rem;letter-spacing:0.22em;color:rgba(200,169,110,0.35);text-transform:uppercase;line-height:1.8;'+(annotPositions[v]||annotPositions['00']);
+  annot.innerHTML='CASE STUDY · MARSHALL<br>DNA TRANSLATION · REF:CS-'+String(Number(v)+1).padStart(3,'0');
+  csw.appendChild(annot);
+  kills.push(function(){annot.remove();});
+}
+
+// ── UTILITY ──
+function mk(tag){return document.createElement(tag);}
+
+// ── MAIN sfV ──
+function sfV(v){
+  kills.forEach(function(fn){try{fn();}catch(e){}});kills=[];
+  cur=v;
+  document.querySelectorAll('.sf-btn').forEach(function(b){b.classList.remove('on');});
+  document.querySelectorAll('.sf-btn').forEach(function(b){if(b.textContent.trim().slice(0,2)===v)b.classList.add('on');});
+  // Always apply
   refineCursor();
   applyShimmer();
-  applyRefinedType();
-  addMarshallWave(v);
-  // Apply section viz for this variant
-  var vizKey = v === '00' ? null : v;
-  if(vizKey && sectionViz[vizKey]){
-    sectionViz[vizKey]();
-  }
-  // Save
-  try{ localStorage.setItem('sf-variant', v); } catch(e){}
+  refineCTA();
+  applySymbols(v);
+  applyThesis(v);
+  applyHero(v);
+  applyMarshall(v);
+  try{localStorage.setItem('sfv',v);}catch(e){}
 }
-
-window.sfSetVariant = sfSetVariant;
+window.sfV=sfV;
 
 // ── INIT ──
-var saved = '00';
-try{ saved = localStorage.getItem('sf-variant') || '00'; } catch(e){}
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', function(){ sfSetVariant(saved); });
-} else {
-  sfSetVariant(saved);
-}
-
+var saved='00';try{saved=localStorage.getItem('sfv')||'00';}catch(e){}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){sfV(saved);});}
+else{sfV(saved);}
 })();
 </script>
 
