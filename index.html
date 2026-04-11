@@ -4188,12 +4188,12 @@ function ijSet(n){
   else if(n===4){document.body.classList.add('ij-state-4');initD4();}
   else if(n===5){document.body.classList.add('ij-state-5');initD5();}
   else if(n===6){document.body.classList.add('ij-state-6');initD6();}
-  else if(n===7){document.body.classList.add('ij-state-7');initN1();}
-  else if(n===8){document.body.classList.add('ij-state-8');initN2();startNRAF();}
-  else if(n===9){document.body.classList.add('ij-state-9');initN3();}
-  else if(n===10){document.body.classList.add('ij-state-10');initN4();startNRAF();}
-  else if(n===11){document.body.classList.add('ij-state-11');initN5();}
-  else if(n===12){document.body.classList.add('ij-state-12');initN1();initN3();initN4();initN5();startNRAF();}
+  else if(n===7){document.body.classList.add('ij-state-7');window.initN1&&window.initN1();}
+  else if(n===8){document.body.classList.add('ij-state-8');window.initN2&&window.initN2();window.startNRAF&&window.startNRAF();}
+  else if(n===9){document.body.classList.add('ij-state-9');window.initN3&&window.initN3();}
+  else if(n===10){document.body.classList.add('ij-state-10');window.initN4&&window.initN4();window.startNRAF&&window.startNRAF();}
+  else if(n===11){document.body.classList.add('ij-state-11');window.initN5&&window.initN5();}
+  else if(n===12){document.body.classList.add('ij-state-12');window.initN1&&window.initN1();window.initN3&&window.initN3();window.initN4&&window.initN4();window.initN5&&window.initN5();window.startNRAF&&window.startNRAF();}
   try{localStorage.setItem('ij',n);}catch(e){}
 }
 window.ijSet=ijSet;
@@ -4605,6 +4605,14 @@ function initN5(){
     drawBOM();if(typeof ResizeObserver!=='undefined')new ResizeObserver(drawBOM).observe(mfg);
   }
 }
+
+// Expose to window so ijSet (in separate IIFE) can reach them
+window.initN1=initN1;
+window.initN2=initN2;
+window.initN3=initN3;
+window.initN4=initN4;
+window.initN5=initN5;
+window.startNRAF=startNRAF;
 
 })();
 </script>
