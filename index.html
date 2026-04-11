@@ -1618,167 +1618,6 @@ div[style*="grid-template-columns:repeat(3,1fr)"] p {
 }
 
 </style>
-
-<!-- ── INDUSTRIAL JEWELRY SYSTEM ── -->
-<style id="ij-css">
-/* ── JEWELRY BASE ── */
-.ij-gold {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(200,169,110,0.28);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
-  pointer-events: none;
-}
-.ij-grey {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(180,175,168,0.22);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-.ij-white {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(244,241,236,0.15);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-.ij-dark {
-  font-family: 'Courier New', monospace;
-  font-size: 0.5em;
-  color: rgba(10,10,10,0.2);
-  vertical-align: super;
-  letter-spacing: 0.05em;
-  transition: color 0.3s ease;
-  pointer-events: none;
-}
-/* Hover reveal — parent hover brightens symbol */
-*:hover > .ij-gold, *:hover .ij-gold { color: rgba(200,169,110,0.65); text-shadow: 0 0 8px rgba(200,169,110,0.25); }
-*:hover > .ij-grey, *:hover .ij-grey { color: rgba(180,175,168,0.55); }
-*:hover > .ij-white, *:hover .ij-white { color: rgba(244,241,236,0.4); }
-*:hover > .ij-dark, *:hover .ij-dark { color: rgba(10,10,10,0.45); }
-
-/* Corner/margin absolute positions */
-.ij-corner {
-  position: absolute;
-  font-family: 'Courier New', monospace;
-  font-size: 0.3rem;
-  letter-spacing: 0.12em;
-  pointer-events: none;
-  z-index: 2;
-  line-height: 1;
-}
-.ij-tl { top: 12px; left: 12px; }
-.ij-tr { top: 12px; right: 12px; }
-.ij-bl { bottom: 12px; left: 12px; }
-.ij-br { bottom: 12px; right: 12px; }
-
-/* ── SWITCHER STATES ── */
-/* S0 = Original — all jewelry hidden */
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-gold,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-grey,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-white,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-dark,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-corner,
-body:not(.ij-s1):not(.ij-s2):not(.ij-s3):not(.ij-s4) .ij-abs {
-  display: none !important;
-}
-
-/* S1 — Sparse Gold: only ij-gold text annotations, no corners/margins */
-body.ij-s1 .ij-grey,
-body.ij-s1 .ij-white,
-body.ij-s1 .ij-dark,
-body.ij-s1 .ij-corner,
-body.ij-s1 .ij-abs { display: none !important; }
-body.ij-s1 .ij-gold { display: inline !important; }
-
-/* S2 — Dense Gold: gold + dark (cream sections), no corners/grey */
-body.ij-s2 .ij-grey,
-body.ij-s2 .ij-white,
-body.ij-s2 .ij-corner,
-body.ij-s2 .ij-abs { display: none !important; }
-body.ij-s2 .ij-gold,
-body.ij-s2 .ij-dark { display: inline !important; }
-
-/* S3 — Mixed colours: gold + dark + grey, no corners */
-body.ij-s3 .ij-white,
-body.ij-s3 .ij-corner,
-body.ij-s3 .ij-abs { display: none !important; }
-body.ij-s3 .ij-gold,
-body.ij-s3 .ij-dark,
-body.ij-s3 .ij-grey { display: inline !important; }
-
-/* S4 — Full 218: everything */
-body.ij-s4 .ij-gold,
-body.ij-s4 .ij-dark,
-body.ij-s4 .ij-grey,
-body.ij-s4 .ij-white,
-body.ij-s4 .ij-corner,
-body.ij-s4 .ij-abs { display: inline !important; }
-body.ij-s4 .ij-corner { display: block !important; }
-
-/* ── FLOATING SWITCHER ── */
-#ij-switcher {
-  position: fixed;
-  bottom: 28px;
-  right: 48px;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  background: rgba(10,10,10,0.92);
-  border: 0.5px solid rgba(200,169,110,0.2);
-  padding: 5px 8px;
-  backdrop-filter: blur(8px);
-}
-.ij-sbtn {
-  font-family: 'Courier New', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.08em;
-  color: rgba(244,241,236,0.25);
-  background: none;
-  border: none;
-  padding: 3px 6px;
-  cursor: pointer;
-  transition: color 0.2s;
-  white-space: nowrap;
-}
-.ij-sbtn:hover { color: rgba(200,169,110,0.7); }
-.ij-sbtn.ij-on { color: #c8a96e; }
-.ij-sdiv { width: 1px; height: 10px; background: rgba(200,169,110,0.15); margin: 0 2px; }
-</style>
-
-<div id="ij-switcher">
-  <button class="ij-sbtn ij-on" onclick="ijSet(0)">⌀ Original</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(1)">S1 · Sparse</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(2)">S2 · Dense</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(3)">S3 · Mixed</button>
-  <div class="ij-sdiv"></div>
-  <button class="ij-sbtn" onclick="ijSet(4)">S4 · Full</button>
-</div>
-
-<script id="ij-js">
-function ijSet(n){
-  document.body.classList.remove('ij-s1','ij-s2','ij-s3','ij-s4');
-  document.querySelectorAll('.ij-sbtn').forEach(function(b){b.classList.remove('ij-on');});
-  if(n>0) document.body.classList.add('ij-s'+n);
-  document.querySelectorAll('.ij-sbtn')[n].classList.add('ij-on');
-  try{localStorage.setItem('ij-state',n);}catch(e){}
-}
-var _ijs=0;try{_ijs=parseInt(localStorage.getItem('ij-state'))||0;}catch(e){}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){ijSet(_ijs);});}
-else{ijSet(_ijs);}
-</script>
-
 </head>
 <body>
 
@@ -1786,20 +1625,20 @@ else{ijSet(_ijs);}
 <!-- MOBILE MENU -->
   <div class="mobile-menu">
     <a href="index.html">Home</a>
-    <a href="index.html#how">How It Works<<span class="ij-gold">∥</span><span class="ij-grey">∥</span>/a>
-    <a href="sf-team.html" target="_blank" rel="noopener">Team<<span class="ij-grey">⊞</span>/a>
-    <a href="sf-contact.html" target="_blank" rel="noopener">Contact<<span class="ij-grey">→|←</span>/a>
+    <a href="index.html#how">How It Works</a>
+    <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
+    <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
   </div>
 
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;position:relative;z-index:1;">
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent<span class="ij-gold">⌀</span></span>
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry<span class="ij-gold">⌀</span></span>
+        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
+        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry<span style="font-family:'Courier New',monospace;font-size:0.42em;vertical-align:super;color:rgba(200,169,110,0.38);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⌀</span></span>
       </a>
         <ul class="nav-links">
       <li><a href="#how">How It Works</a></li>
-      <li><a href="#funds">Investors<<span class="ij-dark">⊞</span><span class="ij-grey">±</span>/a></li>
+      <li><a href="#funds">Investors</a></li>
       <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
       <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
     </ul>
@@ -1813,13 +1652,13 @@ else{ijSet(_ijs);}
   </nav>
 
   <!-- HERO -->
-  <section class="hero"><span class="ij-corner ij-white" style="position:absolute;top:40%;left:20px;font-family:'Courier New',monospace;font-size:0.3rem;letter-spacing:0.1em;color:rgba(244,241,236,0.1);pointer-events:none;z-index:2;writing-mode:vertical-rl;">± ⌀ °</span><span class="ij-corner ij-white" style="position:absolute;top:40%;right:20px;font-family:'Courier New',monospace;font-size:0.3rem;letter-spacing:0.1em;color:rgba(244,241,236,0.1);pointer-events:none;z-index:2;writing-mode:vertical-rl;">⊙ ∥ ▽</span><span class="ij-corner ij-br ij-grey">REF. ⌀3×M6</span><span class="ij-corner ij-bl ij-white">GND ↧</span><span class="ij-corner ij-tr ij-white">¬</span><span class="ij-corner ij-tl ij-white">⌐</span>
+  <section class="hero">
     <div class="hero-bg"></div>
-    <p class="hero-eyebrow">A cross-border<span class="ij-dark">↕</span> venture studio<span class="ij-white">⌙</span></p>
-    <h1 class="hero-headline"><span class="hero-headline-top">INDUSTRIALISING<span class="ij-gold">→|←</span></span><span class="hero-headline-bottom">BRAND SOUL<span class="ij-gold">±0.001</span></span></h1>
+    <p class="hero-eyebrow">A cross-border venture studio</p>
+    <h1 class="hero-headline"><span class="hero-headline-top">INDUSTRIALISING</span><span class="hero-headline-bottom">BRAND SOUL</span></h1>
     <div class="hero-scroll">
       <div class="scroll-line"></div>
-      <span>Scroll<span class="ij-white">↧</span></span>
+      <span>Scroll</span>
     </div>
   </section>
 
@@ -1844,26 +1683,26 @@ else{ijSet(_ijs);}
   })();
   </script>
 
-  <!-- WHAT WE DO + WHY NOW<span class="ij-corner ij-br ij-dark">TOL: ±0.001</span><span class="ij-corner ij-bl ij-dark">FINISH: ▽▽▽</span><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">01.0</span> — Combined section -->
+  <!-- WHAT WE DO + WHY NOW — Combined section -->
   <style>
   </style>
   <section class="wwd-section" style="padding:64px 48px 32px;background:var(--cream);"><div class="mw-wrap">
     <!-- WHAT WE DO -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(138,110,58,0.1);">
-      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">What We Do<span class="ij-dark">⊞</span></span>
+      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">What We Do<span style="font-family:'Courier New',monospace;font-size:0.42em;vertical-align:super;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⊞</span></span>
       <div class="wwd-body" style="display:grid;grid-template-columns:1fr;gap:0;align-items:start;">
-        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry is a cross-border industrial M&amp;A venture studio that translates brand equity<span class="ij-dark">▽▽▽</span> into premium products<span class="ij-dark">⌀</span>. We use a micro-PE<span class="ij-dark">⊞</span>/SPV structure<span class="ij-dark">⌐</span> to build our own brands and selectively partner with authentic, high-DNA brands to turn them into product systems<span class="ij-dark">→|←</span>. Our ventures are built on strong unit economics<span class="ij-dark">±</span> and credible paths to licensing, partnership, or acquisition<span class="ij-dark">↧</span>.</p>
+        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry is a cross-border industrial M&amp;A venture studio that translates brand equity into premium products. We use a micro-PE/SPV structure to build our own brands and selectively partner with authentic, high-DNA brands to turn them into product systems. Our ventures are built on strong unit economics and credible paths to licensing, partnership, or acquisition.</p>
       </div>
     </div>
     <!-- WHY NOW -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:32px;">
-      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Why Now<span class="ij-dark">¬</span></span>
-      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy<span class="ij-dark">¬</span> but product is still hard<span class="ij-dark">⊥</span>. Most brands have demand<span class="ij-dark">↕</span> but no industrial product system. A single product is not enough<span class="ij-dark">→|←</span>. And most ventures are not structured for liquidity<span class="ij-dark">↧</span>.</p>
+      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Why Now<span style="font-family:'Courier New',monospace;font-size:0.42em;vertical-align:super;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">¬</span></span>
+      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy but product is still hard. Most brands have demand but no industrial product system. A single product is not enough. And most ventures are not structured for liquidity.</p>
     </div>
   </div></section>
 
 
-<!-- CASE STUDY — Marshall --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">02.0</span><span class="ij-corner ij-br ij-dark">▽▽▽ ±0.001</span><span class="ij-corner ij-bl ij-dark">REF: CS-001</span><span class="ij-corner ij-tr ij-dark">SPEC: ⌀3×M6</span>
+<!-- CASE STUDY — Marshall -->
 <style>
   .csw { background-color:#e8e2d9; }
   .cs-wrap { padding-top:48px; padding-bottom:48px; }
@@ -1910,16 +1749,16 @@ else{ijSet(_ijs);}
 
       <!-- ROW 1: Situation + Numbers | Concert image -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dey">Case Study — Marshall DNA Translation<span class="ij-dark">1:2</span></span>
-        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies<span class="ij-dark">⊙</span></div>
-        <p class="cs-dp">By 2010, Marshall&#8217;s core market was shrinking<span class="ij-dark">↕</span>. The brand still had strong equity, but the legacy guitar amplifier category<span class="ij-dark">⌀</span> was no longer enough.</p>
+        <span class="cs-dey">Case Study — Marshall DNA Translation</span>
+        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies</div>
+        <p class="cs-dp">By 2010, Marshall&#8217;s core market was shrinking. The brand still had strong equity, but the legacy guitar amplifier category was no longer enough.</p>
         <div style="margin-top:12px;">
           <span class="cs-dslabel">Key Numbers</span>
           <div class="cs-dmets">
-            <div class="cs-dmet"><span class="cs-dmetv">1962<span class="ij-dark">°</span></span><span class="cs-dmetl">Founded</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">60+<span class="ij-dark">∥</span></span><span class="cs-dmetl">Years of Heritage</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$4B+<span class="ij-dark">↕</span></span><span class="cs-dmetl">Expanded Market</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$1.1B<span class="ij-dark">±0.001</span></span><span class="cs-dmetl">Acquired in 2025</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">1962</span><span class="cs-dmetl">Founded</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">60+</span><span class="cs-dmetl">Years of Heritage</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">$4B+</span><span class="cs-dmetl">Expanded Market</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">$1.1B</span><span class="cs-dmetl">Acquired in 2025</span></div>
           </div>
         </div>
       </div>
@@ -1929,14 +1768,14 @@ else{ijSet(_ijs);}
 
       <!-- ROW 2: Brand DNA | 2-up images -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dslabel">Brand DNA<<span class="ij-gold">▽▽▽</span></span>
+        <span class="cs-dslabel">Brand DNA</span>
         <div class="cs-ddna">
-          <div><span class="cs-ddna-k">Tactile<span class="ij-dark">▽▽▽</span></span><span class="cs-ddna-v">Pebbled tolex amp texture</span></div>
-          <div><span class="cs-ddna-k">Physical<span class="ij-dark">⌙</span></span><span class="cs-ddna-v">Weighted brass knobs<span class="ij-dark">⌙</span> and metal controls</span></div>
+          <div><span class="cs-ddna-k">Tactile<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">▽▽▽</span></span><span class="cs-ddna-v">Pebbled tolex amp texture</span></div>
+          <div><span class="cs-ddna-k">Physical<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⌙</span></span><span class="cs-ddna-v">Weighted brass knobs and metal controls</span></div>
           <div><span class="cs-ddna-k">Mechanical</span><span class="cs-ddna-v">Toggle-click switch</span></div>
-          <div><span class="cs-ddna-k">Acoustic<span class="ij-dark">∠</span></span><span class="cs-ddna-v">The sound was tuned to feel recognisably Marshall</span></div>
+          <div><span class="cs-ddna-k">Acoustic<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">∠</span></span><span class="cs-ddna-v">The sound was tuned to feel recognisably Marshall</span></div>
           <div><span class="cs-ddna-k">Intangible</span><span class="cs-ddna-v">The speakers kept the original stage presence</span></div>
-          <div><span class="cs-ddna-k">CMF<span class="ij-gold">±</span></span><span class="cs-ddna-v">Colour, material, and finish<span class="ij-dark">▽</span> were applied consistently</span></div>
+          <div><span class="cs-ddna-k">CMF<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">±</span></span><span class="cs-ddna-v">Colour, material, and finish were applied consistently</span></div>
         </div>
       </div>
       <div class="cs-row-right cs-gap-bottom">
@@ -1948,8 +1787,8 @@ else{ijSet(_ijs);}
 
       <!-- ROW 3: Translation + Result | Bluetooth image -->
       <div class="cs-row-left">
-        <span class="cs-dslabel">Translation<span class="ij-dark">⊙</span></span>
-        <p class="cs-dp">Marshall moved beyond amplifiers into headphones, speakers<span class="ij-dark">→|←</span>, and home audio. This was not merch or logo licensing<span class="ij-dark">¬</span>. It was real product-level DNA translation<span class="ij-dark">1:2</span> into a larger category.<br/><br/>Marshall expanded into a much larger category without losing what made<span class="ij-dark">∥</span> the brand distinctive<span class="ij-dark">▽▽▽</span>. Stronger relevance in China<span class="ij-dark">→|←</span><span class="ij-dark">→|←</span>. A $1.1B acquisition<span class="ij-dark">↧</span> in early 2025.</p>
+        <span class="cs-dslabel">Translation</span>
+        <p class="cs-dp">Marshall moved beyond amplifiers into headphones, speakers, and home audio. This was not merch or logo licensing. It was real product-level DNA translation into a larger category.<br/><br/>Marshall expanded into a much larger category without losing what made the brand distinctive. Stronger relevance in China. A $1.1B acquisition in early 2025.</p>
       </div>
       <div class="cs-row-right cs-show-mobile">
         <img src="marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="filter:brightness(.82) saturate(.85);" alt=""/>
@@ -1959,67 +1798,67 @@ else{ijSet(_ijs);}
   </div>
 </section>
 
-<!-- THESIS QUOTE --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">03.0</span><span class="ij-corner ij-br ij-dark">⊥</span><span class="ij-corner ij-tr ij-dark">¬</span><span class="ij-corner ij-tl ij-dark">⌐</span>
+<!-- THESIS QUOTE -->
   <section style="padding:100px 48px;background:#ede8e0;text-align:center;">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
       <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">The Foundry Thesis</span>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;">The best products<span class="ij-dark">⌙</span></p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;">Won't be invented<span class="ij-dark">∥</span></p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;">They'll be extracted<span class="ij-dark">⌀</span></p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;">The best products</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;">Won't be invented</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;">They'll be extracted</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;">
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
-        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.28);">Matthew, Silent Foundry<span class="ij-dark">±0.001</span></p>
+        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.28);">Matthew, Silent Foundry</p>
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
       </div>
     </div>
   </section>
 
 <!-- P7: How It Works -->
-  <section id="how" style="padding:80px 48px;background:var(--black);"><span class="ij-corner ij-br ij-grey">TOL: ±0.001</span><span class="ij-corner ij-bl ij-grey">FINISH: ▽▽▽</span>
+  <section id="how" style="padding:80px 48px;background:var(--black);">
     <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
       <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;align-self:start;padding-top:28px;">How It Works</span>
       <div class="accordion-steps" style="margin-top:0;">
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">01</span><span class="ij-gold">∠</span><span class="accordion-title">Identify</span></div>
+            <div class="accordion-left"><span class="accordion-num">01</span><span class="accordion-title">Identify</span></div>
             <span class="accordion-icon">∠</span>
           </div>
-          <div class="accordion-body"><p>We find the right brands or concepts to build around. That includes creators, celebrity-backed brands<span class="ij-gold">⌐</span>, heritage names, premium service businesses, and other high-DNA concepts<span class="ij-gold">∠</span> with clear room to expand. We use the same process for our own ventures.</p></div>
+          <div class="accordion-body"><p>We find the right brands or concepts to build around. That includes creators, celebrity-backed brands, heritage names, premium service businesses, and other high-DNA concepts with clear room to expand. We use the same process for our own ventures.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">02</span><span class="ij-gold">∥</span><span class="accordion-title">Select</span></div>
+            <div class="accordion-left"><span class="accordion-num">02</span><span class="accordion-title">Select</span></div>
             <span class="accordion-icon">∥</span>
           </div>
-          <div class="accordion-body"><p>We choose the opportunities where the fit is strongest. We use AI, internal market analysis<span class="ij-gold">¬</span>, and China trend tracking to find the right match between brand, category, product direction, timing, and local demand. Then we focus our outreach where the commercial case is strongest<span class="ij-gold">⊥</span>.</p></div>
+          <div class="accordion-body"><p>We choose the opportunities where the fit is strongest. We use AI, internal market analysis, and China trend tracking to find the right match between brand, category, product direction, timing, and local demand. Then we focus our outreach where the commercial case is strongest.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">03</span><span class="ij-gold">▽</span><span class="accordion-title">Design</span></div>
+            <div class="accordion-left"><span class="accordion-num">03</span><span class="accordion-title">Design</span></div>
             <span class="accordion-icon">▽</span>
           </div>
-          <div class="accordion-body"><p>We decide what the product should be and how the brand should take physical form. This includes the creative direction behind it: what to build, why it fits, how it should feel<span class="ij-gold">▽</span>, and how the system can grow<span class="ij-gold">↕</span> beyond a single object.</p></div>
+          <div class="accordion-body"><p>We decide what the product should be and how the brand should take physical form. This includes the creative direction behind it: what to build, why it fits, how it should feel, and how the system can grow beyond a single object.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">04</span><span class="ij-gold">⊞</span><span class="accordion-title">Structure<span class="ij-gold">⊥</span></span></div>
+            <div class="accordion-left"><span class="accordion-num">04</span><span class="accordion-title">Structure<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⊥</span></span></div>
             <span class="accordion-icon">⊞</span>
           </div>
-          <div class="accordion-body"><p>We set up the commercial, operating, and financing model around the opportunity. That includes rights, incentives, ownership, operator involvement, manufacturing pathways<span class="ij-gold">⌙</span>, and the broader execution framework. Where it makes sense, we can also help finance projects through our investor and family office network<span class="ij-gold">↕</span>.</p></div>
+          <div class="accordion-body"><p>We set up the commercial, operating, and financing model around the opportunity. That includes rights, incentives, ownership, operator involvement, manufacturing pathways, and the broader execution framework. Where it makes sense, we can also help finance projects through our investor and family office network.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">05</span><span class="ij-gold">⊥</span><span class="accordion-title">Execute</span></div>
+            <div class="accordion-left"><span class="accordion-num">05</span><span class="accordion-title">Execute</span></div>
             <span class="accordion-icon">⊥</span>
           </div>
-          <div class="accordion-body"><p>We turn the concept into a real product and bring it to market. That includes industrial design<span class="ij-gold">⌀</span>, engineering, prototyping, sourcing<span class="ij-gold">▽</span>, cross-border manufacturing<span class="ij-gold">⌀3×M6</span>, and rollout with operators in China<span class="ij-gold">→|←</span>.</p></div>
+          <div class="accordion-body"><p>We turn the concept into a real product and bring it to market. That includes industrial design, engineering, prototyping, sourcing, cross-border manufacturing, and rollout with operators in China.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">06</span><span class="ij-gold">↕</span><span class="accordion-title">Scale</span></div>
+            <div class="accordion-left"><span class="accordion-num">06</span><span class="accordion-title">Scale</span></div>
             <span class="accordion-icon">↕</span>
           </div>
-          <div class="accordion-body"><p>We build beyond the first product. Once proven, the model can grow into new products, new categories<span class="ij-gold">↕</span>, and new commercial paths. The goal is a platform<span class="ij-gold">⊞</span>, not a one-off object<span class="ij-gold">⊞</span>.</p></div>
+          <div class="accordion-body"><p>We build beyond the first product. Once proven, the model can grow into new products, new categories, and new commercial paths. The goal is a platform, not a one-off object.</p></div>
         </div>
       </div>
     </div></div>
@@ -2028,7 +1867,7 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- ENGINEERING SWITCHER --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">04.0</span><span class="ij-corner ij-br ij-dark">TOL: ±0.001</span><span class="ij-corner ij-bl ij-dark">SPEC_01: ⊙</span><span class="ij-corner ij-tr ij-dark">MATL: ⌀3×M6</span>
+  <!-- ENGINEERING SWITCHER -->
   <style>
     .es2-opt { display:none; }
     .es2-opt.active { display:block; }
@@ -2100,11 +1939,11 @@ else{ijSet(_ijs);}
     <div style="padding:64px 0;margin-bottom:0;">
       <div class="mw-wrap"><div class="we-build-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;align-items:stretch;">
         <div style="padding-right:56px;display:flex;flex-direction:column;justify-content:flex-start;border:1px solid rgba(10,10,10,0.1);padding:32px;">
-          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">We build the files.<<span class="ij-dark">⌙</span>/p>
+          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">We build the files.</p>
           <p class="we-build-body" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">From PCB layouts to production tooling, we build the files that take products into production. We turn brand DNA into real CAD, working prototypes, and manufacturable products. Our team works across industrial design, mechanical engineering, electronics, prototyping, tooling, supply chain management, and QC, so the product that gets made still reflects the original idea.</p>
         </div>
         <div style="background:rgba(10,10,10,0.03);padding:32px;">
-          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">Manufacturing 2.0<<span class="ij-dark">⌀3×M6</span>/p>
+          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">Manufacturing 2.0</p>
           <div style="display:flex;flex-direction:column;gap:0;">
             <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Re-Skin</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Proven Platforms · Premium Feel · Lower Capex<span class="sf-eng-sym">▽▽▽ · ±0.001</span></span></div>
             <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Development</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">CAD · DFM · Prototyping · Supply Chain<span class="sf-eng-sym">⌀ · 1:2 · ↧</span></span></div>
@@ -2119,7 +1958,7 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- FACTORY IMAGE BREAK --><span class="ij-corner ij-tl ij-dark">⌐</span><span class="ij-corner ij-tr ij-dark">¬</span>
+  <!-- FACTORY IMAGE BREAK -->
   <div style="position:relative;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;"></div>
     <div style="height:60px;position:relative;"></div>
@@ -2183,50 +2022,50 @@ else{ijSet(_ijs);}
   .cpl-d1-imgs img:nth-child(2), .cpl-d1-imgs img:nth-child(3) { display:none !important; }
 }
 </style>
-<section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><span class="ij-corner ij-tr ij-dark">ISO: 1:2</span><span class="ij-corner ij-br ij-dark">⌀ ± °</span><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
+<section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:48px 56px 48px;align-items:start;" class="cpl-d1-top">
       <div class="cpl-china-left">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation<span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">05.0</span><span class="ij-dark">→|←</span></span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,2.8vw,3.2rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China<<span class="ij-dark">1:2</span>/h2>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity<span class="ij-dark">→|←</span> into China-fit product and business concepts<span class="ij-dark">⊞</span> designed to work with local operators.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,2.8vw,3.2rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity into China-fit product and business concepts designed to work with local operators.</p>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:flex-start;">
         <div class="china-accordion cpl-china-acc" style="margin-top:0;">
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<<span class="ij-dark">⌐</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⌐</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture<span class="ij-dark">∠</span>, and channel logic<span class="ij-dark">∥</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture, and channel logic.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<<span class="ij-dark">⊞</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⊞</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales<span class="ij-dark">↧</span> — so every touchpoint is manufacturable<span class="ij-dark">⌀</span> and governed.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales — so every touchpoint is manufacturable and governed.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<<span class="ij-dark">±</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">±</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer<span class="ij-dark">↕</span> — subscriptions, accessories, or service contracts<span class="ij-dark">↕</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer — subscriptions, accessories, or service contracts.</p>
             </div>
           </div>
           <div class="ch-item">
             <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<<span class="ij-dark">↧</span>span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
-              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">↧</span>
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+              <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
             <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture<span class="ij-dark">∥</span> — so the brand enters China with the right partner and the right terms<span class="ij-dark">→|←</span>.</p>
+              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture — so the brand enters China with the right partner and the right terms.</p>
             </div>
           </div>
         </div>
@@ -2241,30 +2080,30 @@ else{ijSet(_ijs);}
 </section>
 
 
-  <!-- VALUE --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">06.0</span><span class="ij-corner ij-br ij-dark">FINISH: ▽▽▽</span><span class="ij-corner ij-bl ij-dark">⊙ ⌀ ∥</span><span class="ij-corner ij-tr ij-dark">MATL: ±0.001</span>
+  <!-- VALUE -->
 <!-- VALUE L1: Title embedded as first card slot -->
   <section class="value" style="padding-top:120px;padding-bottom:160px;background:#ede8e0 !important;background-image:url('cad_texture.jpeg') !important;background-size:cover !important;background-position:center !important;background-attachment:fixed !important;position:relative;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
-    <p class="label" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation<<span class="ij-dark">∥</span>/p>
+    <p class="label" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;z-index:1;">
       <div style="padding:56px 48px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);display:flex;flex-direction:column;justify-content:center;grid-row:span 2;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side<span class="ij-dark">∥</span></h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side</h2>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands<span class="ij-dark">∠</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">New revenue and premium product<span class="ij-dark">↕</span> expansion without building the full product engine<span class="ij-dark">⌙</span> in-house<span class="ij-dark">⌙</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">∠</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">New revenue and premium product expansion without building the full product engine in-house.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Factories<span class="ij-dark">⊥</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Premium, authentic demand<span class="ij-dark">⊙</span> backed by clearer specifications<span class="ij-dark">±</span>, stronger engineering, and tighter execution<span class="ij-dark">⊥</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Factories <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⊥</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Premium, authentic demand backed by clearer specifications, stronger engineering, and tighter execution.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Operators<span class="ij-dark">↕</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Turnkey international brands and product systems that can be localised and scaled<span class="ij-dark">→|←</span> for domestic markets<span class="ij-dark">→|←</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Operators <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">↕</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Turnkey international brands and product systems that can be localised and scaled for domestic markets.</p>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
-        <h4 style="display:flex;justify-content:space-between;align-items:center;">Investors<span class="ij-dark">⊞</span> <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
-        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Earlier, clearer liquidity paths through strategic sales, mergers<span class="ij-dark">↧</span>, and acquisitions<span class="ij-dark">↧</span>.</p>
+        <h4 style="display:flex;justify-content:space-between;align-items:center;">Investors <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">⊞</span></h4>
+        <p class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s;opacity:0;margin-top:0;">Earlier, clearer liquidity paths through strategic sales, mergers, and acquisitions.</p>
       </div>
     </div>
     <script>
@@ -2286,7 +2125,7 @@ else{ijSet(_ijs);}
   </section>
 
 
-  <!-- SWITCH 2.0 FEATURED SECTION --><span class="ij-corner ij-tl ij-grey" style="font-size:0.28rem;letter-spacing:0.2em;">07.0</span><span class="ij-corner ij-br ij-grey">TOL: ±0.001</span><span class="ij-corner ij-bl ij-grey">REF: SW-001</span><span class="ij-corner ij-tr ij-grey">SPEC: ⌀ ± ▽</span>
+  <!-- SWITCH 2.0 FEATURED SECTION -->
   <section id="featured" style="padding:0;">
   <style>
     .fp-opt { display:none; }
@@ -2363,14 +2202,14 @@ else{ijSet(_ijs);}
       <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,20,30,0.75) 0%,rgba(10,10,10,0.35) 45%,rgba(10,10,10,0.02) 75%,transparent 100%);pointer-events:none;z-index:1;"></div>
       <!-- Unified bottom-left overlay — slide 1 only -->
       <div id="c16-overlay" style="position:absolute;bottom:48px;left:48px;z-index:2;transition:opacity 0.4s ease;">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project<span class="ij-gold">⌀</span></span>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project<span style="font-family:'Courier New',monospace;font-size:0.42em;vertical-align:super;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⌀</span></span>
         <img src="Switchlogowhite2.png" style="height:32px;max-width:200px;width:auto;object-fit:contain;display:block;margin-bottom:6px;mix-blend-mode:screen;" id="switch-logo-img" />
         <img src="Logo_escrambler.jpg" style="height:14px;max-width:120px;width:auto;object-fit:contain;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
         <p class="fp-body-text" style="font-size:clamp(0.85rem,1vw,0.95rem);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle, now being relaunched around a larger opportunity.</p>
         <div style="display:flex;gap:28px;">
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh<span class="ij-gold">⌀</span></span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km<span class="ij-gold">↕</span></span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
-          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h<span class="ij-gold">∥</span></span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
         </div>
       </div>
       <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
@@ -2384,8 +2223,8 @@ else{ijSet(_ijs);}
     <!-- THE ACQUISITION -->
     <div style="background:var(--cream);padding:64px 48px;"><div class="mw-wrap">
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:20px;border-bottom:1px solid rgba(0,180,216,0.2);">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition<span class="ij-gold">1:2</span></span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA<span class="ij-gold">⌙</span>. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand<span class="ij-gold">▽▽▽</span>. Its geometry, materials, and manufacturing language can extend far beyond the bike itself<span class="ij-gold">↕</span><span class="ij-gold">↕</span>. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product<span class="ij-gold">⌀</span><span class="ij-gold">⌀</span>.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition</span>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand. Its geometry, materials, and manufacturing language can extend far beyond the bike itself. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product.</p>
       </div>
     </div></div>
     <!-- SWITCH DNA BLOCK -->
@@ -2393,17 +2232,17 @@ else{ijSet(_ijs);}
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(0,180,216,0.2);">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Brand DNA</span>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form<<span class="ij-gold">∠</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">∠</span></div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
           <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Structure</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Exposed tubes, welds, brackets, and visible fasteners.</p></div>
           <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">CMF</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Brushed aluminum, abs, and restrained functional colors.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details<<span class="ij-gold">⌙</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance<<span class="ij-gold">↕</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing<<span class="ij-gold">⌀3×M6</span>/div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">↕</span></div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing<span style="font-family:'Courier New',monospace;font-size:0.5em;vertical-align:middle;color:rgba(200,169,110,0.4);letter-spacing:0.05em;pointer-events:none;user-select:none;" class="ij-base">⌙</span></div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Hardware As A Service<span class="ij-gold">⌀3×M6</span></span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic<span class="ij-gold">⌀3×M6</span>.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Hardware As A Service</span>
+        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic.</p>
       </div>
     </div></div>
     <!-- New products with SWITCH blue -->
@@ -2484,9 +2323,9 @@ else{ijSet(_ijs);}
   </section>
 
 
-  <!-- LOGOS --><span class="ij-corner ij-tl ij-grey">⌐</span><span class="ij-corner ij-tr ij-grey">¬</span>
+  <!-- LOGOS -->
   <div class="logos">
-    <p class="label reveal" style="color:#00b4d8;">As Seen On<<span class="ij-grey">▽▽▽</span>/p>
+    <p class="label reveal" style="color:#00b4d8;">As Seen On</p>
     <div class="logo-grid">
       <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7d29fed7-7d14-4abb-b12d-1b58b47e193c/HYPEBEAST-png-logo.png" alt="Hypebeast" />
       <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e9427ed1-f206-425e-ab38-603d7da7c150/designboom-logo-png.png" alt="Designboom" style="max-height:48px;opacity:0.35;" />
@@ -2507,10 +2346,10 @@ else{ijSet(_ijs);}
 
 
 
-  <!-- FUNDS --><span class="ij-corner ij-tl ij-dark" style="font-size:0.28rem;letter-spacing:0.2em;">08.0</span><span class="ij-corner ij-br ij-dark">VER: ±0.001</span><span class="ij-corner ij-tr ij-dark">TYPE: ⌀ RISK: ± OUTPUT: ↕</span>
+  <!-- FUNDS -->
   <section class="funds" id="funds">
-    <p class="label reveal">Investment Paths<<span class="ij-dark">⌀</span>/p>
-    <h2 class="section-title">Same engine<br/><em>different</em> ownership.<span class="ij-dark">∥</span></h2>
+    <p class="label reveal">Investment Paths</p>
+    <h2 class="section-title">Same engine<br/><em>different</em> ownership.</h2>
     <style>
       .fund-expand { font-size:0.88rem; line-height:1.75; color:rgba(10,10,10,0.6); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
       .fund-card:hover .fund-expand { max-height:160px; opacity:1; }
@@ -2519,36 +2358,36 @@ else{ijSet(_ijs);}
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e3fb1837-73e8-4dd7-bdf0-9d2e68d83582/e70a2636f73da2c6c55b80c7d2dec8ca56fa48ea04b5b80a7139f7d2bf13dc9e.jpg" alt="Fund A" />
         <div class="fund-body">
-          <p class="fund-tag">Fund A<<span class="ij-dark">⌐</span>/p>
-          <h3>Proprietary<<span class="ij-dark">⊞</span>/h3>
-          <p>We invest in our own brands and companies, where we control the IP, product system<span class="ij-dark">⊞</span>, and long-term value creation<span class="ij-dark">∥</span><span class="ij-dark">↕</span>.</p>
-          <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships<span class="ij-dark">⊞</span>, and long-term value creation. We carry the risk and the upside.</div>
+          <p class="fund-tag">Fund A</p>
+          <h3>Proprietary</h3>
+          <p>We invest in our own brands and companies, where we control the IP, product system, and long-term value creation.</p>
+          <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships, and long-term value creation. We carry the risk and the upside.</div>
         </div>
       </div>
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/9cc29928-94be-49b9-a4e4-c87ff6f41e92/640+%282%29.png" alt="Fund B" />
         <div class="fund-body">
-          <p class="fund-tag">Fund B<<span class="ij-dark">¬</span>/p>
-          <h3>Partnership<<span class="ij-dark">→|←</span>/h3>
-          <p>We back external brands through flexible structures — from product translation and licensing<span class="ij-dark">1:2</span> to full investments and acquisitions.</p>
-          <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more<span class="ij-dark">1:2</span> involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
+          <p class="fund-tag">Fund B</p>
+          <h3>Partnership</h3>
+          <p>We back external brands through flexible structures — from product translation and licensing to full investments and acquisitions.</p>
+          <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
         </div>
       </div>
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/2b0a4fc5-52b9-46f7-bdfd-4a444e612091/Bali-Uluwatu.jpg" alt="Exits" />
         <div class="fund-body">
-          <p class="fund-tag">Exits<<span class="ij-dark">GND ↧</span>/p>
-          <h3>Liquidity<<span class="ij-dark">↕</span>/h3>
-          <p>We build toward earlier, cleaner exit pathways — transferable value<span class="ij-dark">→|←</span> that can be sold, licensed, or rolled into larger strategic groups.</p>
-          <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale<span class="ij-dark">↧</span>, licensing, strategic roll-up, or other forms of exit. The goal is optionality<span class="ij-dark">⌐</span>, not a single mandatory outcome<span class="ij-dark">⌐</span>.</div>
+          <p class="fund-tag">Exits</p>
+          <h3>Liquidity</h3>
+          <p>We build toward earlier, cleaner exit pathways — transferable value that can be sold, licensed, or rolled into larger strategic groups.</p>
+          <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale, licensing, strategic roll-up, or other forms of exit. The goal is optionality, not a single mandatory outcome.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA --><span class="ij-corner ij-tl ij-grey" style="font-size:0.28rem;letter-spacing:0.2em;">09.0</span><span class="ij-corner ij-br ij-grey">¬</span><span class="ij-corner ij-tr ij-grey">SPEC: ⌀3×M6</span><span class="ij-corner ij-tl ij-grey">⌐</span>
+  <!-- CTA -->
   <section class="cta">
-    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together<<span class="ij-gold">⌀</span>/p>
+    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together</p>
     <style>
       @keyframes shimmer-product {
         0%   { background-position: -200% center; }
@@ -2576,41 +2415,42 @@ else{ijSet(_ijs);}
         letter-spacing: 0.14em;
       }
     </style>
-    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product<span class="ij-gold">1:2</span>?</span></h2>
-    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth<span class="ij-gold">▽▽▽</span><span class="ij-gold">▽▽▽</span> industrializing<span class="ij-gold">⌙</span>, let's talk.</p>
-    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership<<span class="ij-gold">→|←</span>/a>
+    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span></h2>
+    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.</p>
+    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership</a>
   </section>
 
-  <!-- FOOTER --><span class="ij-corner ij-br ij-grey">VER: 2026.04.±</span><span class="ij-corner ij-bl ij-grey">GND ↧</span>
-  <footer>
+  <!-- FOOTER -->
+  <footer style="position:relative;">
     <div class="reveal">
       <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:8px;">
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
       </a>
-      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into<span class="ij-gold">⊙</span> real products<span class="ij-gold">⌀</span>.</p>
+      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
     <div class="footer-col">
-      <h5>Navigate<<span class="ij-gold">→</span>/h5>
+      <h5>Navigate</h5>
       <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
       <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
-      <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy<<span class="ij-grey">⊞</span>/a>
-      <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use<<span class="ij-grey">⌐</span>/a>
+      <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use</a>
     </div>
     <div class="footer-col">
-      <h5>Hong Kong<<span class="ij-gold">↧</span>/h5>
+      <h5>Hong Kong</h5>
       <address>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road<br/>Wanchai</address>
     </div>
     <div class="footer-col">
-      <h5>Shanghai<<span class="ij-gold">↧</span>/h5>
+      <h5>Shanghai</h5>
       <address>Room 333, 3/F<br/>Building 1, No. 2001<br/>Yanggao North Road<br/>Free Trade Zone</address>
     </div>
     <svg class="sf-footer-triangle" width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M 0 12 L 10 0 L 20 12" stroke="rgba(200,169,110,0.12)" stroke-width="0.8" fill="none"/>
   </svg>
+<span style="position:absolute;bottom:20px;right:48px;font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.3);pointer-events:none;" class="ij-base">⌀3×M6</span>
 </footer>
   <div class="footer-bottom">
-    <span>© 2026 Silent Foundry Group<span class="ij-gold">⌀3×M6</span>. All rights reserved.</span>
+    <span>© 2026 Silent Foundry Group. All rights reserved.</span>
 
   </div>
 
@@ -3732,4 +3572,951 @@ body.v11-active #v11-badge {
   }
 })();
 </script>
+<!-- ═══════════════════════════════════════════════════
+     INDUSTRIAL JEWELRY — SWITCHER + 6 DESIGN DIRECTIONS
+     ═══════════════════════════════════════════════════ -->
+
+<style id="ij-system-css">
+
+/* ── HIDE ALL DESIGN LAYERS BY DEFAULT ── */
+.ij-d1,.ij-d2,.ij-d3,.ij-d4,.ij-d5,.ij-d6 { display:none !important; }
+
+/* ── SHOW ACTIVE LAYER ── */
+body.ij-d1-on .ij-d1 { display:block !important; }
+body.ij-d2-on .ij-d2 { display:block !important; }
+body.ij-d3-on .ij-d3 { display:block !important; }
+body.ij-d4-on .ij-d4 { display:block !important; }
+body.ij-d5-on .ij-d5 { display:block !important; }
+body.ij-d6-on .ij-d6 { display:block !important; }
+
+/* ── FLOATING SWITCHER ── */
+#ij-sw {
+  position:fixed;bottom:24px;right:48px;z-index:9999;
+  display:flex;align-items:center;gap:1px;
+  background:rgba(10,10,10,0.94);
+  border:0.5px solid rgba(200,169,110,0.18);
+  padding:4px 7px;backdrop-filter:blur(8px);
+}
+.ij-btn {
+  font-family:'Courier New',monospace;font-size:0.52rem;
+  letter-spacing:0.06em;color:rgba(244,241,236,0.22);
+  background:none;border:none;padding:3px 6px;cursor:pointer;
+  transition:color 0.18s;white-space:nowrap;
+}
+.ij-btn:hover{color:rgba(200,169,110,0.7);}
+.ij-btn.ij-on{color:#c8a96e;}
+.ij-sep{width:1px;height:8px;background:rgba(200,169,110,0.12);margin:0 1px;}
+
+/* ── D3: CSS CORNER BRACKETS ── */
+.ij-bracket {
+  position:absolute;pointer-events:none;z-index:3;
+  width:16px;height:16px;
+}
+.ij-bracket-tl{top:8px;left:8px;border-top:1px solid rgba(200,169,110,0.2);border-left:1px solid rgba(200,169,110,0.2);}
+.ij-bracket-tr{top:8px;right:8px;border-top:1px solid rgba(200,169,110,0.2);border-right:1px solid rgba(200,169,110,0.2);}
+.ij-bracket-bl{bottom:8px;left:8px;border-bottom:1px solid rgba(200,169,110,0.2);border-left:1px solid rgba(200,169,110,0.2);}
+.ij-bracket-br{bottom:8px;right:8px;border-bottom:1px solid rgba(200,169,110,0.2);border-right:1px solid rgba(200,169,110,0.2);}
+.ij-tick-label {
+  position:absolute;font-family:'Courier New',monospace;font-size:0.26rem;
+  letter-spacing:0.12em;color:rgba(200,169,110,0.25);pointer-events:none;z-index:3;
+}
+
+/* ── D2: DIMENSION LINES ── */
+.ij-dim-line {
+  position:absolute;pointer-events:none;z-index:3;overflow:visible;
+}
+
+/* ── D5: SECTION CUT LINES ── */
+.ij-cut-line {
+  position:relative;width:100%;height:1px;
+  background:rgba(200,169,110,0.08);overflow:visible;
+  display:flex;align-items:center;justify-content:center;
+}
+.ij-cut-sym {
+  font-family:'Courier New',monospace;font-size:0.35rem;
+  color:rgba(200,169,110,0.3);background:var(--black);
+  padding:0 6px;letter-spacing:0.1em;
+}
+
+/* ── WATERMARK BASE ── */
+.ij-watermark {
+  position:absolute;pointer-events:none;z-index:0;
+  display:flex;align-items:center;justify-content:center;
+  inset:0;overflow:hidden;
+}
+.ij-watermark-text {
+  font-family:'Courier New',monospace;
+  color:rgba(200,169,110,0.04);
+  font-size:clamp(4rem,12vw,14rem);
+  letter-spacing:0.05em;
+  user-select:none;pointer-events:none;
+  white-space:nowrap;
+}
+/* Dark section watermarks */
+.csw .ij-watermark-text,
+#how .ij-watermark-text,
+.cta .ij-watermark-text,
+.hero .ij-watermark-text,
+#featured .ij-watermark-text { color:rgba(244,241,236,0.025); }
+
+/* Animate for D1 */
+@keyframes ijRotateSlow { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
+@keyframes ijPulse { 0%,100%{opacity:0.6;}50%{opacity:1;} }
+@keyframes ijFloat { 0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);} }
+@keyframes ijOrbit { from{transform:rotate(0deg) translateX(60px) rotate(0deg);}to{transform:rotate(360deg) translateX(60px) rotate(-360deg);} }
+@keyframes ijDrawLine { from{stroke-dashoffset:800;}to{stroke-dashoffset:0;} }
+@keyframes ijFadeIn { from{opacity:0;}to{opacity:1;} }
+@keyframes ijBlink { 0%,100%{opacity:0.3;}50%{opacity:0.7;} }
+
+body.ij-d1-on .ij-wm-rot { animation:ijRotateSlow 30s linear infinite; }
+body.ij-d1-on .ij-wm-pulse { animation:ijPulse 4s ease-in-out infinite; }
+body.ij-d1-on .ij-wm-float { animation:ijFloat 6s ease-in-out infinite; }
+body.ij-d1-on .ij-orbit-dot { animation:ijOrbit 8s linear infinite; }
+
+body.ij-d2-on .ij-dim-anim { animation:ijDrawLine 2s ease-out forwards; }
+body.ij-d2-on .ij-dim-fade { animation:ijFadeIn 1s ease-out forwards 0.5s both; }
+
+body.ij-d3-on .ij-bracket { animation:ijFadeIn 0.6s ease-out forwards; }
+body.ij-d3-on .ij-tick-label { animation:ijFadeIn 0.8s ease-out forwards 0.3s both; }
+
+body.ij-d5-on .ij-cut-line { animation:ijFadeIn 0.4s ease-out forwards; }
+body.ij-d5-on .ij-cut-sym { animation:ijBlink 3s ease-in-out infinite; }
+
+</style>
+
+<div id="ij-sw">
+  <button class="ij-btn ij-on" onclick="ijSet(0)">⌀ Orig</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(1)">D1·Marks</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(2)">D2·Dims</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(3)">D3·Frame</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(4)">D4·Field</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(5)">D5·Cuts</button>
+  <div class="ij-sep"></div>
+  <button class="ij-btn" onclick="ijSet(6)">D6·Overlay</button>
+</div>
+
+<script id="ij-system-js">
+(function(){
+
+var cur=0;
+var cleanups=[];
+var SYMS=['⌀','±0.001','⊥','↧','⌐','¬','▽','→|←','↕','⊞','⌀3×M6','⊙','⌙','∠','∥','±','°'];
+
+// Map of section → contextual symbol
+var sectionSyms={
+  'hero':'⌀','wwd-section':'⊞','csw':'±0.001','thesis':'⌙',
+  'how':'∥','eng':'⌀3×M6','china':'→|←','value':'⊙',
+  'featured':'∠','logos':'▽','funds':'⌐','cta':'°','footer':'↧'
+};
+
+function ijSet(n){
+  cleanups.forEach(function(fn){try{fn();}catch(e){}});
+  cleanups=[];
+  document.body.className=document.body.className.replace(/ij-d\d-on/g,'').trim();
+  document.querySelectorAll('.ij-btn').forEach(function(b,i){b.classList.toggle('ij-on',i===n);});
+  cur=n;
+  if(n>0) document.body.classList.add('ij-d'+n+'-on');
+  var inits=[null,initD1,initD2,initD3,initD4,initD5,initD6];
+  if(inits[n]) inits[n]();
+  try{localStorage.setItem('ij-state',n);}catch(e){}
+}
+
+// ── D1: Animated SVG Watermarks + Orbiting Rings ──
+function initD1(){
+  var sections=[
+    {sel:'.hero',sym:'⌀',anim:'ij-wm-rot',extra:['⊙','±']},
+    {sel:'.wwd-section',sym:'⊞',anim:'ij-wm-pulse',extra:['∥','⌐']},
+    {sel:'.csw',sym:'±0.001',anim:'ij-wm-float',extra:['▽','⌙']},
+    {sel:'section[style*="padding:100px"]',sym:'⌙',anim:'ij-wm-rot',extra:['¬','⌀']},
+    {sel:'#how',sym:'∥',anim:'ij-wm-pulse',extra:['⊥','↕']},
+    {sel:'.eng-section',sym:'⌀3×M6',anim:'ij-wm-float',extra:['⌙','∠']},
+    {sel:'section[style*="cad_texture"]',sym:'→|←',anim:'ij-wm-rot',extra:['⌀','±']},
+    {sel:'.value',sym:'⊙',anim:'ij-wm-pulse',extra:['⊞','↕']},
+    {sel:'#featured',sym:'∠',anim:'ij-wm-float',extra:['▽','⊥']},
+    {sel:'.funds',sym:'⌐',anim:'ij-wm-rot',extra:['¬','↧']},
+    {sel:'.cta',sym:'°',anim:'ij-wm-pulse',extra:['⌀','∥']},
+  ];
+  sections.forEach(function(s){
+    var el=document.querySelector(s.sel);
+    if(!el) return;
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    // Main watermark
+    var wm=document.createElement('div');
+    wm.className='ij-d1 ij-watermark';
+    wm.innerHTML='<span class="ij-watermark-text '+s.anim+'">'+s.sym+'</span>';
+    el.insertBefore(wm,el.firstChild);
+    // Orbiting symbols ring
+    var ring=document.createElement('div');
+    ring.className='ij-d1';
+    ring.style.cssText='position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none;z-index:1;';
+    s.extra.forEach(function(sym,i){
+      var dot=document.createElement('span');
+      dot.style.cssText='position:absolute;font-family:"Courier New",monospace;font-size:0.32rem;color:rgba(200,169,110,0.15);animation:ijOrbit '+(6+i*2)+'s linear infinite;animation-delay:'+(i*-3)+'s;letter-spacing:0.1em;';
+      dot.textContent=sym;
+      ring.appendChild(dot);
+    });
+    el.appendChild(ring);
+    cleanups.push(function(){wm.remove();ring.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D2: Dimension Lines + Measurement Annotations ──
+function initD2(){
+  var configs=[
+    {sel:'.hero',lines:[{x1:'10%',y1:'80%',x2:'90%',y2:'80%',sym:'⌀',label:'BRAND SOUL'},{x1:'50%',y1:'20%',x2:'50%',y2:'80%',sym:'↕',label:''}]},
+    {sel:'.csw',lines:[{x1:'5%',y1:'50%',x2:'45%',y2:'50%',sym:'→|←',label:'±0.001'},{x1:'55%',y1:'30%',x2:'55%',y2:'70%',sym:'↕',label:'▽▽▽'}]},
+    {sel:'#how',lines:[{x1:'10%',y1:'85%',x2:'90%',y2:'85%',sym:'∥',label:'⌀3×M6'}]},
+    {sel:'.value',lines:[{x1:'33%',y1:'5%',x2:'33%',y2:'95%',sym:'↕',label:'⊥'},{x1:'66%',y1:'5%',x2:'66%',y2:'95%',sym:'↕',label:'⊙'}]},
+    {sel:'#featured',lines:[{x1:'5%',y1:'40%',x2:'50%',y2:'40%',sym:'→|←',label:'∠'},{x1:'5%',y1:'60%',x2:'50%',y2:'60%',sym:'→|←',label:'▽'}]},
+    {sel:'.cta',lines:[{x1:'20%',y1:'90%',x2:'80%',y2:'90%',sym:'°',label:'⌀'}]},
+    {sel:'.funds',lines:[{x1:'5%',y1:'50%',x2:'95%',y2:'50%',sym:'⌐',label:'¬'}]},
+  ];
+  configs.forEach(function(cfg){
+    var el=document.querySelector(cfg.sel);
+    if(!el) return;
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible;';
+    svg.classList.add('ij-d2');
+    cfg.lines.forEach(function(ln){
+      // Main line
+      var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',ln.x1);line.setAttribute('y1',ln.y1);
+      line.setAttribute('x2',ln.x2);line.setAttribute('y2',ln.y2);
+      line.setAttribute('stroke','rgba(200,169,110,0.12)');line.setAttribute('stroke-width','0.5');
+      line.setAttribute('stroke-dasharray','800');line.setAttribute('stroke-dashoffset','800');
+      line.classList.add('ij-dim-anim');
+      svg.appendChild(line);
+      // Arrowhead at end
+      var arr=document.createElementNS('http://www.w3.org/2000/svg','text');
+      arr.setAttribute('x',ln.x2);arr.setAttribute('y',ln.y2);
+      arr.setAttribute('text-anchor','middle');arr.setAttribute('dominant-baseline','middle');
+      arr.setAttribute('font-family',"'Courier New',monospace");arr.setAttribute('font-size','8');
+      arr.setAttribute('fill','rgba(200,169,110,0.25)');
+      arr.classList.add('ij-dim-fade');arr.textContent=ln.sym;
+      svg.appendChild(arr);
+      // Label
+      if(ln.label){
+        var lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+        var mx=((parseFloat(ln.x1)+parseFloat(ln.x2))/2)+'%';
+        var my=((parseFloat(ln.y1)+parseFloat(ln.y2))/2)+'%';
+        lbl.setAttribute('x',mx);lbl.setAttribute('y',my);
+        lbl.setAttribute('text-anchor','middle');lbl.setAttribute('font-family',"'Courier New',monospace");
+        lbl.setAttribute('font-size','6');lbl.setAttribute('fill','rgba(200,169,110,0.2)');
+        lbl.classList.add('ij-dim-fade');lbl.textContent=ln.label;
+        svg.appendChild(lbl);
+      }
+    });
+    el.appendChild(svg);
+    cleanups.push(function(){svg.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D3: CSS Corner Brackets + Tick Rulers ──
+function initD3(){
+  var sections=[
+    {sel:'.hero',ticks:[{pos:'bottom:0;left:0;right:0',sym:'⌀ ± °',dir:'h'}]},
+    {sel:'.csw',ticks:[{pos:'top:0;left:0;right:0',sym:'▽▽▽ ±0.001 ⌙',dir:'h'}]},
+    {sel:'#how',ticks:[{pos:'right:0;top:0;bottom:0',sym:'∥ ⊥ ↕',dir:'v'}]},
+    {sel:'.value',ticks:[{pos:'top:0;left:0;right:0',sym:'⊙ ⊞ ∠ ⊥',dir:'h'}]},
+    {sel:'#featured',ticks:[{pos:'bottom:0;left:0;right:0',sym:'∠ ▽ ⌙ ⌀3×M6',dir:'h'}]},
+    {sel:'.funds',ticks:[{pos:'top:0;left:0;right:0',sym:'⌐ ¬ ↧',dir:'h'}]},
+    {sel:'.cta',ticks:[{pos:'bottom:0;left:0;right:0',sym:'° ⌀ ±0.001',dir:'h'}]},
+    {sel:'section[style*="padding:100px"]',ticks:[{pos:'right:0;top:0;bottom:0',sym:'⌙ ⌀ ±',dir:'v'}]},
+    {sel:'.wwd-section',ticks:[{pos:'bottom:0;left:0;right:0',sym:'⊞ ∥ →|←',dir:'h'}]},
+  ];
+  sections.forEach(function(cfg){
+    var el=document.querySelector(cfg.sel);
+    if(!el) return;
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    // Corner brackets
+    ['tl','tr','bl','br'].forEach(function(c){
+      var b=document.createElement('div');
+      b.className='ij-d3 ij-bracket ij-bracket-'+c;
+      el.appendChild(b);
+    });
+    // Tick ruler
+    cfg.ticks.forEach(function(t){
+      var ruler=document.createElement('div');
+      ruler.className='ij-d3';
+      ruler.style.cssText='position:absolute;pointer-events:none;z-index:2;'+t.pos+';display:flex;align-items:center;justify-content:space-around;overflow:hidden;';
+      if(t.dir==='h') ruler.style.height='16px';
+      else ruler.style.width='16px';
+      t.sym.split(' ').forEach(function(s){
+        var tick=document.createElement('span');
+        tick.className='ij-tick-label';
+        tick.style.cssText='font-family:"Courier New",monospace;font-size:0.26rem;color:rgba(200,169,110,0.22);letter-spacing:0.1em;';
+        tick.textContent=s;
+        ruler.appendChild(tick);
+      });
+      el.appendChild(ruler);
+    });
+    cleanups.push(function(){
+      el.querySelectorAll('.ij-d3').forEach(function(e){e.remove();});
+      if(pos==='static')el.style.position='';
+    });
+  });
+}
+
+// ── D4: 3D Canvas Symbol Depth Fields ──
+function initD4(){
+  var configs=[
+    {sel:'.hero',syms:['⌀','±','°','⊙','∥'],color:'rgba(244,241,236,',dark:true},
+    {sel:'.csw',syms:['▽','⌙','±0.001','→|←','⊥'],color:'rgba(10,10,10,',dark:false},
+    {sel:'#how',syms:['∥','⊞','↕','⊥','∠'],color:'rgba(244,241,236,',dark:true},
+    {sel:'.value',syms:['⊙','⊞','∠','⊥','↕'],color:'rgba(10,10,10,',dark:false},
+    {sel:'#featured',syms:['∠','▽','⌙','⌀3×M6','±'],color:'rgba(200,169,110,',dark:true},
+    {sel:'.funds',syms:['⌐','¬','↧','⌀','±0.001'],color:'rgba(10,10,10,',dark:false},
+    {sel:'.cta',syms:['°','⌀','⊙','∥','▽'],color:'rgba(244,241,236,',dark:true},
+    {sel:'.wwd-section',syms:['⊞','⌐','→|←','±','⌙'],color:'rgba(10,10,10,',dark:false},
+    {sel:'section[style*="padding:100px"]',syms:['⌙','⌀','±0.001','¬','°'],color:'rgba(10,10,10,',dark:false},
+  ];
+  configs.forEach(function(cfg){
+    var el=document.querySelector(cfg.sel);
+    if(!el) return;
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    var c=document.createElement('canvas');
+    c.className='ij-d4';
+    c.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.6;';
+    el.insertBefore(c,el.firstChild);
+    var W=el.offsetWidth||800,H=el.offsetHeight||400;
+    c.width=W;c.height=H;
+    var ctx=c.getContext('2d');
+    var particles=[];
+    for(var i=0;i<30;i++){
+      particles.push({
+        x:Math.random()*W,y:Math.random()*H,
+        z:Math.random()*3+0.5,
+        vx:(Math.random()-0.5)*0.3,
+        vy:(Math.random()-0.5)*0.2,
+        sym:cfg.syms[Math.floor(Math.random()*cfg.syms.length)],
+        opacity:Math.random()*0.08+0.02,
+        size:Math.random()*14+8
+      });
+    }
+    var scrollY=window.scrollY;
+    var raf;
+    function anim(){
+      ctx.clearRect(0,0,W,H);
+      var sy=window.scrollY;
+      var parallax=(sy-scrollY)*0.02;
+      particles.forEach(function(p){
+        p.x+=p.vx;p.y+=p.vy+parallax*p.z*0.1;
+        if(p.x<-20)p.x=W+20;if(p.x>W+20)p.x=-20;
+        if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+        ctx.font=p.size+'px "Courier New",monospace';
+        ctx.fillStyle=cfg.color+p.opacity+')';
+        ctx.fillText(p.sym,p.x,p.y);
+      });
+      raf=requestAnimationFrame(anim);
+    }
+    anim();
+    cleanups.push(function(){cancelAnimationFrame(raf);c.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D5: Section Cut Indicators + Blueprint Grid Pulses ──
+function initD5(){
+  // Insert cut lines between sections
+  var cuts=[
+    {after:'.hero',sym:'A—A ⊥',label:'SECTION CUT'},
+    {after:'.wwd-section',sym:'B—B →|←',label:''},
+    {after:'.csw',sym:'C—C ⌙',label:''},
+    {after:'section[style*="padding:100px"]',sym:'D—D ∠',label:''},
+    {after:'.value',sym:'E—E ⊙',label:''},
+    {after:'#featured',sym:'F—F ∥',label:''},
+    {after:'.funds',sym:'G—G ⌐',label:''},
+  ];
+  cuts.forEach(function(cut){
+    var el=document.querySelector(cut.after);
+    if(!el||!el.nextElementSibling) return;
+    var line=document.createElement('div');
+    line.className='ij-d5 ij-cut-line';
+    line.innerHTML='<span class="ij-cut-sym">'+cut.sym+'</span>';
+    el.parentNode.insertBefore(line,el.nextElementSibling);
+    cleanups.push(function(){line.remove();});
+  });
+  // Blueprint grid pulse on parallax sections
+  document.querySelectorAll('[style*="cad_texture"]').forEach(function(el){
+    var grid=document.createElement('div');
+    grid.className='ij-d5';
+    grid.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;'+
+      'background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(200,169,110,0.04) 27px,rgba(200,169,110,0.04) 28px),'+
+      'repeating-linear-gradient(90deg,transparent,transparent 27px,rgba(200,169,110,0.04) 27px,rgba(200,169,110,0.04) 28px);'+
+      'animation:ijPulse 4s ease-in-out infinite;';
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    el.appendChild(grid);
+    // Symbol annotations in corners
+    var syms=[
+      {style:'top:12px;left:12px',sym:'⌀ ±0.001'},
+      {style:'top:12px;right:12px',sym:'▽▽▽ ⌙'},
+      {style:'bottom:12px;left:12px',sym:'→|← ⊥'},
+      {style:'bottom:12px;right:12px',sym:'⊞ ∠'},
+    ];
+    syms.forEach(function(s){
+      var sp=document.createElement('span');
+      sp.className='ij-d5';
+      sp.style.cssText='position:absolute;'+s.style+';font-family:"Courier New",monospace;font-size:0.28rem;letter-spacing:0.12em;color:rgba(200,169,110,0.22);pointer-events:none;z-index:2;animation:ijBlink 4s ease-in-out infinite;';
+      sp.textContent=s.sym;
+      el.appendChild(sp);
+    });
+    cleanups.push(function(){
+      grid.remove();
+      el.querySelectorAll('.ij-d5').forEach(function(e){e.remove();});
+    });
+  });
+}
+
+// ── D6: Image Overlays + Symbol Particle Systems ──
+function initD6(){
+  // Dimension line SVG overlays on Marshall + SWITCH images
+  document.querySelectorAll('.cs-row-right img, .fund-img').forEach(function(img,idx){
+    var wrap=img.parentElement;
+    var wpos=window.getComputedStyle(wrap).position;
+    if(wpos==='static') wrap.style.position='relative';
+    var syms=[['→|←','⌀'],['↕','▽▽▽'],['∠','±0.001'],['⊥','⌙']];
+    var s=syms[idx%syms.length];
+    var ov=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    ov.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;';
+    ov.classList.add('ij-d6');
+    // Horizontal dim line
+    var ln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1','5%');ln.setAttribute('y1','90%');ln.setAttribute('x2','95%');ln.setAttribute('y2','90%');
+    ln.setAttribute('stroke','rgba(200,169,110,0.2)');ln.setAttribute('stroke-width','0.5');
+    ov.appendChild(ln);
+    // Left tick
+    var lt=document.createElementNS('http://www.w3.org/2000/svg','line');
+    lt.setAttribute('x1','5%');lt.setAttribute('y1','87%');lt.setAttribute('x2','5%');lt.setAttribute('y2','93%');
+    lt.setAttribute('stroke','rgba(200,169,110,0.2)');lt.setAttribute('stroke-width','0.5');
+    ov.appendChild(lt);
+    // Right tick
+    var rt=lt.cloneNode();rt.setAttribute('x1','95%');rt.setAttribute('x2','95%');
+    ov.appendChild(rt);
+    // Centre label
+    var lbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+    lbl.setAttribute('x','50%');lbl.setAttribute('y','88%');
+    lbl.setAttribute('text-anchor','middle');lbl.setAttribute('font-family',"'Courier New',monospace");
+    lbl.setAttribute('font-size','8');lbl.setAttribute('fill','rgba(200,169,110,0.3)');
+    lbl.textContent=s[0];ov.appendChild(lbl);
+    // Vertical dim line
+    var vln=document.createElementNS('http://www.w3.org/2000/svg','line');
+    vln.setAttribute('x1','95%');vln.setAttribute('y1','5%');vln.setAttribute('x2','95%');vln.setAttribute('y2','85%');
+    vln.setAttribute('stroke','rgba(200,169,110,0.15)');vln.setAttribute('stroke-width','0.5');
+    ov.appendChild(vln);
+    var vlbl=document.createElementNS('http://www.w3.org/2000/svg','text');
+    vlbl.setAttribute('x','97%');vlbl.setAttribute('y','45%');
+    vlbl.setAttribute('text-anchor','start');vlbl.setAttribute('font-family',"'Courier New',monospace");
+    vlbl.setAttribute('font-size','7');vlbl.setAttribute('fill','rgba(200,169,110,0.25)');
+    vlbl.setAttribute('transform','rotate(90,'+ov.getAttribute('x')+','+ov.getAttribute('y')+')');
+    vlbl.textContent=s[1];ov.appendChild(vlbl);
+    wrap.appendChild(ov);
+    cleanups.push(function(){ov.remove();if(wpos==='static')wrap.style.position='';});
+  });
+
+  // Symbol particle burst on hero
+  var hero=document.querySelector('.hero');
+  if(hero){
+    var c=document.createElement('canvas');
+    c.className='ij-d6';
+    c.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;';
+    c.width=hero.offsetWidth||1440;c.height=hero.offsetHeight||800;
+    hero.appendChild(c);
+    var ctx=c.getContext('2d');
+    var W=c.width,H=c.height;
+    var syms2=['⌀','±0.001','⊥','↧','⌐','¬','▽','→|←','↕','⊞','⌀3×M6','⊙','⌙','∠','∥','±','°'];
+    var pts=[];
+    for(var i=0;i<50;i++){
+      pts.push({
+        x:Math.random()*W,y:Math.random()*H,
+        vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.3,
+        sym:syms2[Math.floor(Math.random()*syms2.length)],
+        size:Math.random()*10+6,opacity:Math.random()*0.08+0.02,
+        phase:Math.random()*Math.PI*2
+      });
+    }
+    var t=0,raf2;
+    (function anim(){
+      ctx.clearRect(0,0,W,H);t+=0.008;
+      pts.forEach(function(p){
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<-30)p.x=W+30;if(p.x>W+30)p.x=-30;
+        if(p.y<-20)p.y=H+20;if(p.y>H+20)p.y=-20;
+        var alpha=p.opacity*(0.7+0.3*Math.sin(t+p.phase));
+        ctx.font=p.size+'px "Courier New",monospace';
+        ctx.fillStyle='rgba(200,169,110,'+alpha+')';
+        ctx.fillText(p.sym,p.x,p.y);
+      });
+      raf2=requestAnimationFrame(anim);
+    })();
+    cleanups.push(function(){cancelAnimationFrame(raf2);c.remove();});
+  }
+
+  // Blueprint overlay reveal on each section
+  var sectionReveal=['.wwd-section','.csw','.value','.funds','.cta','section[style*="padding:100px"]'];
+  sectionReveal.forEach(function(sel,si){
+    var el=document.querySelector(sel);
+    if(!el) return;
+    var pos=window.getComputedStyle(el).position;
+    if(pos==='static') el.style.position='relative';
+    var bpSym=['⌀3×M6','±0.001','▽▽▽','⊙ ⊞','∠ ⊥','⌙ °'][si];
+    var ov=document.createElement('div');
+    ov.className='ij-d6';
+    ov.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;';
+    // Grid
+    ov.style.backgroundImage='repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(200,169,110,0.03) 39px,rgba(200,169,110,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(200,169,110,0.03) 39px,rgba(200,169,110,0.03) 40px)';
+    // Symbol label
+    var lbl=document.createElement('span');
+    lbl.style.cssText='position:absolute;bottom:8px;right:12px;font-family:"Courier New",monospace;font-size:0.26rem;letter-spacing:0.14em;color:rgba(200,169,110,0.18);animation:ijBlink 5s ease-in-out infinite;animation-delay:'+si+'s;';
+    lbl.textContent=bpSym;
+    ov.appendChild(lbl);
+    el.appendChild(ov);
+    cleanups.push(function(){ov.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+window.ijSet=ijSet;
+var saved=0;try{saved=parseInt(localStorage.getItem('ij-state'))||0;}catch(e){}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){ijSet(saved);});}
+else{ijSet(saved);}
+
+})();
+</script>
+
+<style id="ij-ext-css">
+/* ── EXTENDED ANIMATIONS ── */
+@keyframes ijScanH { 0%{transform:translateX(-100%);}100%{transform:translateX(200%);} }
+@keyframes ijScanV { 0%{transform:translateY(-100%);}100%{transform:translateY(200%);} }
+@keyframes ijMorph { 0%,100%{border-radius:0;}50%{border-radius:50%;} }
+@keyframes ijGlitch { 0%,100%{clip-path:inset(0);}20%{clip-path:inset(2px 0 98% 0);}40%{clip-path:inset(50% 0 50% 0);}60%{clip-path:inset(80% 0 0 0);} }
+@keyframes ijTickerH { from{transform:translateX(0);}to{transform:translateX(-50%);} }
+@keyframes ijSpinCW { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
+@keyframes ijSpinCCW { from{transform:rotate(0deg);}to{transform:rotate(-360deg);} }
+@keyframes ijExpandH { from{transform:scaleX(0);}to{transform:scaleX(1);} }
+@keyframes ijExpandV { from{transform:scaleY(0);}to{transform:scaleY(1);} }
+@keyframes ijTypewriter { from{width:0;}to{width:100%;} }
+@keyframes ijBounce { 0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);} }
+@keyframes ijFlicker { 0%,100%{opacity:0.3;}25%{opacity:0.8;}50%{opacity:0.2;}75%{opacity:0.9;} }
+@keyframes ijZoomSym { 0%,100%{transform:scale(1);}50%{transform:scale(1.08);} }
+@keyframes ijShimmer { from{background-position:-200% center;}to{background-position:200% center;} }
+
+/* ── TICKER TAPE ── */
+.ij-ticker {
+  position:absolute;overflow:hidden;white-space:nowrap;pointer-events:none;z-index:2;
+  font-family:'Courier New',monospace;font-size:0.28rem;letter-spacing:0.18em;
+}
+.ij-ticker-inner { display:inline-block;animation:ijTickerH 20s linear infinite; }
+
+/* ── SCAN LINE ── */
+.ij-scan {
+  position:absolute;pointer-events:none;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(200,169,110,0.06),transparent);
+  height:1px;width:100%;
+}
+
+/* ── SYMBOL RING ── */
+.ij-ring {
+  position:absolute;pointer-events:none;z-index:2;
+  border-radius:50%;border:0.5px solid rgba(200,169,110,0.08);
+}
+
+/* ── CROSSHAIR ── */
+.ij-crosshair {
+  position:absolute;pointer-events:none;z-index:2;
+}
+.ij-crosshair::before,.ij-crosshair::after {
+  content:'';position:absolute;background:rgba(200,169,110,0.1);
+}
+.ij-crosshair::before{width:1px;height:40px;top:-20px;left:50%;}
+.ij-crosshair::after{width:40px;height:1px;top:50%;left:-20px;}
+</style>
+
+<script id="ij-ext-js">
+(function(){
+
+// Wait for base ijSet to exist
+var BASE_INIT = window.ijSet;
+
+// Section configs — every section gets 2 unique animations per direction
+var SECTIONS = [
+  { sel:'.hero', syms:['⌀','±0.001','⊙','°','∥'], dark:true },
+  { sel:'.wwd-section', syms:['⊞','⌐','→|←','±','⌙'], dark:false },
+  { sel:'.csw', syms:['▽','⌙','±0.001','→|←','⊥'], dark:false },
+  { sel:'section[style*="padding:100px"]', syms:['⌙','⌀','¬','°','±'], dark:false },
+  { sel:'#how', syms:['∥','⊞','↕','⊥','∠'], dark:true },
+  { sel:'.eng-section', syms:['⌀3×M6','⌙','⊥','∠','±0.001'], dark:false },
+  { sel:'section[style*="cad_texture"]', syms:['→|←','⌀','±','∥','⊞'], dark:false },
+  { sel:'.value', syms:['⊙','⊞','∠','⊥','↕'], dark:false },
+  { sel:'#featured', syms:['∠','▽','⌙','⌀3×M6','±'], dark:true },
+  { sel:'.logos', syms:['▽','⌀','⊙','∥','°'], dark:true },
+  { sel:'.funds', syms:['⌐','¬','↧','⌀','±0.001'], dark:false },
+  { sel:'.cta', syms:['°','⌀','⊙','∥','▽'], dark:true },
+  { sel:'footer', syms:['↧','⌀3×M6','±','⊞','⌐'], dark:true },
+];
+
+var cleanups2 = [];
+
+function mk(tag){ return document.createElement(tag); }
+
+function color(dark, opacity) {
+  return dark
+    ? 'rgba(200,169,110,' + opacity + ')'
+    : 'rgba(10,10,10,' + opacity + ')';
+}
+
+// ── D1 EXTRA: Orbiting symbol rings + scan lines ──
+function d1Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+
+    // Animation 1: Rotating concentric rings with symbols at cardinal points
+    var ringWrap = mk('div');
+    ringWrap.className = 'ij-d1';
+    ringWrap.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;width:200px;height:200px;';
+    [80, 120, 160].forEach(function(r, ri) {
+      var ring = mk('div');
+      ring.className = 'ij-ring';
+      ring.style.cssText = 'width:' + r*2 + 'px;height:' + r*2 + 'px;top:' + (100-r) + 'px;left:' + (100-r) + 'px;animation:ijSpinCW ' + (20+ri*8) + 's linear infinite' + (ri%2?' reverse':'') + ';';
+      // Place symbol at top of ring
+      var sym = mk('span');
+      sym.style.cssText = 'position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-family:"Courier New",monospace;font-size:0.3rem;color:' + color(cfg.dark, 0.2) + ';letter-spacing:0.1em;';
+      sym.textContent = cfg.syms[ri % cfg.syms.length];
+      ring.appendChild(sym);
+      ringWrap.appendChild(ring);
+    });
+    el.appendChild(ringWrap);
+    cleanups2.push(function(){ringWrap.remove();});
+
+    // Animation 2: Horizontal scan line with symbol label
+    var scan = mk('div');
+    scan.className = 'ij-d1 ij-scan';
+    scan.style.cssText += 'top:' + (20 + si * 7) + '%;animation:ijScanV ' + (8 + si) + 's ease-in-out infinite;animation-delay:' + (si * 0.4) + 's;';
+    var scanLbl = mk('span');
+    scanLbl.style.cssText = 'position:absolute;right:12px;top:-8px;font-family:"Courier New",monospace;font-size:0.24rem;color:' + color(cfg.dark, 0.18) + ';letter-spacing:0.12em;';
+    scanLbl.textContent = cfg.syms[0];
+    scan.appendChild(scanLbl);
+    el.appendChild(scan);
+    cleanups2.push(function(){scan.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D2 EXTRA: Ticker tapes + expanding grid lines ──
+function d2Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+
+    // Animation 1: Bottom ticker tape
+    var ticker = mk('div');
+    ticker.className = 'ij-d2 ij-ticker';
+    var c = color(cfg.dark, 0.18);
+    ticker.style.cssText += 'bottom:4px;left:0;width:100%;color:' + c + ';animation-delay:' + (si * -2) + 's;';
+    var inner = mk('div');
+    inner.className = 'ij-ticker-inner';
+    var tickerText = Array(8).fill(cfg.syms.join(' · ')).join(' · ');
+    inner.textContent = tickerText;
+    inner.style.animationDuration = (25 + si * 3) + 's';
+    ticker.appendChild(inner);
+    el.appendChild(ticker);
+    cleanups2.push(function(){ticker.remove();});
+
+    // Animation 2: Expanding dimension lines from centre
+    var c2 = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    c2.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible;';
+    c2.classList.add('ij-d2');
+    // Crosshair lines from centre
+    var cx = '50%', cy = '50%';
+    var linesData = [
+      {x1:cx,y1:cy,x2:'5%',y2:cy,sym:cfg.syms[1]},
+      {x1:cx,y1:cy,x2:'95%',y2:cy,sym:cfg.syms[2]},
+      {x1:cx,y1:cy,x2:cx,y2:'5%',sym:cfg.syms[3]},
+      {x1:cx,y1:cy,x2:cx,y2:'95%',sym:cfg.syms[4]},
+    ];
+    linesData.forEach(function(ln, li) {
+      var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',ln.x1);line.setAttribute('y1',ln.y1);
+      line.setAttribute('x2',ln.x2);line.setAttribute('y2',ln.y2);
+      line.setAttribute('stroke','rgba(200,169,110,0.07)');line.setAttribute('stroke-width','0.5');
+      line.setAttribute('stroke-dasharray','4 8');
+      c2.appendChild(line);
+      var lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lbl.setAttribute('x',ln.x2);lbl.setAttribute('y',ln.y2);
+      lbl.setAttribute('text-anchor','middle');lbl.setAttribute('font-family',"'Courier New',monospace");
+      lbl.setAttribute('font-size','7');lbl.setAttribute('fill','rgba(200,169,110,0.2)');
+      lbl.textContent = ln.sym;
+      c2.appendChild(lbl);
+    });
+    el.appendChild(c2);
+    cleanups2.push(function(){c2.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D3 EXTRA: Typewriter symbol sequences + tick rulers ──
+function d3Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+    var c = color(cfg.dark, 0.22);
+
+    // Animation 1: Vertical side ruler with tick marks
+    ['left:0','right:0'].forEach(function(side, sdi) {
+      var ruler = mk('div');
+      ruler.className = 'ij-d3';
+      ruler.style.cssText = 'position:absolute;' + side + ';top:0;bottom:0;width:14px;pointer-events:none;z-index:2;display:flex;flex-direction:column;justify-content:space-around;align-items:center;';
+      for (var ti = 0; ti < 8; ti++) {
+        var tick = mk('span');
+        tick.style.cssText = 'display:block;font-family:"Courier New",monospace;font-size:0.22rem;color:' + c + ';letter-spacing:0em;transform:rotate(' + (sdi?0:180) + 'deg);';
+        tick.textContent = cfg.syms[ti % cfg.syms.length];
+        ruler.appendChild(tick);
+      }
+      el.appendChild(ruler);
+      cleanups2.push(function(){ruler.remove();});
+    });
+
+    // Animation 2: Corner diagonal cross marks
+    var corners = [
+      {top:'8px',left:'8px'}, {top:'8px',right:'8px'},
+      {bottom:'8px',left:'8px'}, {bottom:'8px',right:'8px'}
+    ];
+    corners.forEach(function(corner, ci) {
+      var cross = mk('div');
+      cross.className = 'ij-d3 ij-crosshair';
+      var cStyle = 'position:absolute;width:6px;height:6px;pointer-events:none;z-index:3;';
+      Object.keys(corner).forEach(function(k){cStyle+=k+':'+corner[k]+';';});
+      cross.style.cssText = cStyle;
+      // Symbol next to crosshair
+      var sym = mk('span');
+      sym.style.cssText = 'position:absolute;font-family:"Courier New",monospace;font-size:0.24rem;color:' + c + ';white-space:nowrap;' + (ci<2?'top:10px;':'bottom:10px;') + (ci%2===0?'left:0;':'right:0;');
+      sym.textContent = cfg.syms[(si+ci)%cfg.syms.length];
+      cross.appendChild(sym);
+      el.appendChild(cross);
+      cleanups2.push(function(){cross.remove();if(pos==='static')el.style.position='';});
+    });
+  });
+}
+
+// ── D4 EXTRA: 3D perspective grids + symbol matrices ──
+function d4Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+
+    // Animation 1: Symbol matrix grid
+    var matrix = mk('div');
+    matrix.className = 'ij-d4';
+    matrix.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);overflow:hidden;';
+    for (var mi = 0; mi < 32; mi++) {
+      var cell = mk('span');
+      var show = Math.random() > 0.65;
+      cell.style.cssText = 'font-family:"Courier New",monospace;font-size:0.3rem;color:' + color(cfg.dark, show ? (Math.random()*0.06+0.02) : 0) + ';display:flex;align-items:center;justify-content:center;animation:ijFlicker ' + (3+Math.random()*6) + 's ease-in-out infinite;animation-delay:' + (Math.random()*4) + 's;';
+      cell.textContent = cfg.syms[mi % cfg.syms.length];
+      matrix.appendChild(cell);
+    }
+    el.appendChild(matrix);
+    cleanups2.push(function(){matrix.remove();});
+
+    // Animation 2: 3D perspective canvas
+    var canvas = mk('canvas');
+    canvas.className = 'ij-d4';
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0.7;';
+    canvas.width = el.offsetWidth || 800;
+    canvas.height = el.offsetHeight || 400;
+    el.insertBefore(canvas, el.firstChild);
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var pts3d = [];
+    for (var pi = 0; pi < 20; pi++) {
+      pts3d.push({
+        x: (Math.random()-0.5)*800, y: (Math.random()-0.5)*400, z: Math.random()*600+100,
+        vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.3, vz:(Math.random()-0.5)*1,
+        sym: cfg.syms[pi % cfg.syms.length]
+      });
+    }
+    var raf3d;
+    (function draw3d(){
+      ctx.clearRect(0,0,W,H);
+      pts3d.forEach(function(p){
+        p.x+=p.vx; p.y+=p.vy; p.z+=p.vz;
+        if(p.z<50)p.z=800; if(p.z>800)p.z=50;
+        var scale = 400/p.z;
+        var sx = W/2 + p.x*scale;
+        var sy = H/2 + p.y*scale;
+        if(sx<-20||sx>W+20||sy<-20||sy>H+20) return;
+        var alpha = Math.min(0.12, (1-p.z/800)*0.15);
+        ctx.font = (scale*12) + 'px "Courier New",monospace';
+        ctx.fillStyle = color(cfg.dark, alpha);
+        ctx.fillText(p.sym, sx, sy);
+      });
+      raf3d = requestAnimationFrame(draw3d);
+    })();
+    cleanups2.push(function(){cancelAnimationFrame(raf3d);canvas.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D5 EXTRA: Blueprint grids + spinning badges per section ──
+function d5Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+
+    // Animation 1: Blueprint grid overlay (different spacing per section)
+    var spacing = 16 + si * 4;
+    var grid = mk('div');
+    grid.className = 'ij-d5';
+    grid.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;' +
+      'background-image:repeating-linear-gradient(0deg,transparent,transparent ' + (spacing-1) + 'px,rgba(200,169,110,0.04) ' + (spacing-1) + 'px,rgba(200,169,110,0.04) ' + spacing + 'px),' +
+      'repeating-linear-gradient(90deg,transparent,transparent ' + (spacing-1) + 'px,rgba(200,169,110,0.04) ' + (spacing-1) + 'px,rgba(200,169,110,0.04) ' + spacing + 'px);' +
+      'animation:ijPulse ' + (3+si%4) + 's ease-in-out infinite;animation-delay:' + (si*0.5) + 's;';
+    el.appendChild(grid);
+    cleanups2.push(function(){grid.remove();});
+
+    // Animation 2: Mini spinning symbol badge in corner
+    var badge = mk('div');
+    badge.className = 'ij-d5';
+    badge.style.cssText = 'position:absolute;' + (si%2?'bottom:16px;right:16px;':'top:16px;right:16px;') + 'pointer-events:none;z-index:3;width:36px;height:36px;';
+    // SVG spinning ring
+    var svgBadge = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svgBadge.setAttribute('viewBox','0 0 36 36');
+    svgBadge.style.cssText = 'width:36px;height:36px;animation:ijSpinCW ' + (12+si*2) + 's linear infinite;';
+    var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('id','bp'+si);
+    path.setAttribute('d','M18,4 a14,14 0 1,1 -0.01,0');
+    defs.appendChild(path);
+    svgBadge.appendChild(defs);
+    var circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx','18');circle.setAttribute('cy','18');circle.setAttribute('r','14');
+    circle.setAttribute('fill','none');circle.setAttribute('stroke','rgba(200,169,110,0.12)');circle.setAttribute('stroke-width','0.5');
+    svgBadge.appendChild(circle);
+    var tp = document.createElementNS('http://www.w3.org/2000/svg','textPath');
+    tp.setAttribute('href','#bp'+si);tp.setAttribute('startOffset','0%');
+    var txt2 = cfg.syms.join(' · ') + ' · ';
+    tp.textContent = txt2;
+    var tpEl = document.createElementNS('http://www.w3.org/2000/svg','text');
+    tpEl.setAttribute('font-family',"'Courier New',monospace");tpEl.setAttribute('font-size','4');
+    tpEl.setAttribute('fill',color(cfg.dark,0.25));
+    tpEl.appendChild(tp);
+    svgBadge.appendChild(tpEl);
+    // Centre symbol
+    var centre = document.createElementNS('http://www.w3.org/2000/svg','text');
+    centre.setAttribute('x','18');centre.setAttribute('y','21');
+    centre.setAttribute('text-anchor','middle');centre.setAttribute('font-family',"'Courier New',monospace");
+    centre.setAttribute('font-size','8');centre.setAttribute('fill',color(cfg.dark,0.2));
+    centre.textContent = cfg.syms[0];
+    svgBadge.appendChild(centre);
+    badge.appendChild(svgBadge);
+    el.appendChild(badge);
+    cleanups2.push(function(){badge.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── D6 EXTRA: Glitch overlays + symbol particle explosions ──
+function d6Extra() {
+  SECTIONS.forEach(function(cfg, si) {
+    var el = document.querySelector(cfg.sel);
+    if (!el) return;
+    var pos = window.getComputedStyle(el).position;
+    if (pos === 'static') el.style.position = 'relative';
+
+    // Animation 1: Glitch-effect symbol strip
+    var strip = mk('div');
+    strip.className = 'ij-d6';
+    strip.style.cssText = 'position:absolute;' + (si%3===0?'top:0;left:0;right:0;height:2px;':'si%3===1?bottom:0;left:0;right:0;height:2px;':'top:0;bottom:0;right:0;width:2px;') + ';pointer-events:none;z-index:3;overflow:hidden;background:rgba(200,169,110,0.08);animation:ijFlicker ' + (2+si*0.3) + 's ease-in-out infinite;';
+    // Symbol label on the strip
+    var stripSym = mk('span');
+    stripSym.style.cssText = 'position:absolute;' + (si%2?'right:4px;top:-1px;':'left:4px;top:-1px;') + ';font-family:"Courier New",monospace;font-size:0.2rem;color:rgba(200,169,110,0.35);letter-spacing:0.1em;white-space:nowrap;';
+    stripSym.textContent = cfg.syms.join(' ');
+    strip.appendChild(stripSym);
+    el.appendChild(strip);
+    cleanups2.push(function(){strip.remove();});
+
+    // Animation 2: Canvas particle explosion — symbols burst from centre
+    var cExp = mk('canvas');
+    cExp.className = 'ij-d6';
+    cExp.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;';
+    cExp.width = el.offsetWidth || 800;
+    cExp.height = el.offsetHeight || 400;
+    var W = cExp.width, H = cExp.height;
+    el.appendChild(cExp);
+    var ctx6 = cExp.getContext('2d');
+    var particles6 = [];
+    for (var pi6 = 0; pi6 < 25; pi6++) {
+      var angle = (pi6 / 25) * Math.PI * 2;
+      var speed = Math.random() * 0.4 + 0.1;
+      particles6.push({
+        x: W * (0.2 + Math.random() * 0.6),
+        y: H * (0.2 + Math.random() * 0.6),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        sym: cfg.syms[pi6 % cfg.syms.length],
+        alpha: Math.random() * 0.06 + 0.02,
+        size: Math.random() * 10 + 7,
+        phase: Math.random() * Math.PI * 2,
+        freq: 0.005 + Math.random() * 0.01
+      });
+    }
+    var t6 = 0, raf6;
+    (function draw6(){
+      ctx6.clearRect(0,0,W,H);
+      t6 += 0.01;
+      particles6.forEach(function(p){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<-20)p.x=W+20; if(p.x>W+20)p.x=-20;
+        if(p.y<-20)p.y=H+20; if(p.y>H+20)p.y=-20;
+        var a = p.alpha * (0.6 + 0.4*Math.sin(t6*50*p.freq + p.phase));
+        ctx6.font = p.size + 'px "Courier New",monospace';
+        ctx6.fillStyle = color(cfg.dark, a);
+        ctx6.fillText(p.sym, p.x, p.y);
+      });
+      raf6 = requestAnimationFrame(draw6);
+    })();
+    cleanups2.push(function(){cancelAnimationFrame(raf6);cExp.remove();if(pos==='static')el.style.position='';});
+  });
+}
+
+// ── OVERRIDE ijSet to also run extended animations ──
+var origSet = window.ijSet;
+window.ijSet = function(n) {
+  // Kill extended cleanups
+  cleanups2.forEach(function(fn){try{fn();}catch(e){}});
+  cleanups2.length = 0;
+  // Run original
+  origSet(n);
+  // Run extended per direction
+  if(n===1) d1Extra();
+  if(n===2) d2Extra();
+  if(n===3) d3Extra();
+  if(n===4) d4Extra();
+  if(n===5) d5Extra();
+  if(n===6) d6Extra();
+};
+
+// Re-init with current state
+var state = 0;
+try{state=parseInt(localStorage.getItem('ij-state'))||0;}catch(e){}
+if(state>0) setTimeout(function(){window.ijSet(state);},100);
+
+})();
+</script>
+
 </body>
