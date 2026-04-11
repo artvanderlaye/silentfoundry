@@ -127,13 +127,15 @@ window.addEventListener('resize', fitHeadline);
   var FORMATS = {
     3: { name: '03 \u2014 Dossier', build: function() {
       var css = [
-        /* grunge texture static bg — near-white overlay so texture whispers through */
-        '.csw { background-color:#f4f2ee; background-image:url("black-grunge.jpg"); background-size:cover; background-position:center; background-attachment:scroll; position:relative; }',
-        '.csw::before { content:""; position:absolute; inset:0; background:#f2ede4; opacity:0.96; pointer-events:none; z-index:0; }',
-        '.cs-dbody { position:relative; z-index:1; padding:64px 48px; display:grid; grid-template-columns:1fr 380px; align-items:stretch; }',
-        '.cs-dmain { padding-right:48px; border-right:2px solid rgba(138,110,58,.18); display:flex; flex-direction:column; }',
-        '.cs-dsec { padding-bottom:28px; margin-bottom:28px; border-bottom:1px solid rgba(10,10,10,.07); }',
-        '.cs-dsec:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }',
+        /* flat cream background */
+        '.csw { background-color:#e8e2d9; position:relative; }',
+        '.csw::before { content:none; }',
+        '.cs-dbody { position:relative; z-index:1; display:grid; grid-template-columns:1fr 380px; align-items:stretch; border-top:1px solid rgba(138,110,58,0.18); }',
+        '.cs-dleft { padding:48px 48px 48px 48px; display:flex; flex-direction:column; justify-content:center; }',
+        '.cs-dright { overflow:hidden; }',
+        '.cs-dright img { width:100%; height:100%; object-fit:cover; display:block; }',
+        '.cs-dsec { padding-bottom:0; margin-bottom:0; }',
+        '.cs-drow-divider { grid-column:1/-1; height:1px; background:rgba(138,110,58,0.18); }',
         '.cs-dslabel { font-family:'+DS+'; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; }',
         '.cs-dey { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }',
         '.cs-dh  { font-family:'+BN+'; font-size:clamp(2.2rem,3.5vw,4rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:12px; }',
@@ -152,53 +154,76 @@ window.addEventListener('resize', fitHeadline);
         '.cs-dside-mid img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; filter:brightness(.8) saturate(.82); }',
         '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }',
         '@media(max-width:768px){',
-        '  .cs-dbody { padding:40px 24px; grid-template-columns:1fr; }',
-        '  .cs-dmain { padding-right:0; border-right:none; border-bottom:1px solid rgba(138,110,58,.15); padding-bottom:32px; margin-bottom:32px; }',
+        '  .cs-dbody { grid-template-columns:1fr; }',
+        '  .cs-dleft { padding:32px 24px; }',
+        '  .cs-dright { display:none; }',
+        '  .cs-drow-divider { display:none; }',
         '  .cs-dmets { grid-template-columns:repeat(2,1fr); gap:12px 0; }',
         '  .cs-ddna { grid-template-columns:1fr; }',
-        '  .cs-dside-hero { display:none; }',
-        '  .cs-dside-mid { display:none; }',
-        '  .cs-dside-result { width:100%; flex:none; aspect-ratio:16/9; min-height:0; margin-top:0; }',
         '}'
       ].join('\n');
 
       var html = '<section class="case-study csw">'
         + '<div class="cs-dbody">'
-        +   '<div class="cs-dmain">'
-        +     '<div class="cs-dsec">'
-        +       '<span class="cs-dey">'+D.eyebrow+'</span>'
-        +       '<div class="cs-dh">'+D.title+'</div>'
-        +       '<p class="cs-dp">'+D.body+'</p>'
-        +     '</div>'
-        +     '<div class="cs-dsec">'
-        +       '<span class="cs-dslabel">Key Numbers</span>'
-        +       '<div class="cs-dmets">'
+
+        /* ROW 1: Situation + Numbers | Amp image */
+        + '<div class="cs-dleft">'
+        +   '<div class="cs-dsec">'
+        +     '<span class="cs-dey">'+D.eyebrow+'</span>'
+        +     '<div class="cs-dh">'+D.title+'</div>'
+        +     '<p class="cs-dp">'+D.body+'</p>'
+        +   '</div>'
+        +   '<div class="cs-dsec" style="margin-top:28px;">'
+        +     '<span class="cs-dslabel">Key Numbers</span>'
+        +     '<div class="cs-dmets">'
         + D.metrics.map(function(m){ return '<div class="cs-dmet"><span class="cs-dmetv">'+m.val+'</span><span class="cs-dmetl">'+m.lbl+'</span></div>'; }).join('')
-        +       '</div>'
         +     '</div>'
-        +     '<div class="cs-dsec">'
-        +       '<span class="cs-dslabel">Translation</span>'
-        +       '<p class="cs-dp">'+D.translation+'</p>'
-        +     '</div>'
-        +     '<div class="cs-dsec">'
-        +       '<span class="cs-dslabel">Brand DNA</span>'
-        +       '<div class="cs-ddna">'
+        +   '</div>'
+        + '</div>'
+        + '<div class="cs-dright">'
+        +   '<img src="'+D.imgs.amp+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.84) saturate(.88);" alt=""/>'
+        + '</div>'
+
+        /* DIVIDER 1 */
+        + '<div class="cs-drow-divider"></div>'
+
+        /* ROW 2: Brand DNA | 2-up images */
+        + '<div class="cs-dleft" style="padding-top:28px;">'
+        +   '<div class="cs-dsec">'
+        +     '<span class="cs-dslabel">Brand DNA</span>'
+        +     '<div class="cs-ddna">'
         + D.dna.map(function(d){ return '<div><span class="cs-ddna-k">'+d.k+'</span><span class="cs-ddna-v">'+d.v+'</span></div>'; }).join('')
-        +       '</div>'
-        +     '</div>'
-        +     '<div class="cs-dsec">'
-        +       '<span class="cs-dslabel">The Result</span>'
-        +       '<p class="cs-dp">'+D.result+'</p>'
         +     '</div>'
         +   '</div>'
-        +   '<div class="cs-dside">'
-        +     '<img class="cs-dside-hero" src="'+D.imgs.amp+'" style="aspect-ratio:3/2" alt=""/>'
-        +     '<div class="cs-dside-mid">'
-        +       '<img src="'+D.imgs.headphone+'" alt=""/>'
-        +       '<img src="'+D.imgs.acton+'" alt=""/>'
-        +     '</div>'
-        +     '<img class="cs-dside-result" src="'+D.imgs.bluetooth+'" alt=""/>'
+        + '</div>'
+        + '<div class="cs-dright">'
+        +   '<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;height:100%;">'
+        +     '<img src="'+D.imgs.headphone+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.82);" alt=""/>'
+        +     '<img src="'+D.imgs.acton+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.82);" alt=""/>'
         +   '</div>'
+        + '</div>'
+
+        /* DIVIDER 2 */
+        + '<div class="cs-drow-divider"></div>'
+
+        /* ROW 3: Translation + Result | Bluetooth image */
+        + '<div class="cs-dleft" style="padding-top:28px;">'
+        +   '<div class="cs-dsec">'
+        +     '<span class="cs-dslabel">Translation</span>'
+        +     '<p class="cs-dp">'+D.translation+'</p>'
+        +   '</div>'
+        +   '<div class="cs-dsec" style="margin-top:28px;">'
+        +     '<span class="cs-dslabel">The Result</span>'
+        +     '<p class="cs-dp">'+D.result+'</p>'
+        +   '</div>'
+        + '</div>'
+        + '<div class="cs-dright">'
+        +   '<img src="'+D.imgs.bluetooth+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.85);" alt=""/>'
+        + '</div>'
+
+        /* BOTTOM DIVIDER */
+        + '<div class="cs-drow-divider"></div>'
+
         + '</div>'
         + '</section>';
 
