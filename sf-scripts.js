@@ -125,114 +125,90 @@ window.addEventListener('resize', fitHeadline);
   var BODY_SIZE = 'clamp(0.9rem,1.2vw,1.05rem)';
 
   var FORMATS = {
-    3: { name: '03 \u2014 Dossier', build: function() {
+    3: { name: '03 — Dossier', build: function() {
       var css = [
-        /* flat cream background */
-        '.csw { background-color:#e8e2d9; position:relative; }',
-        '.csw::before { content:none; }',
-        '.cs-dbody { position:relative; z-index:1; display:grid; grid-template-columns:1fr 380px; align-items:stretch; }',
-        '.cs-dleft { padding:32px 40px; display:flex; flex-direction:column; justify-content:center; }',
-        '.cs-dright { overflow:hidden; }',
-        '.cs-dsec { padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid rgba(138,110,58,0.15); }',
-        '.cs-dsec:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }',
-        '.cs-drow-gap { display:grid; grid-template-columns:1fr 1fr; gap:3px; height:100%; }',
+        /* ── DOSSIER LAYOUT ── */
+        '.csw { background-color:#e8e2d9; }',
+        '.cs-wrap { border-top:1px solid rgba(138,110,58,0.2); border-bottom:1px solid rgba(138,110,58,0.2); }',
+        '.cs-dbody { display:grid; grid-template-columns:1fr 380px; }',
+        '.cs-row-left { padding:28px 40px; display:flex; flex-direction:column; justify-content:flex-start; border-bottom:1px solid rgba(138,110,58,0.15); }',
+        '.cs-row-left:last-of-type { border-bottom:none; }',
+        '.cs-row-right { overflow:hidden; border-bottom:3px solid #e8e2d9; }',
+        '.cs-row-right:last-of-type { border-bottom:none; }',
+        '.cs-row-right img { width:100%; height:100%; object-fit:cover; display:block; }',
+        '.cs-row-right-inner { display:grid; grid-template-columns:1fr 1fr; gap:3px; height:100%; }',
+        '.cs-row-right-inner img { width:100%; height:100%; object-fit:cover; display:block; }',
+        '.cs-dey  { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }',
+        '.cs-dh   { font-family:'+BN+'; font-size:clamp(2rem,3.2vw,3.6rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:10px; }',
+        '.cs-dp   { font-family:'+DS+'; font-size:'+BODY_SIZE+'; line-height:1.85; color:rgba(10,10,10,.55); font-weight:300; }',
         '.cs-dslabel { font-family:'+DS+'; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; }',
-        '.cs-dey { font-family:'+DS+'; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }',
-        '.cs-dh  { font-family:'+BN+'; font-size:clamp(2.2rem,3.5vw,4rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:12px; }',
-        '.cs-dp  { font-family:'+DS+'; font-size:'+BODY_SIZE+'; line-height:1.85; color:rgba(10,10,10,.55); font-weight:300; }',
-        '.cs-dmets { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }',
-        '.cs-dmet  { padding-right:16px; margin-right:16px; border-right:1px solid rgba(10,10,10,.1); }',
+        '.cs-dmets { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:16px; }',
+        '.cs-dmet  { padding-right:14px; margin-right:14px; border-right:1px solid rgba(10,10,10,.1); }',
         '.cs-dmet:last-child { border-right:none; padding-right:0; margin-right:0; }',
-        '.cs-dmetv { font-family:'+BN+'; font-size:1.4rem; letter-spacing:.06em; color:rgba(10,10,10,.72); display:block; line-height:1; }',
-        '.cs-dmetl { font-family:'+DS+'; font-size:.4rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(10,10,10,.32); display:block; margin-top:2px; font-weight:300; }',
-        '.cs-ddna { display:grid; grid-template-columns:1fr 1fr; gap:8px 24px; }',
+        '.cs-dmetv { font-family:'+BN+'; font-size:1.3rem; letter-spacing:.06em; color:rgba(10,10,10,.72); display:block; line-height:1; }',
+        '.cs-dmetl { font-family:'+DS+'; font-size:.38rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(10,10,10,.32); display:block; margin-top:2px; font-weight:300; }',
+        '.cs-ddna { display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; }',
         '.cs-ddna-k { font-family:'+DS+'; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:2px; }',
         '.cs-ddna-v { font-family:'+DS+'; font-size:'+BODY_SIZE+'; color:rgba(10,10,10,.55); font-weight:300; line-height:1.5; }',
-        '.cs-dside { display:flex; flex-direction:column; }',
-        '.cs-dside-hero { width:100%; object-fit:cover; display:block; filter:brightness(.84) saturate(.88); flex-shrink:0; }',
-        '.cs-dside-mid { display:grid; grid-template-columns:1fr 1fr; gap:3px; margin-top:3px; flex-shrink:0; }',
-        '.cs-dside-mid img { width:100%; aspect-ratio:1/1; object-fit:cover; display:block; filter:brightness(.8) saturate(.82); }',
-        '.cs-dside-result { width:100%; flex:1; min-height:120px; object-fit:cover; display:block; filter:brightness(.82) saturate(.85); margin-top:3px; }',
         '@media(max-width:768px){',
         '  .cs-dbody { grid-template-columns:1fr; }',
-        '  .cs-dleft { padding:28px 24px; }',
-        '  .cs-dright { display:none; }',
-        '  .cs-dright.cs-mobile-show { display:block; }',
-        '  .cs-dright.cs-mobile-show img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; }',
-        '  .cs-dmets { grid-template-columns:repeat(2,1fr); gap:12px 0; }',
+        '  .cs-row-left { padding:24px; }',
+        '  .cs-row-right { display:none; }',
+        '  .cs-row-right.cs-show-mobile { display:block; height:220px; border-bottom:none; }',
+        '  .cs-dmets { grid-template-columns:repeat(2,1fr); gap:10px 0; }',
         '  .cs-ddna { grid-template-columns:1fr; }',
         '}'
       ].join('\n');
 
-      /* top section boundary divider — outside grid */
-      var dividerTop = '<div style="width:100%;height:1px;background:rgba(138,110,58,0.18);"></div>';
-      var dividerBottom = '<div style="width:100%;height:1px;background:rgba(138,110,58,0.18);"></div>';
-
       var html = '<section class="case-study csw">'
-        + dividerTop
-
-        /* grid starts here */
+        + '<div class="cs-wrap">'
         + '<div class="cs-dbody">'
 
-        /* ROW 1: Situation + Numbers | Amp image */
-        + '<div class="cs-dleft">'
-        +   '<div class="cs-dsec">'
-        +     '<span class="cs-dey">'+D.eyebrow+'</span>'
-        +     '<div class="cs-dh">'+D.title+'</div>'
-        +     '<p class="cs-dp">'+D.body+'</p>'
-        +   '</div>'
-        +   '<div class="cs-dsec" style="margin-top:4px;">'
+        /* ROW 1: Situation + Numbers | Amp */
+        + '<div class="cs-row-left">'
+        +   '<span class="cs-dey">'+D.eyebrow+'</span>'
+        +   '<div class="cs-dh">'+D.title+'</div>'
+        +   '<p class="cs-dp">'+D.body+'</p>'
+        +   '<div style="margin-top:20px;">'
         +     '<span class="cs-dslabel">Key Numbers</span>'
         +     '<div class="cs-dmets">'
         + D.metrics.map(function(m){ return '<div class="cs-dmet"><span class="cs-dmetv">'+m.val+'</span><span class="cs-dmetl">'+m.lbl+'</span></div>'; }).join('')
         +     '</div>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-dright" style="height:auto;">'
-        +   '<img src="'+D.imgs.amp+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.84) saturate(.88);" alt=""/>'
+        + '<div class="cs-row-right">'
+        +   '<img src="'+D.imgs.amp+'" style="filter:brightness(.84) saturate(.88);" alt=""/>'
         + '</div>'
 
-        /* row divider — left column line only, right side gap */
-        + '<div style="padding:0 40px;border-top:1px solid rgba(138,110,58,0.15);"></div>'
-        + '<div style="height:3px;background:#e8e2d9;"></div>'
-
-        /* ROW 2: Brand DNA | 2-up images */
-        + '<div class="cs-dleft">'
-        +   '<div class="cs-dsec">'
-        +     '<span class="cs-dslabel">Brand DNA</span>'
-        +     '<div class="cs-ddna">'
+        /* ROW 2: Brand DNA | 2-up */
+        + '<div class="cs-row-left">'
+        +   '<span class="cs-dslabel">Brand DNA</span>'
+        +   '<div class="cs-ddna">'
         + D.dna.map(function(d){ return '<div><span class="cs-ddna-k">'+d.k+'</span><span class="cs-ddna-v">'+d.v+'</span></div>'; }).join('')
-        +     '</div>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-dright">'
-        +   '<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;height:100%;">'
-        +     '<img src="'+D.imgs.headphone+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.82);" alt=""/>'
-        +     '<img src="'+D.imgs.acton+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.8) saturate(.82);" alt=""/>'
+        + '<div class="cs-row-right">'
+        +   '<div class="cs-row-right-inner">'
+        +     '<img src="'+D.imgs.headphone+'" style="filter:brightness(.8) saturate(.82);" alt=""/>'
+        +     '<img src="'+D.imgs.acton+'" style="filter:brightness(.8) saturate(.82);" alt=""/>'
         +   '</div>'
         + '</div>'
 
-        /* row divider */
-        + '<div style="padding:0 40px;border-top:1px solid rgba(138,110,58,0.15);"></div>'
-        + '<div style="height:3px;background:#e8e2d9;"></div>'
-
-        /* ROW 3: Translation + Result | Bluetooth image (shown on mobile too) */
-        + '<div class="cs-dleft">'
-        +   '<div class="cs-dsec">'
-        +     '<span class="cs-dslabel">Translation</span>'
-        +     '<p class="cs-dp">'+D.translation+'</p>'
-        +   '</div>'
-        +   '<div style="margin-top:4px;">'
+        /* ROW 3: Translation + Result | Bluetooth */
+        + '<div class="cs-row-left" style="border-bottom:none;">'
+        +   '<span class="cs-dslabel">Translation</span>'
+        +   '<p class="cs-dp">'+D.translation+'</p>'
+        +   '<div style="margin-top:20px;">'
         +     '<span class="cs-dslabel">The Result</span>'
         +     '<p class="cs-dp">'+D.result+'</p>'
         +   '</div>'
         + '</div>'
-        + '<div class="cs-dright cs-mobile-show">'
-        +   '<img src="'+D.imgs.bluetooth+'" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.82) saturate(.85);" alt=""/>'
+        + '<div class="cs-row-right cs-show-mobile" style="border-bottom:none;">'
+        +   '<img src="'+D.imgs.bluetooth+'" style="filter:brightness(.82) saturate(.85);" alt=""/>'
         + '</div>'
 
-        + '</div>' /* end cs-dbody */
-        + dividerBottom
+        + '</div>'
+        + '</div>'
         + '</section>';
 
       return { css: css, html: html };
