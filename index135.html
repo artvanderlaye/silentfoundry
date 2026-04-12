@@ -3572,36 +3572,27 @@ body.v11-active #v11-badge {
 })();
 </script>
 </body>
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════
      SILENT FOUNDRY — INDUSTRIAL JEWELRY F1-F6
-     ═══════════════════════════════════════════ -->
+     Single IIFE · No scope gaps · No black screens
+     ═══════════════════════════════════════════════ -->
 <style id="f-css">
 #f-sw{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:1px;background:rgba(10,10,10,0.95);border:0.5px solid rgba(200,169,110,0.2);padding:5px 8px;backdrop-filter:blur(10px);}
 .f-btn{font-family:'Courier New',monospace;font-size:0.5rem;letter-spacing:0.06em;color:rgba(244,241,236,0.22);background:none;border:none;padding:3px 7px;cursor:pointer;transition:color 0.18s;white-space:nowrap;}
 .f-btn:hover{color:rgba(200,169,110,0.7);}
 .f-btn.on{color:#c8a96e;}
 .f-div{width:1px;height:10px;background:rgba(200,169,110,0.15);margin:0 2px;}
-
-/* hero symbol */
 .f-metal{background:linear-gradient(90deg,rgba(200,169,110,0.5) 0%,rgba(240,215,140,1) 45%,rgba(200,169,110,0.5) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fsh 3s linear infinite;}
 @keyframes fsh{from{background-position:200% center}to{background-position:-200% center}}
-.f-hsym{display:block;text-align:center;font-family:'Courier New',monospace;font-size:0.28em;pointer-events:none;user-select:none;}
-.f-rule{position:absolute;left:0;right:0;height:1px;background:rgba(200,169,110,0.3);pointer-events:none;z-index:2;}
-
-/* static elements */
-.f-grid{position:absolute;inset:0;pointer-events:none;z-index:0;}
+canvas.f-cv{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;background:transparent;z-index:0;}
+.f-grid{position:absolute;inset:0;pointer-events:none;z-index:0;background-repeat:repeat;}
 .f-wm{position:absolute;font-family:'Courier New',monospace;pointer-events:none;user-select:none;z-index:0;line-height:1;}
 .f-br{position:absolute;inset:0;pointer-events:none;z-index:2;}
 .f-b{position:absolute;}
+.f-rule{position:absolute;left:0;right:0;height:1px;background:rgba(200,169,110,0.3);pointer-events:none;z-index:2;}
+.f-hsym{display:block;text-align:center;font-family:'Courier New',monospace;font-size:0.28em;pointer-events:none;user-select:none;}
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:48px;}
-
-/* How It Works tunnel canvas */
-canvas.f-cv{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;background:transparent;z-index:0;}
-
-/* How It Works matrix grid */
-.f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:0;overflow:hidden;}
-@keyframes fFlicker{0%,100%{opacity:0.08}50%{opacity:1}}
 </style>
 
 <div id="f-sw">
@@ -3627,7 +3618,7 @@ canvas.f-cv{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events
 'use strict';
 
 // ── STATE ──
-var RAF=null, CVS=[], DIM_F=0;
+var CUR=0, RAF=null, CVS=[], DIM_F=0;
 var scrollL=null, resizeL=null, roB=null;
 
 // ── HELPERS ──
@@ -3638,27 +3629,73 @@ function mk(t){return document.createElement(t);}
 function svgE(t){return document.createElementNS('http://www.w3.org/2000/svg',t);}
 function qs(s){return document.querySelector(s);}
 
-// ── SHARED RAF (exact pattern from working D4) ──
+// ── RAF ──
 function startRAF(){
   if(RAF)return;
   var t=0;
   (function loop(){
     t+=0.008;
-    CVS.forEach(function(item){
-      try{item.fn(t,item.ctx,item.W,item.H,item.particles);}catch(e){}
-    });
+    CVS.forEach(function(c){try{c.fn(t,c.ctx,c.W,c.H,c.pts);}catch(e){}});
     RAF=requestAnimationFrame(loop);
   })();
 }
 function stopRAF(){if(RAF){cancelAnimationFrame(RAF);RAF=null;}CVS=[];}
 
-// ── ADD CANVAS (exact pattern from working D4) ──
-function addCV(canvas,drawFn,particles){
-  var ctx=canvas.getContext('2d');
-  var W=canvas.offsetWidth||canvas.parentElement.offsetWidth||900;
-  var H=canvas.offsetHeight||canvas.parentElement.offsetHeight||500;
-  canvas.width=W; canvas.height=H;
-  CVS.push({ctx:ctx,W:W,H:H,fn:drawFn,particles:particles});
+// ── CANVAS ──
+// Canvas starts visible — no opacity trick needed since we appendChild after sizing
+function addCV(el,fn,pts){
+  rp(el);
+  var c=mk('canvas'); c.className='f-cv';
+  // Use window dimensions for sections that fill the viewport (hero etc)
+  // Use element dimensions for content sections
+  var W=el.offsetWidth||window.innerWidth||900;
+  var H=el.offsetHeight>200?el.offsetHeight:window.innerHeight||600;
+  c.width=W; c.height=H;
+  el.appendChild(c);
+  var ctx=c.getContext('2d');
+  CVS.push({ctx:ctx,W:W,H:H,fn:fn,pts:pts||[]});
+  return c;
+}
+
+// ── TUNNEL ──
+// KEY FIX: xs and ys control initial particle spread around VP.
+// Must be SMALL so particles stay within canvas, not fly in from outside.
+// xs:160, ys:120 = particles start within ~80px of VP at z=100
+// As z→0 they approach VP from nearby — tunnel effect, no fish bowl
+function mkPts(n,vz,syms){
+  var pts=[];
+  for(var i=0;i<n;i++) pts.push({
+    x:(Math.random()-0.5)*160,  // tight spread — max ±80px from VP at z=100
+    y:(Math.random()-0.5)*120,  // tight spread — max ±60px
+    z:Math.random()*700+100,
+    vz:(Math.random()<0.5?1:-1)*(vz*0.5+Math.random()*vz*0.5),
+    sym:syms[i%syms.length],
+    ph:Math.random()*Math.PI*2
+  });
+  return pts;
+}
+
+function tunnel(el,cfg){
+  if(!el)return;
+  var pts=mkPts(cfg.n,cfg.vz,cfg.s);
+  var px=cfg.px, py=cfg.py, dk=cfg.dark, om=cfg.om;
+  addCV(el,function(t,ctx,W,H,ps){
+    ctx.clearRect(0,0,W,H);
+    ps.forEach(function(p){
+      p.z+=p.vz;
+      if(p.z<80)p.z=800;
+      if(p.z>800)p.z=80;
+      var s=350/p.z;
+      var sx=W*px+p.x*s;
+      var sy=H*py+p.y*s;
+      // Only draw if within canvas bounds
+      if(sx<-20||sx>W+20||sy<-20||sy>H+20)return;
+      var a=Math.max(0,Math.min(om, om*(1-p.z/800)))*(0.75+0.25*Math.sin(t*20+p.ph));
+      ctx.font='bold '+Math.max(10,s*13)+'px "Courier New",monospace';
+      ctx.fillStyle=dk?gold(a):ink(a);
+      ctx.fillText(p.sym,sx,sy);
+    });
+  },pts);
 }
 
 // ── GRID ──
@@ -3676,8 +3713,7 @@ function wm(el,sym,sz,col,pos){
   if(!el)return; rp(el);
   var s=mk('span'); s.className='f-wm';
   s.textContent=sym;
-  s.style.fontSize=sz; s.style.color=col;
-  s.style.cssText+=';'+pos;
+  s.style.fontSize=sz; s.style.color=col; s.style.cssText+=';'+pos;
   el.appendChild(s);
 }
 
@@ -3702,18 +3738,24 @@ function brackets(el,sz,lw,col,ins,corners){
 
 // ── DIM LINE ──
 var DCFG=[
+  // F1: right, gold, single, value right
   {xf:function(){return window.innerWidth-48;},st:gold(0.5),sw:0.8,tk:10,dbl:false,
-   val:function(x,y1,y2,v){return{x:x+14,y:(y1+y2)/2+3,anc:'start',v:v,box:false,leader:false};}},
+   val:function(x,y1,y2,v){return {x:x+14,y:(y1+y2)/2+3,anc:'start',v:v,box:false,leader:false};}},
+  // F2: left, gold, single, value left
   {xf:function(){return 48;},st:gold(0.5),sw:0.8,tk:20,dbl:false,
-   val:function(x,y1,y2,v){return{x:x-14,y:(y1+y2)/2+3,anc:'end',v:v,box:false,leader:false};}},
+   val:function(x,y1,y2,v){return {x:x-14,y:(y1+y2)/2+3,anc:'end',v:v,box:false,leader:false};}},
+  // F3: centre, ink, heavy, value with bg rect
   {xf:function(){return window.innerWidth/2;},st:ink(0.4),sw:1.5,tk:16,dbl:false,
-   val:function(x,y1,y2,v){return{x:x,y:(y1+y2)/2+3,anc:'middle',v:v,box:'rgba(237,232,224,0.9)',leader:false};}},
+   val:function(x,y1,y2,v){return {x:x,y:(y1+y2)/2+3,anc:'middle',v:v,box:'rgba(237,232,224,0.9)',leader:false};}},
+  // F4: right, gold, double line
   {xf:function(){return window.innerWidth-48;},st:gold(0.4),sw:0.5,tk:10,dbl:true,
-   val:function(x,y1,y2,v){return{x:x-4,y:(y1+y2)/2+3,anc:'middle',v:v,box:false,leader:false};}},
+   val:function(x,y1,y2,v){return {x:x-4,y:(y1+y2)/2+3,anc:'middle',v:v,box:false,leader:false};}},
+  // F5: right, gold, leader to value
   {xf:function(){return window.innerWidth-48;},st:gold(0.5),sw:0.8,tk:10,dbl:false,
-   val:function(x,y1,y2,v){return{x:x+44,y:(y1+y2)/2+3,anc:'start',v:v,box:false,leader:true};}},
+   val:function(x,y1,y2,v){return {x:x+44,y:(y1+y2)/2+3,anc:'start',v:v,box:false,leader:true};}},
+  // F6: right, gold, boxed callout
   {xf:function(){return window.innerWidth-48;},st:gold(0.5),sw:0.8,tk:10,dbl:false,
-   val:function(x,y1,y2,v){return{x:x+8,y:(y1+y2)/2-8,anc:'start',v:v,box:'rgba(10,10,10,0.85)',leader:false};}}
+   val:function(x,y1,y2,v){return {x:x+8,y:(y1+y2)/2-8,anc:'start',v:v,box:'rgba(10,10,10,0.85)',leader:false};}}
 ];
 
 function drawDim(){
@@ -3726,8 +3768,9 @@ function drawDim(){
   var y2=fac.getBoundingClientRect().top;
   if(y2<=y1){svg.innerHTML='';return;}
   var d=DCFG[DIM_F-1];
-  var x=d.xf(),st=d.st,sw=d.sw,tk=d.tk;
+  var x=d.xf(), st=d.st, sw=d.sw, tk=d.tk;
   svg.innerHTML='';
+
   function ln(x1,y1,x2,y2,s,w){
     var e=svgE('line');
     e.setAttribute('x1',x1);e.setAttribute('y1',y1);e.setAttribute('x2',x2);e.setAttribute('y2',y2);
@@ -3736,14 +3779,18 @@ function drawDim(){
   }
   function arr(ax,ay,up){
     var p=svgE('polygon');
-    var pts=up?(ax+','+ay+' '+(ax-3)+','+(ay+7)+' '+(ax+3)+','+(ay+7))
-              :(ax+','+ay+' '+(ax-3)+','+(ay-7)+' '+(ax+3)+','+(ay-7));
+    // UP: tip at top, base below — butts against eng-section bottom
+    // DOWN: tip at bottom, base above — butts against factory-solo top
+    var pts=up
+      ?(ax+','+ay+' '+(ax-3)+','+(ay+7)+' '+(ax+3)+','+(ay+7))
+      :(ax+','+ay+' '+(ax-3)+','+(ay-7)+' '+(ax+3)+','+(ay-7));
     p.setAttribute('points',pts);p.setAttribute('fill',st);svg.appendChild(p);
   }
-  // Ticks
+
+  // Extension ticks
   ln(x-tk,y1,x+tk,y1);
   ln(x-tk,y2,x+tk,y2);
-  // Lines
+  // Dimension line(s)
   if(d.dbl){
     ln(x,y1,x,y2);ln(x-8,y1,x-8,y2,st,0.5);
     ln(x-tk-4,y1,x+tk,y1,st,0.8);ln(x-tk-4,y2,x+tk,y2,st,0.8);
@@ -3778,148 +3825,242 @@ function drawDim(){
 // ── KILL ALL ──
 function killAll(){
   stopRAF();
-  document.querySelectorAll('.f-cv,.f-grid,.f-wm,.f-br,.f-rule,.f-hsym,.f-fsym,.f-m6,.f-matrix').forEach(function(e){e.remove();});
+  document.querySelectorAll('.f-cv,.f-grid,.f-wm,.f-br,.f-rule,.f-hsym,.f-fsym,.f-m6').forEach(function(e){e.remove();});
+  // Reset accordion icons
   document.querySelectorAll('#how .accordion-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   document.querySelectorAll('.ch-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   document.querySelectorAll('.val-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
+  // Hide dim SVG
   var svg=qs('#f-dimsvg');if(svg){svg.style.display='none';svg.innerHTML='';}
   DIM_F=0;
   if(scrollL){window.removeEventListener('scroll',scrollL);scrollL=null;}
   if(resizeL){window.removeEventListener('resize',resizeL);resizeL=null;}
   if(roB){try{roB.disconnect();}catch(e){}roB=null;}
   var fb=qs('.footer-bottom');if(fb)fb.style.position='';
+  var ft=qs('footer');if(ft)ft.style.position='';
 }
 
-// ── HOW IT WORKS TUNNEL (exact D4 pattern, vx=vy=0, opacity bumped) ──
-// F1-F6 configs: [vpx_fraction, vpy_fraction, n, vz, opacity_max, symbols]
-var HOW_T=[
-  {vpx:0.5,vpy:0.5,n:25,vz:0.7,om:0.18,s:['∠','∥','▽','⊞','⊥','↕']},
-  {vpx:0.4,vpy:0.5,n:25,vz:0.7,om:0.18,s:['⌐','→','⌙','⊙','¬','↧']},
-  {vpx:0.5,vpy:0.3,n:25,vz:0.7,om:0.18,s:['⌀','±','∠','⊥','∥','↕']},
-  {vpx:0.5,vpy:0.5,n:35,vz:0.5,om:0.22,s:['⊞','⌙','▽','⌐','¬','⊕']},
-  {vpx:0.5,vpy:0.5,n:15,vz:0.7,om:0.12,s:['↗','→','⊙','⊥','↕','↧']},
-  {vpx:0.7,vpy:0.7,n:25,vz:0.9,om:0.18,s:['∆','⌖','∥','⊞','⊥','°']}
-];
-
-function initHowTunnel(fi){
-  var howEl=qs('#how');
-  if(!howEl)return;
-  rp(howEl);
-  var cfg=HOW_T[fi];
-
-  // Canvas — exact D4 pattern
-  var cv=mk('canvas'); cv.className='f-cv';
-  cv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;background:transparent;';
-  howEl.appendChild(cv);
-
-  // Particles — vx:0, vy:0 (Z-axis only, no lateral drift)
-  var pts=[];
-  for(var i=0;i<cfg.n;i++){
-    pts.push({
-      x:(Math.random()-0.5)*900,
-      y:(Math.random()-0.5)*500,
-      z:Math.random()*700+100,
-      vx:0, vy:0,  // Z-axis only — no floating
-      vz:(Math.random()-0.5)*cfg.vz,
-      sym:cfg.s[i%cfg.s.length],
-      ph:Math.random()*Math.PI*2
-    });
-  }
-
-  var vpxF=cfg.vpx, vpyF=cfg.vpy, om=cfg.om;
-
-  // Size canvas after it's in DOM
-  setTimeout(function(){
-    var W=cv.parentElement.offsetWidth||900;
-    var H=cv.parentElement.offsetHeight||500;
-    cv.width=W; cv.height=H;
-    // Draw function — exact D4 render logic
-    CVS.push({
-      fn:function(t,ctx,W,H,particles){
-        ctx.clearRect(0,0,W,H);
-        particles.forEach(function(p){
-          // vx=0,vy=0 so only z moves
-          p.z+=p.vz;
-          if(p.z<80)p.z=800;
-          if(p.z>800)p.z=80;
-          var s=350/p.z;
-          var sx=W*vpxF+p.x*s;
-          var sy=H*vpyF+p.y*s;
-          if(sx<-30||sx>W+30||sy<-30||sy>H+30)return;
-          var a=Math.min(om,(1-p.z/800)*om*1.2)*(0.7+0.3*Math.sin(t*30+p.ph));
-          var fs=Math.max(10,s*13);
-          ctx.font=fs+'px "Courier New",monospace';
-          ctx.fillStyle=gold(a);
-          ctx.fillText(p.sym,sx,sy);
-        });
-      },
-      ctx:cv.getContext('2d'),
-      W:W,H:H,
-      particles:pts
-    });
-    startRAF();
-  },150);
-}
+// ── TUNNEL CONFIGS: 13 sections × 6 F states ──
+// px/py = vanishing point as fraction of canvas W/H
+// n = particle count, vz = z speed, om = max opacity
+// s = symbols, dark = true for dark sections (gold), false for cream (ink)
+// xs/ys REMOVED — all tunnels use tight mkPts(n,vz,syms) fixed to 160×120
+var TC={
+  hero:[
+    {px:0.5,py:0.45,n:20,vz:0.7,om:0.18,dark:true,s:['→|←']},  // F1: centre, moderate
+    {px:0.5,py:0.35,n:20,vz:0.7,om:0.18,dark:true,s:['→|←']},  // F2: upper centre
+    {px:0.5,py:0.5, n:20,vz:0.6,om:0.15,dark:true,s:['→|←']},  // F3: dead centre
+    {px:0.3,py:0.5, n:20,vz:0.7,om:0.18,dark:true,s:['→|←']},  // F4: left
+    {px:0.7,py:0.5, n:20,vz:0.7,om:0.18,dark:true,s:['→|←']},  // F5: right
+    {px:0.5,py:0.6, n:20,vz:0.8,om:0.18,dark:true,s:['→|←']}   // F6: lower centre
+  ],
+  wwd:[
+    {px:0.7,py:0.5,n:12,vz:0.4,om:0.10,dark:false,s:['∆']},
+    {px:0.2,py:0.3,n:12,vz:0.4,om:0.10,dark:false,s:['⌐']},
+    {px:0.8,py:0.5,n:12,vz:0.35,om:0.08,dark:false,s:['∥']},
+    {px:0.2,py:0.7,n:12,vz:0.4,om:0.10,dark:false,s:['⊥']},
+    {px:0.5,py:0.5,n:12,vz:0.3,om:0.07,dark:false,s:['°']},
+    {px:0.75,py:0.75,n:12,vz:0.4,om:0.10,dark:false,s:['⌙']}
+  ],
+  csw:[
+    {px:0.7,py:0.75,n:12,vz:0.35,om:0.10,dark:false,s:['▽','⌙','∠','±']},
+    {px:0.6,py:0.65,n:12,vz:0.28,om:0.08,dark:false,s:['▽','⌙','∠','±']},
+    {px:0.75,py:0.6,n:12,vz:0.4,om:0.12,dark:false,s:['▽','⌙','∠','±']},
+    {px:0.5,py:0.85,n:10,vz:0.35,om:0.10,dark:false,s:['▽','⌙','∠','±']},
+    {px:0.7,py:0.5,n:10,vz:0.35,om:0.08,dark:false,s:['▽','⌙','∠','±']},
+    {px:0.3,py:0.75,n:12,vz:0.3,om:0.07,dark:false,s:['▽','⌙','∠','±']}
+  ],
+  thesis:[
+    {px:0.5,py:0.5,n:8,vz:0.25,om:0.08,dark:false,s:['⊙','∠','°']},
+    {px:0.4,py:0.4,n:8,vz:0.2,om:0.07,dark:false,s:['⊙','∠','°']},
+    {px:0.6,py:0.35,n:8,vz:0.25,om:0.08,dark:false,s:['⊙','∠','°']},
+    {px:0.5,py:0.6,n:10,vz:0.18,om:0.07,dark:false,s:['⊙','∠','°']},
+    {px:0.35,py:0.5,n:7,vz:0.22,om:0.06,dark:false,s:['⊙','∠','°']},
+    {px:0.65,py:0.65,n:8,vz:0.25,om:0.08,dark:false,s:['⊙','∠','°']}
+  ],
+  how:[
+    {px:0.5,py:0.5,n:25,vz:0.7,om:0.18,dark:true,s:['∠','∥','▽','⊞','⊥','↕']},
+    {px:0.4,py:0.5,n:25,vz:0.7,om:0.18,dark:true,s:['⌐','→','⌙','⊙','¬','↧']},
+    {px:0.5,py:0.3,n:25,vz:0.7,om:0.18,dark:true,s:['⌀','±','∠','⊥','∥','↕']},
+    {px:0.5,py:0.5,n:35,vz:0.5,om:0.22,dark:true,s:['⊞','⌙','▽','⌐','¬','⊕']},
+    {px:0.5,py:0.5,n:15,vz:0.7,om:0.12,dark:true,s:['↗','→','⊙','⊥','↕','↧']},
+    {px:0.7,py:0.7,n:25,vz:0.9,om:0.18,dark:true,s:['∆','⌖','∥','⊞','⊥','°']}
+  ],
+  webuild:[
+    {px:0.25,py:0.3,n:12,vz:0.4,om:0.10,dark:false,s:['⌀']},
+    {px:0.3,py:0.25,n:12,vz:0.4,om:0.10,dark:false,s:['⊥']},
+    {px:0.75,py:0.5,n:12,vz:0.35,om:0.08,dark:false,s:['▽']},
+    {px:0.25,py:0.75,n:12,vz:0.4,om:0.10,dark:false,s:['±']},
+    {px:0.5,py:0.5,n:10,vz:0.25,om:0.07,dark:false,s:['GND']},
+    {px:0.75,py:0.75,n:12,vz:0.4,om:0.10,dark:false,s:['⌙']}
+  ],
+  china:[
+    {px:0.5,py:0.25,n:12,vz:0.4,om:0.10,dark:false,s:['⌐','⊙','±','↧']},
+    {px:0.35,py:0.35,n:12,vz:0.4,om:0.10,dark:false,s:['→|←','⌙','⊞','¬']},
+    {px:0.6,py:0.25,n:12,vz:0.35,om:0.08,dark:false,s:['∆','∥','⊕','↧']},
+    {px:0.5,py:0.45,n:10,vz:0.4,om:0.10,dark:false,s:['⌀','±','⊙','⌐']},
+    {px:0.4,py:0.35,n:12,vz:0.38,om:0.08,dark:false,s:['⌖','→|←','⊥','¬']},
+    {px:0.65,py:0.25,n:12,vz:0.4,om:0.10,dark:false,s:['∠','⊞','↕','⌙']}
+  ],
+  value:[
+    {px:0.2,py:0.75,n:10,vz:0.35,om:0.08,dark:false,s:['→|←','⌙','°','¬']},
+    {px:0.35,py:0.65,n:10,vz:0.35,om:0.08,dark:false,s:['⊙','⊥','↕','⌐']},
+    {px:0.5,py:0.55,n:10,vz:0.3,om:0.07,dark:false,s:['∠','⌀','∥','↧']},
+    {px:0.25,py:0.5,n:12,vz:0.35,om:0.08,dark:false,s:['⊞','±','⌖','∆']},
+    {px:0.75,py:0.45,n:10,vz:0.35,om:0.08,dark:false,s:['⌙','▽','⌐','⊕']},
+    {px:0.45,py:0.75,n:10,vz:0.3,om:0.07,dark:false,s:['↕','⊥','¬','⌀']}
+  ],
+  funds:[
+    {px:0.75,py:0.25,n:12,vz:0.4,om:0.10,dark:false,s:['⊞','→|←','↧']},
+    {px:0.65,py:0.35,n:12,vz:0.4,om:0.08,dark:false,s:['⌐','⊙','¬']},
+    {px:0.55,py:0.45,n:12,vz:0.35,om:0.08,dark:false,s:['⌀','±','↧']},
+    {px:0.5,py:0.25,n:10,vz:0.4,om:0.08,dark:false,s:['⊥','→|←','GND']},
+    {px:0.65,py:0.5,n:12,vz:0.38,om:0.10,dark:false,s:['⊕','∥','↧']},
+    {px:0.75,py:0.35,n:12,vz:0.4,om:0.10,dark:false,s:['⌖','←|→','↧']}
+  ],
+  cta:[
+    {px:0.5,py:0.5,n:7,vz:0.25,om:0.07,dark:false,s:['⌀']},
+    {px:0.4,py:0.45,n:7,vz:0.25,om:0.07,dark:false,s:['⌀']},
+    {px:0.6,py:0.35,n:7,vz:0.22,om:0.06,dark:false,s:['⌀']},
+    {px:0.5,py:0.55,n:8,vz:0.18,om:0.07,dark:false,s:['⌀']},
+    {px:0.35,py:0.5,n:6,vz:0.22,om:0.05,dark:false,s:['⌀']},
+    {px:0.65,py:0.65,n:7,vz:0.25,om:0.07,dark:false,s:['⌀']}
+  ],
+  footer:[
+    {px:0.5,py:0.75,n:10,vz:0.35,om:0.13,dark:true,s:['↧','⌀','GND']},
+    {px:0.4,py:0.65,n:10,vz:0.35,om:0.13,dark:true,s:['↧','⌀','GND']},
+    {px:0.6,py:0.75,n:10,vz:0.3,om:0.11,dark:true,s:['↧','⌀','GND']},
+    {px:0.5,py:0.6,n:12,vz:0.35,om:0.13,dark:true,s:['↧','⌀','GND']},
+    {px:0.35,py:0.75,n:8,vz:0.3,om:0.11,dark:true,s:['↧','⌀','GND']},
+    {px:0.65,py:0.65,n:10,vz:0.38,om:0.13,dark:true,s:['↧','⌀','GND']}
+  ]
+};
 
 // ── INIT F STATE ──
 function initF(n){
-  var fi=n-1;
+  var fi=n-1; // 0-indexed into arrays
 
-  // ── HERO SYMBOL ──
+  // ── SECTION TUNNELS ──
+  function tun(el,key){
+    if(!el)return;
+    var c=TC[key][fi];
+    tunnel(el,c);
+  }
+
+  // Hero tunnel
+  tun(qs('.hero'),'hero');
+  // WWD tunnel
+  tun(qs('.wwd-section'),'wwd');
+  // Marshall tunnel
+  tun(qs('.case-study.csw'),'csw');
+  // Thesis tunnel
+  tun(qs('section[style*="padding:100px"]'),'thesis');
+  // How It Works tunnel
+  tun(qs('#how'),'how');
+  // We Build tunnel — correct selector for the padding:48px ede8e0 section
+  tun(qs('section[style*="padding:48px"][style*="ede8e0"]'),'webuild');
+  // China — find section containing ch-item
+  var chinaEl=null;
+  document.querySelectorAll('section').forEach(function(s){if(s.querySelector('.ch-item'))chinaEl=s;});
+  tun(chinaEl,'china');
+  // Value
+  tun(qs('.value'),'value');
+  // Featured + Logos — no content changes per spec, tunnel only
+  // (spec says no changes to Featured → As Seen On, so no tunnel here)
+  // Funds / Investment Paths
+  tun(qs('.funds'),'funds');
+  // CTA
+  tun(qs('.cta'),'cta');
+  // Footer
+  tun(qs('footer'),'footer');
+
+  // ── HERO SYMBOL →|← ──
+  // F1: above headline centred
+  // F2: on 1px gold rule above headline, symbol on line
+  // F3: between eyebrow and headline centred
+  // F4: left of headline block, vertically centred on midline
+  // F5: right of headline block, vertically centred on midline
+  // F6: below BRAND SOUL centred
   var hero=qs('.hero');
   var hl=qs('.hero-headline');
   if(hero&&hl){
     rp(hero);
-    var sym=mk('span'); sym.className='f-hsym f-metal'; sym.textContent='→|←';
+    var sym=mk('span');
+    sym.className='f-hsym f-metal';
+    sym.textContent='→|←';
     sym.style.position='absolute';
+
     if(n===1){
-      sym.style.left='50%'; sym.style.transform='translateX(-50%)';
-      setTimeout(function(){sym.style.top=(hl.getBoundingClientRect().top-hero.getBoundingClientRect().top-24)+'px';},50);
+      // Above headline centred
+      sym.style.left='50%';sym.style.transform='translateX(-50%)';
+      setTimeout(function(){
+        var hT=hl.getBoundingClientRect().top-hero.getBoundingClientRect().top;
+        sym.style.top=(hT-24)+'px';
+      },50);
       hero.appendChild(sym);
     } else if(n===2){
-      var rule=mk('div'); rule.className='f-rule';
-      setTimeout(function(){rule.style.top=(hl.getBoundingClientRect().top-hero.getBoundingClientRect().top-16)+'px';},50);
-      sym.style.left='50%'; sym.style.top='50%'; sym.style.transform='translate(-50%,-50%)';
-      rule.appendChild(sym); hero.appendChild(rule);
-    } else if(n===3){
-      var ey=qs('.hero-eyebrow');
-      sym.style.left='50%'; sym.style.transform='translateX(-50%)';
+      // On a 1px gold rule above headline
+      var rule=mk('div');rule.className='f-rule';
       setTimeout(function(){
-        if(ey)sym.style.top=(ey.getBoundingClientRect().bottom-hero.getBoundingClientRect().top+8)+'px';
+        var hT=hl.getBoundingClientRect().top-hero.getBoundingClientRect().top;
+        rule.style.top=(hT-16)+'px';
+      },50);
+      sym.style.left='50%';sym.style.transform='translate(-50%,-50%)';sym.style.top='50%';
+      rule.appendChild(sym);hero.appendChild(rule);
+    } else if(n===3){
+      // Between eyebrow and headline
+      var ey=qs('.hero-eyebrow');
+      sym.style.left='50%';sym.style.transform='translateX(-50%)';
+      setTimeout(function(){
+        if(ey&&hero){
+          var eyB=ey.getBoundingClientRect().bottom-hero.getBoundingClientRect().top;
+          sym.style.top=(eyB+8)+'px';
+        }
       },50);
       hero.appendChild(sym);
     } else if(n===4){
-      sym.style.left='48px'; sym.style.transform='translateY(-50%)';
+      // Left of headline, vertically centred on headline midline
+      sym.style.transform='translateY(-50%)';
+      sym.style.left='48px';
       setTimeout(function(){
-        var r=hl.getBoundingClientRect(),hr=hero.getBoundingClientRect();
-        sym.style.top=(r.top-hr.top+r.height/2)+'px';
+        var hlT=hl.getBoundingClientRect().top-hero.getBoundingClientRect().top;
+        var hlH=hl.getBoundingClientRect().height;
+        sym.style.top=(hlT+hlH/2)+'px';
       },50);
       hero.appendChild(sym);
     } else if(n===5){
-      sym.style.right='48px'; sym.style.left='auto'; sym.style.transform='translateY(-50%)';
+      // Right of headline, vertically centred on headline midline
+      sym.style.transform='translateY(-50%)';
+      sym.style.right='48px';sym.style.left='auto';
       setTimeout(function(){
-        var r=hl.getBoundingClientRect(),hr=hero.getBoundingClientRect();
-        sym.style.top=(r.top-hr.top+r.height/2)+'px';
+        var hlT=hl.getBoundingClientRect().top-hero.getBoundingClientRect().top;
+        var hlH=hl.getBoundingClientRect().height;
+        sym.style.top=(hlT+hlH/2)+'px';
       },50);
       hero.appendChild(sym);
     } else if(n===6){
-      sym.style.left='50%'; sym.style.transform='translateX(-50%)';
+      // Below BRAND SOUL
       var bs=qs('.hero-headline-bottom')||hl;
-      setTimeout(function(){sym.style.top=(bs.getBoundingClientRect().bottom-hero.getBoundingClientRect().top+12)+'px';},50);
+      sym.style.left='50%';sym.style.transform='translateX(-50%)';
+      setTimeout(function(){
+        var bB=bs.getBoundingClientRect().bottom-hero.getBoundingClientRect().top;
+        sym.style.top=(bB+12)+'px';
+      },50);
       hero.appendChild(sym);
     }
   }
 
   // ── WWD WATERMARK ──
-  var WWD=[
-    {sym:'∆',  sz:'160px',                   col:ink(0.04),  pos:'top:24px;right:48px;'},
-    {sym:'⌐',  sz:'120px',                   col:ink(0.055), pos:'top:20px;left:32px;'},
-    {sym:'∥',  sz:'200px',                   col:ink(0.03),  pos:'top:50%;right:24px;transform:translateY(-50%);'},
-    {sym:'⊥',  sz:'140px',                   col:ink(0.06),  pos:'bottom:0;left:40px;'},
+  var WWD_WM=[
+    {sym:'∆',  sz:'160px',            col:ink(0.04),  pos:'top:24px;right:48px;'},
+    {sym:'⌐',  sz:'120px',            col:ink(0.055), pos:'top:20px;left:32px;'},
+    {sym:'∥',  sz:'200px',            col:ink(0.03),  pos:'top:50%;right:24px;transform:translateY(-50%);'},
+    {sym:'⊥',  sz:'140px',            col:ink(0.06),  pos:'bottom:0;left:40px;'},
     {sym:'°',  sz:'clamp(180px,22vw,280px)', col:ink(0.025), pos:'top:50%;left:50%;transform:translate(-50%,-50%);'},
-    {sym:'⌙',  sz:'130px',                   col:ink(0.07),  pos:'bottom:16px;right:48px;'}
+    {sym:'⌙',  sz:'130px',            col:ink(0.07),  pos:'bottom:16px;right:48px;'}
   ];
-  var wc=WWD[fi]; wm(qs('.wwd-section'),wc.sym,wc.sz,wc.col,wc.pos);
+  var wc=WWD_WM[fi];
+  wm(qs('.wwd-section'),wc.sym,wc.sz,wc.col,wc.pos);
 
   // ── MARSHALL BRACKETS ──
   var BR=[
@@ -3930,17 +4071,21 @@ function initF(n){
     {sz:20,lw:1,  col:ink(0.12),ins:12,c:['bl','br']},
     {sz:28,lw:0.8,col:ink(0.1), ins:20,c:['tl','tr','bl','br']}
   ];
-  var bc=BR[fi]; brackets(qs('.case-study.csw'),bc.sz,bc.lw,bc.col,bc.ins,bc.c);
+  var bc=BR[fi];
+  brackets(qs('.case-study.csw'),bc.sz,bc.lw,bc.col,bc.ins,bc.c);
 
-  // ── HOW IT WORKS: GRID + TUNNEL + ACCORDION ──
+  // ── HOW IT WORKS: GRID + ACCORDION ──
   var HOW_G=[
     {sp:20,col:gold(0.04)},{sp:28,col:gold(0.04)},{sp:20,col:gold(0.06)},
     {sp:32,col:gold(0.05)},{sp:16,col:gold(0.03)},{sp:20,col:gold(0.08)}
   ];
   var HOW_I=[
-    ['∠','∥','▽','⊞','⊥','↕'],['⌐','→','⌙','⊙','¬','↧'],
-    ['⌀','±','∠','⊥','∥','↕'],['⊞','⌙','▽','⌐','¬','⊕'],
-    ['↗','→','⊙','⊥','↕','↧'],['∆','⌖','∥','⊞','⊥','°']
+    ['∠','∥','▽','⊞','⊥','↕'],
+    ['⌐','→','⌙','⊙','¬','↧'],
+    ['⌀','±','∠','⊥','∥','↕'],
+    ['⊞','⌙','▽','⌐','¬','⊕'],
+    ['↗','→','⊙','⊥','↕','↧'],
+    ['∆','⌖','∥','⊞','⊥','°']
   ];
   var howEl=qs('#how');
   if(howEl){
@@ -3949,93 +4094,103 @@ function initF(n){
       if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
       ic.textContent=HOW_I[fi][i]||ic.textContent;
     });
-    initHowTunnel(fi);
   }
 
   // ── WE BUILD WATERMARK ──
-  var WBsec=qs('section[style*="padding:48px"][style*="ede8e0"]');
-  var WB=[
-    {sym:'⌀',   sz:'160px',                   col:ink(0.04),  pos:'top:24px;right:48px;'},
-    {sym:'⊥',   sz:'120px',                   col:ink(0.055), pos:'top:20px;left:32px;'},
-    {sym:'▽▽▽', sz:'180px',                   col:ink(0.03),  pos:'top:50%;right:24px;transform:translateY(-50%);'},
-    {sym:'±',   sz:'140px',                   col:ink(0.06),  pos:'bottom:0;left:40px;'},
-    {sym:'GND', sz:'clamp(160px,20vw,260px)', col:ink(0.025), pos:'top:50%;left:50%;transform:translate(-50%,-50%);'},
-    {sym:'⌙',   sz:'130px',                   col:ink(0.07),  pos:'bottom:16px;right:48px;'}
+  var WB_WM=[
+    {sym:'⌀',   sz:'160px',                  col:ink(0.04),  pos:'top:24px;right:48px;'},
+    {sym:'⊥',   sz:'120px',                  col:ink(0.055), pos:'top:20px;left:32px;'},
+    {sym:'▽▽▽', sz:'180px',                  col:ink(0.03),  pos:'top:50%;right:24px;transform:translateY(-50%);'},
+    {sym:'±',   sz:'140px',                  col:ink(0.06),  pos:'bottom:0;left:40px;'},
+    {sym:'GND', sz:'clamp(160px,20vw,260px)',col:ink(0.025), pos:'top:50%;left:50%;transform:translate(-50%,-50%);'},
+    {sym:'⌙',   sz:'130px',                  col:ink(0.07),  pos:'bottom:16px;right:48px;'}
   ];
-  var wb=WB[fi]; wm(WBsec,wb.sym,wb.sz,wb.col,wb.pos);
+  var wb=WB_WM[fi];
+  wm(qs('section[style*="padding:48px"][style*="ede8e0"]'),wb.sym,wb.sz,wb.col,wb.pos);
 
-  // ── ENGINEERING GAP DIM LINE ──
+  // ── ENGINEERING GAP DIMENSION LINE ──
   DIM_F=n;
-  var dsvg=qs('#f-dimsvg'); if(dsvg)dsvg.style.display='block';
+  var dsvg=qs('#f-dimsvg');if(dsvg)dsvg.style.display='block';
   drawDim();
-  scrollL=function(){drawDim();}; window.addEventListener('scroll',scrollL,{passive:true});
-  resizeL=function(){drawDim();}; window.addEventListener('resize',resizeL,{passive:true});
-  roB=new ResizeObserver(function(){drawDim();}); roB.observe(document.body);
+  scrollL=function(){drawDim();};
+  resizeL=function(){drawDim();};
+  window.addEventListener('scroll',scrollL,{passive:true});
+  window.addEventListener('resize',resizeL,{passive:true});
+  roB=new ResizeObserver(function(){drawDim();});
+  roB.observe(document.body);
   setTimeout(drawDim,300);
 
-  // ── CHINA ACCORDION ──
-  var CH=[
-    ['⌐','⊙','±','↧'],['→|←','⌙','⊞','¬'],['∆','∥','⊕','↧'],
-    ['⌀','±','⊙','⌐'],['⌖','→|←','⊥','¬'],['∠','⊞','↕','⌙']
+  // ── CHINA ACCORDION ICONS ──
+  var CH_I=[
+    ['⌐','⊙','±','↧'],
+    ['→|←','⌙','⊞','¬'],
+    ['∆','∥','⊕','↧'],
+    ['⌀','±','⊙','⌐'],
+    ['⌖','→|←','⊥','¬'],
+    ['∠','⊞','↕','⌙']
   ];
   document.querySelectorAll('.ch-icon').forEach(function(ic,i){
     if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
-    ic.textContent=CH[fi][i]||ic.textContent;
+    ic.textContent=CH_I[fi][i]||ic.textContent;
   });
 
-  // ── VALUE CREATION ICONS + GRID ──
+  // ── VALUE CREATION: ICONS + OPTIONAL CARD GRIDS ──
   var VAL=[
-    {Brands:'→|←',Factories:'⌙',Operators:'°',Investors:'¬', grd:null},
-    {Brands:'⊙',  Factories:'⊥',Operators:'↕',Investors:'⌐', grd:{sp:20,col:ink(0.04),who:'all'}},
-    {Brands:'∠',  Factories:'⌀',Operators:'∥',Investors:'↧', grd:{sp:24,col:ink(0.055),who:'brands'}},
-    {Brands:'⊞',  Factories:'±',Operators:'⌖',Investors:'∆', grd:{sp:20,col:ink(0.055),who:'all'}},
-    {Brands:'⌙',  Factories:'▽',Operators:'⌐',Investors:'⊕', grd:null},
-    {Brands:'↕',  Factories:'⊥',Operators:'¬',Investors:'⌀', grd:{sp:20,col:ink(0.04),who:'fi'}}
+    {Brands:'→|←',Factories:'⌙',Operators:'°',Investors:'¬',  grd:null},
+    {Brands:'⊙',  Factories:'⊥',Operators:'↕',Investors:'⌐',  grd:{sp:20,col:ink(0.04),who:'all'}},
+    {Brands:'∠',  Factories:'⌀',Operators:'∥',Investors:'↧',  grd:{sp:24,col:ink(0.055),who:'brands'}},
+    {Brands:'⊞',  Factories:'±',Operators:'⌖',Investors:'∆',  grd:{sp:20,col:ink(0.055),who:'all'}},
+    {Brands:'⌙',  Factories:'▽',Operators:'⌐',Investors:'⊕',  grd:null},
+    {Brands:'↕',  Factories:'⊥',Operators:'¬',Investors:'⌀',  grd:{sp:20,col:ink(0.04),who:'fi'}}
   ];
   var vs=VAL[fi];
   document.querySelectorAll('.value-card').forEach(function(card){
-    var h4=card.querySelector('h4'); if(!h4)return;
-    var icon=card.querySelector('.val-icon'); if(!icon)return;
+    var h4=card.querySelector('h4');if(!h4)return;
+    var icon=card.querySelector('.val-icon');if(!icon)return;
     if(!icon.dataset.forig)icon.dataset.forig=icon.textContent;
     var nm=(h4.childNodes[0]?h4.childNodes[0].textContent:'').trim();
     if(vs[nm])icon.textContent=vs[nm];
+    // Card grid
     if(vs.grd){
       var doG=(vs.grd.who==='all')||(vs.grd.who==='brands'&&nm==='Brands')||(vs.grd.who==='fi'&&(nm==='Factories'||nm==='Investors'));
       if(doG){rp(card);card.style.overflow='hidden';grid(card,vs.grd.sp,vs.grd.col);}
     }
   });
 
-  // ── INVESTMENT PATHS SYMBOLS ──
+  // ── INVESTMENT PATHS: HEADING SYMBOLS ──
   var FUND=[
-    {Proprietary:{sym:'⊞', va:'super', fs:'0.65em',op:'1'},Partnership:{sym:'→|←',va:'super', fs:'0.65em',op:'1'},Liquidity:{sym:'↧',  va:'super', fs:'0.65em',op:'1'}},
-    {Proprietary:{sym:'⌐', va:'super', fs:'0.5em', op:'1'},Partnership:{sym:'⊙',  va:'super', fs:'0.5em', op:'1'},Liquidity:{sym:'¬',  va:'super', fs:'0.5em', op:'1'}},
+    {Proprietary:{sym:'⊞', va:'super',fs:'0.65em',op:'1'},Partnership:{sym:'→|←',va:'super',fs:'0.65em',op:'1'},Liquidity:{sym:'↧',  va:'super',fs:'0.65em',op:'1'}},
+    {Proprietary:{sym:'⌐', va:'super',fs:'0.5em', op:'1'},Partnership:{sym:'⊙',  va:'super',fs:'0.5em', op:'1'},Liquidity:{sym:'¬',  va:'super',fs:'0.5em', op:'1'}},
     {Proprietary:{sym:'⌀', va:'middle',fs:'0.75em',op:'1'},Partnership:{sym:'±',  va:'middle',fs:'0.75em',op:'1'},Liquidity:{sym:'↧',  va:'middle',fs:'0.75em',op:'1'}},
-    {Proprietary:{sym:'⊥', va:'super', fs:'0.65em',op:'0.5'},Partnership:{sym:'→|←',va:'super',fs:'0.65em',op:'0.5'},Liquidity:{sym:'GND',va:'super',fs:'0.65em',op:'0.5'}},
-    {Proprietary:{sym:'⊕', va:'sub',   fs:'0.65em',op:'1'},Partnership:{sym:'∥',  va:'sub',   fs:'0.65em',op:'1'},Liquidity:{sym:'↧',  va:'sub',   fs:'0.65em',op:'1'}},
-    {Proprietary:{sym:'⌖', va:'super', fs:'0.85em',op:'1'},Partnership:{sym:'←|→',va:'super', fs:'0.85em',op:'1'},Liquidity:{sym:'↧',  va:'super', fs:'0.85em',op:'1'}}
+    {Proprietary:{sym:'⊥', va:'super',fs:'0.65em',op:'0.5'},Partnership:{sym:'→|←',va:'super',fs:'0.65em',op:'0.5'},Liquidity:{sym:'GND',va:'super',fs:'0.65em',op:'0.5'}},
+    {Proprietary:{sym:'⊕', va:'sub',  fs:'0.65em',op:'1'},Partnership:{sym:'∥',  va:'sub',  fs:'0.65em',op:'1'},Liquidity:{sym:'↧',  va:'sub',  fs:'0.65em',op:'1'}},
+    {Proprietary:{sym:'⌖', va:'super',fs:'0.85em',op:'1'},Partnership:{sym:'←|→',va:'super',fs:'0.85em',op:'1'},Liquidity:{sym:'↧',  va:'super',fs:'0.85em',op:'1'}}
   ];
   var fs=FUND[fi];
   document.querySelectorAll('.fund-card h3').forEach(function(h3){
     var nm=h3.textContent.trim();
     if(fs[nm]){
-      var sp=mk('span'); sp.className='f-fsym';
+      var sp=mk('span');sp.className='f-fsym';
       sp.textContent=fs[nm].sym;
       sp.style.cssText='font-family:"Courier New",monospace;font-size:'+fs[nm].fs+';vertical-align:'+fs[nm].va+';opacity:'+fs[nm].op+';margin-left:0.2em;pointer-events:none;user-select:none;';
       h3.appendChild(sp);
     }
   });
 
-  // ── FOOTER GRID + M6 ──
-  var FT=[
+  // ── FOOTER: GRID + M6 ──
+  var FT_G=[
     {sp:20,col:gold(0.04)},{sp:20,col:gold(0.06)},{sp:20,col:gold(0.08)},
     {sp:24,col:gold(0.04)},{sp:28,col:gold(0.04)},{sp:16,col:gold(0.04)}
   ];
-  var ftEl=qs('footer'); if(ftEl){rp(ftEl);grid(ftEl,FT[fi].sp,FT[fi].col);}
+  var ftEl=qs('footer');
+  if(ftEl){rp(ftEl);grid(ftEl,FT_G[fi].sp,FT_G[fi].col);}
   var fb=qs('.footer-bottom');
   if(fb){
     rp(fb);
-    var m6=mk('span'); m6.className='f-m6'; m6.textContent='⌀3×M6'; fb.appendChild(m6);
+    var m6=mk('span');m6.className='f-m6';m6.textContent='⌀3×M6';fb.appendChild(m6);
   }
+
+  startRAF();
 }
 
 // ── FSET ──
