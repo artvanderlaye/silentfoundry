@@ -1391,7 +1391,6 @@ body.v11-active nav * { cursor: none !important; }
 
       /* ── SWITCH HERO MOBILE ── */
       #c16s-wrap { min-height:90vw !important; width:100% !important; }
-      #c16s-wrap > div[style*="height:5px"] { height:2px !important; }
       .cslide { flex:0 0 85% !important; }
       .concept-carousel { overflow:hidden; }
       #switch-logo-img { height:20px !important; }
@@ -1740,7 +1739,6 @@ div[style*="grid-template-columns:repeat(3,1fr)"] p {
     .cs-row-right.cs-show-mobile { display:block; height:220px; }
     .cs-row-right-r1 { display:none; }
     .cs-dmets { grid-template-columns:repeat(2,1fr); gap:10px 0; }
-    .cs-dmet:nth-child(even) { border-right:none !important; padding-right:0 !important; margin-right:0 !important; }
     .cs-ddna { grid-template-columns:1fr; }
     .cs-dh { font-size:clamp(1.8rem,8vw,2.8rem); }
     .cs-dmetv { font-size:1.1rem; }
@@ -2966,11 +2964,6 @@ body.v11-active #v11-badge {
     color: rgba(244,241,236,0.88) !important;
     gap: 5px !important;
   }
-  body.mobile-hide-logo .nav-logo {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease !important;
-    pointer-events: none !important;
-  }
 }
 </style>
 
@@ -3063,10 +3056,10 @@ body.v11-active #v11-badge {
       }
       // Fade persistent UI near footer
       var footerRect = footer.getBoundingClientRect();
-      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.75);
+      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.15);
       document.body.classList.toggle('v11-footer-cursor-zone', footerRect.top < window.innerHeight * 0.95);
       // Dark cursor on gold CTA - disabled when footer is visible
-      var inFooterZone = footerRect.top < window.innerHeight * 0.75;
+      var inFooterZone = footerRect.top < window.innerHeight * 0.15;
       var ctaEl = document.querySelector('.cta');
       if (ctaEl) {
         var ctaRect = ctaEl.getBoundingClientRect();
@@ -3540,31 +3533,12 @@ body.v11-active #v11-badge {
 
   // ── AUTO-INIT V1.1 ON PAGE LOAD ──
   window.addEventListener('DOMContentLoaded', function() {
-    var isTouch = window.matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints > 0;
-    if (isTouch) return;
     initV11();
   });
 
 })();
 </script>
 <!-- ══ END V1.1 ══ -->
-
-<script>
-// ── MOBILE: hide nav logo when SWITCH featured section is in view ──
-(function() {
-  var isTouch = window.matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints > 0;
-  if (!isTouch) return;
-  var featured = document.getElementById('featured');
-  if (!featured) return;
-  function checkFeatured() {
-    var rect = featured.getBoundingClientRect();
-    var inView = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
-    document.body.classList.toggle('mobile-hide-logo', inView);
-  }
-  window.addEventListener('scroll', checkFeatured, { passive: true });
-  window.addEventListener('DOMContentLoaded', checkFeatured);
-})();
-</script>
 
 
 <script>
@@ -3953,7 +3927,7 @@ function initF1(){
   if(mwWrap){
     rp(mwWrap);
     var wwdWrap=mk('div'); wwdWrap.className='f-wm-wrap';
-    var wwdSp=mk('span'); wwdSp.textContent='⊕';
+    var wwdSp=mk('span'); wwdSp.textContent='⊞';
     wwdWrap.appendChild(wwdSp);
     mwWrap.insertBefore(wwdWrap,mwWrap.firstChild);
   }
@@ -3971,7 +3945,7 @@ function initF1(){
     // Grid
     mkGrid(howEl,16,gold(0.03));
     // Accordion icons — F3
-    var icons=['⌀','±','∠','⊥','∥','⇕'];
+    var icons=['⌀','±','∠','⊥','∥','↕'];
     document.querySelectorAll('#how .accordion-icon').forEach(function(ic,i){
       if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
       ic.textContent=icons[i]||ic.textContent;
@@ -4030,14 +4004,14 @@ function initF1(){
 
   // ── CHINA — F6: ∠ ⊞ ↕ ⌙ ──
   // Scope to .china-accordion only — avoids hitting ch-icon elements elsewhere on page
-  var chIcons=['∠','⊕','⇕','⌙'];
+  var chIcons=['∠','⊞','↕','⌙'];
   document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic,i){
     if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
     ic.textContent=chIcons[i]||ic.textContent;
   });
 
   // ── VALUE CREATION — F6: ↕ ⊥ ¬ ⌀, grid in Factories+Investors ──
-  var valIcons={Brands:'⇕',Factories:'⊥',Operators:'¬',Investors:'⌀'};
+  var valIcons={Brands:'↕',Factories:'⊥',Operators:'¬',Investors:'⌀'};
   document.querySelectorAll('.value-card').forEach(function(card){
     var h4=card.querySelector('h4'); if(!h4)return;
     var icon=card.querySelector('.val-icon'); if(!icon)return;
