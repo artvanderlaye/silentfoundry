@@ -3580,7 +3580,11 @@ body.v11-active #v11-badge {
      ⌀ Orig + F1 (final picks)
      ═══════════════════════════════════════════ -->
 <style id="f-css">
-
+#f-sw{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;align-items:center;gap:1px;background:rgba(10,10,10,0.95);border:0.5px solid rgba(200,169,110,0.2);padding:5px 8px;backdrop-filter:blur(10px);}
+.f-btn{font-family:'Courier New',monospace;font-size:0.5rem;letter-spacing:0.06em;color:rgba(244,241,236,0.22);background:none;border:none;padding:3px 7px;cursor:pointer;transition:color 0.18s;white-space:nowrap;}
+.f-btn:hover{color:rgba(200,169,110,0.7);}
+.f-btn.on{color:#c8a96e;}
+.f-div{width:1px;height:10px;background:rgba(200,169,110,0.15);margin:0 2px;}
 
 /* ── N-SYM exact from reference ── */
 .f-sym{font-family:'Courier New',monospace;vertical-align:super;font-size:0.65em;pointer-events:none;user-select:none;letter-spacing:0.05em;margin-left:0.2em;}
@@ -3609,6 +3613,10 @@ footer{align-items:start !important;}.footer-col{align-self:start !important;}
 @keyframes fFlicker{0%,100%{opacity:0.06}50%{opacity:1}}
 </style>
 
+<div id="f-sw">
+  <button class="f-btn on" onclick="fSet(0)">⌀ Orig</button>
+  <div class="f-div"></div>
+  <button class="f-btn" onclick="fSet(1)">F1</button>
 </div>
 
 <svg id="f-dimsvg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10;overflow:visible;display:none;"></svg>
@@ -4056,10 +4064,13 @@ function initF1(){
   }
 }
 
-// Auto-fire F1 on load — no switcher
-document.addEventListener('DOMContentLoaded',function(){
-  setTimeout(initF1,50);
-});
+// ── FSET ──
+function fSet(n){
+  killAll();
+  document.querySelectorAll('.f-btn').forEach(function(b,i){b.classList.toggle('on',i===n);});
+  if(n===1)setTimeout(initF1,50);
+}
+window.fSet=fSet;
 
 })();
 </script>
