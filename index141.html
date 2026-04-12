@@ -3605,8 +3605,7 @@ body.v11-active #v11-badge {
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:48px;}
 .footer-bottom span{font-size:0.58rem !important;}
-.footer-col a{margin-bottom:0 !important;line-height:1.8 !important;}
-footer{align-items:start !important;}.footer-col{align-self:start !important;}
+footer{align-items:start !important;}
 
 /* ── How It Works matrix — exact D4 ANIM 2 ── */
 .f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:1;overflow:hidden;}
@@ -3698,10 +3697,8 @@ function drawDim(){
   // Extension ticks — 16px wide, sitting exactly on y1 and y2
   ln(x-8,y1,x+8,y1);
   ln(x-8,y2,x+8,y2);
-  // Vertical dimension line — split with gap where value label sits
-  var my=(y1+y2)/2;
-  ln(x,y1,x,my-10);   // top half — stops 10px above centre
-  ln(x,my+10,x,y2);   // bottom half — starts 10px below centre
+  // Vertical dimension line
+  ln(x,y1,x,y2);
 
   // TOP arrowhead — tip at (x,y1), points UP, base 7px below inside gap
   var at=svgE('polygon');
@@ -3714,6 +3711,7 @@ function drawDim(){
   ab.setAttribute('fill',st); svg.appendChild(ab);
 
   // Value label — centred, with bg rect, in mm
+  var my=(y1+y2)/2;
   var mm=Math.round((y2-y1)*0.2646)+'mm';
   var tx=svgE('text');
   tx.setAttribute('x',x);tx.setAttribute('y',my+3);
@@ -3730,94 +3728,6 @@ function drawDim(){
   tol.setAttribute('text-anchor','start');tol.setAttribute('letter-spacing','0.5');
   tol.setAttribute('opacity','0.65');tol.textContent='±0.04';
   svg.appendChild(tol);
-
-  // ── HORIZONTAL DIM LINE — We Build grid width, drawn in same SVG same cycle ──
-  var grid=qs('.we-build-grid');
-  if(grid){
-    var gr=grid.getBoundingClientRect();
-    var hx1=gr.left,hx2=gr.right,hy=gr.bottom+24;
-    if(hx2>hx1){
-      var st2='rgba(10,10,10,0.55)';
-      function hln(a,b,c,d){
-        var e=svgE('line');
-        e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
-        e.setAttribute('stroke',st2);e.setAttribute('stroke-width','1');
-        svg.appendChild(e);
-      }
-      var hmx=(hx1+hx2)/2;
-      // Ticks
-      hln(hx1,hy-8,hx1,hy+8); hln(hx2,hy-8,hx2,hy+8);
-      // Line — split with gap for value
-      hln(hx1,hy,hmx-16,hy); hln(hmx+16,hy,hx2,hy);
-      // Left arrow — tip at hx1, points LEFT
-      var hal=svgE('polygon');
-      hal.setAttribute('points',hx1+','+hy+' '+(hx1+7)+','+(hy-3)+' '+(hx1+7)+','+(hy+3));
-      hal.setAttribute('fill',st2);svg.appendChild(hal);
-      // Right arrow — tip at hx2, points RIGHT
-      var har=svgE('polygon');
-      har.setAttribute('points',hx2+','+hy+' '+(hx2-7)+','+(hy-3)+' '+(hx2-7)+','+(hy+3));
-      har.setAttribute('fill',st2);svg.appendChild(har);
-      // Value
-      var hmm=Math.round((hx2-hx1)*0.2646)+'mm';
-      var htx=svgE('text');
-      htx.setAttribute('x',hmx);htx.setAttribute('y',hy-6);
-      htx.setAttribute('font-family','"Courier New",monospace');
-      htx.setAttribute('font-size','9');htx.setAttribute('fill',st2);
-      htx.setAttribute('text-anchor','middle');htx.setAttribute('letter-spacing','1');
-      htx.textContent=hmm;svg.appendChild(htx);
-      // ±0.04 tolerance superscript
-      var htol=svgE('text');
-      htol.setAttribute('x',hmx+13);htol.setAttribute('y',hy-14);
-      htol.setAttribute('font-family','"Courier New",monospace');
-      htol.setAttribute('font-size','6');htol.setAttribute('fill',st2);
-      htol.setAttribute('text-anchor','start');htol.setAttribute('opacity','0.65');
-      htol.textContent='±0.04';svg.appendChild(htol);
-    }
-  }
-  // ── FUNDS H2 VERTICAL DIM LINE — measures height of "Same engine different ownership" ──
-  // y1 = top of h2, y2 = bottom of h2, x = h2.right + 32px offset
-  var fundsH2=qs('.funds .section-title');
-  if(fundsH2){
-    var fhr=fundsH2.getBoundingClientRect();
-    var fy1=fhr.top, fy2=fhr.bottom, fx=fhr.right+32;
-    if(fy2>fy1){
-      var fst='rgba(10,10,10,0.55)';
-      function fln(a,b,c,d){
-        var e=svgE('line');
-        e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
-        e.setAttribute('stroke',fst);e.setAttribute('stroke-width','1.5');
-        svg.appendChild(e);
-      }
-      var fmy=(fy1+fy2)/2;
-      // Extension ticks
-      fln(fx-8,fy1,fx+8,fy1); fln(fx-8,fy2,fx+8,fy2);
-      // Line — split with gap for value
-      fln(fx,fy1,fx,fmy-10); fln(fx,fmy+10,fx,fy2);
-      // TOP arrow — tip at fy1, points UP
-      var fat=svgE('polygon');
-      fat.setAttribute('points',fx+','+fy1+' '+(fx-3)+','+(fy1+7)+' '+(fx+3)+','+(fy1+7));
-      fat.setAttribute('fill',fst);svg.appendChild(fat);
-      // BOTTOM arrow — tip at fy2, points DOWN
-      var fab=svgE('polygon');
-      fab.setAttribute('points',fx+','+fy2+' '+(fx-3)+','+(fy2-7)+' '+(fx+3)+','+(fy2-7));
-      fab.setAttribute('fill',fst);svg.appendChild(fab);
-      // Value
-      var fmm=Math.round((fy2-fy1)*0.2646)+'mm';
-      var ftx=svgE('text');
-      ftx.setAttribute('x',fx+6);ftx.setAttribute('y',fmy+3);
-      ftx.setAttribute('font-family','"Courier New",monospace');
-      ftx.setAttribute('font-size','9');ftx.setAttribute('fill',fst);
-      ftx.setAttribute('text-anchor','start');ftx.setAttribute('letter-spacing','1');
-      ftx.textContent=fmm;svg.appendChild(ftx);
-      // ±0.04 tolerance superscript
-      var ftol=svgE('text');
-      ftol.setAttribute('x',fx+19);ftol.setAttribute('y',fmy-5);
-      ftol.setAttribute('font-family','"Courier New",monospace');
-      ftol.setAttribute('font-size','6');ftol.setAttribute('fill',fst);
-      ftol.setAttribute('text-anchor','start');ftol.setAttribute('opacity','0.65');
-      ftol.textContent='±0.04';svg.appendChild(ftol);
-    }
-  }
 }
 
 // ── KILL ALL ──
@@ -3930,6 +3840,53 @@ function initF1(){
   // ── HORIZONTAL DIM LINE — We Build grid full width ──
   // x1 = left edge of .we-build-grid, x2 = right edge, y = grid bottom + 24px
   // Redraws on scroll because position:fixed SVG uses viewport coords
+  function drawHorizDim(){
+    var grid=qs('.we-build-grid');
+    if(!grid)return;
+    var gr=grid.getBoundingClientRect();
+    var x1=gr.left, x2=gr.right, y=gr.bottom+24;
+    if(x2<=x1)return;
+    var svg2=qs('#f-dimsvg'); if(!svg2)return;
+    // Remove previous horiz elements
+    svg2.querySelectorAll('.f-hdim').forEach(function(e){e.remove();});
+    var st2='rgba(10,10,10,0.35)';
+    function hln(a,b,c,d){
+      var e=svgE('line');
+      e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
+      e.setAttribute('stroke',st2);e.setAttribute('stroke-width','1');e.setAttribute('class','f-hdim');
+      svg2.appendChild(e);
+    }
+    // Ticks — vertical on x1 and x2
+    hln(x1,y-8,x1,y+8); hln(x2,y-8,x2,y+8);
+    // Horizontal line
+    hln(x1,y,x2,y);
+    // LEFT arrow — tip at x1, points LEFT
+    var al=svgE('polygon');
+    al.setAttribute('points',x1+','+y+' '+(x1+7)+','+(y-3)+' '+(x1+7)+','+(y+3));
+    al.setAttribute('fill',st2);al.setAttribute('class','f-hdim');svg2.appendChild(al);
+    // RIGHT arrow — tip at x2, points RIGHT
+    var ar=svgE('polygon');
+    ar.setAttribute('points',x2+','+y+' '+(x2-7)+','+(y-3)+' '+(x2-7)+','+(y+3));
+    ar.setAttribute('fill',st2);ar.setAttribute('class','f-hdim');svg2.appendChild(ar);
+    // Value — centred above line, transparent
+    var mx=(x1+x2)/2;
+    var hmm=Math.round((x2-x1)*0.2646)+'mm';
+    var htx=svgE('text');
+    htx.setAttribute('x',mx);htx.setAttribute('y',y-6);
+    htx.setAttribute('font-family','"Courier New",monospace');
+    htx.setAttribute('font-size','9');htx.setAttribute('fill',st2);
+    htx.setAttribute('text-anchor','middle');htx.setAttribute('letter-spacing','1');
+    htx.setAttribute('class','f-hdim');htx.textContent=hmm;svg2.appendChild(htx);
+    // ±0.04 tolerance superscript
+    var htol=svgE('text');
+    htol.setAttribute('x',mx+13);htol.setAttribute('y',y-14);
+    htol.setAttribute('font-family','"Courier New",monospace');
+    htol.setAttribute('font-size','6');htol.setAttribute('fill',st2);
+    htol.setAttribute('text-anchor','start');htol.setAttribute('opacity','0.65');
+    htol.setAttribute('class','f-hdim');htol.textContent='±0.04';svg2.appendChild(htol);
+  }
+  drawHorizDim();
+  // Redraws are handled by the existing scrollL/resizeL/roB listeners
 
   // ── CHINA — F6: ∠ ⊞ ↕ ⌙ ──
   // Scope to .china-accordion only — avoids hitting ch-icon elements elsewhere on page
