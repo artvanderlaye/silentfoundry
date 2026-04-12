@@ -1160,11 +1160,8 @@ body.v11-active nav * { cursor: none !important; }
       color: var(--accent);
       transition: transform 0.3s ease;
       min-width: 24px;
-      width: 24px;
-      display: inline-block;
-      text-align: center;
+      text-align: right;
       font-weight: 300;
-      flex-shrink: 0;
     }
     .accordion-icon.open { transform: rotate(45deg); }
     .accordion-body {
@@ -3599,13 +3596,12 @@ body.v11-active #v11-badge {
 .f-wm{position:absolute;font-family:'Courier New',monospace;pointer-events:none;user-select:none;z-index:0;line-height:1;}
 
 /* ── Static elements ── */
-.f-grid{position:absolute;inset:0;pointer-events:none;z-index:0;grid-column:1/-1;}
+.f-grid{position:absolute;inset:0;pointer-events:none;z-index:0;}
 .f-br{position:absolute;inset:0;pointer-events:none;z-index:2;}
 .f-b{position:absolute;}
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:48px;}
 .footer-bottom span{font-size:0.58rem !important;}
-footer{align-items:start !important;}
 
 /* ── How It Works matrix — exact D4 ANIM 2 ── */
 .f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:1;overflow:hidden;}
@@ -3713,6 +3709,11 @@ function drawDim(){
   // Value label — centred, with bg rect, in mm
   var my=(y1+y2)/2;
   var mm=Math.round((y2-y1)*0.2646)+'mm';
+  var rc=svgE('rect');
+  rc.setAttribute('x',x-22);rc.setAttribute('y',my-9);
+  rc.setAttribute('width','44');rc.setAttribute('height','16');
+  rc.setAttribute('fill','rgba(237,232,224,0.92)');
+  svg.appendChild(rc);
   var tx=svgE('text');
   tx.setAttribute('x',x);tx.setAttribute('y',my+3);
   tx.setAttribute('font-family','"Courier New",monospace');
@@ -3720,21 +3721,13 @@ function drawDim(){
   tx.setAttribute('text-anchor','middle');tx.setAttribute('letter-spacing','1');
   tx.textContent=mm;
   svg.appendChild(tx);
-  // ±0.04 tolerance superscript — top-right of value, engineering drawing style
-  var tol=svgE('text');
-  tol.setAttribute('x',x+13);tol.setAttribute('y',my-3);
-  tol.setAttribute('font-family','"Courier New",monospace');
-  tol.setAttribute('font-size','6');tol.setAttribute('fill',st);
-  tol.setAttribute('text-anchor','start');tol.setAttribute('letter-spacing','0.5');
-  tol.setAttribute('opacity','0.65');tol.textContent='±0.04';
-  svg.appendChild(tol);
 }
 
 // ── KILL ALL ──
 function killAll(){
   document.querySelectorAll('.f-sym,.f-grid,.f-wm,.f-wm-wrap,.f-br,.f-fsym,.f-m6,.f-matrix').forEach(function(e){e.remove();});
   document.querySelectorAll('#how .accordion-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
-  document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
+  document.querySelectorAll('.ch-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   document.querySelectorAll('.val-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   var svg=qs('#f-dimsvg');if(svg){svg.style.display='none';svg.innerHTML='';}
   DIM_ON=false;
@@ -3837,61 +3830,9 @@ function initF1(){
   setTimeout(drawDim,300);
   setTimeout(drawDim,800);
 
-  // ── HORIZONTAL DIM LINE — We Build grid full width ──
-  // x1 = left edge of .we-build-grid, x2 = right edge, y = grid bottom + 24px
-  // Redraws on scroll because position:fixed SVG uses viewport coords
-  function drawHorizDim(){
-    var grid=qs('.we-build-grid');
-    if(!grid)return;
-    var gr=grid.getBoundingClientRect();
-    var x1=gr.left, x2=gr.right, y=gr.bottom+24;
-    if(x2<=x1)return;
-    var svg2=qs('#f-dimsvg'); if(!svg2)return;
-    // Remove previous horiz elements
-    svg2.querySelectorAll('.f-hdim').forEach(function(e){e.remove();});
-    var st2='rgba(10,10,10,0.35)';
-    function hln(a,b,c,d){
-      var e=svgE('line');
-      e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
-      e.setAttribute('stroke',st2);e.setAttribute('stroke-width','1');e.setAttribute('class','f-hdim');
-      svg2.appendChild(e);
-    }
-    // Ticks — vertical on x1 and x2
-    hln(x1,y-8,x1,y+8); hln(x2,y-8,x2,y+8);
-    // Horizontal line
-    hln(x1,y,x2,y);
-    // LEFT arrow — tip at x1, points LEFT
-    var al=svgE('polygon');
-    al.setAttribute('points',x1+','+y+' '+(x1+7)+','+(y-3)+' '+(x1+7)+','+(y+3));
-    al.setAttribute('fill',st2);al.setAttribute('class','f-hdim');svg2.appendChild(al);
-    // RIGHT arrow — tip at x2, points RIGHT
-    var ar=svgE('polygon');
-    ar.setAttribute('points',x2+','+y+' '+(x2-7)+','+(y-3)+' '+(x2-7)+','+(y+3));
-    ar.setAttribute('fill',st2);ar.setAttribute('class','f-hdim');svg2.appendChild(ar);
-    // Value — centred above line, transparent
-    var mx=(x1+x2)/2;
-    var hmm=Math.round((x2-x1)*0.2646)+'mm';
-    var htx=svgE('text');
-    htx.setAttribute('x',mx);htx.setAttribute('y',y-6);
-    htx.setAttribute('font-family','"Courier New",monospace');
-    htx.setAttribute('font-size','9');htx.setAttribute('fill',st2);
-    htx.setAttribute('text-anchor','middle');htx.setAttribute('letter-spacing','1');
-    htx.setAttribute('class','f-hdim');htx.textContent=hmm;svg2.appendChild(htx);
-    // ±0.04 tolerance superscript
-    var htol=svgE('text');
-    htol.setAttribute('x',mx+13);htol.setAttribute('y',y-14);
-    htol.setAttribute('font-family','"Courier New",monospace');
-    htol.setAttribute('font-size','6');htol.setAttribute('fill',st2);
-    htol.setAttribute('text-anchor','start');htol.setAttribute('opacity','0.65');
-    htol.setAttribute('class','f-hdim');htol.textContent='±0.04';svg2.appendChild(htol);
-  }
-  drawHorizDim();
-  // Redraws are handled by the existing scrollL/resizeL/roB listeners
-
   // ── CHINA — F6: ∠ ⊞ ↕ ⌙ ──
-  // Scope to .china-accordion only — avoids hitting ch-icon elements elsewhere on page
   var chIcons=['∠','⊞','↕','⌙'];
-  document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic,i){
+  document.querySelectorAll('.ch-icon').forEach(function(ic,i){
     if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
     ic.textContent=chIcons[i]||ic.textContent;
   });
