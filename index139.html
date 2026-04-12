@@ -2349,7 +2349,7 @@ div[style*="grid-template-columns:repeat(3,1fr)"] p {
   <!-- FUNDS -->
   <section class="funds" id="funds">
     <p class="label reveal">Investment Paths</p>
-    <h2 class="section-title">Same engine<br/><em>different</em> ownership</h2>
+    <h2 class="section-title">Same engine<br/><em>different</em> ownership.</h2>
     <style>
       .fund-expand { font-size:0.88rem; line-height:1.75; color:rgba(10,10,10,0.6); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
       .fund-card:hover .fund-expand { max-height:160px; opacity:1; }
@@ -3666,16 +3666,13 @@ function mkBrackets(el,sz,lw,col,ins,corners){
 function drawDim(){
   var svg=qs('#f-dimsvg');
   if(!svg||!DIM_ON){if(svg)svg.innerHTML='';return;}
-  // y1 = #e2.bottom = 3892px (confirmed live) — bottom of carousel content
-  // y2 = factory-solo.top = 4000px (confirmed live)
-  // Gap = 108px total (48px section padding + 60px spacer)
-  // Top arrow butts against carousel image bottom, bottom arrow butts against factory image top
-  var e2=qs('#e2');
-  var engFallback=qs('section[style*="padding:48px"][style*="ede8e0"]');
+  // y1 = We Build section bottom = 3940px (confirmed live)
+  // y2 = factory-solo top = 4000px (confirmed live)
+  // Gap = 60px — the height:60px spacer div between section and factory image
+  var eng=qs('section[style*="padding:48px"][style*="ede8e0"]');
   var fac=qs('.factory-solo');
-  if(!fac){svg.innerHTML='';return;}
-  var y1=e2 ? e2.getBoundingClientRect().bottom : (engFallback ? engFallback.getBoundingClientRect().bottom-48 : null);
-  if(!y1){svg.innerHTML='';return;}
+  if(!eng||!fac){svg.innerHTML='';return;}
+  var y1=eng.getBoundingClientRect().bottom;
   var y2=fac.getBoundingClientRect().top;
   if(y2<=y1){svg.innerHTML='';return;}
 
