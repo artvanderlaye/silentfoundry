@@ -3601,7 +3601,6 @@ body.v11-active #v11-badge {
 .f-b{position:absolute;}
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:48px;}
-.footer-bottom span{font-size:0.58rem !important;}
 
 /* ── How It Works matrix — exact D4 ANIM 2 ── */
 .f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:1;overflow:hidden;}
@@ -3666,14 +3665,11 @@ function mkBrackets(el,sz,lw,col,ins,corners){
 function drawDim(){
   var svg=qs('#f-dimsvg');
   if(!svg||!DIM_ON){if(svg)svg.innerHTML='';return;}
-  // y1 = We Build section bottom = 3940px (confirmed live)
-  // y2 = factory-solo top = 4000px (confirmed live)
-  // Gap = 60px — the height:60px spacer div between section and factory image
   var eng=qs('section[style*="padding:48px"][style*="ede8e0"]');
   var fac=qs('.factory-solo');
   if(!eng||!fac){svg.innerHTML='';return;}
-  var y1=eng.getBoundingClientRect().bottom;
-  var y2=fac.getBoundingClientRect().top;
+  var y1=eng.getBoundingClientRect().bottom;  // section bottom = visual start of gap
+  var y2=fac.getBoundingClientRect().top;     // exact top of factory image
   if(y2<=y1){svg.innerHTML='';return;}
 
   var x=window.innerWidth/2;
@@ -3802,8 +3798,7 @@ function initF1(){
   // ── WE BUILD — ⌀ centred watermark ──
   // Section structure: section > [overlay z-index:0] + [content div z-index:1 > mw-wrap > ...]
   // Inject watermark into the mw-wrap inside the z-index:1 content div
-  // Target the mw-wrap that contains we-build-grid specifically
-  var wbMw=qs('.we-build-grid') ? qs('.we-build-grid').parentElement : null;
+  var wbMw=qs('section[style*="padding:48px"][style*="ede8e0"] .mw-wrap');
   if(wbMw){
     rp(wbMw);
     var wbWrap=mk('div'); wbWrap.className='f-wm-wrap';
