@@ -3589,8 +3589,9 @@ body.v11-active #v11-badge {
 @keyframes fsh{from{background-position:200% center}to{background-position:-200% center}}
 
 /* ── WWD watermark — exact D1 ij-wm ── */
-.f-wm-wrap{position:absolute;inset:0;pointer-events:none;z-index:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.f-wm-wrap span{font-family:'Courier New',monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);}
+.f-wm-wrap{position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.f-wm-wrap span{font-family:'Courier New',monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);animation:fPulse 18s linear infinite;}
+@keyframes fPulse{0%,100%{opacity:0.35;transform:scale(0.97)}50%{opacity:0.85;transform:scale(1.03)}}
 
 /* ── We Build watermark ── */
 .f-wm{position:absolute;font-family:'Courier New',monospace;pointer-events:none;user-select:none;z-index:0;line-height:1;}
@@ -3603,7 +3604,7 @@ body.v11-active #v11-badge {
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:48px;}
 
 /* ── How It Works matrix — exact D4 ANIM 2 ── */
-.f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:1;overflow:hidden;}
+.f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:0;overflow:hidden;}
 @keyframes fFlicker{0%,100%{opacity:0.06}50%{opacity:1}}
 </style>
 
@@ -3668,7 +3669,7 @@ function drawDim(){
   var eng=qs('section[style*="padding:48px"][style*="ede8e0"]');
   var fac=qs('.factory-solo');
   if(!eng||!fac){svg.innerHTML='';return;}
-  var y1=eng.getBoundingClientRect().bottom;  // section bottom = visual start of gap
+  var y1=eng.getBoundingClientRect().bottom;  // exact bottom of We Build
   var y2=fac.getBoundingClientRect().top;     // exact top of factory image
   if(y2<=y1){svg.innerHTML='';return;}
 
@@ -3746,15 +3747,13 @@ function initF1(){
     ht.appendChild(s);
   }
 
-  // ── WWD — ⊞ large centred watermark ──
-  // Inject into mw-wrap (direct child of wwd-section) as first child
-  var mwWrap=qs('.wwd-section .mw-wrap');
-  if(mwWrap){
-    rp(mwWrap);
-    var wwdWrap=mk('div'); wwdWrap.className='f-wm-wrap';
-    var wwdSp=mk('span'); wwdSp.textContent='⊞';
-    wwdWrap.appendChild(wwdSp);
-    mwWrap.insertBefore(wwdWrap,mwWrap.firstChild);
+  // ── WWD — ⊞ large centred watermark, D1 ij-wm style ──
+  var wwdEl=qs('.wwd-section');
+  if(wwdEl){
+    rp(wwdEl);
+    var wrap=mk('div'); wrap.className='f-wm-wrap';
+    var sp=mk('span'); sp.textContent='⊞';
+    wrap.appendChild(sp); wwdEl.appendChild(wrap);
   }
 
   // ── MARSHALL — F2: all 4 corners, 24px, 0.5px, ink(0.1), inset 16px ──
@@ -3792,21 +3791,22 @@ function initF1(){
       cell.textContent=icons[mi%icons.length];
       mx.appendChild(cell);
     }
-    howEl.insertBefore(mx,howEl.firstChild);
+    howEl.appendChild(mx);
   }
 
-  // ── WE BUILD — ⌀ centred watermark ──
-  // Section structure: section > [overlay z-index:0] + [content div z-index:1 > mw-wrap > ...]
-  // Inject watermark into the mw-wrap inside the z-index:1 content div
-  var wbMw=qs('section[style*="padding:48px"][style*="ede8e0"] .mw-wrap');
-  if(wbMw){
-    rp(wbMw);
-    var wbWrap=mk('div'); wbWrap.className='f-wm-wrap';
-    wbWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
-    var wbSp=mk('span'); wbSp.textContent='⌀';
-    wbSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
-    wbWrap.appendChild(wbSp);
-    wbMw.insertBefore(wbWrap,wbMw.firstChild);
+  // ── WE BUILD — ±0.001 watermark, top-right, dark ink ──
+  var wbEl=qs('section[style*="padding:48px"][style*="ede8e0"]');
+  if(wbEl){
+    rp(wbEl);
+    var w=mk('span'); w.className='f-wm';
+    w.textContent='±0.001';
+    w.style.cssText=
+      'position:absolute;top:24px;right:48px;'+
+      'font-size:clamp(60px,9vw,130px);'+
+      'color:rgba(10,10,10,0.04);'+
+      'font-family:"Courier New",monospace;'+
+      'pointer-events:none;user-select:none;z-index:0;line-height:1;';
+    wbEl.appendChild(w);
   }
 
   // ── DIM LINE — F3 style, redraws on scroll/resize ──
