@@ -66,15 +66,16 @@ li { font-size:0.92rem; color:rgba(244,241,236,0.55); margin-bottom:8px; }
 a { color:var(--accent); text-decoration:none; }
 a:hover { text-decoration:underline; }
 /* FOOTER */
-/* old footer CSS removed — now using index footer styles */
+footer { background:#060606; padding:56px 64px 32px; border-top:1px solid rgba(200,169,110,0.08); }
+.footer-bottom { border-top:1px solid rgba(200,169,110,0.06); padding-top:24px; display:flex; justify-content:space-between; align-items:center; margin-top:48px; }
+.footer-bottom span { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.2); }
 @media(max-width:900px) {
   .nav-links, #legal-nav > div { display:none; }
   .nav-toggle { display:flex; }
   #legal-nav { padding:14px 24px; }
   .container { padding:120px 6vw 80px; }
   footer { padding:40px 24px 24px; }
-  .footer-inner { grid-template-columns:1fr !important; padding:40px 24px 32px !important; gap:24px !important; }
-  .footer-bottom { flex-direction:column !important; gap:8px !important; text-align:center !important; padding:16px 24px !important; }
+  .footer-grid { grid-template-columns:1fr !important; gap:32px !important; }
 }
 </style>
 </head>
@@ -267,29 +268,5 @@ a:hover { text-decoration:underline; }
     <span>© 2026 Silent Foundry Group. All rights reserved.</span>
 
   </div>
-<script>
-(function(){
-  function gold(a){return 'rgba(200,169,110,'+a+')';}
-  function mk(t){return document.createElement(t);}
-  function rp(el){if(el&&window.getComputedStyle(el).position==='static')el.style.position='relative';}
-  function mkGrid(el,sp,col){
-    if(!el)return; rp(el);
-    var g=mk('div');
-    g.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px),repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px);';
-    el.appendChild(g);
-  }
-  document.addEventListener('DOMContentLoaded',function(){
-    var ftEl=document.querySelector('footer');
-    if(ftEl){rp(ftEl);mkGrid(ftEl,16,gold(0.04));}
-    var fb=document.querySelector('.footer-bottom');
-    if(fb){rp(fb);
-      var m6=mk('span');
-      m6.style.cssText='font-family:"Courier New",monospace;font-size:0.52rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;';
-      m6.textContent='⌀3×M6';
-      fb.appendChild(m6);
-    }
-  });
-})();
-</script>
 </body>
 </html>
