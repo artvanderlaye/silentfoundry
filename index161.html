@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>html{background:#0a0a0a;overflow-x:hidden;}body{visibility:hidden;overflow-x:hidden;}</style>
+<style>html{background:#0a0a0a;}body{visibility:hidden;}</style>
 <script>document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible';});</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1129,7 +1129,6 @@ body.v11-active nav * { cursor: none !important; }
       border-bottom: 1px solid rgba(244,241,236,0.08);
       border-left: 1px solid transparent;
       border-image: linear-gradient(to bottom, transparent 0%, rgba(200,169,110,0.35) 50%, transparent 100%) 1;
-      max-width: 680px;
     }
     .accordion-header {
       display: flex;
@@ -2551,7 +2550,7 @@ body.v11-active nav * { cursor: none !important; }
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
-    <div class="footer-logo-wrap">
+    <div class="reveal footer-logo-wrap">
       <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:8px;">
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
         <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
@@ -4219,9 +4218,11 @@ function initF1(){
   var dsvg=qs('#f-dimsvg'); if(dsvg)dsvg.style.display='block';
   drawDim();
   var _dimScrollTimer=null;
+  scrollL=function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);};
   resizeL=function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);};
+  window.addEventListener('scroll',scrollL,{passive:true});
   window.addEventListener('resize',resizeL,{passive:true});
-  roB=new ResizeObserver(function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);});
+  roB=new ResizeObserver(function(){drawDim();});
   roB.observe(document.body);
   setTimeout(drawDim,300);
   setTimeout(drawDim,800);
