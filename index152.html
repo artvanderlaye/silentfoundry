@@ -1127,8 +1127,7 @@ body.v11-active nav * { cursor: none !important; }
     .accordion-header {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 16px;
+      justify-content: space-between;
       padding: 20px 0 20px 16px;
       cursor: pointer;
       user-select: none;
@@ -1460,9 +1459,7 @@ body.v11-active nav * { cursor: none !important; }
   }
   .cpl-china-left {
     padding: 24px !important;
-    border: none !important;
   }
-  .cpl-china-left::before { display: none !important; }
 
   /* SWITCH — Acquisition block */
   div[style*="background:var(--cream)"][style*="padding:64px 48px"] {
@@ -1486,9 +1483,6 @@ body.v11-active nav * { cursor: none !important; }
   /* Investment Paths fund-body */
   .fund-body {
     padding: 28px 24px !important;
-  }
-  .fund-card {
-    border: none !important;
   }
 
   /* Value section — already ok but ensure padding */
@@ -1551,7 +1545,7 @@ body.v11-active nav * { cursor: none !important; }
   overflow: hidden;
   min-height: 0;
 }
-.ch-body { overflow: hidden; max-height: 0; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1); }
+.ch-body { overflow: hidden; max-height: 0; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease; }
 .ch-body.ch-open { max-height: 300px; }
 /* Value Creation */
 .val-body {
@@ -2134,7 +2128,7 @@ body.v11-active nav * { cursor: none !important; }
               <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">Concept Development</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body">
+            <div class="ch-body" style="display:grid;grid-template-rows:0fr;opacity:0;">
               <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture, and channel logic.</p>
             </div>
           </div>
@@ -2143,7 +2137,7 @@ body.v11-active nav * { cursor: none !important; }
               <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">System Design</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body">
+            <div class="ch-body" style="display:grid;grid-template-rows:0fr;opacity:0;">
               <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales — so every touchpoint is manufacturable and governed.</p>
             </div>
           </div>
@@ -2152,7 +2146,7 @@ body.v11-active nav * { cursor: none !important; }
               <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">Commercial Model</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body">
+            <div class="ch-body" style="display:grid;grid-template-rows:0fr;opacity:0;">
               <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer — subscriptions, accessories, or service contracts.</p>
             </div>
           </div>
@@ -2161,7 +2155,7 @@ body.v11-active nav * { cursor: none !important; }
               <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">Market Pathway</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body">
+            <div class="ch-body" style="display:grid;grid-template-rows:0fr;opacity:0;">
               <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture — so the brand enters China with the right partner and the right terms.</p>
             </div>
           </div>
@@ -3379,10 +3373,12 @@ body.v11-active #v11-badge {
     var sweep = eyebrow ? eyebrow.querySelector('.ch-sweep') : null;
     var isOpen = body.classList.contains('ch-open');
     // Close all
-    document.querySelectorAll('.ch-body').forEach(function(b) { b.classList.remove('ch-open'); });
+    document.querySelectorAll('.ch-body').forEach(function(b) { b.classList.remove('ch-open'); b.style.gridTemplateRows = '0fr'; b.style.opacity = '0'; });
     document.querySelectorAll('.ch-icon').forEach(function(i) { i.classList.remove('ch-open'); });
     if (!isOpen) {
       body.classList.add('ch-open');
+      body.style.gridTemplateRows = '1fr';
+      body.style.opacity = '1';
       icon.classList.add('ch-open');
     }
   };
@@ -3695,7 +3691,7 @@ body.v11-active #v11-badge {
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;}
 @media(max-width:768px){.f-m6{display:none !important;}}
-.footer-bottom{padding:10px 48px !important;background:var(--black) !important;}
+.footer-bottom{padding:10px 48px !important;}
 .footer-bottom span{font-size:0.42rem !important;letter-spacing:0.12em !important;}
 .f-m6{font-size:0.42rem !important;}
 .footer-col a{margin-bottom:0 !important;line-height:1.8 !important;}
@@ -4188,6 +4184,7 @@ function initF1(){
   var fb=qs('.footer-bottom');
   if(fb){
     rp(fb);
+    mkGrid(fb,16,gold(0.04));
     var m6=mk('span'); m6.className='f-m6'; m6.textContent='⌀3×M6';
     fb.appendChild(m6);
   }
