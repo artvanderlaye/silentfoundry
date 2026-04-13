@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>html{background:#0a0a0a;overflow-x:hidden;}body{visibility:hidden;overflow-x:hidden;position:relative;}</style>
+<style>html{background:#0a0a0a;overflow-x:hidden;}body{visibility:hidden;overflow-x:hidden;}</style>
 <script>document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible';});</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -3778,7 +3778,7 @@ footer{align-items:start !important;position:relative !important;display:block !
 
 </div>
 
-<div id="f-dimsvg-wrap" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;display:none;"><svg id="f-dimsvg" style="position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:hidden;" xmlns="http://www.w3.org/2000/svg"></svg></div>
+<svg id="f-dimsvg" style="position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:10;overflow:hidden;display:none;"></svg>
 
 <script id="f-js">
 (function(){
@@ -3827,20 +3827,9 @@ function mkBrackets(el,sz,lw,col,ins,corners){
 // Top anchor: bottom of We Build section (section[style*="padding:48px"][style*="ede8e0"])
 // Bottom anchor: top of .factory-solo
 // Both tips exact — no rounding
-function docRect(el){
-  var r=el.getBoundingClientRect();
-  var sx=window.scrollX||window.pageXOffset||0;
-  var sy=window.scrollY||window.pageYOffset||0;
-  return {top:r.top+sy,bottom:r.bottom+sy,left:r.left+sx,right:r.right+sx,width:r.width,height:r.height};
-}
 function drawDim(){
-  var wrap=qs('#f-dimsvg-wrap');
   var svg=qs('#f-dimsvg');
-  if(!svg||!DIM_ON){if(svg)svg.innerHTML='';if(wrap)wrap.style.display='none';return;}
-  // Set SVG height to full document height
-  var docH=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
-  svg.setAttribute('height',docH);
-  svg.style.height=docH+'px';
+  if(!svg||!DIM_ON){if(svg)svg.innerHTML='';return;}
   // y1 = #e2.bottom = 3892px (confirmed live) — bottom of carousel content
   // y2 = factory-solo.top = 4000px (confirmed live)
   // Gap = 108px total (48px section padding + 60px spacer)
@@ -3849,15 +3838,14 @@ function drawDim(){
   var engFallback=qs('section[style*="padding:48px"][style*="ede8e0"]');
   var fac=qs('.factory-solo');
   if(!fac){svg.innerHTML='';return;}
-  var y1=e2 ? docRect(e2).bottom : (engFallback ? docRect(engFallback).bottom-48 : null);
+  var y1=e2 ? e2.getBoundingClientRect().bottom : (engFallback ? engFallback.getBoundingClientRect().bottom-48 : null);
   if(!y1){svg.innerHTML='';return;}
-  var y2=docRect(fac).top;
+  var y2=fac.getBoundingClientRect().top;
   if(y2<=y1){svg.innerHTML='';return;}
 
   var x=window.innerWidth/2;
   var st=ink(0.15);
   svg.innerHTML='';
-  wrap.style.display='block';
 
   function ln(x1,y1,x2,y2,sw){
     var e=svgE('line');
@@ -3905,7 +3893,7 @@ function drawDim(){
   // ── HORIZONTAL DIM LINE — We Build grid width, drawn in same SVG same cycle ──
   var grid=qs('.we-build-grid');
   if(grid){
-    var gr=docRect(grid);
+    var gr=grid.getBoundingClientRect();
     var hx1=gr.left,hx2=gr.right,hy=gr.bottom+24;
     if(hx2>hx1){
       var st2='rgba(10,10,10,0.18)';
@@ -3948,7 +3936,7 @@ function drawDim(){
   // ── MARSHALL CASE STUDY — vertical height of cs-wrap ──
   var csWrap=document.querySelector('.cs-wrap');
   if(csWrap){
-    var msr=docRect(csWrap);
+    var msr=csWrap.getBoundingClientRect();
     var mst='rgba(10,10,10,0.18)';
     var msx=msr.right+20,msy1=msr.top,msy2=msr.bottom;
     if(msy2>msy1){
@@ -3976,10 +3964,10 @@ function drawDim(){
     var hst='rgba(200,169,110,0.18)';
     // Top = top of first accordion-header (Identify eyebrow)
     // Bottom = bottom of last accordion-item
-    var hy1=firstHdr ? docRect(firstHdr).top : docRect(firstItem).top;
-    var hy2=docRect(lastItem).bottom;
+    var hy1=firstHdr ? firstHdr.getBoundingClientRect().top : firstItem.getBoundingClientRect().top;
+    var hy2=lastItem.getBoundingClientRect().bottom;
     // X = right edge of accordion-steps minus 48px — safe from text even when expanded
-    var asr=docRect(accSteps);
+    var asr=accSteps.getBoundingClientRect();
     var hx=asr.right-48;
     if(hy2>hy1){
       function hwln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',hst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
@@ -4010,7 +3998,7 @@ function drawDim(){
   // ── 45° DIAGONAL — Marshall top-right to bottom-left ──
   var csw=qs('.case-study.csw');
   if(csw){
-    var csr=docRect(csw);
+    var csr=csw.getBoundingClientRect();
     var cdst='rgba(10,10,10,0.12)';
     var cdx1=csr.right-24, cdy1=csr.top+24;
     var cdx2=csr.left+24, cdy2=csr.bottom-24;
@@ -4033,8 +4021,8 @@ function drawDim(){
   var howEl2=qs('#how');
   var marshEl=qs('.case-study.csw');
   if(howEl2&&marshEl){
-    var hw2r=docRect(howEl2);
-    var mar=docRect(marshEl);
+    var hw2r=howEl2.getBoundingClientRect();
+    var mar=marshEl.getBoundingClientRect();
     var wst='rgba(200,169,110,0.10)';
     var wx1=hw2r.right-16, wy1=hw2r.top+16;
     var wx2=mar.left+16, wy2=mar.top+16;
@@ -4049,7 +4037,7 @@ function drawDim(){
   // ── SWITCH HERO — height measurement, left edge ──
   var c16wrap=qs('#c16s-wrap');
   if(c16wrap){
-    var c16r=docRect(c16wrap);
+    var c16r=c16wrap.getBoundingClientRect();
     var c16st='rgba(0,180,216,0.2)';
     var c16x=c16r.left+8, c16y1=c16r.top, c16y2=c16r.bottom;
     if(c16y2>c16y1){
@@ -4071,7 +4059,7 @@ function drawDim(){
   // All rules: mm only, rgba(10,10,10,0.55), ±0.05 tolerance, continuous horiz line
   var valH2=document.querySelector('.value h2');
   if(valH2){
-    var vr=docRect(valH2);
+    var vr=valH2.getBoundingClientRect();
     var vst='rgba(10,10,10,0.18)';
     function vln(a,b,c,d){
       var e=svgE('line');
@@ -4152,8 +4140,7 @@ function killAll(){
   document.querySelectorAll('#how .accordion-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
   document.querySelectorAll('.val-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
-  var swrap=qs('#f-dimsvg-wrap');if(swrap){swrap.style.display='none';}
-  var svg=qs('#f-dimsvg');if(svg){svg.innerHTML='';}
+  var svg=qs('#f-dimsvg');if(svg){svg.style.display='none';svg.innerHTML='';}
   DIM_ON=false;
   if(scrollL){window.removeEventListener('scroll',scrollL);scrollL=null;}
   if(resizeL){window.removeEventListener('resize',resizeL);resizeL=null;}
@@ -4255,12 +4242,13 @@ function initF1(){
 
   // ── DIM LINE — F3 style, redraws on scroll/resize ──
   DIM_ON=true;
-  var dsvg=qs('#f-dimsvg-wrap'); if(dsvg)dsvg.style.display='block';
+  var dsvg=qs('#f-dimsvg'); if(dsvg)dsvg.style.display='block';
   drawDim();
   var _dimScrollTimer=null;
   resizeL=function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);};
   window.addEventListener('resize',resizeL,{passive:true});
-  // ResizeObserver removed — caused redraws on every layout change
+  roB=new ResizeObserver(function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);});
+  roB.observe(document.body);
   setTimeout(drawDim,300);
   setTimeout(drawDim,800);
 
