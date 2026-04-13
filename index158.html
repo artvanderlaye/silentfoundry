@@ -659,8 +659,6 @@ body.v11-active nav * { cursor: none !important; }
        MOBILE
        ══════════════════════════════ */
     @media (max-width: 900px) {
-      .nav-toggle { align-items: center !important; justify-content: center !important; transition: transform 0.3s ease !important; }
-      .nav-toggle.open { transform: rotate(45deg) !important; }
       section { padding: 80px 24px; }
       .hero { padding: 0 24px 60px; }
       .hero-scroll { display: none; }
@@ -682,13 +680,13 @@ body.v11-active nav * { cursor: none !important; }
       .steps { grid-template-columns: 1fr; }
       .value-card { padding: 36px 28px; }
       #c16-overlay { left:20px !important; right:20px !important; bottom:20px !important; }
-      #c16-overlay p { max-width:220px !important; font-size:0.7rem !important; line-height:1.55 !important; margin-bottom:12px !important; }
-      #c16-overlay > div[style*="display:flex"] { gap:12px !important; }
-      #c16-overlay span[style*="0.68rem"] { font-size:0.5rem !important; margin-bottom:6px !important; }
-      #c16-overlay span[style*="1.9rem"] { font-size:0.95rem !important; }
-      #c16-overlay span[style*="0.58rem"] { font-size:0.44rem !important; }
-      #switch-logo-img { height:16px !important; max-width:120px !important; margin-bottom:3px !important; }
-      #c16s-wrap { min-height:62vw !important; }
+      #c16-overlay p { max-width:100% !important; font-size:0.78rem !important; line-height:1.6 !important; margin-bottom:16px !important; }
+      #c16-overlay > div[style*="display:flex"] { gap:14px !important; }
+      #c16-overlay span[style*="0.68rem"] { font-size:0.55rem !important; margin-bottom:8px !important; }
+      #c16-overlay span[style*="1.9rem"] { font-size:1.1rem !important; }
+      #c16-overlay span[style*="0.58rem"] { font-size:0.48rem !important; }
+      #switch-logo-img { height:18px !important; max-width:140px !important; margin-bottom:4px !important; }
+      #c16s-wrap { min-height:65vw !important; }
     }
 
     /* ── TRANSLATION LAYOUT ── */
@@ -1139,7 +1137,6 @@ body.v11-active nav * { cursor: none !important; }
       padding: 20px 0 20px 16px;
       cursor: pointer;
       user-select: none;
-      max-width: 680px;
     }
     .accordion-header:hover .accordion-title { color: var(--accent); }
     .accordion-left {
@@ -1190,7 +1187,7 @@ body.v11-active nav * { cursor: none !important; }
       font-size: 0.92rem;
       line-height: 1.8;
       color: rgba(244,241,236,0.5);
-      max-width: 480px;
+      max-width: 500px;
     }
   
     /* ── PERSISTENT SCROLL INDICATOR ── */
@@ -1486,9 +1483,6 @@ body.v11-active nav * { cursor: none !important; }
     gap: 16px !important;
     padding: 0 !important;
   }
-  div[style*="grid-template-columns:repeat(3,1fr)"][style*="gap:24px"] {
-    margin-bottom: 28px !important;
-  }
   div[style*="grid-template-columns:120px 1fr"][style*="gap:48px"]:not([style*="margin-bottom"]) {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
@@ -1581,8 +1575,8 @@ body.v11-active nav * { cursor: none !important; }
   overflow: hidden;
   min-height: 0;
 }
-.ch-body { overflow: hidden; max-height: 0; }
-.ch-body.ch-open { }
+.ch-body { overflow: hidden; max-height: 0; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1); }
+.ch-body.ch-open { max-height: 300px; }
 /* Value Creation */
 .val-body {
   font-size: var(--text-body) !important;
@@ -1751,7 +1745,7 @@ body.v11-active nav * { cursor: none !important; }
       <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;" id="lang-zh">中文</button>
       <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;" id="lang-en">EN</button>
     </div>
-    <button class="nav-toggle" aria-label="Menu" style="font-size:38px;line-height:1;color:rgba(244,241,236,0.7);padding:0;width:38px;height:38px;background:none;border:none;">±</button>
+    <button class="nav-toggle" aria-label="Menu" style="font-size:28px;line-height:1;color:rgba(244,241,236,0.7);display:flex;align-items:center;justify-content:center;width:32px;height:32px;padding:4px;">±</button>
   </nav>
 
   <!-- HERO -->
@@ -2674,18 +2668,12 @@ window.addEventListener('load', function() {
   function toggleAccordion(header) {
     const body = header.nextElementSibling;
     const icon = header.querySelector('.accordion-icon');
-    const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
+    const isOpen = body.classList.contains('open');
     // Close all
-    document.querySelectorAll('.accordion-body').forEach(b => {
-      b.style.maxHeight = '0';
-      b.style.paddingBottom = '0';
-      b.classList.remove('open');
-    });
+    document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
     document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
+    // Open this one if it was closed
     if (!isOpen) {
-      body.style.transition = 'max-height 0.6s ease, padding 0.3s ease';
-      body.style.maxHeight = body.scrollHeight + 'px';
-      body.style.paddingBottom = '20px';
       body.classList.add('open');
       icon.classList.add('open');
     }
@@ -3413,14 +3401,9 @@ body.v11-active #v11-badge {
     var sweep = eyebrow ? eyebrow.querySelector('.ch-sweep') : null;
     var isOpen = body.classList.contains('ch-open');
     // Close all
-    document.querySelectorAll('.ch-body').forEach(function(b) {
-      b.style.maxHeight = '0';
-      b.classList.remove('ch-open');
-    });
+    document.querySelectorAll('.ch-body').forEach(function(b) { b.classList.remove('ch-open'); });
     document.querySelectorAll('.ch-icon').forEach(function(i) { i.classList.remove('ch-open'); });
     if (!isOpen) {
-      body.style.transition = 'max-height 0.6s ease';
-      body.style.maxHeight = body.scrollHeight + 'px';
       body.classList.add('ch-open');
       icon.classList.add('ch-open');
     }
@@ -3722,7 +3705,7 @@ body.v11-active #v11-badge {
 
 /* ── WWD watermark — exact D1 ij-wm ── */
 .f-wm-wrap{position:absolute;inset:0;pointer-events:none;z-index:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.f-wm-wrap span{font-family:'Courier New',monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);}
+.f-wm-wrap span{font-family:'Courier New',monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);}
 
 /* ── We Build watermark ── */
 .f-wm{position:absolute;font-family:'Courier New',monospace;pointer-events:none;user-select:none;z-index:0;line-height:1;}
@@ -3734,7 +3717,7 @@ body.v11-active #v11-badge {
 .f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;}
 @media(max-width:768px){.f-m6{display:none !important;}}
-.footer-bottom{padding:16px 48px !important;background:var(--black) !important;}
+.footer-bottom{padding:10px 48px !important;background:var(--black) !important;}
 .footer-bottom span{font-size:0.42rem !important;letter-spacing:0.12em !important;}
 .f-m6{font-size:0.42rem !important;}
 .footer-col a{margin-bottom:0 !important;line-height:1.8 !important;}
@@ -3948,6 +3931,25 @@ function drawDim(){
       ftol.textContent='±0.05';svg.appendChild(ftol);
     }
   }
+  // ── THESIS QUOTE — horizontal width of quote block ──
+  var thesisBlock=document.querySelector('section[style*="padding:100px 48px"][style*="ede8e0"] > div');
+  if(thesisBlock){
+    var tr2=thesisBlock.getBoundingClientRect();
+    var tst='rgba(10,10,10,0.18)';
+    var tx1=tr2.left,tx2=tr2.right,thy=tr2.bottom+16;
+    if(tx2>tx1){
+      function tln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',tst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
+      var tmx=(tx1+tx2)/2;
+      tln(tx1,thy-6,tx1,thy+6);tln(tx2,thy-6,tx2,thy+6);
+      tln(tx1,thy,tmx-18,thy);tln(tmx+18,thy,tx2,thy);
+      var tat=svgE('polygon');tat.setAttribute('points',tx1+','+thy+' '+(tx1+6)+','+(thy-3)+' '+(tx1+6)+','+(thy+3));tat.setAttribute('fill',tst);svg.appendChild(tat);
+      var tab=svgE('polygon');tab.setAttribute('points',tx2+','+thy+' '+(tx2-6)+','+(thy-3)+' '+(tx2-6)+','+(thy+3));tab.setAttribute('fill',tst);svg.appendChild(tab);
+      var thmm=Math.round((tx2-tx1)*0.2646)+'mm';
+      var thtx=svgE('text');thtx.setAttribute('x',tmx);thtx.setAttribute('y',thy-5);thtx.setAttribute('font-family','"Courier New",monospace');thtx.setAttribute('font-size','9');thtx.setAttribute('fill',tst);thtx.setAttribute('text-anchor','middle');thtx.setAttribute('letter-spacing','1');thtx.textContent=thmm;svg.appendChild(thtx);
+      var thtol=svgE('text');thtol.setAttribute('x',tmx+13);thtol.setAttribute('y',thy-13);thtol.setAttribute('font-family','"Courier New",monospace');thtol.setAttribute('font-size','6');thtol.setAttribute('fill',tst);thtol.setAttribute('text-anchor','start');thtol.setAttribute('opacity','0.55');thtol.textContent='±0.05';svg.appendChild(thtol);
+    }
+  }
+
   // ── MARSHALL CASE STUDY — vertical height of cs-wrap ──
   var csWrap=document.querySelector('.cs-wrap');
   if(csWrap){
@@ -3972,7 +3974,7 @@ function drawDim(){
   if(howSec){
     var hr=howSec.getBoundingClientRect();
     var hst='rgba(200,169,110,0.18)';
-    var hx=hr.left+760, hy1=hr.top, hy2=hr.bottom;
+    var hx=hr.right-8, hy1=hr.top, hy2=hr.bottom;
     if(hy2>hy1){
       function hwln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',hst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
       var hwmy=(hy1+hy2)/2;
@@ -3986,6 +3988,50 @@ function drawDim(){
     }
   }
 
+  // ── HERO HEADLINE — horizontal width of BRAND SOUL line ──
+  var heroBot=qs('.hero-headline-bottom');
+  if(heroBot){
+    var hbr=heroBot.getBoundingClientRect();
+    var hbst='rgba(200,169,110,0.15)';
+    var hbx1=hbr.left, hbx2=hbr.right, hby=hbr.bottom+14;
+    if(hbx2>hbx1){
+      function hbln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',hbst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
+      var hbmx=(hbx1+hbx2)/2;
+      hbln(hbx1,hby-5,hbx1,hby+5);hbln(hbx2,hby-5,hbx2,hby+5);
+      hbln(hbx1,hby,hbmx-20,hby);hbln(hbmx+20,hby,hbx2,hby);
+      var hbal=svgE('polygon');hbal.setAttribute('points',hbx1+','+hby+' '+(hbx1+6)+','+(hby-3)+' '+(hbx1+6)+','+(hby+3));hbal.setAttribute('fill',hbst);svg.appendChild(hbal);
+      var hbar=svgE('polygon');hbar.setAttribute('points',hbx2+','+hby+' '+(hbx2-6)+','+(hby-3)+' '+(hbx2-6)+','+(hby+3));hbar.setAttribute('fill',hbst);svg.appendChild(hbar);
+      var hbmm=Math.round((hbx2-hbx1)*0.2646)+'mm';
+      var hbtx=svgE('text');hbtx.setAttribute('x',hbmx);hbtx.setAttribute('y',hby-6);hbtx.setAttribute('font-family','"Courier New",monospace');hbtx.setAttribute('font-size','9');hbtx.setAttribute('fill',hbst);hbtx.setAttribute('text-anchor','middle');hbtx.setAttribute('letter-spacing','1');hbtx.textContent=hbmm;svg.appendChild(hbtx);
+    }
+  }
+
+  // ── 45° DIAGONAL — hero corner to headline origin ──
+  // Runs from bottom-left of hero to start of BRAND SOUL line
+  var heroEl=qs('.hero');
+  var heroH1=qs('.hero-headline');
+  if(heroEl&&heroH1){
+    var hel=heroEl.getBoundingClientRect();
+    var h1r=heroH1.getBoundingClientRect();
+    var dst='rgba(200,169,110,0.12)';
+    var dx1=hel.left+48, dy1=hel.bottom-40;
+    var dx2=h1r.left, dy2=h1r.top;
+    if(dy1>dy2){
+      var dln=svgE('line');
+      dln.setAttribute('x1',dx1);dln.setAttribute('y1',dy1);
+      dln.setAttribute('x2',dx2);dln.setAttribute('y2',dy2);
+      dln.setAttribute('stroke',dst);dln.setAttribute('stroke-width','1');
+      dln.setAttribute('stroke-dasharray','4,3');
+      svg.appendChild(dln);
+      // Angle label at midpoint
+      var dmx=(dx1+dx2)/2, dmy=(dy1+dy2)/2;
+      var ang=Math.round(Math.atan2(dy2-dy1,dx2-dx1)*180/Math.PI);
+      var dtx=svgE('text');dtx.setAttribute('x',dmx+8);dtx.setAttribute('y',dmy);
+      dtx.setAttribute('font-family','"Courier New",monospace');dtx.setAttribute('font-size','8');
+      dtx.setAttribute('fill',dst);dtx.setAttribute('letter-spacing','0.5');
+      dtx.textContent=ang+'°';svg.appendChild(dtx);
+    }
+  }
 
   // ── 45° DIAGONAL — Marshall top-right to bottom-left ──
   var csw=qs('.case-study.csw');
@@ -4007,6 +4053,25 @@ function drawDim(){
     cdtx.setAttribute('font-family','"Courier New",monospace');cdtx.setAttribute('font-size','7');
     cdtx.setAttribute('fill',cdst);cdtx.setAttribute('letter-spacing','0.5');
     cdtx.textContent=cda+'°';svg.appendChild(cdtx);
+  }
+
+  // ── CTA SECTION — width measurement, top edge ──
+  var ctaEl=qs('.cta');
+  if(ctaEl){
+    var ctar=ctaEl.getBoundingClientRect();
+    var ctast='rgba(10,10,10,0.15)';
+    var ctx1=ctar.left, ctx2=ctar.right, cthy=ctar.top+16;
+    if(ctx2>ctx1){
+      function ctln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',ctast);e.setAttribute('stroke-width','1');svg.appendChild(e);}
+      var ctmx=(ctx1+ctx2)/2;
+      ctln(ctx1,cthy-5,ctx1,cthy+5);ctln(ctx2,cthy-5,ctx2,cthy+5);
+      ctln(ctx1,cthy,ctmx-22,cthy);ctln(ctmx+22,cthy,ctx2,cthy);
+      var ctal=svgE('polygon');ctal.setAttribute('points',ctx1+','+cthy+' '+(ctx1+6)+','+(cthy-3)+' '+(ctx1+6)+','+(cthy+3));ctal.setAttribute('fill',ctast);svg.appendChild(ctal);
+      var ctar2=svgE('polygon');ctar2.setAttribute('points',ctx2+','+cthy+' '+(ctx2-6)+','+(cthy-3)+' '+(ctx2-6)+','+(cthy+3));ctar2.setAttribute('fill',ctast);svg.appendChild(ctar2);
+      var ctamm=Math.round((ctx2-ctx1)*0.2646)+'mm';
+      var ctatx=svgE('text');ctatx.setAttribute('x',ctmx);ctatx.setAttribute('y',cthy-7);ctatx.setAttribute('font-family','"Courier New",monospace');ctatx.setAttribute('font-size','9');ctatx.setAttribute('fill',ctast);ctatx.setAttribute('text-anchor','middle');ctatx.setAttribute('letter-spacing','1');ctatx.textContent=ctamm;svg.appendChild(ctatx);
+      var ctaref=svgE('text');ctaref.setAttribute('x',ctx2-4);ctaref.setAttribute('y',cthy+18);ctaref.setAttribute('font-family','"Courier New",monospace');ctaref.setAttribute('font-size','6');ctaref.setAttribute('fill',ctast);ctaref.setAttribute('text-anchor','end');ctaref.setAttribute('opacity','0.6');ctaref.textContent='REF';svg.appendChild(ctaref);
+    }
   }
 
   // ── WAVEFORM DIAGONAL — from How It Works top-right to Marshall top-left ──
@@ -4215,21 +4280,9 @@ function initF1(){
     var wbWrap=mk('div'); wbWrap.className='f-wm-wrap';
     wbWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
     var wbSp=mk('span'); wbSp.textContent='⌀';
-    wbSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
+    wbSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(80px,14vw,180px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
     wbWrap.appendChild(wbSp);
     wbMw.insertBefore(wbWrap,wbMw.firstChild);
-  }
-
-  // ── CHINA WATERMARK — 中 ──
-  var chinaContentDiv=qs('.cpl-d1-top') ? qs('.cpl-d1-top').parentElement : null;
-  if(chinaContentDiv){
-    rp(chinaContentDiv);
-    var chWrap=mk('div'); chWrap.className='f-wm-wrap';
-    chWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
-    var chSp=mk('span'); chSp.textContent='中';
-    chSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
-    chWrap.appendChild(chSp);
-    chinaContentDiv.insertBefore(chWrap,chinaContentDiv.firstChild);
   }
 
   // ── DIM LINE — F3 style, redraws on scroll/resize ──
