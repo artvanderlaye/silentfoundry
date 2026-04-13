@@ -3841,54 +3841,6 @@ function drawDim(){
   var docH=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight);
   svg.setAttribute('height',docH);
   svg.style.height=docH+'px';
-  wrap.style.display='block';
-
-  // ── UPDATE-IN-PLACE ENGINE ──
-  // Elements are reused across draws — no delete/recreate, just attribute updates
-  var _uid=0;
-  var _firstDraw=!svg.hasAttribute('data-drawn');
-  if(_firstDraw) svg.setAttribute('data-drawn','1');
-
-  function getOrCreate(tag,id){
-    var el=svg.querySelector('#'+id);
-    if(!el){
-      el=document.createElementNS('http://www.w3.org/2000/svg',tag);
-      el.setAttribute('id',id);
-      svg.appendChild(el);
-    }
-    return el;
-  }
-  function setLine(x1,y1,x2,y2,stroke,sw){
-    var id='dl'+(++_uid);
-    var el=getOrCreate('line',id);
-    el.setAttribute('x1',x1);el.setAttribute('y1',y1);
-    el.setAttribute('x2',x2);el.setAttribute('y2',y2);
-    el.setAttribute('stroke',stroke);el.setAttribute('stroke-width',sw||'1');
-    el.style.display='';
-  }
-  function setPoly(points,fill){
-    var id='dp'+(++_uid);
-    var el=getOrCreate('polygon',id);
-    el.setAttribute('points',points);el.setAttribute('fill',fill);
-    el.style.display='';
-  }
-  function setText(x,y,content,fill,size,anchor,ls,opacity){
-    var id='dt'+(++_uid);
-    var el=getOrCreate('text',id);
-    el.setAttribute('x',x);el.setAttribute('y',y);
-    el.setAttribute('font-family','"Courier New",monospace');
-    el.setAttribute('font-size',size||'9');
-    el.setAttribute('fill',fill);
-    el.setAttribute('text-anchor',anchor||'middle');
-    el.setAttribute('letter-spacing',ls||'1');
-    if(opacity) el.setAttribute('opacity',opacity); else el.removeAttribute('opacity');
-    el.textContent=content;
-    el.style.display='';
-  }
-  // Hide all existing elements before redraw — they get shown as updated
-  if(!_firstDraw){
-    svg.querySelectorAll('line,polygon,text').forEach(function(el){el.style.display='none';});
-  }
   // y1 = #e2.bottom = 3892px (confirmed live) — bottom of carousel content
   // y2 = factory-solo.top = 4000px (confirmed live)
   // Gap = 108px total (48px section padding + 60px spacer)
@@ -3904,18 +3856,51 @@ function drawDim(){
 
   var x=window.innerWidth/2;
   var st=ink(0.15);
+  svg.innerHTML='';
+  wrap.style.display='block';
 
-  // Extension ticks + main vertical gap line
+  function ln(x1,y1,x2,y2,sw){
+    var e=svgE('line');
+    e.setAttribute('x1',x1);e.setAttribute('y1',y1);e.setAttribute('x2',x2);e.setAttribute('y2',y2);
+    e.setAttribute('stroke',st);e.setAttribute('stroke-width',sw||'1.5');
+    svg.appendChild(e);
+  }
+
+  // Extension ticks — 16px wide, sitting exactly on y1 and y2
+  ln(x-8,y1,x+8,y1);
+  ln(x-8,y2,x+8,y2);
+  // Vertical dimension line — split with gap where value label sits
   var my=(y1+y2)/2;
-  setLine(x-8,y1,x+8,y1,st,'1.5');
-  setLine(x-8,y2,x+8,y2,st,'1.5');
-  setLine(x,y1,x,my-10,st,'1.5');
-  setLine(x,my+10,x,y2,st,'1.5');
-  setPoly(x+','+y1+' '+(x-3)+','+(y1+7)+' '+(x+3)+','+(y1+7),st);
-  setPoly(x+','+y2+' '+(x-3)+','+(y2-7)+' '+(x+3)+','+(y2-7),st);
+  ln(x,y1,x,my-10);   // top half — stops 10px above centre
+  ln(x,my+10,x,y2);   // bottom half — starts 10px below centre
+
+  // TOP arrowhead — tip at (x,y1), points UP, base 7px below inside gap
+  var at=svgE('polygon');
+  at.setAttribute('points',x+','+y1+' '+(x-3)+','+(y1+7)+' '+(x+3)+','+(y1+7));
+  at.setAttribute('fill',st); svg.appendChild(at);
+
+  // BOTTOM arrowhead — tip at (x,y2), points DOWN, base 7px above inside gap
+  var ab=svgE('polygon');
+  ab.setAttribute('points',x+','+y2+' '+(x-3)+','+(y2-7)+' '+(x+3)+','+(y2-7));
+  ab.setAttribute('fill',st); svg.appendChild(ab);
+
+  // Value label — centred, with bg rect, in mm
   var mm=Math.round((y2-y1)*0.2646)+'mm';
-  setText(x,my+3,mm,st,'9','middle','1',null);
-  setText(x+13,my-3,'±0.05',st,'6','start','0.5','0.65');
+  var tx=svgE('text');
+  tx.setAttribute('x',x);tx.setAttribute('y',my+3);
+  tx.setAttribute('font-family','"Courier New",monospace');
+  tx.setAttribute('font-size','9');tx.setAttribute('fill',st);
+  tx.setAttribute('text-anchor','middle');tx.setAttribute('letter-spacing','1');
+  tx.textContent=mm;
+  svg.appendChild(tx);
+  // ±0.05 tolerance superscript — top-right of value, engineering drawing style
+  var tol=svgE('text');
+  tol.setAttribute('x',x+13);tol.setAttribute('y',my-3);
+  tol.setAttribute('font-family','"Courier New",monospace');
+  tol.setAttribute('font-size','6');tol.setAttribute('fill',st);
+  tol.setAttribute('text-anchor','start');tol.setAttribute('letter-spacing','0.5');
+  tol.setAttribute('opacity','0.65');tol.textContent='±0.05';
+  svg.appendChild(tol);
 
   // ── HORIZONTAL DIM LINE — We Build grid width, drawn in same SVG same cycle ──
   var grid=qs('.we-build-grid');
@@ -3924,14 +3909,40 @@ function drawDim(){
     var hx1=gr.left,hx2=gr.right,hy=gr.bottom+24;
     if(hx2>hx1){
       var st2='rgba(10,10,10,0.18)';
+      function hln(a,b,c,d){
+        var e=svgE('line');
+        e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
+        e.setAttribute('stroke',st2);e.setAttribute('stroke-width','1');
+        svg.appendChild(e);
+      }
       var hmx=(hx1+hx2)/2;
-      setLine(hx1,hy-8,hx1,hy+8,st2,'1');setLine(hx2,hy-8,hx2,hy+8,st2,'1');
-      setLine(hx1,hy,hx2,hy,st2,'1');
-      setPoly(hx1+','+hy+' '+(hx1+7)+','+(hy-3)+' '+(hx1+7)+','+(hy+3),st2);
-      setPoly(hx2+','+hy+' '+(hx2-7)+','+(hy-3)+' '+(hx2-7)+','+(hy+3),st2);
+      // Ticks
+      hln(hx1,hy-8,hx1,hy+8); hln(hx2,hy-8,hx2,hy+8);
+      // Line — split with gap for value
+      hln(hx1,hy,hx2,hy);
+      // Left arrow — tip at hx1, points LEFT
+      var hal=svgE('polygon');
+      hal.setAttribute('points',hx1+','+hy+' '+(hx1+7)+','+(hy-3)+' '+(hx1+7)+','+(hy+3));
+      hal.setAttribute('fill',st2);svg.appendChild(hal);
+      // Right arrow — tip at hx2, points RIGHT
+      var har=svgE('polygon');
+      har.setAttribute('points',hx2+','+hy+' '+(hx2-7)+','+(hy-3)+' '+(hx2-7)+','+(hy+3));
+      har.setAttribute('fill',st2);svg.appendChild(har);
+      // Value
       var hmm=Math.round((hx2-hx1)*0.2646)+'mm';
-      setText(hmx,hy-6,hmm,st2,'9','middle','1',null);
-      setText(hmx+13,hy-14,'±0.05',st2,'6','start','1','0.65');
+      var htx=svgE('text');
+      htx.setAttribute('x',hmx);htx.setAttribute('y',hy-6);
+      htx.setAttribute('font-family','"Courier New",monospace');
+      htx.setAttribute('font-size','9');htx.setAttribute('fill',st2);
+      htx.setAttribute('text-anchor','middle');htx.setAttribute('letter-spacing','1');
+      htx.textContent=hmm;svg.appendChild(htx);
+      // ±0.05 tolerance superscript
+      var htol=svgE('text');
+      htol.setAttribute('x',hmx+13);htol.setAttribute('y',hy-14);
+      htol.setAttribute('font-family','"Courier New",monospace');
+      htol.setAttribute('font-size','6');htol.setAttribute('fill',st2);
+      htol.setAttribute('text-anchor','start');htol.setAttribute('opacity','0.65');
+      htol.textContent='±0.05';svg.appendChild(htol);
     }
   }
   // ── MARSHALL CASE STUDY — vertical height of cs-wrap ──
@@ -3941,14 +3952,15 @@ function drawDim(){
     var mst='rgba(10,10,10,0.18)';
     var msx=msr.right+20,msy1=msr.top,msy2=msr.bottom;
     if(msy2>msy1){
+      function msln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',mst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
       var msmy=(msy1+msy2)/2;
-      setLine(msx-6,msy1,msx+6,msy1,mst,'1');setLine(msx-6,msy2,msx+6,msy2,mst,'1');
-      setLine(msx,msy1,msx,msmy-10,mst,'1');setLine(msx,msmy+10,msx,msy2,mst,'1');
-      setPoly(msx+','+msy1+' '+(msx-3)+','+(msy1+7)+' '+(msx+3)+','+(msy1+7),mst);
-      setPoly(msx+','+msy2+' '+(msx-3)+','+(msy2-7)+' '+(msx+3)+','+(msy2-7),mst);
+      msln(msx-6,msy1,msx+6,msy1);msln(msx-6,msy2,msx+6,msy2);
+      msln(msx,msy1,msx,msmy-10);msln(msx,msmy+10,msx,msy2);
+      var msat=svgE('polygon');msat.setAttribute('points',msx+','+msy1+' '+(msx-3)+','+(msy1+7)+' '+(msx+3)+','+(msy1+7));msat.setAttribute('fill',mst);svg.appendChild(msat);
+      var msab=svgE('polygon');msab.setAttribute('points',msx+','+msy2+' '+(msx-3)+','+(msy2-7)+' '+(msx+3)+','+(msy2-7));msab.setAttribute('fill',mst);svg.appendChild(msab);
       var msmm=Math.round((msy2-msy1)*0.2646)+'mm';
-      setText(msx+5,msmy+3,msmm,mst,'9','start','1',null);
-      setText(msx+18,msmy-5,'±0.05',mst,'6','start','1','0.55');
+      var mstx=svgE('text');mstx.setAttribute('x',msx+5);mstx.setAttribute('y',msmy+3);mstx.setAttribute('font-family','"Courier New",monospace');mstx.setAttribute('font-size','9');mstx.setAttribute('fill',mst);mstx.setAttribute('text-anchor','start');mstx.setAttribute('letter-spacing','1');mstx.textContent=msmm;svg.appendChild(mstx);
+      var mstol=svgE('text');mstol.setAttribute('x',msx+18);mstol.setAttribute('y',msmy-5);mstol.setAttribute('font-family','"Courier New",monospace');mstol.setAttribute('font-size','6');mstol.setAttribute('fill',mst);mstol.setAttribute('text-anchor','start');mstol.setAttribute('opacity','0.55');mstol.textContent='±0.05';svg.appendChild(mstol);
     }
   }
 
@@ -3970,14 +3982,26 @@ function drawDim(){
     var asr=docRect(accSteps);
     var hx=asr.right-48;
     if(hy2>hy1){
+      function hwln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',hst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
       var hwmy=(hy1+hy2)/2;
-      setLine(hx-6,hy1,hx+6,hy1,hst,'1');setLine(hx-6,hy2,hx+6,hy2,hst,'1');
-      setLine(hx,hy1,hx,hwmy-16,hst,'1');setLine(hx,hwmy+16,hx,hy2,hst,'1');
-      setPoly(hx+','+hy1+' '+(hx-3)+','+(hy1+7)+' '+(hx+3)+','+(hy1+7),hst);
-      setPoly(hx+','+hy2+' '+(hx-3)+','+(hy2-7)+' '+(hx+3)+','+(hy2-7),hst);
+      // Ticks
+      hwln(hx-6,hy1,hx+6,hy1);hwln(hx-6,hy2,hx+6,hy2);
+      // Line with 16px gap each side of centre for label
+      hwln(hx,hy1,hx,hwmy-16);hwln(hx,hwmy+16,hx,hy2);
+      // Arrows
+      var hwat=svgE('polygon');hwat.setAttribute('points',hx+','+hy1+' '+(hx-3)+','+(hy1+7)+' '+(hx+3)+','+(hy1+7));hwat.setAttribute('fill',hst);svg.appendChild(hwat);
+      var hwab=svgE('polygon');hwab.setAttribute('points',hx+','+hy2+' '+(hx-3)+','+(hy2-7)+' '+(hx+3)+','+(hy2-7));hwab.setAttribute('fill',hst);svg.appendChild(hwab);
+      // Value label — centred on line
       var hwmm=Math.round((hy2-hy1)*0.2646)+'mm';
-      setText(hx,hwmy+3,hwmm,hst,'9','middle','1',null);
-      setText(hx+2,hwmy-9,'±0.02',hst,'6','middle','1','0.55');
+      var hwtx=svgE('text');hwtx.setAttribute('x',hx);hwtx.setAttribute('y',hwmy+3);
+      hwtx.setAttribute('font-family','"Courier New",monospace');hwtx.setAttribute('font-size','9');
+      hwtx.setAttribute('fill',hst);hwtx.setAttribute('text-anchor','middle');hwtx.setAttribute('letter-spacing','1');
+      hwtx.textContent=hwmm;svg.appendChild(hwtx);
+      // Tolerance superscript
+      var hwtol=svgE('text');hwtol.setAttribute('x',hx+2);hwtol.setAttribute('y',hwmy-9);
+      hwtol.setAttribute('font-family','"Courier New",monospace');hwtol.setAttribute('font-size','6');
+      hwtol.setAttribute('fill',hst);hwtol.setAttribute('text-anchor','middle');hwtol.setAttribute('opacity','0.55');
+      hwtol.textContent='±0.02';svg.appendChild(hwtol);
     }
   }
   } // end width guard
@@ -3990,14 +4014,19 @@ function drawDim(){
     var cdst='rgba(10,10,10,0.12)';
     var cdx1=csr.right-24, cdy1=csr.top+24;
     var cdx2=csr.left+24, cdy2=csr.bottom-24;
+    var cdln=svgE('line');
+    cdln.setAttribute('x1',cdx1);cdln.setAttribute('y1',cdy1);
+    cdln.setAttribute('x2',cdx2);cdln.setAttribute('y2',cdy2);
+    cdln.setAttribute('stroke',cdst);cdln.setAttribute('stroke-width','0.5');
+    cdln.setAttribute('stroke-dasharray','3,4');
+    svg.appendChild(cdln);
+    // Angle annotation at 1/3 point
     var cdmx=cdx1+(cdx2-cdx1)*0.35, cdmy=cdy1+(cdy2-cdy1)*0.35;
     var cda=Math.round(Math.atan2(cdy2-cdy1,cdx2-cdx1)*180/Math.PI);
-    var cdlEl=getOrCreate('line','dl'+(++_uid));
-    cdlEl.setAttribute('x1',cdx1);cdlEl.setAttribute('y1',cdy1);
-    cdlEl.setAttribute('x2',cdx2);cdlEl.setAttribute('y2',cdy2);
-    cdlEl.setAttribute('stroke',cdst);cdlEl.setAttribute('stroke-width','0.5');
-    cdlEl.setAttribute('stroke-dasharray','3,4');cdlEl.style.display='';
-    setText(cdmx+6,cdmy-4,cda+'°',cdst,'7','start','0.5',null);
+    var cdtx=svgE('text');cdtx.setAttribute('x',cdmx+6);cdtx.setAttribute('y',cdmy-4);
+    cdtx.setAttribute('font-family','"Courier New",monospace');cdtx.setAttribute('font-size','7');
+    cdtx.setAttribute('fill',cdst);cdtx.setAttribute('letter-spacing','0.5');
+    cdtx.textContent=cda+'°';svg.appendChild(cdtx);
   }
 
   // ── WAVEFORM DIAGONAL — from How It Works top-right to Marshall top-left ──
@@ -4009,11 +4038,12 @@ function drawDim(){
     var wst='rgba(200,169,110,0.10)';
     var wx1=hw2r.right-16, wy1=hw2r.top+16;
     var wx2=mar.left+16, wy2=mar.top+16;
-    var wdlEl=getOrCreate('line','dl'+(++_uid));
-    wdlEl.setAttribute('x1',wx1);wdlEl.setAttribute('y1',wy1);
-    wdlEl.setAttribute('x2',wx2);wdlEl.setAttribute('y2',wy2);
-    wdlEl.setAttribute('stroke',wst);wdlEl.setAttribute('stroke-width','0.5');
-    wdlEl.setAttribute('stroke-dasharray','2,5');wdlEl.style.display='';
+    var wdln=svgE('line');
+    wdln.setAttribute('x1',wx1);wdln.setAttribute('y1',wy1);
+    wdln.setAttribute('x2',wx2);wdln.setAttribute('y2',wy2);
+    wdln.setAttribute('stroke',wst);wdln.setAttribute('stroke-width','0.5');
+    wdln.setAttribute('stroke-dasharray','2,5');
+    svg.appendChild(wdln);
   }
 
   // ── SWITCH HERO — height measurement, left edge ──
@@ -4023,14 +4053,15 @@ function drawDim(){
     var c16st='rgba(0,180,216,0.2)';
     var c16x=c16r.left+8, c16y1=c16r.top, c16y2=c16r.bottom;
     if(c16y2>c16y1){
+      function c16ln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',c16st);e.setAttribute('stroke-width','1');svg.appendChild(e);}
       var c16my=(c16y1+c16y2)/2;
-      setLine(c16x-5,c16y1,c16x+5,c16y1,c16st,'1');setLine(c16x-5,c16y2,c16x+5,c16y2,c16st,'1');
-      setLine(c16x,c16y1,c16x,c16my-10,c16st,'1');setLine(c16x,c16my+10,c16x,c16y2,c16st,'1');
-      setPoly(c16x+','+c16y1+' '+(c16x-3)+','+(c16y1+7)+' '+(c16x+3)+','+(c16y1+7),c16st);
-      setPoly(c16x+','+c16y2+' '+(c16x-3)+','+(c16y2-7)+' '+(c16x+3)+','+(c16y2-7),c16st);
+      c16ln(c16x-5,c16y1,c16x+5,c16y1);c16ln(c16x-5,c16y2,c16x+5,c16y2);
+      c16ln(c16x,c16y1,c16x,c16my-10);c16ln(c16x,c16my+10,c16x,c16y2);
+      var c16at=svgE('polygon');c16at.setAttribute('points',c16x+','+c16y1+' '+(c16x-3)+','+(c16y1+7)+' '+(c16x+3)+','+(c16y1+7));c16at.setAttribute('fill',c16st);svg.appendChild(c16at);
+      var c16ab=svgE('polygon');c16ab.setAttribute('points',c16x+','+c16y2+' '+(c16x-3)+','+(c16y2-7)+' '+(c16x+3)+','+(c16y2-7));c16ab.setAttribute('fill',c16st);svg.appendChild(c16ab);
       var c16mm=Math.round((c16y2-c16y1)*0.2646)+'mm';
-      setText(c16x+5,c16my+3,c16mm,c16st,'9','start','1',null);
-      setText(c16x+18,c16my-5,'±0.05',c16st,'6','start','1','0.6');
+      var c16tx=svgE('text');c16tx.setAttribute('x',c16x+5);c16tx.setAttribute('y',c16my+3);c16tx.setAttribute('font-family','"Courier New",monospace');c16tx.setAttribute('font-size','9');c16tx.setAttribute('fill',c16st);c16tx.setAttribute('text-anchor','start');c16tx.setAttribute('letter-spacing','1');c16tx.textContent=c16mm;svg.appendChild(c16tx);
+      var c16tol=svgE('text');c16tol.setAttribute('x',c16x+18);c16tol.setAttribute('y',c16my-5);c16tol.setAttribute('font-family','"Courier New",monospace');c16tol.setAttribute('font-size','6');c16tol.setAttribute('fill',c16st);c16tol.setAttribute('text-anchor','start');c16tol.setAttribute('opacity','0.6');c16tol.textContent='±0.05';svg.appendChild(c16tol);
     }
   }
 
@@ -4042,29 +4073,75 @@ function drawDim(){
   if(valH2){
     var vr=docRect(valH2);
     var vst='rgba(10,10,10,0.18)';
-    // ── HORIZONTAL — width of h2 ──
+    function vln(a,b,c,d){
+      var e=svgE('line');
+      e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);
+      e.setAttribute('stroke',vst);e.setAttribute('stroke-width','1');
+      svg.appendChild(e);
+    }
+    // ── HORIZONTAL — width of h2, line 20px below bottom ──
     var vx1=vr.left, vx2=vr.right, vhy=vr.bottom+20;
     if(vx2>vx1){
+      // Ticks — vertical
+      vln(vx1,vhy-8,vx1,vhy+8); vln(vx2,vhy-8,vx2,vhy+8);
+      // Continuous line (no gap)
+      vln(vx1,vhy,vx2,vhy);
+      // Left arrow — tip at vx1, points LEFT
+      var val=svgE('polygon');
+      val.setAttribute('points',vx1+','+vhy+' '+(vx1+7)+','+(vhy-3)+' '+(vx1+7)+','+(vhy+3));
+      val.setAttribute('fill',vst);svg.appendChild(val);
+      // Right arrow — tip at vx2, points RIGHT
+      var var2=svgE('polygon');
+      var2.setAttribute('points',vx2+','+vhy+' '+(vx2-7)+','+(vhy-3)+' '+(vx2-7)+','+(vhy+3));
+      var2.setAttribute('fill',vst);svg.appendChild(var2);
+      // Value — sits above line, mm only
       var vmx=(vx1+vx2)/2;
-      setLine(vx1,vhy-8,vx1,vhy+8,vst,'1');setLine(vx2,vhy-8,vx2,vhy+8,vst,'1');
-      setLine(vx1,vhy,vx2,vhy,vst,'1');
-      setPoly(vx1+','+vhy+' '+(vx1+7)+','+(vhy-3)+' '+(vx1+7)+','+(vhy+3),vst);
-      setPoly(vx2+','+vhy+' '+(vx2-7)+','+(vhy-3)+' '+(vx2-7)+','+(vhy+3),vst);
       var vhmm=Math.round((vx2-vx1)*0.2646)+'mm';
-      setText(vmx,vhy-8,vhmm,vst,'9','middle','1',null);
-      setText(vmx+13,vhy-16,'±0.05',vst,'6','start','1','0.65');
+      var vhtx=svgE('text');
+      vhtx.setAttribute('x',vmx);vhtx.setAttribute('y',vhy-8);
+      vhtx.setAttribute('font-family','"Courier New",monospace');
+      vhtx.setAttribute('font-size','9');vhtx.setAttribute('fill',vst);
+      vhtx.setAttribute('text-anchor','middle');vhtx.setAttribute('letter-spacing','1');
+      vhtx.textContent=vhmm;svg.appendChild(vhtx);
+      // ±0.05 tolerance superscript
+      var vhtol=svgE('text');
+      vhtol.setAttribute('x',vmx+13);vhtol.setAttribute('y',vhy-16);
+      vhtol.setAttribute('font-family','"Courier New",monospace');
+      vhtol.setAttribute('font-size','6');vhtol.setAttribute('fill',vst);
+      vhtol.setAttribute('text-anchor','start');vhtol.setAttribute('opacity','0.65');
+      vhtol.textContent='±0.05';svg.appendChild(vhtol);
     }
-    // ── VERTICAL — height of h2 ──
+    // ── VERTICAL — height of h2, line 12px right of h2 ──
     var vvx=vr.right+12, vvy1=vr.top, vvy2=vr.bottom;
     if(vvy2>vvy1){
       var vvmy=(vvy1+vvy2)/2;
-      setLine(vvx-8,vvy1,vvx+8,vvy1,vst,'1');setLine(vvx-8,vvy2,vvx+8,vvy2,vst,'1');
-      setLine(vvx,vvy1,vvx,vvmy-10,vst,'1');setLine(vvx,vvmy+10,vvx,vvy2,vst,'1');
-      setPoly(vvx+','+vvy1+' '+(vvx-3)+','+(vvy1+7)+' '+(vvx+3)+','+(vvy1+7),vst);
-      setPoly(vvx+','+vvy2+' '+(vvx-3)+','+(vvy2-7)+' '+(vvx+3)+','+(vvy2-7),vst);
+      // Ticks — horizontal
+      vln(vvx-8,vvy1,vvx+8,vvy1); vln(vvx-8,vvy2,vvx+8,vvy2);
+      // Line — split with gap for value
+      vln(vvx,vvy1,vvx,vvmy-10); vln(vvx,vvmy+10,vvx,vvy2);
+      // TOP arrow — tip at vvy1, points UP
+      var vat=svgE('polygon');
+      vat.setAttribute('points',vvx+','+vvy1+' '+(vvx-3)+','+(vvy1+7)+' '+(vvx+3)+','+(vvy1+7));
+      vat.setAttribute('fill',vst);svg.appendChild(vat);
+      // BOTTOM arrow — tip at vvy2, points DOWN
+      var vab=svgE('polygon');
+      vab.setAttribute('points',vvx+','+vvy2+' '+(vvx-3)+','+(vvy2-7)+' '+(vvx+3)+','+(vvy2-7));
+      vab.setAttribute('fill',vst);svg.appendChild(vab);
+      // Value — sits to right of line, mm only
       var vvmm=Math.round((vvy2-vvy1)*0.2646)+'mm';
-      setText(vvx+6,vvmy+3,vvmm,vst,'9','start','1',null);
-      setText(vvx+19,vvmy-5,'±0.05',vst,'6','start','1','0.65');
+      var vvtx=svgE('text');
+      vvtx.setAttribute('x',vvx+6);vvtx.setAttribute('y',vvmy+3);
+      vvtx.setAttribute('font-family','"Courier New",monospace');
+      vvtx.setAttribute('font-size','9');vvtx.setAttribute('fill',vst);
+      vvtx.setAttribute('text-anchor','start');vvtx.setAttribute('letter-spacing','1');
+      vvtx.textContent=vvmm;svg.appendChild(vvtx);
+      // ±0.05 tolerance superscript
+      var vvtol=svgE('text');
+      vvtol.setAttribute('x',vvx+19);vvtol.setAttribute('y',vvmy-5);
+      vvtol.setAttribute('font-family','"Courier New",monospace');
+      vvtol.setAttribute('font-size','6');vvtol.setAttribute('fill',vst);
+      vvtol.setAttribute('text-anchor','start');vvtol.setAttribute('opacity','0.65');
+      vvtol.textContent='±0.05';svg.appendChild(vvtol);
     }
   }
 }
