@@ -9,7 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Sans+SC:wght@100&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="sf-styles.css" />
 <style>
 /* CURSOR OVERRIDE — must come after sf-styles.css */
@@ -659,7 +659,8 @@ body.v11-active nav * { cursor: none !important; }
        MOBILE
        ══════════════════════════════ */
     @media (max-width: 900px) {
-      .nav-toggle { align-items: center !important; justify-content: center !important; }
+      .nav-toggle { align-items: center !important; justify-content: center !important; transition: transform 0.3s ease !important; }
+      .nav-toggle.open { transform: rotate(45deg) !important; }
       section { padding: 80px 24px; }
       .hero { padding: 0 24px 60px; }
       .hero-scroll { display: none; }
@@ -2148,7 +2149,7 @@ body.v11-active nav * { cursor: none !important; }
 </style>
 <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:28px 56px 48px;align-items:start;" class="cpl-d1-top">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:48px 56px 48px;align-items:start;" class="cpl-d1-top">
       <div class="cpl-china-left">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,2.8vw,3.2rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
@@ -2602,17 +2603,6 @@ body.v11-active nav * { cursor: none !important; }
     })();
   </script>
   <script src="sf-scripts.js"></script>
-<script>
-(function(){
-  var tog = document.querySelector('.nav-toggle');
-  if(!tog) return;
-  var orig = tog.textContent;
-  tog.addEventListener('click', function(){
-    var isOpen = document.querySelector('.mobile-menu').classList.contains('open');
-    tog.textContent = isOpen ? '∓' : orig;
-  });
-})();
-</script>
 <script>
 // Smooth anchor scroll — wait for full init
 window.addEventListener('load', function() {
@@ -3745,8 +3735,8 @@ body.v11-active #v11-badge {
 .f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;}
 @media(max-width:768px){.f-m6{display:none !important;}}
 .footer-bottom{padding:16px 48px !important;background:var(--black) !important;}
-.footer-bottom span{font-size:0.52rem !important;letter-spacing:0.12em !important;}
-.f-m6{font-size:0.52rem !important;}
+.footer-bottom span{font-size:0.42rem !important;letter-spacing:0.12em !important;}
+.f-m6{font-size:0.42rem !important;}
 .footer-col a{margin-bottom:0 !important;line-height:1.8 !important;}
 footer{align-items:start !important;position:relative !important;display:block !important;padding:0 !important;grid-template-columns:none !important;gap:0 !important;}.footer-col{align-self:start !important;}
 .footer-bottom{position:relative !important;overflow:hidden !important;background:#0a0a0a !important;}
@@ -3977,43 +3967,22 @@ function drawDim(){
     }
   }
 
-  // ── HOW IT WORKS SECTION — vertical height, anchored to accordion items ──
+  // ── HOW IT WORKS SECTION — vertical height measurement, right edge ──
   var howSec=qs('#how');
-  var accSteps=qs('.accordion-steps');
-  var accItems=accSteps ? accSteps.querySelectorAll('.accordion-item') : null;
-  if(howSec&&accSteps&&accItems&&accItems.length){
-    var firstItem=accItems[0];
-    var lastItem=accItems[accItems.length-1];
-    var firstHdr=firstItem.querySelector('.accordion-header');
+  if(howSec){
+    var hr=howSec.getBoundingClientRect();
     var hst='rgba(200,169,110,0.18)';
-    // Top = top of first accordion-header (Identify eyebrow)
-    // Bottom = bottom of last accordion-item
-    var hy1=firstHdr ? firstHdr.getBoundingClientRect().top : firstItem.getBoundingClientRect().top;
-    var hy2=lastItem.getBoundingClientRect().bottom;
-    // X = right edge of accordion-steps minus 48px — safe from text even when expanded
-    var asr=accSteps.getBoundingClientRect();
-    var hx=asr.right-48;
+    var hx=hr.left+760, hy1=hr.top, hy2=hr.bottom;
     if(hy2>hy1){
       function hwln(a,b,c,d){var e=svgE('line');e.setAttribute('x1',a);e.setAttribute('y1',b);e.setAttribute('x2',c);e.setAttribute('y2',d);e.setAttribute('stroke',hst);e.setAttribute('stroke-width','1');svg.appendChild(e);}
       var hwmy=(hy1+hy2)/2;
-      // Ticks
       hwln(hx-6,hy1,hx+6,hy1);hwln(hx-6,hy2,hx+6,hy2);
-      // Line with 16px gap each side of centre for label
-      hwln(hx,hy1,hx,hwmy-16);hwln(hx,hwmy+16,hx,hy2);
-      // Arrows
+      hwln(hx,hy1,hx,hwmy-10);hwln(hx,hwmy+10,hx,hy2);
       var hwat=svgE('polygon');hwat.setAttribute('points',hx+','+hy1+' '+(hx-3)+','+(hy1+7)+' '+(hx+3)+','+(hy1+7));hwat.setAttribute('fill',hst);svg.appendChild(hwat);
       var hwab=svgE('polygon');hwab.setAttribute('points',hx+','+hy2+' '+(hx-3)+','+(hy2-7)+' '+(hx+3)+','+(hy2-7));hwab.setAttribute('fill',hst);svg.appendChild(hwab);
-      // Value label — centred on line
       var hwmm=Math.round((hy2-hy1)*0.2646)+'mm';
-      var hwtx=svgE('text');hwtx.setAttribute('x',hx);hwtx.setAttribute('y',hwmy+3);
-      hwtx.setAttribute('font-family','"Courier New",monospace');hwtx.setAttribute('font-size','9');
-      hwtx.setAttribute('fill',hst);hwtx.setAttribute('text-anchor','middle');hwtx.setAttribute('letter-spacing','1');
-      hwtx.textContent=hwmm;svg.appendChild(hwtx);
-      // Tolerance superscript
-      var hwtol=svgE('text');hwtol.setAttribute('x',hx+2);hwtol.setAttribute('y',hwmy-9);
-      hwtol.setAttribute('font-family','"Courier New",monospace');hwtol.setAttribute('font-size','6');
-      hwtol.setAttribute('fill',hst);hwtol.setAttribute('text-anchor','middle');hwtol.setAttribute('opacity','0.55');
-      hwtol.textContent='±0.02';svg.appendChild(hwtol);
+      var hwtx=svgE('text');hwtx.setAttribute('x',hx+5);hwtx.setAttribute('y',hwmy+3);hwtx.setAttribute('font-family','"Courier New",monospace');hwtx.setAttribute('font-size','9');hwtx.setAttribute('fill',hst);hwtx.setAttribute('text-anchor','start');hwtx.setAttribute('letter-spacing','1');hwtx.textContent=hwmm;svg.appendChild(hwtx);
+      var hwtol=svgE('text');hwtol.setAttribute('x',hx+18);hwtol.setAttribute('y',hwmy-5);hwtol.setAttribute('font-family','"Courier New",monospace');hwtol.setAttribute('font-size','6');hwtol.setAttribute('fill',hst);hwtol.setAttribute('text-anchor','start');hwtol.setAttribute('opacity','0.55');hwtol.textContent='±0.02';svg.appendChild(hwtol);
     }
   }
 
@@ -4251,25 +4220,24 @@ function initF1(){
     wbMw.insertBefore(wbWrap,wbMw.firstChild);
   }
 
-  // ── CHINA WATERMARK — 中 in cpl-china-left panel ──
-  var chinaLeft=qs('.cpl-china-left');
-  if(chinaLeft){
-    rp(chinaLeft);
+  // ── CHINA WATERMARK — 中 ──
+  var chinaContentDiv=qs('.cpl-d1-top') ? qs('.cpl-d1-top').parentElement : null;
+  if(chinaContentDiv){
+    rp(chinaContentDiv);
     var chWrap=mk('div'); chWrap.className='f-wm-wrap';
     chWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
     var chSp=mk('span'); chSp.textContent='中';
-    chSp.style.cssText='font-family:"Noto Sans SC",sans-serif;font-weight:100;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.03);';
+    chSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
     chWrap.appendChild(chSp);
-    chinaLeft.insertBefore(chWrap,chinaLeft.firstChild);
+    chinaContentDiv.insertBefore(chWrap,chinaContentDiv.firstChild);
   }
 
   // ── DIM LINE — F3 style, redraws on scroll/resize ──
   DIM_ON=true;
   var dsvg=qs('#f-dimsvg'); if(dsvg)dsvg.style.display='block';
   drawDim();
-  var _dimScrollTimer=null;
-  scrollL=function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);};
-  resizeL=function(){clearTimeout(_dimScrollTimer);_dimScrollTimer=setTimeout(drawDim,80);};
+  scrollL=function(){drawDim();};
+  resizeL=function(){drawDim();};
   window.addEventListener('scroll',scrollL,{passive:true});
   window.addEventListener('resize',resizeL,{passive:true});
   roB=new ResizeObserver(function(){drawDim();});
