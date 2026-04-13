@@ -2736,7 +2736,7 @@ window.addEventListener('load', function() {
 
 <div id="v11-cursor" style="display:none;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s ease,height 0.3s ease,border-color 0.3s;"></div>
 <div id="v11-cursor-dot" style="display:none;position:fixed;width:4px;height:4px;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:background 0.6s ease;"></div>
-<div id="v11-cursor-ring" style="display:none;position:fixed;width:38px;height:38px;border:1px solid transparent;border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(0.25,0.46,0.45,0.94),height 0.4s cubic-bezier(0.25,0.46,0.45,0.94),border-color 0.6s ease;"></div>
+<div id="v11-cursor-ring" style="display:none;position:fixed;width:38px;height:38px;border:1px solid transparent;border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(0.25,0.46,0.45,0.94),height 0.4s cubic-bezier(0.25,0.46,0.45,0.94),top 0.18s ease-out,left 0.18s ease-out,border-color 0.6s ease;"></div>
 
 <div id="v11-how-glow" style="display:none;position:absolute;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left 0.3s ease,top 0.3s ease;"></div>
 
@@ -2976,9 +2976,9 @@ body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition:
 body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
 
 /* ── CREAM ZONE CURSOR ── */
-body.v11-active.v11-cream-zone #v11-cursor { border-color: rgba(10,10,10,0.7) !important; transition: none !important; }
-body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.8) !important; transition: none !important; }
-body.v11-active.v11-cream-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.5) !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-cursor { border-color: rgba(10,10,10,0.35) !important; transition: border-color 0.2s ease !important; }
+body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.6) !important; transition: background 0.2s ease !important; }
+body.v11-active.v11-cream-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.2) !important; transition: border-color 0.2s ease !important; }
 
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
 /* Status dot always visible — slight opacity on cream */
@@ -3138,8 +3138,8 @@ body.v11-active #v11-badge {
   // Lagging ring
   function animateRing() {
     if (!v11Active) { requestAnimationFrame(animateRing); return; }
-    ringX += (curX - ringX) * 0.28;
-    ringY += (curY - ringY) * 0.28;
+    ringX += (curX - ringX) * 0.12;
+    ringY += (curY - ringY) * 0.12;
     curRing.style.left = ringX + 'px';
     curRing.style.top = ringY + 'px';
     requestAnimationFrame(animateRing);
@@ -3168,7 +3168,7 @@ body.v11-active #v11-badge {
     creamSelectors.forEach(function(sel) {
       document.querySelectorAll(sel).forEach(function(el) {
         var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.5) {
+        if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
           inCream = true;
         }
       });
@@ -3176,7 +3176,7 @@ body.v11-active #v11-badge {
     // Also check cream inline backgrounds
     document.querySelectorAll('[style*="background:var(--cream)"], [style*="background:#ede8e0"]').forEach(function(el) {
       var r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.5) {
+      if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
         inCream = true;
       }
     });
