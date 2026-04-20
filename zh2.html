@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<style>html{background:#0a0a0a;}body{visibility:hidden;}</style>
+<style>html{background:#0a0a0a;overflow-x:hidden;}body{visibility:hidden;overflow-x:hidden;position:relative;}</style>
 <script>document.addEventListener('DOMContentLoaded',function(){document.body.style.visibility='visible';});</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Silent Foundry</title>
+  <title>Silent Foundry | 跨境创业工作室</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Sans+SC:wght@100;400;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="sf-styles.css" />
 <style>
 /* CURSOR OVERRIDE — must come after sf-styles.css */
 body { cursor: none; }
+/* INDUSTRIALISING — hide until scaleX applied to prevent snap */
+.hero-headline-top { opacity: 0; transition: opacity 0.4s ease 0.1s; }
 @media(hover:none),(pointer:coarse) { body { cursor: auto !important; } }
 body.v11-active *,
 body.v11-active a,
@@ -51,6 +53,16 @@ body.v11-active nav * { cursor: none !important; }
       opacity: 1 !important;
       transition: color 0.2s !important;
     }
+    .nav-links a.nav-btn {
+      font-size: 0.62rem !important;
+      font-weight: 500 !important;
+      color: rgba(200,169,110,1) !important;
+      opacity: 1 !important;
+    }
+    .nav-links a.nav-btn.nav-btn-grey {
+      color: rgba(244,241,236,0.4) !important;
+      border-color: rgba(244,241,236,0.25) !important;
+    }
     .nav-links a:hover, .nav-links a.active {
       color: var(--accent) !important;
       opacity: 1 !important;
@@ -79,12 +91,6 @@ body.v11-active nav * { cursor: none !important; }
       background-size: cover;
       background-position: center;
       filter: brightness(0.35);
-      transform: scale(1.05);
-      animation: slowzoom 20s ease-out forwards;
-    }
-    @keyframes slowzoom {
-      from { transform: scale(1.08); }
-      to   { transform: scale(1.0); }
     }
     .hero-eyebrow {
       position: relative;
@@ -104,22 +110,30 @@ body.v11-active nav * { cursor: none !important; }
       text-transform: uppercase;
       color: var(--white);
       opacity: 0;
-      animation: fadein 1s 0.5s forwards;
+      animation: herofadein 1s 0.5s forwards;
     }
     .hero-headline-top { /* tightened ls */
       display: block;
       font-family: 'Bebas Neue', sans-serif;
-      color: rgba(240,235,224,0.15);
-      letter-spacing: 0.17em;
+      color: rgba(240,235,224,0.62);
+      letter-spacing: 0.22em;
       font-size: 0.65em;
     }
     .hero-headline-bottom {
       display: block;
       font-family: 'Bebas Neue', sans-serif;
-      color: rgba(240,235,224,0.62);
-      letter-spacing: 0.14em;
-      font-size: 0.9em;
-      margin-top: 0.1em;
+      letter-spacing: 0.22em;
+      font-size: 0.93em;
+      margin-top: 0;
+    }
+    .hero-brand-word { color: #c8a96e; }
+    .hero-soul-word {
+      color: rgba(240,235,224,0.15);
+      animation: soulFade 4s ease-in-out 1.5s infinite;
+    }
+    @keyframes soulFade {
+      0%,100% { color: rgba(240,235,224,0.15); }
+      50% { color: rgba(240,235,224,0.55); }
     }
     .hero-sub {
       position: relative;
@@ -159,6 +173,10 @@ body.v11-active nav * { cursor: none !important; }
     @keyframes fadein {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes herofadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     /* ── SECTIONS ── */
@@ -205,7 +223,7 @@ body.v11-active nav * { cursor: none !important; }
       border: 1px solid rgba(200,169,110,0.2);
     }
     .intro-text p {
-      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      font-size: var(--text-body);
       line-height: 1.8;
       color: rgba(244,241,236,0.6);
       margin-bottom: 20px;
@@ -265,7 +283,7 @@ body.v11-active nav * { cursor: none !important; }
     .case-text p:first-child {
       font-family: var(--font-body);
       font-style: normal;
-      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      font-size: var(--text-body);
       line-height: 1.8;
       color: rgba(10,10,10,0.6);
       margin: 0 0 20px 0;
@@ -659,6 +677,7 @@ body.v11-active nav * { cursor: none !important; }
        MOBILE
        ══════════════════════════════ */
     @media (max-width: 900px) {
+      .nav-toggle { align-items: center !important; justify-content: center !important; }
       section { padding: 80px 24px; }
       .hero { padding: 0 24px 60px; }
       .hero-scroll { display: none; }
@@ -679,9 +698,14 @@ body.v11-active nav * { cursor: none !important; }
     @media (max-width: 600px) {
       .steps { grid-template-columns: 1fr; }
       .value-card { padding: 36px 28px; }
-      #c16-overlay { left:20px !important; right:20px !important; bottom:24px !important; }
-      #c16-overlay p { max-width:100% !important; font-size:0.82rem !important; }
-      #c16-overlay > div[style*="display:flex"] { gap:16px !important; }
+      #c16-overlay { left:20px !important; right:20px !important; bottom:12px !important; padding-top:28px !important; }
+      #c16-overlay p { max-width:220px !important; font-size:0.62rem !important; line-height:1.5 !important; margin-bottom:10px !important; }
+      #c16-overlay > div[style*="display:flex"] { gap:12px !important; }
+      #c16-overlay span[style*="0.68rem"] { font-size:0.5rem !important; margin-bottom:6px !important; }
+      #c16-overlay span[style*="1.9rem"] { font-size:0.75rem !important; }
+      #c16-overlay span[style*="0.58rem"] { font-size:0.44rem !important; }
+      #switch-logo-img { height:11px !important; max-width:88px !important; margin-bottom:3px !important; }
+      #c16s-wrap { min-height:62vw !important; }
     }
 
     /* ── TRANSLATION LAYOUT ── */
@@ -886,7 +910,7 @@ body.v11-active nav * { cursor: none !important; }
       color: rgba(244,241,236,0.82);
     }
     .eng-body {
-      font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+      font-size: var(--text-body);
       line-height: 1.8;
       color: rgba(244,241,236,0.5);
       font-weight: 300;
@@ -1123,28 +1147,31 @@ body.v11-active nav * { cursor: none !important; }
       border-bottom: 1px solid rgba(244,241,236,0.08);
       border-left: 1px solid transparent;
       border-image: linear-gradient(to bottom, transparent 0%, rgba(200,169,110,0.35) 50%, transparent 100%) 1;
+      max-width: 680px;
     }
     .accordion-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 20px 0;
+      justify-content: flex-start;
+      gap: 16px;
+      padding: 20px 0 20px 16px;
       cursor: pointer;
       user-select: none;
+      max-width: 680px;
     }
     .accordion-header:hover .accordion-title { color: var(--accent); }
     .accordion-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 12px;
     }
     .accordion-num {
       font-family: var(--font-display);
       font-size: 0.75rem;
       letter-spacing: 0.25em;
       color: rgba(200,169,110,0.5);
-      min-width: 48px;
-      padding-right: 8px;
+      min-width: 32px;
+      padding-right: 0;
     }
     .accordion-title {
       font-family: var(--font-display);
@@ -1160,8 +1187,11 @@ body.v11-active nav * { cursor: none !important; }
       color: var(--accent);
       transition: transform 0.3s ease;
       min-width: 24px;
-      text-align: right;
+      width: 24px;
+      display: inline-block;
+      text-align: center;
       font-weight: 300;
+      flex-shrink: 0;
     }
     .accordion-icon.open { transform: rotate(45deg); }
     .accordion-body {
@@ -1169,6 +1199,7 @@ body.v11-active nav * { cursor: none !important; }
       overflow: hidden;
       transition: max-height 0.4s ease, padding 0.3s ease;
       padding-left: 44px;
+      max-width: 680px;
     }
     .accordion-body.open {
       max-height: 200px;
@@ -1178,7 +1209,7 @@ body.v11-active nav * { cursor: none !important; }
       font-size: 0.92rem;
       line-height: 1.8;
       color: rgba(244,241,236,0.5);
-      max-width: 500px;
+      max-width: 480px;
     }
   
     /* ── PERSISTENT SCROLL INDICATOR ── */
@@ -1257,11 +1288,11 @@ body.v11-active nav * { cursor: none !important; }
   </style>
   <style>
     @media(max-width:768px){
-      .eng-section { padding:40px 20px !important; }
+      .eng-section { padding:40px 24px !important; }
       .eng-top { grid-template-columns:1fr !important; gap:32px !important; }
       .eng-top-divider { display:none !important; }
       .eng-headline { font-size:clamp(2.5rem,9vw,4rem) !important; }
-      .eng-body { font-size:0.88rem !important; }
+      .eng-body { font-size:var(--text-body) !important; }
       .eng-car-wrap { height:clamp(220px,55vw,320px) !important; }
       .eng-car-slide { flex:0 0 calc(100vw - 2px) !important; }
       .mc-hero-content { grid-template-columns:1fr !important; padding:20px !important; }
@@ -1365,7 +1396,7 @@ body.v11-active nav * { cursor: none !important; }
       .factory-solo { height:40vh !important; }
 
       /* ── FOOTER ── */
-      footer { grid-template-columns:1fr !important; padding:40px 24px 32px !important; gap:24px !important; }
+      .footer-inner { grid-template-columns:1fr !important; padding:40px 24px 32px !important; gap:24px !important; }
       .footer-bottom { flex-direction:column !important; gap:8px !important; text-align:center !important; padding:16px 24px !important; }
       /* Fix footer logo overlapping nav logo */
       footer a[style*="flex-direction:column;line-height:0.84"] { display:none !important; }
@@ -1388,9 +1419,10 @@ body.v11-active nav * { cursor: none !important; }
 
       /* ── SWITCH HERO MOBILE ── */
       #c16s-wrap { min-height:90vw !important; width:100% !important; }
+      #c16s-wrap > div[style*="height:5px"] { height:2px !important; }
       .cslide { flex:0 0 85% !important; }
       .concept-carousel { overflow:hidden; }
-      #switch-logo-img { height:20px !important; }
+      #switch-logo-img { height:11px !important; }
       .fp-opt section { width:100% !important; overflow:hidden !important; }
       [style*="padding:0 48px;z-index:2"] { padding:24px !important; justify-content:flex-start !important; padding-top:40px !important; }
       #c16s-wrap .fcar-slides { position:absolute !important; inset:0 !important; height:100% !important; }
@@ -1424,22 +1456,109 @@ body.v11-active nav * { cursor: none !important; }
   </style>
 
 <!-- ── SF ADDITIONS: REFINED TYPE + MARSHALL + FOOTER ── -->
+<style id="sf-mobile-width">
+/* ── MOBILE CONTENT WIDTH — consistent 24px side padding ── */
+@media(max-width:768px){
+
+  /* We Build section outer */
+  section[style*="padding:48px"][style*="ede8e0"] {
+    padding: 56px 0 0 !important;
+  }
+  section[style*="padding:48px"][style*="ede8e0"] > div[style*="z-index:0"],
+  section[style*="padding:48px"][style*="ede8e0"] > div[style*="z-index:1"] > div[style*="padding:64px"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* We Build + Mfg 2.0 cards — full width, 24px padding */
+  .we-build-grid > div[style*="padding:32px"] {
+    padding: 24px !important;
+  }
+  /* Manufacturing 2.0 rows — label stays, values wrap */
+  .we-build-grid > div > div > div[style*="display:flex;justify-content:space-between"] {
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 10px 0 !important;
+  }
+
+
+
+  /* SWITCH — Acquisition block */
+  div[style*="background:var(--cream)"][style*="padding:64px 48px"] {
+    padding: 40px 24px !important;
+  }
+  /* SWITCH — Brand DNA block */
+  div[style*="background:var(--cream)"][style*="padding:24px 48px 64px"] {
+    padding: 24px 24px 40px !important;
+  }
+  /* SWITCH — DNA inner grids */
+  div[style*="grid-template-columns:120px 1fr"][style*="gap:48px"][style*="margin-bottom:48px"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 0 !important;
+  }
+  div[style*="grid-template-columns:repeat(3,1fr)"][style*="gap:24px"] {
+    margin-bottom: 28px !important;
+  }
+  div[style*="grid-template-columns:120px 1fr"][style*="gap:48px"]:not([style*="margin-bottom"]) {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Investment Paths — full bleed on mobile */
+  section.funds {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+  section.funds .label,
+  section.funds h2.section-title {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+  .funds-grid {
+    margin-top: 40px !important;
+    gap: 0 !important;
+  }
+  .fund-card {
+    border: none !important;
+    border-bottom: 1px solid rgba(10,10,10,0.06) !important;
+  }
+  .fund-img {
+    aspect-ratio: 16/9 !important;
+  }
+  .fund-body {
+    padding: 24px 24px 28px !important;
+  }
+
+  /* Value section — already ok but ensure padding */
+  .value {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+</style>
 <style id="sf-additions">
+
+:root {
+  --text-body: clamp(0.9rem, 1.2vw, 1.05rem);
+}
 
 /* ── REFINED TYPE — whole site ── */
 /* WWD body */
 .wwd-section p, .wwd-grid p {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
   letter-spacing: 0.01em !important;
 }
 /* Marshall body */
 .cs-dp {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
 }
 .cs-ddna-v {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
 }
 /* How It Works */
 .accordion-title {
@@ -1450,7 +1569,7 @@ body.v11-active nav * { cursor: none !important; }
   font-size: 0.62rem !important;
 }
 .accordion-body p {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
 }
 @media(max-width:768px){
@@ -1458,50 +1577,53 @@ body.v11-active nav * { cursor: none !important; }
 }
 /* We Build body */
 .we-build-body {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
 }
 /* China */
 .cpl-china-left > p,
 .cpl-china-left p[style*="clamp"] {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
 }
 .ch-body p {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
+  overflow: hidden;
+  min-height: 0;
 }
+.ch-body { overflow: hidden; max-height: 0; }
+.ch-body.ch-open { }
 /* Value Creation */
 .val-body {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 1.98 !important;
 }
 /* Featured Project */
 .fp-body-text {
-  font-size: clamp(0.76rem, 0.92vw, 0.86rem) !important;
   line-height: 1.98 !important;
 }
 /* Investment Paths — 70%+ smaller */
 .funds .section-title {
-  font-size: clamp(0.72rem, 1vw, 1rem) !important;
+  font-size: clamp(1.1rem, 1.6vw, 1.8rem) !important;
   letter-spacing: 0.22em !important;
 }
 .funds h3 {
-  font-size: clamp(0.78rem, 1vw, 1.05rem) !important;
+  font-size: clamp(0.88rem, 1.1vw, 1.15rem) !important;
   letter-spacing: 0.14em !important;
 }
 .funds p, .fund-expand {
-  font-size: clamp(0.68rem, 0.82vw, 0.76rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 2.0 !important;
 }
 /* CTA — 70%+ smaller */
 .cta .section-title {
-  font-size: clamp(0.86rem, 1.25vw, 1.35rem) !important;
+  font-size: clamp(1.2rem, 1.8vw, 2rem) !important;
   letter-spacing: 0.28em !important;
   line-height: 1.3 !important;
 }
 .cta > p.reveal {
-  font-size: clamp(0.68rem, 0.8vw, 0.78rem) !important;
+  font-size: var(--text-body) !important;
   line-height: 2.35 !important;
 }
 /* Footer */
@@ -1524,27 +1646,28 @@ body.v11-active nav * { cursor: none !important; }
   position: absolute;
   top: 0;
   left: 0;
-  width: 35%;
+  width: 50%;
   height: 28px;
   display: flex;
   align-items: flex-end;
-  gap: 1.5px;
-  padding: 0 0 0 2px;
+  gap: 1px;
+  padding: 0;
   pointer-events: none;
   z-index: 2;
   overflow: hidden;
 }
 .sf-marshall-wave .sf-wb {
-  width: 1.5px;
-  flex-shrink: 0;
+  flex: 1;
+  min-width: 2px;
   border-radius: 1px 1px 0 0;
-  background: rgba(190,185,178,0.32);
+  background: rgba(190,185,178,0.3);
+  height: 3px;
 }
-@keyframes sfWB0{0%,100%{height:3px}50%{height:20px}}
-@keyframes sfWB1{0%,100%{height:8px}50%{height:24px}}
-@keyframes sfWB2{0%,100%{height:14px}50%{height:5px}}
-@keyframes sfWB3{0%,100%{height:5px}50%{height:18px}}
-@keyframes sfWB4{0%,100%{height:18px}50%{height:4px}}
+@keyframes sfWB0{0%,100%{height:3px}50%{height:26px}}
+@keyframes sfWB1{0%,100%{height:9px}50%{height:32px}}
+@keyframes sfWB2{0%,100%{height:16px}50%{height:6px}}
+@keyframes sfWB3{0%,100%{height:6px}50%{height:20px}}
+@keyframes sfWB4{0%,100%{height:20px}50%{height:4px}}
 
 /* ── ENGINEERING SYMBOLS — Manufacturing 2.0 ── */
 .sf-eng-sym {
@@ -1559,6 +1682,57 @@ body.v11-active nav * { cursor: none !important; }
   vertical-align: middle;
 }
 
+/* ── MARSHALL Brand DNA .cs-ddna-v ── */
+.cs-ddna-v {
+  font-size: var(--text-body) !important;
+  line-height: 1.98 !important;
+}
+
+/* ── VALUE CREATION main headline ── */
+.value h2[style*="clamp(3rem"] {
+  font-size: clamp(1.6rem, 2.4vw, 2.8rem) !important;
+  line-height: 0.92 !important;
+}
+
+/* ── VALUE CARD titles ── */
+.value-card h4 {
+  font-size: clamp(1rem, 1.4vw, 1.5rem) !important;
+  letter-spacing: 0.14em !important;
+  margin-bottom: 14px !important;
+}
+
+/* ── VALUE CARD body ── */
+.value-card p {
+  font-size: var(--text-body) !important;
+  line-height: 1.98 !important;
+}
+
+/* ── MARSHALL Row 1 top padding ── */
+.cs-dbody > div:first-child {
+  padding-top: 0 !important;
+}
+@media(max-width:768px){
+  .cs-dbody > div:first-child {
+    padding-top: 28px !important;
+  }
+}
+
+/* ── WAVEFORM mobile full width ── */
+@media(max-width:768px){
+  .sf-marshall-wave {
+    width: 100% !important;
+    z-index: 10 !important;
+    overflow: visible !important;
+    height: 36px !important;
+  }
+  .sf-marshall-wave .sf-wb {
+    background: rgba(190,185,178,0.5) !important;
+  }
+  .csw {
+    overflow: visible !important;
+  }
+}
+
 /* ── FOOTER TRIANGLE ── */
 .sf-footer-triangle {
   position: absolute;
@@ -1569,33 +1743,60 @@ body.v11-active nav * { cursor: none !important; }
 }
 
 </style>
+<style id="sf-china-mobile">
+@media(max-width:768px){
+  .cpl-d1-top {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    padding: 20px 24px 32px !important;
+  }
+  .cpl-china-left {
+    padding: 24px !important;
+    border: none !important;
+    height: auto !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+  }
+  .cpl-china-left::before { display: none !important; }
+}
+
+/* ── CHINESE VERSION — Noto Sans SC ── */
+body { font-family: 'Noto Sans SC', sans-serif !important; font-weight: 400; }
+.hero-eyebrow, .label, .footer-tagline, .footer-col p, .footer-col a,
+.cs-dp, .ch-body p, .we-build-body, .fp-body-text, .val-body,
+.fund-body p, .accordion-body p { font-family: 'Noto Sans SC', sans-serif !important; font-weight: 400; }
+h2.section-title, .cs-dh, .accordion-title, .funds h3, .value-card h4,
+.footer-brand { font-family: 'Noto Sans SC', sans-serif !important; font-weight: 900; letter-spacing: 0.02em !important; }
+</style>
 </head>
 <body>
 
 
 <!-- MOBILE MENU -->
   <div class="mobile-menu">
-    <a href="index.html">Home</a>
-    <a href="index.html#how">How It Works</a>
-    <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
-    <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
+    <a href="#how" style="color:#c8a96e;">运作方式</a>
+    <a href="#funds" style="color:rgba(100,160,200,0.9);">投资者</a>
+    <a href="sf-team.html" target="_blank" rel="noopener" style="color:rgba(200,195,188,0.9);">团队</a>
+    <a href="sf-contact.html" target="_blank" rel="noopener" style="color:rgba(220,160,80,0.9);">联系我们</a>
   </div>
 
   <!-- NAV -->
   <nav>
-    <a href="index.html" class="nav-logo" style="font-family:'Bebas Neue',sans-serif;color:var(--white);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;text-decoration:none;display:flex;flex-direction:column;justify-content:center;align-self:center;position:relative;z-index:1;">
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Silent</span>
-        <span style="font-size:53px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.9);">Foundry</span>
-      </a>
+    <a href="index.html" class="nav-logo">
+      <span class="sf-mark">
+        <span class="sf-mark-line sf-mark-line--silent" style="color:rgba(244,241,236,0.55);-webkit-text-stroke-color:rgba(244,241,236,0.55);"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
+        <span class="sf-mark-line" style="color:rgba(244,241,236,0.35);-webkit-text-stroke-color:rgba(244,241,236,0.35);"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+      </span>
+    </a>
         <ul class="nav-links">
-      <li><a href="#how">How It Works</a></li>
-      <li><a href="#funds">Investors</a></li>
-      <li><a href="sf-team.html" target="_blank" rel="noopener">Team</a></li>
-      <li><a href="sf-contact.html" target="_blank" rel="noopener">Contact</a></li>
+      <li><a href="#how" class="nav-btn nav-btn-grey">运作方式</a></li>
+      <li><a href="#funds" class="nav-btn nav-btn-grey">投资者</a></li>
+      <li><a href="sf-team.html" target="_blank" rel="noopener" class="nav-btn nav-btn-grey">团队</a></li>
+      <li><a href="sf-contact.html" target="_blank" rel="noopener" class="nav-btn nav-btn-grey">联系我们</a></li>
     </ul>
     <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;margin-left:6px;">
       <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;cursor:pointer;transition:all 0.2s;" id="lang-zh">中文</button>
-      <button onclick="" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;" id="lang-en">EN</button>
+      <a href="index.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;" id="lang-en">EN</a>
     </div>
     <button class="nav-toggle" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -1605,8 +1806,9 @@ body.v11-active nav * { cursor: none !important; }
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
-    <p class="hero-eyebrow">A cross-border venture studio</p>
-    <h1 class="hero-headline"><span class="hero-headline-top">INDUSTRIALISING</span><span class="hero-headline-bottom">BRAND SOUL</span></h1>
+    <p class="hero-eyebrow">跨境创业工作室</p>
+    <h1 class="hero-headline" style="transform:skewX(-4deg);transform-origin:left center;display:inline-block;"><span class="hero-headline-top">工业化</span><span class="hero-headline-bottom"><span class="hero-brand-word">品牌</span> <span class="hero-soul-word">灵魂</span></span></h1>
+
     <div class="hero-scroll">
       <div class="scroll-line"></div>
       <span>Scroll</span>
@@ -1640,15 +1842,15 @@ body.v11-active nav * { cursor: none !important; }
   <section class="wwd-section" style="padding:64px 48px 32px;background:var(--cream);"><div class="mw-wrap">
     <!-- WHAT WE DO -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(138,110,58,0.1);">
-      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">What We Do</span>
+      <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">我们的业务</span>
       <div class="wwd-body" style="display:grid;grid-template-columns:1fr;gap:0;align-items:start;">
-        <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry is a cross-border industrial M&amp;A venture studio that translates brand equity into premium products. We use a micro-PE/SPV structure to build our own brands and selectively partner with authentic, high-DNA brands to turn them into product systems. Our ventures are built on strong unit economics and credible paths to licensing, partnership, or acquisition.</p>
+        <p style="font-size:var(--text-body);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Silent Foundry 是一家跨境工业并购创业工作室，将品牌资产转化为优质产品。我们采用微型私募/SPV结构自建品牌，并有选择性地与具有高品牌基因的正宗品牌合作，将其打造成产品体系。我们的项目建立在强劲的单元经济学基础上，具有可信的授权、合作或收购路径。</p>
       </div>
     </div>
     <!-- WHY NOW -->
     <div class="wwd-grid wwd-divider" style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:32px;">
       <span class="wwd-label" style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;padding-top:6px;">Why Now</span>
-      <p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy but product is still hard. Most brands have demand but no industrial product system. A single product is not enough. And most ventures are not structured for liquidity.</p>
+      <p style="font-size:var(--text-body);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">Concepts are cheap — AI makes ideas easy but product is still hard. Most brands have demand but no industrial product system. A single product is not enough. And most ventures are not structured for liquidity.</p>
     </div>
   </div></section>
 
@@ -1667,18 +1869,18 @@ body.v11-active nav * { cursor: none !important; }
   .cs-row-right-inner img { width:100%; height:100%; object-fit:cover; display:block; }
   .cs-row-right-r1 { align-self:stretch; }
   .cs-row-right-r1 img { width:100%; height:100%; aspect-ratio:unset; object-fit:cover; display:block; }
-  .cs-dey  { font-family:'DM Sans',sans-serif; font-size:.48rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:6px; }
-  .cs-dh   { font-family:'Bebas Neue',sans-serif; font-size:clamp(2rem,3.2vw,3.6rem); letter-spacing:.08em; text-transform:uppercase; color:rgba(10,10,10,.78); line-height:.92; margin-bottom:10px; }
-  .cs-dp   { font-family:'DM Sans',sans-serif; font-size:clamp(0.9rem,1.2vw,1.05rem); line-height:1.85; color:rgba(10,10,10,.55); font-weight:300; }
-  .cs-dslabel { font-family:'DM Sans',sans-serif; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; }
-  .cs-dmets { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:12px; }
+  .cs-dey  { font-family:'DM Sans',sans-serif; font-size:0.68rem; letter-spacing:0.25em; text-transform:uppercase; color:#8a6e3a; font-weight:300; display:block; margin-bottom:20px; }
+  .cs-dh   { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.1rem,1.6vw,1.8rem); letter-spacing:0.22em; text-transform:uppercase; color:rgba(10,10,10,.75); line-height:.92; margin-bottom:10px; }
+  .cs-dp   { font-family:'DM Sans',sans-serif; font-size:var(--text-body); line-height:1.85; color:rgba(10,10,10,.55); font-weight:300; }
+  .cs-dslabel { font-family:'DM Sans',sans-serif; font-size:.48rem; letter-spacing:.22em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:10px; margin-top:20px; }
+  .cs-dmets { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:28px; }
   .cs-dmet  { padding-right:14px; margin-right:14px; border-right:1px solid rgba(10,10,10,.1); }
   .cs-dmet:last-child { border-right:none; padding-right:0; margin-right:0; }
   .cs-dmetv { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.06em; color:rgba(10,10,10,.72); display:block; line-height:1; }
   .cs-dmetl { font-family:'DM Sans',sans-serif; font-size:.38rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(10,10,10,.32); display:block; margin-top:2px; font-weight:300; }
   .cs-ddna { display:grid; grid-template-columns:1fr 1fr; gap:10px 24px; }
   .cs-ddna-k { font-family:'DM Sans',sans-serif; font-size:.44rem; letter-spacing:.16em; text-transform:uppercase; color:rgba(10,10,10,.38); font-weight:300; display:block; margin-bottom:2px; }
-  .cs-ddna-v { font-family:'DM Sans',sans-serif; font-size:clamp(0.9rem,1.2vw,1.05rem); color:rgba(10,10,10,.55); font-weight:300; line-height:1.5; }
+  .cs-ddna-v { font-family:'DM Sans',sans-serif; font-size:var(--text-body); color:rgba(10,10,10,.55); font-weight:300; line-height:1.5; }
   @media(max-width:768px){
     .cs-dbody { grid-template-columns:1fr; }
     .cs-row-left { padding:24px; }
@@ -1687,6 +1889,7 @@ body.v11-active nav * { cursor: none !important; }
     .cs-row-right.cs-show-mobile { display:block; height:220px; }
     .cs-row-right-r1 { display:none; }
     .cs-dmets { grid-template-columns:repeat(2,1fr); gap:10px 0; }
+    .cs-dmet:nth-child(even) { border-right:none !important; padding-right:0 !important; margin-right:0 !important; }
     .cs-ddna { grid-template-columns:1fr; }
     .cs-dh { font-size:clamp(1.8rem,8vw,2.8rem); }
     .cs-dmetv { font-size:1.1rem; }
@@ -1700,11 +1903,11 @@ body.v11-active nav * { cursor: none !important; }
 
       <!-- ROW 1: Situation + Numbers | Concert image -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dey">Case Study — Marshall DNA Translation</span>
-        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies.</div>
-        <p class="cs-dp">By 2010, Marshall&#8217;s core market was shrinking. The brand still had strong equity, but the legacy guitar amplifier category was no longer enough.</p>
+        <span class="cs-dey">案例研究 — 马歇尔品牌DNA转化</span>
+        <div class="cs-dh">摇滚乐<br/>永不消逝</div>
+        <p class="cs-dp">到2010年，马歇尔的核心市场正在萎缩。品牌仍具有强大的资产，但传统吉他音箱品类已不再足够。</p>
         <div style="margin-top:12px;">
-          <span class="cs-dslabel">Key Numbers</span>
+          <span class="cs-dslabel">关键数据</span>
           <div class="cs-dmets">
             <div class="cs-dmet"><span class="cs-dmetv">1962</span><span class="cs-dmetl">Founded</span></div>
             <div class="cs-dmet"><span class="cs-dmetv">60+</span><span class="cs-dmetl">Years of Heritage</span></div>
@@ -1719,7 +1922,7 @@ body.v11-active nav * { cursor: none !important; }
 
       <!-- ROW 2: Brand DNA | 2-up images -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dslabel">Brand DNA</span>
+        <span class="cs-dslabel">品牌基因</span>
         <div class="cs-ddna">
           <div><span class="cs-ddna-k">Tactile</span><span class="cs-ddna-v">Pebbled tolex amp texture</span></div>
           <div><span class="cs-ddna-k">Physical</span><span class="cs-ddna-v">Weighted brass knobs and metal controls</span></div>
@@ -1738,8 +1941,8 @@ body.v11-active nav * { cursor: none !important; }
 
       <!-- ROW 3: Translation + Result | Bluetooth image -->
       <div class="cs-row-left">
-        <span class="cs-dslabel">Translation</span>
-        <p class="cs-dp">Marshall moved beyond amplifiers into headphones, speakers, and home audio. This was not merch or logo licensing. It was real product-level DNA translation into a larger category.<br/><br/>Marshall expanded into a much larger category without losing what made the brand distinctive. Stronger relevance in China. A $1.1B acquisition in early 2025.</p>
+        <span class="cs-dslabel">转化</span>
+        <p class="cs-dp">马歇尔从音箱延伸至耳机、扬声器和家庭音频。这不是简单的周边产品或标志授权，而是真正的产品级品牌DNA转化进入更大品类。<br/><br/>马歇尔在不失去品牌独特性的情况下扩展至更大市场。在中国的影响力更强。2025年初以11亿美元被收购。</p>
       </div>
       <div class="cs-row-right cs-show-mobile">
         <img src="marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="filter:brightness(.82) saturate(.85);" alt=""/>
@@ -1752,13 +1955,13 @@ body.v11-active nav * { cursor: none !important; }
 <!-- THESIS QUOTE -->
   <section style="padding:100px 48px;background:#ede8e0;text-align:center;">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
-      <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">The Foundry Thesis</span>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;">The best products</p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;">Won't be invented</p>
-      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;">They'll be extracted</p>
+      <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">铸造厂论点</span>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;transform:skewX(-4deg);display:block;"><span style="color:#c8a96e;font-size:0.6em;display:inline-block;transform:rotate(90deg);vertical-align:middle;margin-right:0.15em;">⌐</span>The best products</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;transform:skewX(-4deg);display:block;">不会被发明</p>
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:#c8a96e;text-align:center;width:100%;transform:skewX(-4deg);display:block;">They'll be extracted<span style="color:#c8a96e;font-size:0.6em;display:inline-block;transform:rotate(-90deg);vertical-align:middle;margin-left:0.15em;">¬</span></p>
       <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:36px;">
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
-        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.28);">Matthew, Silent Foundry</p>
+        <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.55);">马修，Silent Foundry</p>
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
       </div>
     </div>
@@ -1767,46 +1970,46 @@ body.v11-active nav * { cursor: none !important; }
 <!-- P7: How It Works -->
   <section id="how" style="padding:80px 48px;background:var(--black);">
     <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
-      <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;align-self:start;padding-top:28px;">How It Works</span>
+      <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;align-self:start;padding-top:28px;">运作方式</span>
       <div class="accordion-steps" style="margin-top:0;">
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">01</span><span class="accordion-title">Identify</span></div>
+            <div class="accordion-left"><span class="accordion-num">1</span><span class="accordion-title">识别</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We find the right brands or concepts to build around. That includes creators, celebrity-backed brands, heritage names, premium service businesses, and other high-DNA concepts with clear room to expand. We use the same process for our own ventures.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">02</span><span class="accordion-title">Select</span></div>
+            <div class="accordion-left"><span class="accordion-num">2</span><span class="accordion-title">筛选</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We choose the opportunities where the fit is strongest. We use AI, internal market analysis, and China trend tracking to find the right match between brand, category, product direction, timing, and local demand. Then we focus our outreach where the commercial case is strongest.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">03</span><span class="accordion-title">Design</span></div>
+            <div class="accordion-left"><span class="accordion-num">3</span><span class="accordion-title">设计</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We decide what the product should be and how the brand should take physical form. This includes the creative direction behind it: what to build, why it fits, how it should feel, and how the system can grow beyond a single object.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">04</span><span class="accordion-title">Structure</span></div>
+            <div class="accordion-left"><span class="accordion-num">4</span><span class="accordion-title">架构</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We set up the commercial, operating, and financing model around the opportunity. That includes rights, incentives, ownership, operator involvement, manufacturing pathways, and the broader execution framework. Where it makes sense, we can also help finance projects through our investor and family office network.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">05</span><span class="accordion-title">Execute</span></div>
+            <div class="accordion-left"><span class="accordion-num">5</span><span class="accordion-title">执行</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We turn the concept into a real product and bring it to market. That includes industrial design, engineering, prototyping, sourcing, cross-border manufacturing, and rollout with operators in China.</p></div>
         </div>
         <div class="accordion-item">
           <div class="accordion-header" onclick="toggleAccordion(this)">
-            <div class="accordion-left"><span class="accordion-num">06</span><span class="accordion-title">Scale</span></div>
+            <div class="accordion-left"><span class="accordion-num">6</span><span class="accordion-title">扩展</span></div>
             <span class="accordion-icon">+</span>
           </div>
           <div class="accordion-body"><p>We build beyond the first product. Once proven, the model can grow into new products, new categories, and new commercial paths. The goal is a platform, not a one-off object.</p></div>
@@ -1843,9 +2046,13 @@ body.v11-active nav * { cursor: none !important; }
     .ec2-btn { position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:transparent;border:0.5px solid rgba(200,169,110,0.4);color:rgba(200,169,110,0.8);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4rem;transition:background 0.2s,border-color 0.2s,color 0.2s;text-shadow:0 1px 4px rgba(0,0,0,0.5); }
     .ec2-btn:hover { background:rgba(200,169,110,0.15);border-color:rgba(200,169,110,0.7);color:var(--accent); }
     .ec2-prev { left:20px; } .ec2-next { right:20px; }
+    .ec2-outer { margin: 0 -48px; }
     @media(max-width:768px){
-      .ec2-slide { flex:0 0 calc(100vw - 2px); }
+      .ec2-slide { flex:0 0 100%; }
+      .ec2-track { gap:0; }
       #es2-sw { padding:12px 20px; }
+      .ec2-wrap { height:72vw !important; }
+      .ec2-outer { margin: 0 -24px; }
     }
   </style>
   <script>
@@ -1862,16 +2069,19 @@ body.v11-active nav * { cursor: none !important; }
     ];
     function buildEc2(id){
       var s=_ec2slides.concat(_ec2slides);
-      return '<div class="ec2-wrap"><button class="ec2-btn ec2-prev" onclick="ec2Step(\''+id+'\',-1)">&#8592;</button><button class="ec2-btn ec2-next" onclick="ec2Step(\''+id+'\',1)">&#8594;</button><div class="ec2-track" id="'+id+'">'+
+      return '<div class="ec2-wrap"><button class="ec2-btn ec2-prev" onclick="ec2Step(\''+id+'\',-1)" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(90deg);">∥</button><button class="ec2-btn ec2-next" onclick="ec2Step(\''+id+'\',1)" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(-90deg);">∥</button><div class="ec2-track" id="'+id+'">'+
         s.map(function(sl){return '<div class="ec2-slide"><img src="'+sl.src+'"'+(sl.pos?' style="object-position:'+sl.pos+'"':'')+'/><div class="ec2-info"><span class="ec2-tag">'+sl.tag+'</span><span class="ec2-name">'+sl.name+'</span></div></div>';}).join('')+
       '</div></div>';
     }
     function ec2Step(id,d){
       var t=document.getElementById(id);
       if(!t)return;
-      var sw=t.querySelector('.ec2-slide').offsetWidth+2;
+      var slide=t.querySelector('.ec2-slide');
+      var gap=parseFloat(getComputedStyle(t).gap)||0;
+      var sw=slide.offsetWidth+gap;
       var cur=new DOMMatrix(getComputedStyle(t).transform).m41||0;
-      var next=cur-(d*sw),total=sw*9;
+      var total=sw*_ec2slides.length;
+      var next=cur-(d*sw);
       if(next<-total)next+=total;if(next>0)next-=total;
       t.style.transform='translateX('+next+'px)';
     }
@@ -1881,30 +2091,42 @@ body.v11-active nav * { cursor: none !important; }
     }
     document.addEventListener('DOMContentLoaded',function(){
       ['e0','e1','e2','e3','e4','e5','e6','e7','e8','e9','e10'].forEach(function(id){
-        var el=document.getElementById(id);if(el)el.innerHTML=buildEc2(id+'t');
+        var el=document.getElementById(id);if(el){
+          el.innerHTML=buildEc2(id+'t');
+          // Touch swipe
+          var wrap=el.querySelector('.ec2-wrap');
+          if(wrap){
+            var tx=0;
+            wrap.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+            wrap.addEventListener('touchend',function(e){
+              var dx=e.changedTouches[0].clientX-tx;
+              if(Math.abs(dx)>40)ec2Step(id+'t',dx<0?1:-1);
+            },{passive:true});
+          }
+        }
       });
     });
   </script>
-  <style>@media(max-width:768px){ .we-build-grid { grid-template-columns:1fr !important; } }</style>
+  <style>@media(max-width:768px){ .we-build-grid { grid-template-columns:1fr !important; } .ec2-outer { margin: 0 !important; } .fdot { font-size: 10px !important; } }</style>
   <section style="padding:48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div><div style="position:relative;z-index:1;">
     <div style="padding:64px 0;margin-bottom:0;">
       <div class="mw-wrap"><div class="we-build-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;align-items:stretch;">
         <div style="padding-right:56px;display:flex;flex-direction:column;justify-content:flex-start;border:1px solid rgba(10,10,10,0.1);padding:32px;">
           <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">We build the files.</p>
-          <p class="we-build-body" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">From PCB layouts to production tooling, we build the files that take products into production. We turn brand DNA into real CAD, working prototypes, and manufacturable products. Our team works across industrial design, mechanical engineering, electronics, prototyping, tooling, supply chain management, and QC, so the product that gets made still reflects the original idea.</p>
+          <p class="we-build-body" style="font-size:var(--text-body);line-height:1.85;color:rgba(10,10,10,0.55);font-weight:300;">从PCB布局到生产工具，我们构建将产品带入生产的文件。我们将品牌DNA转化为真实的CAD、工作原型和可制造产品。我们的团队涵盖工业设计、机械工程、电子、原型制作、模具、供应链管理和质量控制，确保最终产品仍反映原始理念。</p>
         </div>
         <div style="background:rgba(10,10,10,0.03);padding:32px;">
-          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">Manufacturing 2.0</p>
+          <p style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:20px;">制造业2.0</p>
           <div style="display:flex;flex-direction:column;gap:0;">
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Re-Skin</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Proven Platforms · Premium Feel · Lower Capex<span class="sf-eng-sym">▽▽▽ · ±0.001</span></span></div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Development</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">CAD · DFM · Prototyping · Supply Chain<span class="sf-eng-sym">⌀ · 1:2 · ↧</span></span></div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Electronics</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">PCB Layout · BMS · Wiring · Controls<span class="sf-eng-sym">GND · ⊞ · ∠</span></span></div>
-            <div style="display:flex;justify-content:space-between;padding:12px 0;"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Execution</span><span style="font-size:0.8rem;color:rgba(10,10,10,0.65);">Tooling · Production · QC · Factory Rollout<span class="sf-eng-sym">⌙ · →|← · ⊥</span></span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Re-Skin</span><span style="font-size:var(--text-body);color:rgba(10,10,10,0.65);">Proven Platforms · Premium Feel · Lower Capex</span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Development</span><span style="font-size:var(--text-body);color:rgba(10,10,10,0.65);">CAD · DFM · Prototyping · Supply Chain</span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(10,10,10,0.07);"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Electronics</span><span style="font-size:var(--text-body);color:rgba(10,10,10,0.65);">PCB Layout · BMS · Wiring · Controls</span></div>
+            <div style="display:flex;justify-content:space-between;padding:12px 0;"><span style="font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.35);">Execution</span><span style="font-size:var(--text-body);color:rgba(10,10,10,0.65);">Tooling · Production · QC · Factory Rollout</span></div>
           </div>
         </div>
       </div>
     </div></div>
-    <div id="e2" style="margin:0 -48px;"></div>
+    <div id="e2" class="ec2-outer"></div>
   </section>
 
 
@@ -1916,7 +2138,7 @@ body.v11-active nav * { cursor: none !important; }
     <div class="factory-solo" style="position:relative;">
       <img src="frame_factory-431.jpg" alt="Prototype on workbench" />
     </div>
-    <div style="height:108px;position:relative;"></div>
+    <div style="height:64px;position:relative;"></div>
   </div>
   
     <style>
@@ -1965,58 +2187,60 @@ body.v11-active nav * { cursor: none !important; }
 }
 .ch-item:hover::before { height: 100%; }
 @media(max-width:768px){
-  .cpl-china-left { padding: 24px !important; align-self: auto !important; height: auto !important; }
+  .cpl-china-left { padding: 24px !important; padding-left: 0 !important; align-self: auto !important; height: auto !important; }
   .cpl-china-acc { gap: 2px; }
-  .cpl-d1-top { grid-template-columns:1fr !important; gap:24px !important; padding:40px 24px 32px !important; }
+  /* cpl-d1-top mobile handled in sf-mobile-width block above */
   .cpl-d1-imgs { grid-template-columns:1fr !important; }
   .cpl-d1-imgs img { aspect-ratio:16/9 !important; }
   .cpl-d1-imgs img:nth-child(2), .cpl-d1-imgs img:nth-child(3) { display:none !important; }
+  .ch-item { padding:8px 14px !important; }
+  .ch-body p { line-height:1.6 !important; }
 }
 </style>
 <section style="padding:0;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed !important;position:relative;"><div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
   <div style="position:relative;z-index:1;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:48px 56px 48px;align-items:start;" class="cpl-d1-top">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:16px 56px 48px;align-items:start;" class="cpl-d1-top">
       <div class="cpl-china-left">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">China Translation</span>
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4.5rem);text-transform:uppercase;line-height:0.88;color:rgba(10,10,10,0.82);margin-bottom:24px;">Localised For China</h2>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">We rework the product, business model, and route to market for China. We turn Western brand equity into China-fit product and business concepts designed to work with local operators.</p>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(138,110,58,0.8);display:block;margin-bottom:20px;">中国本土化</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);letter-spacing:0.22em;text-transform:uppercase;line-height:0.92;color:rgba(10,10,10,0.75);margin-bottom:24px;">为中国本土化</h2>
+        <p class="fp-body-text" style="font-size:var(--text-body);line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:400px;">我们为中国重构产品、商业模式和市场路径。我们将西方品牌资产转化为适合中国的产品和商业概念，专为与本地运营商合作而设计。</p>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:flex-start;">
         <div class="china-accordion cpl-china-acc" style="margin-top:0;">
           <div class="ch-item">
-            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Concept Development<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">概念开发</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture, and channel logic.</p>
+            <div class="ch-body">
+              <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Brand-right for China. We translate the core product concept into a format that fits Chinese consumer expectations, price architecture, and channel logic.</p>
             </div>
           </div>
           <div class="ch-item">
-            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">System Design<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">System Design</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales — so every touchpoint is manufacturable and governed.</p>
+            <div class="ch-body">
+              <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Product + service logic. We design the full system — hardware, packaging, fulfilment, and after-sales — so every touchpoint is manufacturable and governed.</p>
             </div>
           </div>
           <div class="ch-item">
-            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Commercial Model<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">Commercial Model</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer — subscriptions, accessories, or service contracts.</p>
+            <div class="ch-body">
+              <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Hero + recurring layer. A clear revenue model built around a flagship product entry point and a structured recurring layer — subscriptions, accessories, or service contracts.</p>
             </div>
           </div>
           <div class="ch-item">
-            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;cursor:pointer;">
-              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);position:relative;display:inline-block;overflow:hidden;">Market Pathway<span class="ch-sweep" style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(138,110,58,0.18),transparent);transform:translateX(-100%);pointer-events:none;"></span></span>
+            <div class="ch-header" onclick="toggleChina(this)" style="display:flex;justify-content:space-between;align-items:center;padding:20px 0;cursor:pointer;">
+              <span class="ch-eyebrow" style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.5);">Market Pathway</span>
               <span class="ch-icon" style="font-size:1rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span>
             </div>
-            <div class="ch-body" style="display:grid;grid-template-rows:0fr;transition:grid-template-rows 0.5s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;opacity:0;">
-              <p style="font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture — so the brand enters China with the right partner and the right terms.</p>
+            <div class="ch-body">
+              <p style="font-family:'DM Sans',sans-serif;font-size:var(--text-body);font-weight:300;color:rgba(10,10,10,0.65);padding-bottom:16px;">Built with local operators. We structure the commercial partnership — distribution, licensing, or co-venture — so the brand enters China with the right partner and the right terms.</p>
             </div>
           </div>
         </div>
@@ -2035,10 +2259,10 @@ body.v11-active nav * { cursor: none !important; }
 <!-- VALUE L1: Title embedded as first card slot -->
   <section class="value" style="padding-top:120px;padding-bottom:160px;background:#ede8e0 !important;background-image:url('cad_texture.jpeg') !important;background-size:cover !important;background-position:center !important;background-attachment:fixed !important;position:relative;">
     <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
-    <p class="label reveal" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation</p>
+    <p class="label" style="margin-bottom:48px;color:#8a6e3a;position:relative;z-index:1;">Value Creation</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;position:relative;z-index:1;">
       <div style="padding:56px 48px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);display:flex;flex-direction:column;justify-content:center;grid-row:span 2;">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.72);line-height:0.88;">A better deal for every side.</h2>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);letter-spacing:0.22em;text-transform:uppercase;color:rgba(10,10,10,0.75);line-height:0.92;">各方都能获得更好的回报</h2>
       </div>
       <div class="value-card" style="cursor:pointer;" onclick="toggleValueCard(this)">
         <h4 style="display:flex;justify-content:space-between;align-items:center;">Brands <span class="val-icon" style="font-size:1.2rem;color:#8a6e3a;font-weight:300;transition:transform 0.3s;">+</span></h4>
@@ -2106,10 +2330,11 @@ body.v11-active nav * { cursor: none !important; }
     .fcar-btn:hover { background:rgba(0,180,216,0.15); border-color:#00b4d8; color:#00b4d8; }
     .fcar-prev { left:14px; } .fcar-next { right:14px; }
     .fcar-dots { position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:20; }
-    .fdot { width:5px; height:5px; border-radius:50%; background:rgba(244,241,236,0.25); cursor:pointer; border:none; padding:0; transition:background 0.2s; }
-    .fdot.active { background:#c8a96e; }
-    #c16s-wrap .fdot.active { background:#00b4d8; }
-    #c16s-wrap .fdot { background:rgba(0,180,216,0.25); }
+    .fdot { background:none; cursor:pointer; border:none; padding:0; transition:all 0.2s; font-family:'Bebas Neue',sans-serif; font-size:14px; color:rgba(244,241,236,0.3); display:inline-block; transform:skewX(-4deg); line-height:1; }
+    .fdot.active { color:rgba(200,169,110,0.9); }
+    .fdot::before { content:'◎'; }
+    #c16s-wrap .fdot { color:rgba(0,180,216,0.3); }
+    #c16s-wrap .fdot.active { color:rgba(0,180,216,0.95); }
   </style>
 
   <script>
@@ -2156,15 +2381,15 @@ body.v11-active nav * { cursor: none !important; }
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(244,241,236,0.6);display:block;margin-bottom:16px;">Featured Project</span>
         <img src="Switchlogowhite2.png" style="height:32px;max-width:200px;width:auto;object-fit:contain;display:block;margin-bottom:6px;mix-blend-mode:screen;" id="switch-logo-img" />
         <img src="Logo_escrambler.jpg" style="height:14px;max-width:120px;width:auto;object-fit:contain;display:block;margin-bottom:20px;filter:invert(1) brightness(0.7);opacity:0.7;" />
-        <p class="fp-body-text" style="font-size:clamp(0.85rem,1vw,0.95rem);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle, now being relaunched around a larger opportunity.</p>
+        <p class="fp-body-text" style="font-size:var(--text-body);line-height:1.75;color:rgba(244,241,236,0.55);font-weight:300;max-width:420px;margin-bottom:24px;">An award-winning electric motorcycle, now being relaunched around a larger opportunity.</p>
         <div style="display:flex;gap:28px;">
           <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">13kWh</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Battery</span></div>
           <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">150km</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Range</span></div>
           <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:0.06em;color:#00b4d8;line-height:1;">135km/h</span><span style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.5);">Top Speed</span></div>
         </div>
       </div>
-      <button class="fcar-btn fcar-prev" onclick="c16Step(-1)">&#8592;</button>
-      <button class="fcar-btn fcar-next" onclick="c16Step(1)">&#8594;</button>
+      <button class="fcar-btn fcar-prev" onclick="c16Step(-1)" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(90deg);">↧</button>
+      <button class="fcar-btn fcar-next" onclick="c16Step(1)" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(-90deg);">↧</button>
       <!-- Animated electric top line -->
       <div style="position:absolute;top:0;left:0;right:0;height:5px;z-index:3;overflow:hidden;">
         <div id="switch-electric-line" style="width:100%;height:100%;background:linear-gradient(to right,transparent 0%,rgba(0,180,216,0.55) 20%,#00b4d8 50%,rgba(0,180,216,0.55) 80%,transparent 100%);background-size:200% 100%;animation:electric-sweep 3s ease-in-out infinite;"></div>
@@ -2175,25 +2400,25 @@ body.v11-active nav * { cursor: none !important; }
     <div style="background:var(--cream);padding:64px 48px;"><div class="mw-wrap">
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;padding-bottom:20px;border-bottom:1px solid rgba(0,180,216,0.2);">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Acquisition</span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand. Its geometry, materials, and manufacturing language can extend far beyond the bike itself. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product.</p>
+        <p class="fp-body-text" style="font-size:var(--text-body);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">We acquired the SWITCH assets in 2025: a niche electric motorcycle brand with unusually deep design and engineering DNA. That depth runs through the whole product, from industrial design and engineering to manufacturing, materials, finishes, and brand. Its geometry, materials, and manufacturing language can extend far beyond the bike itself. The brand is now being translated into products with larger addressable markets, with SWITCH remaining the hero product.</p>
       </div>
     </div></div>
     <!-- SWITCH DNA BLOCK -->
     <div style="background:var(--cream);padding:24px 48px 64px;"><div class="mw-wrap">
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(0,180,216,0.2);">
-        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Brand DNA</span>
+        <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">品牌基因</span>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Structure</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Exposed tubes, welds, brackets, and visible fasteners.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">CMF</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Brushed aluminum, abs, and restrained functional colors.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
-          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing</div><p style="font-size:clamp(0.9rem,1.2vw,1.05rem);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Form</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">Rectilinear blocks, hard chamfers, and soft macro radii.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">架构</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">Exposed tubes, welds, brackets, and visible fasteners.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">CMF</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">Brushed aluminum, abs, and restrained functional colors.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Signature Details</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">Battery ribs, cooling fins, CNC parts, and bolt rhythm.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Stance</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">A level top line and heavy central block give it composure.</p></div>
+          <div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#00b4d8;margin-bottom:8px;">Manufacturing</div><p style="font-size:var(--text-body);color:rgba(10,10,10,0.55);line-height:1.6;">Capital-light, tool-like, and built with honest assembly logic</p></div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:120px 1fr;gap:48px;">
         <span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:#00b4d8;">Hardware As A Service</span>
-        <p class="fp-body-text" style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic.</p>
+        <p class="fp-body-text" style="font-size:var(--text-body);line-height:1.9;color:rgba(10,10,10,0.55);font-weight:300;">Not a motorcycle brand, but a proven design and engineering system that can extend into any hardware category that shares the same geometry, materials, and manufacturing logic.</p>
       </div>
     </div></div>
     <!-- New products with SWITCH blue -->
@@ -2210,8 +2435,8 @@ body.v11-active nav * { cursor: none !important; }
       <div class="concept-track" id="conceptTrack">
         <div class="cslide" style="min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="snowboard.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Adventure</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Snowboard</span></div></div><div class="cslide" style="min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="guitar.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Music</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Guitar</span></div></div><div class="cslide" style="min-width:0;position:relative;overflow:hidden;background:#f5f5f5;"><img src="Upscaled_amp.png" style="width:100%;aspect-ratio:1/1;object-fit:contain;padding:16px;display:block;filter:brightness(1);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Electronic</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Amp</span></div></div><div class="cslide" style="min-width:0;position:relative;overflow:hidden;background:#0d0d0d;"><img src="switch_battery.jpg" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:brightness(0.65);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(10,10,10,0.9),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Energy</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,241,236,0.85);">Battery Pack</span></div></div><div class="cslide" style="min-width:0;position:relative;overflow:hidden;background:#f0f0f0;"><img src="switch_speaker.png" style="width:100%;aspect-ratio:1/1;object-fit:contain;padding:16px;display:block;filter:brightness(1);" /><div style="position:absolute;top:0;left:0;right:0;height:2px;background:#00b4d8;"></div><div style="position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(244,241,236,0.8),transparent);"><span style="font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);display:block;margin-bottom:4px;">Audio</span><span style="font-family:'Bebas Neue',sans-serif;font-size:0.92rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.75);">Speaker</span></div></div>
       </div>
-      <button class="concept-btn concept-prev" onclick="conceptStep(-1)">&#8592;</button>
-      <button class="concept-btn concept-next" onclick="conceptStep(1)">&#8594;</button>
+      <button class="concept-btn concept-prev" onclick="conceptStep(-1)" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(90deg);">⊥</button>
+      <button class="concept-btn concept-next" onclick="conceptStep(1)" style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;transform:skewX(-4deg) rotate(-90deg);">⊥</button>
     </div>
     <script>
     (function(){
@@ -2276,20 +2501,20 @@ body.v11-active nav * { cursor: none !important; }
 
   <!-- LOGOS -->
   <div class="logos">
-    <p class="label reveal" style="color:#00b4d8;">As Seen On</p>
+    <p class="label" style="color:#00b4d8;">As Seen On</p>
     <div class="logo-grid">
-      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7d29fed7-7d14-4abb-b12d-1b58b47e193c/HYPEBEAST-png-logo.png" alt="Hypebeast" />
-      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e9427ed1-f206-425e-ab38-603d7da7c150/designboom-logo-png.png" alt="Designboom" style="max-height:48px;opacity:0.35;" />
-      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/81e969d5-7723-4fcd-bbb9-5f16e4e1c237/hi-consumption-logo.png" alt="Hi Consumption" />
-      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/394a7990-a252-4858-9c74-2b19f9b35603/uncrate-logo-r-1.png" alt="Uncrate" />
-      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ee7b81b0-5a05-4db7-9bb4-cff5634abf53/bikeexif-logo-black-png.png" alt="Bike EXIF" />
-      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/5f327e67-83af-450b-86d0-3d56a99eb567/trendhunter_logo-png.png" alt="Trendhunter" style="max-height:44px;opacity:0.35;" />
-      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/89a6f087-5ee5-45b7-9fa2-3fe0d6a09a49/cropped-electrek-logo11.png" alt="Electrek" />
-      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/77cd5272-89c6-462d-9822-2088cd17a303/gessato.png" alt="Gessato" />
-      <img class="reveal reveal-delay-1" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/d6cc1702-a912-4aca-8efb-e598febf19e7/daily-hunt-logo-png.png" alt="Daily Hunt" style="transform:scale(2.2); transform-origin:center;" />
-      <img class="reveal reveal-delay-2" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/4c1bac0d-c8fa-4ed3-9550-1a2940814eab/Silodrome.png" alt="Silodrome" style="transform:scale(1.8); transform-origin:center;" style="transform:scale(1.8); transform-origin:center;" />
-      <img class="reveal reveal-delay-3" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/c0d6afba-7150-447e-8f2d-b6bceca40b35/Blessthisstuff-grey.png" alt="Bless This Stuff" style="max-height:44px;opacity:0.35;" />
-      <img class="reveal reveal-delay-4" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ccbb2b4f-d984-429e-9824-5d2339f35ed5/THE-COOLECTOR-logo-texture-2.png" alt="The Coolector" style="max-height:44px;opacity:0.35;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/7d29fed7-7d14-4abb-b12d-1b58b47e193c/HYPEBEAST-png-logo.png" alt="Hypebeast" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e9427ed1-f206-425e-ab38-603d7da7c150/designboom-logo-png.png" alt="Designboom" style="max-height:48px;opacity:0.35;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/81e969d5-7723-4fcd-bbb9-5f16e4e1c237/hi-consumption-logo.png" alt="Hi Consumption" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/394a7990-a252-4858-9c74-2b19f9b35603/uncrate-logo-r-1.png" alt="Uncrate" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ee7b81b0-5a05-4db7-9bb4-cff5634abf53/bikeexif-logo-black-png.png" alt="Bike EXIF" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/5f327e67-83af-450b-86d0-3d56a99eb567/trendhunter_logo-png.png" alt="Trendhunter" style="max-height:44px;opacity:0.35;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/89a6f087-5ee5-45b7-9fa2-3fe0d6a09a49/cropped-electrek-logo11.png" alt="Electrek" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/77cd5272-89c6-462d-9822-2088cd17a303/gessato.png" alt="Gessato" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/d6cc1702-a912-4aca-8efb-e598febf19e7/daily-hunt-logo-png.png" alt="Daily Hunt" style="transform:scale(1.4); transform-origin:center;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/4c1bac0d-c8fa-4ed3-9550-1a2940814eab/Silodrome.png" alt="Silodrome" style="transform:scale(1.3); transform-origin:center;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/c0d6afba-7150-447e-8f2d-b6bceca40b35/Blessthisstuff-grey.png" alt="Bless This Stuff" style="max-height:44px;opacity:0.35;" />
+      <img src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/ccbb2b4f-d984-429e-9824-5d2339f35ed5/THE-COOLECTOR-logo-texture-2.png" alt="The Coolector" style="max-height:44px;opacity:0.35;" />
     </div>
   </div>
 
@@ -2299,8 +2524,8 @@ body.v11-active nav * { cursor: none !important; }
 
   <!-- FUNDS -->
   <section class="funds" id="funds">
-    <p class="label reveal">Investment Paths</p>
-    <h2 class="section-title">Same engine<br/><em>different</em> ownership.</h2>
+    <p class="label">投资路径</p>
+    <h2 class="section-title">同一引擎<br/><em>不同</em>所有权</h2>
     <style>
       .fund-expand { font-size:0.88rem; line-height:1.75; color:rgba(10,10,10,0.6); margin-top:12px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, opacity 0.3s; opacity:0; }
       .fund-card:hover .fund-expand { max-height:160px; opacity:1; }
@@ -2309,8 +2534,8 @@ body.v11-active nav * { cursor: none !important; }
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/e3fb1837-73e8-4dd7-bdf0-9d2e68d83582/e70a2636f73da2c6c55b80c7d2dec8ca56fa48ea04b5b80a7139f7d2bf13dc9e.jpg" alt="Fund A" />
         <div class="fund-body">
-          <p class="fund-tag">Fund A</p>
-          <h3>Proprietary</h3>
+          <p class="fund-tag">基金A</p>
+          <h3>自有项目</h3>
           <p>We invest in our own brands and companies, where we control the IP, product system, and long-term value creation.</p>
           <div class="fund-expand">This is where Silent Foundry builds and owns the asset most directly — including IP, product system, supplier relationships, and long-term value creation. We carry the risk and the upside.</div>
         </div>
@@ -2318,8 +2543,8 @@ body.v11-active nav * { cursor: none !important; }
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/9cc29928-94be-49b9-a4e4-c87ff6f41e92/640+%282%29.png" alt="Fund B" />
         <div class="fund-body">
-          <p class="fund-tag">Fund B</p>
-          <h3>Partnership</h3>
+          <p class="fund-tag">基金B</p>
+          <h3>合作项目</h3>
           <p>We back external brands through flexible structures — from product translation and licensing to full investments and acquisitions.</p>
           <div class="fund-expand">Flexible structures with outside brands, from translation and licensing to more involved build-outs. The terms depend on fit, brand equity, and commercial logic — not a fixed template.</div>
         </div>
@@ -2327,8 +2552,8 @@ body.v11-active nav * { cursor: none !important; }
       <div class="fund-card">
         <img class="fund-img" src="https://images.squarespace-cdn.com/content/v1/69a7d61db6350c31d2475be3/2b0a4fc5-52b9-46f7-bdfd-4a444e612091/Bali-Uluwatu.jpg" alt="Exits" />
         <div class="fund-body">
-          <p class="fund-tag">Exits</p>
-          <h3>Liquidity</h3>
+          <p class="fund-tag">退出</p>
+          <h3>流动性</h3>
           <p>We build toward earlier, cleaner exit pathways — transferable value that can be sold, licensed, or rolled into larger strategic groups.</p>
           <div class="fund-expand">Once the system is proven, each venture is packaged for transferable value — with cleaner pathways to sale, licensing, strategic roll-up, or other forms of exit. The goal is optionality, not a single mandatory outcome.</div>
         </div>
@@ -2338,7 +2563,7 @@ body.v11-active nav * { cursor: none !important; }
 
   <!-- CTA -->
   <section class="cta">
-    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together</p>
+    <p class="label reveal" style="color:rgba(10,10,10,0.5);">携手共建</p>
     <style>
       @keyframes shimmer-product {
         0%   { background-position: -200% center; }
@@ -2366,22 +2591,25 @@ body.v11-active nav * { cursor: none !important; }
         letter-spacing: 0.14em;
       }
     </style>
-    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span></h2>
+    <h2 class="section-title reveal">准备好将您的<br/>品牌转化为<br/><span class="cta-product-word">产品</span>了吗？</h2>
     <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.</p>
     <a href="sf-contact.html" class="btn reveal">Discuss a Partnership</a>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <div class="reveal">
-      <a href="index.html" style="text-decoration:none;font-family:'Bebas Neue',sans-serif;color:rgba(244,241,236,0.7);transform:skewX(-4deg);transform-origin:left center;line-height:0.76;display:flex;flex-direction:column;margin-bottom:8px;">
-        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Silent</span>
-        <span style="font-size:42px;letter-spacing:0.06em;-webkit-text-stroke:0.5px rgba(244,241,236,0.7);">Foundry</span>
+    <div class="footer-inner">
+    <div class="footer-logo-wrap">
+      <a href="index.html" class="footer-logo">
+        <span class="sf-mark">
+          <span class="sf-mark-line sf-mark-line--silent"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
+          <span class="sf-mark-line"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+        </span>
       </a>
-      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
+      <p class="footer-tagline">将正宗品牌转化为真实产品的跨境创业工作室。</p>
     </div>
     <div class="footer-col">
-      <h5>Navigate</h5>
+      <h5>导航</h5>
       <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
       <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
       <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
@@ -2398,9 +2626,10 @@ body.v11-active nav * { cursor: none !important; }
     <svg class="sf-footer-triangle" width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M 0 12 L 10 0 L 20 12" stroke="rgba(200,169,110,0.12)" stroke-width="0.8" fill="none"/>
   </svg>
+  </div>
 </footer>
   <div class="footer-bottom">
-    <span>© 2026 Silent Foundry Group. All rights reserved.</span>
+    <span>© 2026 Silent Foundry集团。保留所有权利。</span>
 
   </div>
 
@@ -2427,6 +2656,19 @@ body.v11-active nav * { cursor: none !important; }
     })();
   </script>
   <script src="sf-scripts.js"></script>
+<script>
+(function(){
+  function revealTop(){
+    var top=document.querySelector('.hero-headline-top');
+    if(top) top.style.opacity='1';
+  }
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){ setTimeout(revealTop, 50); });
+  } else {
+    window.addEventListener('load', revealTop);
+  }
+})();
+</script>
 <script>
 // Smooth anchor scroll — wait for full init
 window.addEventListener('load', function() {
@@ -2498,12 +2740,18 @@ window.addEventListener('load', function() {
   function toggleAccordion(header) {
     const body = header.nextElementSibling;
     const icon = header.querySelector('.accordion-icon');
-    const isOpen = body.classList.contains('open');
+    const isOpen = body.style.maxHeight && body.style.maxHeight !== '0px' && body.style.maxHeight !== '';
     // Close all
-    document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.accordion-body').forEach(b => {
+      b.style.maxHeight = '0';
+      b.style.paddingBottom = '0';
+      b.classList.remove('open');
+    });
     document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
-    // Open this one if it was closed
     if (!isOpen) {
+      body.style.transition = 'max-height 0.6s ease, padding 0.3s ease';
+      body.style.maxHeight = body.scrollHeight + 'px';
+      body.style.paddingBottom = '20px';
       body.classList.add('open');
       icon.classList.add('open');
     }
@@ -2520,8 +2768,8 @@ window.addEventListener('load', function() {
 
 <!-- V1.1 DOM elements -->
 <div id="v11-status" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:600;align-items:center;gap:7px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);">
-  <div id="v11-status-dot" style="width:6px;height:6px;border-radius:50%;background:#c8a96e;flex-shrink:0;animation:v11DotPulse 2s ease-in-out infinite;opacity:1;"></div>
-  <span id="v11-status-text">Open for 2026 partnerships</span>
+  <span id="v11-status-dot" style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:#c8a96e;flex-shrink:0;animation:v11DotPulse 2s ease-in-out infinite;opacity:1;transform:skewX(-4deg);display:inline-block;line-height:1;">◎</span>
+  <span id="v11-status-text">开放2026年合作</span>
 </div>
 
 <div id="v11-badge" style="display:none;position:fixed;bottom:62px;left:50%;transform:translateX(-50%);z-index:599;pointer-events:none;width:78px;height:78px;transition:filter 0.6s ease;">
@@ -2533,9 +2781,13 @@ window.addEventListener('load', function() {
   </svg>
 </div>
 
-<div id="v11-cursor" style="display:none;position:fixed;width:20px;height:20px;border:1.5px solid rgba(200,169,110,0.8);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width 0.3s ease,height 0.3s ease,border-color 0.3s,top 0.08s linear,left 0.08s linear;"></div>
-<div id="v11-cursor-dot" style="display:none;position:fixed;width:4px;height:4px;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:background 0.6s ease;"></div>
-<div id="v11-cursor-ring" style="display:none;position:fixed;width:38px;height:38px;border:1px solid transparent;border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(0.25,0.46,0.45,0.94),height 0.4s cubic-bezier(0.25,0.46,0.45,0.94),top 0.18s ease-out,left 0.18s ease-out,border-color 0.6s ease;"></div>
+<div id="v11-cursor" style="display:none;position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%) skewX(-4deg);transition:color 0.3s;position:fixed;">
+  <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:rgba(200,169,110,0.85);line-height:1;display:block;position:relative;">◎<span id="v11-cursor-dot" style="position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:#c8a96e;display:block;pointer-events:none;"></span></span>
+</div>
+<div id="v11-cursor-ring" style="display:none;position:fixed;pointer-events:none;z-index:99998;transform:translate(-50%,-50%) skewX(-4deg);">
+  <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:rgba(200,169,110,0.4);line-height:1;display:block;">◎</span>
+  <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:rgba(200,169,110,0.4);display:block;pointer-events:none;"></span>
+</div>
 
 <div id="v11-how-glow" style="display:none;position:absolute;width:450px;height:450px;border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;transform:translate(-50%,-50%);transition:left 0.3s ease,top 0.3s ease;"></div>
 
@@ -2546,11 +2798,10 @@ body.v11-active * { cursor: none !important; }
 body.v11-active a, body.v11-active button, body.v11-active [onclick] { cursor: none !important; }
 body.v11-active address, body.v11-active address * { cursor: none !important; }
 body.v11-active #v11-status,
-body.v11-active #v11-badge,
 body.v11-active #v11-cursor,
-body.v11-active #v11-cursor-dot,
 body.v11-active #v11-cursor-ring { display: flex !important; }
-body.v11-active #v11-badge { display: block !important; }
+/* body.v11-active #v11-badge — badge hidden, keep for re-enable:
+   body.v11-active #v11-badge { display: block !important; } */
 
 /* ── LOGO HIDE ON CTA ── */
 body.v11-active .nav-logo {
@@ -2569,9 +2820,14 @@ body.v11-active .nav-logo span {
   transition: font-size 0.5s ease, letter-spacing 0.5s ease, line-height 0.5s ease;
   display: block;
 }
-body.v11-active.v11-scrolled .nav-logo span {
-  font-size: 42px !important;
+body.v11-active .nav-logo .sf-mark-ring {
+  display: inline !important;
 }
+body.v11-active .nav-logo .gm {
+  display: inline !important;
+}
+/* gmPulse animations removed */
+/* logo scroll shrink removed — opacity only */
 
 /* ── 5. LOGO STAMP ON LOAD ── */
 @keyframes v11LogoStamp {
@@ -2596,20 +2852,10 @@ body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 140px; ov
 /* ── 6. NAV HOVER — underline + glow ── */
 body.v11-active .nav-links a {
   position: relative;
-  transition: opacity 0.2s, color 0.2s, text-shadow 0.3s !important;
+  transition: opacity 0.2s, color 0.2s !important;
 }
-body.v11-active .nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left: 0;
-  width: 0; height: 1px;
-  background: #c8a96e;
-  transition: width 0.3s ease;
-}
-body.v11-active .nav-links a:hover::after { width: 100%; }
 body.v11-active .nav-links a:hover {
   opacity: 1 !important;
-  text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
 }
 
 /* ── 7+8. SOUL PULSES ── */
@@ -2698,12 +2944,6 @@ body.v11-active [style*="grid-template-columns:repeat(3,1fr);gap:24px"] {
 }
 
 /* ── 17. HOW IT WORKS ACCORDION — open item background ── */
-body.v11-active .accordion-item.open-item {
-  background: rgba(200,169,110,0.04);
-  border-radius: 2px;
-  transition: background 0.4s ease;
-}
-
 /* ── 18. ACCORDION SCROLL REVEAL ── */
 /* accordion reveal removed — items visible by default */
 body.v11-active .accordion-item {
@@ -2755,7 +2995,6 @@ body.v11-active .china-grid > div:last-child {
 }
 
 body.v11-active .ch-body.ch-open {
-  grid-template-rows: 1fr !important;
   opacity: 1 !important;
 }
 body.v11-active .ch-body > * {
@@ -2765,15 +3004,7 @@ body.v11-active .ch-body > * {
 body.v11-active .ch-icon.ch-open {
   transform: rotate(45deg);
 }
-body.v11-active .ch-item {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
-}
-body.v11-active .ch-item.v11-ch-revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ch-item stagger removed — items visible by default */
 
 /* ── 22. VALUE CARD SMOOTH EXPAND ── */
 body.v11-active .val-body {
@@ -2790,40 +3021,43 @@ body.v11-active.v11-footer-zone #v11-status { opacity: 0 !important; transition:
 body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: opacity 0.5s ease !important; }
 
 /* ── CREAM ZONE CURSOR ── */
-body.v11-active.v11-cream-zone #v11-cursor { border-color: rgba(10,10,10,0.35) !important; transition: border-color 0.2s ease !important; }
-body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.6) !important; transition: background 0.2s ease !important; }
-body.v11-active.v11-cream-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.2) !important; transition: border-color 0.2s ease !important; }
+body.v11-active.v11-cream-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.8) !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-cursor-ring span:first-child { color: rgba(10,10,10,0.5) !important; transition: none !important; }
 
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
 /* Status dot always visible — slight opacity on cream */
 body.v11-active.v11-cream-zone #v11-status { color: rgba(10,10,10,0.45) !important; transition: none !important; }
-body.v11-active.v11-cream-zone #v11-status-dot { background: #c8a96e !important; transition: none !important; }
+body.v11-active.v11-cream-zone #v11-status-dot { color: rgba(10,10,10,0.6) !important; transition: none !important; }
 /* Dark cursor on gold CTA sections */
-body.v11-active.v11-cta-zone #v11-cursor { border-color: rgba(10,10,10,0.7) !important; }
+body.v11-active.v11-cta-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; }
 body.v11-active #v11-cursor-dot { background: #c8a96e; }
-body.v11-active #v11-cursor-ring { border-color: rgba(200,169,110,0.7) !important; }
+body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4) !important; }
 body.v11-active.v11-cta-zone #v11-cursor-dot { background: rgba(10,10,10,0.7) !important; }
-body.v11-active.v11-cta-zone #v11-cursor-ring { border-color: rgba(10,10,10,0.3) !important; }
-body.v11-active.v11-footer-zone #v11-cursor { border-color: rgba(244,241,236,0.6) !important; transition: border-color 0.3s ease !important; }
-body.v11-active.v11-footer-cursor-zone #v11-cursor { border-color: rgba(244,241,236,0.6) !important; transition: border-color 0.3s ease !important; }
+body.v11-active.v11-cta-zone #v11-cursor-ring span:first-child { color: rgba(10,10,10,0.3) !important; }
+body.v11-active.v11-cta-zone #v11-status-dot { color: rgba(10,10,10,0.6) !important; transition: none !important; }
+body.v11-active.v11-cta-zone #v11-status { color: rgba(10,10,10,0.55) !important; transition: none !important; }
+body.v11-active.v11-footer-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
+body.v11-active.v11-footer-cursor-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
 body.v11-active.v11-footer-zone #v11-cursor-dot { background: rgba(244,241,236,0.85) !important; transition: background 0.3s ease !important; }
-body.v11-active.v11-footer-zone #v11-cursor-ring { border-color: rgba(244,241,236,0.6) !important; transition: border-color 0.3s ease !important; }
+body.v11-active.v11-footer-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
 body.v11-active.v11-footer-cursor-zone #v11-cursor-dot { background: rgba(244,241,236,0.85) !important; transition: background 0.3s ease !important; }
-body.v11-active.v11-footer-cursor-zone #v11-cursor-ring { border-color: rgba(244,241,236,0.6) !important; transition: border-color 0.3s ease !important; }
+body.v11-active.v11-footer-cursor-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
 
 /* Always show status dot */
 body.v11-active #v11-status { display: flex !important; }
+@media(max-width:900px) { body.v11-active.v11-footer-zone #v11-status { display: none !important; } }
 
 /* ── 26. SWITCH SECTION CYAN — INSTANT SNAP ── */
-body.v11-active.v11-switch-zone #v11-status-dot { background: #00b4d8 !important; transition: none !important; }
-body.v11-active:not(.v11-switch-zone) #v11-status-dot { background: #c8a96e !important; }
+body.v11-active.v11-switch-zone #v11-status-dot { color: #00b4d8 !important; transition: none !important; }
+body.v11-active:not(.v11-switch-zone) #v11-status-dot { color: #c8a96e !important; }
 body.v11-active.v11-switch-zone #v11-badge svg text { fill: rgba(0,180,216,0.6) !important; }
 body.v11-active.v11-switch-zone .scroll-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .hero-scroll span { color: #00b4d8 !important; transition: none !important; }
 /* nav stays SF colours in switch zone */
-body.v11-active.v11-switch-zone #v11-cursor { border-color: rgba(0,180,216,0.8) !important; transition: none !important; }
+body.v11-active.v11-switch-zone #v11-cursor span:first-child { color: rgba(0,180,216,0.8) !important; transition: none !important; }
 body.v11-active.v11-switch-zone #v11-cursor-dot { background: #00b4d8 !important; transition: none !important; }
-body.v11-active.v11-switch-zone #v11-cursor-ring { border-color: rgba(0,180,216,0.25) !important; transition: none !important; }
+body.v11-active.v11-switch-zone #v11-cursor-ring span:first-child { color: rgba(0,180,216,0.25) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .scroll-indicator-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .scroll-indicator span { color: #00b4d8 !important; transition: none !important; }
 body.v11-active.v11-switch-zone .fcar-btn { border-color: rgba(0,180,216,0.4) !important; color: rgba(0,180,216,0.8) !important; transition: none !important; }
@@ -2867,8 +3101,8 @@ body.v11-active.v11-cursor-hover #v11-cursor-ring {
 }
 
 @keyframes v11DotPulse {
-  0%,100% { transform:scale(1); opacity:1; }
-  50% { transform:scale(1.4); opacity:1; }
+  0%,100% { transform:skewX(-4deg) scale(1); opacity:1; }
+  50% { transform:skewX(-4deg) scale(1.4); opacity:1; }
 }
 /* ── BADGE SPIN ── */
 @keyframes v11BadgeSpin {
@@ -2890,13 +3124,18 @@ body.v11-active #v11-badge {
   }
   nav > div[style*="gap:8px"] {
     position: absolute !important;
-    right: 58px !important;
+    right: 72px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
   }
 }
 @media (hover: none), (pointer: coarse) {
   body { cursor: auto !important; }
+  .footer-logo-wrap {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
   #v11-cursor, #v11-cursor-dot, #v11-cursor-ring {
     display: none !important;
   }
@@ -2911,6 +3150,11 @@ body.v11-active #v11-badge {
     font-size: 0.50rem !important;
     color: rgba(244,241,236,0.88) !important;
     gap: 5px !important;
+  }
+  body.mobile-hide-logo .nav-logo {
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    pointer-events: none !important;
   }
 }
 </style>
@@ -2934,7 +3178,6 @@ body.v11-active #v11-badge {
     if (!v11Active) return;
     curX = e.clientX; curY = e.clientY;
     cur.style.left = curX + 'px'; cur.style.top = curY + 'px';
-    curDot.style.left = curX + 'px'; curDot.style.top = curY + 'px';
     // Force cursor:none on hovered element to beat UA stylesheet
     if (e.target && e.target.style) e.target.style.cursor = 'none';
   });
@@ -2942,8 +3185,8 @@ body.v11-active #v11-badge {
   // Lagging ring
   function animateRing() {
     if (!v11Active) { requestAnimationFrame(animateRing); return; }
-    ringX += (curX - ringX) * 0.12;
-    ringY += (curY - ringY) * 0.12;
+    ringX += (curX - ringX) * 0.28;
+    ringY += (curY - ringY) * 0.28;
     curRing.style.left = ringX + 'px';
     curRing.style.top = ringY + 'px';
     requestAnimationFrame(animateRing);
@@ -2972,7 +3215,7 @@ body.v11-active #v11-badge {
     creamSelectors.forEach(function(sel) {
       document.querySelectorAll(sel).forEach(function(el) {
         var r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
+        if (r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.5) {
           inCream = true;
         }
       });
@@ -2980,7 +3223,7 @@ body.v11-active #v11-badge {
     // Also check cream inline backgrounds
     document.querySelectorAll('[style*="background:var(--cream)"], [style*="background:#ede8e0"]').forEach(function(el) {
       var r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight * 0.75 && r.bottom > window.innerHeight * 0.25) {
+      if (r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.5) {
         inCream = true;
       }
     });
@@ -3004,10 +3247,10 @@ body.v11-active #v11-badge {
       }
       // Fade persistent UI near footer
       var footerRect = footer.getBoundingClientRect();
-      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.15);
+      document.body.classList.toggle('v11-footer-zone', footerRect.top < window.innerHeight * 0.75);
       document.body.classList.toggle('v11-footer-cursor-zone', footerRect.top < window.innerHeight * 0.95);
       // Dark cursor on gold CTA - disabled when footer is visible
-      var inFooterZone = footerRect.top < window.innerHeight * 0.15;
+      var inFooterZone = footerRect.top < window.innerHeight * 0.75;
       var ctaEl = document.querySelector('.cta');
       if (ctaEl) {
         var ctaRect = ctaEl.getBoundingClientRect();
@@ -3184,7 +3427,7 @@ body.v11-active #v11-badge {
         setTimeout(function() {
           document.querySelectorAll('.accordion-item').forEach(function(item) {
             var body = item.querySelector('.accordion-body');
-            item.classList.toggle('open-item', body && body.classList.contains('open'));
+
           });
         }, 50);
       });
@@ -3230,38 +3473,21 @@ body.v11-active #v11-badge {
     var sweep = eyebrow ? eyebrow.querySelector('.ch-sweep') : null;
     var isOpen = body.classList.contains('ch-open');
     // Close all
-    document.querySelectorAll('.ch-body').forEach(function(b) { b.classList.remove('ch-open'); b.style.maxHeight = '0'; b.style.opacity = '0'; });
+    document.querySelectorAll('.ch-body').forEach(function(b) {
+      b.style.maxHeight = '0';
+      b.classList.remove('ch-open');
+    });
     document.querySelectorAll('.ch-icon').forEach(function(i) { i.classList.remove('ch-open'); });
     if (!isOpen) {
+      body.style.transition = 'max-height 0.6s ease';
+      body.style.maxHeight = body.scrollHeight + 'px';
       body.classList.add('ch-open');
-      body.style.maxHeight = '120px';
-      body.style.opacity = '1';
       icon.classList.add('ch-open');
-      // Sweep once
-      if (sweep && !sweep.dataset.swept) {
-        sweep.dataset.swept = '1';
-        sweep.style.transition = 'transform 0.8s ease';
-        sweep.style.transform = 'translateX(200%)';
-      }
     }
   };
 
   function initV11ChinaReveal() {
-    var items = document.querySelectorAll('.ch-item');
-    if (!items.length) return;
-    var chObs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting && v11Active) {
-          var idx = Array.from(items).indexOf(entry.target);
-          setTimeout(function() {
-            entry.target.classList.add('v11-ch-revealed');
-          }, idx * 120);
-          chObs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    items.forEach(function(item) { chObs.observe(item); });
-    v11Observers.push(chObs);
+    // stagger reveal removed — items always visible
   }
 
   // ── SWITCH SECTION CYAN ZONE ──
@@ -3481,12 +3707,48 @@ body.v11-active #v11-badge {
 
   // ── AUTO-INIT V1.1 ON PAGE LOAD ──
   window.addEventListener('DOMContentLoaded', function() {
+    var isTouch = window.matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints > 0;
+    if (isTouch) {
+      // Mobile — lightweight init: badge + status dot + soul pulses only
+      document.body.classList.add('v11-active');
+      stampLogo();
+      initV11IndustrialPulse();
+      initV11SwitchZone();
+      initV11ChinaReveal();
+      initV11Marquee();
+      // Hide status bar near footer on mobile
+      window.addEventListener('scroll', function() {
+        var footer = document.querySelector('footer');
+        if (footer) {
+          var r = footer.getBoundingClientRect();
+          document.body.classList.toggle('v11-footer-zone', r.top < window.innerHeight * 0.9);
+        }
+      }, { passive: true });
+      return;
+    }
     initV11();
   });
 
 })();
 </script>
 <!-- ══ END V1.1 ══ -->
+
+<script>
+// ── MOBILE: hide nav logo when SWITCH featured section is in view ──
+(function() {
+  var isTouch = window.matchMedia('(pointer:coarse)').matches || navigator.maxTouchPoints > 0;
+  if (!isTouch) return;
+  var featured = document.getElementById('featured');
+  if (!featured) return;
+  function checkFeatured() {
+    var rect = featured.getBoundingClientRect();
+    var inView = rect.top < window.innerHeight * 0.5 && rect.bottom > 0;
+    document.body.classList.toggle('mobile-hide-logo', inView);
+  }
+  window.addEventListener('scroll', checkFeatured, { passive: true });
+  window.addEventListener('DOMContentLoaded', checkFeatured);
+})();
+</script>
 
 
 <script>
@@ -3512,14 +3774,253 @@ body.v11-active #v11-badge {
 (function(){
   var wrap = document.getElementById('sf-mwave');
   if(!wrap) return;
-  var bars = 18;
+  var bars = 14;
   for(var i=0; i<bars; i++){
     var b = document.createElement('div');
     b.className = 'sf-wb';
-    b.style.animation = 'sfWB'+(i%5)+' '+(0.55+Math.random()*1.1)+'s ease-in-out infinite';
-    b.style.animationDelay = (i*0.06)+'s';
+    b.style.animation = 'sfWB'+(i%5)+' '+(0.55+Math.random()*1)+'s ease-in-out infinite';
+    b.style.animationDelay = (i*0.045)+'s';
     wrap.appendChild(b);
   }
 })();
 </script>
 </body>
+<!-- ═══════════════════════════════════════════
+     SILENT FOUNDRY — INDUSTRIAL JEWELRY FINAL
+     ⌀ Orig + F1 (final picks)
+     ═══════════════════════════════════════════ -->
+<style id="f-css">
+
+
+/* ── N-SYM exact from reference ── */
+.f-sym{font-family:'Courier New',monospace;vertical-align:super;font-size:0.65em;pointer-events:none;user-select:none;letter-spacing:0.05em;margin-left:0.2em;}
+.f-metal{background:linear-gradient(90deg,rgba(200,169,110,0.5) 0%,rgba(240,215,140,1) 45%,rgba(200,169,110,0.5) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fsh 3s linear infinite;}
+@keyframes fsh{from{background-position:200% center}to{background-position:-200% center}}
+
+/* ── WWD watermark — exact D1 ij-wm ── */
+.f-wm-wrap{position:absolute;inset:0;pointer-events:none;z-index:1;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.f-wm-wrap span{font-family:'Courier New',monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);}
+
+/* ── We Build watermark ── */
+.f-wm{position:absolute;font-family:'Courier New',monospace;pointer-events:none;user-select:none;z-index:0;line-height:1;}
+
+/* ── Static elements ── */
+.f-grid{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.f-br{position:absolute;inset:0;pointer-events:none;z-index:2;}
+.f-b{position:absolute;}
+.f-fsym{font-family:'Courier New',monospace;margin-left:0.2em;pointer-events:none;user-select:none;}
+.f-m6{font-family:'Courier New',monospace;font-size:0.32rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;}
+@media(max-width:768px){.f-m6{display:none !important;}}
+.footer-bottom{padding:16px 48px !important;background:var(--black) !important;}
+.footer-bottom span{font-size:0.52rem !important;letter-spacing:0.12em !important;}
+.f-m6{font-size:0.52rem !important;}
+.footer-col a{margin-bottom:0 !important;line-height:1.8 !important;}
+footer{align-items:start !important;position:relative !important;display:block !important;padding:0 !important;grid-template-columns:none !important;gap:0 !important;}.footer-col{align-self:start !important;}
+.footer-bottom{position:relative !important;overflow:hidden !important;background:#0a0a0a !important;border-top:none !important;}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;position:relative;z-index:1;align-items:start;}
+
+/* ── How It Works matrix — exact D4 ANIM 2 ── */
+.f-matrix{position:absolute;inset:0;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(4,1fr);pointer-events:none;z-index:1;overflow:hidden;}
+@keyframes fFlicker{0%,100%{opacity:0.15}50%{opacity:0.9}}
+</style>
+
+</div>
+
+
+<script id="f-js">
+(function(){
+'use strict';
+
+
+function rp(el){if(el&&window.getComputedStyle(el).position==='static')el.style.position='relative';}
+function gold(a){return 'rgba(200,169,110,'+a+')';}
+function ink(a){return 'rgba(10,10,10,'+a+')';}
+function mk(t){return document.createElement(t);}
+function svgE(t){return document.createElementNS('http://www.w3.org/2000/svg',t);}
+function qs(s){return document.querySelector(s);}
+
+// ── GRID ──
+function mkGrid(el,sp,col){
+  if(!el)return; rp(el);
+  var g=mk('div'); g.className='f-grid';
+  g.style.backgroundImage=
+    'repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px),'+
+    'repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px)';
+  el.appendChild(g);
+}
+
+// ── BRACKETS ──
+function mkBrackets(el,sz,lw,col,ins,corners){
+  if(!el)return; rp(el);
+  var wrap=mk('div'); wrap.className='f-br';
+  var map={
+    tl:{top:ins+'px',left:ins+'px',borderTop:lw+'px solid '+col,borderLeft:lw+'px solid '+col},
+    tr:{top:ins+'px',right:ins+'px',borderTop:lw+'px solid '+col,borderRight:lw+'px solid '+col},
+    bl:{bottom:ins+'px',left:ins+'px',borderBottom:lw+'px solid '+col,borderLeft:lw+'px solid '+col},
+    br:{bottom:ins+'px',right:ins+'px',borderBottom:lw+'px solid '+col,borderRight:lw+'px solid '+col}
+  };
+  corners.forEach(function(k){
+    var b=mk('div'); b.className='f-b';
+    b.style.cssText='position:absolute;width:'+sz+'px;height:'+sz+'px;';
+    Object.keys(map[k]).forEach(function(p){b.style[p]=map[k][p];});
+    wrap.appendChild(b);
+  });
+  el.appendChild(wrap);
+}
+
+// ── KILL ALL ──
+function killAll(){
+  document.querySelectorAll('.f-sym,.f-grid,.f-wm,.f-wm-wrap,.f-br,.f-fsym,.f-m6,.f-matrix').forEach(function(e){e.remove();});
+  document.querySelectorAll('#how .accordion-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
+  document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
+  document.querySelectorAll('.val-icon').forEach(function(ic){if(ic.dataset.forig)ic.textContent=ic.dataset.forig;});
+  var fb=qs('.footer-bottom');if(fb)fb.style.position='';
+  var ft=qs('footer');if(ft)ft.style.position='';
+}
+
+// ── INIT F1 ──
+function initF1(){
+
+  // ── HERO ──
+  // Exact N1 reference: →|← appended to .hero-headline-top
+  // sitting next to INDUSTRIALISING, font-size:0.28em, gold shimmer
+  // →|← removed from hero
+
+  // ── WWD — ⊞ large centred watermark ──
+  // Inject into mw-wrap (direct child of wwd-section) as first child
+  var mwWrap=qs('.wwd-section .mw-wrap');
+  if(mwWrap){
+    rp(mwWrap);
+    var wwdWrap=mk('div'); wwdWrap.className='f-wm-wrap';
+    var wwdSp=mk('span'); wwdSp.textContent='◎'; wwdSp.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(180px,28vw,340px);color:rgba(244,241,236,0.045);transform:skewX(-4deg);display:inline-block;line-height:1;user-select:none;pointer-events:none;';
+    wwdWrap.appendChild(wwdSp);
+    mwWrap.insertBefore(wwdWrap,mwWrap.firstChild);
+  }
+
+  // ── MARSHALL — F2: all 4 corners, 24px, 0.5px, ink(0.1), inset 16px ──
+  mkBrackets(qs('.case-study.csw'),24,0.5,ink(0.1),16,['tl','tr','bl','br']);
+
+  // ── HOW IT WORKS ──
+  // F5 grid: sp:16, rgba(200,169,110,0.03)
+  // F3 accordion: ⌀ ± ∠ ⊥ ∥ ↕
+  // D4 matrix ANIM 2: 8×4 flickering grid of F3 symbols — no canvas, no floating
+  var howEl=qs('#how');
+  if(howEl){
+    rp(howEl);
+    // Grid
+    mkGrid(howEl,16,gold(0.03));
+    // Accordion icons — F3
+    var icons=['⌀','±','∠','⊥','∥','⇕'];
+    document.querySelectorAll('#how .accordion-icon').forEach(function(ic,i){
+      if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
+      ic.textContent=icons[i]||ic.textContent;
+    });
+    // Matrix — exact D4 ANIM 2 pattern
+    var mx=mk('div'); mx.className='f-matrix';
+    for(var mi=0;mi<32;mi++){
+      var cell=mk('span');
+      var show=Math.random()>0.5;
+      var delay=(Math.random()*6).toFixed(1);
+      var dur=(2+Math.random()*6).toFixed(1);
+      cell.style.cssText=
+        'font-family:"Courier New",monospace;'+
+        'font-size:clamp(11px,1.1vw,15px);'+
+        'display:flex;align-items:center;justify-content:center;'+
+        'animation:fFlicker '+dur+'s ease-in-out infinite;'+
+        'animation-delay:'+delay+'s;'+
+        'color:'+gold(show?0.35:0.08)+';';
+      cell.textContent=icons[mi%icons.length];
+      mx.appendChild(cell);
+    }
+    howEl.insertBefore(mx,howEl.firstChild);
+  }
+
+  // ── WE BUILD — ⌀ centred watermark ──
+  // Section structure: section > [overlay z-index:0] + [content div z-index:1 > mw-wrap > ...]
+  // Inject watermark into the mw-wrap inside the z-index:1 content div
+  // Target the mw-wrap that contains we-build-grid specifically
+  var wbMw=qs('.we-build-grid') ? qs('.we-build-grid').parentElement : null;
+  if(wbMw){
+    rp(wbMw);
+    var wbWrap=mk('div'); wbWrap.className='f-wm-wrap';
+    wbWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
+    var wbSp=mk('span'); wbSp.textContent='◎';
+    wbSp.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(150px,25vw,320px);user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.035);transform:skewX(-4deg);display:inline-block;line-height:1;';
+    wbWrap.appendChild(wbSp);
+    wbMw.insertBefore(wbWrap,wbMw.firstChild);
+  }
+
+  // ── CHINA WATERMARK — 中 in cpl-china-left panel ──
+  var chinaLeft=qs('.cpl-china-left');
+  if(chinaLeft){
+    rp(chinaLeft);
+    var chWrap=mk('div'); chWrap.className='f-wm-wrap';
+    chWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
+    var chSp=mk('span'); chSp.textContent='中国';
+    chSp.style.cssText='font-family:"Noto Sans SC",sans-serif;font-weight:100;font-size:clamp(90px,16vw,200px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.04);transform:skewX(-4deg);display:inline-block;line-height:1;';
+    chWrap.appendChild(chSp);
+    chinaLeft.insertBefore(chWrap,chinaLeft.firstChild);
+  }
+
+
+  // ── CHINA — F6: ∠ ⊞ ↕ ⌙ ──
+  // Scope to .china-accordion only — avoids hitting ch-icon elements elsewhere on page
+  var chIcons=['∠','⊕','⇕','⌙'];
+  document.querySelectorAll('.china-accordion .ch-icon').forEach(function(ic,i){
+    if(!ic.dataset.forig)ic.dataset.forig=ic.textContent;
+    ic.textContent=chIcons[i]||ic.textContent;
+  });
+
+  // ── VALUE CREATION — F6: ↕ ⊥ ¬ ⌀, grid in Factories+Investors ──
+  var valIcons={Brands:'⇕',Factories:'⊥',Operators:'¬',Investors:'⌀'};
+  document.querySelectorAll('.value-card').forEach(function(card){
+    var h4=card.querySelector('h4'); if(!h4)return;
+    var icon=card.querySelector('.val-icon'); if(!icon)return;
+    if(!icon.dataset.forig)icon.dataset.forig=icon.textContent;
+    var nm=(h4.childNodes[0]?h4.childNodes[0].textContent:'').trim();
+    if(valIcons[nm])icon.textContent=valIcons[nm];
+    if(nm==='Factories'||nm==='Investors'){
+      rp(card); card.style.overflow='hidden';
+      mkGrid(card,20,ink(0.04));
+    }
+  });
+
+  // ── INVESTMENT PATHS — F3: ⌀ ± ↧, middle, 0.75em ──
+  var fundMap={
+    Proprietary:{sym:'⌀',va:'middle',fs:'0.75em',op:'1'},
+    Partnership:{sym:'±', va:'middle',fs:'0.75em',op:'1'},
+    Liquidity:  {sym:'↧', va:'middle',fs:'0.75em',op:'1'}
+  };
+  document.querySelectorAll('.fund-card h3').forEach(function(h3){
+    var nm=h3.textContent.trim();
+    if(fundMap[nm]){
+      var sp=mk('span'); sp.className='f-fsym';
+      sp.textContent=fundMap[nm].sym;
+      sp.style.cssText=
+        'font-family:"Courier New",monospace;'+
+        'font-size:'+fundMap[nm].fs+';'+
+        'vertical-align:'+fundMap[nm].va+';'+
+        'opacity:'+fundMap[nm].op+';'+
+        'margin-left:0.2em;pointer-events:none;user-select:none;';
+      h3.appendChild(sp);
+    }
+  });
+
+  // ── FOOTER — F6: sp:16, gold(0.04) + ⌀3×M6 ──
+  var ftEl=qs('footer');
+  if(ftEl){rp(ftEl); mkGrid(ftEl,16,gold(0.04));}
+  var fb=qs('.footer-bottom');
+  if(fb){
+    rp(fb);
+    var m6=mk('span'); m6.className='f-m6'; m6.textContent='⌀3×M6';
+    fb.appendChild(m6);
+  }
+}
+
+// Auto-fire F1 on load — no switcher
+document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(initF1,50);
+});
+
+})();
+</script>
