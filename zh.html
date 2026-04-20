@@ -1767,7 +1767,7 @@ body.v11-active nav * { cursor: none !important; }
 
 /* Base: all body text */
 body {
-  font-family: 'Noto Sans SC', sans-serif !important;
+  font-family: 'Noto Sans SC', sans-serif;
   font-weight: 400;
 }
 
@@ -1783,8 +1783,8 @@ body {
 .fund-tag,
 [style*="font-size:var(--text-body)"],
 [style*="font-weight:300"] {
-  font-family: 'Noto Sans SC', sans-serif !important;
-  font-weight: 400 !important;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
 }
 
 /* Heavy 700 — headings and titles */
@@ -1792,9 +1792,9 @@ h2.section-title, .cs-dh, .accordion-title,
 .fund-card h3, .value-card h4,
 .footer-brand,
 .cs-dslabel, .wwd-label {
-  font-family: 'Noto Sans SC', sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 /* Eyebrow labels — medium weight */
@@ -1802,14 +1802,22 @@ h2.section-title, .cs-dh, .accordion-title,
 [style*="letter-spacing:0.22em"],
 [style*="letter-spacing:0.28em"],
 [style*="letter-spacing:0.25em"] {
-  font-family: 'Noto Sans SC', sans-serif !important;
-  font-weight: 400 !important;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 400;
 }
 
-/* ── ZH2: Noto Serif SC — universal override ── */
-/* Single rule beats all inline styles and class-based font declarations */
-body.zh2 *:not(.sf-mark):not(.sf-mark-line):not(.sf-mark-ring):not(.gm):not(.nav-ring):not(script):not(style) {
+/* ── ZH2: CSS class swap — 100% coverage ── */
+body.zh2,
+body.zh2 * {
   font-family: 'Noto Serif SC', serif !important;
+}
+/* Preserve logo marks and engineering symbols */
+body.zh2 .sf-mark,
+body.zh2 .sf-mark-line,
+body.zh2 .sf-mark-ring,
+body.zh2 .gm,
+body.zh2 .nav-ring {
+  font-family: 'Bebas Neue', sans-serif !important;
 }
 
 /* Font name label under switcher buttons */
@@ -1831,27 +1839,6 @@ body.zh2 *:not(.sf-mark):not(.sf-mark-line):not(.sf-mark-ring):not(.gm):not(.nav
 </style>
 <script>
 function setZhFont(v) {
-  var SERIF = "Noto Serif SC, serif";
-  var SANS  = "Noto Sans SC, sans-serif";
-  var target = (v === 2) ? SERIF : SANS;
-  var skipIds = ["lang-zh","lang-zh2","lang-en"];
-  var skipCls = ["sf-mark","sf-mark-line","gm","nav-ring"];
-
-  var all = document.querySelectorAll("*");
-  for (var i = 0; i < all.length; i++) {
-    var el = all[i];
-    var tag = el.tagName;
-    if (tag === "SCRIPT" || tag === "STYLE") continue;
-    var skipEl = false;
-    if (el.id && skipIds.indexOf(el.id) !== -1) skipEl = true;
-    if (!skipEl && el.classList) {
-      for (var s = 0; s < skipCls.length; s++) {
-        if (el.classList.contains(skipCls[s])) { skipEl = true; break; }
-      }
-    }
-    if (!skipEl) el.style.fontFamily = target;
-  }
-
   var zh  = document.getElementById("lang-zh");
   var zh2 = document.getElementById("lang-zh2");
   var goldBg  = "rgba(200,169,110,0.1)";
@@ -1860,11 +1847,13 @@ function setZhFont(v) {
   var greyBdr = "0.5px solid rgba(244,241,236,0.25)";
   var greyClr = "rgba(244,241,236,0.4)";
   if (v === 2) {
-    zh2.style.background = goldBg; zh2.style.border = goldBdr; zh2.style.color = goldClr;
-    zh.style.background  = "none"; zh.style.border  = greyBdr; zh.style.color  = greyClr;
+    document.body.classList.add("zh2");
+    if (zh2) { zh2.style.background=goldBg; zh2.style.border=goldBdr; zh2.style.color=goldClr; }
+    if (zh)  { zh.style.background="none";  zh.style.border=greyBdr;  zh.style.color=greyClr;  }
   } else {
-    zh.style.background  = goldBg; zh.style.border  = goldBdr; zh.style.color  = goldClr;
-    zh2.style.background = "none"; zh2.style.border = greyBdr; zh2.style.color = greyClr;
+    document.body.classList.remove("zh2");
+    if (zh)  { zh.style.background=goldBg; zh.style.border=goldBdr; zh.style.color=goldClr; }
+    if (zh2) { zh2.style.background="none"; zh2.style.border=greyBdr; zh2.style.color=greyClr; }
   }
   try { localStorage.setItem("sf-zh-font", String(v)); } catch(e){}
 }
