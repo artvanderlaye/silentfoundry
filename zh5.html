@@ -1899,48 +1899,6 @@ body.zh2 [style*="font-weight:300"] {
       <a href="index.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-block;" id="lang-en">EN</a>
     </div>
     <script>
-    // Fonts for each mode
-    var ZH_FONTS = {
-      1: { sans: ''Noto Sans SC', sans-serif',  display: ''Noto Sans SC', sans-serif' },
-      2: { sans: ''Noto Serif SC', serif',       display: ''Noto Serif SC', serif'    }
-    };
-
-    // Skip elements where font should never change (logo marks, IJ symbols, Bebas display)
-    var SKIP_CLASSES = ['sf-mark','sf-mark-line','gm','nav-ring','hero-scroll'];
-    // Skip inline font overrides for these IDs
-    var SKIP_IDS = ['lang-zh','lang-zh2','lang-en'];
-
-    function shouldSkip(el) {
-      if (!el || el.nodeType !== 1) return true;
-      var tag = el.tagName;
-      if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'SVG') return true;
-      for (var i = 0; i < SKIP_CLASSES.length; i++) {
-        if (el.classList && el.classList.contains(SKIP_CLASSES[i])) return true;
-      }
-      if (el.id && SKIP_IDS.indexOf(el.id) !== -1) return true;
-      return false;
-    }
-
-    // Walk every element and override font-family in inline styles
-    function applyFontToDOM(fontSans, fontDisplay) {
-      var all = document.querySelectorAll('*');
-      for (var i = 0; i < all.length; i++) {
-        var el = all[i];
-        if (shouldSkip(el)) continue;
-        var inlineFont = el.style.fontFamily;
-        if (inlineFont) {
-          // Replace any Noto Sans SC or Noto Serif SC inline reference
-          if (inlineFont.indexOf('Noto') !== -1 ||
-              inlineFont.indexOf('DM Sans') !== -1 ||
-              inlineFont.indexOf('DM Serif') !== -1) {
-            el.style.fontFamily = fontSans;
-          }
-        }
-      }
-      // Also update CSS variables on :root via body dataset
-      document.body.setAttribute('data-zh-font', fontSans);
-    }
-
     function setZhFont(v) {
       var b = document.body;
       var zh  = document.getElementById('lang-zh');
@@ -1950,10 +1908,8 @@ body.zh2 [style*="font-weight:300"] {
       var goldClr = 'rgba(200,169,110,0.8)';
       var greyBdr = '0.5px solid rgba(244,241,236,0.25)';
       var greyClr = 'rgba(244,241,236,0.4)';
-
       if (v === 2) {
         b.classList.add('zh2');
-        applyFontToDOM(''Noto Serif SC', serif', ''Noto Serif SC', serif');
         zh2.style.background = goldBg;
         zh2.style.border = goldBdr;
         zh2.style.color = goldClr;
@@ -1963,7 +1919,6 @@ body.zh2 [style*="font-weight:300"] {
         try { localStorage.setItem('sf-zh-font', '2'); } catch(e){}
       } else {
         b.classList.remove('zh2');
-        applyFontToDOM(''Noto Sans SC', sans-serif', ''Noto Sans SC', sans-serif');
         zh.style.background = goldBg;
         zh.style.border = goldBdr;
         zh.style.color = goldClr;
@@ -1973,13 +1928,10 @@ body.zh2 [style*="font-weight:300"] {
         try { localStorage.setItem('sf-zh-font', '1'); } catch(e){}
       }
     }
-
-    // Restore preference on load — run after DOM ready
-    document.addEventListener('DOMContentLoaded', function() {
-      try {
-        if (localStorage.getItem('sf-zh-font') === '2') setZhFont(2);
-      } catch(e){}
-    });
+    // Restore preference on load
+    try {
+      if (localStorage.getItem('sf-zh-font') === '2') setZhFont(2);
+    } catch(e){}
     </script>
     <button class="nav-toggle" aria-label="Menu">
       <span></span><span></span><span></span>
