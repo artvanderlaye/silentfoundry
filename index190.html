@@ -53,12 +53,6 @@ body.v11-active nav * { cursor: none !important; }
       opacity: 1 !important;
       transition: color 0.2s !important;
     }
-    .nav-links a.nav-btn {
-      font-size: 0.62rem !important;
-      font-weight: 500 !important;
-      color: rgba(200,169,110,1) !important;
-      opacity: 1 !important;
-    }
     .nav-links a:hover, .nav-links a.active {
       color: var(--accent) !important;
       opacity: 1 !important;
@@ -1750,7 +1744,7 @@ body.v11-active nav * { cursor: none !important; }
     <a href="index.html" class="nav-logo">
       <span class="sf-mark">
         <span class="sf-mark-line sf-mark-line--silent" style="color:rgba(244,241,236,0.55);-webkit-text-stroke-color:rgba(244,241,236,0.55);"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
-        <span class="sf-mark-line" style="color:rgba(244,241,236,0.35);-webkit-text-stroke-color:rgba(244,241,236,0.35);"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+        <span class="sf-mark-line" style="color:rgba(244,241,236,0.35);-webkit-text-stroke-color:rgba(244,241,236,0.35);"><span class="gm">¬</span><span class="gm">⊙</span>U<span class="gm">∧</span>DR<span class="gm">▽</span><span class="sf-mark-ring">◎</span></span>
       </span>
     </a>
         <ul class="nav-links">
@@ -2566,7 +2560,7 @@ body.v11-active nav * { cursor: none !important; }
       <a href="index.html" class="footer-logo">
         <span class="sf-mark">
           <span class="sf-mark-line sf-mark-line--silent"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
-          <span class="sf-mark-line"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+          <span class="sf-mark-line"><span class="gm">¬</span><span class="gm">⊙</span>U<span class="gm">∧</span>DR<span class="gm">▽</span><span class="sf-mark-ring">◎</span></span>
         </span>
       </a>
       <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
@@ -2817,10 +2811,20 @@ body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 140px; ov
 /* ── 6. NAV HOVER — underline + glow ── */
 body.v11-active .nav-links a {
   position: relative;
-  transition: opacity 0.2s, color 0.2s !important;
+  transition: opacity 0.2s, color 0.2s, text-shadow 0.3s !important;
 }
+body.v11-active .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: #c8a96e;
+  transition: width 0.3s ease;
+}
+body.v11-active .nav-links a:hover::after { width: 100%; }
 body.v11-active .nav-links a:hover {
   opacity: 1 !important;
+  text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
 }
 
 /* ── 7+8. SOUL PULSES ── */
@@ -3853,7 +3857,7 @@ function initF1(){
   if(mwWrap){
     rp(mwWrap);
     var wwdWrap=mk('div'); wwdWrap.className='f-wm-wrap';
-    var wwdSp=mk('span'); wwdSp.textContent='◎'; wwdSp.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(180px,28vw,340px);color:rgba(244,241,236,0.045);transform:skewX(-4deg);display:inline-block;line-height:1;user-select:none;pointer-events:none;';
+    var wwdSp=mk('span'); wwdSp.textContent='⊕';
     wwdWrap.appendChild(wwdSp);
     mwWrap.insertBefore(wwdWrap,mwWrap.firstChild);
   }
@@ -3905,8 +3909,8 @@ function initF1(){
     rp(wbMw);
     var wbWrap=mk('div'); wbWrap.className='f-wm-wrap';
     wbWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
-    var wbSp=mk('span'); wbSp.textContent='◎';
-    wbSp.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(150px,25vw,320px);user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.035);transform:skewX(-4deg);display:inline-block;line-height:1;';
+    var wbSp=mk('span'); wbSp.textContent='⌀';
+    wbSp.style.cssText='font-family:"Courier New",monospace;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.022);';
     wbWrap.appendChild(wbSp);
     wbMw.insertBefore(wbWrap,wbMw.firstChild);
   }
@@ -3917,8 +3921,8 @@ function initF1(){
     rp(chinaLeft);
     var chWrap=mk('div'); chWrap.className='f-wm-wrap';
     chWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
-    var chSp=mk('span'); chSp.textContent='中国';
-    chSp.style.cssText='font-family:"Noto Sans SC",sans-serif;font-weight:100;font-size:clamp(90px,16vw,200px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.04);transform:skewX(-4deg);display:inline-block;line-height:1;';
+    var chSp=mk('span'); chSp.textContent='中';
+    chSp.style.cssText='font-family:"Noto Sans SC",sans-serif;font-weight:100;font-size:clamp(120px,21vw,270px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.03);';
     chWrap.appendChild(chSp);
     chinaLeft.insertBefore(chWrap,chinaLeft.firstChild);
   }
