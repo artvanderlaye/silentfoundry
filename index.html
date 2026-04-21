@@ -14,8 +14,6 @@
 <style>
 /* CURSOR OVERRIDE — must come after sf-styles.css */
 body { cursor: none; }
-/* INDUSTRIALISING — hide until scaleX applied to prevent snap */
-.hero-headline-top { opacity: 0; transition: opacity 0.4s ease 0.1s; }
 @media(hover:none),(pointer:coarse) { body { cursor: auto !important; } }
 body.v11-active *,
 body.v11-active a,
@@ -1160,6 +1158,10 @@ body.v11-active nav * { cursor: none !important; }
       max-width: 680px;
     }
     .accordion-header:hover .accordion-title { color: var(--accent); }
+    @media (min-width:1200px) {
+      .accordion-item { max-width: 900px; }
+      .accordion-header { max-width: 900px; }
+    }
     .accordion-left {
       display: flex;
       align-items: center;
@@ -1945,8 +1947,9 @@ body.v11-active nav * { cursor: none !important; }
 </section>
 
 <!-- THESIS QUOTE -->
-  <section style="padding:100px 48px;background:#ede8e0;text-align:center;">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
+  <section style="padding:100px 48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;">
+    <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
+    <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
       <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">The Foundry Thesis</span>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;transform:skewX(-4deg);display:block;"><span style="color:#c8a96e;font-size:0.6em;display:inline-block;transform:rotate(90deg);vertical-align:middle;margin-right:0.15em;">⌐</span>The best products</p>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;transform:skewX(-4deg);display:block;">Won't be invented</p>
@@ -1956,6 +1959,7 @@ body.v11-active nav * { cursor: none !important; }
         <p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(10,10,10,0.55);">Matthew, Silent Foundry</p>
         <div style="width:20px;height:1px;background:rgba(200,169,110,0.4);"></div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -2601,18 +2605,18 @@ body.v11-active nav * { cursor: none !important; }
       <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
     <div class="footer-col">
-      <h5>Navigate</h5>
+      <h5>Navigate <span class="gm" style="display:inline;font-style:normal;">◎</span></h5>
       <a href="sf-team.html" target="_blank" rel="noopener">Team</a>
       <a href="sf-contact.html" target="_blank" rel="noopener">Contact</a>
       <a href="legal.html#privacy" target="_blank" rel="noopener">Privacy Policy</a>
       <a href="legal.html#terms" target="_blank" rel="noopener">Terms of Use</a>
     </div>
     <div class="footer-col">
-      <h5>Hong Kong</h5>
+      <h5>Hong Kong <span class="gm" style="display:inline;font-style:normal;">⌐</span></h5>
       <address>Flat/Rm A, 20/F<br/>Kiu Fu Commercial Building<br/>300 Lockhart Road<br/>Wanchai</address>
     </div>
     <div class="footer-col">
-      <h5>Shanghai</h5>
+      <h5>Shanghai <span class="gm" style="display:inline;font-style:normal;">¬</span></h5>
       <address>Room 333, 3/F<br/>Building 1, No. 2001<br/>Yanggao North Road<br/>Free Trade Zone</address>
     </div>
     <svg class="sf-footer-triangle" width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2648,19 +2652,7 @@ body.v11-active nav * { cursor: none !important; }
     })();
   </script>
   <script src="sf-scripts.js"></script>
-<script>
-(function(){
-  function revealTop(){
-    var top=document.querySelector('.hero-headline-top');
-    if(top) top.style.opacity='1';
-  }
-  if(document.fonts && document.fonts.ready){
-    document.fonts.ready.then(function(){ setTimeout(revealTop, 50); });
-  } else {
-    window.addEventListener('load', revealTop);
-  }
-})();
-</script>
+
 <script>
 // Smooth anchor scroll — wait for full init
 window.addEventListener('load', function() {
@@ -3089,7 +3081,7 @@ body.v11-active.v11-cursor-hover #v11-cursor {
   border-color: rgba(200,169,110,0.4);
 }
 body.v11-active.v11-cursor-hover #v11-cursor-ring {
-  width: 58px; height: 58px;
+  display: none !important;
 }
 
 @keyframes v11DotPulse {
@@ -3172,13 +3164,6 @@ body.v11-active #v11-badge {
     cur.style.left = curX + 'px'; cur.style.top = curY + 'px';
     // Force cursor:none on hovered element to beat UA stylesheet
     if (e.target && e.target.style) e.target.style.cursor = 'none';
-    // ── Zone detection from element under cursor ──
-    var zone = _getZoneForElement(e.target);
-    document.body.classList.toggle('v11-switch-zone', zone.inSwitch);
-    document.body.classList.toggle('v11-cream-zone',  !zone.inSwitch && (zone.inCream || zone.inFooter === false && false));
-    document.body.classList.toggle('v11-footer-zone', zone.inFooter);
-    // Cream zone: inCream only, not switch, not footer
-    document.body.classList.toggle('v11-cream-zone', !zone.inSwitch && zone.inCream);
   });
 
   // Lagging ring
@@ -3201,40 +3186,12 @@ body.v11-active #v11-badge {
     if (e.target.matches('a,button,[onclick]')) document.body.classList.remove('v11-cursor-hover');
   });
 
-  // ── CURSOR ZONE DETECTION — mousemove based ──
-  // Disabled: scroll-based cream zone (replaced by mousemove hit-test below)
-  function updateCreamZone() { /* disabled — zones set by mousemove */ }
-
-  // Known cream/gold backgrounds (computed colour strings browsers return)
-  var _creamBgs = ['rgb(237, 232, 224)', 'rgb(232, 226, 217)', 'rgb(200, 169, 110)'];
-  // Known switch ancestors
-  var _switchIds = ['featured', 'logos-wrap'];
-
-  function _getZoneForElement(el) {
-    // Walk up the DOM from the element under the cursor
-    var node = el;
-    var inSwitch = false;
-    var inCream = false;
-    var inFooter = false;
-    while (node && node !== document.body) {
-      var tag = node.tagName ? node.tagName.toLowerCase() : '';
-      // Footer
-      if (tag === 'footer') { inFooter = true; break; }
-      // Switch zone — #featured or .logos
-      if (node.id === 'featured') { inSwitch = true; break; }
-      if (node.classList && node.classList.contains('logos')) { inSwitch = true; break; }
-      // Cream/gold background check
-      var bg = window.getComputedStyle(node).backgroundColor;
-      if (_creamBgs.indexOf(bg) !== -1) { inCream = true; break; }
-      node = node.parentElement;
-    }
-    return { inSwitch: inSwitch, inCream: inCream, inFooter: inFooter };
-  }
+  // ── CREAM ZONE DETECTION — disabled, cursor stays gold until SWITCH ──
+  function updateCreamZone() { /* disabled */ }
 
   // ── LOGO SCROLL SHRINK + FADE NEAR FOOTER ──
   window.addEventListener('scroll', function() {
     if (!v11Active) return;
-    // Note: cream/switch zones now handled by mousemove hit-test
     var scrolled = window.scrollY > 60;
     document.body.classList.toggle('v11-scrolled', scrolled);
     var footer = document.querySelector('footer');
@@ -3483,8 +3440,49 @@ body.v11-active #v11-badge {
   }
 
   // ── SWITCH SECTION CYAN ZONE ──
-  // Disabled: now handled by mousemove hit-test in _getZoneForElement
-  function initV11SwitchZone() { /* zones now set by mousemove */ }
+  function initV11SwitchZone() {
+    // Simple 3-zone cursor system — scroll based, instant snaps, no transitions
+    // Zone 1 (default): gold  — Hero through Value Creation
+    // Zone 2: cyan            — SWITCH Featured top → As Seen On bottom
+    // Zone 3: black           — Investment Paths top → CTA bottom
+    // Zone 4: gold            — Footer
+    var featured = document.getElementById('featured');
+    var logos    = document.querySelector('.logos');
+    var funds    = document.getElementById('funds');
+    var footer   = document.querySelector('footer');
+    if (!featured) return;
+
+    function checkZone() {
+      if (!v11Active) return;
+      var vh = window.innerHeight;
+      var featuredR = featured.getBoundingClientRect();
+      var logosR    = logos   ? logos.getBoundingClientRect()  : null;
+      var fundsR    = funds   ? funds.getBoundingClientRect()  : null;
+      var footerR   = footer  ? footer.getBoundingClientRect() : null;
+
+      // Zone 4: footer — cursor gold (footer-zone)
+      var inFooter = footerR && footerR.top < vh;
+
+      // Zone 3: Investment Paths top entered viewport → CTA bottom left
+      // funds.top < vh means Investment Paths has entered from bottom
+      var inBlack = !inFooter && fundsR && fundsR.top < vh && (!footerR || footerR.top >= vh);
+
+      // Zone 2: cyan — featured top entered viewport, not yet in black zone
+      var inSwitch = !inFooter && !inBlack && (
+        (featuredR.top < vh && featuredR.bottom > 0) ||
+        (logosR && logosR.top < vh && logosR.bottom > 0)
+      );
+
+      document.body.classList.toggle('v11-switch-zone', inSwitch);
+      document.body.classList.toggle('v11-cta-zone',    inBlack);
+      document.body.classList.toggle('v11-footer-zone', inFooter);
+      // cream zone always off
+      document.body.classList.remove('v11-cream-zone');
+    }
+
+    window.addEventListener('scroll', checkZone, { passive: true });
+    checkZone();
+  }
 
   // ── SWITCH SINE WAVE ──
   function initV11SineWave() {
@@ -3909,8 +3907,28 @@ function initF1(){
     rp(chinaLeft);
     var chWrap=mk('div'); chWrap.className='f-wm-wrap';
     chWrap.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;display:flex;align-items:center;justify-content:center;overflow:hidden;';
+    function getChFont(){
+      var cl=document.body.classList;
+      if(cl.contains('zh16')) return '"Cute Font",cursive';
+      if(cl.contains('zh15')) return '"Noto Sans SC",sans-serif';
+      if(cl.contains('zh14')) return '"Noto Serif SC",serif';
+      if(cl.contains('zh13')) return '"Noto Serif SC",serif';
+      if(cl.contains('zh12')) return '"Noto Serif SC",serif';
+      if(cl.contains('zh11')) return '"Noto Sans SC",sans-serif';
+      if(cl.contains('zh10')) return '"Noto Sans SC",sans-serif';
+      if(cl.contains('zh9'))  return '"ZCOOL KuaiLe",sans-serif';
+      if(cl.contains('zh8'))  return '"Long Cang",cursive';
+      if(cl.contains('zh7'))  return '"Liu Jian Mao Cao",cursive';
+      if(cl.contains('zh6'))  return '"Zhi Mang Xing",cursive';
+      if(cl.contains('zh5'))  return '"Ma Shan Zheng",cursive';
+      if(cl.contains('zh4'))  return '"ZCOOL QingKe HuangYou",sans-serif';
+      if(cl.contains('zh3'))  return '"ZCOOL XiaoWei",sans-serif';
+      if(cl.contains('zh2'))  return '"Noto Serif SC",serif';
+      return '"Noto Sans SC",sans-serif';
+    }
+    window._chWatermarkSp = chSp;
     var chSp=mk('span'); chSp.textContent='中国';
-    chSp.style.cssText='font-family:"Noto Sans SC",sans-serif;font-weight:100;font-size:clamp(90px,16vw,200px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.04);transform:skewX(-4deg);display:inline-block;line-height:1;';
+    chSp.style.cssText='font-family:'+getChFont()+';font-weight:100;font-size:clamp(90px,16vw,200px);letter-spacing:0.05em;user-select:none;pointer-events:none;white-space:nowrap;color:rgba(10,10,10,0.04);transform:skewX(-4deg);display:inline-block;line-height:1;';
     chWrap.appendChild(chSp);
     chinaLeft.insertBefore(chWrap,chinaLeft.firstChild);
   }
