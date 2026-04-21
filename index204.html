@@ -3077,6 +3077,7 @@ body.v11-active .fund-card {
 
 /* ── CURSOR HOVER STATE ── */
 body.v11-active.v11-cursor-hover #v11-cursor {
+  width: 42px; height: 42px;
   border-color: rgba(200,169,110,0.4);
 }
 body.v11-active.v11-cursor-hover #v11-cursor-ring {
@@ -3157,34 +3158,12 @@ body.v11-active #v11-badge {
   var curX = window.innerWidth/2, curY = window.innerHeight/2;
   var ringX = curX, ringY = curY;
 
-  // ── Hover-based cursor zone detection ──
-  function getCursorZone(el) {
-    var node = el;
-    while (node && node !== document.body) {
-      var tag = node.tagName ? node.tagName.toLowerCase() : '';
-      if (tag === 'footer')                                      return 'footer';
-      if (node.classList && node.classList.contains('cta'))      return 'black';
-      if (node.id === 'funds')                                   return 'black';
-      if (node.classList && node.classList.contains('funds'))    return 'black';
-      if (node.classList && node.classList.contains('logos'))    return 'switch';
-      if (node.id === 'featured')                                return 'switch';
-      node = node.parentElement;
-    }
-    return 'gold';
-  }
-
   document.addEventListener('mousemove', function(e) {
     if (!v11Active) return;
     curX = e.clientX; curY = e.clientY;
     cur.style.left = curX + 'px'; cur.style.top = curY + 'px';
     // Force cursor:none on hovered element to beat UA stylesheet
     if (e.target && e.target.style) e.target.style.cursor = 'none';
-    // Zone detection — hover based, instant snap
-    var zone = getCursorZone(e.target);
-    document.body.classList.toggle('v11-switch-zone', zone === 'switch');
-    document.body.classList.toggle('v11-cta-zone',    zone === 'black');
-    document.body.classList.toggle('v11-footer-zone', zone === 'footer');
-    document.body.classList.remove('v11-cream-zone');
   });
 
   // Lagging ring
@@ -3207,7 +3186,7 @@ body.v11-active #v11-badge {
     if (e.target.matches('a,button,[onclick]')) document.body.classList.remove('v11-cursor-hover');
   });
 
-  // ── CREAM ZONE DETECTION — disabled, zones handled by mousemove ──
+  // ── CREAM ZONE DETECTION — disabled, cursor stays gold until SWITCH ──
   function updateCreamZone() { /* disabled */ }
 
   // ── LOGO SCROLL SHRINK + FADE NEAR FOOTER ──
@@ -3461,8 +3440,49 @@ body.v11-active #v11-badge {
   }
 
   // ── SWITCH SECTION CYAN ZONE ──
-  // Cursor zones now handled by mousemove hover detection
-  function initV11SwitchZone() { /* disabled — zones set by mousemove */ }
+  function initV11SwitchZone() {
+    // Simple 3-zone cursor system — scroll based, instant snaps, no transitions
+    // Zone 1 (default): gold  — Hero through Value Creation
+    // Zone 2: cyan            — SWITCH Featured top → As Seen On bottom
+    // Zone 3: black           — Investment Paths top → CTA bottom
+    // Zone 4: gold            — Footer
+    var featured = document.getElementById('featured');
+    var logos    = document.querySelector('.logos');
+    var funds    = document.getElementById('funds');
+    var footer   = document.querySelector('footer');
+    if (!featured) return;
+
+    function checkZone() {
+      if (!v11Active) return;
+      var vh = window.innerHeight;
+      var featuredR = featured.getBoundingClientRect();
+      var logosR    = logos   ? logos.getBoundingClientRect()  : null;
+      var fundsR    = funds   ? funds.getBoundingClientRect()  : null;
+      var footerR   = footer  ? footer.getBoundingClientRect() : null;
+
+      // Zone 4: footer — cursor gold (footer-zone)
+      var inFooter = footerR && footerR.top < vh;
+
+      // Zone 3: Investment Paths top entered viewport → CTA bottom left
+      // funds.top < vh means Investment Paths has entered from bottom
+      var inBlack = !inFooter && fundsR && fundsR.top < vh && (!footerR || footerR.top >= vh);
+
+      // Zone 2: cyan — featured top entered viewport, not yet in black zone
+      var inSwitch = !inFooter && !inBlack && (
+        (featuredR.top < vh && featuredR.bottom > 0) ||
+        (logosR && logosR.top < vh && logosR.bottom > 0)
+      );
+
+      document.body.classList.toggle('v11-switch-zone', inSwitch);
+      document.body.classList.toggle('v11-cta-zone',    inBlack);
+      document.body.classList.toggle('v11-footer-zone', inFooter);
+      // cream zone always off
+      document.body.classList.remove('v11-cream-zone');
+    }
+
+    window.addEventListener('scroll', checkZone, { passive: true });
+    checkZone();
+  }
 
   // ── SWITCH SINE WAVE ──
   function initV11SineWave() {
