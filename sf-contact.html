@@ -66,13 +66,17 @@ body { font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
 
     /* ── CONTACT BODY ── */
     .contact-body {
-      padding: 80px 48px 160px;
+      padding: 160px 48px 160px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 100px;
-      align-items: start; min-height: 80vh;
+      align-items: start; min-height: 80vh; position:relative; z-index:1;
     }
 
+/* ── CONTACT D4 MATRIX ── */
+.contact-matrix-wrap { position:relative; }
+.f-matrix-contact { position:absolute; inset:0; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(4,1fr); pointer-events:none; z-index:0; overflow:hidden; }
+@keyframes fFlicker { 0%,100%{opacity:0.15} 50%{opacity:0.9} }
     /* ── PATH CARDS ── */
     .paths { display: flex; flex-direction: column; gap: 2px; height: 100%; }
 
@@ -446,6 +450,7 @@ footer{align-items:start !important;position:relative !important;display:block !
   <!-- MARQUEE -->
   
   <!-- CONTACT BODY -->
+  <div class="contact-matrix-wrap">
   <div class="contact-body">
 
     <!-- PATH CARDS -->
@@ -629,6 +634,8 @@ footer{align-items:start !important;position:relative !important;display:block !
     });
   })();
   </script>
+  </div><!-- /contact-matrix-wrap -->
+
   <footer>
     <div class="footer-inner">
     <div class="footer-logo-wrap">
@@ -1692,4 +1699,29 @@ body.v11-active #v11-badge {
 })();
 </script>
 <!-- ══ END V1.1 ══ -->
+<script>
+(function(){
+  var wrap = document.querySelector('.contact-matrix-wrap');
+  if(!wrap) return;
+  var mx = document.createElement('div');
+  mx.className = 'f-matrix-contact';
+  var icons = ['⌀','±','∠','⊥','∥','⇕'];
+  for(var i=0;i<32;i++){
+    var cell = document.createElement('span');
+    var delay = (Math.random()*6).toFixed(1);
+    var dur = (2+Math.random()*6).toFixed(1);
+    var show = Math.random()>0.5;
+    cell.style.cssText =
+      'font-family:"Courier New",monospace;'+
+      'font-size:clamp(11px,1.1vw,15px);'+
+      'display:flex;align-items:center;justify-content:center;'+
+      'animation:fFlicker '+dur+'s ease-in-out infinite;'+
+      'animation-delay:'+delay+'s;'+
+      'color:rgba(200,169,110,'+(show?'0.12':'0.04')+');';
+    cell.textContent = icons[i%icons.length];
+    mx.appendChild(cell);
+  }
+  wrap.insertBefore(mx, wrap.firstChild);
+})();
+</script>
 </body>
