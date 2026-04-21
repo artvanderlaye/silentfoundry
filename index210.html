@@ -3771,214 +3771,163 @@ body.v11-active #v11-badge {
 </script>
 <!-- ── TYPE SWITCHER ── -->
 <style>
-/* ── SWITCHER UI ── */
 #type-switcher {
   position: fixed;
-  top: 16px;
+  top: 18px;
   right: 200px;
   z-index: 200;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   flex-wrap: wrap;
-  max-width: 340px;
+  max-width: 320px;
 }
 #type-switcher .tsw-label {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.48rem;
+  font-size: 0.52rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(244,241,236,0.22);
+  color: rgba(244,241,236,0.25);
   margin-right: 4px;
   flex-shrink: 0;
 }
 .tsw-btn {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.08em;
-  padding: 2px 6px;
-  border: 0.5px solid rgba(244,241,236,0.18);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+  border: 0.5px solid rgba(244,241,236,0.2);
   background: transparent;
-  color: rgba(244,241,236,0.28);
+  color: rgba(244,241,236,0.3);
   cursor: pointer;
   transition: all 0.2s;
   flex-shrink: 0;
-  line-height: 1.6;
 }
 .tsw-btn:hover {
   color: rgba(200,169,110,0.8);
-  border-color: rgba(200,169,110,0.35);
+  border-color: rgba(200,169,110,0.4);
 }
 .tsw-btn.active {
-  background: rgba(200,169,110,0.1);
+  background: rgba(200,169,110,0.08);
   color: #c8a96e;
-  border-color: rgba(200,169,110,0.65);
+  border-color: rgba(200,169,110,0.7);
 }
 @media (max-width: 900px) {
   #type-switcher {
-    position: fixed;
     top: auto;
-    bottom: 0;
+    bottom: 16px;
     right: 0;
     left: 0;
     max-width: 100%;
     justify-content: center;
-    background: rgba(10,10,10,0.96);
-    padding: 6px 8px 8px;
-    gap: 3px;
-    border-top: 0.5px solid rgba(200,169,110,0.18);
-    z-index: 98;
-    flex-wrap: wrap;
+    background: rgba(10,10,10,0.92);
+    padding: 8px 12px;
+    gap: 4px;
+    border-top: 0.5px solid rgba(200,169,110,0.15);
   }
   #type-switcher .tsw-label { display: none; }
-  .tsw-btn { font-size: 0.6rem; padding: 3px 6px; }
+  .tsw-btn { font-size: 0.62rem; padding: 4px 8px; }
 }
+
+/* ── THESIS OPT 2 — asymmetric left, dimension lines ── */
+#thesis-section.thesis-opt2 {
+  text-align: left !important;
+}
+#thesis-section.thesis-opt2 > div:last-child {
+  max-width: 900px !important;
+  margin: 0 !important;
+  padding-left: 8vw;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 64px;
+}
+#thesis-section.thesis-opt2 .thesis-quote-block {
+  flex: 1;
+}
+#thesis-section.thesis-opt2 .thesis-attr-block {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  align-self: center;
+  opacity: 0.4;
+  letter-spacing: 0.3em;
+  font-size: 0.48rem !important;
+  white-space: nowrap;
+}
+/* animated dimension grid behind thesis opt2 */
+#thesis-dimgrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#thesis-section.thesis-opt2 #thesis-dimgrid { opacity: 1; }
+#thesis-section.thesis-opt2 .thesis-crosshair {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  color: rgba(138,110,58,0.18);
+  font-size: 4rem;
+  font-family: 'Bebas Neue', sans-serif;
+  animation: crosshair-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes crosshair-pulse {
+  0%,100% { opacity: 0.12; transform: translate(-50%,-50%) scale(1); }
+  50% { opacity: 0.3; transform: translate(-50%,-50%) scale(1.08); }
+}
+
+/* ── THESIS OPT 3 — two column, ghost symbol backdrop ── */
+#thesis-section.thesis-opt3 {
+  text-align: left !important;
+}
+#thesis-section.thesis-opt3 > div:last-child {
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1.4fr !important;
+  gap: 80px;
+  align-items: center;
+  flex-direction: unset !important;
+}
+#thesis-ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 6vw;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#thesis-ghost span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(8rem, 20vw, 18rem);
+  color: rgba(138,110,58,0.07);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  animation: ghost-drift 8s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes ghost-drift {
+  0%,100% { transform: translateY(0) rotate(-2deg); opacity: 0.07; }
+  50% { transform: translateY(-12px) rotate(0deg); opacity: 0.13; }
+}
+#thesis-section.thesis-opt3 #thesis-ghost { opacity: 1; }
 </style>
 
+<!-- Thesis dimension grid (opt2) -->
 <div id="thesis-dimgrid">
   <canvas id="thesis-dimcanvas" style="position:absolute;inset:0;width:100%;height:100%;"></canvas>
-  <div class="thesis-crosshair" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(138,110,58,0.18);font-size:4rem;font-family:'Bebas Neue',sans-serif;animation:crosshair-pulse 3s ease-in-out infinite;pointer-events:none;z-index:0;"></div>
+  <div class="thesis-crosshair">⌖</div>
 </div>
-<div id="thesis-ghost" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;padding-left:6vw;pointer-events:none;z-index:0;opacity:0;transition:opacity 0.6s;"><span style="font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,18rem);color:rgba(138,110,58,0.07);line-height:1;letter-spacing:-0.02em;animation:ghost-drift 8s ease-in-out infinite;transform-origin:center;">&#x229E;</span></div>
-
-<style>
-@keyframes crosshair-pulse { 0%,100%{opacity:0.12;transform:translate(-50%,-50%) scale(1);}50%{opacity:0.3;transform:translate(-50%,-50%) scale(1.08);} }
-@keyframes ghost-drift { 0%,100%{transform:translateY(0) rotate(-2deg);opacity:0.07;}50%{transform:translateY(-12px) rotate(0deg);opacity:0.13;} }
-@keyframes scan-sweep { 0%{top:0%;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{top:100%;opacity:0;} }
-@keyframes grid-rotate { from{transform:rotate(0deg);}to{transform:rotate(360deg);} }
-@keyframes blink { 0%,100%{opacity:1;}50%{opacity:0;} }
-
-/* Opt 5 blueprint elements */
-.t-blueprint-grid {
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(0,180,216,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,0.07) 1px,transparent 1px);
-  background-size:40px 40px;
-}
-.t-cnr { position:absolute;width:20px;height:20px;pointer-events:none;z-index:1; }
-.t-cnr-tl { top:16px;left:16px;border-top:1px solid rgba(0,180,216,0.45);border-left:1px solid rgba(0,180,216,0.45); }
-.t-cnr-tr { top:16px;right:16px;border-top:1px solid rgba(0,180,216,0.45);border-right:1px solid rgba(0,180,216,0.45); }
-.t-cnr-bl { bottom:16px;left:16px;border-bottom:1px solid rgba(0,180,216,0.45);border-left:1px solid rgba(0,180,216,0.45); }
-.t-cnr-br { bottom:16px;right:16px;border-bottom:1px solid rgba(0,180,216,0.45);border-right:1px solid rgba(0,180,216,0.45); }
-.t-datum { position:absolute;top:22px;left:44px;font-size:0.44rem;letter-spacing:0.2em;color:rgba(0,180,216,0.4);font-family:'DM Sans',sans-serif;pointer-events:none;z-index:1; }
-
-/* Gold blueprint variant */
-.t-gold-grid {
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(138,110,58,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(138,110,58,0.08) 1px,transparent 1px);
-  background-size:40px 40px;
-}
-.t-cnr-gold { position:absolute;width:20px;height:20px;pointer-events:none;z-index:1; }
-.t-cnr-gold.tl { top:16px;left:16px;border-top:1px solid rgba(200,169,110,0.45);border-left:1px solid rgba(200,169,110,0.45); }
-.t-cnr-gold.tr { top:16px;right:16px;border-top:1px solid rgba(200,169,110,0.45);border-right:1px solid rgba(200,169,110,0.45); }
-.t-cnr-gold.bl { bottom:16px;left:16px;border-bottom:1px solid rgba(200,169,110,0.45);border-left:1px solid rgba(200,169,110,0.45); }
-.t-cnr-gold.br { bottom:16px;right:16px;border-bottom:1px solid rgba(200,169,110,0.45);border-right:1px solid rgba(200,169,110,0.45); }
-
-/* Scan line */
-.t-scan-line {
-  position:absolute;left:0;right:0;height:2px;
-  background:linear-gradient(to right,transparent,rgba(200,169,110,0.5),transparent);
-  animation:scan-sweep 3s ease-in-out infinite;pointer-events:none;z-index:2;
-}
-
-/* Ghost word */
-.t-ghost-word {
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-family:'Bebas Neue',sans-serif;font-size:clamp(6rem,18vw,16rem);
-  color:rgba(138,110,58,0.05);white-space:nowrap;pointer-events:none;
-  z-index:0;letter-spacing:0.08em;line-height:1;
-}
-
-/* Dashed rule */
-.t-dash-rule {
-  width:100%;height:1px;margin:10px 0;
-  background:repeating-linear-gradient(to right,rgba(138,110,58,0.3) 0,rgba(138,110,58,0.3) 6px,transparent 6px,transparent 12px);
-}
-
-/* Dim lines between lines */
-.t-dim-connector {
-  display:flex;align-items:center;gap:8px;
-  font-size:0.44rem;letter-spacing:0.18em;color:rgba(138,110,58,0.4);
-  font-family:'DM Sans',sans-serif;margin:4px 0;
-}
-.t-dim-connector::before,.t-dim-connector::after { content:'';flex:1;height:1px;background:rgba(138,110,58,0.2); }
-
-/* Redact */
-.t-redact {
-  display:inline-block;background:rgba(10,10,10,0.6);
-  color:transparent !important;margin:0 4px;padding:0 10px;vertical-align:baseline;
-}
-.t-redact-gold {
-  display:inline-block;background:rgba(138,110,58,0.5);
-  color:transparent !important;margin:0 4px;padding:0 10px;vertical-align:baseline;
-}
-
-/* Cursor blink */
-.t-cursor {
-  display:inline-block;width:2px;height:0.9em;background:rgba(200,169,110,0.8);
-  vertical-align:middle;animation:blink 1s step-end infinite;margin-left:4px;
-}
-
-/* Rotating grid backdrop */
-.t-grid-bg {
-  position:absolute;inset:-50%;display:flex;align-items:center;justify-content:center;
-  pointer-events:none;z-index:0;
-  animation:grid-rotate 40s linear infinite;
-}
-.t-grid-bg span {
-  font-family:'Bebas Neue',sans-serif;font-size:clamp(16rem,40vw,36rem);
-  color:rgba(138,110,58,0.05);line-height:1;
-}
-
-/* Left border accent */
-.t-left-border {
-  position:absolute;top:0;left:0;bottom:0;width:3px;background:rgba(200,169,110,0.4);
-}
-
-/* Stamp box */
-.t-stamp {
-  display:inline-block;border:2px solid rgba(138,110,58,0.5);
-  padding:28px 36px;transform:rotate(-0.5deg);
-}
-.t-stamp-inner { transform:rotate(0.5deg); }
-
-/* Spec rows */
-.t-spec-row {
-  display:flex;align-items:baseline;gap:20px;
-  border-top:1px solid rgba(138,110,58,0.18);padding:12px 0;width:100%;
-}
-.t-spec-tol {
-  font-family:'DM Sans',sans-serif;font-size:0.48rem;letter-spacing:0.2em;
-  color:rgba(138,110,58,0.5);white-space:nowrap;min-width:56px;
-}
-
-/* Oversized label */
-.t-bg-label {
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,7vw,7rem);
-  color:rgba(138,110,58,0.06);letter-spacing:0.14em;
-  white-space:nowrap;pointer-events:none;z-index:0;text-align:center;
-}
-
-/* 3-sided wirebox */
-.t-wirebox {
-  display:inline-block;
-  border-left:1.5px solid rgba(138,110,58,0.5);
-  border-top:1.5px solid rgba(138,110,58,0.5);
-  border-bottom:1.5px solid rgba(138,110,58,0.5);
-  padding:28px 40px 28px 28px;position:relative;
-}
-.t-wirebox::after {
-  content:'';position:absolute;right:-14px;top:20%;bottom:20%;
-  width:1.5px;background:rgba(138,110,58,0.15);
-}
-
-/* Line number prefix */
-.t-linenum {
-  font-family:'DM Sans',sans-serif;font-size:0.44rem;
-  letter-spacing:0.2em;color:rgba(138,110,58,0.4);
-  display:inline-block;margin-right:14px;vertical-align:middle;
-}
-</style>
+<!-- Thesis ghost symbol (opt3) -->
+<div id="thesis-ghost"><span>⊞</span></div>
 
 <div id="type-switcher">
   <span class="tsw-label">Type</span>
@@ -4014,692 +3963,1066 @@ body.v11-active #v11-badge {
   <button class="tsw-btn" onclick="typeSwitch(30)">30</button>
 </div>
 
+<style>
+/* ── THESIS DESIGNS OPT 16–30 ── */
+
+/* OPT 16: full bleed quote */
+#thesis-section.thesis-opt16 { overflow:hidden; text-align:center !important; }
+.thesis-bleed-word {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(8rem,22vw,20rem);
+  color:rgba(138,110,58,0.05);
+  white-space:nowrap; pointer-events:none; z-index:0;
+  letter-spacing:0.06em; line-height:1;
+}
+
+/* OPT 17: typewriter */
+#thesis-section.thesis-opt17 { text-align:left !important; }
+#thesis-section.thesis-opt17 > div:last-child { padding-left:8vw; max-width:700px !important; margin:0 !important; }
+.thesis-typewriter p[style*="Bebas Neue"] {
+  font-family:'DM Sans',sans-serif !important;
+  font-size:clamp(1rem,2vw,1.4rem) !important;
+  font-weight:300 !important;
+  letter-spacing:0.08em !important;
+  line-height:1.8 !important;
+  color:rgba(10,10,10,0.7) !important;
+  transform:none !important;
+}
+.thesis-cursor {
+  display:inline-block; width:2px; height:1.1em;
+  background:rgba(138,110,58,0.7); vertical-align:middle;
+  animation:blink 1s step-end infinite; margin-left:4px;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+.thesis-timestamp {
+  font-size:0.44rem; letter-spacing:0.22em; color:rgba(138,110,58,0.35);
+  font-family:'DM Sans',sans-serif; margin-top:8px; display:block;
+}
+
+/* OPT 18: diagonal rules */
+.thesis-diag-line {
+  position:absolute; left:0; right:0; height:1px;
+  background:rgba(138,110,58,0.25); pointer-events:none; z-index:0;
+  transform-origin:center; opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt18 .thesis-diag-line { opacity:1; }
+
+/* OPT 19: negative space ghost */
+#thesis-section.thesis-opt19 p[style*="Bebas Neue"] {
+  color:rgba(237,232,224,0.4) !important;
+  transition:color 0.4s;
+}
+#thesis-section.thesis-opt19:hover p[style*="Bebas Neue"] {
+  color:rgba(10,10,10,0.7) !important;
+}
+#thesis-section.thesis-opt19 span[style*="0.52rem"] {
+  color:rgba(237,232,224,0.5) !important;
+  transition:color 0.4s;
+}
+#thesis-section.thesis-opt19:hover span[style*="0.52rem"] {
+  color:#8a6e3a !important;
+}
+
+/* OPT 20: perfect square border with midpoint ticks */
+.thesis-square-border {
+  position:relative; display:inline-block;
+  border:1px solid rgba(138,110,58,0.4);
+  padding:40px 48px;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt20 .thesis-square-border { opacity:1; }
+.thesis-tick { position:absolute; background:rgba(138,110,58,0.5); }
+.thesis-tick-t { top:-4px; left:50%; transform:translateX(-50%); width:1px; height:8px; }
+.thesis-tick-b { bottom:-4px; left:50%; transform:translateX(-50%); width:1px; height:8px; }
+.thesis-tick-l { left:-4px; top:50%; transform:translateY(-50%); height:1px; width:8px; }
+.thesis-tick-r { right:-4px; top:50%; transform:translateY(-50%); height:1px; width:8px; }
+
+/* OPT 21: stacked vertical each word own line */
+#thesis-section.thesis-opt21 { text-align:left !important; padding:80px 0 80px 10vw !important; }
+#thesis-section.thesis-opt21 p[style*="Bebas Neue"] {
+  display:block !important; line-height:1.4 !important;
+  font-size:clamp(2.5rem,5vw,6rem) !important;
+}
+.thesis-vert-attr {
+  position:absolute; right:48px; top:50%; transform:translateY(-50%) rotate(90deg);
+  font-size:0.44rem; letter-spacing:0.3em; color:rgba(138,110,58,0.35);
+  font-family:'DM Sans',sans-serif; white-space:nowrap;
+  transform-origin:center; opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt21 .thesis-vert-attr { opacity:1; }
+
+/* OPT 22: redacted */
+.thesis-redact {
+  display:inline-block;
+  background:rgba(138,110,58,0.55);
+  color:transparent !important;
+  margin:0 4px; padding:0 8px;
+  vertical-align:baseline;
+  border-radius:1px;
+}
+
+/* OPT 23: split horizon */
+.thesis-horizon-top {
+  position:absolute; top:0; left:0; right:0; height:50%;
+  background:#0a0a0a; z-index:0; pointer-events:none;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt23 .thesis-horizon-top { opacity:1; }
+#thesis-section.thesis-opt23 { position:relative; }
+#thesis-section.thesis-opt23 > div:last-child { position:relative; z-index:1; }
+#thesis-section.thesis-opt23 p[style*="Bebas Neue"] { mix-blend-mode:difference; color:rgba(244,241,236,0.9) !important; }
+
+/* OPT 24: numbered spec lines */
+#thesis-section.thesis-opt24 { text-align:left !important; }
+#thesis-section.thesis-opt24 > div:last-child { padding-left:8vw; max-width:700px !important; margin:0 !important; }
+.thesis-line-num {
+  font-family:'DM Sans',sans-serif; font-size:0.44rem;
+  letter-spacing:0.2em; color:rgba(138,110,58,0.4);
+  display:inline-block; margin-right:16px; vertical-align:middle;
+}
+.thesis-code-end {
+  display:block; font-family:'DM Sans',sans-serif;
+  font-size:0.44rem; letter-spacing:0.2em; color:rgba(138,110,58,0.35);
+  margin-top:16px;
+}
+
+/* OPT 25: radial arc lines */
+#thesis-section.thesis-opt25 { overflow:hidden; }
+.thesis-radial-wrap {
+  display:flex; flex-direction:column; align-items:center;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt25 .thesis-radial-wrap { opacity:1; }
+.thesis-radial-wrap p[style*="Bebas Neue"]:nth-child(1) { transform:skewX(-4deg) rotate(-3deg) translateX(-2vw) !important; }
+.thesis-radial-wrap p[style*="Bebas Neue"]:nth-child(2) { transform:skewX(-4deg) rotate(0deg) !important; }
+.thesis-radial-wrap p[style*="Bebas Neue"]:nth-child(3) { transform:skewX(-4deg) rotate(3deg) translateX(2vw) !important; }
+
+/* OPT 26: mirror reflection */
+.thesis-mirror-wrap { position:relative; }
+.thesis-mirror-copy {
+  position:absolute; top:0; left:0; right:0;
+  transform:scaleX(-1); opacity:0.05; pointer-events:none;
+  z-index:0;
+}
+
+/* OPT 27: oversized label ghost */
+.thesis-ghost-label {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,8vw,8rem);
+  color:rgba(138,110,58,0.06);
+  letter-spacing:0.14em; text-transform:uppercase;
+  white-space:nowrap; pointer-events:none; z-index:0;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt27 .thesis-ghost-label { opacity:1; }
+
+/* OPT 28: wire frame 3-sided bracket */
+.thesis-wirebox {
+  position:relative; display:inline-block;
+  border-left:1.5px solid rgba(138,110,58,0.45);
+  border-top:1.5px solid rgba(138,110,58,0.45);
+  border-bottom:1.5px solid rgba(138,110,58,0.45);
+  padding:32px 48px 32px 32px;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt28 .thesis-wirebox { opacity:1; }
+.thesis-wirebox::after {
+  content:''; position:absolute; right:-16px; top:20%; bottom:20%;
+  width:1.5px; background:rgba(138,110,58,0.15);
+}
+
+/* OPT 29: dashed rules between lines */
+#thesis-section.thesis-opt29 { text-align:left !important; }
+#thesis-section.thesis-opt29 > div:last-child { padding-left:8vw; max-width:700px !important; margin:0 !important; }
+.thesis-dash-rule {
+  width:100%; height:1px; margin:12px 0;
+  background:repeating-linear-gradient(to right, rgba(138,110,58,0.3) 0, rgba(138,110,58,0.3) 6px, transparent 6px, transparent 12px);
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt29 .thesis-dash-rule { opacity:1; }
+.thesis-diam-prefix {
+  font-family:'Bebas Neue',sans-serif; color:rgba(138,110,58,0.5);
+  margin-right:10px; font-size:0.9em;
+}
+
+/* OPT 30: film strip */
+.thesis-film-wrap { position:relative; }
+.thesis-film-copy1, .thesis-film-copy2 {
+  position:absolute; top:0; left:0; right:0;
+  pointer-events:none; z-index:0;
+}
+.thesis-film-copy1 { opacity:0.28; transform:translateY(8px); }
+.thesis-film-copy2 { opacity:0.07; transform:translateY(16px); }
+#thesis-section.thesis-opt30 > div:last-child { position:relative; z-index:1; }
+</style>
+
+/* OPT 4: full bleed ghost type + dim line */
+#thesis-section.thesis-opt4 { text-align:left !important; }
+#thesis-section.thesis-opt4 > div:last-child { padding-left:8vw; max-width:none !important; margin:0 !important; }
+#thesis-section.thesis-opt4 .thesis-ghost-word {
+  position:absolute; top:50%; left:0; right:0;
+  transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(6rem,18vw,16rem);
+  color:rgba(138,110,58,0.05);
+  text-align:center; letter-spacing:0.08em;
+  pointer-events:none; z-index:0; white-space:nowrap;
+}
+#thesis-section.thesis-opt4 .thesis-dimline {
+  position:absolute; top:50%; left:0; right:0;
+  height:1px; background:rgba(138,110,58,0.18);
+  z-index:0; pointer-events:none;
+}
+#thesis-section.thesis-opt4 .thesis-dimline::before {
+  content:'→|← ' attr(data-mm) 'mm';
+  position:absolute; left:48px; top:-10px;
+  font-size:0.52rem; letter-spacing:0.2em; color:rgba(138,110,58,0.35);
+  font-family:'DM Sans',sans-serif;
+}
+
+/* OPT 5: blueprint dark */
+#thesis-section.thesis-opt5 {
+  background:#0d1117 !important;
+  background-image:none !important;
+}
+#thesis-section.thesis-opt5 > div:first-child { display:none !important; } /* hide cream overlay */
+#thesis-section.thesis-opt5 span[style*="0.52rem"] { color:rgba(0,180,216,0.7) !important; }
+#thesis-section.thesis-opt5 p[style*="Bebas Neue"] { color:rgba(244,241,236,0.75) !important; }
+#thesis-section.thesis-opt5 p[style*="color:#c8a96e"] { color:#00b4d8 !important; }
+.thesis-blueprint-grid {
+  position:absolute; inset:0; pointer-events:none; z-index:0; opacity:0;
+  background-image:
+    linear-gradient(rgba(0,180,216,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,216,0.06) 1px, transparent 1px);
+  background-size:40px 40px;
+  transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt5 .thesis-blueprint-grid { opacity:1; }
+.thesis-crosshair-tl, .thesis-crosshair-tr, .thesis-crosshair-bl, .thesis-crosshair-br {
+  position:absolute; width:20px; height:20px; pointer-events:none; z-index:1; opacity:0; transition:opacity 0.5s;
+}
+.thesis-crosshair-tl { top:16px; left:16px; border-top:1px solid rgba(0,180,216,0.4); border-left:1px solid rgba(0,180,216,0.4); }
+.thesis-crosshair-tr { top:16px; right:16px; border-top:1px solid rgba(0,180,216,0.4); border-right:1px solid rgba(0,180,216,0.4); }
+.thesis-crosshair-bl { bottom:16px; left:16px; border-bottom:1px solid rgba(0,180,216,0.4); border-left:1px solid rgba(0,180,216,0.4); }
+.thesis-crosshair-br { bottom:16px; right:16px; border-bottom:1px solid rgba(0,180,216,0.4); border-right:1px solid rgba(0,180,216,0.4); }
+#thesis-section.thesis-opt5 .thesis-crosshair-tl,
+#thesis-section.thesis-opt5 .thesis-crosshair-tr,
+#thesis-section.thesis-opt5 .thesis-crosshair-bl,
+#thesis-section.thesis-opt5 .thesis-crosshair-br { opacity:1; }
+.thesis-datum-tl { position:absolute; top:22px; left:42px; font-size:0.48rem; letter-spacing:0.2em; color:rgba(0,180,216,0.35); font-family:'DM Sans',sans-serif; pointer-events:none; z-index:1; opacity:0; transition:opacity 0.5s; }
+#thesis-section.thesis-opt5 .thesis-datum-tl { opacity:1; }
+
+/* OPT 6: stamp */
+#thesis-section.thesis-opt6 { text-align:left !important; }
+#thesis-section.thesis-opt6 > div:last-child { padding-left:8vw; max-width:none !important; margin:0 !important; }
+.thesis-stamp-box {
+  position:relative; display:inline-block;
+  border:2px solid rgba(138,110,58,0.5);
+  padding:32px 40px;
+  transform:skewX(-4deg) rotate(-0.5deg);
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt6 .thesis-stamp-box { opacity:1; }
+.thesis-stamp-box > * { transform:skewX(4deg); }
+.thesis-barcode {
+  display:flex; gap:2px; align-items:flex-end;
+  margin-top:20px; opacity:0; transition:opacity 0.5s 0.2s;
+}
+#thesis-section.thesis-opt6 .thesis-barcode { opacity:1; }
+.thesis-barcode span {
+  display:inline-block; width:2px; background:rgba(138,110,58,0.4);
+}
+
+/* OPT 7: scan line */
+#thesis-section.thesis-opt7 { padding:80px 48px !important; }
+.thesis-scan-panel {
+  background:#0a0a0a;
+  padding:48px;
+  position:relative;
+  overflow:hidden;
+  max-width:700px;
+  margin:0 auto;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt7 .thesis-scan-panel { opacity:1; }
+.thesis-scan-line {
+  position:absolute; left:0; right:0; height:2px;
+  background:linear-gradient(to right, transparent, rgba(200,169,110,0.4), transparent);
+  animation:scan-sweep 3s ease-in-out infinite;
+  pointer-events:none; z-index:2;
+}
+@keyframes scan-sweep {
+  0% { top:0%; opacity:0; }
+  10% { opacity:1; }
+  90% { opacity:1; }
+  100% { top:100%; opacity:0; }
+}
+.thesis-scan-panel p[style*="Bebas Neue"] { color:rgba(200,169,110,0.85) !important; }
+.thesis-scan-panel span[style*="0.52rem"] { color:rgba(200,169,110,0.45) !important; }
+
+/* OPT 8: exploded view */
+#thesis-section.thesis-opt8 { padding:80px 48px !important; text-align:left !important; }
+#thesis-section.thesis-opt8 > div:last-child { padding-left:8vw; max-width:none !important; margin:0 !important; }
+.thesis-exploded-line { position:relative; padding:20px 0; }
+.thesis-exploded-connector {
+  position:absolute; left:-32px; top:0; bottom:0; width:1px;
+  background:rgba(138,110,58,0.25); pointer-events:none;
+}
+.thesis-exploded-connector::after {
+  content:attr(data-mm) 'mm';
+  position:absolute; top:50%; left:6px;
+  transform:translateY(-50%);
+  font-size:0.44rem; letter-spacing:0.18em; color:rgba(138,110,58,0.4);
+  font-family:'DM Sans',sans-serif; white-space:nowrap;
+}
+
+/* OPT 9: ultra minimal gold underlines */
+#thesis-section.thesis-opt9 { }
+.thesis-underline-anim {
+  display:block; height:1px; background:rgba(200,169,110,0.4);
+  margin:4px auto 16px;
+  transform:scaleX(0); transform-origin:left;
+  transition:transform 0.8s ease; width:80%;
+}
+#thesis-section.thesis-opt9 .thesis-underline-anim { transform:scaleX(1); }
+
+/* OPT 10: // punctuation watermark */
+.thesis-slash-watermark {
+  position:absolute; top:-20px; right:40px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(6rem,15vw,12rem);
+  color:rgba(138,110,58,0.05);
+  letter-spacing:-0.05em; pointer-events:none; z-index:0;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt10 .thesis-slash-watermark { opacity:1; }
+#thesis-section.thesis-opt10 { border-left:3px solid rgba(138,110,58,0.3) !important; }
+
+/* OPT 11: giant rotating ⊞ grid */
+.thesis-grid-backdrop {
+  position:absolute; inset:-50%; display:flex; align-items:center; justify-content:center;
+  pointer-events:none; z-index:0; opacity:0; transition:opacity 0.6s;
+  animation:grid-rotate 40s linear infinite;
+}
+@keyframes grid-rotate { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+.thesis-grid-backdrop span {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(16rem,40vw,36rem);
+  color:rgba(138,110,58,0.05);
+  letter-spacing:-0.05em; line-height:1;
+}
+#thesis-section.thesis-opt11 .thesis-grid-backdrop { opacity:1; }
+
+/* OPT 12: two column with giant delta */
+#thesis-section.thesis-opt12 > div:last-child {
+  display:grid !important; grid-template-columns:1fr 1.4fr !important;
+  gap:0 !important; max-width:none !important; margin:0 !important;
+  align-items:center; flex-direction:unset !important;
+}
+.thesis-delta-col {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(6rem,16vw,14rem);
+  color:rgba(138,110,58,0.08); letter-spacing:-0.02em;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt12 .thesis-delta-col { opacity:1; }
+#thesis-section.thesis-opt12 { text-align:left !important; }
+
+/* OPT 13: process dividers */
+#thesis-section.thesis-opt13 { text-align:left !important; }
+#thesis-section.thesis-opt13 > div:last-child { padding-left:8vw; max-width:800px !important; }
+.thesis-process-div {
+  display:flex; align-items:center; gap:16px; margin:8px 0;
+  opacity:0; transition:opacity 0.5s;
+}
+#thesis-section.thesis-opt13 .thesis-process-div { opacity:1; }
+.thesis-process-div::before { content:'∴'; font-family:'Bebas Neue',sans-serif; color:rgba(138,110,58,0.4); font-size:1rem; }
+.thesis-process-div::after { content:''; flex:1; height:1px; background:rgba(138,110,58,0.15); }
+
+/* OPT 14: right-aligned directional */
+#thesis-section.thesis-opt14 { text-align:right !important; }
+#thesis-section.thesis-opt14 > div:last-child { margin-left:auto !important; margin-right:0 !important; padding-right:8vw; }
+.thesis-nabla-ghost {
+  position:absolute; bottom:-20px; left:40px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(8rem,20vw,18rem);
+  color:rgba(138,110,58,0.05); pointer-events:none; z-index:0;
+  opacity:0; transition:opacity 0.6s;
+  animation:nabla-fade 4s ease-in-out infinite;
+}
+@keyframes nabla-fade { 0%,100%{opacity:0.05;} 50%{opacity:0.1;} }
+#thesis-section.thesis-opt14 .thesis-nabla-ghost { opacity:1; }
+
+/* OPT 15: tolerance spec table */
+#thesis-section.thesis-opt15 { text-align:left !important; }
+#thesis-section.thesis-opt15 > div:last-child { padding-left:8vw; max-width:800px !important; margin:0 !important; }
+.thesis-spec-row {
+  display:flex; align-items:baseline; gap:24px;
+  border-top:1px solid rgba(138,110,58,0.15);
+  padding:16px 0;
+}
+.thesis-spec-row:last-of-type { border-bottom:1px solid rgba(138,110,58,0.15); }
+.thesis-spec-tol {
+  font-family:'DM Sans',sans-serif; font-size:0.52rem; letter-spacing:0.2em;
+  color:rgba(138,110,58,0.5); white-space:nowrap; min-width:60px;
+}
+</style>
+
 <script>
 (function(){
 
-/* ── TEXTS ── */
-var T = {
-  eyebrow: {
-    1:'A cross-border venture studio',
-    2:'→|← A CROSS-BORDER VENTURE STUDIO ←|→',
-    3:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙',
-    4:'→|← A CROSS-BORDER VENTURE STUDIO',
-    5:'∠ A CROSS-BORDER VENTURE STUDIO °',
-    6:'⌖ A CROSS-BORDER VENTURE STUDIO ⌖',
-    7:'∫ A CR⊙∫∫-B⊙RDER VE∇TURE ∫TU∆IO',
-    8:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
-    9:'A cross-border venture studio ⌀',
-    10:'A cross-border venture studio —',
-    11:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
-    12:'△ A CROSS-BORDER VENTURE STUDIO ▽',
-    13:'∫ A CROSS-BORDER VENTURE STUDIO ∴',
-    14:'↗ A CROSS-BORDER VENTURE STUDIO ↘',
-    15:'±0.001 A CROSS-BORDER VENTURE STUDIO',
-    16:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
-    17:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
-    18:'⌐ A CROSS-BORDER VENTURE STUDIO ¬',
-    19:'A cross-border venture studio ⌀',
-    20:'⌖ A CROSS-BORDER VENTURE STUDIO ⌖',
-    21:'±0.001 A CROSS-BORDER VENTURE STUDIO',
-    22:'↗ A CROSS-BORDER VENTURE STUDIO ↘',
-    23:'▽ A CROSS-BORDER VENTURE STUDIO ▽▽',
-    24:'∵ A CROSS-BORDER VENTURE STUDIO ∴',
-    25:'∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
-    26:'∫ A CROSS-BORDER VENTURE STUDIO ∫',
-    27:'→|← A CROSS-BORDER VENTURE STUDIO →|←',
-    28:'⌐ A CROSS-BORDER VENTURE STUDIO',
-    29:'⊥ A CROSS-BORDER VENTURE STUDIO ⊥',
-    30:'∥ A CROSS-BORDER VENTURE STUDIO ∥'
-  },
-  heroTop: {
-    1:'INDUSTRIALISING',
-    2:'⌐ INDUSTRIALISING ±0.01',
-    3:'∥∇∆U∫⊥R∥∠L∥∫∥∇G',
-    4:'⌐ INDUSTRIALISING',
-    5:'INDUSTRIALISING ⊞',
-    6:'INDUSTRIALISING ←|→',
-    7:'∥∇∆U∫⊥R∥∠L∥∫∥∇G',
-    8:'∥∇∆U∫⊥R∥∠L∥∫∥∇G',
-    9:'INDUSTRIALISING ±',
-    10:'INDUSTRIALISING //',
-    11:'∥∇∆U∫⊥R∥∠L∥∫∥∇G ±0.001',
-    12:'INDUSTRIALISING ◎',
-    13:'INDUSTRIALISING ∵',
-    14:'INDUSTRIALISING ↕',
-    15:'INDUSTRIALISING Ø',
-    16:'⌐ INDUSTRIALISING ¬',
-    17:'INDU∫TRIAL∫∥∫∥NG ±0.01',
-    18:'INDUSTRIALISING',
-    19:'INDUSTRIALISING ±',
-    20:'⌖ INDUSTRIALISING',
-    21:'INDUSTRIALI∫∥NG',
-    22:'INDUSTRIALISING ↕',
-    23:'INDUSTRIALISING ▽▽▽',
-    24:'INDUSTRIALISING ∴',
-    25:'INDU∫TRIALI∫ING ⌙',
-    26:'∫ INDUSTRIALISING',
-    27:'→|← INDUSTRIALISING →|←',
-    28:'INDUSTRIALISING',
-    29:'INDUSTRIALISING ⊥',
-    30:'∥ INDUSTRIALISING ∥'
-  },
-  heroBrand: {
-    1:'BRAND',2:'BRAND',3:'BR∠∇∆',4:'BRAND',5:'BRAND',6:'BR∠∇∆',
-    7:'BR∠∇∆',8:'BR∠∇∆',9:'BRAND',10:'BRAND',11:'BR∠∇∆',12:'BRAND',
-    13:'BRAND',14:'BRAND',15:'BRAND',
-    16:'BR∠∇∆',17:'BRAND',18:'BRAND',19:'BRAND',20:'BR∠∇∆',
-    21:'BRAND',22:'BRAND',23:'BRAND ▽',24:'∵ BRAND',25:'BR∠∇∆',
-    26:'BRAND',27:'→|← BRAND',28:'⌐ BRAND',29:'BRAND ⊥',30:'∥ BRAND'
-  },
-  heroSoul: {
-    1:'SOUL',2:'SOUL',3:'∫⊙UL',4:'SOUL',5:'SOUL',6:'∫⊙UL',
-    7:'∫⊙UL',8:'∫⊙UL',9:'SOUL',10:'SOUL',11:'∫⊙UL',12:'S⊙UL',
-    13:'SOUL',14:'SOUL',15:'SOUL',
-    16:'SOUL',17:'∫⊙UL',18:'S⊙UL',19:'SOUL ⌀',20:'∫⊙UL',
-    21:'SOUL',22:'↧ SOUL',23:'SOUL ▽▽▽',24:'SOUL ∴',25:'∫⊙UL ⌙',
-    26:'∫⊙UL',27:'SOUL →|←',28:'SOUL ¬',29:'⊥ SOUL',30:'SOUL ∥'
-  },
-  ctaLabel: {
-    1:"Let's Build Together",2:"⌖ LET'S BUILD TOGETHER",3:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
-    4:"Let's Build Together",5:"Let's Build Together",6:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
-    7:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",8:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",9:"⌖ Let's Build Together",
-    10:"// Let's Build Together",11:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",12:"◎ Let's Build Together",
-    13:"∴ Let's Build Together",14:"↗ Let's Build Together",15:"Ø Let's Build Together",
-    16:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",17:"LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",18:"⌐ LET'S BUILD TOGETHER ¬",
-    19:"Let's Build Together ⌀",20:"⌖A LET'S BUILD TOGETHER",21:"± LET'S BUILD TOGETHER",
-    22:"↗ LET'S BUILD TOGETHER",23:"▽ LET'S BUILD TOGETHER",24:"∴ LET'S BUILD TOGETHER",
-    25:"⌙ LET'S BUILD TOGETHER",26:"∫ LET'S BUILD TOGETHER",27:"→|← LET'S BUILD TOGETHER →|←",
-    28:"⌐ LET'S BUILD TOGETHER",29:"⊥ LET'S BUILD TOGETHER",30:"∥ LET'S BUILD TOGETHER ∥"
-  },
-  ctaHead: {
-    1:'Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span>',
-    2:'⌐ Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product ¬</span>',
-    3:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    4:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>YOUR BRAND INTO<br/>A <span class="cta-product-word">PRODUCT?</span>',
-    5:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    6:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    7:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    8:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    9:'Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span>',
-    10:'Ready to turn your brand<br/>into a <span class="cta-product-word">product ⌀</span>',
-    11:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    12:'Ready to turn your<br/>BR∠∇∆ ∥NT⊙<br/>a <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    13:'Ready to turn your brand<br/>into a product ∵',
-    14:'→ Ready to turn your<br/>brand into<br/>a product ↘',
-    15:'Ready to turn your brand<br/>into a product <span class="cta-product-word">±0.001</span>',
-    16:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    17:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ PR⊙∆UC⊥<sup style="font-size:0.45em;color:#c8a96e;vertical-align:super;">±0.01</sup>?',
-    18:'READY ⊥⊙ TURN YOUR BRAND<br/>∥NT⊙ A <span class="cta-product-word">PRODUCT?</span>',
-    19:'Ready to turn your BR∠∇∆<br/>∥NT⊙ a <span class="cta-product-word">product?</span>',
-    20:'⌖B RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    21:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    22:'→ READY TO TURN YOUR BR∠∇∆<br/>∥NT⊙ A <span class="cta-product-word">PR⊙∆UC⊥ ↘</span>',
-    23:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    24:'∵ YOUR BR∠∇∆ HAS ∆NA<br/>∴ ∠ PR⊙∆UC⊥ <span class="cta-product-word">EX∥∫⊥∫</span>',
-    25:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    26:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    27:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    28:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
-    29:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥ ⊥</span>',
-    30:'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>'
-  },
-  ctaBody: {
-    1:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    2:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    3:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    4:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    5:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    6:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    7:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    8:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    9:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    10:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    11:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    12:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    13:"\u222b We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    14:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    15:"We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
-    16:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    17:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    18:"We work with a \u222fele\u22a5t number of partners each year. \u2225f you have brand \u2206NA worth industrializing, let's talk.",
-    19:"We work with a select number of partners each year. If you have brand \u2206NA worth industrializing, let's talk.",
-    20:"\u2316C We work with a select number of partners each year. If you have brand \u2206NA worth industrializing, let's talk.",
-    21:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners \u00b10.1 each year. \u2225f y\u22a5u have brand \u2206NA \u00b10.01 worth indu\u222ftrializing \u00b10.001, let'\u222f talk.",
-    22:"We work with a select number of partners each year. If you have brand \u2206NA worth industrializing, let's talk.",
-    23:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing\u25bd\u25bd\u25bd, let'\u222f talk.",
-    24:"We work with a select number of partners each year. If you have brand \u2206NA worth industrializing, let's talk.",
-    25:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA 6\u00d7\u00d88 worth indu\u222ftrializing, let'\u222f talk.",
-    26:"\u222b We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    27:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    28:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    29:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk.",
-    30:"We w\u22a5rk with \u2220 \u222fele\u22a5t number \u22a5f partners each year. \u2225f y\u22a5u have brand \u2206NA worth indu\u222ftrializing, let'\u222f talk."
-  },
-  ctaBtn: {
-    1:'Discuss a Partnership',2:'Discuss a Partnership',3:'Discuss a Partnership',
-    4:'Discuss a Partnership',5:'Discuss a Partnership',6:'Discuss a Partnership',
-    7:'Discuss a Partnership',8:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    9:'Discuss a Partnership',10:'Discuss a Partnership',
-    11:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    12:'Discuss a Partnership',13:'Discuss a Partnership',
-    14:'\u2197 Discuss a Partnership',15:'Discuss a Partnership',
-    16:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    17:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    18:'\u230f DISCUSS A PARTNERSHIP \u00ac',
-    19:'Discuss a Partnership \u2300',
-    20:'\u2316D D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    21:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    22:'\u2192 DISCUSS A PARTNERSHIP',
-    23:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    24:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    25:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    26:'\u222b D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    27:'\u2192|\u2190 D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P \u2192|\u2190',
-    28:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P \u00ac',
-    29:'D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P',
-    30:'\u2225 D\u2225\u222fCU\u222f\u222f \u2220 P\u2220R\u22a5\u2207ER\u222fH\u2225P \u2225'
-  },
-  thLabel: {
-    1:'The Foundry Thesis',2:'\u2316 THE FOUNDRY THESIS \u00b1',3:'\u22a5HE F\u22a5U\u2207\u2206RY \u22a5HE\u222f\u2225\u222f',
-    4:'\u230f The Foundry Thesis',5:'\u2316 THE FOUNDRY THESIS \u2316',6:'The Foundry Thesis',
-    7:'\u222b The Foundry Thesis',8:'\u2316 THE FOUNDRY THESIS',9:'The Foundry Thesis \u2300',
-    10:'// The Foundry Thesis',11:'\u229e THE FOUNDRY THESIS \u229e',12:'\u25ce The Foundry Thesis',
-    13:'\u230f The Foundry Thesis \u2234',14:'\u2197 The Foundry Thesis',15:'\u00d8 The Foundry Thesis \u00b10.001',
-    16:'\u2316 THE FOUNDRY THESIS \u2316',17:'\u2316 THE FOUNDRY THESIS',18:'\u230f The Foundry Thesis \u00ac',
-    19:'The Foundry Thesis',20:'\u2316 The Foundry Thesis \u2316',21:'The Foundry Thesis',
-    22:'The Foundry Thesis',23:'\u25bd The Foundry Thesis',24:'01 \u00b7 The Foundry Thesis',
-    25:'\u2316 THE FOUNDRY THESIS \u2316',26:'The Foundry Thesis',27:'The Foundry Thesis',
-    28:'\u230f The Foundry Thesis',29:'\u2300 The Foundry Thesis',30:'The Foundry Thesis'
-  },
-  thL1: {
-    1:'The best products',2:'\u230f \u21a7 THE BEST PRODUCTS',3:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',
-    4:'THE BEST PRODUCTS',5:'\u2316 THE BEST PRODUCTS',6:'The best products',
-    7:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',8:'THE BEST PRODUCTS',9:'The best products',
-    10:'The best products',11:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',12:'The best products',
-    13:'The best products',14:'\u2192 The best products',15:'The best products',
-    16:'\u2316 THE BEST PRODUCTS',17:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',
-    18:'The best products',19:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',
-    20:'\u2316 THE BEST PRODUCTS',21:'THE BEST PRODUCTS',22:'THE BEST PRODUCTS',
-    23:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',24:'The best products',
-    25:'\u22a5HE BE\u222f\u22a5 PR\u22a5\u2206UC\u22a5\u222f',26:'The best products',
-    27:'The best products',28:'The best products',29:'The best products',30:'The best products'
-  },
-  thL2: {
-    1:"Won't be invented",2:"\u2225 WON'T BE INVENTED \u2225",3:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",
-    4:"WON'T BE INVENTED",5:"\u22a5 WON'T BE INVENTED",6:"Won't be invented",
-    7:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",8:"WON'T BE INVENTED",
-    9:"Won't be invented",10:"// Won't be invented",11:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",
-    12:"Won't be invented",13:"\u2225 Won't be invented",14:"\u2193 Won't be invented",
-    15:"Won't be invented",
-    16:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",17:"Won't be invented",
-    18:"Won't be invented",19:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",
-    20:"Won't be invented",21:"WON'T BE INVENTED",22:"WON'T BE INVENTED",
-    23:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",24:"Won't be invented",
-    25:"W\u22a5\u2207'\u22a5 BE \u2225\u2207VE\u2207\u22a5E\u2206",26:"Won't be invented",
-    27:"Won't be invented",28:"Won't be invented",29:"Won't be invented",30:"Won't be invented"
-  },
-  thL3: {
-    1:"They'll be extracted",2:"THEY'LL BE EXTRACTED \u2192|\u2190 \u00ac",3:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",
-    4:"THEY'LL BE EXTRACTED",5:"THEY'LL BE EXTRACTED \u00ac",6:"They'll be extracted",
-    7:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",8:"THEY'LL BE EXTRACTED",
-    9:"They'll be extracted",10:"They'll be extracted //",11:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",
-    12:"They'll be extracted",13:"\u00ac They'll be extracted",14:"\u2198 They'll be extracted",
-    15:"They'll be extracted",
-    16:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",17:"They'll be extracted",
-    18:"They'll be extracted",19:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",
-    20:"They'll be extracted",21:"THEY'LL BE EXTRACTED",22:"THEY'LL BE EXTRACTED",
-    23:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",24:"They'll be extracted",
-    25:"\u22a5HEY'LL BE EX\u22a5R\u2220C\u22a5E\u2206",26:"They'll be extracted",
-    27:"They'll be extracted",28:"They'll be extracted",29:"They'll be extracted",30:"They'll be extracted"
-  },
-  thAttr: {
-    1:'Matthew, Silent Foundry',2:'\u2316A \u00b7 Matthew \u00b7 Silent Foundry \u00b7 \u00b10.001',
-    3:'M\u2220\u22a5\u22a5HEW \u00b7 \u222f\u2225LE\u2207\u22a5 F\u22a5U\u2207\u2206RY',
-    4:'— Matthew, Silent Foundry',5:'\u2316 Matthew, Silent Foundry',6:'Matthew, Silent Foundry',
-    7:'\u222b Matthew \u00b7 Silent Foundry',8:'\u2316A \u00b7 Matthew \u00b7 Silent Foundry',
-    9:'\u2316 Matthew, Silent Foundry',10:'— Matthew, Silent Foundry',
-    11:'\u229e Matthew \u00b7 Silent Foundry \u00b7 \u00b10.001',12:'\u25ce Matthew, Silent Foundry',
-    13:'\u222b Matthew, Silent Foundry',14:'\u2192 Matthew, Silent Foundry',
-    15:'\u00d8 Matthew, Silent Foundry \u00b10.001',
-    16:'\u2316 Matthew, Silent Foundry',17:'00:00:01 \u00b7 Matthew, Silent Foundry',
-    18:'\u230f Matthew, Silent Foundry \u00ac',19:'Matthew, Silent Foundry',
-    20:'\u2316 Matthew, Silent Foundry',21:'Matthew, Silent Foundry',
-    22:'\u2192 Matthew, Silent Foundry',23:'\u25bd\u25bd\u25bd Matthew, Silent Foundry',
-    24:'// end \u00b7 Matthew, Silent Foundry',25:'\u2316 Matthew, Silent Foundry',
-    26:'Matthew, Silent Foundry',27:'Matthew, Silent Foundry',
-    28:'Matthew, Silent Foundry \u00ac',29:'\u2300 Matthew, Silent Foundry',30:'Matthew, Silent Foundry'
-  }
-};
-
-/* ── THESIS BUILDER ── */
-/* All thesis designs use direct inline style control — no CSS class fights */
-
-var DARK = '#0d1117';
-var CREAM = '#ede8e0';
-
-/* thesis design configs: [bg, textAlign, padding, innerMaxW, innerMargin, extraFn] */
-var tDesign = {
-  1:  { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto' },
-  /* 2: asymmetric left, dim grid */
-  2:  { bg:CREAM,  ta:'left',   pad:'100px 48px', mw:'none',  mg:'0', extra:'dimgrid' },
-  /* 3: ghost ⊞ drift */
-  3:  { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'ghost' },
-  /* 4: ghost word EXTRACTED + dim line */
-  4:  { bg:CREAM,  ta:'left',   pad:'100px 48px', mw:'none',  mg:'0 0 0 8vw', extra:'ghostword' },
-  /* 5: blueprint dark, blue grid, corner brackets */
-  5:  { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'blueprint-blue' },
-  /* 6: stamp rotated box */
-  6:  { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'stamp' },
-  /* 7: dark scan panel */
-  7:  { bg:CREAM,  ta:'center', pad:'80px 48px',  mw:'700px', mg:'0 auto', extra:'scan' },
-  /* 8: exploded view dim lines between */
-  8:  { bg:CREAM,  ta:'left',   pad:'80px 48px',  mw:'700px', mg:'0 0 0 8vw', extra:'exploded' },
-  /* 9: gold underlines */
-  9:  { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'underlines' },
-  /* 10: // slash watermark + left border */
-  10: { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'slashmark' },
-  /* 11: rotating ⊞ grid */
-  11: { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'rotgrid' },
-  /* 12: two col giant delta */
-  12: { bg:CREAM,  ta:'left',   pad:'80px 0',     mw:'none',  mg:'0', extra:'twocol' },
-  /* 13: process dividers ∴ */
-  13: { bg:CREAM,  ta:'left',   pad:'100px 48px', mw:'700px', mg:'0 0 0 8vw', extra:'processdiv' },
-  /* 14: right-aligned ∇ ghost */
-  14: { bg:CREAM,  ta:'right',  pad:'100px 48px', mw:'700px', mg:'0 0 0 auto', extra:'nabla' },
-  /* 15: tolerance spec table */
-  15: { bg:CREAM,  ta:'left',   pad:'80px 48px',  mw:'700px', mg:'0 0 0 8vw', extra:'spectable' },
-
-  /* ── 16–30: rebuilt, mostly dark ── */
-  /* 16: dark blueprint gold grid + gold corners + Opt3 text */
-  16: { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'blueprint-gold' },
-  /* 17: dark + blueprint blue left-aligned, ⌖ left annotation */
-  17: { bg:DARK,   ta:'left',   pad:'100px 48px 100px 10vw', mw:'600px', mg:'0', extra:'blueprint-blue-left' },
-  /* 18: cream, giant left border 4px gold, left-aligned large type */
-  18: { bg:CREAM,  ta:'left',   pad:'80px 48px 80px 10vw', mw:'700px', mg:'0', extra:'leftborder' },
-  /* 19: dark, scan line, Opt3 text */
-  19: { bg:DARK,   ta:'center', pad:'80px 48px',  mw:'700px', mg:'0 auto', extra:'scan-dark' },
-  /* 20: dark, blueprint blue centered, datum ⌖ marks */
-  20: { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'blueprint-blue' },
-  /* 21: cream, wirebox 3-sided bracket */
-  21: { bg:CREAM,  ta:'center', pad:'80px 48px',  mw:'none',  mg:'0 auto', extra:'wirebox' },
-  /* 22: dark, ghost word EXTRACTED behind, left-aligned */
-  22: { bg:DARK,   ta:'left',   pad:'100px 48px 100px 10vw', mw:'600px', mg:'0', extra:'ghostword-dark' },
-  /* 23: dark, rotating ⊞ grid, Opt3 text */
-  23: { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'rotgrid-dark' },
-  /* 24: cream, numbered spec lines left-aligned */
-  24: { bg:CREAM,  ta:'left',   pad:'80px 48px',  mw:'700px', mg:'0 0 0 8vw', extra:'speclines' },
-  /* 25: dark blueprint blue + Opt3 text + ⌖ crosshairs */
-  25: { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'blueprint-blue' },
-  /* 26: cream, dashed rules between lines, ⌀ prefix */
-  26: { bg:CREAM,  ta:'left',   pad:'80px 48px',  mw:'700px', mg:'0 0 0 8vw', extra:'dashrules' },
-  /* 27: dark, oversized ghost label behind */
-  27: { bg:DARK,   ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'ghostlabel' },
-  /* 28: cream, stamp box */
-  28: { bg:CREAM,  ta:'center', pad:'80px 48px',  mw:'none',  mg:'0 auto', extra:'stamp' },
-  /* 29: dark, gold grid + left aligned */
-  29: { bg:DARK,   ta:'left',   pad:'100px 48px 100px 10vw', mw:'600px', mg:'0', extra:'blueprint-gold-left' },
-  /* 30: cream, film strip 3x opacity */
-  30: { bg:CREAM,  ta:'center', pad:'100px 48px', mw:'700px', mg:'0 auto', extra:'film' }
-};
-
-function inj(el, className) {
-  el.className = 'tsw-injected ' + className;
-  return el;
-}
-
-function buildThesis(opt) {
-  var sec = document.getElementById('thesis-section');
-  if (!sec) return;
-
-  /* 1. Remove all injected elements */
-  sec.querySelectorAll('.tsw-injected').forEach(function(el){ el.remove(); });
-
-  /* 2. Reset overlay opacity */
-  var overlay = sec.querySelector('div[style*="opacity:0.92"]');
-  if (overlay) overlay.style.opacity = '0.92';
-
-  /* 3. Get inner content div */
-  var inner = sec.querySelector('div[style*="z-index:1"]');
-
-  var d = tDesign[opt] || tDesign[1];
-
-  /* 4. Set section styles directly */
-  sec.style.background = d.bg;
-  sec.style.backgroundImage = (d.bg === CREAM) ? "url('cad_texture.jpeg')" : 'none';
-  sec.style.backgroundSize = 'cover';
-  sec.style.backgroundPosition = 'center';
-  sec.style.backgroundAttachment = 'fixed';
-  sec.style.padding = d.pad;
-  sec.style.textAlign = d.ta;
-
-  /* fix overlay for dark bg */
-  if (overlay) {
-    overlay.style.background = (d.bg === DARK) ? '#0d1117' : '#ede8e0';
-    overlay.style.opacity = '0.95';
-  }
-
-  /* 5. Set inner div styles */
-  if (inner) {
-    inner.style.maxWidth = d.mw;
-    inner.style.margin = d.mg;
-    inner.style.textAlign = d.ta;
-    inner.style.flexDirection = 'column';
-    inner.style.alignItems = (d.ta === 'center') ? 'center' : 'flex-start';
-    inner.style.display = 'flex';
-  }
-
-  /* 6. Fix text colors for dark bg */
-  var isDark = (d.bg === DARK);
-  var lines = sec.querySelectorAll('p[style*="Bebas Neue"]');
-  lines.forEach(function(p, i) {
-    if (isDark) {
-      if (i === 0) p.style.color = 'rgba(244,241,236,0.35)';
-      else if (i === 1) p.style.color = 'rgba(244,241,236,0.65)';
-      else p.style.color = '#c8a96e';
-    } else {
-      if (i === 0) p.style.color = 'rgba(10,10,10,0.1)';
-      else if (i === 1) p.style.color = 'rgba(10,10,10,0.3)';
-      else p.style.color = '#c8a96e';
+  var texts = {
+    eyebrow: {
+      1: 'A cross-border venture studio',
+      2: '→|← A CROSS-BORDER VENTURE STUDIO ←|→',
+      3: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙',
+      4: '→|← A CROSS-BORDER VENTURE STUDIO',
+      5: '∠ A CROSS-BORDER VENTURE STUDIO °',
+      6: '⌖ A CROSS-BORDER VENTURE STUDIO ⌖',
+      7: '∫ A CR⊙∫∫-B⊙RDER VE∇TURE ∫TU∆IO',
+      8: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
+      9: 'A cross-border venture studio ⌀',
+      10: 'A cross-border venture studio —',
+      11: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
+      12: '△ A CROSS-BORDER VENTURE STUDIO ▽',
+      13: '∫ A CROSS-BORDER VENTURE STUDIO ∴',
+      14: '↗ A CROSS-BORDER VENTURE STUDIO ↘',
+      15: '±0.001 A CROSS-BORDER VENTURE STUDIO',
+      16: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
+      17: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
+      18: '⌐ A CROSS-BORDER VENTURE STUDIO ¬',
+      19: 'A cross-border venture studio ⌀',
+      20: '⌖ A CROSS-BORDER VENTURE STUDIO ⌖',
+      21: '±0.001 A CROSS-BORDER VENTURE STUDIO',
+      22: '↗ A CROSS-BORDER VENTURE STUDIO ↘',
+      23: '▽ A CROSS-BORDER VENTURE STUDIO ▽▽',
+      24: '∵ A CROSS-BORDER VENTURE STUDIO ∴',
+      25: '∠ CR⊙∫∫-B⊙R∆ER VE∇⊥URE ∫⊥U∆∥⊙ ⌀',
+      26: '∫ A CROSS-BORDER VENTURE STUDIO ∫',
+      27: '→|← A CROSS-BORDER VENTURE STUDIO →|←',
+      28: '⌐ A CROSS-BORDER VENTURE STUDIO',
+      29: '⊥ A CROSS-BORDER VENTURE STUDIO ⊥',
+      30: '∥ A CROSS-BORDER VENTURE STUDIO ∥'
+    },
+    heroTop: {
+      1: 'INDUSTRIALISING',
+      2: '⌐ INDUSTRIALISING ±0.01',
+      3: '∥∇∆U∫⊥R∥∠L∥∫∥∇G',
+      4: '⌐ INDUSTRIALISING',
+      5: 'INDUSTRIALISING ⊞',
+      6: 'INDUSTRIALISING ←|→',
+      7: '∥∇∆U∫⊥R∥∠L∥∫∥∇G',
+      8: '∥∇∆U∫⊥R∥∠L∥∫∥∇G',
+      9: 'INDUSTRIALISING ±',
+      10: 'INDUSTRIALISING //',
+      11: '∥∇∆U∫⊥R∥∠L∥∫∥∇G ±0.001',
+      12: 'INDUSTRIALISING ◎',
+      13: 'INDUSTRIALISING ∵',
+      14: 'INDUSTRIALISING ↕',
+      15: 'INDUSTRIALISING Ø',
+      16: '⌐ INDUSTRIALISING ¬',
+      17: 'INDU∫TRIAL∫∥∫∥NG ±0.01',
+      18: 'INDUSTRIALISING',
+      19: 'INDUSTRIALISING ±',
+      20: '⌖ INDUSTRIALISING',
+      21: 'INDUSTRIALI∫∥NG',
+      22: 'INDUSTRIALISING ↕',
+      23: 'INDUSTRIALISING ▽▽▽',
+      24: 'INDUSTRIALISING ∴',
+      25: 'INDU∫TRIALI∫ING ⌙',
+      26: '∫ INDUSTRIALISING',
+      27: '→|← INDUSTRIALISING →|←',
+      28: 'INDUSTRIALISING',
+      29: 'INDUSTRIALISING ⊥',
+      30: '∥ INDUSTRIALISING ∥'
+    },
+    heroBrand: {
+      1: 'BRAND', 2: 'BRAND', 3: 'BR∠∇∆',
+      4: 'BRAND', 5: 'BRAND', 6: 'BR∠∇∆',
+      7: 'BR∠∇∆', 8: 'BR∠∇∆', 9: 'BRAND',
+      10: 'BRAND', 11: 'BR∠∇∆', 12: 'BRAND',
+      13: 'BRAND', 14: 'BRAND', 15: 'BRAND',
+      16: 'BR∠∇∆', 17: 'BRAND', 18: 'BRAND', 19: 'BRAND',
+      20: 'BR∠∇∆', 21: 'BRAND ±0.1', 22: 'BRAND', 23: 'BRAND ▽',
+      24: '∵ BRAND', 25: 'BR∠∇∆', 26: 'BRAND', 27: '→|← BRAND',
+      28: '⌐ BRAND', 29: 'BRAND ⊥', 30: '∥ BRAND'
+    },
+    heroSoul: {
+      1: 'SOUL', 2: 'SOUL', 3: '∫⊙UL',
+      4: 'SOUL', 5: 'SOUL', 6: '∫⊙UL',
+      7: '∫⊙UL', 8: '∫⊙UL', 9: 'SOUL',
+      10: 'SOUL', 11: '∫⊙UL', 12: 'S⊙UL',
+      13: 'SOUL', 14: 'SOUL', 15: 'SOUL',
+      16: 'SOUL', 17: '∫⊙UL', 18: 'S⊙UL', 19: 'SOUL ⌀',
+      20: '∫⊙UL', 21: 'SOUL ±0.001', 22: '↧ SOUL', 23: 'SOUL ▽▽▽',
+      24: 'SOUL ∴', 25: '∫⊙UL ⌙', 26: '∫⊙UL', 27: 'SOUL →|←',
+      28: 'SOUL ¬', 29: '⊥ SOUL', 30: 'SOUL ∥'
+    },
+    ctaLabel: {
+      1: "Let's Build Together",
+      2: "⌖ LET'S BUILD TOGETHER",
+      3: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      4: "Let's Build Together",
+      5: "Let's Build Together",
+      6: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      7: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      8: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      9: "⌖ Let's Build Together",
+      10: "// Let's Build Together",
+      11: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      12: "◎ Let's Build Together",
+      13: "∴ Let's Build Together",
+      14: "↗ Let's Build Together",
+      15: "Ø Let's Build Together",
+      16: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      17: "LE⊥'∫ BU∥L∆ ⊥⊙GE⊥HER",
+      18: "⌐ LET'S BUILD TOGETHER ¬",
+      19: "Let's Build Together ⌀",
+      20: "⌖A LET'S BUILD TOGETHER",
+      21: "± LET'S BUILD TOGETHER",
+      22: "↗ LET'S BUILD TOGETHER",
+      23: "▽ LET'S BUILD TOGETHER",
+      24: "∴ LET'S BUILD TOGETHER",
+      25: "⌙ LET'S BUILD TOGETHER",
+      26: "∫ LET'S BUILD TOGETHER",
+      27: "→|← LET'S BUILD TOGETHER →|←",
+      28: "⌐ LET'S BUILD TOGETHER",
+      29: "⊥ LET'S BUILD TOGETHER",
+      30: "∥ LET'S BUILD TOGETHER ∥"
+    },
+    ctaHeadline: {
+      1: 'Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span>',
+      2: '⌐ Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product ¬</span>',
+      3: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      4: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>YOUR BRAND INTO<br/>A <span class="cta-product-word">PRODUCT?</span>',
+      5: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      6: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      7: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      8: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      9: 'Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span>',
+      10: 'Ready to turn your brand<br/>into a <span class="cta-product-word">product ⌀</span>',
+      11: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      12: 'Ready to turn your<br/>BR∠∇∆ ∥NT⊙<br/>a <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      13: 'Ready to turn your brand<br/>into a product ∵',
+      14: '→ Ready to turn your<br/>brand into<br/>a product ↘',
+      15: 'Ready to turn your brand<br/>into a product <span class="cta-product-word">±0.001</span>',
+      16: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      17: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ PR⊙∆UC⊥<sup style="font-size:0.45em;color:#c8a96e;vertical-align:super;">±0.01</sup>?',
+      18: 'READY ⊥⊙ TURN YOUR BRAND<br/>∥NT⊙ A <span class="cta-product-word">PRODUCT?</span>',
+      19: 'Ready to turn your BR∠∇∆<br/>∥NT⊙ a <span class="cta-product-word">product?</span>',
+      20: '⌖B RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      21: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      22: '→ READY TO TURN YOUR BR∠∇∆<br/>∥NT⊙ A <span class="cta-product-word">PR⊙∆UC⊥ ↘</span>',
+      23: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      24: '∵ YOUR BR∠∇∆ HAS ∆NA<br/>∴ ∠ PR⊙∆UC⊥ <span class="cta-product-word">EX∥∫⊥∫</span>',
+      25: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      26: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      27: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      28: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>',
+      29: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥ ⊥</span>',
+      30: 'RE∠∆Y ⊥⊙ ⊥UR∇<br/>Y⊙UR BR∠∇∆ ∥NT⊙<br/>∠ <span class="cta-product-word">PR⊙∆UC⊥?</span>'
+    },
+    ctaBody: {
+      1: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      2: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      3: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      4: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      5: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      6: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      7: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      8: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      9: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      10: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      11: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      12: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      13: "∫ We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      14: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      15: "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.",
+      16: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      17: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      18: "We work with a ∫elect number of partners each year. ∥f you have brand ∆NA worth industrializing, let's talk.",
+      19: "We work with a select number of partners each year. If you have brand ∆NA worth industrializing, let's talk.",
+      20: "⌖C We work with a select number of partners each year. If you have brand ∆NA worth industrializing, let's talk.",
+      21: "We w⊙rk with ∠ ∫elect number ⊙f partners ±0.1 each year. ∥f y⊙u have brand ∆NA ±0.01 worth indu∫trializing ±0.001, let'∫ talk.",
+      22: "We work with a select number of partners each year. If you have brand ∆NA worth industrializing, let's talk.",
+      23: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing▽▽▽, let'∫ talk.",
+      24: "We work with a select number of partners each year. If you have brand ∆NA worth industrializing, let's talk.",
+      25: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA 6×Ø8 worth indu∫trializing, let'∫ talk.",
+      26: "∫ We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      27: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      28: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      29: "We w⊙rk with ∠ ∫elect number ⊙f partners. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk.",
+      30: "We w⊙rk with ∠ ∫elect number ⊙f partners each year. ∥f y⊙u have brand ∆NA worth indu∫trializing, let'∫ talk."
+    },
+    ctaButton: {
+      1: 'Discuss a Partnership',
+      2: 'Discuss a Partnership',
+      3: 'Discuss a Partnership',
+      4: 'Discuss a Partnership',
+      5: 'Discuss a Partnership',
+      6: 'Discuss a Partnership',
+      7: 'Discuss a Partnership',
+      8: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      9: 'Discuss a Partnership',
+      10: 'Discuss a Partnership',
+      11: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      12: 'Discuss a Partnership',
+      13: 'Discuss a Partnership',
+      14: '→ Discuss a Partnership',
+      15: 'Discuss a Partnership',
+      16: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      17: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      18: '⌐ DISCUSS A PARTNERSHIP ¬',
+      19: 'Discuss a Partnership ⌀',
+      20: '⌖D D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      21: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      22: '→ DISCUSS A PARTNERSHIP',
+      23: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      24: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      25: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      26: '∫ D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      27: '→|← D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P →|←',
+      28: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P ¬',
+      29: 'D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P',
+      30: '∥ D∥∫CU∫∫ ∠ P∠R⊥∇ER∫H∥P ∥'
+    },
+    thesisLabel: {
+      1: 'The Foundry Thesis',
+      2: '⌖ THE FOUNDRY THESIS ±',
+      3: '⊥HE F⊙U∇∆RY ⊥HE∫∥∫',
+      4: '⌐ The Foundry Thesis',
+      5: '⌖ THE FOUNDRY THESIS ⌖',
+      6: 'The Foundry Thesis',
+      7: '∫ The Foundry Thesis',
+      8: '⌖ THE FOUNDRY THESIS',
+      9: 'The Foundry Thesis ⌀',
+      10: '// The Foundry Thesis',
+      11: '⊞ THE FOUNDRY THESIS ⊞',
+      12: '◎ The Foundry Thesis',
+      13: '⌐ The Foundry Thesis ∴',
+      14: '↗ The Foundry Thesis',
+      15: 'Ø The Foundry Thesis ±0.001',
+      16: 'The Foundry Thesis',
+      17: '// The Foundry Thesis',
+      18: '⌐ The Foundry Thesis ¬',
+      19: 'The Foundry Thesis',
+      20: '⌖ The Foundry Thesis ⌖',
+      21: 'The Foundry Thesis',
+      22: 'The Foundry Thesis',
+      23: '▽ The Foundry Thesis',
+      24: '01 · The Foundry Thesis',
+      25: 'The Foundry Thesis ⌙',
+      26: 'The Foundry Thesis',
+      27: 'The Foundry Thesis',
+      28: '⌐ The Foundry Thesis',
+      29: '⌀ The Foundry Thesis',
+      30: 'The Foundry Thesis'
+    },
+    thesisLine1: {
+      1: 'The best products',
+      2: '⌐ ↧ THE BEST PRODUCTS',
+      3: '⊥HE BE∫⊥ PR⊙∆UC⊥∫',
+      4: 'THE BEST PRODUCTS',
+      5: '⌖ THE BEST PRODUCTS',
+      6: 'The best products',
+      7: '⊥HE BE∫⊥ PR⊙∆UC⊥∫',
+      8: 'THE BEST PRODUCTS',
+      9: 'The best products',
+      10: 'The best products',
+      11: '⊥HE BE∫⊥ PR⊙∆UC⊥∫',
+      12: 'The best products',
+      13: 'The best products',
+      14: '→ The best products',
+      15: 'The best products',
+      16: 'THE BEST PRODUCTS',
+      17: 'The best products',
+      18: 'The best products',
+      19: 'The best products',
+      20: 'The best products',
+      21: 'THE BEST',
+      22: 'THE BEST ████',
+      23: 'The best products',
+      24: 'The best products',
+      25: 'The best products',
+      26: 'The best products',
+      27: 'The best products',
+      28: 'The best products',
+      29: 'The best products',
+      30: 'The best products'
+    },
+    thesisLine2: {
+      1: "Won't be invented",
+      2: "∥ WON'T BE INVENTED ∥",
+      3: "W⊙∇'⊥ BE ∥∇VE∇⊥E∆",
+      4: "WON'T BE INVENTED",
+      5: "⊥ WON'T BE INVENTED",
+      6: "Won't be invented",
+      7: "W⊙∇'⊥ BE ∥∇VE∇⊥E∆",
+      8: "WON'T BE INVENTED",
+      9: "Won't be invented",
+      10: "// Won't be invented",
+      11: "W⊙∇'⊥ BE ∥∇VE∇⊥E∆",
+      12: "Won't be invented",
+      13: "∥ Won't be invented",
+      14: "↓ Won't be invented",
+      15: "Won't be invented",
+      16: "WON'T BE INVENTED",
+      17: "Won't be invented",
+      18: "Won't be invented",
+      19: "Won't be invented",
+      20: "Won't be invented",
+      21: "PRODUCTS",
+      22: "WON'T BE ████",
+      23: "Won't be invented",
+      24: "Won't be invented",
+      25: "Won't be invented",
+      26: "Won't be invented",
+      27: "Won't be invented",
+      28: "Won't be invented",
+      29: "Won't be invented",
+      30: "Won't be invented"
+    },
+    thesisLine3: {
+      1: "They'll be extracted",
+      2: "THEY'LL BE EXTRACTED →|← ¬",
+      3: "⊥HEY'LL BE EX⊥R∠C⊥E∆",
+      4: "THEY'LL BE EXTRACTED",
+      5: "THEY'LL BE EXTRACTED ¬",
+      6: "They'll be extracted",
+      7: "⊥HEY'LL BE EX⊥R∠C⊥E∆",
+      8: "THEY'LL BE EXTRACTED",
+      9: "They'll be extracted",
+      10: "They'll be extracted //",
+      11: "⊥HEY'LL BE EX⊥R∠C⊥E∆",
+      12: "They'll be extracted",
+      13: "¬ They'll be extracted",
+      14: "↘ They'll be extracted",
+      15: "They'll be extracted",
+      16: "THEY'LL BE EXTRACTED",
+      17: "They'll be extracted",
+      18: "They'll be extracted",
+      19: "They'll be extracted",
+      20: "They'll be extracted",
+      21: "EXTRACTED",
+      22: "THEY'LL BE EXTRACTED",
+      23: "They'll be extracted",
+      24: "They'll be extracted",
+      25: "They'll be extracted",
+      26: "They'll be extracted",
+      27: "They'll be extracted",
+      28: "They'll be extracted",
+      29: "They'll be extracted",
+      30: "They'll be extracted"
+    },
+    thesisAttr: {
+      1: 'Matthew, Silent Foundry',
+      2: '⌖A · Matthew · Silent Foundry · ±0.001',
+      3: 'M∠⊥⊥HEW · ∫∥LE∇⊥ F⊙U∇∆RY',
+      4: '— Matthew, Silent Foundry',
+      5: '⌖ Matthew, Silent Foundry',
+      6: 'Matthew, Silent Foundry',
+      7: '∫ Matthew · Silent Foundry',
+      8: '⌖A · Matthew · Silent Foundry',
+      9: '⌖ Matthew, Silent Foundry',
+      10: '— Matthew, Silent Foundry',
+      11: '⊞ Matthew · Silent Foundry · ±0.001',
+      12: '◎ Matthew, Silent Foundry',
+      13: '∫ Matthew, Silent Foundry',
+      14: '→ Matthew, Silent Foundry',
+      15: 'Ø Matthew, Silent Foundry ±0.001',
+      16: '— Matthew, Silent Foundry',
+      17: '00:00:01 · Matthew, Silent Foundry',
+      18: '⌐ Matthew, Silent Foundry ¬',
+      19: 'Matthew, Silent Foundry',
+      20: '⌖ Matthew, Silent Foundry',
+      21: 'Matthew, Silent Foundry',
+      22: '→ Matthew, Silent Foundry',
+      23: '▽▽▽ Matthew, Silent Foundry',
+      24: '// end · Matthew, Silent Foundry',
+      25: '⌙ Matthew, Silent Foundry',
+      26: 'Matthew, Silent Foundry',
+      27: 'Matthew, Silent Foundry',
+      28: 'Matthew, Silent Foundry ¬',
+      29: '⌀ Matthew, Silent Foundry',
+      30: 'Matthew, Silent Foundry'
     }
-  });
+  };
 
-  var labelEl = sec.querySelector('span[style*="0.52rem"]');
-  if (labelEl) labelEl.style.color = isDark ? 'rgba(200,169,110,0.6)' : '#8a6e3a';
+  var thesisClasses = ['thesis-opt2','thesis-opt3','thesis-opt4','thesis-opt5','thesis-opt6',
+    'thesis-opt7','thesis-opt8','thesis-opt9','thesis-opt10','thesis-opt11',
+    'thesis-opt12','thesis-opt13','thesis-opt14','thesis-opt15',
+    'thesis-opt16','thesis-opt17','thesis-opt18','thesis-opt19','thesis-opt20',
+    'thesis-opt21','thesis-opt22','thesis-opt23','thesis-opt24','thesis-opt25',
+    'thesis-opt26','thesis-opt27','thesis-opt28','thesis-opt29','thesis-opt30'];
 
-  var attrEl = sec.querySelector('p[style*="letter-spacing:0.24em"]');
-  if (attrEl) attrEl.style.color = isDark ? 'rgba(244,241,236,0.35)' : 'rgba(10,10,10,0.55)';
+  var current = 1;
 
-  /* 7. Extra design elements */
-  var ex = d.extra;
-  if (!ex) return;
+  function buildThesis(opt) {
+    var thSec = document.getElementById('thesis-section');
+    if (!thSec) return;
 
-  function addTo(el) { sec.insertBefore(el, sec.firstChild); }
+    /* remove all thesis variant classes */
+    thSec.classList.remove.apply(thSec.classList, thesisClasses);
+    if (opt > 1) thSec.classList.add('thesis-opt' + opt);
 
-  if (ex === 'dimgrid') {
+    /* remove any injected thesis children from previous opts */
+    ['thesis-ghost-word','thesis-dimline','thesis-blueprint-grid',
+     'thesis-crosshair-tl','thesis-crosshair-tr','thesis-crosshair-bl','thesis-crosshair-br',
+     'thesis-datum-tl','thesis-stamp-box','thesis-scan-panel','thesis-underline-anim',
+     'thesis-slash-watermark','thesis-grid-backdrop','thesis-delta-col',
+     'thesis-nabla-ghost'].forEach(function(cls){
+      thSec.querySelectorAll('.'+cls).forEach(function(el){ el.remove(); });
+    });
+    /* restore default inner content visibility */
+    var defaultInner = thSec.querySelector('div[style*="z-index:1"]');
+
+    /* inject opt-specific elements */
+    if (opt === 4) {
+      var gw = document.createElement('div');
+      gw.className = 'thesis-ghost-word';
+      gw.textContent = 'EXTRACTED';
+      thSec.insertBefore(gw, thSec.firstChild);
+      var dl = document.createElement('div');
+      dl.className = 'thesis-dimline';
+      dl.setAttribute('data-mm', Math.round(thSec.offsetWidth * 0.2646));
+      thSec.insertBefore(dl, thSec.firstChild);
+    }
+    if (opt === 5) {
+      var bg = document.createElement('div'); bg.className = 'thesis-blueprint-grid'; thSec.insertBefore(bg, thSec.firstChild);
+      var tl = document.createElement('div'); tl.className = 'thesis-crosshair-tl'; thSec.appendChild(tl);
+      var tr = document.createElement('div'); tr.className = 'thesis-crosshair-tr'; thSec.appendChild(tr);
+      var bl = document.createElement('div'); bl.className = 'thesis-crosshair-bl'; thSec.appendChild(bl);
+      var br = document.createElement('div'); br.className = 'thesis-crosshair-br'; thSec.appendChild(br);
+      var dt = document.createElement('div'); dt.className = 'thesis-datum-tl'; dt.textContent = '⌖ DATUM A'; thSec.appendChild(dt);
+    }
+    if (opt === 7) {
+      /* wrap inner content in scan panel */
+      if (defaultInner && !defaultInner.classList.contains('thesis-scan-panel')) {
+        var panel = document.createElement('div');
+        panel.className = 'thesis-scan-panel';
+        var scanLine = document.createElement('div');
+        scanLine.className = 'thesis-scan-line';
+        panel.appendChild(scanLine);
+        /* move children into panel */
+        while (defaultInner.firstChild) panel.appendChild(defaultInner.firstChild);
+        defaultInner.appendChild(panel);
+      }
+    }
+    if (opt === 9) {
+      /* add underline animators after each thesis line */
+      var lines = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      lines.forEach(function(line){
+        var ul = document.createElement('span');
+        ul.className = 'thesis-underline-anim';
+        line.parentNode.insertBefore(ul, line.nextSibling);
+      });
+    }
+    if (opt === 10) {
+      var sw = document.createElement('div'); sw.className = 'thesis-slash-watermark'; sw.textContent = '//'; thSec.insertBefore(sw, thSec.firstChild);
+    }
+    if (opt === 11) {
+      var gb = document.createElement('div'); gb.className = 'thesis-grid-backdrop';
+      var gs = document.createElement('span'); gs.textContent = '⊞'; gb.appendChild(gs);
+      thSec.insertBefore(gb, thSec.firstChild);
+    }
+    if (opt === 12) {
+      var dc = document.createElement('div'); dc.className = 'thesis-delta-col'; dc.textContent = '∆';
+      if (defaultInner) defaultInner.insertBefore(dc, defaultInner.firstChild);
+    }
+    if (opt === 14) {
+      var ng = document.createElement('div'); ng.className = 'thesis-nabla-ghost'; ng.textContent = '∇'; thSec.insertBefore(ng, thSec.firstChild);
+    }
+
+    /* ── OPT 16–30 ── */
+    if (opt === 16) {
+      var bw = document.createElement('div'); bw.className = 'thesis-bleed-word'; bw.textContent = 'EXTRACTED'; thSec.insertBefore(bw, thSec.firstChild);
+    }
+    if (opt === 17) {
+      if (defaultInner) defaultInner.classList.add('thesis-typewriter');
+      var cur = document.createElement('span'); cur.className = 'thesis-cursor';
+      var lines = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      if (lines[2]) lines[2].appendChild(cur);
+      var ts = document.createElement('span'); ts.className = 'thesis-timestamp'; ts.textContent = '00:00:01 · Logged';
+      if (defaultInner) defaultInner.appendChild(ts);
+    }
+    if (opt === 18) {
+      var dl1 = document.createElement('div'); dl1.className = 'thesis-diag-line';
+      dl1.style.cssText = 'top:30%;transform:rotate(-8deg) scaleX(1.2);';
+      var dl2 = document.createElement('div'); dl2.className = 'thesis-diag-line';
+      dl2.style.cssText = 'top:70%;transform:rotate(8deg) scaleX(1.2);';
+      thSec.insertBefore(dl1, thSec.firstChild);
+      thSec.insertBefore(dl2, thSec.firstChild);
+    }
+    if (opt === 20) {
+      var sb = document.createElement('div'); sb.className = 'thesis-square-border';
+      var ticks = ['thesis-tick thesis-tick-t','thesis-tick thesis-tick-b','thesis-tick thesis-tick-l','thesis-tick thesis-tick-r'];
+      ticks.forEach(function(c){ var t=document.createElement('div'); t.className=c; sb.appendChild(t); });
+      if (defaultInner) {
+        while(defaultInner.firstChild) sb.appendChild(defaultInner.firstChild);
+        defaultInner.appendChild(sb);
+      }
+    }
+    if (opt === 21) {
+      var va = document.createElement('div'); va.className = 'thesis-vert-attr'; va.textContent = 'Matthew · Silent Foundry · ±0.001';
+      thSec.appendChild(va);
+    }
+    if (opt === 22) {
+      /* inject redact spans into line text */
+      var lines22 = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      if (lines22[0]) lines22[0].innerHTML = '<span class="gm" style="font-size:0.55em;vertical-align:middle;margin-right:0.12em;">⌈</span>THE BEST <span class="thesis-redact">PRODUCTS</span>';
+      if (lines22[1]) lines22[1].innerHTML = "WON'T BE <span class='thesis-redact'>INVENTED</span>";
+      if (lines22[2]) lines22[2].innerHTML = "THEY'LL BE EXTRACTED<span class='gm' style='font-size:0.55em;vertical-align:middle;margin-left:0.12em;'>⌉</span>";
+    }
+    if (opt === 23) {
+      var ht23 = document.createElement('div'); ht23.className = 'thesis-horizon-top'; thSec.insertBefore(ht23, thSec.firstChild);
+    }
+    if (opt === 24) {
+      var lines24 = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      var nums = ['01','02','03'];
+      lines24.forEach(function(p,i){
+        var n = document.createElement('span'); n.className = 'thesis-line-num'; n.textContent = nums[i]+' ·';
+        p.insertBefore(n, p.firstChild);
+      });
+      var ce = document.createElement('span'); ce.className = 'thesis-code-end'; ce.textContent = '// end';
+      if (defaultInner) defaultInner.appendChild(ce);
+    }
+    if (opt === 25) {
+      if (defaultInner) defaultInner.classList.add('thesis-radial-wrap');
+    }
+    if (opt === 26) {
+      if (defaultInner) {
+        var mw = document.createElement('div'); mw.className = 'thesis-mirror-wrap';
+        var mc = defaultInner.cloneNode(true); mc.className = 'thesis-mirror-copy';
+        defaultInner.style.position = 'relative'; defaultInner.style.zIndex = '1';
+        defaultInner.parentNode.insertBefore(mw, defaultInner);
+        mw.appendChild(defaultInner); mw.appendChild(mc);
+      }
+    }
+    if (opt === 27) {
+      var gl = document.createElement('div'); gl.className = 'thesis-ghost-label'; gl.textContent = 'THE FOUNDRY THESIS'; thSec.insertBefore(gl, thSec.firstChild);
+    }
+    if (opt === 28) {
+      var wb = document.createElement('div'); wb.className = 'thesis-wirebox';
+      if (defaultInner) {
+        while(defaultInner.firstChild) wb.appendChild(defaultInner.firstChild);
+        defaultInner.appendChild(wb);
+      }
+    }
+    if (opt === 29) {
+      var lines29 = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      lines29.forEach(function(p){
+        var dp = document.createElement('span'); dp.className = 'thesis-diam-prefix'; dp.textContent = '⌀';
+        p.insertBefore(dp, p.firstChild);
+        var dr = document.createElement('div'); dr.className = 'thesis-dash-rule';
+        p.parentNode.insertBefore(dr, p.nextSibling);
+      });
+    }
+    if (opt === 30) {
+      if (defaultInner) {
+        var fw = document.createElement('div'); fw.className = 'thesis-film-wrap';
+        var fc1 = defaultInner.cloneNode(true); fc1.className = 'thesis-film-copy1';
+        var fc2 = defaultInner.cloneNode(true); fc2.className = 'thesis-film-copy2';
+        defaultInner.style.position = 'relative'; defaultInner.style.zIndex = '1';
+        defaultInner.parentNode.insertBefore(fw, defaultInner);
+        fw.appendChild(defaultInner); fw.appendChild(fc1); fw.appendChild(fc2);
+      }
+    }
+  }
+
+  function typeSwitch(opt) {
+    if (opt === current) return;
+    current = opt;
+
+    document.querySelectorAll('.tsw-btn').forEach(function(b,i){ b.classList.toggle('active', i+1===opt); });
+
+    var ey = document.querySelector('.hero-eyebrow');
+    if (ey) ey.textContent = texts.eyebrow[opt];
+
+    var ht = document.querySelector('.hero-headline-top');
+    if (ht) ht.textContent = texts.heroTop[opt];
+    var hb = document.querySelector('.hero-brand-word');
+    if (hb) hb.textContent = texts.heroBrand[opt];
+    var hs = document.querySelector('.hero-soul-word');
+    if (hs) hs.textContent = texts.heroSoul[opt];
+
+    /* value cards — all normal */
+    document.querySelectorAll('h4').forEach(function(h4){
+      var icon = h4.querySelector('.val-icon');
+      if (!icon) return;
+      var raw = h4.childNodes[0];
+      if (!raw) return;
+      var txt = raw.textContent.trim().replace(/\s*.*/,'').replace(/[^a-zA-Z]/g,'').toLowerCase();
+      if (txt.indexOf('brand')===0) raw.textContent = 'Brands ';
+      else if (txt.indexOf('factor')===0) raw.textContent = 'Factories ';
+      else if (txt.indexOf('operator')===0||txt.indexOf('oper')===0) raw.textContent = 'Operators ';
+      else if (txt.indexOf('invest')===0||txt.indexOf('nve')>-1) raw.textContent = 'Investors ';
+    });
+
+    /* CTA */
+    var ctaL = document.querySelector('section.cta .label');
+    if (ctaL) ctaL.textContent = texts.ctaLabel[opt];
+    var ctaH = document.querySelector('section.cta .section-title');
+    if (ctaH) ctaH.innerHTML = texts.ctaHeadline[opt];
+    var ctaP = document.querySelector('section.cta p.reveal:not(.label):not(.section-title)');
+    if (ctaP) ctaP.textContent = texts.ctaBody[opt];
+    var ctaBtn = document.querySelector('section.cta .btn');
+    if (ctaBtn) ctaBtn.textContent = texts.ctaButton[opt];
+
+    /* Thesis text */
+    var thSec = document.getElementById('thesis-section');
+    if (thSec) {
+      var thLabel = thSec.querySelector('span[style*="0.52rem"]');
+      var thLines = thSec.querySelectorAll('p[style*="Bebas Neue"]');
+      var thAttr = thSec.querySelector('p[style*="0.52rem"][style*="letter-spacing:0.24em"]');
+      if (thLabel) thLabel.textContent = texts.thesisLabel[opt];
+      if (thLines[0]) thLines[0].innerHTML = '<span class="gm" style="font-size:0.55em;vertical-align:middle;margin-right:0.12em;font-style:normal;">⌈</span>' + texts.thesisLine1[opt];
+      if (thLines[1]) thLines[1].textContent = texts.thesisLine2[opt];
+      if (thLines[2]) thLines[2].innerHTML = texts.thesisLine3[opt] + '<span class="gm" style="font-size:0.55em;vertical-align:middle;margin-left:0.12em;font-style:normal;">⌉</span>';
+      if (thAttr) thAttr.textContent = texts.thesisAttr[opt];
+    }
+
+    /* Thesis design */
+    buildThesis(opt);
+
+    /* dimgrid + ghost */
     var dg = document.getElementById('thesis-dimgrid');
     var gh = document.getElementById('thesis-ghost');
-    if (dg) { sec.insertBefore(dg, sec.firstChild); dg.style.opacity = '1'; drawDimGrid(); }
-    if (gh) gh.style.opacity = '0';
+    if (thSec && dg && !thSec.contains(dg)) thSec.insertBefore(dg, thSec.firstChild);
+    if (thSec && gh && !thSec.contains(gh)) thSec.insertBefore(gh, thSec.firstChild);
+    if (opt === 2) drawDimGrid();
   }
 
-  if (ex === 'ghost') {
-    var gh2 = document.getElementById('thesis-ghost');
-    if (gh2) { sec.insertBefore(gh2, sec.firstChild); gh2.style.opacity = '1'; }
+  function drawDimGrid() {
+    var canvas = document.getElementById('thesis-dimcanvas');
+    if (!canvas) return;
+    var sec = document.getElementById('thesis-section');
+    canvas.width = sec.offsetWidth;
+    canvas.height = sec.offsetHeight;
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle = 'rgba(138,110,58,0.1)';
+    ctx.lineWidth = 0.5;
+    for (var x=0;x<canvas.width;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+    for (var y=0;y<canvas.height;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+    ctx.font='9px DM Sans,sans-serif';
+    ctx.fillStyle='rgba(138,110,58,0.22)';
+    ctx.fillText('→|← '+Math.round(canvas.width*0.2646)+'mm',8,canvas.height-8);
+    ctx.fillText('↕ '+Math.round(canvas.height*0.2646)+'mm',canvas.width-60,16);
   }
 
-  if (ex === 'blueprint-blue' || ex === 'blueprint-blue-left') {
-    var bg = document.createElement('div'); addTo(inj(bg, 't-blueprint-grid'));
-    ['tl','tr','bl','br'].forEach(function(p){
-      var c = document.createElement('div');
-      inj(c, 't-cnr t-cnr-'+p); sec.appendChild(c);
-    });
-    var dt = document.createElement('div');
-    inj(dt, 't-datum'); dt.textContent = '\u2316 DATUM A';
-    sec.appendChild(dt);
-    if (ex === 'blueprint-blue-left' && inner) {
-      var ann = document.createElement('div');
-      ann.className = 'tsw-injected';
-      ann.style.cssText = 'writing-mode:vertical-rl;transform:rotate(180deg);font-family:"DM Sans",sans-serif;font-size:0.44rem;letter-spacing:0.3em;color:rgba(0,180,216,0.35);position:absolute;left:3vw;top:50%;transform:translateY(-50%) rotate(180deg);';
-      ann.textContent = '\u2316 SILENT FOUNDRY \u00b7 DATUM A \u00b7 \u00b10.001';
-      sec.appendChild(ann);
-    }
-  }
+  window.typeSwitch = typeSwitch;
 
-  if (ex === 'blueprint-gold' || ex === 'blueprint-gold-left') {
-    var gg = document.createElement('div'); addTo(inj(gg, 't-gold-grid'));
-    ['tl','tr','bl','br'].forEach(function(p){
-      var c = document.createElement('div');
-      inj(c, 't-cnr-gold '+p); sec.appendChild(c);
-    });
-    if (ex === 'blueprint-gold-left' && inner) {
-      var annG = document.createElement('div');
-      annG.className = 'tsw-injected';
-      annG.style.cssText = 'position:absolute;left:3vw;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;font-family:"DM Sans",sans-serif;font-size:0.44rem;letter-spacing:0.3em;color:rgba(200,169,110,0.35);';
-      annG.textContent = '\u2316 SILENT FOUNDRY \u00b7 \u00b10.001';
-      sec.appendChild(annG);
-    }
-  }
-
-  if (ex === 'ghostword' || ex === 'ghostword-dark') {
-    var gw = document.createElement('div');
-    inj(gw, 't-ghost-word');
-    gw.textContent = 'EXTRACTED';
-    if (ex === 'ghostword-dark') gw.style.color = 'rgba(200,169,110,0.06)';
-    addTo(gw);
-    var dl = document.createElement('div');
-    dl.className = 'tsw-injected';
-    dl.style.cssText = 'position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(138,110,58,0.18);pointer-events:none;z-index:0;';
-    addTo(dl);
-  }
-
-  if (ex === 'scan' || ex === 'scan-dark') {
-    var sp = document.createElement('div');
-    sp.className = 'tsw-injected';
-    var bgColor = ex === 'scan-dark' ? 'transparent' : 'rgba(10,10,10,0.85)';
-    sp.style.cssText = 'position:absolute;inset:0;overflow:hidden;pointer-events:none;';
-    if (ex === 'scan') { sp.style.background = bgColor; }
-    var sl = document.createElement('div'); inj(sl, 't-scan-line');
-    sp.appendChild(sl);
-    addTo(sp);
-  }
-
-  if (ex === 'underlines') {
-    lines.forEach(function(line) {
-      var ul = document.createElement('div');
-      ul.className = 'tsw-injected';
-      ul.style.cssText = 'height:1px;background:rgba(200,169,110,0.4);margin:2px auto 14px;transform:scaleX(0);transform-origin:left;transition:transform 0.8s ease;width:80%;';
-      line.parentNode.insertBefore(ul, line.nextSibling);
-      setTimeout(function(){ ul.style.transform = 'scaleX(1)'; }, 100);
-    });
-  }
-
-  if (ex === 'slashmark') {
-    var sm = document.createElement('div');
-    sm.className = 'tsw-injected';
-    sm.style.cssText = 'position:absolute;top:-10px;right:40px;font-family:"Bebas Neue",sans-serif;font-size:clamp(6rem,15vw,12rem);color:rgba(138,110,58,0.05);letter-spacing:-0.05em;pointer-events:none;z-index:0;';
-    sm.textContent = '//';
-    addTo(sm);
-    sec.style.borderLeft = '3px solid rgba(138,110,58,0.3)';
-  }
-
-  if (ex === 'rotgrid' || ex === 'rotgrid-dark') {
-    var rb = document.createElement('div');
-    inj(rb, 't-grid-bg');
-    var rs = document.createElement('span'); rs.textContent = '\u229e'; rb.appendChild(rs);
-    if (ex === 'rotgrid-dark') rs.style.color = 'rgba(200,169,110,0.05)';
-    addTo(rb);
-  }
-
-  if (ex === 'twocol') {
-    var dc = document.createElement('div');
-    dc.className = 'tsw-injected';
-    dc.style.cssText = 'display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue",sans-serif;font-size:clamp(6rem,16vw,14rem);color:rgba(138,110,58,0.08);letter-spacing:-0.02em;width:30%;flex-shrink:0;';
-    dc.textContent = '\u2206';
-    if (inner) {
-      inner.style.flexDirection = 'row';
-      inner.style.gap = '0';
-      inner.style.width = '100%';
-      inner.style.padding = '0 48px';
-      inner.insertBefore(dc, inner.firstChild);
-    }
-  }
-
-  if (ex === 'processdiv') {
-    lines.forEach(function(line, i) {
-      if (i < lines.length - 1) {
-        var pd = document.createElement('div');
-        pd.className = 'tsw-injected';
-        pd.style.cssText = 'display:flex;align-items:center;gap:16px;margin:4px 0;font-family:"Bebas Neue",sans-serif;color:rgba(138,110,58,0.35);font-size:0.85rem;';
-        pd.innerHTML = '<span>\u2234</span><span style="flex:1;height:1px;background:rgba(138,110,58,0.15);display:block;"></span>';
-        line.parentNode.insertBefore(pd, line.nextSibling);
-      }
-    });
-  }
-
-  if (ex === 'nabla') {
-    var ng = document.createElement('div');
-    ng.className = 'tsw-injected';
-    ng.style.cssText = 'position:absolute;bottom:-20px;left:40px;font-family:"Bebas Neue",sans-serif;font-size:clamp(8rem,20vw,18rem);color:rgba(138,110,58,0.05);pointer-events:none;z-index:0;animation:ghost-drift 4s ease-in-out infinite;';
-    ng.textContent = '\u2207';
-    addTo(ng);
-  }
-
-  if (ex === 'spectable') {
-    var tols = ['\u00b10.1','\u00b10.01','\u00b10.001'];
-    lines.forEach(function(line, i) {
-      var row = document.createElement('div');
-      row.className = 'tsw-injected';
-      row.style.cssText = 'display:flex;align-items:baseline;gap:20px;border-top:1px solid rgba(138,110,58,0.18);padding:4px 0;width:100%;';
-      var tol = document.createElement('span');
-      tol.style.cssText = 'font-family:"DM Sans",sans-serif;font-size:0.48rem;letter-spacing:0.2em;color:rgba(138,110,58,0.5);white-space:nowrap;min-width:56px;';
-      tol.textContent = tols[i] || '';
-      row.appendChild(tol);
-      line.parentNode.insertBefore(row, line);
-      row.appendChild(line);
-    });
-  }
-
-  if (ex === 'leftborder') {
-    var lb = document.createElement('div');
-    inj(lb, 't-left-border');
-    addTo(lb);
-    if (lines[0]) lines[0].style.fontSize = 'clamp(2.5rem,5.5vw,6rem)';
-    if (lines[1]) lines[1].style.fontSize = 'clamp(2.5rem,5.5vw,6rem)';
-    if (lines[2]) lines[2].style.fontSize = 'clamp(2.5rem,5.5vw,6rem)';
-  }
-
-  if (ex === 'stamp') {
-    var sb = document.createElement('div');
-    inj(sb, 't-stamp');
-    var si = document.createElement('div'); si.className = 't-stamp-inner';
-    if (inner) {
-      var kids = Array.from(inner.children);
-      kids.forEach(function(k){ si.appendChild(k); });
-      sb.appendChild(si);
-      inner.appendChild(sb);
-    }
-  }
-
-  if (ex === 'wirebox') {
-    var wb = document.createElement('div');
-    inj(wb, 't-wirebox');
-    if (inner) {
-      var wkids = Array.from(inner.children);
-      wkids.forEach(function(k){ wb.appendChild(k); });
-      inner.appendChild(wb);
-    }
-  }
-
-  if (ex === 'speclines') {
-    lines.forEach(function(line, i) {
-      var nm = document.createElement('span');
-      inj(nm, 't-linenum');
-      nm.textContent = '0'+(i+1)+' \u00b7';
-      line.insertBefore(nm, line.firstChild);
-    });
-    var ce = document.createElement('div');
-    ce.className = 'tsw-injected';
-    ce.style.cssText = 'font-family:"DM Sans",sans-serif;font-size:0.44rem;letter-spacing:0.2em;color:rgba(138,110,58,0.35);margin-top:16px;';
-    ce.textContent = '// end';
-    if (inner) inner.appendChild(ce);
-  }
-
-  if (ex === 'dashrules') {
-    lines.forEach(function(line) {
-      var dr = document.createElement('div');
-      inj(dr, 't-dash-rule');
-      line.insertBefore(document.createElement('span'), line.firstChild);
-      line.firstChild.className = 'tsw-injected';
-      line.firstChild.style.cssText = 'font-family:"Bebas Neue",sans-serif;color:rgba(138,110,58,0.5);margin-right:10px;font-size:0.9em;';
-      line.firstChild.textContent = '\u2300';
-      line.parentNode.insertBefore(dr, line.nextSibling);
-    });
-  }
-
-  if (ex === 'ghostlabel') {
-    var gl = document.createElement('div');
-    inj(gl, 't-bg-label');
-    gl.textContent = 'THE FOUNDRY THESIS';
-    addTo(gl);
-  }
-
-  if (ex === 'film') {
-    if (inner) {
-      var fc1 = inner.cloneNode(true);
-      var fc2 = inner.cloneNode(true);
-      fc1.className = 'tsw-injected'; fc1.style.opacity = '0.28'; fc1.style.position = 'absolute'; fc1.style.top = '0'; fc1.style.transform = 'translateY(10px)'; fc1.style.pointerEvents = 'none';
-      fc2.className = 'tsw-injected'; fc2.style.opacity = '0.07'; fc2.style.position = 'absolute'; fc2.style.top = '0'; fc2.style.transform = 'translateY(20px)'; fc2.style.pointerEvents = 'none';
-      sec.style.overflow = 'hidden';
-      inner.style.position = 'relative'; inner.style.zIndex = '1';
-      sec.appendChild(fc1); sec.appendChild(fc2);
-    }
-  }
-}
-
-function drawDimGrid() {
-  var canvas = document.getElementById('thesis-dimcanvas');
-  if (!canvas) return;
-  var sec = document.getElementById('thesis-section');
-  canvas.width = sec.offsetWidth; canvas.height = sec.offsetHeight;
-  var ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle='rgba(138,110,58,0.1)'; ctx.lineWidth=0.5;
-  for(var x=0;x<canvas.width;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
-  for(var y=0;y<canvas.height;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
-  ctx.font='9px DM Sans,sans-serif'; ctx.fillStyle='rgba(138,110,58,0.22)';
-  ctx.fillText('\u2192|\u2190 '+Math.round(canvas.width*0.2646)+'mm',8,canvas.height-8);
-  ctx.fillText('\u2195 '+Math.round(canvas.height*0.2646)+'mm',canvas.width-60,16);
-}
-
-/* ── MAIN SWITCH ── */
-var current = 1;
-
-function typeSwitch(opt) {
-  if (opt === current) return;
-  current = opt;
-
-  document.querySelectorAll('.tsw-btn').forEach(function(b,i){ b.classList.toggle('active',i+1===opt); });
-
-  /* hero */
-  var ey = document.querySelector('.hero-eyebrow'); if(ey) ey.textContent = T.eyebrow[opt];
-  var ht = document.querySelector('.hero-headline-top'); if(ht) ht.textContent = T.heroTop[opt];
-  var hb = document.querySelector('.hero-brand-word'); if(hb) hb.textContent = T.heroBrand[opt];
-  var hs = document.querySelector('.hero-soul-word'); if(hs) hs.textContent = T.heroSoul[opt];
-
-  /* CTA */
-  var cL = document.querySelector('section.cta .label'); if(cL) cL.textContent = T.ctaLabel[opt];
-  var cH = document.querySelector('section.cta .section-title'); if(cH) cH.innerHTML = T.ctaHead[opt];
-  var cP = document.querySelector('section.cta p.reveal:not(.label):not(.section-title)'); if(cP) cP.textContent = T.ctaBody[opt];
-  var cB = document.querySelector('section.cta .btn'); if(cB) cB.textContent = T.ctaBtn[opt];
-
-  /* thesis text */
-  var sec = document.getElementById('thesis-section');
-  if (sec) {
-    var lbl = sec.querySelector('span[style*="0.52rem"]'); if(lbl) lbl.textContent = T.thLabel[opt];
-    var ls = sec.querySelectorAll('p[style*="Bebas Neue"]');
-    if(ls[0]) ls[0].innerHTML = '<span class="gm" style="font-size:0.55em;vertical-align:middle;margin-right:0.12em;font-style:normal;">\u2308</span>'+T.thL1[opt];
-    if(ls[1]) ls[1].textContent = T.thL2[opt];
-    if(ls[2]) ls[2].innerHTML = T.thL3[opt]+'<span class="gm" style="font-size:0.55em;vertical-align:middle;margin-left:0.12em;font-style:normal;">\u2309</span>';
-    var at = sec.querySelector('p[style*="letter-spacing:0.24em"]'); if(at) at.textContent = T.thAttr[opt];
-  }
-
-  /* thesis design */
-  buildThesis(opt);
-
-  /* reset slashmark border unless opt10 */
-  var ts = document.getElementById('thesis-section');
-  if(ts && opt !== 10) ts.style.borderLeft = '';
-}
-
-window.typeSwitch = typeSwitch;
-
-document.addEventListener('DOMContentLoaded', function(){
-  var dg = document.getElementById('thesis-dimgrid');
-  var gh = document.getElementById('thesis-ghost');
-  var sec = document.getElementById('thesis-section');
-  if(sec && dg) sec.insertBefore(dg, sec.firstChild);
-  if(sec && gh) sec.insertBefore(gh, sec.firstChild);
-});
+  document.addEventListener('DOMContentLoaded', function(){
+    var thSec = document.getElementById('thesis-section');
+    var dg = document.getElementById('thesis-dimgrid');
+    var gh = document.getElementById('thesis-ghost');
+    if (thSec && dg) thSec.insertBefore(dg, thSec.firstChild);
+    if (thSec && gh) thSec.insertBefore(gh, thSec.firstChild);
+  });
 
 })();
 </script>
