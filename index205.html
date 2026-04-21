@@ -3163,7 +3163,7 @@ body.v11-active #v11-badge {
     while (node && node !== document.body) {
       var tag = node.tagName ? node.tagName.toLowerCase() : '';
       if (tag === 'footer')                                      return 'footer';
-      if (node.classList && node.classList.contains('cta'))      return 'footer';
+      if (node.classList && node.classList.contains('cta'))      return 'black';
       if (node.id === 'funds')                                   return 'black';
       if (node.classList && node.classList.contains('funds'))    return 'black';
       if (node.classList && node.classList.contains('logos'))    return 'switch';
@@ -3209,60 +3209,6 @@ body.v11-active #v11-badge {
 
   // ── CREAM ZONE DETECTION — disabled, zones handled by mousemove ──
   function updateCreamZone() { /* disabled */ }
-
-  // ── STATUS BAR COLOUR — scroll based, elementFromPoint at ring position ──
-  // Ring is fixed at bottom:32px, left:50% — check what section is behind it
-  function updateStatusColour() {
-    if (!v11Active) return;
-    var x = window.innerWidth / 2;
-    var y = window.innerHeight - 32;
-    // elementsFromPoint gives full stack — skip fixed/overlay elements
-    var els = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [];
-    var sectionEl = null;
-    for (var i = 0; i < els.length; i++) {
-      var cs = window.getComputedStyle(els[i]).position;
-      if (cs === 'fixed' || cs === 'sticky') continue;
-      sectionEl = els[i];
-      break;
-    }
-    // Walk up to find known section
-    var node = sectionEl;
-    var zone = 'default'; // gold — hero and everything not matched
-    while (node && node !== document.body) {
-      var tag = node.tagName ? node.tagName.toLowerCase() : '';
-      if (tag === 'footer')                                    { zone = 'footer';  break; }
-      if (node.classList && node.classList.contains('cta'))   { zone = 'dark';    break; }
-      if (node.id === 'funds' || (node.classList && node.classList.contains('funds'))) { zone = 'dark'; break; }
-      if (node.classList && node.classList.contains('logos')) { zone = 'switch';  break; }
-      if (node.id === 'featured')                             { zone = 'switch';  break; }
-      if (node.id === 'how')                                  { zone = 'default'; break; }
-      if (node.classList && node.classList.contains('hero'))  { zone = 'default'; break; }
-      // Everything else — cream sections, value, china, marshall, thesis, engineering
-      var bg = window.getComputedStyle(node).backgroundColor;
-      if (bg === 'rgb(237, 232, 224)' || bg === 'rgb(232, 226, 217)' || bg === 'rgb(200, 169, 110)') {
-        zone = 'dark'; break;
-      }
-      node = node.parentElement;
-    }
-    // Apply dot colour
-    var dot  = document.getElementById('v11-status-dot');
-    var text = document.getElementById('v11-status-text');
-    if (!dot || !text) return;
-    if (zone === 'footer') {
-      // fades out via v11-footer-zone — no colour needed
-    } else if (zone === 'switch') {
-      dot.style.color  = '#00b4d8';
-      text.style.color = 'rgba(10,10,10,0.45)';
-    } else if (zone === 'dark') {
-      dot.style.color  = 'rgba(10,10,10,0.6)';
-      text.style.color = 'rgba(10,10,10,0.45)';
-    } else {
-      // default — hero, how it works
-      dot.style.color  = '#c8a96e';
-      text.style.color = 'rgba(244,241,236,0.5)';
-    }
-  }
-  window.addEventListener('scroll', updateStatusColour, { passive: true });
 
   // ── LOGO SCROLL SHRINK + FADE NEAR FOOTER ──
   window.addEventListener('scroll', function() {
