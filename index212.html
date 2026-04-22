@@ -1800,8 +1800,8 @@ body.v11-active nav * { cursor: none !important; }
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
-    <p class="hero-eyebrow">CR⊥∯-B⊥R∆ER VE∇⊥URE ∯⊥U∆∥⊥</p>
-    <h1 class="hero-headline" style="transform:skewX(-4deg);transform-origin:left center;display:inline-block;"><span class="hero-headline-top">∥∇∆U∯⊥R∥∠L∥∯∥∇G</span><span class="hero-headline-bottom"><span class="hero-brand-word">BR∠∇∆</span> <span class="hero-soul-word">∯⊥UL</span></span></h1>
+    <p class="hero-eyebrow">A cross-border venture studio</p>
+    <h1 class="hero-headline" style="transform:skewX(-4deg);transform-origin:left center;display:inline-block;"><span class="hero-headline-top">INDUSTRIALISING</span><span class="hero-headline-bottom"><span class="hero-brand-word">BRAND</span> <span class="hero-soul-word">SOUL</span></span></h1>
 
     <div class="hero-scroll">
       <div class="scroll-line"></div>
@@ -1948,8 +1948,8 @@ body.v11-active nav * { cursor: none !important; }
 
 <!-- THESIS QUOTE -->
   <section id="thesis-section" style="padding:100px 48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;">
-    <div id="thesis-overlay" style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
-    <div id="thesis-inner" style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
+    <div style="position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;"></div>
+    <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;">
       <span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:40px;">The Foundry Thesis</span>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.1);text-align:center;width:100%;transform:skewX(-4deg);display:block;"><span class="gm" style="font-size:0.55em;vertical-align:middle;margin-right:0.12em;font-style:normal;">⌈</span>The best products</p>
       <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.9;color:rgba(10,10,10,0.3);text-align:center;width:100%;transform:skewX(-4deg);display:block;">Won't be invented</p>
@@ -2559,7 +2559,7 @@ body.v11-active nav * { cursor: none !important; }
 
   <!-- CTA -->
   <section class="cta">
-    <p class="label reveal" style="color:rgba(10,10,10,0.5);">LE⊥'∯ BU∥L∆ ⊥⊥GE⊥HER</p>
+    <p class="label reveal" style="color:rgba(10,10,10,0.5);">Let's Build Together</p>
     <style>
       @keyframes shimmer-product {
         0%   { background-position: -200% center; }
@@ -2587,9 +2587,9 @@ body.v11-active nav * { cursor: none !important; }
         letter-spacing: 0.14em;
       }
     </style>
-    <h2 class="section-title reveal">RE∠∆Y ⊥⊥ ⊥UR∇<br/>Y⊥UR BR∠∇∆ ∥N⊥⊥<br/>∠ <span class="cta-product-word">PR⊥∆UC⊥?</span></h2>
-    <p class="reveal">We w⊥rk with ∠ ∯ele⊥t number ⊥f p∠rtners e∠ch ye∠r. ∥f y⊥u h∠ve br∠nd DN∠ w⊥rth indu∯tri∠lizing →|← let'∯ t∠lk ¬</p>
-    <a href="sf-contact.html" class="btn reveal">D∥∯CU∯∯ ∠ P∠R⊥∇ER∯H∥P</a>
+    <h2 class="section-title reveal">Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span></h2>
+    <p class="reveal">We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.</p>
+    <a href="sf-contact.html" class="btn reveal">Discuss a Partnership</a>
   </section>
 
   <!-- FOOTER -->
@@ -4463,12 +4463,12 @@ function buildThesis(opt) {
   sec.style.cssText = "padding:100px 48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;";
 
   // Reset overlay
-  var overlay = document.getElementById('thesis-overlay');
+  var overlay = sec.querySelector('div[style*="inset:0"]');
   if(overlay) overlay.style.cssText = 'position:absolute;inset:0;background:#ede8e0;opacity:0.92;pointer-events:none;z-index:0;';
 
   // ── ALWAYS rebuild inner HTML from scratch ──
   // This prevents DOM node movement bugs completely
-  var inner = document.getElementById('thesis-inner');
+  var inner = sec.querySelector('div[style*="z-index:1"]');
   if(inner) {
     inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;';
     inner.innerHTML =
@@ -4960,7 +4960,16 @@ var current = 0;
 
 function restoreOriginal() {
   document.querySelectorAll('.tsw-btn').forEach(function(b){ b.classList.toggle('active', parseInt(b.getAttribute('data-opt'))===0); });
-  /* hero and CTA permanently locked — no restore needed */
+  // Restore hero
+  var ey = document.querySelector('.hero-eyebrow'); if(ey) ey.textContent = 'A cross-border venture studio';
+  var ht = document.querySelector('.hero-headline-top'); if(ht) ht.textContent = 'INDUSTRIALISING';
+  var hb = document.querySelector('.hero-brand-word'); if(hb) hb.textContent = 'BRAND';
+  var hs = document.querySelector('.hero-soul-word'); if(hs) hs.textContent = 'SOUL';
+  // Restore CTA
+  var cL = document.querySelector('section.cta .label'); if(cL) cL.textContent = "Let's Build Together";
+  var cH = document.querySelector('section.cta .section-title'); if(cH) cH.innerHTML = 'Ready to turn<br/>your brand into<br/>a <span class="cta-product-word">product?</span>';
+  var cP = document.querySelector('section.cta p.reveal:not(.label):not(.section-title)'); if(cP) cP.textContent = "We work with a select number of partners each year. If you have brand DNA worth industrializing, let's talk.";
+  var cB = document.querySelector('section.cta .btn'); if(cB) cB.textContent = 'Discuss a Partnership';
   // Restore thesis
   buildThesis(1);
   var sec = document.getElementById('thesis-section');
@@ -4983,7 +4992,17 @@ function typeSwitch(opt) {
 
   document.querySelectorAll('.tsw-btn').forEach(function(b){ b.classList.toggle('active', parseInt(b.getAttribute('data-opt'))===opt); });
 
-  /* hero and CTA are permanently locked — not switched */
+  /* hero */
+  var ey = document.querySelector('.hero-eyebrow'); if(ey) ey.textContent = T.eyebrow[opt];
+  var ht = document.querySelector('.hero-headline-top'); if(ht) ht.textContent = T.heroTop[opt];
+  var hb = document.querySelector('.hero-brand-word'); if(hb) hb.textContent = T.heroBrand[opt];
+  var hs = document.querySelector('.hero-soul-word'); if(hs) hs.textContent = T.heroSoul[opt];
+
+  /* CTA */
+  var cL = document.querySelector('section.cta .label'); if(cL) cL.textContent = T.ctaLabel[opt];
+  var cH = document.querySelector('section.cta .section-title'); if(cH) cH.innerHTML = T.ctaHead[opt];
+  var cP = document.querySelector('section.cta p.reveal:not(.label):not(.section-title)'); if(cP) cP.textContent = T.ctaBody[opt];
+  var cB = document.querySelector('section.cta .btn'); if(cB) cB.textContent = T.ctaBtn[opt];
 
   /* thesis: buildThesis first (rebuilds inner with class-named elements), then populate text */
   buildThesis(opt);
