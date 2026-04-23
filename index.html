@@ -4126,104 +4126,104 @@ body.v11-active #v11-badge {
 
 <script>
 (function(){
-
 var current = 0;
-var originalThesisHTML = '';
 
 /* ── ANIMATION DATA — one entry per opt, guaranteed ── */
 var TH_ANIMS = {
-  2:  {sym:'⌣', pos:'top-right',  anim:'n-arc-rev 5s linear infinite',           size:'34px', color:'rgba(200,169,110,0.95)'},
-  3:  {sym:'⌢', pos:'bot-left',   anim:'n-wave 6s ease-in-out infinite',          size:'32px', color:'rgba(200,169,110,0.95)'},
-  4:  {sym:'◎', pos:'top-right',  anim:'n-coin-spin 9s linear infinite',          size:'36px', color:'rgba(200,169,110,0.95)'},
-  5:  {sym:'⊙', pos:'bot-left',   anim:'n-orbit 14s linear infinite',             size:'34px', color:'rgba(200,169,110,0.95)'},
-  6:  {sym:'⊕', pos:'ctr-right',  anim:'n-cross-spin 18s linear infinite',        size:'38px', color:'rgba(200,169,110,0.95)'},
-  7:  {sym:'⊗', pos:'top-left',   anim:'n-counter 11s linear infinite',           size:'36px', color:'rgba(200,169,110,0.95)'},
-  8:  {sym:'⌖', pos:'bot-right',  anim:'n-lock 5s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  9:  {sym:'⊥', pos:'ctr-left',   anim:'n-perp-drop 3s ease-in-out infinite',     size:'36px', color:'rgba(200,169,110,0.95)'},
-  10: {sym:'⌀', pos:'top-right',  anim:'n-tilt-spin 13s linear infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
-  11: {sym:'∥', pos:'bot-left',   anim:'n-parallel 5s ease-in-out infinite',      size:'34px', color:'rgba(200,169,110,0.95)'},
-  12: {sym:'±', pos:'ctr-right',  anim:'n-pm 3s ease-in-out infinite',            size:'38px', color:'rgba(200,169,110,0.95)'},
-  13: {sym:'∠', pos:'top-left',   anim:'n-angle 4s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  14: {sym:'↕', pos:'bot-right',  anim:'n-float 3.5s ease-in-out infinite',       size:'34px', color:'rgba(200,169,110,0.95)'},
-  15: {sym:'↧', pos:'top-ctr',    anim:'n-fall 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  16: {sym:'↥', pos:'bot-left',   anim:'n-rise 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  17: {sym:'⌒', pos:'ctr-right',  anim:'n-gyro 10s linear infinite',              size:'38px', color:'rgba(200,169,110,0.95)'},
-  18: {sym:'◎', pos:'bot-right',  anim:'n-coin-spin 12s linear infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  19: {sym:'⌙', pos:'top-left',   anim:'n-drill 4s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  20: {sym:'⊞', pos:'ctr-left',   anim:'n-grid-pulse 4s ease-in-out infinite',    size:'36px', color:'rgba(200,169,110,0.95)'},
-  21: {sym:'∫', pos:'top-right',  anim:'n-integral 5s ease-in-out infinite',      size:'40px', color:'rgba(200,169,110,0.95)'},
-  22: {sym:'∇', pos:'bot-ctr',    anim:'n-fill 6s ease-in-out infinite',          size:'36px', color:'rgba(200,169,110,0.95)'},
-  23: {sym:'△', pos:'top-left',   anim:'n-delta 4s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  24: {sym:'⌵', pos:'bot-right',  anim:'n-v-open 4s ease-in-out infinite',        size:'36px', color:'rgba(200,169,110,0.95)'},
-  25: {sym:'→|←', pos:'ctr-left', anim:'n-compress 6s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
-  26: {sym:'←|→', pos:'top-ctr',  anim:'n-expand 6s ease-in-out infinite',   size:'22px', color:'rgba(200,169,110,0.95)'},
-  27: {sym:'◉', pos:'ctr-right',  anim:'n-sonar 2.5s ease-out infinite',          size:'32px', color:'rgba(200,169,110,0.95)'},
-  28: {sym:'⌂', pos:'bot-left',   anim:'n-bounce 3s ease-in-out infinite',        size:'34px', color:'rgba(200,169,110,0.95)'},
-  29: {sym:'∴', pos:'top-right',  anim:'n-seq1 1.5s ease-in-out infinite',        size:'34px', color:'rgba(200,169,110,0.95)'},
-  30: {sym:'◎', pos:'top-right',  anim:'n-coin-spin 8s linear infinite',          size:'36px', color:'rgba(200,169,110,0.95)'},
-  31: {sym:'⊙', pos:'bot-left',   anim:'n-orbit 12s linear infinite',             size:'34px', color:'rgba(200,169,110,0.95)'},
-  32: {sym:'◉', pos:'top-left',   anim:'n-sonar 2s ease-out infinite',            size:'32px', color:'rgba(200,169,110,0.95)'},
-  33: {sym:'⊕', pos:'ctr-right',  anim:'n-cross-spin 10s linear infinite',        size:'38px', color:'rgba(200,169,110,0.95)'},
-  34: {sym:'⊗', pos:'bot-right',  anim:'n-counter 8s linear infinite',            size:'36px', color:'rgba(200,169,110,0.95)'},
-  35: {sym:'⌖', pos:'top-right',  anim:'n-lock 6s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  36: {sym:'∫', pos:'ctr-left',   anim:'n-integral 5s ease-in-out infinite',      size:'40px', color:'rgba(200,169,110,0.95)'},
-  37: {sym:'∇', pos:'bot-ctr',    anim:'n-fill 6s ease-in-out infinite',          size:'36px', color:'rgba(200,169,110,0.95)'},
-  38: {sym:'△', pos:'top-left',   anim:'n-delta 4s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  39: {sym:'↕', pos:'ctr-right',  anim:'n-float 3s ease-in-out infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
-  40: {sym:'↧', pos:'top-ctr',    anim:'n-fall 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  41: {sym:'↥', pos:'bot-right',  anim:'n-rise 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
-  42: {sym:'±', pos:'ctr-left',   anim:'n-pm 3s ease-in-out infinite',            size:'38px', color:'rgba(200,169,110,0.95)'},
-  43: {sym:'⊥', pos:'bot-left',   anim:'n-perp-drop 3s ease-in-out infinite',     size:'36px', color:'rgba(200,169,110,0.95)'},
-  44: {sym:'∥', pos:'top-right',  anim:'n-parallel 5s ease-in-out infinite',      size:'34px', color:'rgba(200,169,110,0.95)'},
-  45: {sym:'⌒', pos:'ctr-right',  anim:'n-gyro 9s linear infinite',               size:'38px', color:'rgba(200,169,110,0.95)'},
-  46: {sym:'⌵', pos:'bot-right',  anim:'n-v-open 4s ease-in-out infinite',        size:'36px', color:'rgba(200,169,110,0.95)'},
-  47: {sym:'⌴', pos:'top-left',   anim:'n-drill 4s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  48: {sym:'⌗', pos:'ctr-left',   anim:'n-tilt-spin 15s linear infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
-  49: {sym:'▽▽▽', pos:'bot-left', anim:'n-cascade 2s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
-  50: {sym:'⌂', pos:'top-right',  anim:'n-bounce 3s ease-in-out infinite',        size:'34px', color:'rgba(200,169,110,0.95)'},
-  51: {sym:'⌏', pos:'bot-right',  anim:'n-start 5s ease-in-out infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
-  52: {sym:'¬', pos:'top-left',   anim:'n-end 5s ease-in-out infinite',           size:'36px', color:'rgba(200,169,110,0.95)'},
-  53: {sym:'⌙', pos:'ctr-right',  anim:'n-drill 5s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
-  54: {sym:'⊞', pos:'bot-left',   anim:'n-grid-pulse 4s ease-in-out infinite',    size:'36px', color:'rgba(200,169,110,0.95)'},
-  55: {sym:'→|←', pos:'ctr-left', anim:'n-compress 6s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
-  56: {sym:'←|→', pos:'top-ctr',  anim:'n-expand 6s ease-in-out infinite',   size:'22px', color:'rgba(200,169,110,0.95)'},
-  57: {sym:'∴', pos:'bot-right',  anim:'n-seq1 1.5s ease-in-out infinite',        size:'34px', color:'rgba(200,169,110,0.95)'},
-  58: {sym:'⌀', pos:'top-right',  anim:'n-tilt-spin 11s linear infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
-  59: {sym:'⌒', pos:'bot-left',   anim:'n-gyro 14s linear infinite',              size:'38px', color:'rgba(200,169,110,0.95)'}
+  1:  {sym:'⌒', pos:'top-right',  anim:'arc-draw 4s linear infinite',           size:'22vw', color:'rgba(200,169,110,0.12)'},
+  2: {sym:'⌣', pos:'top-right', anim:'arc-draw-rev 5s linear infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  3: {sym:'⌢', pos:'top-right', anim:'wave-undulate 6s ease-in-out infinite', size:'32px', color:'rgba(200,169,110,0.95)'},
+  4: {sym:'◎', pos:'top-right', anim:'coin-spin 9s linear infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  5: {sym:'⊙', pos:'top-right', anim:'coin-spin 14s linear infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  6: {sym:'⊕', pos:'top-right', anim:'slow-spin 18s linear infinite', size:'38px', color:'rgba(200,169,110,0.95)'},
+  7: {sym:'⊗', pos:'top-right', anim:'counter-spin 11s linear infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  8: {sym:'⌖', pos:'top-right', anim:'arc-draw 5s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  9: {sym:'⊥', pos:'top-right', anim:'centre-pulse 3s ease-in-out infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  10: {sym:'⌀', pos:'top-right', anim:'coin-spin 13s linear infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  11: {sym:'∥', pos:'top-right', anim:'wave-undulate 5s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  12: {sym:'±', pos:'top-right', anim:'centre-pulse 3s ease-in-out infinite', size:'38px', color:'rgba(200,169,110,0.95)'},
+  13: {sym:'∠', pos:'top-right', anim:'arc-draw 4s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  14: {sym:'↕', pos:'top-right', anim:'wave-undulate 3.5s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  15: {sym:'↧', pos:'top-right', anim:'arc-draw-rev 4s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  16: {sym:'↥', pos:'top-right', anim:'centre-pulse 4s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  17: {sym:'⌒', pos:'top-right', anim:'coin-spin 10s linear infinite', size:'38px', color:'rgba(200,169,110,0.95)'},
+  18: {sym:'◎', pos:'top-right', anim:'slow-spin 12s linear infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  19: {sym:'⌙', pos:'top-right', anim:'arc-draw 4s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  20: {sym:'⊞', pos:'top-right', anim:'slow-spin 20s linear infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  21: {sym:'∫', pos:'top-right', anim:'wave-undulate 5s ease-in-out infinite', size:'40px', color:'rgba(200,169,110,0.95)'},
+  22: {sym:'∇', pos:'top-right', anim:'centre-pulse 6s ease-in-out infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  23: {sym:'△', pos:'top-right', anim:'arc-draw-rev 4s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  24: {sym:'⌵', pos:'top-right', anim:'wave-undulate 4s ease-in-out infinite', size:'36px', color:'rgba(200,169,110,0.95)'},
+  25: {sym:'→|←', pos:'top-right', anim:'arc-draw 6s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
+  26: {sym:'←|→', pos:'top-right', anim:'centre-pulse 6s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
+  27: {sym:'◉', pos:'top-right', anim:'counter-spin 8s linear infinite', size:'32px', color:'rgba(200,169,110,0.95)'},
+  28: {sym:'⌂', pos:'top-right', anim:'centre-pulse 3s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  29: {sym:'∴', pos:'top-right', anim:'arc-draw-rev 1.5s ease-in-out infinite', size:'34px', color:'rgba(200,169,110,0.95)'},
+  30: {sym:'◎', pos:'top-right',  anim:'b-coin-spin 8s linear infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
+  31: {sym:'⊙', pos:'bot-left',   anim:'b-pulse 3s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
+  32: {sym:'◉', pos:'top-left',   anim:'b-sonar 2s ease-out infinite',            size:'32px', color:'rgba(200,169,110,0.95)'},
+  33: {sym:'⊕', pos:'ctr-right',  anim:'b-spin-s 12s linear infinite',            size:'38px', color:'rgba(200,169,110,0.95)'},
+  34: {sym:'⊗', pos:'bot-right',  anim:'b-spin-r 10s linear infinite',            size:'36px', color:'rgba(200,169,110,0.95)'},
+  35: {sym:'⌖', pos:'top-right',  anim:'b-cross 6s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
+  36: {sym:'∫', pos:'ctr-left',   anim:'b-integral 5s ease-in-out infinite',      size:'40px', color:'rgba(200,169,110,0.95)'},
+  37: {sym:'∇', pos:'bot-ctr',    anim:'b-fill 6s ease-in-out infinite',           size:'36px', color:'rgba(200,169,110,0.95)'},
+  38: {sym:'△', pos:'top-left',   anim:'b-delta 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
+  39: {sym:'↕', pos:'ctr-right',  anim:'b-float 3s ease-in-out infinite',          size:'36px', color:'rgba(200,169,110,0.95)'},
+  40: {sym:'↧', pos:'top-ctr',    anim:'b-fall 4s ease-in-out infinite',           size:'34px', color:'rgba(200,169,110,0.95)'},
+  41: {sym:'↥', pos:'bot-right',  anim:'b-rise 4s ease-in-out infinite',           size:'34px', color:'rgba(200,169,110,0.95)'},
+  42: {sym:'±', pos:'ctr-left',   anim:'b-pm 3s ease-in-out infinite',             size:'38px', color:'rgba(200,169,110,0.95)'},
+  43: {sym:'⊥', pos:'bot-left',   anim:'b-perp 3s ease-in-out infinite',           size:'36px', color:'rgba(200,169,110,0.95)'},
+  44: {sym:'∥', pos:'top-right',  anim:'b-parallel 5s ease-in-out infinite',      size:'34px', color:'rgba(200,169,110,0.95)'},
+  45: {sym:'⌒', pos:'ctr-right',  anim:'b-gyro 10s linear infinite',              size:'38px', color:'rgba(200,169,110,0.95)'},
+  46: {sym:'⌵', pos:'bot-right',  anim:'b-v-open 4s ease-in-out infinite',        size:'36px', color:'rgba(200,169,110,0.95)'},
+  47: {sym:'⌴', pos:'top-left',   anim:'b-drill 4s ease-in-out infinite',          size:'34px', color:'rgba(200,169,110,0.95)'},
+  48: {sym:'⌗', pos:'ctr-left',   anim:'b-intersect 15s linear infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
+  49: {sym:'▽▽▽', pos:'bot-left', anim:'b-cascade 2s ease-in-out infinite', size:'22px', color:'rgba(200,169,110,0.95)'},
+  50: {sym:'⌂', pos:'top-right',  anim:'b-bounce 3s ease-in-out infinite',        size:'34px', color:'rgba(200,169,110,0.95)'},
+  51: {sym:'⌏', pos:'bot-right',  anim:'b-start 5s ease-in-out infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
+  52: {sym:'¬', pos:'top-left',   anim:'b-end 5s ease-in-out infinite',           size:'36px', color:'rgba(200,169,110,0.95)'},
+  53: {sym:'⌙', pos:'ctr-right',  anim:'b-drill 5s ease-in-out infinite',         size:'34px', color:'rgba(200,169,110,0.95)'},
+  54: {sym:'⊞', pos:'bot-left',   anim:'b-pulse 4s ease-in-out infinite',         size:'36px', color:'rgba(200,169,110,0.95)'},
+  55: {sym:'→|←', pos:'ctr-left', anim:'b-close 6s ease-in-out infinite',   size:'22px', color:'rgba(200,169,110,0.95)'},
+  56: {sym:'←|→', pos:'top-ctr',  anim:'b-open 6s ease-in-out infinite',    size:'22px', color:'rgba(200,169,110,0.95)'},
+  57: {sym:'∴', pos:'bot-right',  anim:'b-seq1 1.5s ease-in-out infinite',       size:'34px', color:'rgba(200,169,110,0.95)'},
+  58: {sym:'⌀', pos:'top-right',  anim:'b-spin-tilt 12s linear infinite',        size:'36px', color:'rgba(200,169,110,0.95)'},
+  59: {sym:'⌒', pos:'bot-left',   anim:'b-gyro 14s linear infinite',             size:'38px', color:'rgba(200,169,110,0.95)'}
 };
 
 
 
 /* ── BACKGROUND COLORS ── */
 var TH_BG = {
+  1:'#909095',
   2:'linear-gradient(135deg,#1a1a2e 0%,#0d0d1a 100%)',
   3:'linear-gradient(160deg,#1c1008 0%,#080402 100%)',
-  4:'#0d1117',
-  5:'linear-gradient(45deg,#0a1628 0%,#020810 100%)',
-  6:'linear-gradient(120deg,#1e2d1e 0%,#080f08 100%)',
-  7:'linear-gradient(200deg,#2a1020 0%,#0d0408 100%)',
-  8:'#111118',
-  9:'linear-gradient(90deg,#14142a 0%,#06060f 100%)',
-  10:'linear-gradient(150deg,#0e1c2a 0%,#040810 100%)',
-  11:'linear-gradient(30deg,#20180a 0%,#0a0802 100%)',
-  12:'#0c0c0c',
-  13:'linear-gradient(60deg,#1e2d1e 0%,#080f08 100%)',
-  14:'linear-gradient(110deg,#1a1a2e 0%,#0d0d1a 100%)',
-  15:'linear-gradient(220deg,#1e0c1a 0%,#08040a 100%)',
-  16:'#101010',
-  17:'linear-gradient(80deg,#0e1c2a 0%,#040810 100%)',
-  18:'linear-gradient(140deg,#1c1008 0%,#080402 100%)',
-  19:'#0a0a0a',
-  20:'linear-gradient(190deg,#1a1a2e 0%,#0d0d1a 100%)',
-  21:'linear-gradient(25deg,#001a1a 0%,#000808 100%)',
-  22:'linear-gradient(155deg,#1a001c 0%,#08000a 100%)',
-  23:'#0e0e0e',
-  24:'linear-gradient(75deg,#0a1a00 0%,#040800 100%)',
-  25:'linear-gradient(215deg,#1a1000 0%,#080500 100%)',
-  26:'linear-gradient(35deg,#001218 0%,#000608 100%)',
-  27:'#0c0c14',
-  28:'linear-gradient(125deg,#180018 0%,#080008 100%)',
-  29:'linear-gradient(165deg,#001a00 0%,#000800 100%)',
+  4:'linear-gradient(45deg,#0a1628 0%,#020810 100%)',
+  5:'linear-gradient(120deg,#1e2d1e 0%,#080f08 100%)',
+  6:'linear-gradient(200deg,#2a1020 0%,#0d0408 100%)',
+  7:'linear-gradient(90deg,#14142a 0%,#06060f 100%)',
+  8:'linear-gradient(150deg,#0e1c2a 0%,#040810 100%)',
+  9:'linear-gradient(30deg,#20180a 0%,#0a0802 100%)',
+  10:'linear-gradient(60deg,#1a1a2e 0%,#0d0d1a 100%)',
+  11:'linear-gradient(110deg,#1e2d1e 0%,#080f08 100%)',
+  12:'linear-gradient(220deg,#1e0c1a 0%,#08040a 100%)',
+  13:'linear-gradient(80deg,#1c1008 0%,#080402 100%)',
+  14:'linear-gradient(140deg,#1a1a2e 0%,#0d0d1a 100%)',
+  15:'linear-gradient(190deg,#1e0c1a 0%,#08040a 100%)',
+  16:'linear-gradient(25deg,#001a1a 0%,#000808 100%)',
+  17:'linear-gradient(155deg,#14142a 0%,#06060f 100%)',
+  18:'linear-gradient(75deg,#0e1c2a 0%,#040810 100%)',
+  19:'linear-gradient(215deg,#1a1200 0%,#080600 100%)',
+  20:'linear-gradient(35deg,#1a1a2e 0%,#0d0d1a 100%)',
+  21:'linear-gradient(125deg,#001a00 0%,#000800 100%)',
+  22:'linear-gradient(165deg,#1a001c 0%,#08000a 100%)',
+  23:'linear-gradient(55deg,#0a1a00 0%,#040800 100%)',
+  24:'linear-gradient(195deg,#0e0e2a 0%,#040410 100%)',
+  25:'linear-gradient(85deg,#1c0a00 0%,#080400 100%)',
+  26:'linear-gradient(145deg,#001218 0%,#000608 100%)',
+  27:'linear-gradient(15deg,#180018 0%,#080008 100%)',
+  28:'linear-gradient(105deg,#001a00 0%,#000800 100%)',
+  29:'linear-gradient(235deg,#1a0c0c 0%,#080404 100%)',
   30:'linear-gradient(135deg,#1a1a2e 0%,#0d0d1a 100%)',
   31:'linear-gradient(160deg,#2d1b0e 0%,#0e0806 100%)',
   32:'linear-gradient(45deg,#0a1628 0%,#020810 100%)',
@@ -4260,79 +4260,77 @@ var TH_BG = {
 
 /* ── TEXT TREATMENTS ── */
 var TH_TEXT = {
-  2: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  3: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  4: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  5: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  6: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  7: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  8: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  9: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  10: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  11: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  12: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  13: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  14: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  15: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  16: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  17: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  18: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  19: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  20: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  21: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  22: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  23: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  24: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  25: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  26: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  27: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  28: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  29: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  30: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  31: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  32: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  33: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  34: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  35: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  36: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  37: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  38: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  39: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  40: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  41: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  42: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  43: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  44: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  45: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  46: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  47: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  48: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  49: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  50: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  51: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  52: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  53: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  54: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  55: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  56: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  57: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  58: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
-  59: {l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"}
+  1:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  2:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  3:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  4:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  5:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  6:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  7:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  8:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  9:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  10:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  11:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  12:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  13:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  14:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  15:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  16:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  17:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  18:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  19:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  20:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  21:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  22:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  23:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  24:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  25:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  26:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  27:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  28:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  29:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  30:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  31:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  32:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  33:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  34:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  35:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  36:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  37:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  38:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  39:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  40:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  41:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  42:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  43:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  44:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  45:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  46:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  47:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  48:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  49:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  50:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  51:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  52:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  53:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  54:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  55:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  56:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  57:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  58:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"},
+  59:{l1:"The best products",l2:"Won't be invented",l3:"They'll be extracted",lbl:"The Foundry Thesis",attr:"Matthew · Silent Foundry"}
 };
 
 
 
 /* ── TEXT COLORS by background lightness ── */
 function thTextColor(opt) {
-  return {
-    l1: 'rgba(244,241,236,0.42)',
-    l2: 'rgba(244,241,236,0.72)',
-    l3: '#c8a96e',
-    lbl: 'rgba(200,169,110,0.65)',
-    attr: 'rgba(244,241,236,0.32)'
-  };
+  if (opt >= 30) return { l1:'rgba(244,241,236,0.38)', l2:'rgba(244,241,236,0.68)', l3:'#c8a96e', lbl:'rgba(200,169,110,0.65)', attr:'rgba(244,241,236,0.32)' };
+  // opts 1-7 are lighter — use darker gold
+  if (opt <= 4) return {l1:'rgba(30,28,25,0.55)', l2:'rgba(30,28,25,0.75)', l3:'rgba(120,88,30,0.9)', lbl:'rgba(80,60,20,0.7)', attr:'rgba(30,28,25,0.45)'};
+  if (opt <= 8) return {l1:'rgba(200,169,110,0.45)', l2:'rgba(200,169,110,0.65)', l3:'rgba(200,169,110,0.9)', lbl:'rgba(200,169,110,0.5)', attr:'rgba(200,169,110,0.35)'};
+  return {l1:'rgba(200,169,110,0.4)', l2:'rgba(200,169,110,0.65)', l3:'#c8a96e', lbl:'rgba(200,169,110,0.55)', attr:'rgba(200,169,110,0.32)'};
 }
-
 
 /* ── INJECT ANIMATED SYMBOL ── */
 function injectSymbol(sec, opt) {
@@ -4340,13 +4338,26 @@ function injectSymbol(sec, opt) {
   if (!a) return;
   var el = document.createElement('div');
   el.className = 'tsw-injected th-sym th-sym-' + a.pos;
-  el.style.cssText = 'font-size:'+a.size+';color:'+a.color+';animation:'+a.anim+';position:absolute;z-index:4;font-family:"Bebas Neue",sans-serif;pointer-events:none;line-height:1;';
+  el.style.fontSize = a.size;
+  el.style.color = a.color;
+  el.style.animation = a.anim;
+  el.style.zIndex = (opt >= 30) ? '4' : '0';
   el.textContent = a.sym;
-  var needs3d = [4,5,6,7,10,17,18,30,31,32,33,34,45,48,58,59];
-  if (needs3d.indexOf(opt) > -1) { el.style.perspective='600px'; el.style.transformStyle='preserve-3d'; }
+  // Extra: for opt 4 (◎) add coin perspective
+  if (opt === 4 || opt === 30 || opt === 45 || opt === 58 || opt === 59) { el.style.perspective = '600px'; el.style.transformStyle = 'preserve-3d'; }
+  // For opt 27 (◉) add multiple staggered copies for sonar effect
+  if (opt === 27) {
+    el.style.animation = 'none';
+    for (var i = 0; i < 3; i++) {
+      var ring = el.cloneNode(true);
+      ring.style.animation = 'bullseye-pulse 2s ease-in-out ' + (i*0.6) + 's infinite';
+      ring.style.position = 'absolute';
+      sec.appendChild(ring);
+    }
+    el.style.animation = 'bullseye-pulse 2s ease-in-out 0s infinite';
+  }
   sec.appendChild(el);
 }
-
 
 /* ── INJECT CORNER BRACKETS ── */
 function injectCorners(sec) {
@@ -4361,683 +4372,798 @@ function injectCorners(sec) {
 function buildThesis(opt) {
   var sec = document.getElementById('thesis-section');
   if (!sec) return;
+
+  // 1. Clean up
   sec.querySelectorAll('.tsw-injected').forEach(function(el){ el.remove(); });
+
+  // 2. Reset section styles
   var overlay = document.getElementById('thesis-overlay');
   var inner = document.getElementById('thesis-inner');
 
   if (opt === 0) {
+    // Original: restore cream
     sec.style.cssText = "padding:100px 48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;";
     if (overlay) { overlay.style.background='#ede8e0'; overlay.style.opacity='0.92'; }
-    if (inner) { inner.style.cssText='position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;'; inner.innerHTML=originalThesisHTML; }
+    if (inner) {
+      inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;';
+      inner.innerHTML = originalThesisHTML;
+    }
     return;
   }
 
   var bg = TH_BG[opt] || '#0d1117';
   var tc = thTextColor(opt);
   var tx = TH_TEXT[opt];
-  var isGrad = bg && bg.indexOf('gradient') > -1;
 
-  sec.style.cssText = 'min-height:440px;background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';position:relative;overflow:hidden;display:flex;align-items:center;padding:60px 0;';
-  if (overlay) { overlay.style.background='none'; overlay.style.opacity='0'; }
+  // 3. Set section bg
+  var isGrad=(bg&&bg.indexOf('gradient')>-1);
+  sec.style.cssText = 'padding:80px 48px;background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';text-align:center;position:relative;overflow:hidden;';
+  if (overlay) { overlay.style.background = bg; overlay.style.opacity = '0.95'; }
 
-  var reflOpts = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58];
-  var hasRefl = reflOpts.indexOf(opt) > -1;
-
-  if (!inner) return;
-  inner.style.cssText = 'position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;height:100%;';
-
-  var mainCol = document.createElement('div');
-  mainCol.className = 'tsw-injected';
-  mainCol.style.cssText = 'width:'+(hasRefl?'52%':'100%')+';display:flex;flex-direction:column;justify-content:center;flex-shrink:0;padding:0 6vw;';
-
-  var lbl = document.createElement('span');
-  lbl.className = 'tsw-injected th-label';
-  lbl.style.cssText = 'font-size:0.5rem;letter-spacing:0.32em;text-transform:uppercase;color:'+tc.lbl+';display:block;margin-bottom:24px;font-family:"DM Sans",sans-serif;font-weight:300;';
-  lbl.textContent = tx ? tx.lbl : 'The Foundry Thesis';
-  mainCol.appendChild(lbl);
-
-  var p1 = document.createElement('p');
-  p1.className = 'th-l1';
-  p1.style.cssText = 'font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.08em;text-transform:uppercase;line-height:0.92;color:'+tc.l1+';transform:skewX(-4deg);display:block;margin:0 0 2px;';
-  p1.textContent = tx ? tx.l1 : 'The best products';
-  mainCol.appendChild(p1);
-
-  var p2 = document.createElement('p');
-  p2.className = 'th-l2';
-  p2.style.cssText = 'font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.08em;text-transform:uppercase;line-height:0.92;color:'+tc.l2+';transform:skewX(-4deg);display:block;margin:0 0 2px;';
-  p2.textContent = tx ? tx.l2 : "Won't be invented";
-  mainCol.appendChild(p2);
-
-  var p3 = document.createElement('p');
-  p3.className = 'th-l3';
-  p3.style.cssText = 'font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.08em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin:0;';
-  p3.textContent = tx ? tx.l3 : "They'll be extracted";
-  mainCol.appendChild(p3);
-
-  var atw = document.createElement('div');
-  atw.className = 'tsw-injected';
-  atw.style.cssText = 'display:flex;align-items:center;gap:12px;margin-top:24px;';
-  var attr_text = tx ? tx.attr : 'Matthew · Silent Foundry';
-  atw.innerHTML = '<div style="width:16px;height:0.5px;background:rgba(200,169,110,0.28);flex-shrink:0;"></div>'+'<p style="font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:'+tc.attr+';font-weight:300;white-space:nowrap;">'+attr_text+'</p>'+'<div style="width:16px;height:0.5px;background:rgba(200,169,110,0.28);flex-shrink:0;"></div>';
-  mainCol.appendChild(atw);
-
-  inner.appendChild(mainCol);
-
-  if (hasRefl) {
-    var reflCol = document.createElement('div');
-    reflCol.className = 'tsw-injected';
-    reflCol.style.cssText = 'width:48%;display:flex;align-items:center;overflow:hidden;';
-    var reflInner = document.createElement('div');
-    reflInner.style.cssText = 'transform:scaleX(-1);opacity:0.11;pointer-events:none;display:flex;flex-direction:column;padding-left:2vw;';
-    var rTexts = [tx?tx.l3:"They'll be extracted", tx?tx.l2:"Won't be invented", tx?tx.l1:"The best products"];
-    rTexts.forEach(function(t,i){
-      var rp = document.createElement('p');
-      rp.style.cssText = 'font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.08em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin:0 0 2px;opacity:'+(1-i*0.22)+';';
-      rp.textContent = t;
-      reflInner.appendChild(rp);
-    });
-    reflCol.appendChild(reflInner);
-    inner.appendChild(reflCol);
+  // 4. Reset inner
+  if (inner) {
+    inner.style.cssText = 'position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:720px;margin:0 auto;';
   }
 
-  applyLayout(sec, inner, mainCol, p1, p2, p3, lbl, atw, opt, tc, hasRefl);
+  // 5. Build inner HTML fresh
+  if (inner && tx) {
+    inner.innerHTML =
+      '<span class="th-label" style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:'+tc.lbl+';display:block;margin-bottom:32px;"></span>' +
+      '<p class="th-l1" style="font-family:Bebas Neue,sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l1+';text-align:center;width:100%;transform:skewX(-4deg);display:block;margin-bottom:4px;"></p>' +
+      '<p class="th-l2" style="font-family:Bebas Neue,sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l2+';text-align:center;width:100%;transform:skewX(-4deg);display:block;margin-bottom:4px;"></p>' +
+      '<p class="th-l3" style="font-family:Bebas Neue,sans-serif;font-size:clamp(2rem,4.2vw,4.8rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';text-align:center;width:100%;transform:skewX(-4deg);display:block;"></p>' +
+      '<div class="th-attr-wrap" style="display:flex;align-items:center;justify-content:center;gap:14px;margin-top:32px;">' +
+        '<div style="width:20px;height:1px;background:rgba(200,169,110,0.3);"></div>' +
+        '<p class="th-attr" style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:'+tc.attr+';"></p>' +
+        '<div style="width:20px;height:1px;background:rgba(200,169,110,0.3);"></div>' +
+      '</div>';
+
+    // Populate text
+    var lbl = inner.querySelector('.th-label'); if(lbl) lbl.textContent = tx.lbl;
+    var l1 = inner.querySelector('.th-l1'); if(l1) l1.innerHTML = '⌈' + tx.l1;
+    var l2 = inner.querySelector('.th-l2'); if(l2) l2.textContent = tx.l2;
+    var l3 = inner.querySelector('.th-l3'); if(l3) l3.innerHTML = tx.l3 + '⌉';
+    var at = inner.querySelector('.th-attr'); if(at) at.textContent = tx.attr;
+  }
+
+  // 6. Apply unique layout
+  applyLayout(sec, inner, opt, tc);
+
+  // 7. Inject animated symbol (every opt guaranteed)
   injectSymbol(sec, opt);
+
+  // 8. Inject corner brackets (every opt guaranteed)
   injectCorners(sec);
 }
 
 /* ── LAYOUT VARIANTS ── */
-function applyLayout(sec, inner, mainCol, l1, l2, l3, lbl, atw, opt, tc, hasRefl) {
-  if (!mainCol) return;
-
-  // Helper: make a divider
-  function hr(opacity) {
-    var d = document.createElement('div');
-    d.className = 'tsw-injected';
-    d.style.cssText = 'width:100%;height:0.5px;background:rgba(200,169,110,' + (opacity||0.2) + ');margin:8px 0;';
-    return d;
+function applyLayout(sec, inner, opt, tc) {
+  if (!inner) return;
+  var l1=inner.querySelector('.th-l1'),l2=inner.querySelector('.th-l2'),l3=inner.querySelector('.th-l3'),lbl=inner.querySelector('.th-label'),atw=inner.querySelector('.th-attr-wrap'),at=inner.querySelector('.th-attr');
+  var IJD={
+    2:['⊥he be∫t products','Wøn\'t be invented','⊥hey’ll be extracted'],
+    3:['The be∫t products','Won\'t be ∥nvented','⊥hey’ll be ex⊥racted'],
+    4:['⊥he be∫t pr△ducts','W∇n\'t be invented','They’ll be ex⊥racted'],
+    5:['The be∫t products','W⊙n\'t be ∫vented','⊥hey’ll be ex⊥racted'],
+    6:['⊥he best products','W⊥n\'t be ∥nvented','They’ll be ex∫racted'],
+    7:['The be∫t pr△ducts','Won\'t be ⊥nvented','⊥hey’ll be ex⊥racted ¬'],
+    8:['⊥he best products','W∇n\'t be in∥ented','They’ll be ex⊥racted'],
+    9:['The be∫t products','Won\'t be in∇ented','⊥hey’ll be ∫xtracted'],
+    10:['⊥he be∫t pr△ducts','Wøn\'t be ⊥nvented','They’ll be extracted'],
+    11:['The best pr△ducts','Won\'t be ∥nvented','⊥hey’ll be ex⊥racted'],
+    12:['⊥he be∫t products','W∇n\'t be invented','They’ll be ex⊥racted ¬'],
+    13:['The be∫t products','Won\'t be in∇ented','⊥hey’ll be ∫xtracted'],
+    14:['⊥he best products','Wøn\'t be ∥nvented','They’ll be ex⊥racted'],
+    15:['The be∫t pr△ducts','Won\'t be ⊥nvented','⊥hey’ll be extracted'],
+    16:['⊥he be∫t products','Won\'t be ∥nvented','They’ll be ex∫racted'],
+    17:['The best products','W∇n\'t be in∥ented','⊥hey’ll be ex⊥racted ¬'],
+    18:['⊥he be∫t products','Won\'t be ⊥nvented','They’ll be ex⊥racted'],
+    19:['The be∫t pr△ducts','Wøn\'t be invented','⊥hey’ll be ∫xtracted'],
+    20:['⊥he best pr△ducts','Won\'t be ∥nvented','They’ll be ex⊥racted ¬'],
+    21:['The be∫t products','W⊥n\'t be ∇nvented','⊥hey’ll be extracted'],
+    22:['⊥he be∫t products','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    23:['The be∫t pr△ducts','W∇n\'t be ⊥nvented','⊥hey’ll be ∫xtracted ¬'],
+    24:['⊥he best products','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    25:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be ex∫racted'],
+    26:['⊥he be∫t pr△ducts','Won\'t be ∥nvented','They’ll be ex⊥racted ¬'],
+    27:['The best pr△ducts','W∇n\'t be ⊥nvented','⊥hey’ll be extracted'],
+    28:['⊥he be∫t products','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    29:['The be∫t pr△ducts','Wøn\'t be invented','⊥hey’ll be ∫xtracted'],
+    30:['⊥he best products','Won\'t be ∥nvented','They’ll be ex⊥racted ¬'],
+    31:['The be∫t products','W∇n\'t be ⊥nvented','⊥hey’ll be extracted'],
+    32:['⊥he be∫t pr△ducts','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    33:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be ∫xtracted ¬'],
+    34:['⊥he best pr△ducts','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    35:['The be∫t products','W⊥n\'t be ∇nvented','⊥hey’ll be extracted'],
+    36:['⊥he be∫t products','Won\'t be ∥nvented','They’ll be ex⊥racted ¬'],
+    37:['The be∫t pr△ducts','Wøn\'t be ⊥nvented','⊥hey’ll be ∫xtracted'],
+    38:['⊥he best products','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    39:['The be∫t products','W∇n\'t be invented','⊥hey’ll be ex⊥racted ¬'],
+    40:['⊥he be∫t pr△ducts','Won\'t be ∥nvented','They’ll be extracted'],
+    41:['The best products','Wøn\'t be ⊥nvented','⊥hey’ll be ex∫racted'],
+    42:['⊥he be∫t products','Won\'t be in∥ented','They’ll be ex⊥racted ¬'],
+    43:['The be∫t pr△ducts','W∇n\'t be ⊥nvented','⊥hey’ll be ∫xtracted'],
+    44:['⊥he best products','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    45:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be extracted ¬'],
+    46:['⊥he be∫t pr△ducts','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    47:['The be∫t products','W∇n\'t be ⊥nvented','⊥hey’ll be ∫xtracted ¬'],
+    48:['⊥he best pr△ducts','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    49:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be extracted'],
+    50:['⊥he be∫t products','Won\'t be in∥ented','They’ll be ex⊥racted ¬'],
+    51:['The be∫t pr△ducts','W∇n\'t be invented','⊥hey’ll be ∫xtracted'],
+    52:['⊥he best products','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    53:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be extracted ¬'],
+    54:['⊥he be∫t pr△ducts','Won\'t be in∥ented','They’ll be ex⊥racted'],
+    55:['The be∫t products','W∇n\'t be ⊥nvented','⊥hey’ll be ∫xtracted ¬'],
+    56:['⊥he best pr△ducts','Won\'t be ∥nvented','They’ll be ex⊥racted'],
+    57:['The be∫t products','Wøn\'t be ⊥nvented','⊥hey’ll be extracted'],
+    58:['⊥he be∫t products','Won\'t be in∥ented','They’ll be ex⊥racted ¬'],
+    59:['The be∫t pr△ducts','W∇n\'t be ⊥nvented','⊥hey’ll be ∫xtracted'],
+  };
+  function mkRefl(opt,w,sz){
+    var ij=IJD[opt]||['','',''];
+    var rw=document.createElement('div');rw.className='tsw-injected';
+    rw.style.cssText='width:'+w+'%;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:60px 4vw;';
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;pointer-events:none;';
+    ij.forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:'+(sz||'clamp(1.6rem,3vw,3.5rem)')+';letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    rw.appendChild(ri);return rw;
   }
-
-  // ── OPT 2: Full-width ruled — hairlines above each line, left-aligned ──
-  if (opt === 2) {
-    mainCol.style.paddingLeft = '6vw';
-    if (l1) { mainCol.insertBefore(hr(0.18), l1); l1.style.textAlign='left'; }
-    if (l2) { mainCol.insertBefore(hr(0.18), l2); l2.style.textAlign='left'; }
-    if (l3) { mainCol.insertBefore(hr(0.18), l3); l3.style.textAlign='left'; }
-    mainCol.appendChild(hr(0.18));
-    if (lbl) lbl.style.marginBottom='16px';
-    if (atw) atw.style.justifyContent='flex-start';
+  function mkLeft(w,pad,items){
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='width:'+w+'%;display:flex;flex-direction:column;justify-content:center;padding:'+pad+';flex-shrink:0;';
+    items.forEach(function(el){if(el){lc.appendChild(el);}});return lc;
   }
-
-  // ── OPT 3: Centred italic — all DM Serif, centred ──
-  else if (opt === 3) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    mainCol.style.textAlign = 'center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontFamily="'DM Serif Display',serif";p.style.fontSize='clamp(1.6rem,3.2vw,3.8rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.letterSpacing='0.02em';p.style.lineHeight='1.2';}});
-    if(l1) l1.style.opacity='0.45';
-    if(l2) l2.style.opacity='0.72';
-    if(lbl){lbl.style.textAlign='center';lbl.style.marginBottom='32px';}
-    if(atw) atw.style.justifyContent='center';
+  function setRow(){
+    sec.style.overflow='hidden';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:360px;';
   }
-
-  // ── OPT 4: l3 only, massive left — with reflection ──
-  else if (opt === 4) {
-    mainCol.style.paddingLeft = '6vw';
-    if(l1) l1.style.display='none';
-    if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(3rem,8vw,10rem)';l3.style.lineHeight='0.87';l3.style.letterSpacing='-0.01em';}
-    if(lbl){lbl.style.marginBottom='24px';}
+  function mkDiv(){
+    var d=document.createElement('div');d.className='tsw-injected';
+    d.style.cssText='width:0.5px;background:rgba(200,169,110,0.2);align-self:stretch;flex-shrink:0;';return d;
   }
-
-  // ── OPT 5: 3-col equal grid ──
-  else if (opt === 5) {
-    mainCol.style.width = '100%';
-    inner.style.flexDirection = 'column';
-    mainCol.style.display = 'grid';
-    mainCol.style.gridTemplateColumns = '1fr 1fr 1fr';
-    mainCol.style.gap = '0';
-    mainCol.style.alignItems = 'center';
-    if(lbl){lbl.style.gridColumn='1/-1';lbl.style.marginBottom='20px';}
-    function colDiv(){var d=document.createElement('div');d.className='tsw-injected';d.style.cssText='width:0.5px;height:60%;background:rgba(200,169,110,0.18);align-self:center;justify-self:center;';return d;}
-    if(l1&&l1.parentNode){l1.parentNode.insertBefore(colDiv(),l2);}
-    if(l2&&l2.parentNode){l2.parentNode.insertBefore(colDiv(),l3);}
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(1rem,1.9vw,2.2rem)';p.style.padding='0 2vw';p.style.textAlign='center';}});
-    if(atw){atw.style.gridColumn='1/-1';atw.style.justifyContent='center';}
+  function mkHL(){
+    var h=document.createElement('div');h.className='tsw-injected';
+    h.style.cssText='height:0.5px;background:rgba(200,169,110,0.18);width:100%;';return h;
   }
-
-  // ── OPT 6: Split 50/50 — l1+l2 left, l3 right large, with reflection ──
-  else if (opt === 6) {
-    mainCol.style.paddingLeft = '6vw';
-    mainCol.style.paddingRight = '3vw';
-    mainCol.style.borderRight = '0.5px solid rgba(200,169,110,0.18)';
-    if(l1) l1.style.fontSize='clamp(1.1rem,2vw,2.4rem)';
-    if(l2) l2.style.fontSize='clamp(1.1rem,2vw,2.4rem)';
-    if(l3) { l3.style.display='none'; }
-    // l3 goes in reflection col as large text
+  function mkCell(bg,isGrad,css){
+    var d=document.createElement('div');d.className='tsw-injected';d.style.cssText=css;
+    d.style.background=isGrad?'none':bg;if(isGrad)d.style.backgroundImage=bg;return d;
   }
-
-  // ── OPT 7: Exponential scale left — l1 tiny, l2 mid, l3 huge ──
-  else if (opt === 7) {
-    mainCol.style.paddingLeft = '6vw';
-    if(l1){l1.style.fontSize='clamp(0.8rem,1.4vw,1.6rem)';l1.style.opacity='0.38';l1.style.textAlign='left';}
-    if(l2){l2.style.fontSize='clamp(1.4rem,2.6vw,3rem)';l2.style.opacity='0.68';l2.style.textAlign='left';}
-    if(l3){l3.style.fontSize='clamp(2.8rem,6.5vw,8rem)';l3.style.textAlign='left';l3.style.lineHeight='0.87';}
-    if(atw) atw.style.justifyContent='flex-start';
+  function tl(el,sz){if(!el)return;el.style.textAlign='left';if(sz)el.style.fontSize=sz;}
+  if (opt===1) { /* default centred — no changes */ }
+  if (opt===2) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl,l1,l2,l3]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(p)p.style.textAlign='left';});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
   }
-
-  // ── OPT 8: Top/bottom split — l1+l2 top panel, l3 bottom panel, with reflection ──
-  else if (opt === 8) {
-    mainCol.style.paddingLeft = '6vw';
-    mainCol.style.flexDirection = 'column';
-    var topP = document.createElement('div');
-    topP.className='tsw-injected';
-    topP.style.cssText='padding-bottom:20px;border-bottom:0.5px solid rgba(200,169,110,0.18);';
-    if(lbl){topP.appendChild(lbl);}
-    if(l1){l1.style.fontSize='clamp(1.1rem,2vw,2.3rem)';topP.appendChild(l1);}
-    if(l2){l2.style.fontSize='clamp(1.1rem,2vw,2.3rem)';topP.appendChild(l2);}
-    mainCol.insertBefore(topP, mainCol.firstChild);
-    var botP = document.createElement('div');
-    botP.className='tsw-injected';botP.style.cssText='padding-top:20px;';
-    if(l3){l3.style.fontSize='clamp(2.4rem,5vw,6rem)';l3.style.lineHeight='0.88';botP.appendChild(l3);}
-    if(atw){botP.appendChild(atw);}
-    mainCol.appendChild(botP);
+  else if (opt===3) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='width:28%;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);flex-shrink:0;';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.26em';lc.appendChild(lbl);}
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.transform='rotate(180deg)';atw.style.justifyContent='flex-start';lc.appendChild(atw);}
+    inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:72%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw;';
+    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';p.style.fontSize='clamp(1.8rem,3.5vw,4rem)';rc.appendChild(p);}});
+    inner.appendChild(rc);
   }
-
-  // ── OPT 9: Right-aligned staircase ──
-  else if (opt === 9) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'flex-end';
-    mainCol.style.paddingRight = '8vw';
-    if(l1){l1.style.textAlign='right';l1.style.marginRight='14vw';}
-    if(l2){l2.style.textAlign='right';l2.style.marginRight='7vw';}
-    if(l3){l3.style.textAlign='right';l3.style.marginRight='0';}
-    if(lbl){lbl.style.alignSelf='flex-start';lbl.style.marginLeft='8vw';}
-    if(atw) atw.style.justifyContent='flex-end';
+  else if (opt===4) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(60,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='14px';
+    if(l1){l1.style.fontSize='clamp(0.85rem,1.4vw,1.6rem)';l1.style.opacity='0.45';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(0.85rem,1.4vw,1.6rem)';l2.style.opacity='0.45';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(3rem,7vw,8.5rem)';l3.style.lineHeight='0.87';tl(l3);l3.style.marginTop='8px';lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,40));
   }
-
-  // ── OPT 10: Massive centred single word — l3 only, with reflection ──
-  else if (opt === 10) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    if(l1) l1.style.display='none';
-    if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(3.5rem,9vw,11rem)';l3.style.textAlign='center';l3.style.lineHeight='0.85';l3.style.letterSpacing='0.02em';}
-    if(lbl){lbl.style.textAlign='center';}
-    if(atw) atw.style.justifyContent='center';
+  else if (opt===5) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;min-height:360px;';
+    var c1=document.createElement('div');c1.className='tsw-injected';c1.style.cssText='display:flex;flex-direction:column;justify-content:center;padding:60px 3vw 60px 5vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.marginBottom='18px';c1.appendChild(lbl);}if(l1){l1.style.textAlign='left';c1.appendChild(l1);}inner.appendChild(c1);
+    var c2=document.createElement('div');c2.className='tsw-injected';c2.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 3vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(l2){l2.style.textAlign='center';l2.style.fontSize='clamp(2rem,4vw,4.8rem)';c2.appendChild(l2);}inner.appendChild(c2);
+    var c3=document.createElement('div');c3.className='tsw-injected';c3.style.cssText='display:flex;flex-direction:column;justify-content:space-between;padding:60px 5vw 60px 3vw;';
+    if(l3){l3.style.textAlign='right';c3.appendChild(l3);}if(atw){atw.style.justifyContent='flex-end';c3.appendChild(atw);}inner.appendChild(c3);
   }
-
-  // ── OPT 11: Vertical label left + text right ──
-  else if (opt === 11) {
-    mainCol.style.width = '100%';
-    mainCol.style.flexDirection = 'row';
-    mainCol.style.alignItems = 'center';
-    var lc = document.createElement('div');
-    lc.className='tsw-injected';
-    lc.style.cssText='width:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:0.5px solid rgba(200,169,110,0.18);margin-right:4vw;padding-right:3vw;min-height:160px;flex-shrink:0;';
-    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.25em';lbl.style.marginBottom='0';lc.appendChild(lbl);}
-    mainCol.insertBefore(lc, mainCol.firstChild);
-    var rc = document.createElement('div');
-    rc.className='tsw-injected';rc.style.cssText='display:flex;flex-direction:column;';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';rc.appendChild(p);}});
-    if(atw){rc.appendChild(atw);}
-    mainCol.appendChild(rc);
+  else if (opt===6) {
+    sec.style.padding='0';
+    var bg6=TH_BG[6]||'#0d1117';var isG6=bg6.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var g=[mkCell(bg6,isG6,'display:flex;flex-direction:column;justify-content:flex-end;padding:28px 4vw;'),mkCell(bg6,isG6,'display:flex;flex-direction:column;justify-content:center;align-items:center;padding:28px 4vw;'),mkCell(bg6,isG6,'display:flex;flex-direction:column;justify-content:center;padding:28px 4vw;'),mkCell(bg6,isG6,'display:flex;flex-direction:column;justify-content:center;padding:28px 4vw;overflow:hidden;')];
+    if(lbl){lbl.style.marginBottom='6px';g[0].appendChild(lbl);}if(l1){l1.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';l1.style.textAlign='left';g[0].appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(2rem,4vw,4.8rem)';l2.style.textAlign='center';g[1].appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';l3.style.textAlign='left';g[2].appendChild(l3);}
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    (IJD[6]||[]).forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.1rem,2vw,2.3rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    g[3].appendChild(ri);if(atw){atw.style.marginTop='8px';g[3].appendChild(atw);}
+    g.forEach(function(c){inner.appendChild(c);});
   }
-
-  // ── OPT 12: Angle-quote framed — large « » with reflection ──
-  else if (opt === 12) {
-    mainCol.style.paddingLeft = '6vw';
-    var oq = document.createElement('div');
-    oq.className='tsw-injected';
-    oq.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,5vw,6rem);color:rgba(200,169,110,0.16);line-height:0.6;margin-bottom:8px;';
-    oq.textContent='\u00ab';
-    var cq = oq.cloneNode(true);cq.textContent='\u00bb';cq.style.marginTop='8px';
-    if(l1&&l1.parentNode){l1.parentNode.insertBefore(oq,l1);}
-    if(atw&&atw.parentNode){atw.parentNode.insertBefore(cq,atw);}
+  else if (opt===7) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(55,'60px 4vw 60px 6vw',[]);
+    if(l1){l1.style.fontSize='clamp(0.8rem,1.3vw,1.5rem)';l1.style.opacity='0.38';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(1.4rem,2.6vw,3rem)';l2.style.opacity='0.68';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2.8rem,6vw,7.5rem)';l3.style.lineHeight='0.87';tl(l3);lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='16px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,45));
   }
-
-  // ── OPT 13: All same size, tight left, minimal ──
-  else if (opt === 13) {
-    mainCol.style.paddingLeft = '6vw';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';p.style.fontSize='clamp(2rem,4vw,4.8rem)';p.style.lineHeight='0.88';p.style.marginBottom='2px';}});
-    if(atw) atw.style.justifyContent='flex-start';
-  }
-
-  // ── OPT 14: Progressive opacity+size left, with reflection ──
-  else if (opt === 14) {
-    mainCol.style.paddingLeft = '6vw';
-    if(l1){l1.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';l1.style.opacity='0.42';l1.style.textAlign='left';}
-    if(l2){l2.style.fontSize='clamp(1.8rem,3.4vw,4rem)';l2.style.opacity='0.68';l2.style.textAlign='left';}
-    if(l3){l3.style.fontSize='clamp(2.5rem,5vw,6rem)';l3.style.textAlign='left';l3.style.lineHeight='0.88';}
-    if(atw) atw.style.justifyContent='flex-start';
-  }
-
-  // ── OPT 15: Offset left 14vw — text pushed right of centre ──
-  else if (opt === 15) {
-    mainCol.style.width = '100%';
-    mainCol.style.paddingLeft = '14vw';
-    [l1,l2,l3].forEach(function(p){if(p) p.style.textAlign='left';});
-    if(lbl){lbl.style.position='absolute';lbl.style.top='24px';lbl.style.right='6vw';}
-    if(atw){atw.style.position='absolute';atw.style.bottom='24px';atw.style.right='6vw';atw.style.justifyContent='flex-end';}
-  }
-
-  // ── OPT 16: Full-bleed nowrap centred, with reflection ──
-  else if (opt === 16) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(2.8rem,7.5vw,9.5rem)';p.style.lineHeight='0.85';p.style.overflow='hidden';p.style.whiteSpace='nowrap';p.style.textAlign='center';}});
-    if(lbl){lbl.style.position='absolute';lbl.style.top='20px';lbl.style.left='4vw';}
-    if(atw){atw.style.position='absolute';atw.style.bottom='20px';atw.style.right='4vw';atw.style.justifyContent='flex-end';}
-  }
-
-  // ── OPT 17: Ruled left — hairline rule between each line, left text ──
-  else if (opt === 17) {
-    mainCol.style.paddingLeft = '6vw';
-    mainCol.style.width = '100%';
-    [l1,l2,l3].forEach(function(p){
-      if(!p||!p.parentNode) return;
-      var r=document.createElement('div');r.className='tsw-injected';r.style.cssText='width:100%;height:0.5px;background:rgba(200,169,110,0.16);';
-      p.parentNode.insertBefore(r,p);p.style.textAlign='left';p.style.padding='10px 0';
+  else if (opt===8) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.marginBottom='20px';inner.appendChild(lbl);}
+    var anns=['±0.1','±0.01','±0.001'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;
+      var row=document.createElement('div');row.className='tsw-injected';row.style.cssText='display:flex;align-items:center;border-top:0.5px solid rgba(200,169,110,0.18);padding:12px 0;';
+      var a=document.createElement('span');a.className='tsw-injected';a.style.cssText='font-size:0.5rem;letter-spacing:0.18em;color:rgba(200,169,110,0.5);width:56px;flex-shrink:0;font-family:"DM Sans",sans-serif;';a.textContent=anns[i];row.appendChild(a);
+      line.style.fontSize='clamp(1.8rem,3.5vw,4.2rem)';line.style.textAlign='left';line.style.margin='0';line.style.flexGrow='1';row.appendChild(line);inner.appendChild(row);
     });
-    var rEnd=document.createElement('div');rEnd.className='tsw-injected';rEnd.style.cssText='width:100%;height:0.5px;background:rgba(200,169,110,0.16);';
-    mainCol.appendChild(rEnd);
-    if(atw) atw.style.justifyContent='flex-start';
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-
-  // ── OPT 18: 4×2 book layout — left text, right reflection (the favourite) ──
-  else if (opt === 18) {
-    mainCol.style.paddingLeft = '6vw';
-    if(l1) l1.style.fontSize='clamp(1.4rem,2.6vw,3rem)';
-    if(l2) l2.style.fontSize='clamp(1.4rem,2.6vw,3rem)';
-    if(l3) l3.style.fontSize='clamp(1.4rem,2.6vw,3rem)';
-    if(lbl) lbl.style.marginBottom='24px';
-    if(atw) atw.style.justifyContent='flex-start';
-    if(atw) atw.style.marginTop='24px';
+  else if (opt===9) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 2.5fr 1fr;width:100%;min-height:360px;';
+    var c1=document.createElement('div');c1.className='tsw-injected';c1.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.24em';c1.appendChild(lbl);}inner.appendChild(c1);
+    var c2=document.createElement('div');c2.className='tsw-injected';c2.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 4vw;';
+    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='center';c2.appendChild(p);}});inner.appendChild(c2);
+    var c3=document.createElement('div');c3.className='tsw-injected';c3.style.cssText='display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:60px 2vw;border-left:0.5px solid rgba(200,169,110,0.18);overflow:hidden;';
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;writing-mode:vertical-rl;';
+    var p9=document.createElement('p');p9.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.7rem,1.2vw,1.4rem);letter-spacing:0.1em;color:'+tc.l3+';text-transform:uppercase;';p9.textContent=IJD[9][2];ri.appendChild(p9);c3.appendChild(ri);
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.justifyContent='flex-start';c3.appendChild(atw);}inner.appendChild(c3);
   }
-
-  // ── OPT 19: Negative letter-spacing condensed centred ──
-  else if (opt === 19) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(2.2rem,5vw,6rem)';p.style.letterSpacing='-0.01em';p.style.lineHeight='0.87';p.style.textAlign='center';}});
-    if(lbl){lbl.style.textAlign='center';}
-    if(atw) atw.style.justifyContent='center';
+  else if (opt===10) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:45%;display:flex;flex-direction:column;justify-content:center;padding:60px 4vw 60px 6vw;border-right:0.5px solid rgba(200,169,110,0.2);overflow:hidden;flex-shrink:0;';
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    (IJD[10]||[]).forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    lc.appendChild(ri);inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:55%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    if(lbl){lbl.style.marginBottom='20px';rc.appendChild(lbl);}
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);rc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';rc.appendChild(atw);}inner.appendChild(rc);
   }
-
-  // ── OPT 20: 2-col — label right, text left, with reflection ──
-  else if (opt === 20) {
-    mainCol.style.width = '100%';
-    mainCol.style.display = 'grid';
-    mainCol.style.gridTemplateColumns = '1fr 160px';
-    mainCol.style.alignItems = 'center';
-    var rc20 = document.createElement('div');
-    rc20.className='tsw-injected';
-    rc20.style.cssText='display:flex;flex-direction:column;align-items:flex-end;padding-left:3vw;border-left:0.5px solid rgba(200,169,110,0.18);';
-    if(lbl){lbl.style.textAlign='right';lbl.style.writingMode='vertical-rl';lbl.style.letterSpacing='0.24em';rc20.appendChild(lbl);}
-    if(atw){atw.style.justifyContent='flex-end';atw.style.writingMode='vertical-rl';atw.style.marginTop='16px';rc20.appendChild(atw);}
-    mainCol.appendChild(rc20);
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';p.style.paddingLeft='6vw';}});
+  else if (opt===11) {
+    sec.style.padding='0';
+    var bg11=TH_BG[11]||'#0d1117';var isG11=bg11.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    if(l1){l1.style.fontSize='clamp(2rem,4vw,4.8rem)';tl(l1);}
+    if(l2){l2.style.fontSize='clamp(2rem,4vw,4.8rem)';l2.style.textAlign='right';}
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';tl(l3);}
+    [l1,l2,l3].forEach(function(p,i){if(!p)return;var d=mkCell(bg11,isG11,'display:flex;flex-direction:column;justify-content:center;padding:28px 4vw;');d.appendChild(p);inner.appendChild(d);});
+    var d4=mkCell(bg11,isG11,'display:flex;flex-direction:column;justify-content:space-between;padding:28px 4vw;');
+    if(lbl){lbl.style.marginBottom='0';d4.appendChild(lbl);}if(atw){atw.style.justifyContent='flex-end';d4.appendChild(atw);}inner.appendChild(d4);
   }
-
-  // ── OPT 21: DM Serif all 3 lines italic centred ──
-  else if (opt === 21) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontFamily="'DM Serif Display',serif";p.style.fontSize='clamp(1.5rem,2.8vw,3.2rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.letterSpacing='0.01em';p.style.lineHeight='1.25';p.style.textAlign='center';}});
-    if(lbl){lbl.style.textAlign='center';}
-    if(atw) atw.style.justifyContent='center';
+  else if (opt===12) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl){lbl.style.marginBottom='20px';lbl.style.textAlign='left';}
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.5rem,2.8vw,3.2rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.letterSpacing='0.01em';p.style.lineHeight='1.25';tl(p);lc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:50%;display:flex;flex-direction:column;justify-content:center;padding:60px 4vw;';
+    ['The best products',"Won't be invented","They'll be extracted"].forEach(function(t){var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l2+';transform:skewX(-4deg);display:block;margin-bottom:4px;text-align:left;';p.textContent=t;rc.appendChild(p);});
+    inner.appendChild(rc);
   }
-
-  // ── OPT 22: 4-panel grid — l1/l2/l3/attr each in a box, with reflection ──
-  else if (opt === 22) {
-    mainCol.style.width = '100%';
-    mainCol.style.display = 'grid';
-    mainCol.style.gridTemplateColumns = '1fr 1fr';
-    mainCol.style.gridTemplateRows = 'auto auto';
-    mainCol.style.gap = '1px';
-    mainCol.style.background = 'rgba(200,169,110,0.1)';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.background=isGradBg()?'rgba(0,0,0,0.4)':'rgba(10,10,10,0.6)';p.style.padding='20px 24px';p.style.textAlign='left';p.style.fontSize='clamp(1.3rem,2.4vw,2.8rem)';}});
-    if(lbl){lbl.style.gridColumn='1/-1';lbl.style.marginBottom='16px';lbl.style.background='none';}
-    if(atw){atw.style.gridColumn='1/-1';atw.style.justifyContent='flex-start';atw.style.marginTop='16px';atw.style.background='none';}
-    function isGradBg(){var b=TH_BG[opt]||'';return b.indexOf('gradient')>-1;}
+  else if (opt===13) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.marginBottom='20px';inner.appendChild(lbl);}
+    [l1,l2,l3].forEach(function(line){if(!line)return;inner.appendChild(mkHL());line.style.textAlign='left';line.style.padding='14px 0';line.style.margin='0';inner.appendChild(line);});
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-
-  // ── OPT 23: Tiny l1+l2, massive l3 — centred ──
-  else if (opt === 23) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    if(l1){l1.style.fontSize='clamp(0.85rem,1.5vw,1.7rem)';l1.style.opacity='0.42';l1.style.textAlign='center';l1.style.marginBottom='2px';}
-    if(l2){l2.style.fontSize='clamp(0.85rem,1.5vw,1.7rem)';l2.style.opacity='0.42';l2.style.textAlign='center';l2.style.marginBottom='16px';}
-    if(l3){l3.style.fontSize='clamp(3rem,7.2vw,9rem)';l3.style.textAlign='center';l3.style.lineHeight='0.87';}
-    if(lbl){lbl.style.textAlign='center';}
-    if(atw) atw.style.justifyContent='center';
+  else if (opt===14) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(60,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='14px';
+    if(l1){l1.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';l1.style.opacity='0.42';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(1.8rem,3.4vw,4rem)';l2.style.opacity='0.68';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2.5rem,5vw,6rem)';l3.style.lineHeight='0.88';tl(l3);lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,40));
   }
-
-  // ── OPT 24: l1+l2 DM Sans, l3 DM Serif italic huge — left, with reflection ──
-  else if (opt === 24) {
-    mainCol.style.paddingLeft = '6vw';
-    if(l1){l1.style.fontFamily="'DM Sans',sans-serif";l1.style.fontWeight='300';l1.style.fontSize='clamp(1rem,1.8vw,2rem)';l1.style.textTransform='none';l1.style.transform='none';l1.style.letterSpacing='0.04em';l1.style.opacity='0.5';}
-    if(l2){l2.style.fontFamily="'DM Sans',sans-serif";l2.style.fontWeight='300';l2.style.fontSize='clamp(1rem,1.8vw,2rem)';l2.style.textTransform='none';l2.style.transform='none';l2.style.letterSpacing='0.04em';l2.style.opacity='0.5';}
-    if(l3){l3.style.fontFamily="'DM Serif Display',serif";l3.style.fontSize='clamp(2rem,4vw,4.8rem)';l3.style.fontStyle='italic';l3.style.textTransform='none';l3.style.transform='none';l3.style.letterSpacing='0.01em';l3.style.lineHeight='1.1';l3.style.marginTop='12px';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===15) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 3fr 1fr;width:100%;min-height:360px;';
+    var c1=document.createElement('div');c1.className='tsw-injected';c1.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.24em';c1.appendChild(lbl);}inner.appendChild(c1);
+    var c2=document.createElement('div');c2.className='tsw-injected';c2.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 4vw;';
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
+    if(l3){l3.style.fontSize='clamp(3rem,7.5vw,9.5rem)';l3.style.textAlign='center';l3.style.lineHeight='0.85';l3.style.letterSpacing='0.03em';c2.appendChild(l3);}inner.appendChild(c2);
+    var c3=document.createElement('div');c3.className='tsw-injected';c3.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-left:0.5px solid rgba(200,169,110,0.18);';
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.justifyContent='flex-start';c3.appendChild(atw);}inner.appendChild(c3);
   }
-
-  // ── OPT 25: Single line l3 only, left, small clean ──
-  else if (opt === 25) {
-    mainCol.style.paddingLeft = '8vw';
-    if(l1) l1.style.display='none';
-    if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(2rem,4.5vw,5.5rem)';l3.style.textAlign='left';l3.style.lineHeight='1';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===16) {
+    sec.style.padding='0';
+    var bg16=TH_BG[16]||'#0d1117';var isG16=bg16.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    if(l1)l1.style.fontSize='clamp(1.6rem,3vw,3.5rem)';if(l2)l2.style.fontSize='clamp(2rem,4vw,4.8rem)';if(l3)l3.style.fontSize='clamp(2rem,4vw,4.8rem)';
+    var d1=mkCell(bg16,isG16,'display:flex;flex-direction:column;justify-content:flex-end;padding:24px 5vw;');tl(l1);if(l1)d1.appendChild(l1);
+    var d2=mkCell(bg16,isG16,'display:flex;flex-direction:column;justify-content:flex-start;padding:24px 5vw;');tl(l2);if(l2)d2.appendChild(l2);
+    var d3=mkCell(bg16,isG16,'display:flex;flex-direction:column;justify-content:flex-end;padding:24px 5vw;');tl(l3);if(l3)d3.appendChild(l3);
+    var d4=mkCell(bg16,isG16,'display:flex;flex-direction:column;justify-content:flex-start;padding:24px 4vw;overflow:hidden;');
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    var p16=document.createElement('p');p16.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.6rem,3vw,3.5rem);letter-spacing:0.1em;color:'+tc.l3+';text-transform:uppercase;transform:skewX(-4deg);';p16.textContent=IJD[16][2];ri.appendChild(p16);d4.appendChild(ri);
+    [d1,d2,d3,d4].forEach(function(d){inner.appendChild(d);});
   }
-
-  // ── OPT 26: Right-heavy 2-col — label+attr left, all text right, with reflection ──
-  else if (opt === 26) {
-    mainCol.style.width = '100%';
-    mainCol.style.display = 'grid';
-    mainCol.style.gridTemplateColumns = '140px 1fr';
-    mainCol.style.alignItems = 'center';
-    var lc26=document.createElement('div');lc26.className='tsw-injected';lc26.style.cssText='display:flex;flex-direction:column;justify-content:space-between;height:100%;padding-right:3vw;min-height:120px;border-right:0.5px solid rgba(200,169,110,0.16);';
-    if(lbl){lbl.style.textAlign='left';lc26.appendChild(lbl);}
-    if(atw){atw.style.justifyContent='flex-start';lc26.appendChild(atw);}
-    mainCol.insertBefore(lc26, mainCol.firstChild);
-    var rc26=document.createElement('div');rc26.className='tsw-injected';rc26.style.cssText='display:flex;flex-direction:column;align-items:flex-end;padding-left:3vw;';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='right';rc26.appendChild(p);}});
-    mainCol.appendChild(rc26);
-  }
-
-  // ── OPT 27: Dot divider centred ──
-  else if (opt === 27) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    [l1,l2].forEach(function(p){
-      if(!p||!p.parentNode) return;
-      var dot=document.createElement('div');dot.className='tsw-injected';dot.style.cssText='width:4px;height:4px;border-radius:50%;background:rgba(200,169,110,0.4);margin:10px auto;';
-      p.parentNode.insertBefore(dot,p.nextSibling);
+  else if (opt===17) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.marginBottom='20px';inner.appendChild(lbl);}
+    var syms=['⌀','∠','⊥'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;
+      var row=document.createElement('div');row.className='tsw-injected';row.style.cssText='display:flex;align-items:center;border-top:0.5px solid rgba(200,169,110,0.18);padding:12px 0;';
+      var a=document.createElement('span');a.className='tsw-injected';a.style.cssText='font-size:1.3rem;color:rgba(200,169,110,0.55);width:44px;flex-shrink:0;font-family:"Bebas Neue",sans-serif;';a.textContent=syms[i];row.appendChild(a);
+      line.style.fontSize='clamp(1.8rem,3.5vw,4.2rem)';line.style.textAlign='left';line.style.margin='0';line.style.flexGrow='1';row.appendChild(line);inner.appendChild(row);
     });
-    [l1,l2,l3].forEach(function(p){if(p) p.style.textAlign='center';});
-    if(lbl) lbl.style.textAlign='center';
-    if(atw) atw.style.justifyContent='center';
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-
-  // ── OPT 28: Each word on its own line, right, tapering ──
-  else if (opt === 28) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'flex-end';
-    mainCol.style.paddingRight = '6vw';
-    if(l1) l1.style.display='none';
-    if(l2) l2.style.display='none';
+  else if (opt===18) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='22px';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);lc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='22px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
+  }
+  else if (opt===19) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;min-height:360px;';
+    var bg19=TH_BG[19]||'#0d1117';var isG19=bg19.indexOf('gradient')>-1;
+    var top=document.createElement('div');top.className='tsw-injected';top.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5px;background:rgba(200,169,110,0.12);flex:1;';
+    var words=['The best','products',"Won't be"];
+    words.forEach(function(w){var d=mkCell(bg19,isG19,'display:flex;flex-direction:column;justify-content:center;padding:36px 4vw;');var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.6rem,3vw,3.5rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l1+';transform:skewX(-4deg);';p.textContent=w;d.appendChild(p);top.appendChild(d);});
+    inner.appendChild(top);
+    var bot=document.createElement('div');bot.className='tsw-injected';bot.style.cssText='display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(200,169,110,0.18);padding:16px 6vw;';
+    if(lbl){lbl.style.marginBottom='0';lbl.style.marginRight='auto';bot.appendChild(lbl);}
+    if(l3){l3.style.fontSize='clamp(1.8rem,3.5vw,4rem)';l3.style.textAlign='right';l3.style.margin='0';bot.appendChild(l3);}
+    if(atw){atw.style.marginTop='0';atw.style.marginLeft='24px';bot.appendChild(atw);}
+    inner.appendChild(bot);
+  }
+  else if (opt===20) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:38%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 3vw;border-right:0.5px solid rgba(200,169,110,0.18);flex-shrink:0;';
+    if(lbl){lbl.style.fontFamily='"DM Serif Display",serif';lbl.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';lbl.style.letterSpacing='0.02em';lbl.style.textTransform='none';lbl.style.textAlign='center';lbl.style.lineHeight='1.35';lc.appendChild(lbl);}inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:62%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='right';rc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='16px';rc.appendChild(atw);}inner.appendChild(rc);
+  }
+  else if (opt===21) {
+    sec.style.padding='0';
+    var bg21=TH_BG[21]||'#0d1117';var isG21=bg21.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var top=mkCell(bg21,isG21,'grid-column:1/-1;display:flex;align-items:center;gap:4vw;padding:28px 6vw;');
+    if(l1){l1.style.fontSize='clamp(1.8rem,3.2vw,3.8rem)';tl(l1);top.appendChild(l1);}
+    var vs=document.createElement('div');vs.className='tsw-injected';vs.style.cssText='width:0.5px;height:36px;background:rgba(200,169,110,0.25);flex-shrink:0;';top.appendChild(vs);
+    if(l2){l2.style.fontSize='clamp(1.8rem,3.2vw,3.8rem)';tl(l2);top.appendChild(l2);}
+    if(lbl){lbl.style.marginLeft='auto';lbl.style.marginBottom='0';top.appendChild(lbl);}inner.appendChild(top);
+    var bl=mkCell(bg21,isG21,'display:flex;flex-direction:column;justify-content:center;padding:28px 6vw;');
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';tl(l3);bl.appendChild(l3);}inner.appendChild(bl);
+    var br=mkCell(bg21,isG21,'display:flex;flex-direction:column;justify-content:center;padding:28px 4vw;overflow:hidden;');
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    (IJD[21]||[]).forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.2rem,2.2vw,2.6rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    br.appendChild(ri);if(atw){atw.style.marginTop='10px';br.appendChild(atw);}inner.appendChild(br);
+  }
+  else if (opt===22) {
+    setRow();sec.style.padding='0';inner.style.minHeight='360px';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    lc.style.justifyContent='flex-start';if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);lc.appendChild(p);}});
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:50%;display:flex;flex-direction:column;justify-content:flex-end;padding:60px 4vw;overflow:hidden;';
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    (IJD[22]||[]).forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    rc.appendChild(ri);if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';rc.appendChild(atw);}inner.appendChild(rc);
+  }
+  else if (opt===23) {
+    sec.style.padding='80px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='0';lbl.style.left='0';lbl.style.marginBottom='0';inner.appendChild(lbl);}
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
+    if(l3){l3.style.fontSize='clamp(3.5rem,9vw,11rem)';l3.style.textAlign='center';l3.style.lineHeight='0.85';l3.style.letterSpacing='0.02em';inner.appendChild(l3);}
+    if(atw){atw.style.position='absolute';atw.style.bottom='0';atw.style.right='0';atw.style.marginTop='0';inner.appendChild(atw);}
+  }
+  else if (opt===24) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 3fr 1.5fr;width:100%;min-height:360px;';
+    var c1=document.createElement('div');c1.className='tsw-injected';c1.style.cssText='display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.24em';c1.appendChild(lbl);}
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.justifyContent='flex-start';c1.appendChild(atw);}inner.appendChild(c1);
+    var c2=document.createElement('div');c2.className='tsw-injected';c2.style.cssText='display:flex;flex-direction:column;justify-content:center;padding:60px 4vw;';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);p.style.fontSize='clamp(1.8rem,3.5vw,4rem)';c2.appendChild(p);}});inner.appendChild(c2);
+    var c3=document.createElement('div');c3.className='tsw-injected';c3.style.cssText='display:flex;flex-direction:column;justify-content:center;padding:60px 3vw;border-left:0.5px solid rgba(200,169,110,0.18);overflow:hidden;';
+    (IJD[24]||[]).forEach(function(t){var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.75rem,1.3vw,1.5rem);letter-spacing:0.08em;text-transform:uppercase;line-height:1.2;color:rgba(200,169,110,0.4);display:block;margin-bottom:6px;';p.textContent=t;c3.appendChild(p);});
+    inner.appendChild(c3);
+  }
+  else if (opt===25) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.6rem,3vw,3.5rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.letterSpacing='0.01em';p.style.lineHeight='1.25';tl(p);lc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
+  }
+  else if (opt===26) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='48px';lbl.style.right='6vw';inner.appendChild(lbl);}
+    var szs=['clamp(1.4rem,2.6vw,3rem)','clamp(2rem,3.8vw,4.4rem)','clamp(2.8rem,5.5vw,6.5rem)'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;inner.appendChild(mkHL());line.style.textAlign='left';line.style.padding='12px 0';line.style.fontSize=szs[i];line.style.margin='0';inner.appendChild(line);});
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
+  }
+  else if (opt===27) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(65,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);lc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:35%;display:flex;flex-direction:column;justify-content:center;padding:60px 3vw;';
+    (IJD[27]||[]).forEach(function(t){var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.7rem,1.2vw,1.4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:1.3;color:rgba(200,169,110,0.4);display:block;margin-bottom:8px;';p.textContent=t;rc.appendChild(p);});
+    inner.appendChild(rc);
+  }
+  else if (opt===28) {
+    sec.style.padding='0';
+    var bg28=TH_BG[28]||'#0d1117';var isG28=bg28.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var words=["They'll be","extracted","Won't be","invented"];
+    var taligns=['left','right','right','left'];
+    words.forEach(function(w,i){
+      var d=mkCell(bg28,isG28,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+      var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(2rem,4.5vw,5.5rem);letter-spacing:0.06em;text-transform:uppercase;line-height:0.88;color:'+(i<2?tc.l3:tc.l1)+';transform:skewX(-4deg);text-align:'+taligns[i]+';';p.textContent=w;d.appendChild(p);
+      if(i===0&&lbl){lbl.style.marginBottom='8px';d.insertBefore(lbl,d.firstChild);}
+      if(i===3&&atw){atw.style.justifyContent='flex-start';atw.style.marginTop='10px';d.appendChild(atw);}
+      inner.appendChild(d);
+    });
+  }
+  else if (opt===29) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);lc.appendChild(p);}});
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:50%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    ['The best products',"Won't be invented","They'll be extracted"].forEach(function(t){var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l1+';transform:skewX(-4deg);display:block;margin-bottom:4px;text-align:right;';p.textContent=t;rc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='20px';rc.appendChild(atw);}inner.appendChild(rc);
+  }
+  else if (opt===30) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(55,'60px 4vw 60px 6vw',[]);
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='24px';lbl.style.right='6vw';inner.appendChild(lbl);}
+    if(l3){l3.style.fontSize='clamp(3rem,8vw,10rem)';l3.style.lineHeight='0.85';tl(l3);lc.appendChild(l3);}
+    if(atw){atw.style.position='absolute';atw.style.bottom='24px';atw.style.right='6vw';atw.style.marginTop='0';inner.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,45,'clamp(1.6rem,3vw,3.5rem)'));
+  }
+  else if (opt===31) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-end;width:100%;';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='48px';lbl.style.left='6vw';inner.appendChild(lbl);}
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
     if(l3){
-      l3.style.display='block';l3.style.textAlign='right';l3.style.lineHeight='0.9';
-      var ww=l3.textContent.split(' ');
-      l3.innerHTML=ww.map(function(w,i){return '<span style="display:block;font-size:clamp('+(3.5-i*0.4)+'rem,'+(9-i)+'vw,'+(10.5-i*0.8)+'rem);opacity:'+(1-i*0.14)+'">'+w+'</span>';}).join('');
+      l3.style.display='block';l3.style.lineHeight='0.9';
+      var words31=["They'll","be","extracted"];
+      l3.innerHTML=words31.map(function(w,i){return '<span style="display:block;text-align:right;font-size:clamp('+(3.5-i*0.4)+'rem,'+(9-i*1.5)+'vw,'+(11-i*1.2)+'rem);opacity:'+(1-i*0.15)+';font-family:Bebas Neue,sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:'+tc.l3+';transform:skewX(-4deg);display:block;">'+w+'</span>';}).join('');
+      inner.appendChild(l3);
     }
-    if(lbl){lbl.style.position='absolute';lbl.style.top='20px';lbl.style.left='6vw';}
-    if(atw) atw.style.justifyContent='flex-end';
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='16px';inner.appendChild(atw);}
   }
-
-  // ── OPT 29: 3-dot sequence centred, small, spacious ──
-  else if (opt === 29) {
-    mainCol.style.width = '100%';
-    mainCol.style.alignItems = 'center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='center';p.style.fontSize='clamp(1.6rem,3vw,3.4rem)';}});
-    if(lbl) lbl.style.textAlign='center';
-    if(atw) atw.style.justifyContent='center';
+  else if (opt===32) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;min-height:360px;';
+    var bg32=TH_BG[32]||'#0d1117';var isG32=bg32.indexOf('gradient')>-1;
+    function mkcol32(css){var d=document.createElement('div');d.className='tsw-injected';d.style.cssText=css;return d;}
+    var cols32=[mkcol32('display:flex;flex-direction:column;justify-content:center;padding:60px 3vw 60px 5vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol32('display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 3vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol32('display:flex;flex-direction:column;justify-content:space-between;padding:60px 5vw 60px 3vw;')];
+    if(lbl){lbl.style.marginBottom='16px';cols32[0].appendChild(lbl);}if(l1){tl(l1);cols32[0].appendChild(l1);}inner.appendChild(cols32[0]);
+    if(l2){l2.style.textAlign='center';l2.style.fontSize='clamp(2rem,4vw,4.8rem)';cols32[1].appendChild(l2);}inner.appendChild(cols32[1]);
+    if(l3){l3.style.textAlign='right';cols32[2].appendChild(l3);}if(atw){atw.style.justifyContent='flex-end';cols32[2].appendChild(atw);}inner.appendChild(cols32[2]);
   }
-
-  // ── OPTS 30-59: each unique ──
-  else if (opt === 30) {
-    // Full-bleed massive l3 left, label floating top-right
-    mainCol.style.paddingLeft='6vw';
-    if(l1) l1.style.display='none'; if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(3.5rem,10vw,12rem)';l3.style.lineHeight='0.85';l3.style.letterSpacing='-0.01em';}
-    if(lbl){lbl.style.position='absolute';lbl.style.top='20px';lbl.style.right='6vw';}
-    if(atw){atw.style.position='absolute';atw.style.bottom='20px';atw.style.right='6vw';}
+  else if (opt===33) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.5rem,2.8vw,3.2rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.lineHeight='1.25';tl(p);lc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
   }
-  else if (opt === 31) {
-    // Word-per-line right taper (the gradient favourite)
-    mainCol.style.width='100%';mainCol.style.alignItems='flex-end';mainCol.style.paddingRight='6vw';
-    if(l1) l1.style.display='none'; if(l2) l2.style.display='none';
-    if(l3){l3.style.display='block';l3.style.textAlign='right';l3.style.lineHeight='0.9';var ww31=l3.textContent.split(' ');l3.innerHTML=ww31.map(function(w,i){return '<span style="display:block;font-size:clamp('+(3.5-i*0.5)+'rem,'+(9-i*1.2)+'vw,'+(10-i)+'rem);opacity:'+(1-i*0.15)+'">'+w+'</span>';}).join('');}
-    if(lbl){lbl.style.position='absolute';lbl.style.top='20px';lbl.style.left='6vw';}
-    if(atw) atw.style.justifyContent='flex-end';
+  else if (opt===34) {
+    sec.style.padding='0';
+    var bg34=TH_BG[34]||'#0d1117';var isG34=bg34.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var cells34=[mkCell(bg34,isG34,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;'),mkCell(bg34,isG34,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;'),mkCell(bg34,isG34,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;'),mkCell(bg34,isG34,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;')];
+    if(lbl){lbl.style.marginBottom='8px';cells34[0].appendChild(lbl);}
+    if(l1){l1.style.textAlign='left';cells34[1].appendChild(l1);}
+    if(l2){l2.style.textAlign='left';cells34[2].appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';l3.style.textAlign='left';cells34[3].appendChild(l3);}
+    if(atw){atw.style.marginTop='8px';cells34[0].appendChild(atw);}
+    cells34.forEach(function(c){inner.appendChild(c);});
   }
-  else if (opt === 32) {
-    // DM Serif centred italic, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontFamily="'DM Serif Display',serif";p.style.fontSize='clamp(1.5rem,3vw,3.6rem)';p.style.letterSpacing='0.01em';p.style.textTransform='none';p.style.transform='none';p.style.lineHeight='1.2';p.style.fontStyle='italic';p.style.textAlign='center';}});
-    if(l1) l1.style.opacity='0.45'; if(l2) l2.style.opacity='0.72';
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
+  else if (opt===35) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:38%;display:flex;flex-direction:column;justify-content:space-between;padding:60px 3vw 60px 6vw;border-right:0.5px solid rgba(200,169,110,0.18);flex-shrink:0;';
+    if(lbl){lbl.style.marginBottom='0';lc.appendChild(lbl);}if(atw){atw.style.justifyContent='flex-start';lc.appendChild(atw);}inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:62%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    if(l1){l1.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';l1.style.opacity='0.42';tl(l1);rc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(1.8rem,3.4vw,4rem)';l2.style.opacity='0.68';tl(l2);rc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2.5rem,5vw,6rem)';l3.style.lineHeight='0.88';tl(l3);rc.appendChild(l3);}
+    inner.appendChild(rc);
   }
-  else if (opt === 33) {
-    // 3-col grid forest green
-    mainCol.style.width='100%';mainCol.style.display='grid';mainCol.style.gridTemplateColumns='1fr 1fr 1fr';mainCol.style.gap='0';mainCol.style.alignItems='center';
-    function mk33(){var d=document.createElement('div');d.className='tsw-injected';d.style.cssText='width:0.5px;height:55%;background:rgba(200,169,110,0.2);align-self:center;justify-self:center;';return d;}
-    if(l1&&l1.parentNode){l1.parentNode.insertBefore(mk33(),l2);}
-    if(l2&&l2.parentNode){l2.parentNode.insertBefore(mk33(),l3);}
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(1.1rem,2vw,2.4rem)';p.style.padding='0 3vw';p.style.textAlign='center';}});
-    if(lbl){lbl.style.gridColumn='1/-1';lbl.style.marginBottom='18px';lbl.style.textAlign='center';}
-    if(atw){atw.style.gridColumn='1/-1';atw.style.justifyContent='center';atw.style.marginTop='18px';}
+  else if (opt===36) {
+    sec.style.padding='80px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;text-align:center;';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='0';lbl.style.left='0';inner.appendChild(lbl);}
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
+    if(l3){l3.style.fontSize='clamp(3rem,7.5vw,9.5rem)';l3.style.textAlign='center';l3.style.lineHeight='0.85';inner.appendChild(l3);}
+    if(atw){atw.style.position='absolute';atw.style.bottom='0';atw.style.right='0';inner.appendChild(atw);}
   }
-  else if (opt === 34) {
-    // Ghost "THESIS" bg watermark behind, with reflection
-    mainCol.style.paddingLeft='6vw';
-    var bg34=document.createElement('div');bg34.className='tsw-injected';bg34.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) skewX(-4deg);font-family:"Bebas Neue",sans-serif;font-size:clamp(5rem,18vw,20rem);color:rgba(200,169,110,0.04);white-space:nowrap;pointer-events:none;z-index:0;letter-spacing:0.06em;';bg34.textContent='THESIS';sec.insertBefore(bg34,sec.firstChild);
+  else if (opt===37) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.marginBottom='20px';inner.appendChild(lbl);}
+    var indents=['0','4vw','8vw'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;inner.appendChild(mkHL());line.style.textAlign='left';line.style.paddingLeft=indents[i];line.style.paddingTop='12px';line.style.paddingBottom='12px';line.style.margin='0';inner.appendChild(line);});
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-  else if (opt === 35) {
-    // Split 55/45
-    mainCol.style.display='grid';mainCol.style.gridTemplateColumns='55% 45%';mainCol.style.width='100%';mainCol.style.alignItems='center';
-    var lc35=document.createElement('div');lc35.className='tsw-injected';lc35.style.cssText='display:flex;flex-direction:column;padding:0 4vw 0 6vw;border-right:0.5px solid rgba(200,169,110,0.18);';
-    if(lbl){lbl.style.marginBottom='14px';lc35.appendChild(lbl);}
-    if(l1){l1.style.textAlign='left';l1.style.fontSize='clamp(1.1rem,2vw,2.4rem)';lc35.appendChild(l1);}
-    if(l2){l2.style.textAlign='left';l2.style.fontSize='clamp(1.1rem,2vw,2.4rem)';lc35.appendChild(l2);}
-    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc35.appendChild(atw);}
-    mainCol.appendChild(lc35);
-    var rc35=document.createElement('div');rc35.className='tsw-injected';rc35.style.cssText='display:flex;align-items:center;justify-content:center;padding-left:4vw;';
-    if(l3){l3.style.fontSize='clamp(2.5rem,5.5vw,6.5rem)';l3.style.textAlign='center';l3.style.lineHeight='0.88';rc35.appendChild(l3);}
-    mainCol.appendChild(rc35);
+  else if (opt===38) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:50%;display:flex;flex-direction:column;border-right:0.5px solid rgba(200,169,110,0.2);flex-shrink:0;';
+    var top38=document.createElement('div');top38.className='tsw-injected';top38.style.cssText='flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 4vw 24px 6vw;border-bottom:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.marginBottom='14px';top38.appendChild(lbl);}
+    if(l1){l1.style.fontSize='clamp(1.1rem,2vw,2.3rem)';tl(l1);top38.appendChild(l1);}if(l2){l2.style.fontSize='clamp(1.1rem,2vw,2.3rem)';tl(l2);top38.appendChild(l2);}
+    lc.appendChild(top38);
+    var bot38=document.createElement('div');bot38.className='tsw-injected';bot38.style.cssText='flex:1;display:flex;align-items:flex-end;padding:24px 4vw 48px 6vw;';
+    if(atw){atw.style.justifyContent='flex-start';bot38.appendChild(atw);}lc.appendChild(bot38);
+    inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:50%;display:flex;flex-direction:column;';
+    var top38r=document.createElement('div');top38r.className='tsw-injected';top38r.style.cssText='flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 4vw 24px;border-bottom:0.5px solid rgba(200,169,110,0.18);';
+    if(l3){l3.style.fontSize='clamp(2.5rem,5vw,6rem)';l3.style.lineHeight='0.88';tl(l3);top38r.appendChild(l3);}rc.appendChild(top38r);
+    var bot38r=document.createElement('div');bot38r.className='tsw-injected';bot38r.style.cssText='flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px 4vw 48px;overflow:hidden;';
+    var ri38=document.createElement('div');ri38.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    var p38=document.createElement('p');p38.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.4rem,2.6vw,3rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);';p38.textContent=IJD[38][2];ri38.appendChild(p38);bot38r.appendChild(ri38);rc.appendChild(bot38r);
+    inner.appendChild(rc);
   }
-  else if (opt === 36) {
-    // l3 only centred massive, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    if(l1) l1.style.display='none'; if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(3rem,7.5vw,9rem)';l3.style.lineHeight='0.87';l3.style.letterSpacing='0.05em';l3.style.textAlign='center';}
-    if(lbl){lbl.style.textAlign='center';lbl.style.marginBottom='36px';}
-    if(atw){atw.style.justifyContent='center';atw.style.marginTop='36px';}
+  else if (opt===39) {
+    sec.style.padding='0';
+    var bg39=TH_BG[39]||'#0d1117';var isG39=bg39.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    if(l1){l1.style.fontSize='clamp(1.8rem,3.5vw,4rem)';tl(l1);}if(l2){l2.style.fontSize='clamp(1.8rem,3.5vw,4rem)';l2.style.textAlign='right';}if(l3){l3.style.fontSize='clamp(1.8rem,3.5vw,4rem)';tl(l3);}
+    [l1,l2,l3].forEach(function(p,i){if(!p)return;var d=mkCell(bg39,isG39,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');d.appendChild(p);inner.appendChild(d);});
+    var d4=mkCell(bg39,isG39,'display:flex;flex-direction:column;justify-content:space-between;padding:28px 5vw;');
+    if(lbl){lbl.style.marginBottom='0';d4.appendChild(lbl);}if(atw){atw.style.justifyContent='flex-start';d4.appendChild(atw);}inner.appendChild(d4);
   }
-  else if (opt === 37) {
-    // Reverse staircase right, decreasing indent
-    mainCol.style.width='100%';mainCol.style.alignItems='flex-end';mainCol.style.paddingRight='6vw';
-    if(l1){l1.style.fontSize='clamp(1.3rem,2.5vw,3rem)';l1.style.textAlign='right';l1.style.marginRight='12vw';}
-    if(l2){l2.style.fontSize='clamp(1.8rem,3.4vw,4rem)';l2.style.textAlign='right';l2.style.marginRight='6vw';}
-    if(l3){l3.style.fontSize='clamp(2.4rem,4.5vw,5.2rem)';l3.style.textAlign='right';}
-    if(lbl){lbl.style.alignSelf='flex-start';lbl.style.marginLeft='6vw';}
-    if(atw) atw.style.justifyContent='flex-end';
+  else if (opt===40) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(60,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='14px';
+    if(l1){l1.style.fontSize='clamp(0.85rem,1.4vw,1.6rem)';l1.style.opacity='0.42';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(0.85rem,1.4vw,1.6rem)';l2.style.opacity='0.42';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(3rem,7vw,8.5rem)';l3.style.lineHeight='0.87';tl(l3);l3.style.marginTop='8px';lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,40));
   }
-  else if (opt === 38) {
-    // l1+l2 small fading, l3 DM Serif large italic, with reflection
-    mainCol.style.paddingLeft='6vw';
-    if(l1){l1.style.fontSize='clamp(1rem,1.8vw,2.1rem)';l1.style.opacity='0.42';}
-    if(l2){l2.style.fontSize='clamp(1.4rem,2.6vw,3rem)';l2.style.opacity='0.68';}
-    if(l3){l3.style.fontFamily="'DM Serif Display',serif";l3.style.fontSize='clamp(2rem,3.8vw,4.4rem)';l3.style.fontStyle='italic';l3.style.textTransform='none';l3.style.transform='none';l3.style.letterSpacing='0.01em';l3.style.lineHeight='1.1';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===41) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 3fr 1fr;width:100%;min-height:360px;';
+    var c1=document.createElement('div');c1.className='tsw-injected';c1.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.24em';c1.appendChild(lbl);}inner.appendChild(c1);
+    var c2=document.createElement('div');c2.className='tsw-injected';c2.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 4vw;';
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.5rem,2.8vw,3.2rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.lineHeight='1.25';p.style.textAlign='center';c2.appendChild(p);});inner.appendChild(c2);
+    var c3=document.createElement('div');c3.className='tsw-injected';c3.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-left:0.5px solid rgba(200,169,110,0.18);';
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.justifyContent='flex-start';c3.appendChild(atw);}inner.appendChild(c3);
   }
-  else if (opt === 39) {
-    // Hard left all same size tight
-    mainCol.style.paddingLeft='6vw';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';p.style.fontSize='clamp(2rem,4.2vw,5rem)';p.style.lineHeight='0.88';p.style.marginBottom='2px';}});
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===42) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.6rem,3vw,3.5rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.lineHeight='1.25';tl(p);lc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
   }
-  else if (opt === 40) {
-    // l1+l2 byline tiny, l3 massive gold, with reflection
-    mainCol.style.paddingLeft='6vw';
-    if(l1){l1.style.fontSize='clamp(0.8rem,1.4vw,1.6rem)';l1.style.opacity='0.42';l1.style.marginBottom='1px';}
-    if(l2){l2.style.fontSize='clamp(0.8rem,1.4vw,1.6rem)';l2.style.opacity='0.42';l2.style.marginBottom='14px';}
-    if(l3){l3.style.fontSize='clamp(3rem,7vw,8.5rem)';l3.style.lineHeight='0.87';}
-    if(atw) atw.style.justifyContent='flex-start';
-  }
-  else if (opt === 41) {
-    // Full DM Serif italic same size centred
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontFamily="'DM Serif Display',serif";p.style.fontSize='clamp(1.4rem,2.5vw,2.9rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.letterSpacing='0.01em';p.style.lineHeight='1.3';p.style.textAlign='center';}});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
-  }
-  else if (opt === 42) {
-    // Top/bottom panel split with border, with reflection
-    mainCol.style.paddingLeft='6vw';mainCol.style.flexDirection='column';
-    var tp42=document.createElement('div');tp42.className='tsw-injected';tp42.style.cssText='padding-bottom:24px;border-bottom:0.5px solid rgba(200,169,110,0.18);';
-    if(lbl) tp42.appendChild(lbl);
-    if(l1){l1.style.fontSize='clamp(1.2rem,2.1vw,2.5rem)';tp42.appendChild(l1);}
-    if(l2){l2.style.fontSize='clamp(1.2rem,2.1vw,2.5rem)';tp42.appendChild(l2);}
-    mainCol.insertBefore(tp42,mainCol.firstChild);
-    var bt42=document.createElement('div');bt42.className='tsw-injected';bt42.style.cssText='padding-top:24px;';
-    if(l3){l3.style.fontSize='clamp(2.4rem,5.2vw,6.2rem)';l3.style.lineHeight='0.88';bt42.appendChild(l3);}
-    if(atw){atw.style.marginTop='16px';bt42.appendChild(atw);}
-    mainCol.appendChild(bt42);
-  }
-  else if (opt === 43) {
-    // Offset left 14vw
-    mainCol.style.width='100%';mainCol.style.paddingLeft='14vw';
-    [l1,l2,l3].forEach(function(p){if(p) p.style.textAlign='left';});
-    if(lbl){lbl.style.position='absolute';lbl.style.top='20px';lbl.style.right='6vw';}
-    if(atw){atw.style.position='absolute';atw.style.bottom='20px';atw.style.right='6vw';atw.style.justifyContent='flex-end';}
-  }
-  else if (opt === 44) {
-    // All same massive centred, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(2.4rem,5.2vw,6.2rem)';p.style.lineHeight='0.86';p.style.textAlign='center';p.style.marginBottom='0';}});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
-  }
-  else if (opt === 45) {
-    // Full-width ruled left
-    mainCol.style.paddingLeft='6vw';mainCol.style.width='100%';
-    [l1,l2,l3].forEach(function(p){
-      if(!p||!p.parentNode) return;
-      var r45=document.createElement('div');r45.className='tsw-injected';r45.style.cssText='width:100%;height:0.5px;background:rgba(200,169,110,0.16);';
-      p.parentNode.insertBefore(r45,p);p.style.textAlign='left';p.style.padding='10px 0';
+  else if (opt===43) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;width:100%;';
+    if(lbl){lbl.style.marginBottom='20px';inner.appendChild(lbl);}
+    var syms43=['⌀','∠','⊥'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;
+      var row=document.createElement('div');row.className='tsw-injected';row.style.cssText='display:flex;align-items:center;border-top:0.5px solid rgba(200,169,110,0.18);padding:12px 0;';
+      var a=document.createElement('span');a.className='tsw-injected';a.style.cssText='font-size:1.2rem;color:rgba(200,169,110,0.5);width:44px;flex-shrink:0;font-family:"Bebas Neue",sans-serif;';a.textContent=syms43[i];row.appendChild(a);
+      line.style.fontSize='clamp(1.8rem,3.5vw,4.2rem)';tl(line);line.style.margin='0';line.style.flexGrow='1';row.appendChild(line);inner.appendChild(row);
     });
-    var rEnd45=document.createElement('div');rEnd45.className='tsw-injected';rEnd45.style.cssText='width:100%;height:0.5px;background:rgba(200,169,110,0.16);';mainCol.appendChild(rEnd45);
-    if(atw) atw.style.justifyContent='flex-start';
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-  else if (opt === 46) {
-    // DM Sans l1+l2, DM Serif l3 moderate size, with reflection
-    mainCol.style.paddingLeft='6vw';
-    if(l1){l1.style.fontFamily="'DM Sans',sans-serif";l1.style.fontWeight='300';l1.style.fontSize='clamp(1rem,1.8vw,2rem)';l1.style.textTransform='none';l1.style.transform='none';l1.style.letterSpacing='0.04em';l1.style.opacity='0.55';}
-    if(l2){l2.style.fontFamily="'DM Sans',sans-serif";l2.style.fontWeight='300';l2.style.fontSize='clamp(1rem,1.8vw,2rem)';l2.style.textTransform='none';l2.style.transform='none';l2.style.letterSpacing='0.04em';l2.style.opacity='0.55';}
-    if(l3){l3.style.fontFamily="'DM Serif Display',serif";l3.style.fontSize='clamp(1.8rem,3.4vw,4rem)';l3.style.fontStyle='italic';l3.style.textTransform='none';l3.style.transform='none';l3.style.letterSpacing='0.01em';l3.style.lineHeight='1.1';l3.style.marginTop='12px';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===44) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(1.8rem,3.5vw,4rem)';p.style.textAlign='center';lc.appendChild(p);}});
+    lc.style.alignItems='center';lc.style.textAlign='center';
+    if(atw){atw.style.justifyContent='center';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
   }
-  else if (opt === 47) {
-    // l1+l2 tiny byline, l3 headline left — REDUCED SIZE
-    mainCol.style.paddingLeft='6vw';
-    if(l1){l1.style.fontSize='clamp(0.9rem,1.5vw,1.7rem)';l1.style.opacity='0.48';}
-    if(l2){l2.style.fontSize='clamp(0.9rem,1.5vw,1.7rem)';l2.style.opacity='0.48';}
-    if(l3){l3.style.fontSize='clamp(2.4rem,5vw,6rem)';l3.style.lineHeight='0.87';l3.style.marginTop='8px';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===45) {
+    sec.style.padding='0';
+    var bg45=TH_BG[45]||'#0d1117';var isG45=bg45.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var c45_0=mkCell(bg45,isG45,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(lbl){lbl.style.fontFamily='"DM Serif Display",serif';lbl.style.fontSize='clamp(1.2rem,2.2vw,2.6rem)';lbl.style.letterSpacing='0.02em';lbl.style.textTransform='none';lbl.style.lineHeight='1.35';c45_0.appendChild(lbl);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='12px';c45_0.appendChild(atw);}inner.appendChild(c45_0);
+    var c45_1=mkCell(bg45,isG45,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(l1){l1.style.fontSize='clamp(1.8rem,3.5vw,4rem)';l1.style.textAlign='right';c45_1.appendChild(l1);}inner.appendChild(c45_1);
+    var c45_2=mkCell(bg45,isG45,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(l2){l2.style.fontSize='clamp(1.8rem,3.5vw,4rem)';tl(l2);c45_2.appendChild(l2);}inner.appendChild(c45_2);
+    var c45_3=mkCell(bg45,isG45,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';l3.style.textAlign='right';c45_3.appendChild(l3);}inner.appendChild(c45_3);
   }
-  else if (opt === 48) {
-    // Dot dividers centred, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2].forEach(function(p){
-      if(!p||!p.parentNode) return;
-      var dot48=document.createElement('div');dot48.className='tsw-injected';dot48.style.cssText='width:4px;height:4px;border-radius:50%;background:rgba(200,169,110,0.38);margin:10px auto;';
-      p.parentNode.insertBefore(dot48,p.nextSibling);
-    });
-    [l1,l2,l3].forEach(function(p){if(p) p.style.textAlign='center';});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
+  else if (opt===46) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:32%;display:flex;flex-direction:column;justify-content:space-between;padding:60px 3vw 60px 6vw;border-right:0.5px solid rgba(200,169,110,0.18);flex-shrink:0;';
+    if(lbl){lbl.style.marginBottom='0';lc.appendChild(lbl);}if(atw){atw.style.justifyContent='flex-start';lc.appendChild(atw);}inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:68%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    if(l1){l1.style.fontFamily='"DM Sans",sans-serif';l1.style.fontWeight='300';l1.style.fontSize='clamp(1rem,1.8vw,2.1rem)';l1.style.textTransform='none';l1.style.transform='none';l1.style.opacity='0.55';tl(l1);rc.appendChild(l1);}
+    if(l2){l2.style.fontFamily='"DM Sans",sans-serif';l2.style.fontWeight='300';l2.style.fontSize='clamp(1rem,1.8vw,2.1rem)';l2.style.textTransform='none';l2.style.transform='none';l2.style.opacity='0.55';tl(l2);rc.appendChild(l2);}
+    if(l3){l3.style.fontFamily='"DM Serif Display",serif';l3.style.fontSize='clamp(1.8rem,3.5vw,4rem)';l3.style.fontStyle='italic';l3.style.textTransform='none';l3.style.transform='none';l3.style.lineHeight='1.1';l3.style.marginTop='12px';tl(l3);rc.appendChild(l3);}
+    inner.appendChild(rc);
   }
-  else if (opt === 49) {
-    // Right staircase
-    mainCol.style.width='100%';mainCol.style.alignItems='flex-end';mainCol.style.paddingRight='6vw';
-    if(l1){l1.style.textAlign='right';l1.style.marginRight='12vw';}
-    if(l2){l2.style.textAlign='right';l2.style.marginRight='6vw';}
-    if(l3) l3.style.textAlign='right';
-    if(lbl){lbl.style.alignSelf='flex-start';lbl.style.marginLeft='6vw';}
-    if(atw) atw.style.justifyContent='flex-end';
+  else if (opt===47) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 2.5fr 1.2fr;width:100%;min-height:360px;';
+    var c47_0=document.createElement('div');c47_0.className='tsw-injected';c47_0.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.24em';c47_0.appendChild(lbl);}inner.appendChild(c47_0);
+    var c47_1=document.createElement('div');c47_1.className='tsw-injected';c47_1.style.cssText='display:flex;flex-direction:column;justify-content:center;padding:60px 4vw;border-right:0.5px solid rgba(200,169,110,0.18);';
+    if(l1)l1.style.display='none';if(l2)l2.style.display='none';
+    if(l3){l3.style.fontSize='clamp(2.4rem,5vw,6rem)';tl(l3);l3.style.lineHeight='0.88';c47_1.appendChild(l3);}inner.appendChild(c47_1);
+    var c47_2=document.createElement('div');c47_2.className='tsw-injected';c47_2.style.cssText='display:flex;flex-direction:column;justify-content:center;padding:60px 3vw;';
+    var t1=document.createElement('p');t1.className='tsw-injected';t1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.9rem,1.5vw,1.7rem);letter-spacing:0.1em;text-transform:uppercase;line-height:1.2;color:'+tc.l1+';transform:skewX(-4deg);margin-bottom:6px;opacity:0.55;';t1.textContent="The best products";c47_2.appendChild(t1);
+    var t2=t1.cloneNode();t2.textContent="Won't be invented";c47_2.appendChild(t2);
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';c47_2.appendChild(atw);}inner.appendChild(c47_2);
   }
-  else if (opt === 50) {
-    // Full-bleed nowrap, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(3rem,8.5vw,10.5rem)';p.style.lineHeight='0.85';p.style.overflow='hidden';p.style.whiteSpace='nowrap';p.style.textAlign='center';}});
-    if(lbl){lbl.style.position='absolute';lbl.style.top='18px';lbl.style.left='4vw';}
-    if(atw){atw.style.position='absolute';atw.style.bottom='18px';atw.style.right='4vw';atw.style.justifyContent='flex-end';}
+  else if (opt===48) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(47,'60px 4vw 60px 6vw',[lbl]);
+    lc.style.alignItems='center';lc.style.textAlign='center';
+    if(lbl){lbl.style.marginBottom='20px';lbl.style.textAlign='center';}
+    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='center';lc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='center';atw.style.marginTop='20px';lc.appendChild(atw);}
+    inner.appendChild(lc);
+    var dots=document.createElement('div');dots.className='tsw-injected';dots.style.cssText='width:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;flex-shrink:0;';
+    for(var di=0;di<5;di++){var dot=document.createElement('div');dot.className='tsw-injected';dot.style.cssText='width:3px;height:3px;border-radius:50%;background:rgba(200,169,110,0.35);';dots.appendChild(dot);}
+    inner.appendChild(dots);
+    inner.appendChild(mkRefl(opt,47,'clamp(1.8rem,3.5vw,4rem)'));
   }
-  else if (opt === 51) {
-    // Vertical label left + text right
-    mainCol.style.width='100%';mainCol.style.display='grid';mainCol.style.gridTemplateColumns='100px 1fr';mainCol.style.alignItems='center';
-    var lc51=document.createElement('div');lc51.className='tsw-injected';lc51.style.cssText='display:flex;flex-direction:column;align-items:center;justify-content:center;padding-right:3vw;border-right:0.5px solid rgba(200,169,110,0.18);min-height:150px;';
-    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.26em';lbl.style.marginBottom='0';lc51.appendChild(lbl);}
-    if(atw){atw.style.writingMode='vertical-rl';atw.style.transform='rotate(180deg)';atw.style.marginTop='14px';atw.style.justifyContent='flex-start';lc51.appendChild(atw);}
-    mainCol.insertBefore(lc51,mainCol.firstChild);
-    var rc51=document.createElement('div');rc51.className='tsw-injected';rc51.style.cssText='display:flex;flex-direction:column;padding-left:3vw;';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='left';rc51.appendChild(p);}});
-    mainCol.appendChild(rc51);
+  else if (opt===49) {
+    sec.style.padding='48px 6vw';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-end;width:100%;';
+    if(lbl){lbl.style.position='absolute';lbl.style.top='48px';lbl.style.left='6vw';inner.appendChild(lbl);}
+    var rights=['14vw','7vw','0'];
+    [l1,l2,l3].forEach(function(line,i){if(!line)return;inner.appendChild(mkHL());line.style.textAlign='right';line.style.paddingRight=rights[i];line.style.padding='12px '+rights[i]+' 12px 0';line.style.margin='0';inner.appendChild(line);});
+    inner.appendChild(mkHL());
+    if(atw){atw.style.justifyContent='flex-end';atw.style.marginTop='14px';inner.appendChild(atw);}
   }
-  else if (opt === 52) {
-    // Condensed negative tracking centred, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.fontSize='clamp(2.4rem,5.6vw,6.8rem)';p.style.letterSpacing='-0.01em';p.style.lineHeight='0.87';p.style.textAlign='center';}});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
+  else if (opt===50) {
+    sec.style.padding='0';
+    var bg50=TH_BG[50]||'#0d1117';var isG50=bg50.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);overflow:hidden;';
+    var txts=["The best","products","Won't be","invented"];
+    txts.forEach(function(w,i){var d=mkCell(bg50,isG50,'display:flex;flex-direction:column;justify-content:center;padding:16px 3vw;overflow:hidden;');var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3rem,7.5vw,9rem);letter-spacing:0.04em;text-transform:uppercase;line-height:0.85;color:'+(i%2===0?tc.l1:tc.l3)+';transform:skewX(-4deg);white-space:nowrap;overflow:visible;';p.textContent=w;d.appendChild(p);
+    if(i===0&&lbl){lbl.style.fontSize='0.4rem';lbl.style.position='absolute';lbl.style.top='8px';lbl.style.left='3vw';d.style.position='relative';d.appendChild(lbl);}
+    inner.appendChild(d);});
   }
-  else if (opt === 53) {
-    // Exponential scale left
-    mainCol.style.paddingLeft='8vw';
-    if(l1){l1.style.fontSize='clamp(0.75rem,1.3vw,1.5rem)';l1.style.opacity='0.32';}
-    if(l2){l2.style.fontSize='clamp(1.4rem,2.5vw,2.9rem)';l2.style.opacity='0.62';}
-    if(l3){l3.style.fontSize='clamp(3rem,6.8vw,8.2rem)';l3.style.lineHeight='0.87';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===51) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:28%;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:60px 2vw;border-right:0.5px solid rgba(200,169,110,0.18);flex-shrink:0;';
+    if(lbl){lbl.style.writingMode='vertical-rl';lbl.style.transform='rotate(180deg)';lbl.style.letterSpacing='0.26em';lc.appendChild(lbl);}
+    if(atw){atw.style.writingMode='vertical-rl';atw.style.transform='rotate(180deg)';atw.style.justifyContent='flex-start';lc.appendChild(atw);}inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:72%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw;';
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);p.style.fontSize='clamp(1.8rem,3.5vw,4rem)';rc.appendChild(p);}});
+    inner.appendChild(rc);
   }
-  else if (opt === 54) {
-    // l1 + l3 visible, l2 near-invisible, with reflection
-    mainCol.style.paddingLeft='6vw';
-    if(l1) l1.style.fontSize='clamp(1.6rem,3vw,3.6rem)';
-    if(l2){l2.style.opacity='0.07';l2.style.fontSize='clamp(0.85rem,1.5vw,1.7rem)';}
-    if(l3) l3.style.fontSize='clamp(2.4rem,4.8vw,5.8rem)';
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===52) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;min-height:360px;';
+    function mkcol52(css){var d=document.createElement('div');d.className='tsw-injected';d.style.cssText=css;return d;}
+    var cols52=[mkcol52('display:flex;flex-direction:column;justify-content:center;padding:60px 3vw 60px 5vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol52('display:flex;flex-direction:column;justify-content:center;padding:60px 3vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol52('display:flex;flex-direction:column;justify-content:space-between;padding:60px 5vw 60px 3vw;')];
+    if(lbl){lbl.style.marginBottom='16px';cols52[0].appendChild(lbl);}
+    [l1,l2,l3].forEach(function(p,i){if(!p)return;p.style.fontSize='clamp(2rem,4vw,4.8rem)';p.style.letterSpacing='-0.01em';p.style.lineHeight='0.87';tl(p);cols52[i].appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-end';cols52[2].appendChild(atw);}
+    cols52.forEach(function(c){inner.appendChild(c);});
   }
-  else if (opt === 55) {
-    // Single l3 only, left
-    mainCol.style.paddingLeft='8vw';
-    if(l1) l1.style.display='none'; if(l2) l2.style.display='none';
-    if(l3){l3.style.fontSize='clamp(2rem,4.2vw,5rem)';l3.style.lineHeight='1';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===53) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(55,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='14px';
+    if(l1){l1.style.fontSize='clamp(0.75rem,1.2vw,1.4rem)';l1.style.opacity='0.32';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.fontSize='clamp(1.4rem,2.6vw,3rem)';l2.style.opacity='0.62';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2.8rem,6vw,7.5rem)';l3.style.lineHeight='0.87';tl(l3);lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,45));
   }
-  else if (opt === 56) {
-    // Angle-quote framed centred, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    var oq56=document.createElement('div');oq56.className='tsw-injected';oq56.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,5vw,6rem);color:rgba(200,169,110,0.16);line-height:0.6;margin-bottom:8px;text-align:center;width:100%;';oq56.textContent='\u00ab';
-    var cq56=oq56.cloneNode(true);cq56.textContent='\u00bb';cq56.style.marginTop='8px';cq56.style.marginBottom='0';
-    if(l1&&l1.parentNode){l1.parentNode.insertBefore(oq56,l1);}
-    if(atw&&atw.parentNode){atw.parentNode.insertBefore(cq56,atw);}
-    [l1,l2,l3].forEach(function(p){if(p) p.style.textAlign='center';});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
+  else if (opt===54) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(55,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='16px';
+    if(l1){l1.style.fontSize='clamp(1.6rem,3vw,3.5rem)';tl(l1);lc.appendChild(l1);}
+    if(l2){l2.style.opacity='0.06';l2.style.fontSize='clamp(0.85rem,1.4vw,1.6rem)';tl(l2);lc.appendChild(l2);}
+    if(l3){l3.style.fontSize='clamp(2.4rem,4.8vw,5.8rem)';tl(l3);lc.appendChild(l3);}
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='14px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';
+    inner.appendChild(lc);inner.appendChild(mkRefl(opt,45));
   }
-  else if (opt === 57) {
-    // Right-heavy 2-col — label left, text right
-    mainCol.style.width='100%';mainCol.style.display='grid';mainCol.style.gridTemplateColumns='130px 1fr';mainCol.style.alignItems='center';
-    var lc57=document.createElement('div');lc57.className='tsw-injected';lc57.style.cssText='display:flex;flex-direction:column;justify-content:space-between;height:100%;padding-right:3vw;min-height:120px;border-right:0.5px solid rgba(200,169,110,0.16);';
-    if(lbl){lbl.style.textAlign='left';lc57.appendChild(lbl);}
-    if(atw){atw.style.justifyContent='flex-start';lc57.appendChild(atw);}
-    mainCol.insertBefore(lc57,mainCol.firstChild);
-    var rc57=document.createElement('div');rc57.className='tsw-injected';rc57.style.cssText='display:flex;flex-direction:column;align-items:flex-end;padding-left:3vw;';
-    [l1,l2,l3].forEach(function(p){if(p){p.style.textAlign='right';rc57.appendChild(p);}});
-    mainCol.appendChild(rc57);
+  else if (opt===55) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[]);
+    var oq=document.createElement('div');oq.className='tsw-injected';oq.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(2.5rem,5vw,6rem);color:rgba(200,169,110,0.16);line-height:0.6;margin-bottom:8px;';oq.textContent='«';lc.appendChild(oq);
+    if(lbl){lbl.style.marginBottom='12px';lc.appendChild(lbl);}
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);lc.appendChild(p);}});
+    var cq=oq.cloneNode(true);cq.textContent='»';cq.style.marginTop='8px';cq.style.marginBottom='0';lc.appendChild(cq);
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='12px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    inner.appendChild(mkRefl(opt,50,'clamp(1.8rem,3.5vw,4rem)'));
   }
-  else if (opt === 58) {
-    // Progressive opacity+size centred, with reflection
-    mainCol.style.width='100%';mainCol.style.alignItems='center';
-    if(l1){l1.style.fontSize='clamp(1.3rem,2.4vw,2.8rem)';l1.style.opacity='0.42';l1.style.textAlign='center';}
-    if(l2){l2.style.fontSize='clamp(1.9rem,3.6vw,4.2rem)';l2.style.opacity='0.7';l2.style.textAlign='center';}
-    if(l3){l3.style.fontSize='clamp(2.7rem,5vw,6rem)';l3.style.textAlign='center';}
-    [l1,l2,l3].forEach(function(p,i){if(p) p.style.marginBottom=i<2?'2px':'0';});
-    if(lbl) lbl.style.textAlign='center'; if(atw) atw.style.justifyContent='center';
+  else if (opt===56) {
+    sec.style.padding='0';
+    var bg56=TH_BG[56]||'#0d1117';var isG56=bg56.indexOf('gradient')>-1;
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr auto;width:100%;min-height:400px;gap:0.5px;background:rgba(200,169,110,0.12);';
+    var tl56=mkCell(bg56,isG56,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(lbl){lbl.style.marginBottom='8px';tl56.appendChild(lbl);}if(l1){tl(l1);tl56.appendChild(l1);}if(l2){tl(l2);tl56.appendChild(l2);}inner.appendChild(tl56);
+    var tr56=mkCell(bg56,isG56,'display:flex;flex-direction:column;justify-content:center;padding:28px 5vw;');
+    if(l3){l3.style.fontSize='clamp(2rem,4vw,4.8rem)';l3.style.textAlign='right';tr56.appendChild(l3);}inner.appendChild(tr56);
+    var bot56=mkCell(bg56,isG56,'grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:20px 5vw;border-top:0.5px solid rgba(200,169,110,0.18);');
+    if(atw){atw.style.marginTop='0';atw.style.justifyContent='center';bot56.appendChild(atw);}inner.appendChild(bot56);
   }
-  else if (opt === 59) {
-    // Three-tier left — small/mid/massive
-    mainCol.style.paddingLeft='6vw';
-    if(l1){l1.style.fontSize='clamp(1.1rem,2vw,2.4rem)';l1.style.marginBottom='6px';}
-    if(l2){l2.style.fontSize='clamp(1.9rem,3.8vw,4.5rem)';l2.style.marginBottom='4px';}
-    if(l3){l3.style.fontSize='clamp(3rem,6.2vw,7.5rem)';l3.style.lineHeight='0.87';}
-    if(atw) atw.style.justifyContent='flex-start';
+  else if (opt===57) {
+    setRow();sec.style.padding='0';
+    var lc=mkLeft(50,'60px 4vw 60px 6vw',[lbl]);
+    if(lbl)lbl.style.marginBottom='20px';
+    [l1,l2,l3].forEach(function(p){if(!p)return;p.style.fontFamily='"DM Serif Display",serif';p.style.fontSize='clamp(1.4rem,2.6vw,3rem)';p.style.fontStyle='italic';p.style.textTransform='none';p.style.transform='none';p.style.lineHeight='1.3';p.style.opacity='0.65';tl(p);lc.appendChild(p);});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';lc.appendChild(atw);}
+    lc.style.borderRight='0.5px solid rgba(200,169,110,0.2)';inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:50%;display:flex;flex-direction:column;justify-content:center;padding:60px 4vw;';
+    ['The best products',"Won't be invented","They'll be extracted"].forEach(function(t){var p=document.createElement('p');p.className='tsw-injected';p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l2+';transform:skewX(-4deg);display:block;margin-bottom:4px;text-align:right;';p.textContent=t;rc.appendChild(p);});
+    inner.appendChild(rc);
+  }
+  else if (opt===58) {
+    sec.style.padding='0';
+    inner.style.cssText='position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr 1fr;width:100%;min-height:360px;';
+    function mkcol58(css){var d=document.createElement('div');d.className='tsw-injected';d.style.cssText=css;return d;}
+    var opacities=[0.35,0.65,1];
+    var cols58=[mkcol58('display:flex;flex-direction:column;justify-content:center;padding:60px 3vw 60px 5vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol58('display:flex;flex-direction:column;justify-content:center;padding:60px 3vw;border-right:0.5px solid rgba(200,169,110,0.18);'),mkcol58('display:flex;flex-direction:column;justify-content:space-between;padding:60px 5vw 60px 3vw;')];
+    [l1,l2,l3].forEach(function(p,i){if(!p)return;p.style.fontSize='clamp(1.8rem,3.5vw,4rem)';tl(p);p.style.opacity=String(opacities[i]);cols58[i].appendChild(p);});
+    if(lbl){lbl.style.marginBottom='0';cols58[2].insertBefore(lbl,cols58[2].firstChild);}
+    if(atw){atw.style.justifyContent='flex-end';cols58[2].appendChild(atw);}
+    cols58.forEach(function(c){inner.appendChild(c);});
+  }
+  else if (opt===59) {
+    setRow();sec.style.padding='0';
+    var lc=document.createElement('div');lc.className='tsw-injected';lc.style.cssText='width:48%;display:flex;flex-direction:column;justify-content:center;padding:60px 4vw 60px 6vw;border-right:0.5px solid rgba(200,169,110,0.2);overflow:hidden;flex-shrink:0;';
+    var ri=document.createElement('div');ri.style.cssText='transform:scaleX(-1);opacity:0.13;';
+    (IJD[59]||[]).forEach(function(t){var p=document.createElement('p');p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.8rem,3.5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;line-height:0.92;color:'+tc.l3+';transform:skewX(-4deg);display:block;margin-bottom:4px;';p.textContent=t;ri.appendChild(p);});
+    lc.appendChild(ri);inner.appendChild(lc);
+    var rc=document.createElement('div');rc.className='tsw-injected';rc.style.cssText='width:52%;display:flex;flex-direction:column;justify-content:center;padding:60px 6vw 60px 4vw;';
+    if(lbl){lbl.style.marginBottom='20px';rc.appendChild(lbl);}
+    [l1,l2,l3].forEach(function(p){if(p){tl(p);rc.appendChild(p);}});
+    if(atw){atw.style.justifyContent='flex-start';atw.style.marginTop='20px';rc.appendChild(atw);}inner.appendChild(rc);
   }
 }
 
@@ -5055,12 +5181,6 @@ function typeSwitch(opt) {
 }
 
 window.typeSwitch = typeSwitch;
-
-// Capture original thesis HTML on load
-document.addEventListener('DOMContentLoaded', function() {
-  var inner = document.getElementById('thesis-inner');
-  if (inner) originalThesisHTML = inner.innerHTML;
-});
 
 })();
 </script>
