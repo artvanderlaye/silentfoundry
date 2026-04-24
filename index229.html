@@ -746,95 +746,130 @@ body.v11-active nav * { cursor: none !important; }
 
     /* ── THESIS SECTION MOBILE ── */
     @media (max-width: 900px) {
-      /* ── THESIS SECTION — MOBILE ── */
-      #thesis-section { padding: 0 !important; }
+      /* Section padding */
+      #thesis-section { padding: 56px 20px !important; }
 
-      /* Inner — stack to column */
+      /* Switcher — already handled by its own media query (bottom bar) */
+
+      /* Default inner layout */
       #thesis-inner {
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+      }
+
+      /* Type sizes — scale down for mobile */
+      .th-l1, .th-l2, .th-l3 {
+        font-size: clamp(1.6rem, 7vw, 3rem) !important;
+        letter-spacing: 0.06em !important;
+        text-align: center !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+      }
+
+      /* Label + attr */
+      .th-label { font-size: 0.44rem !important; letter-spacing: 0.22em !important; margin-bottom: 20px !important; }
+      .th-attr  { font-size: 0.42rem !important; letter-spacing: 0.16em !important; }
+      .th-attr-wrap { margin-top: 20px !important; }
+
+      /* Animated symbol — smaller on mobile */
+      .tsw-injected.th-sym,
+      div[style*='th-arc-draw'],
+      div[style*='th-coin-spin'],
+      div[style*='th-slow-spin'],
+      div[style*='th-counter-spin'],
+      div[style*='th-centre-pulse'],
+      div[style*='th-crosshair-pulse'],
+      div[style*='th-float-ud'],
+      div[style*='th-drop-fade'],
+      div[style*='th-rise-fade'],
+      div[style*='th-integral-draw'],
+      div[style*='th-fill-drain'],
+      div[style*='th-triangle-draw'],
+      div[style*='th-grid-wave'],
+      div[style*='th-parallel-drift'],
+      div[style*='th-perp-osc'],
+      div[style*='th-pm-morph'],
+      div[style*='th-cascade'],
+      div[style*='th-drill-pulse'],
+      div[style*='th-countersink'],
+      div[style*='th-intersect-rot'],
+      div[style*='th-bullseye'],
+      div[style*='th-flag-bounce'],
+      div[style*='th-dots-seq'],
+      div[style*='th-dim-close'],
+      div[style*='th-dim-open'],
+      div[style*='th-wave-undulate'],
+      div[style*='th-start-sweep'],
+      div[style*='th-end-sweep'],
+      div[style*='th-arc-draw-rev'] {
+        font-size: 38vw !important;
+        opacity: 0.08 !important;
+      }
+
+      /* Grid layouts — collapse to stacked */
+      #thesis-inner[style*='grid-template-columns'] {
         display: flex !important;
         flex-direction: column !important;
-        align-items: stretch !important;
         width: 100% !important;
-        min-height: auto !important;
       }
 
-      /* Left col (label) — show at top, reduced padding, centred */
-      #thesis-inner > .tsw-injected:first-child {
-        padding: 28px 20px 12px !important;
-        align-items: center !important;
-        justify-content: center !important;
+      /* Diagonal staircase — remove offset */
+      .th-l1[style*='margin-left'],
+      .th-l2[style*='margin-left'],
+      .th-l3[style*='margin-left'] {
+        margin-left: 0 !important;
       }
 
-      /* cw wrapper — stack to column, centred */
-      #thesis-inner > .tsw-injected:nth-child(2) {
+      /* Full bleed — normal padding */
+      .th-l1[style*='clamp(3rem'],
+      .th-l2[style*='clamp(3rem'],
+      .th-l3[style*='clamp(3rem'] {
+        font-size: clamp(1.6rem, 7vw, 3rem) !important;
+        white-space: normal !important;
+        overflow: visible !important;
+      }
+
+      /* Word per line — scale down */
+      .th-l3[style*='clamp(3.5rem'] {
+        font-size: clamp(2rem, 8vw, 3.5rem) !important;
+      }
+
+      /* Side-by-side / asymmetric — reset */
+      #thesis-inner[style*='30%'],
+      #thesis-inner[style*='1fr 1fr'] {
+        display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 20px !important;
-        padding: 0 20px 32px !important;
-        width: 100% !important;
       }
 
-      /* Centre col (cc) — full width, centred */
-      #thesis-inner .tsw-injected .tsw-injected:first-child {
-        padding: 0 !important;
-        align-items: center !important;
-        text-align: center !important;
-        width: 100% !important;
+      /* Stamp box — scale down */
+      div[style*='rotate(-1.5deg)'] {
+        padding: 24px 20px !important;
+        transform: rotate(-1.5deg) scale(0.9) !important;
       }
 
-      /* l1, l2 — override inline clamp for mobile */
-      #thesis-inner .th-l1,
-      #thesis-inner .th-l2 {
-        font-size: clamp(0.92rem, 3.8vw, 1.2rem) !important;
-        text-align: center !important;
-        width: 100% !important;
-      }
+      /* Vertical attribution — hide on mobile */
+      div[style*='writing-mode:vertical-rl'] { display: none !important; }
 
-      /* l3 — THEY LL BE EXTRACTED */
-      #thesis-inner .th-l3 {
-        font-size: clamp(2.6rem, 10vw, 3.8rem) !important;
-        text-align: center !important;
-        width: 100% !important;
-        line-height: 0.9 !important;
-      }
+      /* Bottom anchored — reduce space */
+      #thesis-section[style*='space-between'] { min-height: 280px !important; }
 
-      /* Attribution */
-      #thesis-inner .th-attr-wrap,
-      #thesis-inner [style*="MATTHEW"] {
-        text-align: center !important;
-        margin-top: 12px !important;
-      }
+      /* Corner brackets — keep but tighter */
+      .th-cnr { width: 16px !important; height: 16px !important; }
+      .th-cnr-tl { top: 10px !important; left: 10px !important; }
+      .th-cnr-tr { top: 10px !important; right: 10px !important; }
+      .th-cnr-bl { bottom: 10px !important; left: 10px !important; }
+      .th-cnr-br { bottom: 10px !important; right: 10px !important; }
 
-      /* rc (jewellery symbols) — scale down, max width */
-      #thesis-inner .tsw-injected .tsw-injected:nth-child(3) {
-        max-height: 120px !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        min-width: 0 !important;
-        width: 100% !important;
-        max-width: 320px !important;
-      }
-
-      /* sp symbol — reposition to bottom right, smaller */
-      #thesis-inner ~ .tsw-injected,
-      #thesis-section .tsw-injected[style*="position:absolute"] {
-        font-size: 0.55rem !important;
+      /* Pinned absolute elements — reposition for mobile */
+      div[style*='position:absolute'][style*='left:48px'],
+      div[style*='position:absolute'][style*='right:48px'] {
+        left: 16px !important;
         right: 16px !important;
-        bottom: 12px !important;
-        top: auto !important;
-        transform: none !important;
       }
-
-      /* THE F⊗UNDRY THESIS label text */
-      #thesis-inner .th-label {
-        font-size: 0.55rem !important;
-        letter-spacing: 0.18em !important;
-        text-align: center !important;
-      }
-
-      /* Hide corner brackets (already removed from code but belt+braces) */
-      .th-cnr { display: none !important; }
     }
 
     /* ── TRANSLATION LAYOUT ── */
@@ -1382,20 +1417,7 @@ body.v11-active nav * { cursor: none !important; }
       .china-grid > div:last-child { height:auto !important; overflow:visible !important; padding:40px 24px !important; }
       .china-accordion { margin-top:24px !important; }
       .china-grid > div:last-child { padding:40px 24px !important; } .scroll-indicator { display:none; } }
-  
-    @media (max-width: 480px) {
-      #thesis-inner .th-l3 {
-        font-size: clamp(2.2rem, 12vw, 3rem) !important;
-      }
-      #thesis-inner .th-l1,
-      #thesis-inner .th-l2 {
-        font-size: clamp(0.82rem, 4.2vw, 1.1rem) !important;
-      }
-      #thesis-inner > .tsw-injected:first-child {
-        padding: 20px 16px 8px !important;
-      }
-    }
-    </style>
+  </style>
 
   <style>
     @media(max-width:768px){
@@ -4078,10 +4100,19 @@ body.v11-active #v11-badge {
 }
 </style>
 
-<div id="type-switcher" style="display:none;">
+<div id="type-switcher">
   <span class="tsw-label">Thesis</span>
   
   
+  <button class="tsw-btn" onclick="typeSwitch(2)" data-opt="2">2</button>
+  
+  
+  
+  
+  
+  
+  <button class="tsw-btn" onclick="typeSwitch(9)" data-opt="9">9</button>
+  <button class="tsw-btn" onclick="typeSwitch(10)" data-opt="10">10</button>
   
   
   
@@ -4097,46 +4128,37 @@ body.v11-active #v11-badge {
   
   
   
+  <button class="tsw-btn" onclick="typeSwitch(26)" data-opt="26">26</button>
+  
+  <button class="tsw-btn" onclick="typeSwitch(28)" data-opt="28">28</button>
+  
+  
+  
+  <button class="tsw-btn" onclick="typeSwitch(32)" data-opt="32">32</button>
+  
+  <button class="tsw-btn" onclick="typeSwitch(34)" data-opt="34">34</button>
+  
+  
+  
+  
+  <button class="tsw-btn" onclick="typeSwitch(39)" data-opt="39">39</button>
   
   
   
   
   
+  <button class="tsw-btn" onclick="typeSwitch(45)" data-opt="45">45</button>
   
   
   
   
   
+  <button class="tsw-btn" onclick="typeSwitch(51)" data-opt="51">51</button>
   
   
+  <button class="tsw-btn" onclick="typeSwitch(54)" data-opt="54">54</button>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <button class="tsw-btn" onclick="typeSwitch(56)" data-opt="56">56</button>
   
   
   
@@ -4460,6 +4482,127 @@ function applyLayout(sec, inner, opt, tc) {
   var l1=inner.querySelector('.th-l1'),l2=inner.querySelector('.th-l2'),l3=inner.querySelector('.th-l3'),lbl=inner.querySelector('.th-label'),atw=inner.querySelector('.th-attr-wrap'),at=inner.querySelector('.th-attr');
   if (opt===1) { return; }
 
+  else if (opt===2) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:42px 31px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:scaleX(-1);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.82rem,1.25vw,1.32rem);letter-spacing:0.18em;color:rgba(200,169,110,0.13);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='∵∫∴△∇↧±∥⊞∠⊥⌀';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='⌀';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===9) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:42px 31px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.55rem,0.82vw,0.88rem);letter-spacing:0.2em;color:rgba(200,169,110,0.20);word-break:break-all;line-height:1.4;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵⌀⊥∠⊞∥±↧∇△∴∫∵⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='∇';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===10) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:38px 29px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:scaleX(-1);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.84rem,1.28vw,1.35rem);letter-spacing:0.18em;color:rgba(240,235,224,0.11);word-break:break-all;line-height:1.5;opacity:0.20;animation:th-glow 8s ease-in-out infinite alternate;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='△';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===26) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:42px 31px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:rotate(180deg);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.68rem,1.02vw,1.08rem);letter-spacing:0.18em;color:rgba(200,169,110,0.13);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='⌀';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===28) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:32px 24px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.95rem,1.46vw,1.54rem);letter-spacing:0.14em;color:rgba(200,169,110,0.22);word-break:break-all;line-height:1.4;opacity:0.20;transform:scaleX(-1);';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='∠';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===32) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:35px 26px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:rotate(180deg);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.88rem,1.35vw,1.42rem);letter-spacing:0.18em;color:rgba(200,169,110,0.15);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='↧';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
   else if (opt===34) {
     sec.style.cssText='padding:0;overflow:hidden;position:relative;';
     inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
@@ -4479,6 +4622,109 @@ function applyLayout(sec, inner, opt, tc) {
     var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='△';cw.appendChild(sp);
     cw.appendChild(rc);inner.appendChild(cw);
   }
+
+  else if (opt===39) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:38px 29px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:rotate(180deg);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.75rem,1.14vw,1.20rem);letter-spacing:0.18em;color:rgba(240,235,224,0.08);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='⊥';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===45) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:35px 26px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    ['⌀⊥∠⊞','∥±↧∇','△∴∫∵'].forEach(function(t,i){var p=document.createElement('p');p.className='tsw-injected';var szz=['clamp(1.0rem,1.55vw,1.62rem)','clamp(0.82rem,1.25vw,1.32rem)','clamp(0.65rem,0.98vw,1.04rem)'];p.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:'+szz[i%3]+';letter-spacing:0.12em;color:rgba(240,235,224,0.12);display:block;margin-bottom:3px;opacity:'+(0.9-i*0.2)+';transform:skewX(-4deg);';p.textContent=t;rc.appendChild(p);});
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='∇';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===51) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:42px 31px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:rotate(180deg);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.60rem,0.90vw,0.96rem);letter-spacing:0.18em;color:rgba(240,235,224,0.08);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='⊥';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===54) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:35px 26px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.68rem,1.02vw,1.08rem);letter-spacing:0.2em;color:rgba(200,169,110,0.20);word-break:break-all;line-height:1.4;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵⌀⊥∠⊞∥±↧∇△∴∫∵⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='∥';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
+
+  else if (opt===56) {
+    sec.style.cssText='padding:0;overflow:hidden;position:relative;';
+    inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;';
+    var lc=document.createElement('div');lc.className='tsw-injected';
+    lc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:48px 24px 48px 48px;';
+    if(lbl){lbl.innerHTML='<span style="display:block;line-height:1.2;">THE</span><span style="display:block;line-height:1.2;">F⊗UNDRY</span><span style="display:block;line-height:1.2;">THESIS</span>';lbl.style.cssText='font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(107,101,96,0.48);display:block;font-family:var(--font-body);margin:0;line-height:1.2;';if(lbl.parentNode){}lc.appendChild(lbl);}
+    inner.appendChild(lc);
+    var cc=document.createElement('div');cc.className='tsw-injected';
+    cc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:42px 31px;position:relative;pointer-events:auto;';
+    if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 2px 0;';l1.textContent='The best products';cc.appendChild(l1);}
+    if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(1.14rem,1.72vw,1.79rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0 0 14px 0;';l2.textContent="Won't be invented";cc.appendChild(l2);}
+    if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(3.12rem,4.9vw,5.72rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
+    if(atw){atw.innerHTML='MATTHEW — SILENT FOUNDRY';atw.style.cssText='font-family:var(--font-body);font-size:0.42rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.45);display:flex;align-items:center;margin-top:12px;white-space:nowrap;';cc.appendChild(atw);}
+    var cw=document.createElement('div');cw.className='tsw-injected';cw.style.cssText='flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:48px;position:relative;';cw.appendChild(cc);var rc=document.createElement('div');rc.className='tsw-injected';
+    rc.style.cssText='display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 24px;overflow:hidden;position:relative;min-width:120px;max-height:320px;';
+    var ri=document.createElement('div');ri.className='tsw-injected';ri.style.cssText='transform:scaleX(-1);font-family:"Bebas Neue",sans-serif;font-size:clamp(0.86rem,1.32vw,1.38rem);letter-spacing:0.18em;color:rgba(200,169,110,0.15);word-break:break-all;line-height:1.5;opacity:0.20;';ri.className+=' th-sym-shimmer';ri.textContent='⌀⊥∠⊞∥±↧∇△∴∫∵';rc.appendChild(ri);
+    var sp=document.createElement('div');sp.className='tsw-injected';sp.style.cssText='position:absolute;top:50%;right:48px;transform:translateY(-50%);pointer-events:none;z-index:3;font-size:0.72rem;color:rgba(200,169,110,0.34);line-height:1;font-family:"Bebas Neue",sans-serif;';sp.textContent='↧';cw.appendChild(sp);
+    cw.appendChild(rc);inner.appendChild(cw);
+  }
 }
 function restoreOriginal() {
   document.querySelectorAll('.tsw-btn').forEach(function(b){ b.classList.toggle('active', parseInt(b.getAttribute('data-opt'))===0); });
@@ -4494,7 +4740,7 @@ function typeSwitch(opt) {
 }
 
 window.typeSwitch = typeSwitch;
-document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){typeSwitch(34);},100);});
+document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){typeSwitch(2);},100);});
 
 })();
 </script>
