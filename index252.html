@@ -1961,7 +1961,7 @@ body.v11-active nav * { cursor: none !important; }
 </style>
 </head>
 <body>
-<div id="hero-switcher"><span class="hsw-label">HERO</span><button class="hsw-btn active" onclick="applyHeroOpt(0)">0</button><button class="hsw-btn" onclick="applyHeroOpt(1)">1</button><button class="hsw-btn" onclick="applyHeroOpt(2)">2</button><button class="hsw-btn" onclick="applyHeroOpt(3)">3</button><button class="hsw-btn" onclick="applyHeroOpt(4)">4</button><button class="hsw-btn" onclick="applyHeroOpt(5)">5</button><button class="hsw-btn" onclick="applyHeroOpt(6)">6</button><button class="hsw-btn" onclick="applyHeroOpt(7)">7</button><button class="hsw-btn" onclick="applyHeroOpt(8)">8</button><button class="hsw-btn" onclick="applyHeroOpt(9)">9</button><button class="hsw-btn" onclick="applyHeroOpt(10)">10</button><button class="hsw-btn" onclick="applyHeroOpt(11)">11</button><button class="hsw-btn" onclick="applyHeroOpt(12)">12</button><button class="hsw-btn" onclick="applyHeroOpt(13)">13</button><button class="hsw-btn" onclick="applyHeroOpt(14)">14</button><button class="hsw-btn" onclick="applyHeroOpt(15)">15</button><button class="hsw-btn" onclick="applyHeroOpt(16)">16</button><button class="hsw-btn" onclick="applyHeroOpt(17)">17</button><button class="hsw-btn" onclick="applyHeroOpt(18)">18</button><button class="hsw-btn" onclick="applyHeroOpt(19)">19</button></div>
+<div id="hero-switcher"><span class="hsw-label">HERO</span><button class="hsw-btn" onclick="applyHeroOpt(0)">0</button><button class="hsw-btn" onclick="applyHeroOpt(1)">1</button><button class="hsw-btn" onclick="applyHeroOpt(2)">2</button><button class="hsw-btn" onclick="applyHeroOpt(3)">3</button><button class="hsw-btn" onclick="applyHeroOpt(4)">4</button><button class="hsw-btn" onclick="applyHeroOpt(5)">5</button><button class="hsw-btn" onclick="applyHeroOpt(6)">6</button><button class="hsw-btn" onclick="applyHeroOpt(7)">7</button><button class="hsw-btn" onclick="applyHeroOpt(8)">8</button><button class="hsw-btn" onclick="applyHeroOpt(9)">9</button><button class="hsw-btn" onclick="applyHeroOpt(10)">10</button><button class="hsw-btn" onclick="applyHeroOpt(11)">11</button><button class="hsw-btn" onclick="applyHeroOpt(12)">12</button></div>
 
 
 
@@ -4794,96 +4794,38 @@ document.addEventListener('DOMContentLoaded',function(){
 
 <script id="hero-switcher-js">
 (function(){
-var JF = "'Josefin Sans',sans-serif";
-var BB = "'Bebas Neue',sans-serif";
-var C1 = "rgba(244,241,236,0.92)";
-var C2 = "rgba(244,241,236,0.5)";
-var C3 = "rgba(244,241,236,0.25)";
-var G1 = "#c8a96e";
-var G2 = "#8a6e3a";
-var G3 = "rgba(200,169,110,0.45)";
-
-// Per-hero style specs: [eyebrow, top, brand, soul]
-// Each: {font, weight, color, tilt, size}
-var STYLES = [
-  // 0 original — keep existing site styles (null = don't override)
-  null,
-  // 1 original
-  null,
-  // 2 Pure Josefin ultra light
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:JF,w:100,c:C1,t:false}, brand:{f:JF,w:100,c:G1,t:false}, soul:{f:JF,w:100,c:C3,t:false}},
-  // 3 Pure Josefin heavy contrast
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:JF,w:700,c:C1,t:false}, brand:{f:JF,w:700,c:G1,t:false}, soul:{f:JF,w:100,c:C3,t:false}},
-  // 4 Pure Josefin medium weights
-  {ey:{f:JF,w:200,c:C2,t:false}, top:{f:JF,w:400,c:C1,t:false}, brand:{f:JF,w:400,c:G1,t:false}, soul:{f:JF,w:200,c:C2,t:false}},
-  // 5 Josefin eyebrow+soul, Bebas glyphs top+brand
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:BB,w:400,c:G1,t:true}, soul:{f:JF,w:100,c:C3,t:false}},
-  // 6 Bebas glyphs top+soul, Josefin brand, plain eyebrow
-  {ey:{f:JF,w:200,c:G3,t:false}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:JF,w:300,c:G1,t:false}, soul:{f:BB,w:400,c:C2,t:true}},
-  // 7 All glyphs
-  {ey:{f:BB,w:400,c:C2,t:true}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:BB,w:400,c:G1,t:true}, soul:{f:BB,w:400,c:C2,t:true}},
-  // 8 Engineering annotation
-  {ey:{f:JF,w:100,c:G3,t:false}, top:{f:JF,w:500,c:C1,t:false}, brand:{f:JF,w:300,c:G1,t:false}, soul:{f:JF,w:100,c:C2,t:false}},
-  // 9 Chinese/English bilingual
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:JF,w:300,c:G1,t:false}, soul:{f:BB,w:400,c:C2,t:true}},
-  // 10 Gold headline Josefin
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:JF,w:600,c:G1,t:false}, brand:{f:JF,w:300,c:C1,t:false}, soul:{f:JF,w:100,c:G3,t:false}},
-  // 11 Minimal one line
-  {ey:{f:JF,w:100,c:G3,t:false}, top:{f:JF,w:100,c:C1,t:false}, brand:{f:JF,w:100,c:C1,t:false}, soul:{f:JF,w:100,c:C1,t:false}},
-  // 12 Josefin italic headline
-  {ey:{f:JF,w:100,c:C2,t:false,i:true}, top:{f:JF,w:300,c:C1,t:false,i:true}, brand:{f:JF,w:300,c:G1,t:false}, soul:{f:JF,w:100,c:C3,t:false,i:true}},
-  // 13 Dark gold headline glyphs brand/soul
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:JF,w:500,c:G2,t:false}, brand:{f:BB,w:400,c:G1,t:true}, soul:{f:BB,w:400,c:C2,t:true}},
-  // 14 Whisper headline loud brand
-  {ey:{f:JF,w:100,c:C3,t:false}, top:{f:JF,w:100,c:C3,t:false}, brand:{f:JF,w:700,c:G1,t:false}, soul:{f:JF,w:700,c:C1,t:false}},
-  // 15 Glyph top Josefin brand/soul plain
-  {ey:{f:JF,w:200,c:C2,t:false}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:JF,w:300,c:G1,t:false}, soul:{f:JF,w:100,c:C2,t:false}},
-  // 16 All Josefin brand in dark gold
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:JF,w:300,c:C1,t:false}, brand:{f:JF,w:500,c:G2,t:false}, soul:{f:JF,w:100,c:C3,t:false}},
-  // 17 Condensed feel wide tracking
-  {ey:{f:JF,w:100,c:G1,t:false}, top:{f:JF,w:200,c:C1,t:false}, brand:{f:JF,w:200,c:G3,t:false}, soul:{f:JF,w:100,c:C2,t:false}},
-  // 18 Mixed tilt
-  {ey:{f:JF,w:100,c:C2,t:false}, top:{f:BB,w:400,c:C1,t:true}, brand:{f:BB,w:400,c:G1,t:true}, soul:{f:JF,w:100,c:C3,t:false}},
-  // 19 Pure Josefin cream only
-  {ey:{f:JF,w:100,c:C3,t:false}, top:{f:JF,w:300,c:C1,t:false}, brand:{f:JF,w:300,c:C2,t:false}, soul:{f:JF,w:100,c:C3,t:false}},
-];
-
-function applyStyle(el, spec) {
-  if(!el||!spec) return;
-  if(spec.f) el.style.fontFamily = spec.f;
-  if(spec.w) el.style.fontWeight = spec.w;
-  if(spec.c) el.style.color = spec.c;
-  if(spec.i) el.style.fontStyle = 'italic';
-  else el.style.fontStyle = '';
-  if(spec.t !== undefined) {
-    el.style.transform = spec.t ? 'skewX(-4deg)' : 'skewX(0deg)';
-    el.style.display = 'inline-block';
-  }
-}
-
+var HERO_OPTS=[{"l1": "<span class=\"gm\">∫</span>ILENT", "l2": "F<span class=\"gm\">◎</span>UNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "SILENT", "l2": "F<span class=\"gm\">◎</span>UNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "S<span class=\"gm\">∥</span>LENT", "l2": "F<span class=\"gm\">◎</span>UNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "S<span class=\"gm\">⌐</span><span class=\"gm\">∥</span>ENT", "l2": "F<span class=\"gm\">◎</span>UN<span class=\"gm\">∧</span>RY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "<span class=\"gm\">∫</span>I⊥EN<span class=\"gm\">↧</span>", "l2": "<span class=\"gm\">¬</span><span class=\"gm\">◎</span>U<span class=\"gm\">∧</span>DR<span class=\"gm\">▽</span>", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "<span class=\"gm\">∫</span><span class=\"gm\">⌐</span><span class=\"gm\">⊕</span>EN<span class=\"gm\">↧</span>", "l2": "<span class=\"gm\">¬</span>⊙U<span class=\"gm\">∧</span>DR<span class=\"gm\">▽</span>", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "<span class=\"gm\">∫</span>ILENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "SILENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "S<span class=\"gm\">∥</span>LENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "S<span class=\"gm\">⌐</span><span class=\"gm\">∥</span>ENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "<span class=\"gm\">∫</span>I⊥ENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"},
+{"l1": "<span class=\"gm\">∫</span><span class=\"gm\">⌐</span>⊕ENT", "l2": "FOUNDRY", "ey": "CROSS-BORDER VENTURE STUDIO", "top": "∥∇∆U∫⊥R∥∠L∥∫∥∇G", "brand": "BRAND", "soul": "S⊙∪L"}];
 function applyHeroOpt(n){
-  var o=HERO_OPTS[n];
-  if(!o) return;
+  var o=HERO_OPTS[n];if(!o)return;
+  var l1=document.querySelector('.sf-mark-line--silent');
+  if(l1)l1.innerHTML=o.l1;
+  var l2=document.querySelector('.sf-mark-line:not(.sf-mark-line--silent)');
+  if(l2)l2.innerHTML=o.l2;
   var ey=document.querySelector('.hero-eyebrow');
+  if(ey)ey.textContent=o.ey;
   var top=document.querySelector('.hero-headline-top');
+  if(top)top.textContent=o.top;
   var brand=document.querySelector('.hero-brand-word');
+  if(brand)brand.textContent=o.brand;
   var soul=document.querySelector('.hero-soul-word');
-  if(ey) ey.textContent=o.ey;
-  if(top) top.textContent=o.top;
-  if(brand) brand.textContent=o.brand;
-  if(soul) soul.textContent=o.soul;
-  var s=STYLES[n];
-  if(s){
-    applyStyle(ey,s.ey);
-    applyStyle(top,s.top);
-    applyStyle(brand,s.brand);
-    applyStyle(soul,s.soul);
-  }
-  document.querySelectorAll('#hero-switcher .hsw-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+  if(soul)soul.textContent=o.soul;
+  document.querySelectorAll('.hsw-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
 }
 window.applyHeroOpt=applyHeroOpt;
 document.addEventListener('DOMContentLoaded',function(){
-  applyHeroOpt(0);
+  var b=document.querySelectorAll('.hsw-btn');
+  if(b[0])b[0].classList.add('active');
 });
 })();
 </script>
@@ -4899,14 +4841,18 @@ document.addEventListener('DOMContentLoaded',function(){
   .nav-logo svg{width:120px!important;height:120px!important;}
 }
 </style>
-<div id="logo-switcher"><span class="hsw-label">LOGO</span><button class="hsw-btn active" onclick="applyLogoOpt(0)">1</button><button class="hsw-btn" onclick="applyLogoOpt(1)">2</button></div>
+<div id="logo-switcher"><span class="hsw-label">LOGO</span><button class="hsw-btn active" onclick="applyLogoOpt(0)">1</button><button class="hsw-btn" onclick="applyLogoOpt(1)">2</button><button class="hsw-btn" onclick="applyLogoOpt(2)">3</button><button class="hsw-btn" onclick="applyLogoOpt(3)">4</button></div>
 <script id="logo-switcher-js">
 (function(){
 var LOGOS=[
 // 1: SILENT w100 / FOUNDRY w100 ls6
 '<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="100" letter-spacing="6" fill="rgba(244,241,236,0.92)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="100" letter-spacing="6" fill="rgba(244,241,236,0.92)">FOUNDRY</text></g></svg>',
-// 2: SILENT w200 / FOUNDRY w200 ls6
-'<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">FOUNDRY</text></g></svg>'
+// 2: SILENT w100 / FOUNDRY w200 ls6
+'<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="100" letter-spacing="6" fill="rgba(244,241,236,0.92)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">FOUNDRY</text></g></svg>',
+// 3: SILENT w200 / FOUNDRY w200 ls6
+'<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">FOUNDRY</text></g></svg>',
+// 4: SILENT w200 / FOUNDRY w300 ls6
+'<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.92)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(244,241,236,0.92)">FOUNDRY</text></g></svg>'
 ];
 function applyLogoOpt(n){
   var logo=document.querySelector('.nav-logo');
