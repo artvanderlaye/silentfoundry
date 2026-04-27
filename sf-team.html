@@ -6,1027 +6,743 @@
 <title>Team — Silent Foundry</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="sf-styles.css" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sf-styles.css"/>
 <style>
-:root{--black:#0a0a0a;--white:#f4f1ec;--cream:#ede8e0;--accent:#c8a96e;--mid:#6b6560;--gold-dk:#8a6e3a;--navy:#1e2a4a;--purple:#2c1e4a;--charcoal:#282b33;--copper:#b87333;}
+:root{--black:#0a0a0a;--white:#f4f1ec;--cream:#ede8e0;--accent:#c8a96e;--mid:#6b6560;--gdk:#8a6e3a;--navy:#1e2a4a;--purple:#2c1e4a;--charcoal:#282b33;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;padding-bottom:52px;transition:background 0.4s ease,color 0.4s ease;}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s ease;overflow:visible;}
+body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;padding-bottom:52px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s;overflow:visible;}
 nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;}
-nav.scrolled{opacity:0.3;}
-nav.scrolled:hover{opacity:1;}
-.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-28px;transition:opacity 0.5s ease;}
-.nav-links-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
-.nav-btn-sm{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;transition:all 0.2s;white-space:nowrap;cursor:pointer;}
-.nav-btn-sm:hover{color:rgba(10,10,10,0.9);}
-.nav-btn-en{background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.9);font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;}
+nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
+.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-28px;}
+.nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
+.nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;transition:all 0.2s;cursor:pointer;}
+.nbtn:hover{color:rgba(10,10,10,0.9);}
+.nbtn-en{background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.9);font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;}
 .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;position:relative;z-index:1;}
-.nav-toggle span{display:block;width:24px;height:1px;background:rgba(10,10,10,0.6);transition:transform 0.3s,opacity 0.3s;}
-.mobile-menu{display:none;position:fixed;inset:0;background:#ede8e0;z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:24px;}
-.mobile-menu.open{display:flex;}
-.mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.12em;color:rgba(10,10,10,0.7);text-decoration:none;text-transform:uppercase;}
-.mobile-menu a:hover{color:rgba(10,10,10,1);}
-@media(max-width:900px){nav{padding:14px 24px;}.nav-links-right{display:none;}.nav-toggle{display:flex;}.nav-logo{width:120px;height:60px;margin-left:-13px;}}
-
-/* FOOTER — always consistent */
-footer{background:var(--black);border-top:1px solid rgba(244,241,236,0.08);padding:0;}
-.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;align-items:start;}
-.footer-logo-wrap{}
-.footer-logo{display:block;width:160px;height:50px;margin-left:-18px;}
-.footer-tagline{font-size:0.82rem;line-height:1.8;color:var(--mid);max-width:280px;margin-top:16px;padding-left:10px;}
-.footer-col h5{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
-.footer-col p,.footer-col address{font-size:0.82rem;line-height:1.8;color:var(--mid);font-style:normal;}
-.footer-col a{display:block;font-size:0.82rem;color:var(--mid);text-decoration:none;margin-bottom:8px;transition:color 0.2s;}
-.footer-col a:hover{color:var(--white);}
-.footer-bottom{padding:16px 48px;background:var(--black);border-top:1px solid rgba(244,241,236,0.06);display:flex;justify-content:space-between;align-items:center;}
-.footer-bottom span{font-size:0.52rem;color:rgba(244,241,236,0.25);letter-spacing:0.12em;}
-@media(max-width:900px){
-  .footer-inner{grid-template-columns:1fr;gap:24px;padding:40px 24px 32px;}
-  .footer-tagline{padding-left:10px;}
-  .footer-col{padding-left:10px;}
-  .footer-bottom{flex-direction:column;gap:8px;text-align:center;padding:16px 24px;}
-  .footer-logo{margin-left:-13px;}
-}
-
-/* SWITCHER BAR */
-#page-switcher{position:fixed;bottom:0;left:0;right:0;z-index:9000;display:flex;align-items:center;justify-content:center;gap:2px;background:rgba(28,26,20,0.97);border-top:0.5px solid rgba(200,169,110,0.25);padding:5px 8px 7px;flex-wrap:wrap;}
-#page-switcher .sw-label{font-family:'DM Sans',sans-serif;font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-right:5px;white-space:nowrap;}
-#page-switcher .sw-btn{font-family:'DM Sans',sans-serif;font-size:0.52rem;letter-spacing:0.04em;color:rgba(180,180,180,0.55);background:rgba(180,180,180,0.1);border:0.5px solid rgba(180,180,180,0.18);cursor:pointer;padding:3px 7px;transition:all 0.15s;}
-#page-switcher .sw-btn:hover{color:rgba(244,241,236,0.85);background:rgba(180,180,180,0.18);}
-#page-switcher .sw-btn.active{color:rgba(200,169,110,0.95);background:rgba(200,169,110,0.14);border-color:rgba(200,169,110,0.38);}
-
-/* PAGE CONTENT AREA */
-#page-content{min-height:60vh;}
-
-/* LABEL SYSTEM — shared */
-.sf-label{font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;}
-.sf-label-dk{color:var(--gold-dk);}
-.sf-glyph{font-family:'Bebas Neue',sans-serif;color:var(--accent);display:inline;}
-
-/* SHARED MEMBER DATA */
-.member-imgs{display:none;}
-
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
+.nav-toggle span{display:block;width:24px;height:1px;background:rgba(10,10,10,0.6);transition:all 0.3s;}
+.mmenu{display:none;position:fixed;inset:0;background:#ede8e0;z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:24px;}
+.mmenu.open{display:flex;}
+.mmenu a{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.12em;color:rgba(10,10,10,0.7);text-decoration:none;text-transform:uppercase;}
+@media(max-width:900px){nav{padding:14px 24px;}.nav-right{display:none;}.nav-toggle{display:flex;}.nav-logo{width:120px;height:60px;margin-left:-13px;}}
+footer{background:#0a0a0a;padding:0;}
+.fi{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;align-items:start;}
+.fl{display:block;width:160px;height:50px;margin-left:-18px;}
+.ft{font-size:0.82rem;line-height:1.8;color:var(--mid);max-width:280px;margin-top:16px;padding-left:10px;}
+.fc h5{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.fc address,.fc a{font-size:0.82rem;line-height:1.8;color:var(--mid);font-style:normal;display:block;text-decoration:none;margin-bottom:8px;}
+.fc a:hover{color:var(--white);}
+.fb{padding:16px 48px;background:#0a0a0a;border-top:1px solid rgba(244,241,236,0.06);display:flex;justify-content:space-between;align-items:center;}
+.fb span{font-size:0.52rem;color:rgba(244,241,236,0.25);letter-spacing:0.12em;}
+@media(max-width:900px){.fi{grid-template-columns:1fr;gap:24px;padding:40px 24px 32px;}.ft,.fc{padding-left:10px;}.fb{flex-direction:column;gap:8px;text-align:center;padding:16px 24px;}.fl{margin-left:-13px;}}
+#psw{position:fixed;bottom:0;left:0;right:0;z-index:9000;display:flex;align-items:center;justify-content:center;gap:2px;background:rgba(28,26,20,0.97);border-top:0.5px solid rgba(200,169,110,0.25);padding:5px 8px 7px;flex-wrap:wrap;}
+#psw .sl{font-family:'DM Sans',sans-serif;font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-right:5px;white-space:nowrap;}
+#psw .sb{font-family:'DM Sans',sans-serif;font-size:0.52rem;color:rgba(180,180,180,0.55);background:rgba(180,180,180,0.1);border:0.5px solid rgba(180,180,180,0.18);cursor:pointer;padding:3px 7px;transition:all 0.15s;}
+#psw .sb:hover{color:rgba(244,241,236,0.85);background:rgba(180,180,180,0.18);}
+#psw .sb.active{color:rgba(200,169,110,0.95);background:rgba(200,169,110,0.14);border-color:rgba(200,169,110,0.38);}
+#pc{min-height:60vh;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes blink{50%{opacity:0;}}
 </style>
 </head>
 <body>
-
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu">
+<div class="mmenu" id="mmenu">
   <a href="index.html#how">HOW IT WORKS</a>
   <a href="index.html#funds">INVESTORS</a>
   <a href="sf-team.html">TEAM</a>
   <a href="sf-contact.html">CONTACT</a>
 </div>
-
-<!-- NAV -->
 <nav id="main-nav">
   <a href="index.html" class="nav-logo">
     <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="80"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(10,10,10,0.75)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(10,10,10,0.75)">FOUNDRY</text></g></svg>
   </a>
-  <div class="nav-links-right">
-    <a href="index.html" class="nav-btn-sm">HOME</a>
-    <a href="zh-team.html" class="nav-btn-sm">中文</a>
-    <span class="nav-btn-en">EN</span>
+  <div class="nav-right">
+    <a href="index.html" class="nbtn">HOME</a>
+    <a href="zh-team.html" class="nbtn">中文</a>
+    <span class="nbtn-en">EN</span>
   </div>
-  <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mobile-menu').classList.toggle('open')">
+  <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mmenu').classList.toggle('open')">
     <span></span><span></span><span></span>
   </button>
 </nav>
-
-<!-- PAGE CONTENT — rebuilt by JS -->
-<div id="page-content"></div>
-
-<!-- FOOTER -->
+<div id="pc"></div>
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo-wrap">
-      <a href="index.html" class="footer-logo">
-        <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg>
-      </a>
-      <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
+  <div class="fi">
+    <div>
+      <a href="index.html" class="fl"><svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg></a>
+      <p class="ft">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
-    <div class="footer-col">
-      <h5>Navigate</h5>
-      <a href="sf-team.html">Team</a>
-      <a href="sf-contact.html">Contact</a>
-      <a href="legal.html#privacy">Privacy Policy</a>
-      <a href="legal.html#terms">Terms of Use</a>
-    </div>
-    <div class="footer-col">
-      <h5>Hong Kong</h5>
-      <address>Flat/Rm A, 20/F<br>Kiu Fu Commercial Building<br>300 Lockhart Road<br>Wanchai</address>
-    </div>
-    <div class="footer-col">
-      <h5>Shanghai</h5>
-      <address>Room 333, 3/F<br>Building 1, No. 2001<br>Yanggao North Road<br>Free Trade Zone</address>
-    </div>
+    <div class="fc"><h5>Navigate</h5><a href="sf-team.html">Team</a><a href="sf-contact.html">Contact</a><a href="legal.html#privacy">Privacy Policy</a><a href="legal.html#terms">Terms of Use</a></div>
+    <div class="fc"><h5>Hong Kong</h5><address>Flat/Rm A, 20/F<br>Kiu Fu Commercial Building<br>300 Lockhart Road<br>Wanchai</address></div>
+    <div class="fc"><h5>Shanghai</h5><address>Room 333, 3/F<br>Building 1, No. 2001<br>Yanggao North Road<br>Free Trade Zone</address></div>
   </div>
 </footer>
-<div class="footer-bottom">
-  <span>© 2026 Silent Foundry Group. All rights reserved.</span>
-  <span>⌀3×M6</span>
-</div>
-
-<!-- SWITCHER BAR -->
-<div id="page-switcher">
-  <span class="sw-label">TEAM</span>
-</div>
-
+<div class="fb"><span>© 2026 Silent Foundry Group. All rights reserved.</span><span>⌀3×M6</span></div>
+<div id="psw"><span class="sl">TEAM</span></div>
 <script src="sf-scripts.js"></script>
 <script>
 (function(){
 
-// ── TEAM DATA ──
-var MEMBERS = [
-  {name:'Michel Riis Eriksen',role:'Co-Founder / Head of Design',bio:'Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products. Degree in Industrial Design, University of Kolding.',img:'michel.jpeg'},
+var M=[
+  {name:'Michel Riis Eriksen',role:'Co-Founder / Head of Design',bio:'Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products.',img:'michel.jpeg'},
   {name:'Matthew Waddick',role:'Co-Founder / CEO',bio:'Entrepreneur and founder with experience building multiple startups. Focuses on supply chain strategy, factory partnerships, international relationships, and capital raising.',img:'matthew.jpg'},
   {name:'James Cooper',role:'Co-Founder / Head of Creative Strategy',bio:'Creative strategist with experience across Australia\'s leading creative agencies. Leads brand development, concept direction, and translation of brand identity into scalable product platforms.',img:'james-cooper.jpeg'},
-  {name:'王馨莹 Amanda Wang',role:'Partnerships — Greater China',bio:'Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.',img:'amandawang.jpg'},
+  {name:'Amanda Wang',role:'Partnerships — Greater China',bio:'Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.',img:'amandawang.jpg'},
   {name:'James Terry',role:'Graphic Design & Brand Strategy',bio:'Senior graphic designer and brand strategist. Previously ran one of Melbourne\'s leading design agencies. Specialises in brand systems, visual identity, and product communication design.',img:'james-terry.png'},
   {name:'Mark Chennells',role:'Finance & Capital Strategy',bio:'Sits on the board and oversees financial modelling, capital strategy, and business structuring. Extensive experience across public companies, private ventures, and early-stage startups.',img:'mark.png'},
-  {name:'Danny Zhang',role:'Head of Engineering',bio:'Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories. Degree from University of Nottingham.',img:'danny.jpeg'},
-  {name:'Anders',role:'Head of Digital',bio:'Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development. Degree in Digital Marketing, University of Kolding.',img:'anders.jpg'},
-  {name:'Ian',role:'Head of AI',bio:'Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation supporting the development pipeline.',img:'ian.jpg'}
+  {name:'Danny Zhang',role:'Head of Engineering',bio:'Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories.',img:'danny.jpeg'},
+  {name:'Anders',role:'Head of Digital',bio:'Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development.',img:'anders.jpg'},
+  {name:'Ian',role:'Head of AI',bio:'Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation.',img:'ian.jpg'}
 ];
 
-var JOIN = {
-  label:'Opportunities',
-  title:'Join the Team.',
-  bio:'We\'re always looking for talented people — designers, engineers, strategists, and operators who want to work at the intersection of brand, product, and capital.',
-  cta:'Get in Touch',
-  href:'sf-contact.html'
-};
+var JOIN={label:'Opportunities',title:'Join the Team.',bio:'We\'re always looking for talented people — designers, engineers, strategists, and operators who want to work at the intersection of brand, product, and capital.',cta:'Get in Touch',href:'sf-contact.html'};
 
-// ── VARIANT BUILDERS ──
+// ── NAV HELPER ──
+function setNav(mode){
+  var lf=mode==='light'?'rgba(10,10,10,0.75)':'rgba(244,241,236,0.85)';
+  document.querySelectorAll('.nav-logo svg text').forEach(function(t){t.setAttribute('fill',lf);});
+  var dark=mode!=='light';
+  document.querySelectorAll('.nbtn').forEach(function(b){b.style.borderColor=dark?'rgba(244,241,236,0.25)':'rgba(10,10,10,0.25)';b.style.color=dark?'rgba(244,241,236,0.4)':'rgba(10,10,10,0.5)';});
+  document.querySelectorAll('.nav-toggle span').forEach(function(s){s.style.background=dark?'rgba(244,241,236,0.7)':'rgba(10,10,10,0.6)';});
+  var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
+  var grads={light:'rgba(237,232,224,0.98)',dark:'rgba(10,10,10,0.95)',navy:'rgba(20,28,55,0.97)',black:'rgba(10,10,10,0.97)',charcoal:'rgba(35,38,46,0.97)',purple:'rgba(30,20,50,0.97)',gold:'rgba(180,140,60,0.97)',bronze:'rgba(28,22,14,0.97)'};
+  var c=grads[mode]||grads.dark;
+  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';
+}
 
-var VARIANTS = {
+// ── SHARED ELEMENTS ──
+function scrollStrip(cards){
+  return '<div style="overflow-x:auto;display:flex;gap:2px;padding:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;">'+cards+'</div>';
+}
 
-  // 0: Original — cream, 3-col photo grid
-  0: function(){
-    var bg='#ede8e0';var tc='#0a0a0a';
-    setBody(bg,tc,'nav-light');
-    return '<div style="padding:180px 48px 80px;border-bottom:1px solid rgba(10,10,10,0.1);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.82);transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">The Team</h1>'+
-      '<p style="font-size:1rem;line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:600px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">'+
-    MEMBERS.map(function(m,i){return photoCard(m,'dark');}).join('')+
-    joinCard('#c8a96e','#0a0a0a')+
-    '</div>';
-  },
+function joinSection(bg,tc,ac,bc){
+  bg=bg||'rgba(200,169,110,0.12)';tc=tc||'#c8a96e';ac=ac||'rgba(200,169,110,0.4)';bc=bc||'rgba(244,241,236,0.45)';
+  return '<div style="background:'+bg+';padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:'+ac+';display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:0.06em;color:'+tc+';transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div style="max-width:440px;"><p style="font-size:0.88rem;line-height:1.8;color:'+bc+';margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid '+tc+';opacity:0.7;color:'+tc+';font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a></div>'+
+  '</div>';
+}
 
-  // 1: Cream Alt — editorial, label-led hero, 2-col split member list
-  1: function(){
-    setBody('#ede8e0','#0a0a0a','nav-light');
-    return '<div style="padding:180px 48px 0px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;border-bottom:2px solid rgba(200,169,110,0.3);">'+
-      '<div>'+
-      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:32px;">Silent Foundry</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,10vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.08);transform:skewX(-4deg);transform-origin:left;line-height:0.85;margin-bottom:0;">The<br>People</h1>'+
-      '</div>'+
-      '<div style="padding-bottom:48px;">'+
-      '<p style="font-size:0.95rem;line-height:1.9;color:rgba(10,10,10,0.55);border-left:3px solid #c8a96e;padding-left:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="padding:40px 48px;border-bottom:1px solid rgba(10,10,10,0.08);border-right:'+(i%2===0?'1px solid rgba(10,10,10,0.08)':'none')+';">'+
-        '<div style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:#8a6e3a;margin-bottom:8px;">0'+(i+1)+'</div>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;text-transform:uppercase;color:rgba(10,10,10,0.85);transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-        '<div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:16px;">'+m.role+'</div>'+
-        '<p style="font-size:0.82rem;line-height:1.75;color:rgba(10,10,10,0.5);">'+m.bio+'</p>'+
-      '</div>';
-    }).join('')+
-    '</div>'+
-    '<div style="background:#0a0a0a;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:40px;">'+
-      '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:12px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:3rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.88rem;line-height:1.75;color:rgba(244,241,236,0.5);max-width:520px;margin-top:12px;">'+JOIN.bio+'</p></div>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;white-space:nowrap;font-family:\'DM Sans\',sans-serif;flex-shrink:0;transition:background 0.2s;">'+JOIN.cta+'</a>'+
-    '</div>';
-  },
+// ── VARIANT 0: Original cream 3-col photo grid ──
+function v0(){
+  setNav('light');document.body.style.background='#ede8e0';document.body.style.color='#0a0a0a';
+  return '<div style="padding:180px 48px 80px;border-bottom:1px solid rgba(10,10,10,0.1);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.82);transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">The Team</h1>'+
+    '<p style="font-size:1rem;line-height:1.8;color:rgba(10,10,10,0.55);font-weight:300;max-width:600px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">'+
+  M.map(function(m){return '<div style="position:relative;overflow:hidden;background:#111;"><div style="position:relative;overflow:hidden;aspect-ratio:3/4;">'+
+    '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.7);transition:transform 0.6s,filter 0.5s;" onmouseover="this.style.transform=\'scale(1.05)\';this.style.filter=\'grayscale(0%) brightness(0.85)\'" onmouseout="this.style.transform=\'\';this.style.filter=\'grayscale(20%) brightness(0.7)\'"/>'+
+    '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,rgba(10,10,10,0.4) 55%,transparent 100%);"></div>'+
+    '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.04em;color:#f4f1ec;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.45);">'+m.role+'</div>'+
+    '</div></div></div>';}).join('')+
+  '<div style="background:#c8a96e;grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:40px;padding:96px 64px;">'+
+    '<div><span style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:10px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.2rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:12px;">'+JOIN.title+'</div>'+
+    '<p style="font-size:0.88rem;line-height:1.75;color:rgba(10,10,10,0.6);max-width:520px;">'+JOIN.bio+'</p></div>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;white-space:nowrap;font-family:\'DM Sans\',sans-serif;flex-shrink:0;">'+JOIN.cta+'</a>'+
+  '</div></div>';
+}
 
-  // 2: Foundry Dark — full black, massive hero, horizontal scroll strip
-  2: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="padding:200px 48px 80px;background:#0a0a0a;border-bottom:1px solid rgba(200,169,110,0.15);position:relative;overflow:hidden;">'+
-      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px);pointer-events:none;"></div>'+
-      '<div style="position:relative;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">⌀ Silent Foundry — The People</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,15vw,18rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.06);transform:skewX(-4deg);transform-origin:left;line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.2);">TEAM</h1>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.4);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
+// ── VARIANT 1: Shanghai Night (base format) ──
+// Navy/purple gradient, split hero, horizontal big portrait scroll
+function v1(){
+  setNav('navy');document.body.style.background='#1e2a4a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid rgba(200,169,110,0.15);background:linear-gradient(135deg,#1e2a4a 0%,#2c1e4a 100%);">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>People</h1></div>'+
+    '<div style="padding-bottom:16px;"><p style="font-size:0.9rem;line-height:1.9;color:rgba(244,241,236,0.45);border-left:2px solid rgba(200,169,110,0.3);padding-left:24px;margin-bottom:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+    '<div style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.35);">9 People · HK · SH · MEL · EU</div></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:linear-gradient(135deg,#1e2a4a,#2c1e4a);border-right:0.5px solid rgba(200,169,110,0.1);position:relative;overflow:hidden;">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.65);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    // gold marquee
-    '<div style="background:#c8a96e;overflow:hidden;padding:14px 0;">'+
-      '<div style="display:flex;white-space:nowrap;animation:marquee 20s linear infinite;">'+
-        [1,2].map(function(){return MEMBERS.map(function(m){return '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.9rem;letter-spacing:0.18em;color:#0a0a0a;padding:0 32px;">'+m.name+' ⌀</span>';}).join('');}).join('');+
-      '</div>'+
+    '<div style="padding:24px 32px 40px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:1;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.35);margin-bottom:16px;">'+m.role+'</div>'+
+      '<p style="font-size:0.75rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    // horizontal scroll member strip
-    '<div style="overflow-x:auto;display:flex;gap:2px;background:#0a0a0a;padding:0;scrollbar-width:none;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="flex:0 0 340px;position:relative;height:480px;overflow:hidden;">'+
-        '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(30%) brightness(0.6);" />'+
-        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,rgba(10,10,10,0.3) 60%,transparent 100%);"></div>'+
-        '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;">'+
-          '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.5);margin-bottom:8px;">0'+(i+1)+'</div>'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:1;">'+m.name+'</div>'+
-          '<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.4);margin-top:6px;">'+m.role+'</div>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    '</div>'+
-    // join card as full-width gold marquee banner
-    '<div style="background:#c8a96e;padding:80px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.04em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;line-height:0.9;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div>'+
-        '<p style="font-size:0.9rem;line-height:1.8;color:rgba(10,10,10,0.6);margin-bottom:32px;">'+JOIN.bio+'</p>'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:16px 40px;border:1.5px solid rgba(10,10,10,0.5);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;transition:background 0.2s;">'+JOIN.cta+' ↗</a>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.1)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)');
+}
 
-  // 3: Blueprint — dark navy, numbered spec list, no photos
-  3: function(){
-    setBody('#0d1117','#f4f1ec','nav-blueprint');
-    return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid rgba(0,180,216,0.2);position:relative;">'+
-      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px);pointer-events:none;"></div>'+
-      '<div style="position:relative;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,180,216,0.5);display:block;margin-bottom:24px;">∠ Personnel Specification / Rev.2026</span>'+
-      '<h1 style="font-family:\'DM Sans\',sans-serif;font-size:clamp(1rem,2vw,1.8rem);letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);font-weight:300;margin-bottom:8px;">Silent Foundry</h1>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,8rem);letter-spacing:0.06em;color:rgba(244,241,236,0.85);line-height:0.9;">Team<br>Roster</div>'+
-      '<p style="font-size:0.75rem;line-height:1.8;color:rgba(0,180,216,0.5);margin-top:24px;font-family:\'Courier New\',monospace;">// 9 personnel · Cross-border · HK / SH / MEL / EU</p>'+
-      '</div>'+
-    '</div>'+
-    // engineering spec list
-    '<div style="padding:0 48px;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="display:grid;grid-template-columns:80px 1fr 1fr;gap:0;border-bottom:0.5px solid rgba(0,180,216,0.12);padding:32px 0;">'+
-        '<div style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(0,180,216,0.4);padding-right:24px;padding-top:4px;">'+('0'+(i+1)).slice(-2)+'</div>'+
-        '<div style="border-left:0.5px solid rgba(0,180,216,0.15);padding-left:24px;">'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:rgba(0,180,216,0.85);margin-bottom:4px;">'+m.name+'</div>'+
-          '<div style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,180,216,0.4);">'+m.role+'</div>'+
-        '</div>'+
-        '<div style="border-left:0.5px solid rgba(0,180,216,0.1);padding-left:24px;">'+
-          '<p style="font-size:0.78rem;line-height:1.75;color:rgba(244,241,236,0.35);font-family:\'Courier New\',monospace;">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    '</div>'+
-    // join section
-    '<div style="background:#0d1117;border:0.5px solid rgba(0,180,216,0.2);margin:48px;padding:64px;border-top:2px solid rgba(0,180,216,0.5);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,180,216,0.4);display:block;margin-bottom:16px;">± '+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.08em;color:rgba(0,180,216,0.7);margin-bottom:16px;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.35);margin-bottom:32px;max-width:520px;font-family:\'Courier New\',monospace;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(0,180,216,0.35);color:rgba(0,180,216,0.7);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
-    '</div>';
-  },
+// ── VARIANTS 2-21: All based on the Shanghai format (scroll strip + big photos) ──
+// Each varies: bg colour, photo filter/treatment, card layout, hero, join section
 
-  // 4: Brutalist — zero padding, type bleeds, 4-col tight grid
-  4: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="padding:180px 0 0;overflow:hidden;">'+
-      '<div style="border-bottom:4px solid #f4f1ec;padding:0 0 32px;">'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(6rem,18vw,22rem);letter-spacing:-0.02em;text-transform:uppercase;color:#f4f1ec;line-height:0.82;padding:0 24px;transform:skewX(-4deg);transform-origin:left;">The<br>Team</h1>'+
-      '<p style="font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.35);padding:24px 24px 0;border-top:1px solid rgba(244,241,236,0.1);margin-top:24px;">A cross-border crew of designers, engineers, strategists, and operators — HK / SH / MEL / EU</p>'+
-      '</div>'+
+// 2: Pure Black — dark industrial, gold border cards, full bleed photos
+function v2(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;border-bottom:1px solid rgba(200,169,110,0.15);position:relative;overflow:hidden;">'+
+    '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px);pointer-events:none;"></div>'+
+    '<div style="position:relative;"><span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">⌀ Silent Foundry — Personnel</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,15vw,18rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.05);transform:skewX(-4deg);transform-origin:left;line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.2);">TEAM</h1>'+
+    '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators.</p></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;background:#0a0a0a;border:0.5px solid rgba(200,169,110,0.15);border-top:2px solid #c8a96e;position:relative;overflow:hidden;">'+
+    '<div style="width:100%;height:420px;overflow:hidden;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(40%) brightness(0.55);"/>'+
+      '<div style="position:absolute;top:0;left:0;right:0;height:420px;background:linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.2) 65%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:#111;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="position:relative;height:400px;overflow:hidden;background:#111;">'+
-        '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(100%) brightness(0.7) contrast(1.1);transition:transform 0.6s ease;" onmouseover="this.style.transform=\'scale(1.05)\'" onmouseout="this.style.transform=\'\'" />'+
-        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.4) 55%,transparent 100%);"></div>'+
-        '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.04em;color:#f4f1ec;line-height:1;">'+m.name+'</div>'+
-          '<div style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.4);margin-top:4px;">'+m.role+'</div>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:24px 28px 36px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.3);margin-bottom:8px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="background:#f4f1ec;padding:96px 24px;border-top:4px solid #0a0a0a;">'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'+
-        '<div style="border-right:4px solid #0a0a0a;padding:0 48px 0 24px;">'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,8vw,9rem);letter-spacing:0.02em;color:#0a0a0a;line-height:0.85;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-        '</div>'+
-        '<div style="padding:0 24px 0 48px;display:flex;flex-direction:column;justify-content:space-between;">'+
-          '<p style="font-size:0.9rem;line-height:1.8;color:rgba(10,10,10,0.6);">'+JOIN.bio+'</p>'+
-          '<a href="'+JOIN.href+'" style="display:inline-block;margin-top:32px;padding:16px 40px;border:2px solid #0a0a0a;color:#0a0a0a;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#c8a96e;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(10,10,10,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 5: Gold Rush — full gold bg, single word hero, name-only list
-  5: function(){
-    setBody('#c8a96e','#0a0a0a','nav-gold');
-    return '<div style="min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:180px 48px 80px;text-align:center;border-bottom:1px solid rgba(10,10,10,0.12);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(10,10,10,0.4);display:block;margin-bottom:32px;">Silent Foundry</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,25vw,32rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.08);transform:skewX(-4deg);line-height:0.85;">TEAM</h1>'+
-      '<p style="font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(10,10,10,0.45);margin-top:32px;max-width:480px;line-height:1.8;">9 People · Cross-border · Brand × Product × Capital</p>'+
+// 3: Cream Editorial — light bg, big serif hero, mono-toned photos, column strip
+function v3(){
+  setNav('light');document.body.style.background='#ede8e0';document.body.style.color='#0a0a0a';
+  return '<div style="padding:180px 48px 60px;border-bottom:3px solid #0a0a0a;">'+
+    '<span style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:0.9rem;color:#8a6e3a;display:block;margin-bottom:24px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'DM Serif Display\',serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:-0.01em;color:#0a0a0a;line-height:0.9;margin-bottom:32px;"><em style="color:#c8a96e;">The</em> Team</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.85;color:rgba(10,10,10,0.5);max-width:480px;font-family:\'DM Serif Display\',serif;border-left:3px solid #c8a96e;padding-left:20px;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 340px;background:#ede8e0;border-right:1px solid rgba(10,10,10,0.08);overflow:hidden;">'+
+    '<div style="width:100%;height:440px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) contrast(1.05);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(237,232,224,0.97) 0%,rgba(237,232,224,0.15) 55%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="padding:0 48px;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:24px 0;border-bottom:0.5px solid rgba(10,10,10,0.15);">'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,3rem);letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-        '<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(10,10,10,0.45);">'+m.role+'</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:1.2rem;color:#0a0a0a;margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:#8a6e3a;margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.75;color:rgba(10,10,10,0.5);font-family:\'DM Serif Display\',serif;">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="background:#0a0a0a;padding:96px 48px;margin-top:0;display:flex;justify-content:space-between;align-items:center;gap:48px;">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.04em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div style="max-width:400px;">'+
-        '<p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.5);margin-bottom:24px;">'+JOIN.bio+'</p>'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#0a0a0a;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:0.9rem;color:rgba(200,169,110,0.5);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'DM Serif Display\',serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;line-height:1.05;font-style:italic;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.85;color:rgba(244,241,236,0.45);max-width:400px;margin-bottom:24px;font-family:\'DM Serif Display\',serif;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 6: Ghost — near white, watermark type, minimal
-  6: function(){
-    setBody('#f4f1ec','rgba(10,10,10,0.2)','nav-ghost');
-    return '<div style="padding:200px 48px 80px;position:relative;overflow:hidden;">'+
-      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:35vw;color:rgba(10,10,10,0.03);transform:skewX(-4deg);white-space:nowrap;letter-spacing:0.04em;line-height:1;">TEAM</div>'+
-      '</div>'+
-      '<div style="position:relative;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(200,169,110,0.35);display:block;margin-bottom:32px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:rgba(10,10,10,0.08);-webkit-text-stroke:0.5px rgba(10,10,10,0.12);">Silent Foundry Team</h1>'+
-      '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.2);max-width:480px;margin-top:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
+// 4: Charcoal Left-Rule — dark grey, gold left axis, wide cards
+function v4(){
+  setNav('charcoal');document.body.style.background='#282b33';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 0 60px 0;border-left:4px solid #c8a96e;margin-left:48px;padding-left:48px;">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.08em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The Team</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;">A cross-border crew spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 400px;background:#282b33;border-right:0.5px solid rgba(200,169,110,0.1);border-left:'+(i===0?'4px solid #c8a96e':'none')+';">'+
+    '<div style="width:100%;height:460px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.6);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(40,43,51,0.97) 0%,rgba(40,43,51,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(10,10,10,0.06);">'+
-    MEMBERS.map(function(m){
-      return '<div style="background:#f4f1ec;padding:48px 40px;">'+
-        '<div style="width:60px;height:60px;border-radius:0;overflow:hidden;margin-bottom:20px;opacity:0.15;">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(100%);" />'+
-        '</div>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:rgba(10,10,10,0.12);">'+m.name+'</div>'+
-        '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.3);margin-top:6px;">'+m.role+'</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:24px 32px 40px;border-left:'+(i===0?'none':'0.5px solid rgba(200,169,110,0.08)')+';">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="padding:96px 48px;border-top:0.5px solid rgba(200,169,110,0.15);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.3);display:block;margin-bottom:24px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,5vw,7rem);letter-spacing:0.06em;color:rgba(10,10,10,0.06);-webkit-text-stroke:0.5px rgba(10,10,10,0.1);">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.85rem;line-height:1.8;color:rgba(10,10,10,0.2);max-width:480px;margin-top:24px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;margin-top:32px;padding:12px 32px;border:0.5px solid rgba(10,10,10,0.12);color:rgba(10,10,10,0.2);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#c8a96e;padding:96px 48px 96px 100px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(40,43,51,0.45);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#282b33;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(40,43,51,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1px solid rgba(40,43,51,0.35);color:#282b33;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 7: Shanghai Night — navy/purple gradient, split hero, horizontal cards
-  7: function(){
-    setBody('#1e2a4a','#f4f1ec','nav-dark-blue');
-    return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid rgba(200,169,110,0.15);background:linear-gradient(135deg,#1e2a4a 0%,#2c1e4a 100%);">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>People</h1>'+
-      '</div>'+
-      '<div style="padding-bottom:16px;">'+
-        '<p style="font-size:0.9rem;line-height:1.9;color:rgba(244,241,236,0.45);border-left:2px solid rgba(200,169,110,0.3);padding-left:24px;margin-bottom:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-        '<div style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.35);">9 People · HK · SH · MEL · EU</div>'+
-      '</div>'+
+// 5: Gold Rush — full gold bg, black photo treatment, oversized hero
+function v5(){
+  setNav('gold');document.body.style.background='#c8a96e';document.body.style.color='#0a0a0a';
+  return '<div style="padding:180px 48px 80px;border-bottom:2px solid rgba(10,10,10,0.12);text-align:center;">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(10,10,10,0.4);display:block;margin-bottom:32px;">Silent Foundry</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,22vw,28rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.07);transform:skewX(-4deg);line-height:0.85;">TEAM</h1>'+
+    '<p style="font-size:0.85rem;color:rgba(10,10,10,0.5);margin-top:32px;max-width:480px;line-height:1.8;margin-left:auto;margin-right:auto;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;background:#c8a96e;border-right:1px solid rgba(10,10,10,0.1);">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) contrast(1.2) brightness(0.5);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(200,169,110,0.97) 0%,rgba(200,169,110,0.15) 55%,transparent 100%);"></div>'+
     '</div>'+
-    // horizontal scroll cards with gold borders
-    '<div style="overflow-x:auto;display:flex;gap:1px;background:rgba(200,169,110,0.1);padding:0;scrollbar-width:none;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="flex:0 0 320px;background:linear-gradient(135deg,#1e2a4a,#2c1e4a);padding:40px 32px;border-right:0.5px solid rgba(200,169,110,0.1);">'+
-        '<div style="width:80px;height:80px;overflow:hidden;margin-bottom:24px;border:0.5px solid rgba(200,169,110,0.2);">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(20%) brightness(0.7);" />'+
-        '</div>'+
-        '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:8px;">0'+(i+1)+'</div>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:1;margin-bottom:6px;">'+m.name+'</div>'+
-        '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:16px;">'+m.role+'</div>'+
-        '<p style="font-size:0.75rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.45);margin-bottom:12px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(10,10,10,0.5);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="background:rgba(200,169,110,0.08);border:0.5px solid rgba(200,169,110,0.15);border-top:2px solid #c8a96e;margin:48px;padding:64px;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.4);max-width:480px;margin-bottom:32px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.3);color:#c8a96e;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#0a0a0a;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.45);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 8: Newspaper — cream, editorial columns, DM Serif, thumbnails
-  8: function(){
-    setBody('#ede8e0','#0a0a0a','nav-light');
-    return '<div style="padding:180px 48px 40px;border-bottom:3px solid #0a0a0a;">'+
-      '<div style="display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
-        '<div>'+
-          '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;font-family:\'DM Serif Display\',serif;font-style:italic;letter-spacing:0.05em;font-size:0.75rem;text-transform:none;">The People Behind It</span>'+
-          '<h1 style="font-family:\'DM Serif Display\',serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:-0.01em;color:#0a0a0a;line-height:1.05;margin-bottom:24px;">The<br><em style="color:#c8a96e;">Team</em></h1>'+
-        '</div>'+
-        '<div style="background:#0a0a0a;align-self:stretch;"></div>'+
-        '<div style="display:flex;flex-direction:column;gap:16px;padding-top:8px;">'+
-          MEMBERS.slice(0,3).map(function(m){return '<div style="display:flex;gap:16px;align-items:start;padding-bottom:16px;border-bottom:0.5px solid rgba(10,10,10,0.12);">'+
-            '<img src="'+m.img+'" style="width:48px;height:48px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(20%);" />'+
-            '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1rem;letter-spacing:0.06em;color:#0a0a0a;">'+m.name+'</div><div style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a6e3a;margin-top:2px;">'+m.role+'</div></div>'+
-          '</div>';}).join('')+
-        '</div>'+
-        '<div style="background:#0a0a0a;align-self:stretch;"></div>'+
-        '<div style="padding-top:8px;">'+
-          '<p style="font-size:0.88rem;line-height:1.9;color:rgba(10,10,10,0.55);font-family:\'DM Serif Display\',serif;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-          '<div style="margin-top:24px;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.3);border-top:1px solid rgba(10,10,10,0.1);padding-top:16px;">9 Personnel · Est. 2023</div>'+
-        '</div>'+
-      '</div>'+
+// 6: Blueprint — dark navy grid, cyan accents, engineering cards
+function v6(){
+  setNav('navy');document.body.style.background='#0d1117';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid rgba(0,180,216,0.2);position:relative;">'+
+    '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px);pointer-events:none;"></div>'+
+    '<div style="position:relative;"><span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,180,216,0.5);display:block;margin-bottom:24px;">∠ Personnel Specification / Rev.2026</span>'+
+    '<h1 style="font-family:\'DM Sans\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,180,216,0.7);font-weight:300;margin-bottom:8px;">Silent Foundry</h1>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,8rem);color:rgba(244,241,236,0.85);line-height:0.9;">Team Roster</div>'+
+    '<p style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(0,180,216,0.4);margin-top:24px;">// 9 personnel · Cross-border · HK / SH / MEL / EU</p></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:#0d1117;border:0.5px solid rgba(0,180,216,0.1);border-top:2px solid rgba(0,180,216,0.5);">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.5) sepia(20%);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,17,23,0.97) 0%,rgba(13,17,23,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    // member list editorial style
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid rgba(10,10,10,0.1);">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="display:flex;gap:24px;align-items:start;padding:32px 48px;border-bottom:0.5px solid rgba(10,10,10,0.08);border-right:'+(i%2===0?'0.5px solid rgba(10,10,10,0.08)':'none')+';">'+
-        '<img src="'+m.img+'" style="width:72px;height:90px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);" />'+
-        '<div>'+
-          '<div style="font-family:\'DM Serif Display\',serif;font-size:1.1rem;color:#0a0a0a;margin-bottom:4px;font-style:italic;">'+m.name+'</div>'+
-          '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:#8a6e3a;margin-bottom:12px;">'+m.role+'</div>'+
-          '<p style="font-size:0.78rem;line-height:1.75;color:rgba(10,10,10,0.5);">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(0,180,216,0.35);margin-bottom:8px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:rgba(0,180,216,0.8);margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.4);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-family:\'Courier New\',monospace;font-size:0.68rem;line-height:1.75;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="background:#0a0a0a;padding:80px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-      '<div>'+
-        '<span style="font-size:0.75rem;font-family:\'DM Serif Display\',serif;font-style:italic;color:rgba(200,169,110,0.5);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'DM Serif Display\',serif;font-size:clamp(2rem,4vw,5rem);color:#c8a96e;line-height:1.1;font-style:italic;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div>'+
-        '<p style="font-size:0.88rem;line-height:1.85;color:rgba(244,241,236,0.45);font-family:\'DM Serif Display\',serif;margin-bottom:24px;">'+JOIN.bio+'</p>'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.35);color:#c8a96e;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#0d1117;border:0.5px solid rgba(0,180,216,0.15);border-top:2px solid rgba(0,180,216,0.5);margin:48px;padding:64px;">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(0,180,216,0.4);display:block;margin-bottom:16px;">± '+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:rgba(0,180,216,0.7);margin-bottom:16px;">'+JOIN.title+'</div>'+
+    '<p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(0,180,216,0.35);color:rgba(0,180,216,0.7);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
+  '</div>';
+}
 
-  // 9: Machine — terminal readout, monospace, no photos
-  9: function(){
-    setBody('#0a0a0a','rgba(200,169,110,0.7)','nav-dark');
-    return '<div style="padding:180px 48px 60px;border-bottom:1px solid rgba(200,169,110,0.15);">'+
-      '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);display:block;margin-bottom:8px;">// SILENT FOUNDRY PERSONNEL DATABASE v2.6</span>'+
-      '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);display:block;margin-bottom:32px;">// QUERY: SELECT * FROM team WHERE active=true;</span>'+
-      '<h1 style="font-family:\'Courier New\',monospace;font-size:clamp(1.5rem,3vw,3.5rem);letter-spacing:0.08em;color:#c8a96e;font-weight:400;margin-bottom:8px;">TEAM_ROSTER<span style="animation:blink 1s step-end infinite;">_</span></h1>'+
-      '<p style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(200,169,110,0.35);line-height:1.8;">RECORDS FOUND: 9 | SORT: ROLE ASC | OUTPUT: FULL</p>'+
+// 7: Brutalist — zero padding, massive type, tight 4-col grid then scroll
+function v7(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 0 0;overflow:hidden;">'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(6rem,18vw,22rem);letter-spacing:-0.02em;text-transform:uppercase;color:#f4f1ec;line-height:0.82;padding:0 24px;transform:skewX(-4deg);transform-origin:left;border-bottom:4px solid #f4f1ec;">TEAM</h1>'+
+    '<p style="font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.35);padding:24px;border-bottom:1px solid rgba(244,241,236,0.1);">9 People · Cross-border · HK / SH / MEL / EU · Brand × Product × Capital</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:#0a0a0a;border-right:3px solid #f4f1ec;">'+
+    '<div style="width:100%;height:480px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) brightness(0.65) contrast(1.15);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<style>@keyframes blink{50%{opacity:0;}}</style>'+
-    '<div style="padding:0 48px;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="border-bottom:0.5px solid rgba(200,169,110,0.1);padding:28px 0;display:grid;grid-template-columns:48px 240px 1fr;gap:24px;">'+
-        '<div style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.3);padding-top:4px;">['+('0'+(i+1)).slice(-2)+']</div>'+
-        '<div>'+
-          '<div style="font-family:\'Courier New\',monospace;font-size:0.82rem;color:#c8a96e;letter-spacing:0.08em;">'+m.name.toUpperCase()+'</div>'+
-          '<div style="font-family:\'Courier New\',monospace;font-size:0.6rem;color:rgba(200,169,110,0.35);margin-top:4px;">'+m.role.toUpperCase()+'</div>'+
-        '</div>'+
-        '<div style="font-family:\'Courier New\',monospace;font-size:0.68rem;line-height:1.8;color:rgba(200,169,110,0.3);">'+m.bio+'</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 24px 36px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.04em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.35);margin-bottom:12px;">'+m.role+'</div>'+
+      '<p style="font-size:0.7rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="margin:48px;border:0.5px solid rgba(200,169,110,0.15);border-top:1px solid rgba(200,169,110,0.4);padding:48px;">'+
-      '<div style="font-family:\'Courier New\',monospace;font-size:0.55rem;color:rgba(200,169,110,0.3);margin-bottom:16px;">// STATUS: OPEN_POSITIONS > 0</div>'+
-      '<div style="font-family:\'Courier New\',monospace;font-size:clamp(1.2rem,2.5vw,2.5rem);color:#c8a96e;letter-spacing:0.08em;margin-bottom:16px;">JOIN_THE_TEAM.EXE</div>'+
-      '<div style="font-family:\'Courier New\',monospace;font-size:0.68rem;color:rgba(200,169,110,0.35);line-height:1.8;max-width:480px;margin-bottom:24px;">'+JOIN.bio+'</div>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:10px 24px;border:0.5px solid rgba(200,169,110,0.25);color:rgba(200,169,110,0.6);font-family:\'Courier New\',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;">[ CONNECT → ]</a>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#f4f1ec;padding:96px 24px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;border-top:4px solid #0a0a0a;">'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,8rem);color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;line-height:0.9;">'+JOIN.title+'</div>'+
+    '<div><p style="font-size:0.9rem;line-height:1.8;color:rgba(10,10,10,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:16px 40px;border:2px solid #0a0a0a;color:#0a0a0a;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 10: Label-as-Hero — inverted label hierarchy, label blown up to hero size
-  10: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="min-height:70vh;display:flex;flex-direction:column;justify-content:flex-end;padding:180px 48px 60px;border-bottom:1px solid rgba(200,169,110,0.15);position:relative;overflow:hidden;">'+
-      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(200,169,110,0.02) 19px,rgba(200,169,110,0.02) 20px);pointer-events:none;"></div>'+
-      '<div style="position:relative;">'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,12vw,16rem);letter-spacing:0.32em;text-transform:uppercase;color:rgba(200,169,110,0.06);transform:skewX(-4deg);transform-origin:left;line-height:0.9;-webkit-text-stroke:0.5px rgba(200,169,110,0.08);">The People<br>Behind It</div>'+
-      '<div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;">'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:#f4f1ec;">Silent Foundry Team</h1>'+
-        '<p style="font-size:0.88rem;line-height:1.9;color:rgba(244,241,236,0.4);align-self:end;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
-      '</div>'+
+// 8: Trace — outline only, ghost photos, stroke text
+function v8(){
+  setNav('navy');document.body.style.background='#0d1117';document.body.style.color='rgba(200,169,110,0.5)';
+  return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.1);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.3);display:block;margin-bottom:32px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,11vw,14rem);letter-spacing:0.06em;text-transform:uppercase;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.25);transform:skewX(-4deg);transform-origin:left;line-height:0.85;">Team</h1>'+
+    '<p style="font-size:0.82rem;line-height:1.8;color:rgba(200,169,110,0.25);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;border:0.5px solid rgba(200,169,110,0.08);border-top:0.5px solid rgba(200,169,110,0.3);">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) brightness(0.25) sepia(30%);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,17,23,0.98) 0%,rgba(13,17,23,0.3) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">'+
-    MEMBERS.map(function(m){return photoCard(m,'dark');}).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.2);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.4);transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.2);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.7rem;line-height:1.7;color:rgba(200,169,110,0.2);">'+m.bio+'</p>'+
     '</div>'+
-    joinCard('#c8a96e','#0a0a0a');
-  },
+  '</div>';})).join('')+
+  joinSection('transparent','rgba(200,169,110,0.4)','rgba(200,169,110,0.2)','rgba(200,169,110,0.2)');
+}
 
-  // 11: Inversion — alternating dark/cream per row
-  11: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    var rows = [];
-    for(var i=0;i<MEMBERS.length;i+=3){
-      var rowMembers = MEMBERS.slice(i,i+3);
-      var isDark = (i/3)%2===0;
-      var bg = isDark?'#0a0a0a':'#ede8e0';
-      var tc = isDark?'#f4f1ec':'#0a0a0a';
-      var ac = isDark?'#c8a96e':'#8a6e3a';
-      rows.push('<div style="display:grid;grid-template-columns:repeat('+rowMembers.length+',1fr);gap:2px;background:'+(isDark?'rgba(200,169,110,0.1)':'rgba(10,10,10,0.06)')+';">'+
-        rowMembers.map(function(m){
-          return '<div style="background:'+bg+';position:relative;overflow:hidden;">'+
-            '<div style="position:relative;overflow:hidden;aspect-ratio:4/5;">'+
-              '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale('+(isDark?'20':'30')+'%) brightness('+(isDark?'0.65':'0.85')+')" />'+
-              '<div style="position:absolute;inset:0;background:linear-gradient(to top,'+(isDark?'rgba(10,10,10,0.95)':'rgba(237,232,224,0.92)')+' 0%,transparent 60%);"></div>'+
-              '<div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">'+
-                '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:'+ac+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-                '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(isDark?'rgba(244,241,236,0.4)':'rgba(10,10,10,0.4)')+';margin-top:4px;">'+m.role+'</div>'+
-              '</div>'+
-            '</div>'+
-          '</div>';
-        }).join('')+
-      '</div>');
-    }
-    return '<div style="padding:180px 48px 60px;background:#ede8e0;border-bottom:none;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,8rem);letter-spacing:0.06em;text-transform:uppercase;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">The Team</h1>'+
-      '<p style="font-size:0.9rem;line-height:1.8;color:rgba(10,10,10,0.55);max-width:560px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+// 9: Frequency — scan lines, oscilloscope, ticker hero
+function v9(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid rgba(200,169,110,0.08);">'+
+    '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.025) 3px,rgba(200,169,110,0.025) 4px);pointer-events:none;z-index:0;"></div>'+
+    '<div style="position:relative;z-index:1;"><span style="font-family:\'Courier New\',monospace;font-size:0.52rem;letter-spacing:0.2em;color:rgba(200,169,110,0.35);display:block;margin-bottom:16px;">SFG // TEAM // 2026 ▌</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,20vw,26rem);letter-spacing:0.02em;color:rgba(200,169,110,0.05);line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.1);">09</div>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.1em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-top:-40px;position:relative;">Personnel</h1>'+
+    '<p style="font-size:0.78rem;line-height:1.8;color:rgba(244,241,236,0.3);max-width:480px;margin-top:24px;font-family:\'Courier New\',monospace;">A cross-border crew of designers, engineers, strategists, and operators.</p></div>'+
+  '</div>'+
+  '<div style="background:rgba(200,169,110,0.05);border-top:0.5px solid rgba(200,169,110,0.1);border-bottom:0.5px solid rgba(200,169,110,0.1);overflow:hidden;padding:10px 0;">'+
+    '<div style="display:flex;white-space:nowrap;animation:marquee 25s linear infinite;">'+
+      [1,2].map(function(){return M.map(function(m){return '<span style="font-family:\'Courier New\',monospace;font-size:0.62rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);padding:0 40px;">'+m.name.toUpperCase()+' // '+m.role.toUpperCase()+' ▌</span>';}).join('');}).join('')+
     '</div>'+
-    rows.join('')+
-    '<div style="background:#c8a96e;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:40px;">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.04em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(10,10,10,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
-    '</div>';
-  },
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;background:#0a0a0a;position:relative;overflow:hidden;">'+
+    '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.02) 3px,rgba(200,169,110,0.02) 4px);pointer-events:none;z-index:1;"></div>'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(50%) brightness(0.4) sepia(20%);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 65%,transparent 100%);z-index:2;"></div>'+
+    '</div>'+
+    '<div style="padding:20px 28px 36px;position:relative;z-index:2;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.3);margin-bottom:6px;">CH.'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.08em;color:#c8a96e;text-shadow:0 0 20px rgba(200,169,110,0.3);margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-bottom:12px;">'+m.role+'</div>'+
+      '<p style="font-size:0.68rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
+    '</div>'+
+  '</div>';})).join('')+
+  joinSection('#0a0a0a','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.35)');
+}
 
-  // 12: Charcoal — dark grey, left border, accordion member list
-  12: function(){
-    setBody('#282b33','#f4f1ec','nav-dark');
-    return '<div style="padding:180px 0 60px 0;border-left:4px solid #c8a96e;margin-left:48px;padding-left:48px;border-bottom:none;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.08em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.9;margin-bottom:24px;">The Team</h1>'+
-      '<p style="font-size:0.9rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+// 10: Inversion — alternating dark/cream hero, sepia photos, split cards
+function v10(){
+  setNav('light');document.body.style.background='#ede8e0';document.body.style.color='#0a0a0a';
+  return '<div style="display:grid;grid-template-columns:1fr 1fr;min-height:50vh;">'+
+    '<div style="background:#0a0a0a;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">Silent Foundry</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.06em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The Team</h1>'+
     '</div>'+
-    '<div style="margin-left:48px;border-left:4px solid rgba(200,169,110,0.15);padding-left:48px;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="border-bottom:0.5px solid rgba(200,169,110,0.1);">'+
-        '<div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'block\'?\'none\':\'block\';this.querySelector(\'.acc-icon\').textContent=this.nextElementSibling.style.display===\'block\'?\'−\':\'+'+'\';" style="display:flex;justify-content:space-between;align-items:center;padding:28px 0;cursor:pointer;">'+
-          '<div>'+
-            '<span style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,169,110,0.35);display:block;margin-bottom:6px;">0'+(i+1)+'</span>'+
-            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:#c8a96e;">'+m.name+'</div>'+
-            '<div style="font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-top:4px;">'+m.role+'</div>'+
-          '</div>'+
-          '<span class="acc-icon" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;color:rgba(200,169,110,0.4);">+</span>'+
-        '</div>'+
-        '<div style="display:none;padding-bottom:24px;">'+
-          '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.35);">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="background:#ede8e0;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
+      '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.55);border-left:3px solid #c8a96e;padding-left:24px;margin-bottom:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:#8a6e3a;">9 People · HK · SH · MEL · EU</div>'+
     '</div>'+
-    '<div style="background:#c8a96e;margin-left:0;padding:80px 48px 80px 100px;border-left:4px solid #282b33;display:flex;justify-content:space-between;align-items:center;gap:40px;margin-top:0;">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(40,43,51,0.45);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:0.04em;color:#282b33;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){
+    var dk=i%2===0;
+    return '<div style="flex:0 0 380px;background:'+(dk?'#0a0a0a':'#ede8e0')+';border-right:1px solid rgba(200,169,110,0.1);">'+
+      '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+        '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness('+(dk?'0.6':'0.85')+');"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,'+(dk?'rgba(10,10,10,0.97)':'rgba(237,232,224,0.96)')+' 0%,transparent 55%);"></div>'+
       '</div>'+
-      '<div><p style="font-size:0.85rem;line-height:1.8;color:rgba(40,43,51,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1px solid rgba(40,43,51,0.35);color:#282b33;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
-    '</div>';
-  },
-
-  // 13: White Heat — cream, DM Serif italic hero, 4-col tight grid
-  13: function(){
-    setBody('#ede8e0','#0a0a0a','nav-light');
-    return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid #c8a96e;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:32px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'DM Serif Display\',serif;font-size:clamp(4rem,10vw,14rem);font-style:italic;letter-spacing:-0.01em;color:#0a0a0a;line-height:0.9;margin-bottom:32px;">The<br>Team</h1>'+
-      '<p style="font-size:0.88rem;line-height:1.85;color:rgba(10,10,10,0.45);max-width:480px;font-family:\'DM Serif Display\',serif;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(10,10,10,0.08);">'+
-    MEMBERS.map(function(m){
-      return '<div style="background:#ede8e0;position:relative;overflow:hidden;aspect-ratio:3/4;">'+
-        '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(25%);" />'+
-        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(237,232,224,0.97) 0%,rgba(237,232,224,0.3) 50%,transparent 100%);"></div>'+
-        '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">'+
-          '<div style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:1rem;color:#0a0a0a;margin-bottom:4px;">'+m.name+'</div>'+
-          '<div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:#8a6e3a;">'+m.role+'</div>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    '</div>'+
-    '<div style="background:#0a0a0a;padding:80px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-      '<div>'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:clamp(2.5rem,5vw,6rem);color:#c8a96e;line-height:1.05;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div>'+
-        '<p style="font-size:0.88rem;line-height:1.85;color:rgba(244,241,236,0.45);font-family:\'DM Serif Display\',serif;margin-bottom:24px;">'+JOIN.bio+'</p>'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.35);color:#c8a96e;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
+      '<div style="padding:20px 28px 36px;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:'+(dk?'#c8a96e':'#0a0a0a')+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+        '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(dk?'rgba(200,169,110,0.4)':'#8a6e3a')+';margin-bottom:12px;">'+m.role+'</div>'+
+        '<p style="font-size:0.72rem;line-height:1.7;color:'+(dk?'rgba(244,241,236,0.3)':'rgba(10,10,10,0.5)') +';"> '+m.bio+'</p>'+
       '</div>'+
     '</div>';
-  },
+  })).join('')+
+  '<div style="background:#c8a96e;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(10,10,10,0.6);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 14: CAD Texture — full-bleed factory section style, poster hero
-  14: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="min-height:80vh;display:flex;flex-direction:column;justify-content:flex-end;padding:180px 48px 80px;background:#ede8e0;background-image:url(\'cad_texture.jpeg\');background-size:cover;background-position:center;background-attachment:fixed;position:relative;border-bottom:none;">'+
-      '<div style="position:absolute;inset:0;background:#0a0a0a;opacity:0.88;pointer-events:none;"></div>'+
-      '<div style="position:relative;">'+
-        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⌀ Personnel · Silent Foundry</span>'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;transform:skewX(-4deg);transform-origin:left;line-height:0.85;">'+
-          '<span style="display:block;font-size:clamp(2rem,5vw,6rem);letter-spacing:0.12em;color:rgba(244,241,236,0.25);">Cross-Border</span>'+
-          '<span style="display:block;font-size:clamp(5rem,12vw,15rem);letter-spacing:0.04em;color:#f4f1ec;">Team</span>'+
-          '<span style="display:block;font-size:clamp(2rem,5vw,6rem);letter-spacing:0.12em;color:#c8a96e;">Nine People</span>'+
-        '</h1>'+
-        '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
+// 11: Wire Schematic — hairline gold boxes, blueprint photo tint
+function v11(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="margin:120px 48px 0;border:0.5px solid rgba(200,169,110,0.25);padding:64px;position:relative;">'+
+    '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;letter-spacing:0.15em;">SF/TEAM/2026</div>'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;border-bottom:0.5px solid rgba(200,169,110,0.15);padding-bottom:16px;">Personnel — The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.08em;color:rgba(244,241,236,0.7);-webkit-text-stroke:0.5px rgba(200,169,110,0.2);transform:skewX(-4deg);transform-origin:left;">The Team</h1>'+
+    '<p style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(200,169,110,0.3);margin-top:24px;">// 9 personnel · Cross-border · Active</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;border:0.5px solid rgba(200,169,110,0.15);border-top:1px solid rgba(200,169,110,0.4);position:relative;">'+
+    '<div style="position:absolute;top:0;left:0;right:0;font-family:\'Courier New\',monospace;font-size:0.4rem;color:rgba(200,169,110,0.3);padding:8px 16px;letter-spacing:0.12em;">NODE_'+('0'+(i+1)).slice(-2)+'</div>'+
+    '<div style="width:100%;height:400px;overflow:hidden;margin-top:24px;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(40%) brightness(0.4);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">'+
-    MEMBERS.map(function(m){return photoCard(m,'dark');}).join('')+
+    '<div style="padding:16px 24px 32px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:rgba(244,241,236,0.7);-webkit-text-stroke:0.3px rgba(200,169,110,0.3);margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.3);margin-bottom:12px;">'+m.role+'</div>'+
+      '<p style="font-family:\'Courier New\',monospace;font-size:0.65rem;line-height:1.7;color:rgba(244,241,236,0.2);">'+m.bio+'</p>'+
     '</div>'+
-    joinCard('#c8a96e','#0a0a0a');
-  },
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.05)','rgba(200,169,110,0.6)','rgba(200,169,110,0.25)','rgba(244,241,236,0.2)');
+}
 
-  // 15: Split — hard 50/50 dark/cream every section
-  15: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="min-height:60vh;display:grid;grid-template-columns:1fr 1fr;">'+
-      '<div style="background:#0a0a0a;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
-        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">Silent Foundry</span>'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>Team</h1>'+
-      '</div>'+
-      '<div style="background:#ede8e0;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
-        '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.55);border-left:3px solid #c8a96e;padding-left:24px;margin-bottom:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-        '<div style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:#8a6e3a;">9 People · HK · SH · MEL · EU</div>'+
-      '</div>'+
+// 12: Warm Bronze Archive — dark bronze, gold body text
+function v12(){
+  setNav('bronze');document.body.style.background='#1c1a14';document.body.style.color='#c8a96e';
+  return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The Team</h1>'+
+    '<p style="font-size:0.88rem;line-height:1.8;color:rgba(200,169,110,0.45);max-width:480px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:#1c1a14;border-right:0.5px solid rgba(200,169,110,0.1);">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.45) sepia(30%);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,26,20,0.98) 0%,rgba(28,26,20,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    MEMBERS.map(function(m,i){
-      return '<div style="display:grid;grid-template-columns:1fr 1fr;">'+
-        '<div style="background:'+(i%2===0?'#0a0a0a':'#ede8e0')+';padding:48px;display:flex;align-items:center;gap:24px;">'+
-          '<div>'+
-            '<div style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:'+(i%2===0?'rgba(200,169,110,0.35)':'#8a6e3a')+';margin-bottom:8px;">0'+(i+1)+'</div>'+
-            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:'+(i%2===0?'#c8a96e':'#0a0a0a')+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-            '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(i%2===0?'rgba(244,241,236,0.35)':'rgba(10,10,10,0.4)')+';margin-top:6px;">'+m.role+'</div>'+
-          '</div>'+
-        '</div>'+
-        '<div style="background:'+(i%2===0?'#ede8e0':'#0a0a0a')+';padding:48px;overflow:hidden;">'+
-          '<img src="'+m.img+'" style="width:100%;height:200px;object-fit:cover;object-position:top;filter:grayscale(20%);display:block;margin-bottom:16px;" />'+
-          '<p style="font-size:0.78rem;line-height:1.75;color:'+(i%2===0?'rgba(10,10,10,0.5)':'rgba(244,241,236,0.35)')+';font-size:0.75rem;">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;">'+
-      '<div style="background:#c8a96e;padding:80px 48px;">'+
-        '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:0.04em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+JOIN.title+'</div>'+
-        '<p style="font-size:0.85rem;line-height:1.8;color:rgba(10,10,10,0.6);">'+JOIN.bio+'</p>'+
-      '</div>'+
-      '<div style="background:#0a0a0a;padding:80px 48px;display:flex;align-items:center;justify-content:center;">'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:20px 48px;border:0.5px solid rgba(200,169,110,0.4);color:#c8a96e;font-size:0.82rem;letter-spacing:0.22em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
-      '</div>'+
-    '</div>';
-  },
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.3);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(200,169,110,0.35);">'+m.bio+'</p>'+
+    '</div>'+
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.07)','#c8a96e','rgba(200,169,110,0.35)','rgba(200,169,110,0.4)');
+}
 
-  // 16: Gold Engineering Annotation — gold hairlines, dimension callouts
-  16: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="padding:180px 48px 80px;position:relative;border-bottom:none;">'+
-      '<div style="position:absolute;top:120px;left:48px;right:48px;height:0.5px;background:rgba(200,169,110,0.3);"></div>'+
-      '<div style="position:absolute;top:120px;left:48px;font-family:\'Courier New\',monospace;font-size:0.52rem;color:rgba(200,169,110,0.4);transform:translateY(-100%);padding-bottom:4px;">↕ 120px</div>'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;position:relative;">⌀ Personnel Specification</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;position:relative;">The Team</h1>'+
-      '<div style="position:absolute;right:48px;top:50%;transform:translateY(-50%);text-align:right;">'+
-        '<div style="font-family:\'Courier New\',monospace;font-size:0.55rem;color:rgba(200,169,110,0.35);line-height:2;">↔ 9 Personnel<br>↕ Cross-border<br>∠ HK / SH / MEL<br>⌀ Est. 2023</div>'+
-      '</div>'+
-      '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;position:relative;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+// 13: Purple Night — deeper purple, warm photo tone
+function v13(){
+  setNav('purple');document.body.style.background='#1a1030';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;background:linear-gradient(160deg,#1a1030 0%,#2c1e4a 50%,#1e1040 100%);border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⊕ The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,10vw,12rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The<br>Team</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.9;color:rgba(244,241,236,0.4);max-width:520px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:linear-gradient(160deg,#1a1030,#2c1e4a);border-right:0.5px solid rgba(200,169,110,0.08);">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.5) saturate(0.8);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,16,48,0.97) 0%,rgba(26,16,48,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
+    '</div>'+
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.1)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)');
+}
+
+// 14: CAD Texture — factory section treatment, textured overlay
+function v14(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="min-height:60vh;display:flex;flex-direction:column;justify-content:flex-end;padding:180px 48px 80px;background-image:url(\'cad_texture.jpeg\');background-size:cover;background-position:center;background-attachment:fixed;position:relative;border-bottom:none;">'+
+    '<div style="position:absolute;inset:0;background:#0a0a0a;opacity:0.88;pointer-events:none;"></div>'+
     '<div style="position:relative;">'+
-      '<div style="position:absolute;left:0;top:0;bottom:0;width:0.5px;background:rgba(200,169,110,0.2);"></div>'+
-      MEMBERS.map(function(m,i){
-        return '<div style="display:grid;grid-template-columns:80px 1fr 320px;border-bottom:0.5px solid rgba(200,169,110,0.1);position:relative;">'+
-          '<div style="padding:32px 24px;border-right:0.5px solid rgba(200,169,110,0.1);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:36px;">'+
-            '<div style="font-family:\'Courier New\',monospace;font-size:0.55rem;color:rgba(200,169,110,0.35);writing-mode:vertical-rl;letter-spacing:0.15em;">'+('0'+(i+1)).slice(-2)+'</div>'+
-          '</div>'+
-          '<div style="padding:32px 40px;border-right:0.5px solid rgba(200,169,110,0.08);">'+
-            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
-            '<div style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,169,110,0.4);">'+m.role+'</div>'+
-          '</div>'+
-          '<div style="padding:32px;overflow:hidden;">'+
-            '<img src="'+m.img+'" style="width:100%;height:140px;object-fit:cover;object-position:top;filter:grayscale(30%) brightness(0.6);display:block;" />'+
-          '</div>'+
-        '</div>';
-      }).join('')+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⌀ Personnel · Silent Foundry</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;transform:skewX(-4deg);transform-origin:left;line-height:0.85;">'+
+        '<span style="display:block;font-size:clamp(2rem,5vw,6rem);letter-spacing:0.12em;color:rgba(244,241,236,0.2);">Cross-Border</span>'+
+        '<span style="display:block;font-size:clamp(5rem,12vw,15rem);letter-spacing:0.04em;color:#f4f1ec;">Team</span>'+
+        '<span style="display:block;font-size:clamp(2rem,5vw,6rem);letter-spacing:0.12em;color:#c8a96e;">Nine People</span>'+
+      '</h1>'+
     '</div>'+
-    '<div style="border:0.5px solid rgba(200,169,110,0.2);border-top:1px solid #c8a96e;margin:48px;padding:64px;position:relative;">'+
-      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;">± OPEN POSITIONS</div>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-bottom:32px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.3);color:#c8a96e;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
-    '</div>';
-  },
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:#0a0a0a;position:relative;overflow:hidden;">'+
+    '<div style="position:absolute;inset:0;background-image:url(\'cad_texture.jpeg\');background-size:cover;opacity:0.08;pointer-events:none;"></div>'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.55);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
+    '</div>'+
+    '<div style="padding:20px 28px 36px;position:relative;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.35);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
+    '</div>'+
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.08)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.35)');
+}
 
-  // 17: Trace — outline only, no fills, gold stroke text
-  17: function(){
-    setBody('#0d1117','rgba(200,169,110,0.5)','nav-dark-blue');
-    return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.1);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.3);display:block;margin-bottom:32px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,11vw,14rem);letter-spacing:0.06em;text-transform:uppercase;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.25);transform:skewX(-4deg);transform-origin:left;line-height:0.85;">Team</h1>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(200,169,110,0.25);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+// 15: Redline — black, red accent, high-contrast
+function v15(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;border-bottom:2px solid #c8312a;position:relative;">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,49,42,0.6);display:block;margin-bottom:24px;">⌀ Personnel</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The Team</h1>'+
+    '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;border-left:2px solid #c8312a;padding-left:16px;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;background:#0a0a0a;border-right:0.5px solid rgba(200,49,42,0.1);border-top:2px solid #c8312a;">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(50%) brightness(0.55);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="border:0.5px solid rgba(200,169,110,0.08);padding:48px 40px;position:relative;overflow:hidden;">'+
-        '<div style="position:absolute;inset:0;overflow:hidden;opacity:0.06;">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(100%) sepia(50%);" />'+
-        '</div>'+
-        '<div style="position:relative;">'+
-          '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.2);margin-bottom:16px;">0'+(i+1)+'</div>'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.4);transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.name+'</div>'+
-          '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.2);margin-bottom:16px;">'+m.role+'</div>'+
-          '<p style="font-size:0.72rem;line-height:1.75;color:rgba(200,169,110,0.2);">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(200,49,42,0.5);margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8312a;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="margin:48px;border:0.5px solid rgba(200,169,110,0.12);border-top:0.5px solid rgba(200,169,110,0.35);padding:64px;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,169,110,0.2);display:block;margin-bottom:24px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.3);transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(200,169,110,0.2);max-width:480px;margin-bottom:32px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.15);color:rgba(200,169,110,0.3);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="background:#c8312a;padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(244,241,236,0.5);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.65);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(244,241,236,0.5);color:#f4f1ec;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+  '</div>';
+}
 
-  // 18: Stamped — cream, massive glyph, oversized Bebas hero
-  18: function(){
-    setBody('#ede8e0','#0a0a0a','nav-light');
-    return '<div style="padding:180px 48px 60px;position:relative;overflow:hidden;border-bottom:4px solid #0a0a0a;">'+
-      '<div style="position:absolute;right:-80px;top:-40px;font-family:\'Bebas Neue\',sans-serif;font-size:40vw;color:rgba(10,10,10,0.03);line-height:1;pointer-events:none;transform:skewX(-4deg);user-select:none;">⌀</div>'+
-      '<div style="position:relative;">'+
-        '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:24px;">The People Behind It</span>'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,18rem);letter-spacing:0.02em;text-transform:uppercase;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;line-height:0.82;margin-bottom:0;">Team</h1>'+
-        '<p style="font-size:0.82rem;line-height:1.8;color:rgba(10,10,10,0.45);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '</div>'+
+// 16: Ghost — near white, barely visible, watermark hero
+function v16(){
+  setNav('light');document.body.style.background='#f4f1ec';document.body.style.color='rgba(10,10,10,0.2)';
+  return '<div style="padding:200px 48px 80px;position:relative;overflow:hidden;border-bottom:0.5px solid rgba(10,10,10,0.06);">'+
+    '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:35vw;color:rgba(10,10,10,0.025);transform:skewX(-4deg);white-space:nowrap;">TEAM</div></div>'+
+    '<div style="position:relative;"><span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(200,169,110,0.35);display:block;margin-bottom:32px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.1em;color:rgba(10,10,10,0.07);-webkit-text-stroke:0.5px rgba(10,10,10,0.1);">Silent Foundry Team</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.18);max-width:480px;margin-top:24px;">A cross-border crew of designers, engineers, strategists, and operators.</p></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 340px;background:#f4f1ec;border-right:0.5px solid rgba(10,10,10,0.05);">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) brightness(1.1) contrast(0.7);opacity:0.25;"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(244,241,236,0.97) 0%,rgba(244,241,236,0.1) 55%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="padding:40px 48px;border-bottom:1px solid rgba(10,10,10,0.08);border-right:'+(i%2===0?'1px solid rgba(10,10,10,0.08)':'none')+';position:relative;overflow:hidden;">'+
-        '<div style="position:absolute;right:-8px;bottom:-16px;font-family:\'Bebas Neue\',sans-serif;font-size:6rem;color:rgba(10,10,10,0.03);line-height:1;transform:skewX(-4deg);">'+['⌀','∠','⊥','∴','⊕','↗','∇','±','∫'][i]+'</div>'+
-        '<div style="position:relative;">'+
-          '<div style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:8px;">0'+(i+1)+'</div>'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-          '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:#8a6e3a;margin-bottom:16px;">'+m.role+'</div>'+
-          '<p style="font-size:0.78rem;line-height:1.75;color:rgba(10,10,10,0.5);">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:rgba(10,10,10,0.12);margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.3);margin-bottom:12px;">'+m.role+'</div>'+
+      '<p style="font-size:0.7rem;line-height:1.7;color:rgba(10,10,10,0.14);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="background:#0a0a0a;padding:96px 48px;position:relative;overflow:hidden;">'+
-      '<div style="position:absolute;right:-40px;top:-20px;font-family:\'Bebas Neue\',sans-serif;font-size:20rem;color:rgba(200,169,110,0.03);line-height:1;transform:skewX(-4deg);">∴</div>'+
-      '<div style="position:relative;display:flex;justify-content:space-between;align-items:center;gap:48px;">'+
-        '<div>'+
-          '<span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.04em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-        '</div>'+
-        '<div style="max-width:400px;">'+
-          '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.4);margin-bottom:24px;">'+JOIN.bio+'</p>'+
-          '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.35);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  '<div style="padding:96px 48px;border-top:0.5px solid rgba(10,10,10,0.06);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.3);display:block;margin-bottom:24px;">'+JOIN.label+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,5vw,6rem);color:rgba(10,10,10,0.07);-webkit-text-stroke:0.5px rgba(10,10,10,0.1);">'+JOIN.title+'</div>'+
+    '<p style="font-size:0.85rem;line-height:1.8;color:rgba(10,10,10,0.18);max-width:480px;margin-top:24px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+    '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(10,10,10,0.1);color:rgba(10,10,10,0.2);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a>'+
+  '</div>';
+}
 
-  // 19: Wire — black, gold hairline boxes, schematic layout
-  19: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="margin:120px 48px 0;border:0.5px solid rgba(200,169,110,0.25);padding:64px;position:relative;">'+
-      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;letter-spacing:0.15em;">SF/TEAM/2026</div>'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;border-bottom:0.5px solid rgba(200,169,110,0.15);padding-bottom:16px;">Personnel — The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.08em;text-transform:uppercase;color:rgba(244,241,236,0.85);-webkit-text-stroke:0.5px rgba(200,169,110,0.2);transform:skewX(-4deg);transform-origin:left;">The Team</h1>'+
-      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.3);max-width:480px;margin-top:24px;font-family:\'Courier New\',monospace;font-size:0.72rem;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
+// 17: Machine terminal — courier, code output format
+function v17(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='rgba(200,169,110,0.7)';
+  return '<div style="padding:180px 48px 60px;border-bottom:1px solid rgba(200,169,110,0.15);">'+
+    '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.35);display:block;margin-bottom:8px;">// SILENT FOUNDRY PERSONNEL DATABASE v2.6</span>'+
+    '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.35);display:block;margin-bottom:32px;">// QUERY: SELECT * FROM team WHERE active=true;</span>'+
+    '<h1 style="font-family:\'Courier New\',monospace;font-size:clamp(1.5rem,3vw,3.5rem);color:#c8a96e;font-weight:400;letter-spacing:0.08em;">TEAM_ROSTER<span style="animation:blink 1s step-end infinite;">_</span></h1>'+
+    '<p style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(200,169,110,0.35);margin-top:16px;">RECORDS FOUND: 9 | SORT: ROLE ASC</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;background:#0a0a0a;border-right:0.5px solid rgba(200,169,110,0.1);border-top:1px solid rgba(200,169,110,0.4);">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(100%) brightness(0.3) sepia(20%) contrast(1.2);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.98) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
+      '<div style="position:absolute;top:12px;left:16px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.3);">['+('0'+(i+1)).slice(-2)+'] LOADED</div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:0 48px;border:0.5px solid rgba(200,169,110,0.15);border-top:none;">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="border:0.5px solid rgba(200,169,110,0.1);padding:32px;position:relative;">'+
-        '<div style="position:absolute;top:0;left:0;right:0;height:1px;background:rgba(200,169,110,0.2);"></div>'+
-        '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.25);margin-bottom:16px;">NODE_'+('0'+(i+1)).slice(-2)+'</div>'+
-        '<div style="width:56px;height:56px;border:0.5px solid rgba(200,169,110,0.2);overflow:hidden;margin-bottom:16px;">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(40%) brightness(0.5);" />'+
-        '</div>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:rgba(244,241,236,0.7);-webkit-text-stroke:0.3px rgba(200,169,110,0.3);margin-bottom:4px;">'+m.name+'</div>'+
-        '<div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.3);margin-bottom:12px;">'+m.role+'</div>'+
-        '<p style="font-size:0.7rem;line-height:1.7;color:rgba(244,241,236,0.2);font-family:\'Courier New\',monospace;">'+m.bio.substring(0,80)+'...</p>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.95rem;color:#c8a96e;letter-spacing:0.08em;margin-bottom:4px;">'+m.name.toUpperCase()+'</div>'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.58rem;color:rgba(200,169,110,0.4);margin-bottom:14px;">'+m.role.toUpperCase()+'</div>'+
+      '<p style="font-family:\'Courier New\',monospace;font-size:0.65rem;line-height:1.8;color:rgba(200,169,110,0.3);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="margin:24px 48px 48px;border:0.5px solid rgba(200,169,110,0.2);border-top:1px solid rgba(200,169,110,0.4);padding:48px;position:relative;">'+
-      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;">± OPEN_POSITIONS</div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-        '<div>'+
-          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4rem);color:rgba(244,241,236,0.7);-webkit-text-stroke:0.5px rgba(200,169,110,0.3);transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-        '</div>'+
-        '<div>'+
-          '<p style="font-size:0.75rem;line-height:1.8;color:rgba(244,241,236,0.25);margin-bottom:24px;font-family:\'Courier New\',monospace;">'+JOIN.bio+'</p>'+
-          '<a href="'+JOIN.href+'" style="display:inline-block;padding:10px 28px;border:0.5px solid rgba(200,169,110,0.2);color:rgba(200,169,110,0.5);font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;font-family:\'Courier New\',monospace;">[  '+JOIN.cta+'  ]</a>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  },
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.06)','#c8a96e','rgba(200,169,110,0.35)','rgba(200,169,110,0.35)');
+}
 
-  // 20: Frequency — scan lines, ticker, oscilloscope number display
-  20: function(){
-    setBody('#0a0a0a','#f4f1ec','nav-dark');
-    return '<div style="padding:180px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid rgba(200,169,110,0.1);">'+
-      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.025) 3px,rgba(200,169,110,0.025) 4px);pointer-events:none;z-index:0;"></div>'+
-      '<div style="position:relative;z-index:1;">'+
-        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;font-family:\'Courier New\',monospace;">SFG // TEAM // 2026 ▌</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,20vw,26rem);letter-spacing:0.02em;color:rgba(200,169,110,0.06);line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.1);">09</div>'+
-        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.1em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-top:-40px;position:relative;">Personnel</h1>'+
-        '<p style="font-size:0.78rem;line-height:1.8;color:rgba(244,241,236,0.3);max-width:480px;margin-top:24px;font-family:\'Courier New\',monospace;">A cross-border crew of designers, engineers, strategists, and operators.</p>'+
-      '</div>'+
+// 18: Deep Navy Single Column — full-width stacked members
+function v18(){
+  setNav('navy');document.body.style.background='#0e1628';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⊕ The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.08em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The Team</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.9;color:rgba(244,241,236,0.4);max-width:520px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 420px;background:#0e1628;border-right:1px solid rgba(200,169,110,0.06);">'+
+    '<div style="width:100%;height:500px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(10%) brightness(0.6);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(14,22,40,0.97) 0%,rgba(14,22,40,0.15) 55%,transparent 100%);"></div>'+
     '</div>'+
-    // ticker strip
-    '<div style="background:rgba(200,169,110,0.06);border-top:0.5px solid rgba(200,169,110,0.15);border-bottom:0.5px solid rgba(200,169,110,0.15);overflow:hidden;padding:12px 0;">'+
-      '<div style="display:flex;white-space:nowrap;animation:marquee 25s linear infinite;">'+
-        [1,2].map(function(){return MEMBERS.map(function(m){return '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;letter-spacing:0.15em;color:rgba(200,169,110,0.4);padding:0 40px;">'+m.name.toUpperCase()+' // '+m.role.toUpperCase()+' ▌</span>';}).join('');}).join('')+
-      '</div>'+
+    '<div style="padding:24px 32px 40px;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:8px;">0'+(i+1)+' / 09</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.7rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.name+'</div>'+
+      '<div style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.35);margin-bottom:18px;">'+m.role+'</div>'+
+      '<p style="font-size:0.78rem;line-height:1.75;color:rgba(244,241,236,0.35);">'+m.bio+'</p>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,169,110,0.08);">'+
-    MEMBERS.map(function(m,i){
-      return '<div style="background:#0a0a0a;position:relative;overflow:hidden;">'+
-        '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.02) 3px,rgba(200,169,110,0.02) 4px);pointer-events:none;z-index:1;"></div>'+
-        '<div style="position:relative;overflow:hidden;aspect-ratio:1;">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(50%) brightness(0.4) sepia(20%);" />'+
-          '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 70%,transparent 100%);z-index:2;"></div>'+
-          '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:3;">'+
-            '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.3);margin-bottom:6px;">CH.'+('0'+(i+1)).slice(-2)+'</div>'+
-            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:#c8a96e;text-shadow:0 0 20px rgba(200,169,110,0.3);">'+m.name+'</div>'+
-            '<div style="font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-top:4px;">'+m.role+'</div>'+
-          '</div>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
-    '</div>'+
-    '<div style="padding:80px 48px;background:#0a0a0a;border-top:1px solid rgba(200,169,110,0.1);display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;position:relative;overflow:hidden;">'+
-      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.015) 3px,rgba(200,169,110,0.015) 4px);pointer-events:none;"></div>'+
-      '<div style="position:relative;">'+
-        '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;letter-spacing:0.2em;color:rgba(200,169,110,0.35);display:block;margin-bottom:16px;">// OPEN_POSITIONS > 0</span>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;text-shadow:0 0 30px rgba(200,169,110,0.2);transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-      '</div>'+
-      '<div style="position:relative;">'+
-        '<p style="font-size:0.78rem;line-height:1.8;color:rgba(244,241,236,0.3);margin-bottom:24px;font-family:\'Courier New\',monospace;">'+JOIN.bio+'</p>'+
-        '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.25);color:rgba(200,169,110,0.6);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Courier New\',monospace;">[ '+JOIN.cta+' → ]</a>'+
-      '</div>'+
-    '</div>'+
-    '<style>@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}</style>';
-  },
+  '</div>';})).join('')+
+  joinSection('rgba(200,169,110,0.08)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)');
+}
 
-  // 21: Value Card Expand — member bios revealed on click, card-based
-  21: function(){
-    setBody('#1c1a14','#c8a96e','nav-dark');
-    return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The Team</h1>'+
-      '<p style="font-size:0.88rem;line-height:1.8;color:rgba(200,169,110,0.4);max-width:480px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+// 19: Stamped Cream — watermark glyph, oversized Bebas, cream bg
+function v19(){
+  setNav('light');document.body.style.background='#ede8e0';document.body.style.color='#0a0a0a';
+  return '<div style="padding:180px 48px 60px;position:relative;overflow:hidden;border-bottom:4px solid #0a0a0a;">'+
+    '<div style="position:absolute;right:-80px;top:-40px;font-family:\'Bebas Neue\',sans-serif;font-size:40vw;color:rgba(10,10,10,0.03);line-height:1;pointer-events:none;transform:skewX(-4deg);">⌀</div>'+
+    '<div style="position:relative;"><span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:24px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,18rem);letter-spacing:0.02em;text-transform:uppercase;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;line-height:0.82;">Team</h1>'+
+    '<p style="font-size:0.82rem;line-height:1.8;color:rgba(10,10,10,0.45);max-width:480px;margin-top:32px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 360px;background:#ede8e0;border-right:1px solid rgba(10,10,10,0.08);position:relative;overflow:hidden;">'+
+    '<div style="position:absolute;right:-8px;top:8px;font-family:\'Bebas Neue\',sans-serif;font-size:8rem;color:rgba(10,10,10,0.03);line-height:1;transform:skewX(-4deg);pointer-events:none;">'+['⌀','∠','⊥','∴','⊕','↗','∇','±','∫'][i]+'</div>'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.82);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(237,232,224,0.97) 0%,rgba(237,232,224,0.1) 55%,transparent 100%);"></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(200,169,110,0.08);">'+
-    MEMBERS.map(function(m,i){
-      return '<div onclick="toggleCard(this)" style="background:#1c1a14;cursor:pointer;border:0.5px solid rgba(200,169,110,0.08);transition:background 0.3s;position:relative;overflow:hidden;" onmouseover="this.style.background=\'rgba(200,169,110,0.06)\'" onmouseout="if(!this.classList.contains(\'open\'))this.style.background=\'#1c1a14\'">'+
-        '<div style="position:relative;overflow:hidden;aspect-ratio:3/4;">'+
-          '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(20%) brightness(0.5) sepia(10%);" />'+
-          '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,26,20,0.97) 0%,rgba(28,26,20,0.4) 60%,transparent 100%);"></div>'+
-          '<div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">'+
-            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-            '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.4);">'+m.role+'</div>'+
-          '</div>'+
-        '</div>'+
-        '<div class="val-body" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s ease,padding 0.3s;opacity:0;padding:0 24px;">'+
-          '<p style="font-size:0.78rem;line-height:1.75;color:rgba(200,169,110,0.5);padding-bottom:24px;">'+m.bio+'</p>'+
-        '</div>'+
-      '</div>';
-    }).join('')+
+    '<div style="padding:20px 28px 36px;position:relative;">'+
+      '<div style="font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;margin-bottom:8px;">0'+(i+1)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:#8a6e3a;margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.75;color:rgba(10,10,10,0.5);">'+m.bio+'</p>'+
     '</div>'+
-    '<script>function toggleCard(el){var body=el.querySelector(\'.val-body\');var isOpen=el.classList.contains(\'open\');document.querySelectorAll(\'.val-body\').forEach(function(b){b.style.maxHeight=\'0\';b.style.opacity=\'0\';b.style.padding=\'0 24px\';b.parentElement.classList.remove(\'open\');});if(!isOpen){body.style.maxHeight=\'200px\';body.style.opacity=\'1\';body.style.padding=\'24px\';el.classList.add(\'open\');}}<\/script>'+
-    '<div style="background:rgba(200,169,110,0.06);border:0.5px solid rgba(200,169,110,0.12);border-top:1px solid rgba(200,169,110,0.35);margin:48px;padding:64px;">'+
-      '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,169,110,0.35);display:block;margin-bottom:24px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.85rem;line-height:1.8;color:rgba(200,169,110,0.4);max-width:480px;margin-bottom:32px;">'+JOIN.bio+'</p>'+
-      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.25);color:rgba(200,169,110,0.6);font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a>'+
-    '</div>';
-  }
-
-};
-
-// ── HELPERS ──
-function photoCard(m, theme) {
-  var dark = theme==='dark';
-  return '<div style="position:relative;overflow:hidden;background:#111;">'+
-    '<div style="position:relative;overflow:hidden;aspect-ratio:3/4;">'+
-      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(20%) brightness(0.7);transition:transform 0.7s ease,filter 0.5s ease;" onmouseover="this.style.transform=\'scale(1.05)\';this.style.filter=\'grayscale(0%) brightness(0.85)\'" onmouseout="this.style.transform=\'\';this.style.filter=\'grayscale(20%) brightness(0.7)\'" />'+
-      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.5) 50%,transparent 100%);"></div>'+
-      '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;">'+
-        '<div style="font-size:0.8rem;line-height:1.7;color:rgba(244,241,236,0.65);max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s ease;opacity:0;" class="member-bio-hover">'+m.bio+'</div>'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.04em;line-height:1;color:#f4f1ec;margin-bottom:6px;">'+m.name+'</div>'+
-        '<div style="font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,236,0.45);">'+m.role+'</div>'+
-      '</div>'+
+  '</div>';})).join('')+
+  '<div style="background:#0a0a0a;padding:96px 48px;position:relative;overflow:hidden;">'+
+    '<div style="position:absolute;right:-20px;top:-20px;font-family:\'Bebas Neue\',sans-serif;font-size:18rem;color:rgba(200,169,110,0.03);line-height:1;transform:skewX(-4deg);">∴</div>'+
+    '<div style="position:relative;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+      '<div><span style="font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+      '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.4);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+      '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid rgba(200,169,110,0.35);color:#c8a96e;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
     '</div>'+
   '</div>';
 }
 
-function joinCard(bg, tc) {
-  return '<div style="background:'+bg+';grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:40px;padding:96px 64px;position:relative;overflow:hidden;border-top:3px solid rgba(10,10,10,0.15);">'+
-    '<div>'+
-      '<span style="font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba('+
-        (tc==='#0a0a0a'?'10,10,10':'244,241,236')+',0.45);display:block;margin-bottom:10px;">'+JOIN.label+'</span>'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.2rem;letter-spacing:0.06em;text-transform:uppercase;color:'+tc+';line-height:1;margin-bottom:12px;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div>'+
-      '<p style="font-size:0.88rem;line-height:1.75;color:rgba('+(tc==='#0a0a0a'?'10,10,10':'244,241,236')+',0.6);max-width:520px;">'+JOIN.bio+'</p>'+
+// 20: Engineering Annotation — dark, gold dimension lines, spec callouts
+function v20(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;position:relative;border-bottom:none;">'+
+    '<div style="position:absolute;top:140px;left:48px;right:48px;height:0.5px;background:rgba(200,169,110,0.3);"></div>'+
+    '<div style="position:absolute;top:140px;left:48px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.35);transform:translateY(-100%);padding-bottom:4px;">↕ 140px</div>'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;position:relative;">⌀ Personnel Specification</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;position:relative;">The Team</h1>'+
+    '<div style="position:absolute;right:48px;top:50%;transform:translateY(-50%);text-align:right;"><div style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:rgba(200,169,110,0.3);line-height:2;">↔ 9 Personnel<br>↕ Cross-border<br>∠ HK / SH / MEL<br>⌀ Est. 2023</div></div>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div style="flex:0 0 380px;border:0.5px solid rgba(200,169,110,0.1);border-top:1px solid rgba(200,169,110,0.4);position:relative;">'+
+    '<div style="position:absolute;top:-1px;left:16px;font-family:\'Courier New\',monospace;font-size:0.4rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 6px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;margin-top:8px;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.55);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
     '</div>'+
-    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba('+(tc==='#0a0a0a'?'10,10,10':'244,241,236')+',0.4);color:'+tc+';font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;white-space:nowrap;font-family:\'DM Sans\',sans-serif;transition:background 0.2s;">'+JOIN.cta+'</a>'+
+    '<div style="padding:16px 24px 32px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:14px;">'+m.role+'</div>'+
+      '<p style="font-size:0.7rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+m.bio+'</p>'+
+    '</div>'+
+  '</div>';})).join('')+
+  '<div style="border:0.5px solid rgba(200,169,110,0.2);border-top:1px solid #c8a96e;margin:48px;padding:64px;position:relative;">'+
+    '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;">± OPEN POSITIONS</div>'+
+    '<div style="display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);color:#c8a96e;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
+      '<div><p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:400px;margin-bottom:24px;">'+JOIN.bio+'</p>'+
+      '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.3);color:#c8a96e;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+JOIN.cta+' ↗</a></div>'+
+    '</div>'+
   '</div>';
 }
 
-function setBody(bg, tc, navMode) {
-  document.body.style.background = bg;
-  document.body.style.color = tc;
-  // nav logo colour
-  var navSvgTexts = document.querySelectorAll('.nav-logo svg text');
-  var logoFill = (navMode==='nav-light')?'rgba(10,10,10,0.75)':'rgba(244,241,236,0.85)';
-  navSvgTexts.forEach(function(t){t.setAttribute('fill',logoFill);});
-  // nav gradient
-  var navBefore = document.querySelector('nav');
-  if(navMode==='nav-light'){
-    navBefore.style.setProperty('--nav-grad','rgba(237,232,224,0.98)');
-  }
-  // nav buttons
-  var navBtns = document.querySelectorAll('.nav-btn-sm');
-  if(navMode==='nav-light'){
-    navBtns.forEach(function(b){b.style.borderColor='rgba(10,10,10,0.25)';b.style.color='rgba(10,10,10,0.5)';});
-  } else {
-    navBtns.forEach(function(b){b.style.borderColor='rgba(244,241,236,0.25)';b.style.color='rgba(244,241,236,0.4)';});
-  }
-  // nav toggle
-  var spans = document.querySelectorAll('.nav-toggle span');
-  spans.forEach(function(s){s.style.background=navMode==='nav-light'?'rgba(10,10,10,0.6)':'rgba(244,241,236,0.7)';});
-  // nav before gradient
-  var navEl = document.querySelector('nav');
-  if(navMode==='nav-light'){
-    navEl.style.cssText += '';
-    var style = document.getElementById('nav-grad-style');
-    if(!style){style=document.createElement('style');style.id='nav-grad-style';document.head.appendChild(style);}
-    style.textContent = navMode==='nav-light'?
-      'nav::before{background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%)!important;}':
-      'nav::before{background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%)!important;}';
-  } else if(navMode==='nav-dark-blue'){
-    var style=document.getElementById('nav-grad-style');
-    if(!style){style=document.createElement('style');style.id='nav-grad-style';document.head.appendChild(style);}
-    style.textContent='nav::before{background:linear-gradient(to bottom,rgba(14,20,40,0.97) 0%,transparent 100%)!important;}';
-  } else {
-    var style=document.getElementById('nav-grad-style');
-    if(!style){style=document.createElement('style');style.id='nav-grad-style';document.head.appendChild(style);}
-    style.textContent='nav::before{background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%)!important;}';
-  }
+// 21: Value Click-Expand — click to reveal bios on dark bg
+function v21(){
+  setNav('dark');document.body.style.background='#0a0a0a';document.body.style.color='#f4f1ec';
+  return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">The Team</h1>'+
+    '<p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+  '</div>'+
+  scrollStrip(M.map(function(m,i){return '<div onclick="tCard(this)" style="flex:0 0 380px;background:#0a0a0a;border-right:0.5px solid rgba(200,169,110,0.08);cursor:pointer;transition:background 0.3s;" onmouseover="if(!this.classList.contains(\'open\'))this.style.background=\'rgba(200,169,110,0.04)\'" onmouseout="if(!this.classList.contains(\'open\'))this.style.background=\'#0a0a0a\'">'+
+    '<div style="width:100%;height:420px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.55);transition:filter 0.4s;" class="mc-img"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.2) 60%,transparent 100%);"></div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
+        '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,0.35);">'+m.role+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="mc-body" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s,padding 0.3s;opacity:0;">'+
+      '<div style="padding:20px 28px 32px;"><p style="font-size:0.78rem;line-height:1.75;color:rgba(244,241,236,0.4);">'+m.bio+'</p></div>'+
+    '</div>'+
+  '</div>';})).join('')+
+  '<script>window.tCard=function(el){var b=el.querySelector(\'.mc-body\');var isOpen=el.classList.contains(\'open\');document.querySelectorAll(\'.mc-body\').forEach(function(x){x.style.maxHeight=\'0\';x.style.opacity=\'0\';x.style.padding=\'0\';x.parentElement.classList.remove(\'open\');x.parentElement.style.background=\'#0a0a0a\';x.parentElement.querySelector(\'.mc-img\').style.filter=\'grayscale(20%) brightness(0.55)\';});if(!isOpen){b.style.maxHeight=\'200px\';b.style.opacity=\'1\';el.classList.add(\'open\');el.style.background=\'rgba(200,169,110,0.06)\';el.querySelector(\'.mc-img\').style.filter=\'grayscale(0%) brightness(0.75)\';}};<\/script>'+
+  joinSection('rgba(200,169,110,0.08)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)');
 }
+
+// ── VARIANT MAP ──
+var VV={0:v0,1:v1,2:v2,3:v3,4:v4,5:v5,6:v6,7:v7,8:v8,9:v9,10:v10,11:v11,12:v12,13:v13,14:v14,15:v15,16:v16,17:v17,18:v18,19:v19,20:v20,21:v21};
 
 // ── SWITCHER ──
-var current = 0;
-var sw = document.getElementById('page-switcher');
-for(var i=0;i<=21;i++){
-  (function(n){
-    var btn = document.createElement('button');
-    btn.className = 'sw-btn' + (n===0?' active':'');
-    btn.textContent = n;
-    btn.onclick = function(){ applyOpt(n); };
-    sw.appendChild(btn);
-  })(i);
-}
+var cur=0;
+var sw=document.getElementById('psw');
+for(var i=0;i<=21;i++){(function(n){var b=document.createElement('button');b.className='sb'+(n===0?' active':'');b.textContent=n;b.onclick=function(){applyOpt(n);};sw.appendChild(b);})(i);}
 
-function applyOpt(n) {
-  current = n;
-  var content = document.getElementById('page-content');
-  if(VARIANTS[n]){
-    content.innerHTML = VARIANTS[n]();
-  }
-  document.querySelectorAll('#page-switcher .sw-btn').forEach(function(b,i){
-    b.classList.toggle('active', i===n);
-  });
+function applyOpt(n){
+  cur=n;document.getElementById('pc').innerHTML=VV[n]?VV[n]():'';
+  document.querySelectorAll('#psw .sb').forEach(function(b,i){b.classList.toggle('active',i===n);});
   window.scrollTo(0,0);
 }
-
-// init
 applyOpt(0);
-
-// nav scroll
-window.addEventListener('scroll',function(){
-  document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);
-},{passive:true});
-
-// marquee keyframe
-var mStyle = document.createElement('style');
-mStyle.textContent = '@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}';
-document.head.appendChild(mStyle);
-
+window.addEventListener('scroll',function(){document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);},{passive:true});
 })();
 </script>
 </body>
