@@ -15,8 +15,7 @@ nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to b
 nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
 .nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-28px;}
 .nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
-.nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;transition:all 0.2s;cursor:pointer;}
-.nbtn:hover{color:rgba(244,241,236,0.9);}
+.nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;cursor:pointer;}
 .nbtn-en{background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.9);font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;}
 .nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;position:relative;z-index:1;}
 .nav-toggle span{display:block;width:24px;height:1px;background:rgba(244,241,236,0.7);}
@@ -49,20 +48,22 @@ footer{background:#0a0a0a;}
 #psw .sb:hover{color:rgba(244,241,236,0.85);}
 #psw .sb.active{color:rgba(200,169,110,0.95);background:rgba(200,169,110,0.14);border-color:rgba(200,169,110,0.38);}
 #pc{min-height:60vh;}
-@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-/* ── MOBILE STRIP SCROLL ── */
-.strip{overflow-x:auto;display:flex;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-.strip::-webkit-scrollbar{display:none;}
+@keyframes eng-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* mobile strip */
 @media(max-width:900px){
-  .strip .sc{flex:0 0 85vw!important;}
-  .sn-hero{grid-template-columns:1fr!important;padding:140px 24px 48px!important;}
-  .sn-hero .sh-right{border-left:none!important;padding-left:0!important;border-top:1px solid rgba(200,169,110,0.2);padding-top:24px!important;}
-  .sn-join{flex-direction:column!important;padding:64px 24px!important;}
-  .ed-hero{grid-template-columns:1fr!important;gap:0!important;padding:140px 24px 32px!important;}
-  .ed-hero .ed-divider{display:none!important;}
-  .ed-grid{grid-template-columns:1fr!important;}
-  .ed-grid .ec{border-right:none!important;}
-  .ed-join{grid-template-columns:1fr!important;padding:48px 24px!important;}
+  .sn-split{grid-template-columns:1fr!important;padding:120px 24px 48px!important;}
+  .sn-right{border-left:none!important;padding-left:0!important;border-top:1px solid rgba(200,169,110,0.2)!important;padding-top:24px!important;}
+  .snj{flex-direction:column!important;padding:64px 24px!important;}
+  .ed-hero-grid{grid-template-columns:1fr!important;}
+  .ed-divider{display:none!important;}
+  .ed-grid-2{grid-template-columns:1fr!important;}
+  .ed-grid-3{grid-template-columns:1fr!important;}
+  .ed-grid-4{grid-template-columns:1fr 1fr!important;}
+  .edj{grid-template-columns:1fr!important;padding:48px 24px!important;}
+  .row-alt{grid-template-columns:1fr!important;min-height:auto!important;}
+  .row-alt img{height:300px!important;}
+  .sticky-l{position:relative!important;height:auto!important;min-height:300px!important;}
 }
 </style>
 </head>
@@ -75,7 +76,10 @@ footer{background:#0a0a0a;}
 </div>
 <nav id="mn">
   <a href="index.html" class="nav-logo" id="nl">
-    <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="80"><text x="10" y="52" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.85)">SILENT</text><text x="10" y="72" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.85)">FOUNDRY</text></svg>
+    <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="80">
+      <text x="10" y="52" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.85)">SILENT</text>
+      <text x="10" y="72" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.85)">FOUNDRY</text>
+    </svg>
   </a>
   <div class="nav-right">
     <a href="index.html" class="nbtn">HOME</a>
@@ -104,496 +108,860 @@ footer{background:#0a0a0a;}
 
 // ── DATA ──
 var M=[
-  {name:'Michel Riis Eriksen',role:'Co-Founder / Head of Design',bio:'Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products.',img:'michel.jpeg',loc:'Copenhagen'},
-  {name:'Matthew Waddick',role:'Co-Founder / CEO',bio:'Entrepreneur and founder with experience building multiple startups. Focuses on supply chain strategy, factory partnerships, international relationships, and capital raising.',img:'matthew.jpg',loc:'Hong Kong'},
-  {name:'James Cooper',role:'Co-Founder / Head of Creative Strategy',bio:'Creative strategist with experience across leading creative agencies. Leads brand development and translation of brand identity into scalable product platforms.',img:'james-cooper.jpeg',loc:'Melbourne'},
-  {name:'Amanda Wang',role:'Partnerships — Greater China',bio:'Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.',img:'amandawang.jpg',loc:'Shanghai'},
-  {name:'James Terry',role:'Graphic Design & Brand Strategy',bio:'Senior graphic designer and brand strategist. Previously ran one of Melbourne\'s leading design agencies. Specialises in brand systems, visual identity, and product communication.',img:'james-terry.png',loc:'Melbourne'},
-  {name:'Mark Chennells',role:'Finance & Capital Strategy',bio:'Sits on the board and oversees financial modelling, capital strategy, and business structuring. Extensive experience across public companies, private ventures, and early-stage startups.',img:'mark.png',loc:'Melbourne'},
-  {name:'Danny Zhang',role:'Head of Engineering',bio:'Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories.',img:'danny.jpeg',loc:'Shanghai'},
-  {name:'Anders',role:'Head of Digital',bio:'Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development.',img:'anders.jpg',loc:'Copenhagen'},
-  {name:'Ian',role:'Head of AI',bio:'Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation.',img:'ian.jpg',loc:'Hong Kong'}
+  {n:'Michel Riis Eriksen',r:'Co-Founder / Head of Design',b:'Former Yamaha designer and Danish flat-track champion. Leads design direction, product architecture, and brand DNA translation into manufacturable products.',i:'michel.jpeg',l:'Copenhagen'},
+  {n:'Matthew Waddick',r:'Co-Founder / CEO',b:'Entrepreneur and founder with experience building multiple startups. Focuses on supply chain strategy, factory partnerships, international relationships, and capital raising.',i:'matthew.jpg',l:'Hong Kong'},
+  {n:'James Cooper',r:'Co-Founder / Head of Creative Strategy',b:'Creative strategist with experience across leading creative agencies. Leads brand development and translation of brand identity into scalable product platforms.',i:'james-cooper.jpeg',l:'Melbourne'},
+  {n:'Amanda Wang',r:'Partnerships — Greater China',b:'Leads partnerships and strategic relationships across Greater China. Background in creative strategy and marketing. Degree in Theatre and Statistics, University of Toronto.',i:'amandawang.jpg',l:'Shanghai'},
+  {n:'James Terry',r:'Graphic Design & Brand Strategy',b:'Senior graphic designer and brand strategist. Previously ran one of Melbourne\'s leading design agencies. Specialises in brand systems, visual identity, and product communication.',i:'james-terry.png',l:'Melbourne'},
+  {n:'Mark Chennells',r:'Finance & Capital Strategy',b:'Sits on the board and oversees financial modelling, capital strategy, and business structuring. Extensive experience across public companies, private ventures, and early-stage startups.',i:'mark.png',l:'Melbourne'},
+  {n:'Danny Zhang',r:'Head of Engineering',b:'Mechatronics Engineer responsible for engineering development, factory integration, and product quality. Oversees manufacturing processes and QA across partner factories.',i:'danny.jpeg',l:'Shanghai'},
+  {n:'Anders',r:'Head of Digital',b:'Has run digital agencies across the Middle East, the US, and Europe, working with BMW and McLaren. Leads digital strategy and platform development.',i:'anders.jpg',l:'Copenhagen'},
+  {n:'Ian',r:'Head of AI',b:'Leads internal AI systems including Clawbot. Work focuses on AI-driven discovery, concept generation, product-market fit analysis, and internal automation.',i:'ian.jpg',l:'Hong Kong'}
 ];
-var JOIN={label:'Opportunities',title:'Join the Team.',bio:'We are always looking for talented people — designers, engineers, strategists, and operators who want to work at the intersection of brand, product, and capital.',cta:'Get in Touch',href:'sf-contact.html'};
+var JN={lb:'Opportunities',tt:'Join the Team.',bb:'We are always looking for talented people — designers, engineers, strategists, and operators who want to work at the intersection of brand, product, and capital.',ct:'Get in Touch',hr:'sf-contact.html'};
 
-// ── SN PALETTE ──
-var S={
-  b1:'#1e2a4a',b2:'#2c1e4a',
-  tx:'#f4f1ec',
-  gd:'#c8a96e',
-  g5:'rgba(200,169,110,0.5)',g4:'rgba(200,169,110,0.4)',
-  g2:'rgba(200,169,110,0.2)',g15:'rgba(200,169,110,0.15)',
-  g1:'rgba(200,169,110,0.1)',g08:'rgba(200,169,110,0.08)',
-  t5:'rgba(244,241,236,0.5)',t45:'rgba(244,241,236,0.45)',
-  t4:'rgba(244,241,236,0.4)',t35:'rgba(244,241,236,0.35)',t3:'rgba(244,241,236,0.3)'
+// ── PALETTES ──
+var S={b1:'#1e2a4a',b2:'#2c1e4a',tx:'#f4f1ec',gd:'#c8a96e',
+  g5:'rgba(200,169,110,0.5)',g4:'rgba(200,169,110,0.4)',g2:'rgba(200,169,110,0.2)',
+  g15:'rgba(200,169,110,0.15)',g1:'rgba(200,169,110,0.1)',g08:'rgba(200,169,110,0.08)',
+  t5:'rgba(244,241,236,0.5)',t45:'rgba(244,241,236,0.45)',t4:'rgba(244,241,236,0.4)',
+  t35:'rgba(244,241,236,0.35)',t3:'rgba(244,241,236,0.3)',t25:'rgba(244,241,236,0.25)'
 };
-// ── ED PALETTE ──
 var E={bg:'#ede8e0',tc:'#0a0a0a',ac:'#c8a96e',lc:'#8a6e3a',
-  b08:'rgba(10,10,10,0.08)',b5:'rgba(10,10,10,0.5)',b4:'rgba(10,10,10,0.4)',b3:'rgba(10,10,10,0.3)'};
+  b08:'rgba(10,10,10,0.08)',b5:'rgba(10,10,10,0.5)',b4:'rgba(10,10,10,0.4)',b3:'rgba(10,10,10,0.3)',b15:'rgba(10,10,10,0.15)'};
 
 // ── NAV ──
-function navD(grad){
-  var t=document.querySelectorAll('#nl svg text');t.forEach(function(x){x.setAttribute('fill','rgba(244,241,236,0.85)');});
+function navD(){
+  document.querySelectorAll('#nl svg text').forEach(function(t){t.setAttribute('fill','rgba(244,241,236,0.85)');});
   document.querySelectorAll('.nbtn').forEach(function(b){b.style.borderColor='rgba(244,241,236,0.25)';b.style.color='rgba(244,241,236,0.4)';});
   document.querySelectorAll('.nav-toggle span').forEach(function(s){s.style.background='rgba(244,241,236,0.7)';});
-  ng(grad||'rgba(30,42,74,0.97)');
+  ng('rgba(30,42,74,0.97)');
 }
-function navL(grad){
-  var t=document.querySelectorAll('#nl svg text');t.forEach(function(x){x.setAttribute('fill','rgba(10,10,10,0.75)');});
+function navL(){
+  document.querySelectorAll('#nl svg text').forEach(function(t){t.setAttribute('fill','rgba(10,10,10,0.75)');});
   document.querySelectorAll('.nbtn').forEach(function(b){b.style.borderColor='rgba(10,10,10,0.25)';b.style.color='rgba(10,10,10,0.5)';});
   document.querySelectorAll('.nav-toggle span').forEach(function(s){s.style.background='rgba(10,10,10,0.6)';});
-  ng(grad||'rgba(237,232,224,0.98)');
+  ng('rgba(237,232,224,0.98)');
 }
 function ng(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
 function bc(css){document.body.style.cssText=css+'padding-bottom:52px;overflow-x:hidden;';}
 
 // ── SN HELPERS ──
-function snHero(eyebrow,h1line1,h1line2,sub,extraRight){
-  return '<div class="sn-hero" style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid '+S.g15+';background:linear-gradient(135deg,'+S.b1+' 0%,'+S.b2+' 100%);">'+
-    '<div>'+
-      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">'+eyebrow+'</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">'+h1line1+'<br>'+h1line2+'</h1>'+
-    '</div>'+
-    '<div class="sh-right" style="border-left:1px solid '+S.g15+';padding-left:32px;">'+
+var SNBG='linear-gradient(135deg,'+S.b1+' 0%,'+S.b2+' 100%)';
+function snHero(h1,sub){
+  return '<div class="sn-split" style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid '+S.g15+';background:'+SNBG+';">'+
+    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">'+h1+'</h1></div>'+
+    '<div class="sn-right" style="border-left:1px solid '+S.g15+';padding-left:32px;">'+
       '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">'+sub+'</p>'+
       '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div>'+
-      (extraRight||'')+
     '</div>'+
   '</div>';
 }
-function snCard(m,i,opts){
-  opts=opts||{};
-  var w=opts.w||'380px';
-  var ph=opts.ph||'400px';
-  var filter=opts.filter||'grayscale(15%) brightness(0.65)';
-  var bg=opts.bg||('linear-gradient(135deg,'+S.b1+','+S.b2+')');
-  var bdr=opts.bdr||('0.5px solid '+S.g1);
-  var numStyle=opts.numBig?'position:absolute;top:16px;right:16px;font-family:\'Bebas Neue\',sans-serif;font-size:20vw;color:rgba(200,169,110,0.06);line-height:1;pointer-events:none;':'font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:10px;';
-  var topBorder=opts.topBorder?'border-top:2px solid '+S.gd+';':'';
-  var hRule=opts.hRule?'<div style="height:0.5px;background:'+S.g2+';margin:16px 0;"></div>':'';
-  var nameFont=opts.josefinName?'\'Josefin Sans\',sans-serif':'\'Bebas Neue\',sans-serif';
-  var nameSz=opts.josefinName?'1rem':'1.6rem';
-  var nameLs=opts.josefinName?'0.2em':'0.06em';
-  var nameSkew=opts.josefinName?'':'transform:skewX(-4deg);transform-origin:left;';
-
-  var photoTop=opts.textTop?'':'<div style="width:100%;height:'+ph+';overflow:hidden;position:relative;">'+
-    '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:'+filter+';"/>'+
-    '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,'+S.g08+' 60%,transparent 100%);"></div>'+
-    (opts.numBig?'<div style="'+numStyle+'">'+('0'+(i+1)).slice(-2)+'</div>':'')+
-  '</div>';
-  var textBlock='<div style="padding:24px 32px 40px;">'+
-    (!opts.numBig?'<div style="'+numStyle+'">'+('0'+(i+1)).slice(-2)+'</div>':'')+
-    (opts.textTop?'<div style="width:100%;height:'+ph+';overflow:hidden;margin-bottom:16px;"><img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:'+filter+';" /></div>':'')+
-    hRule+
-    '<div style="font-family:'+nameFont+';font-size:'+nameSz+';letter-spacing:'+nameLs+';color:'+S.gd+';'+nameSkew+'margin-bottom:6px;line-height:1.1;">'+m.name+'</div>'+
-    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';margin-bottom:14px;">'+m.role+'</div>'+
-    '<p style="font-size:0.75rem;line-height:1.7;color:'+S.t3+';">'+m.bio+'</p>'+
-    (opts.showLoc?'<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g4+';margin-top:12px;">'+m.loc+'</div>':'')+
-  '</div>';
-
-  return '<div class="sc" style="flex:0 0 '+w+';background:'+bg+';border-right:'+bdr+';'+topBorder+'overflow:hidden;position:relative;">'+photoTop+textBlock+'</div>';
-}
-function snStrip(opts){
-  return '<div class="strip">'+M.map(function(m,i){return snCard(m,i,opts);}).join('')+'</div>';
-}
-function snJoin(bg){
-  bg=bg||S.g08;
-  return '<div class="sn-join" style="background:'+bg+';padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:16px;">'+JOIN.label+'</span>'+
-    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
-    '<div style="max-width:420px;"><p style="font-size:0.88rem;line-height:1.8;color:'+S.t4+';margin-bottom:24px;">'+JOIN.bio+'</p>'+
-    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:0.5px solid '+S.gd+';opacity:0.7;color:'+S.gd+';font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;">'+JOIN.cta+' ↗</a></div>'+
+var SNHSUB='A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.';
+function snJ(){
+  return '<div class="snj" style="background:'+S.g08+';padding:96px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px;flex-wrap:wrap;">'+
+    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:16px;">'+JN.lb+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5rem);letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;">'+JN.tt+'</div></div>'+
+    '<div style="max-width:420px;"><p style="font-size:0.88rem;line-height:1.8;color:'+S.t4+';margin-bottom:24px;">'+JN.bb+'</p>'+
+    '<a href="'+JN.hr+'" style="display:inline-block;padding:14px 36px;border:0.5px solid '+S.gd+';opacity:0.7;color:'+S.gd+';font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;">'+JN.ct+' ↗</a></div>'+
   '</div>';
 }
+// Standard SN card
+function sc(m,i,w,ph,flt,extra){
+  w=w||'380px';ph=ph||'400px';flt=flt||'grayscale(15%) brightness(0.65)';extra=extra||'';
+  return '<div style="flex:0 0 '+w+';background:'+SNBG+';border-right:0.5px solid '+S.g1+';overflow:hidden;position:relative;">'+
+    '<div style="width:100%;height:'+ph+';overflow:hidden;position:relative;">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:'+flt+';"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,'+S.g08+' 60%,transparent 100%);"></div>'+
+      extra+
+    '</div>'+
+    '<div style="padding:20px 28px 36px;">'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:10px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;line-height:1.1;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';margin-bottom:14px;">'+m.r+'</div>'+
+      '<p style="font-size:0.75rem;line-height:1.7;color:'+S.t3+';">'+m.b+'</p>'+
+    '</div>'+
+  '</div>';
+}
+function strip(cards){return '<div style="overflow-x:auto;display:flex;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;">'+cards+'</div>';}
 
 // ── ED HELPERS ──
-function edHero(){
-  return '<div class="ed-hero" style="padding:180px 48px 40px;border-bottom:3px solid '+E.tc+';background:'+E.bg+';display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
-    '<div>'+
-      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:16px;">The People Behind It</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:0.95;transform:skewX(-4deg);transform-origin:left;margin-bottom:0;">The<br><span style="color:'+E.ac+';">Team</span></h1>'+
-    '</div>'+
+function edH(miniCount,introFont){
+  miniCount=miniCount||3;introFont=introFont||'\'DM Sans\',sans-serif';
+  return '<div class="ed-hero-grid" style="padding:180px 48px 40px;border-bottom:3px solid '+E.tc+';background:'+E.bg+';display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
+    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:16px;">The People Behind It</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:0.95;transform:skewX(-4deg);transform-origin:left;">The<br><span style="color:'+E.ac+';">Team</span></h1></div>'+
     '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
     '<div style="display:flex;flex-direction:column;gap:14px;padding-top:8px;">'+
-      M.slice(0,3).map(function(m){return '<div style="display:flex;gap:14px;align-items:start;padding-bottom:14px;border-bottom:0.5px solid '+E.b08+';">'+
-        '<img src="'+m.img+'" style="width:48px;height:48px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(20%);"/>'+
-        '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.95rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-top:2px;">'+m.role+'</div></div>'+
-      '</div>';}).join('')+
+      M.slice(0,miniCount).map(function(m){return '<div style="display:flex;gap:14px;align-items:start;padding-bottom:14px;border-bottom:0.5px solid '+E.b08+';">'+
+        '<img src="'+m.i+'" style="width:48px;height:48px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(20%);"/>'+
+        '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.95rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-top:2px;">'+m.r+'</div></div></div>';}).join('')+
     '</div>'+
     '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="padding-top:8px;">'+
-      '<p style="font-size:0.88rem;line-height:1.9;color:'+E.b5+';font-family:\'DM Sans\',sans-serif;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '<div style="margin-top:20px;font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:'+E.b3+';border-top:1px solid '+E.b08+';padding-top:14px;">9 Personnel · Est. 2023</div>'+
-    '</div>'+
+    '<div style="padding-top:8px;"><p style="font-size:0.88rem;line-height:1.9;color:'+E.b5+';font-family:'+introFont+';">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+    '<div style="margin-top:20px;font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:'+E.b3+';border-top:1px solid '+E.b08+';padding-top:14px;">9 Personnel · Est. 2023</div></div>'+
   '</div>';
 }
 function edCard(m,i,opts){
   opts=opts||{};
-  var bdr=i%2===0?('border-right:0.5px solid '+E.b08+';'):'';
-  var ph=opts.ph||'90px'; var pw=opts.pw||'72px';
+  var bdr=i%2===0?'border-right:0.5px solid '+E.b08+';':'';
+  var pw=opts.pw||'72px'; var ph=opts.ph||'90px';
   var rad=opts.circle?'border-radius:50%;':'';
-  var filt=opts.colour?'':'filter:grayscale(15%);';
-  var numShow=opts.showNum?'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.5rem;color:rgba(10,10,10,0.06);line-height:1;flex-shrink:0;transform:skewX(-4deg);margin-right:8px;align-self:flex-end;">'+('0'+(i+1)).slice(-2)+'</div>':'';
-  var nameEl='<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">';
-  if(opts.josefinName) nameEl='<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.tc+';margin-bottom:4px;">';
-  var roleRule=opts.goldRule?'<div style="height:2px;background:'+E.ac+';width:32px;margin-bottom:8px;"></div>':'';
-  var locEl=opts.showLoc?'<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.b3+';margin-top:4px;">'+m.loc+'</div>':'';
-  var hover=opts.hover?'transition:transform 0.3s;cursor:default;" onmouseover="this.querySelector(\'img\').style.transform=\'scale(1.04)\'" onmouseout="this.querySelector(\'img\').style.transform=\'\'':'';
+  var flt=opts.colour?'filter:none;':'filter:grayscale(15%);';
+  var nameEl=opts.josefin?
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.tc+';margin-bottom:4px;">'+m.n+'</div>':
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>';
+  var goldRule=opts.goldRule?'<div style="height:2px;background:'+E.ac+';width:32px;margin-bottom:8px;"></div>':'';
+  var numEl=opts.showNum?'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.5rem;color:rgba(10,10,10,0.06);line-height:1;flex-shrink:0;transform:skewX(-4deg);margin-right:8px;align-self:flex-end;">'+('0'+(i+1)).slice(-2)+'</div>':'';
+  var locEl=opts.showLoc?'<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.b3+';margin-top:6px;">· '+m.l+'</div>':'';
+  var lbdr=opts.leftBorder?'border-left:3px solid '+E.ac+';':'';
+  var altBg=opts.altBg&&Math.floor(i/2)%2===1?'background:rgba(10,10,10,0.02);':'';
+  var nameBottom=opts.nameBottom;
 
-  var mainContent='<div style="display:flex;gap:20px;align-items:start;flex:1;">'+
-    '<img src="'+m.img+'" style="width:'+pw+';height:'+ph+';object-fit:cover;object-position:top;flex-shrink:0;'+filt+rad+'transition:transform 0.4s;"/>'+
-    '<div style="flex:1;">'+
-      numShow+
-      roleRule+
-      nameEl+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.role+'</div>'+
-      (opts.nameBottom?'':'<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.bio+'</p>')+
-      locEl+
-    '</div></div>'+
-    (opts.nameBottom?'<div style="margin-top:12px;padding-top:12px;border-top:0.5px solid '+E.b08+';">'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-      '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';margin-top:8px;">'+m.bio+'</p></div>':'');
+  var inner=nameBottom?
+    numEl+'<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.r+'</div>'+
+    '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';margin-bottom:12px;">'+m.b+'</p>'+
+    '<div style="padding-top:12px;border-top:0.5px solid '+E.b08+';">'+nameEl+'</div>':
+    numEl+goldRule+nameEl+
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.r+'</div>'+
+    '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.b+'</p>'+locEl;
 
-  return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+hover+'">'+mainContent+'</div>';
-}
-function edGrid(opts){
-  return '<div class="ed-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
-    M.map(function(m,i){return edCard(m,i,opts);}).join('')+
+  return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+lbdr+altBg+'">'+
+    '<div style="flex-shrink:0;overflow:hidden;width:'+pw+';height:'+ph+';'+rad+'">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top;'+flt+'transition:transform 0.4s;" '+
+      (opts.hover?'onmouseover="this.style.transform=\'scale(1.08)\'" onmouseout="this.style.transform=\'\'"':'')+' /></div>'+
+    '<div style="flex:1;">'+inner+'</div>'+
   '</div>';
 }
-function edJoin(){
-  return '<div class="ed-join" style="background:'+E.tc+';padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:14px;">'+JOIN.label+'</span>'+
-    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4.5rem);letter-spacing:0.06em;color:'+E.ac+';line-height:1;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
-    '<div><p style="font-size:0.88rem;line-height:1.85;color:rgba(244,241,236,0.45);margin-bottom:24px;">'+JOIN.bio+'</p>'+
-    '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:0.5px solid rgba(200,169,110,0.35);color:'+E.ac+';font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
+function edGrid(opts,cols){
+  cols=cols||2;
+  var gc=cols===2?'1fr 1fr':cols===3?'repeat(3,1fr)':'repeat(4,1fr)';
+  return '<div class="ed-grid-'+cols+'" style="display:grid;grid-template-columns:'+gc+';gap:0;border-bottom:1px solid '+E.b08+';">'+
+    M.map(function(m,i){return edCard(m,i,opts);}).join('')+'</div>';
+}
+function edJ(bg,tc,ac){
+  bg=bg||E.tc;tc=tc||'rgba(200,169,110,0.5)';ac=ac||E.ac;
+  var bodyC=bg===E.tc?'rgba(244,241,236,0.45)':'rgba(10,10,10,0.6)';
+  var ctaBdr=bg===E.tc?'0.5px solid rgba(200,169,110,0.35)':'1.5px solid rgba(10,10,10,0.35)';
+  return '<div class="edj" style="background:'+bg+';padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
+    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:'+tc+';display:block;margin-bottom:14px;">'+JN.lb+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4.5rem);letter-spacing:0.06em;color:'+ac+';line-height:1;transform:skewX(-4deg);transform-origin:left;">'+JN.tt+'</div></div>'+
+    '<div><p style="font-size:0.88rem;line-height:1.85;color:'+bodyC+';margin-bottom:24px;">'+JN.bb+'</p>'+
+    '<a href="'+JN.hr+'" style="display:inline-block;padding:12px 32px;border:'+ctaBdr+';color:'+ac+';font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;">'+JN.ct+'</a></div>'+
   '</div>';
 }
 
-// ══════════════ v0: ORIGINAL CREAM GRID ══════════════
+// ══════════════════════════════════════════
+// v0: ORIGINAL — cream 3-col hover grid
+// ══════════════════════════════════════════
 function v0(){
   navL();bc('background:#ede8e0;color:#0a0a0a;font-family:\'DM Sans\',sans-serif;font-weight:300;');
   return '<div style="padding:180px 48px 80px;border-bottom:1px solid rgba(10,10,10,0.1);">'+
     '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">The People Behind It</span>'+
     '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,4rem);letter-spacing:0.1em;color:rgba(10,10,10,0.82);transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">The Team</h1>'+
-    '<p style="font-size:1rem;line-height:1.8;color:rgba(10,10,10,0.55);max-width:600px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p></div>'+
+    '<p style="font-size:1rem;line-height:1.8;color:rgba(10,10,10,0.55);max-width:600px;">'+SNHSUB+'</p></div>'+
   '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">'+
-  M.map(function(m){return '<div style="position:relative;overflow:hidden;background:#111;"><div style="position:relative;overflow:hidden;aspect-ratio:3/4;">'+
-    '<img src="'+m.img+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.7);transition:transform 0.6s,filter 0.5s;" onmouseover="this.style.transform=\'scale(1.05)\';this.style.filter=\'grayscale(0%) brightness(0.85)\'" onmouseout="this.style.transform=\'\';this.style.filter=\'grayscale(20%) brightness(0.7)\'"/>'+
+  M.map(function(m){return '<div style="position:relative;overflow:hidden;background:#111;"><div style="aspect-ratio:3/4;position:relative;overflow:hidden;">'+
+    '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.7);transition:transform 0.6s,filter 0.5s;" onmouseover="this.style.transform=\'scale(1.05)\';this.style.filter=\'grayscale(0%) brightness(0.85)\'" onmouseout="this.style.transform=\'\';this.style.filter=\'grayscale(20%) brightness(0.7)\'"/>'+
     '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,rgba(10,10,10,0.4) 55%,transparent 100%);"></div>'+
     '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;">'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.04em;color:#f4f1ec;margin-bottom:4px;">'+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.5);">'+m.role+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.04em;color:#f4f1ec;margin-bottom:4px;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.5);">'+m.r+'</div>'+
     '</div></div></div>';}).join('')+
   '<div style="background:#c8a96e;grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:40px;padding:72px 64px;flex-wrap:wrap;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:10px;">'+JOIN.label+'</span>'+
-    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.2rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:12px;">'+JOIN.title+'</div>'+
-    '<p style="font-size:0.88rem;line-height:1.75;color:rgba(10,10,10,0.6);max-width:520px;">'+JOIN.bio+'</p></div>'+
-    '<a href="'+JOIN.href+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;white-space:nowrap;font-family:\'Josefin Sans\',sans-serif;flex-shrink:0;">'+JOIN.cta+'</a>'+
+    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:10px;">'+JN.lb+'</span>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.2rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:12px;">'+JN.tt+'</div>'+
+    '<p style="font-size:0.88rem;line-height:1.75;color:rgba(10,10,10,0.6);max-width:520px;">'+JN.bb+'</p></div>'+
+    '<a href="'+JN.hr+'" style="display:inline-block;padding:14px 36px;border:1.5px solid rgba(10,10,10,0.4);color:#0a0a0a;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;flex-shrink:0;white-space:nowrap;">'+JN.ct+'</a>'+
   '</div></div>';
 }
 
-// ══════════════ v1 & v2: SN ORIGINAL (preserved) ══════════════
-function snOrig(){
+// ══════ v1 + v2: SN ORIGINAL (preserved) ══════
+function snBase(){
   navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({})+snJoin();
+  return snHero('The<br>People',SNHSUB)+
+  strip(M.map(function(m,i){return sc(m,i);})).join('')+snJ();
 }
-function v1(){return snOrig();}
-function v2(){return snOrig();}
+function v1(){return snBase();}
+function v2(){return snBase();}
 
-// ══════════════ v3–v21: SN ITERATIONS ══════════════
-// v3: Wider cards (480px) — more breathing room
-function v3(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({w:'480px'})+snJoin();}
+// ══════ v3: AUTO-SCROLL CAROUSEL (Engineering carousel DNA) ══════
+function v3(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var cards=M.concat(M).map(function(m,i){
+    return '<div style="flex:0 0 calc(33.333vw - 2px);max-width:560px;min-width:280px;position:relative;overflow:hidden;">'+
+      '<div style="aspect-ratio:3/4;overflow:hidden;position:relative;">'+
+        '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,'+S.g08+' 60%,transparent 100%);"></div>'+
+        '<div style="position:absolute;top:12px;right:16px;font-family:\'Courier New\',monospace;font-size:0.42rem;color:'+S.g4+';writing-mode:vertical-rl;letter-spacing:0.12em;">FR.'+('0'+((i%9+1)*3)).slice(-2)+'A</div>'+
+      '</div>'+
+      '<div style="padding:20px 24px 28px;background:'+SNBG+';">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:8px;">'+('0'+(i%9+1)).slice(-2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';">'+m.r+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return snHero('The<br>People',SNHSUB)+
+  '<div style="overflow:hidden;background:'+S.b1+';" onmouseenter="this.querySelector(\'.ct\').style.animationPlayState=\'paused\'" onmouseleave="this.querySelector(\'.ct\').style.animationPlayState=\'running\'">'+
+    '<div class="ct" style="display:flex;gap:2px;will-change:transform;animation:eng-scroll 45s linear infinite;">'+cards+'</div>'+
+  '</div>'+snJ();
+}
 
-// v4: Taller photos (520px) — more portrait presence
-function v4(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({ph:'520px'})+snJoin();}
+// ══════ v4: CLICK-EXPAND ROWS (Fund card DNA) ══════
+function v4(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var rows=M.map(function(m,i){
+    return '<div class="er" style="border-bottom:0.5px solid '+S.g1+';">'+
+      '<div onclick="tER(this)" style="display:grid;grid-template-columns:64px 1fr 200px 48px;align-items:center;padding:28px 48px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background=\'rgba(200,169,110,0.04)\'" onmouseout="this.style.background=\'transparent\'">'+
+        '<div style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+S.g4+';">'+('0'+(i+1)).slice(-2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.8rem,4vw,3rem);letter-spacing:0.04em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.gd+';">'+m.r+'</div>'+
+        '<div class="ei" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;color:'+S.gd+';text-align:right;">+</div>'+
+      '</div>'+
+      '<div class="eb" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s;opacity:0;">'+
+        '<div style="display:grid;grid-template-columns:300px 1fr;border-top:0.5px solid '+S.g1+';">'+
+          '<img src="'+m.i+'" style="width:100%;height:400px;object-fit:cover;object-position:top;filter:grayscale(15%) brightness(0.6);display:block;"/>'+
+          '<div style="padding:48px 56px;background:'+SNBG+';">'+
+            '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g5+';margin-bottom:16px;">'+m.l+'</div>'+
+            '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.n+'</div>'+
+            '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t4+';margin-bottom:24px;">'+m.r+'</div>'+
+            '<p style="font-size:0.88rem;line-height:1.8;color:'+S.t45+';">'+m.b+'</p>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid '+S.g15+';background:'+SNBG+';">'+
+    '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:clamp(0.8rem,1.5vw,1.2rem);letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;line-height:1.4;">Cross-Border<br>Venture Studio</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,16rem);letter-spacing:0.04em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.82;margin-bottom:32px;">The<br>People</h1>'+
+    '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';max-width:600px;border-left:2px solid '+S.g4+';padding-left:24px;">'+SNHSUB+'</p></div>'+
+  rows+
+  '<script>window.tER=function(el){var r=el.closest(\'.er\');var b=r.querySelector(\'.eb\');var ic=r.querySelector(\'.ei\');var o=r.classList.contains(\'eo\');document.querySelectorAll(\'.er\').forEach(function(x){x.classList.remove(\'eo\');x.querySelector(\'.eb\').style.maxHeight=\'0\';x.querySelector(\'.eb\').style.opacity=\'0\';x.querySelector(\'.ei\').textContent=\'+\';});if(!o){r.classList.add(\'eo\');b.style.maxHeight=\'500px\';b.style.opacity=\'1\';ic.textContent=\'\\u2212\';}}<\/script>'+
+  snJ();
+}
 
-// v5: Warm sepia photo filter — bronze mood
-function v5(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({filter:'grayscale(30%) sepia(25%) brightness(0.55)'})+snJoin();}
+// ══════ v5: NUMBERED ACCORDION (How It Works DNA) ══════
+function v5(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var rows=M.map(function(m,i){
+    return '<div class="ar" style="border-bottom:0.5px solid '+S.g1+';">'+
+      '<div onclick="tAR(this)" style="display:grid;grid-template-columns:80px 1fr auto 48px;align-items:center;padding:28px 48px;cursor:pointer;gap:24px;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:'+S.gd+';transform:skewX(-4deg);">'+('0'+(i+1)).slice(-2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.g5+';">'+m.l+'</div>'+
+        '<div class="ai2" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;color:'+S.gd+';text-align:right;">+</div>'+
+      '</div>'+
+      '<div class="ab" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s;opacity:0;">'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;border-top:0.5px solid '+S.g1+';">'+
+          '<div style="padding:48px;"><div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g5+';margin-bottom:16px;">'+m.l+'</div>'+
+          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;color:'+S.gd+';transform:skewX(-4deg);margin-bottom:8px;">'+m.n+'</div>'+
+          '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t4+';margin-bottom:24px;">'+m.r+'</div>'+
+          '<p style="font-size:0.88rem;line-height:1.8;color:'+S.t45+';">'+m.b+'</p></div>'+
+          '<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:400px;object-fit:cover;object-position:top;filter:grayscale(15%) brightness(0.6);display:block;"/></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return snHero('The<br>Team',SNHSUB)+rows+
+  '<script>window.tAR=function(el){var r=el.closest(\'.ar\');var b=r.querySelector(\'.ab\');var ic=r.querySelector(\'.ai2\');var o=r.classList.contains(\'ao\');document.querySelectorAll(\'.ar\').forEach(function(x){x.classList.remove(\'ao\');x.querySelector(\'.ab\').style.maxHeight=\'0\';x.querySelector(\'.ab\').style.opacity=\'0\';x.querySelector(\'.ai2\').textContent=\'+\';});if(!o){r.classList.add(\'ao\');b.style.maxHeight=\'500px\';b.style.opacity=\'1\';ic.textContent=\'\\u2212\';}}<\/script>'+
+  snJ();
+}
 
-// v6: Full-width single-column hero (no split)
-function v6(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid '+S.g15+';background:linear-gradient(135deg,'+S.b1+','+S.b2+');">'+
+// ══════ v6: FULL-BLEED STACKED PORTRAITS (Hero section DNA) ══════
+function v6(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var sections=M.map(function(m,i){
+    return '<div style="position:relative;height:100vh;min-height:600px;overflow:hidden;border-bottom:0.5px solid '+S.g08+';">'+
+      '<img src="'+m.i+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.5);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.2) 50%,transparent 100%);"></div>'+
+      '<div style="position:absolute;top:48px;right:48px;font-family:\'Bebas Neue\',sans-serif;font-size:clamp(6rem,10vw,12rem);color:rgba(200,169,110,0.06);line-height:1;transform:skewX(-4deg);">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:80px 48px;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g5+';margin-bottom:16px;">'+('0'+(i+1)).slice(-2)+' — '+m.l+'</div>'+
+        '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.04em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.85;margin-bottom:16px;">'+m.n+'</h2>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.gd+';margin-bottom:20px;">'+m.r+'</div>'+
+        '<p style="font-size:0.88rem;line-height:1.75;color:'+S.t5+';max-width:600px;">'+m.b+'</p>'+
+        (i<M.length-1?'<div style="margin-top:48px;font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.g4+';">↓ Scroll</div>':'')+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return '<div style="height:50vh;display:flex;flex-direction:column;justify-content:flex-end;padding:48px;background:'+SNBG+';border-bottom:0.5px solid '+S.g15+';">'+
     '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;">⊕ Cross-Border Venture Studio</span>'+
-    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,16rem);letter-spacing:0.04em;text-transform:uppercase;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.85;margin-bottom:32px;">The<br>People</h1>'+
-    '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';max-width:600px;border-left:2px solid '+S.g4+';padding-left:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,9rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The People</h1>'+
+  '</div>'+sections+snJ();
+}
+
+// ══════ v7: 2-COL FIXED/SCROLL (Index split-column DNA) ══════
+function v7(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var right=M.map(function(m,i){
+    return '<div style="position:relative;height:100vh;min-height:500px;overflow:hidden;border-bottom:1px solid '+S.g1+';">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.55);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.1) 55%,transparent 100%);"></div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:48px;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g4+';margin-bottom:8px;">'+('0'+(i+1)).slice(-2)+' · '+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4rem);letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.t35+';margin-bottom:16px;">'+m.r+'</div>'+
+        '<p style="font-size:0.78rem;line-height:1.75;color:'+S.t35+';max-width:320px;">'+m.b+'</p>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  return '<div style="display:grid;grid-template-columns:1fr 1fr;min-height:100vh;">'+
+    '<div class="sticky-l" style="background:'+SNBG+';position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 48px;border-right:0.5px solid '+S.g15+';">'+
+      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ The People</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,5vw,6rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:32px;">The<br>Team</h1>'+
+      '<p style="font-size:0.88rem;line-height:1.85;color:'+S.t4+';margin-bottom:32px;border-left:2px solid '+S.g4+';padding-left:16px;">'+SNHSUB+'</p>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div>'+
+    '</div>'+
+    '<div>'+right+'</div>'+
+  '</div>'+snJ();
+}
+
+// ══════ v8: FEATURE CARD + 3-COL GRID (Value card DNA) ══════
+function v8(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var hero=M[0];
+  var rest=M.slice(1);
+  return snHero('The<br>People',SNHSUB)+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;min-height:60vh;border-bottom:1px solid '+S.g1+';">'+
+    '<div style="overflow:hidden;"><img src="'+hero.i+'" style="width:100%;height:100%;min-height:480px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);display:block;"/></div>'+
+    '<div style="background:'+SNBG+';padding:64px 56px;display:flex;flex-direction:column;justify-content:center;border-left:0.5px solid '+S.g1+';">'+
+      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;">Featured</span>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,8rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:16px;">'+hero.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.gd+';margin-bottom:24px;border-left:2px solid '+S.g4+';padding-left:16px;">'+hero.r+'</div>'+
+      '<p style="font-size:0.9rem;line-height:1.85;color:'+S.t45+';">'+hero.b+'</p>'+
+    '</div>'+
   '</div>'+
-  snStrip({})+snJoin();}
-
-// v7: Large Josefin Sans eyebrow as hero focal point
-function v7(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid '+S.g15+';background:linear-gradient(135deg,'+S.b1+','+S.b2+');">'+
-    '<div>'+
-      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:clamp(1rem,2.5vw,2rem);letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;line-height:1.4;">Cross-Border<br>Venture Studio</span>'+
-      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.06em;text-transform:uppercase;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>People</h1>'+
+  '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:'+S.g08+';">'+
+  rest.map(function(m,i){return '<div style="background:'+SNBG+';overflow:hidden;">'+
+    '<div style="aspect-ratio:3/4;position:relative;overflow:hidden;">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.6);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.2) 55%,transparent 100%);"></div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.42rem;letter-spacing:0.3em;color:'+S.g4+';margin-bottom:6px;">0'+(i+2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';">'+m.r+'</div>'+
+      '</div>'+
     '</div>'+
-    '<div style="border-left:1px solid '+S.g15+';padding-left:32px;">'+
-      '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div>'+
+  '</div>';}).join('')+
+  '</div>'+snJ();
+}
+
+// ══════ v9: WIDE HORIZONTAL BANNER ROWS (Case study DNA) ══════
+function v9(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return snHero('The<br>People',SNHSUB)+
+  M.map(function(m,i){
+    var flip=i%2===1;
+    return '<div class="row-alt" style="display:grid;grid-template-columns:'+(flip?'1fr 1fr':'1fr 1fr')+';min-height:480px;border-bottom:0.5px solid '+S.g08+';">'+
+      (!flip?'<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:100%;min-height:480px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);display:block;"/></div>':'')+
+      '<div style="background:'+SNBG+';padding:60px 64px;display:flex;flex-direction:column;justify-content:center;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g5+';margin-bottom:16px;">'+('0'+(i+1)).slice(-2)+' · '+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;line-height:0.9;margin-bottom:12px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:'+S.t4+';margin-bottom:24px;">'+m.r+'</div>'+
+        '<p style="font-size:0.88rem;line-height:1.85;color:'+S.t45+';max-width:400px;">'+m.b+'</p>'+
+      '</div>'+
+      (flip?'<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:100%;min-height:480px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);display:block;"/></div>':'')+
+    '</div>';
+  }).join('')+snJ();
+}
+
+// ══════ v10: GIANT NUMBER + NAME LIST (Why Now numbers DNA) ══════
+function v10(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;align-items:end;border-bottom:1px solid '+S.g15+';background:'+SNBG+';">'+
+    '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,22vw,28rem);letter-spacing:0.04em;color:'+S.g1+';line-height:0.85;transform:skewX(-4deg);-webkit-text-stroke:1px '+S.g15+';">09</div></div>'+
+    '<div style="padding-bottom:24px;border-left:1px solid '+S.g15+';padding-left:40px;">'+
+      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;">⊕ The People</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">The Team</h1>'+
+      '<p style="font-size:0.88rem;line-height:1.85;color:'+S.t45+';">'+SNHSUB+'</p>'+
     '</div>'+
-  '</div>'+snStrip({})+snJoin();}
-
-// v8: Card text ABOVE photo — reversed reading order
-function v8(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({textTop:true,ph:'320px'})+snJoin();}
-
-// v9: Giant number overlay on photo (20vw)
-function v9(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({numBig:true,ph:'420px'})+snJoin();}
-
-// v10: Gold hairline top border on each card
-function v10(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({topBorder:true})+snJoin();}
-
-// v11: Horizontal rule divider between photo and text
-function v11(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({hRule:true})+snJoin();}
-
-// v12: Location shown on each card
-function v12(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({showLoc:true})+snJoin();}
-
-// v13: Member name in Josefin Sans (not Bebas)
-function v13(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({josefinName:true})+snJoin();}
-
-// v14: Alternating photo brightness cards
-function v14(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  '<div class="strip">'+M.map(function(m,i){return snCard(m,i,{filter:i%2===0?'grayscale(15%) brightness(0.55)':'grayscale(15%) brightness(0.78)'}); }).join('')+'</div>'+snJoin();}
-
-// v15: Hero with Josefin Sans as main headline font
-function v15(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div class="sn-hero" style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid '+S.g15+';background:linear-gradient(135deg,'+S.b1+','+S.b2+');">'+
-    '<div>'+
-      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
-      '<h1 style="font-family:\'Josefin Sans\',sans-serif;font-size:clamp(2rem,5vw,5rem);font-weight:200;letter-spacing:0.3em;text-transform:uppercase;color:'+S.tx+';line-height:1.1;">The<br>People</h1>'+
+  '</div>'+
+  M.map(function(m,i){return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:28px 48px;border-bottom:0.5px solid '+S.g1+';transition:background 0.2s;" onmouseover="this.style.background=\'rgba(200,169,110,0.03)\'" onmouseout="this.style.background=\'transparent\'">'+
+    '<div style="display:flex;align-items:baseline;gap:24px;">'+
+      '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+S.g4+';flex-shrink:0;">'+('0'+(i+1)).slice(-2)+'</span>'+
+      '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.8rem,4vw,5.5rem);letter-spacing:0.04em;color:'+S.tx+';transform:skewX(-4deg);display:inline-block;transform-origin:left;">'+m.n+'</span>'+
     '</div>'+
-    '<div class="sh-right" style="border-left:1px solid '+S.g15+';padding-left:32px;">'+
-      '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div>'+
-    '</div></div>'+
-  snStrip({})+snJoin();}
+    '<div style="text-align:right;flex-shrink:0;padding-left:24px;">'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.gd+';">'+m.r+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:'+S.t3+';margin-top:4px;">'+m.l+'</div>'+
+    '</div>'+
+  '</div>';}).join('')+snJ();
+}
 
-// v16: Square cards (380×380) — different photo crop
-function v16(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({ph:'340px',w:'340px'})+snJoin();}
+// ══════ v11: MOSAIC IRREGULAR GRID (Engineering slide grid DNA) ══════
+function v11(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var spans=[2,1,1,1,2,1,1,1,2];
+  return snHero('The<br>People',SNHSUB)+
+  '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:'+S.g08+';">'+
+  M.map(function(m,i){
+    var s=spans[i];var h=s===2?'600px':'400px';
+    return '<div style="grid-column:span '+s+';position:relative;overflow:hidden;height:'+h+';">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.55);transition:transform 0.6s;" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.15) 55%,transparent 100%);"></div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:'+(s===2?'40px':'20px')+';">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:8px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(s===2?'2.2rem':'1.4rem')+';letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';">'+m.r+'</div>'+
+        (s===2?'<p style="font-size:0.78rem;line-height:1.7;color:'+S.t35+';max-width:400px;margin-top:12px;">'+m.b+'</p>':'')+
+      '</div>'+
+    '</div>';
+  }).join('')+
+  '</div>'+snJ();
+}
 
-// v17: Hero has subtle full-width photo texture behind type
-function v17(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+// ══════ v12: LOCATION GROUPED (China section DNA) ══════
+function v12(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var cities=['Hong Kong','Shanghai','Melbourne','Copenhagen'];
+  var sections=cities.map(function(city){
+    var mem=M.filter(function(m){return m.l===city;});
+    if(!mem.length)return '';
+    return '<div style="border-bottom:1px solid '+S.g1+';">'+
+      '<div style="padding:48px 48px 24px;display:flex;align-items:baseline;justify-content:space-between;">'+
+        '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,8rem);letter-spacing:0.06em;color:'+S.g1+';transform:skewX(-4deg);transform-origin:left;-webkit-text-stroke:0.5px '+S.g4+';">'+city.toUpperCase()+'</h2>'+
+        '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g4+';">'+mem.length+' '+(mem.length===1?'Person':'People')+'</span>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat('+Math.min(mem.length,3)+',1fr);gap:2px;padding-bottom:48px;">'+
+      mem.map(function(m){return '<div style="position:relative;overflow:hidden;">'+
+        '<div style="height:360px;overflow:hidden;position:relative;"><img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.55);"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.1) 55%,transparent 100%);"></div></div>'+
+        '<div style="padding:20px 24px 28px;background:'+SNBG+';">'+
+          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+          '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';">'+m.r+'</div>'+
+        '</div>'+
+      '</div>';}).join('')+'</div></div>';
+  }).join('');
+  return snHero('The<br>People',SNHSUB)+sections+snJ();
+}
+
+// ══════ v13: TICKER + VERTICAL LIST (Logo ticker DNA) ══════
+function v13(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var tick=M.concat(M).map(function(m){return '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.04em;color:'+S.g15+';padding:0 40px;white-space:nowrap;display:inline-block;transform:skewX(-4deg);-webkit-text-stroke:0.5px '+S.g4+';">'+m.n+'</span>';}).join('');
+  return '<div style="padding:180px 48px 40px;background:'+SNBG+';border-bottom:0.5px solid '+S.g15+';">'+
+    '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:24px;">⊕ 09 People · Cross-Border Venture Studio</span>'+
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:clamp(1rem,3vw,2rem);font-weight:200;letter-spacing:0.4em;text-transform:uppercase;color:'+S.t4+';margin-bottom:8px;">The People</div></div>'+
+  '<div style="overflow:hidden;padding:16px 0;border-bottom:0.5px solid '+S.g15+';background:'+S.b1+'" onmouseenter="this.querySelector(\'.tk\').style.animationPlayState=\'paused\'" onmouseleave="this.querySelector(\'.tk\').style.animationPlayState=\'running\'">'+
+    '<div class="tk" style="display:flex;white-space:nowrap;animation:marquee 30s linear infinite;">'+tick+'</div>'+
+  '</div>'+
+  M.map(function(m,i){return '<div class="row-alt" style="display:grid;grid-template-columns:2fr 3fr;min-height:400px;border-bottom:1px solid '+S.g08+';">'+
+    '<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:100%;min-height:400px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);display:block;"/></div>'+
+    '<div style="background:'+SNBG+';padding:56px 56px;display:flex;flex-direction:column;justify-content:center;border-left:0.5px solid '+S.g1+';">'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g5+';margin-bottom:16px;">'+('0'+(i+1)).slice(-2)+' · '+m.l+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4.5rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.9;margin-bottom:12px;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:'+S.gd+';margin-bottom:20px;">'+m.r+'</div>'+
+      '<p style="font-size:0.85rem;line-height:1.8;color:'+S.t4+';max-width:400px;">'+m.b+'</p>'+
+    '</div>'+
+  '</div>';}).join('')+snJ();
+}
+
+// ══════ v14: HOVER REVEAL (v11 cursor pattern DNA) ══════
+function v14(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return '<div style="padding:180px 0 0;overflow:hidden;background:'+SNBG+';">'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,14vw,18rem);letter-spacing:-0.02em;text-transform:uppercase;color:'+S.tx+';line-height:0.82;padding:0 24px;transform:skewX(-4deg);transform-origin:left;border-bottom:4px solid '+S.tx+';">THE<br>TEAM</h1>'+
+    '<p style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.t35+';padding:20px 48px;border-bottom:0.5px solid '+S.g15+';">9 People · Cross-border · HK / SH / MEL / EU · Hover to reveal</p>'+
+  '</div>'+
+  M.map(function(m,i){return '<div style="position:relative;border-bottom:1px solid '+S.g1+';overflow:hidden;" onmouseenter="this.querySelector(\'.hi\').style.opacity=\'0.18\'" onmouseleave="this.querySelector(\'.hi\').style.opacity=\'0\'">'+
+    '<img class="hi" src="'+m.i+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.5);opacity:0;transition:opacity 0.4s;pointer-events:none;"/>'+
+    '<div style="position:relative;z-index:1;display:flex;align-items:baseline;justify-content:space-between;padding:24px 48px;">'+
+      '<div style="display:flex;align-items:baseline;gap:24px;">'+
+        '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+S.g4+';flex-shrink:0;">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,5vw,6rem);letter-spacing:-0.01em;color:'+S.tx+';line-height:1;transform:skewX(-4deg);display:inline-block;">'+m.n+'</span>'+
+      '</div>'+
+      '<div style="text-align:right;flex-shrink:0;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.g5+';">'+m.r+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:'+S.t3+';margin-top:4px;">'+m.l+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';}).join('')+snJ();
+}
+
+// ══════ v15: VERTICAL TIMELINE (How It Works axis DNA) ══════
+function v15(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return snHero('The<br>Team',SNHSUB)+
+  '<div style="position:relative;padding:48px 48px 48px 120px;">'+
+    '<div style="position:absolute;left:79px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,'+S.g4+' 5%,'+S.g4+' 95%,transparent);"></div>'+
+    M.map(function(m,i){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:48px;position:relative;align-items:start;">'+
+      '<div style="position:absolute;left:-57px;top:28px;width:16px;height:16px;border:1px solid '+S.gd+';background:'+S.b1+';transform:rotate(45deg);"></div>'+
+      '<div style="position:absolute;left:-50px;top:24px;font-family:\'Courier New\',monospace;font-size:0.42rem;color:'+S.g4+';transform:translateX(-100%);padding-right:8px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="overflow:hidden;height:320px;position:relative;">'+
+        '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(15%) brightness(0.6);"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.9) 0%,transparent 50%);"></div>'+
+      '</div>'+
+      '<div style="padding-top:8px;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.g4+';margin-bottom:12px;">'+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.t4+';margin-bottom:20px;border-left:2px solid '+S.g4+';padding-left:12px;">'+m.r+'</div>'+
+        '<p style="font-size:0.82rem;line-height:1.8;color:'+S.t4+';">'+m.b+'</p>'+
+      '</div>'+
+    '</div>';}).join('')+
+  '</div>'+snJ();
+}
+
+// ══════ v16: 3-COL PORTRAIT GRID (Fund card grid DNA) ══════
+function v16(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return snHero('The<br>People',SNHSUB)+
+  '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:'+S.g08+';">'+
+  M.map(function(m,i){return '<div style="background:'+SNBG+';overflow:hidden;">'+
+    '<div style="aspect-ratio:3/4;position:relative;overflow:hidden;">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.65);transition:transform 0.5s;" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,rgba(30,42,74,0.2) 55%,transparent 100%);"></div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.42rem;letter-spacing:0.3em;color:'+S.g4+';margin-bottom:8px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';">'+m.r+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="padding:20px 24px 28px;">'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:'+S.t3+';">'+m.b+'</p>'+
+    '</div>'+
+  '</div>';}).join('')+
+  '</div>'+snJ();
+}
+
+// ══════ v17: FULL-SCREEN HORIZONTAL SNAP (SWITCH featured DNA) ══════
+function v17(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return snHero('The<br>People','Scroll right to meet the team.')+
+  '<div style="overflow-x:scroll;display:flex;scrollbar-width:none;scroll-snap-type:x mandatory;">'+
+  M.map(function(m,i){return '<div style="flex:0 0 100vw;height:90vh;position:relative;overflow:hidden;scroll-snap-align:start;">'+
+    '<img src="'+m.i+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(20%) brightness(0.5);"/>'+
+    '<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,42,74,0.92) 0%,rgba(44,30,74,0.3) 60%,transparent 100%);"></div>'+
+    '<div style="position:absolute;top:0;left:0;bottom:0;width:50%;display:flex;flex-direction:column;justify-content:flex-end;padding:80px 60px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+S.g5+';margin-bottom:24px;">'+('0'+(i+1)).slice(-2)+' / 09 · '+m.l+'</div>'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,8rem);letter-spacing:0.04em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.85;margin-bottom:16px;">'+m.n+'</h2>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;color:'+S.gd+';margin-bottom:24px;">'+m.r+'</div>'+
+      '<p style="font-size:0.88rem;line-height:1.8;color:'+S.t45+';max-width:400px;">'+m.b+'</p>'+
+      (i<M.length-1?'<div style="margin-top:48px;font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.g4+';">→ Scroll right</div>':'')+
+    '</div>'+
+    '<div style="position:absolute;top:48px;right:48px;font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,9rem);color:'+S.g08+';letter-spacing:0.1em;">'+('0'+(i+1)).slice(-2)+'</div>'+
+  '</div>';}).join('')+
+  '</div>'+snJ();
+}
+
+// ══════ v18: CAD TEXTURE HERO + STRIP (Value section DNA) ══════
+function v18(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
   return '<div style="position:relative;overflow:hidden;border-bottom:0.5px solid '+S.g15+';">'+
-    '<img src="'+M[0].img+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.15);opacity:0.6;"/>'+
-    '<div style="position:relative;padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;background:linear-gradient(135deg,rgba(30,42,74,0.88),rgba(44,30,74,0.88));">'+
-      '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
+    '<div style="background-image:url(\'cad_texture.jpeg\');background-size:cover;background-position:center;position:absolute;inset:0;"></div>'+
+    '<div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,42,74,0.92),rgba(44,30,74,0.92));"></div>'+
+    '<div style="position:relative;padding:180px 48px 80px;min-height:60vh;display:flex;flex-direction:column;justify-content:flex-end;">'+
+      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:32px;">The<br>People</h1>'+
+      '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';max-width:600px;border-left:2px solid '+S.g4+';padding-left:24px;">'+SNHSUB+'</p>'+
+    '</div>'+
+  '</div>'+
+  '<div style="overflow-x:auto;display:flex;gap:4px;background:'+S.g08+';scrollbar-width:none;">'+
+  M.map(function(m,i){return '<div style="flex:0 0 380px;overflow:hidden;position:relative;">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;">'+
+      '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.6);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,'+S.g08+' 60%,transparent 100%);"></div>'+
+    '</div>'+
+    '<div style="padding:20px 28px 36px;background:'+SNBG+';">'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:10px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';margin-bottom:14px;">'+m.r+'</div>'+
+      '<p style="font-size:0.75rem;line-height:1.7;color:'+S.t3+';">'+m.b+'</p>'+
+    '</div>'+
+  '</div>';}).join('')+'</div>'+snJ();
+}
+
+// ══════ v19: FILM STRIP (Engineering carousel aesthetic DNA) ══════
+function v19(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var spr=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(function(){return '<div style="width:20px;height:14px;background:'+S.b1+';border:1px solid rgba(200,169,110,0.15);border-radius:2px;flex-shrink:0;margin:0 12px;"></div>';}).join('');
+  return snHero('The<br>People',SNHSUB)+
+  '<div style="background:rgba(30,42,74,0.5);position:relative;overflow:hidden;">'+
+    '<div style="height:32px;display:flex;align-items:center;padding:0 8px;border-bottom:1px solid rgba(200,169,110,0.1);">'+spr+'</div>'+
+    '<div style="overflow-x:auto;display:flex;scrollbar-width:none;">'+
+    M.map(function(m,i){return '<div style="flex:0 0 320px;position:relative;">'+
+      '<img src="'+m.i+'" style="width:100%;height:380px;object-fit:cover;object-position:top center;filter:grayscale(30%) brightness(0.6);display:block;"/>'+
+      '<div style="position:absolute;inset:0;height:380px;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,transparent 50%);"></div>'+
+      '<div style="position:absolute;top:12px;right:16px;font-family:\'Courier New\',monospace;font-size:0.42rem;color:'+S.g4+';writing-mode:vertical-rl;letter-spacing:0.12em;">SFG-2026</div>'+
+      '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px;">'+
+        '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:'+S.g4+';margin-bottom:6px;">FR.'+('0'+((i+1)*3)).slice(-2)+'A</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;color:'+S.t3+';margin-top:4px;">'+m.r+'</div>'+
+      '</div>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="height:32px;display:flex;align-items:center;padding:0 8px;border-top:1px solid rgba(200,169,110,0.1);">'+spr+'</div>'+
+  '</div>'+
+  '<div style="display:grid;grid-template-columns:repeat(3,1fr);background:'+SNBG+';">'+
+  M.map(function(m,i){return '<div style="padding:28px 36px;border-bottom:0.5px solid '+S.g1+';border-right:'+(i%3<2?'0.5px solid '+S.g1:'none')+';">'+
+    '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:'+S.g4+';margin-bottom:8px;">FR.'+('0'+((i+1)*3)).slice(-2)+'A</div>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:'+S.t35+';margin-bottom:10px;">'+m.r+'</div>'+
+    '<p style="font-size:0.7rem;line-height:1.7;color:'+S.t3+';">'+m.b+'</p>'+
+  '</div>';}).join('')+'</div>'+snJ();
+}
+
+// ══════ v20: DIAGONAL SPLIT HERO + STRIP (Skew DNA) ══════
+function v20(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return '<div style="position:relative;overflow:hidden;border-bottom:0.5px solid '+S.g15+';background:'+SNBG+';">'+
+    '<div style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:'+S.g2+';transform:skewX(-8deg);transform-origin:top;"></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;padding:180px 0 80px;background:'+SNBG+';">'+
+      '<div style="padding:0 48px;"><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
       '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>People</h1></div>'+
-      '<div style="border-left:1px solid '+S.g15+';padding-left:32px;"><p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div></div>'+
-    '</div></div>'+
-  snStrip({})+snJoin();}
+      '<div style="padding:0 48px;display:flex;flex-direction:column;justify-content:flex-end;">'+
+        '<p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">'+SNHSUB+'</p>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+  '<div style="overflow-x:auto;display:flex;gap:0;scrollbar-width:none;">'+
+  M.map(function(m,i){return '<div style="flex:0 0 380px;background:'+SNBG+';border-right:0.5px solid '+S.g1+';overflow:hidden;transform:skewX(-2deg);flex-shrink:0;">'+
+    '<div style="width:100%;height:400px;overflow:hidden;position:relative;transform:skewX(2deg);">'+
+      '<img src="'+m.i+'" style="width:100%;height:110%;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.65);"/>'+
+      '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.97) 0%,'+S.g08+' 60%,transparent 100%);"></div>'+
+    '</div>'+
+    '<div style="padding:20px 28px 36px;transform:skewX(2deg);">'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.g4+';margin-bottom:10px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.t35+';margin-bottom:14px;">'+m.r+'</div>'+
+      '<p style="font-size:0.75rem;line-height:1.7;color:'+S.t3+';">'+m.b+'</p>'+
+    '</div>'+
+  '</div>';}).join('')+'</div>'+snJ();
+}
 
-// v18: Strip gap between cards (4px gap, visible rhythm)
-function v18(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  '<div class="strip" style="gap:4px;background:'+S.g08+';">'+M.map(function(m,i){return snCard(m,i,{bdr:'none'});}).join('')+'</div>'+snJoin();}
+// ══════ v21: INTERVIEW Q&A ROWS (Thesis quote DNA) ══════
+function v21(){
+  navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var qs=['What drives you?','What do you make?','What is your role?','Where do you operate?','What do you design?','What do you oversee?','What do you build?','What is your platform?','What does AI change?'];
+  return snHero('The<br>People',SNHSUB)+
+  M.map(function(m,i){var flip=i%2===1;
+    return '<div class="row-alt" style="display:grid;grid-template-columns:'+(flip?'1fr 40%':'40% 1fr')+';min-height:500px;border-bottom:1px solid '+S.g1+';">'+
+      (!flip?'<div style="overflow:hidden;position:relative;"><img src="'+m.i+'" style="width:100%;height:100%;min-height:500px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.55);"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.92) 0%,rgba(30,42,74,0.1) 50%,transparent 100%);"></div>'+
+        '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;"><div style="font-family:\'Courier New\',monospace;font-size:0.42rem;color:'+S.g4+';margin-bottom:6px;">'+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div></div></div>':'')+
+      '<div style="background:'+SNBG+';padding:60px 64px;display:flex;flex-direction:column;justify-content:center;">'+
+        '<div style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+S.g4+';margin-bottom:16px;letter-spacing:0.12em;">'+('0'+(i+1)).slice(-2)+' / 09</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-style:italic;font-size:clamp(0.9rem,1.5vw,1.3rem);color:'+S.g5+';margin-bottom:24px;">"'+qs[i]+'"</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:'+S.gd+';margin-bottom:24px;border-left:2px solid '+S.g4+';padding-left:12px;">'+m.r+'</div>'+
+        '<p style="font-size:0.85rem;line-height:1.85;color:'+S.t45+';">'+m.b+'</p>'+
+      '</div>'+
+      (flip?'<div style="overflow:hidden;position:relative;"><img src="'+m.i+'" style="width:100%;height:100%;min-height:500px;object-fit:cover;object-position:top center;filter:grayscale(15%) brightness(0.55);"/>'+
+        '<div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(30,42,74,0.92) 0%,rgba(30,42,74,0.1) 50%,transparent 100%);"></div>'+
+        '<div style="position:absolute;bottom:0;left:0;right:0;padding:28px;"><div style="font-family:\'Courier New\',monospace;font-size:0.42rem;color:'+S.g4+';margin-bottom:6px;">'+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:'+S.gd+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div></div></div>':'')+
+    '</div>';
+  }).join('')+snJ();
+}
 
-// v19: Hero diagonal skew rule separating columns
-function v19(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:end;border-bottom:0.5px solid '+S.g15+';background:linear-gradient(135deg,'+S.b1+','+S.b2+');position:relative;overflow:hidden;">'+
-    '<div style="padding-right:48px;"><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:32px;">⊕ Cross-Border Venture Studio</span>'+
-    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;color:'+S.tx+';transform:skewX(-4deg);transform-origin:left;line-height:0.88;">The<br>People</h1></div>'+
-    '<div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:'+S.g2+';transform:skewX(-8deg);transform-origin:top;"></div>'+
-    '<div style="padding-left:48px;"><p style="font-size:0.9rem;line-height:1.9;color:'+S.t45+';margin-bottom:24px;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:'+S.t35+';">9 People · HK · SH · MEL · EU</div></div></div>'+
-  snStrip({})+snJoin();}
-
-// v20: Wider cards + taller + sepia + Josefin name (compound iteration)
-function v20(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({w:'440px',ph:'460px',filter:'grayscale(20%) brightness(0.6)',josefinName:true,showLoc:true,hRule:true})+snJoin();}
-
-// v21: Wider cards + gold top border + location + Josefin name
-function v21(){navD();bc('background:'+S.b1+';color:'+S.tx+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return snHero('⊕ Cross-Border Venture Studio','The','People','A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.')+
-  snStrip({w:'420px',ph:'480px',topBorder:true,josefinName:false,showLoc:true,numBig:false})+snJoin();}
-
-// ══════════════ v22: EDITORIAL BASE (preserved from backup, no serif font) ══════════════
+// ══════════════════════════════════════════
+// v22: EDITORIAL BASE (preserved, Bebas + Josefin + DM Sans)
+// ══════════════════════════════════════════
 function v22(){
   navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({})+edJoin();
+  return edH()+edGrid()+edJ();
 }
 
-// ══════════════ v23–v41: ED ITERATIONS ══════════════
-// v23: Taller photos (120px) — more presence
-function v23(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({ph:'120px',pw:'80px'})+edJoin();}
+// ══════ v23–v41: EDITORIAL ITERATIONS ══════
 
-// v24: Name in Josefin Sans — softer label feel
-function v24(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({josefinName:true})+edJoin();}
+// v23: Alternating full-width rows L/R
+function v23(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+
+  M.map(function(m,i){var flip=i%2===1;
+    return '<div class="row-alt" style="display:grid;grid-template-columns:'+(flip?'1fr 360px':'360px 1fr')+';min-height:380px;border-bottom:1px solid '+E.b08+';">'+
+      (!flip?'<img src="'+m.i+'" style="width:100%;height:100%;min-height:380px;object-fit:cover;object-position:top;filter:grayscale(15%);display:block;"/>':'')+
+      '<div style="padding:48px 56px;display:flex;flex-direction:column;justify-content:center;'+(flip?'border-right':'border-left')+':0.5px solid '+E.b08+';">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:'+E.lc+';margin-bottom:14px;">'+('0'+(i+1)).slice(-2)+' · '+m.l+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,3rem);letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.n+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:'+E.ac+';margin-bottom:20px;">'+m.r+'</div>'+
+        '<p style="font-size:0.85rem;line-height:1.85;color:'+E.b5+';">'+m.b+'</p>'+
+      '</div>'+
+      (flip?'<img src="'+m.i+'" style="width:100%;height:100%;min-height:380px;object-fit:cover;object-position:top;filter:grayscale(15%);display:block;"/>':'')+
+    '</div>';}).join('')+edJ();
+}
 
-// v25: Gold rule under each name (3px accent)
-function v25(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({goldRule:true})+edJoin();}
+// v24: 3-col card grid
+function v24(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({},3)+edJ();
+}
 
-// v26: Alternating cream/off-white row background
-function v26(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+
-  '<div class="ed-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
-  M.map(function(m,i){
-    var dk=Math.floor(i/2)%2===1;
-    var bdr=i%2===0?('border-right:0.5px solid '+E.b08+';'):'';
-    return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+'background:'+(dk?'rgba(10,10,10,0.025)':'transparent')+';">'+
-      '<img src="'+m.img+'" style="width:72px;height:90px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);"/>'+
-      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.role+'</div>'+
-      '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.bio+'</p></div>'+
-    '</div>';}).join('')+'</div>'+edJoin();}
-
-// v27: 5 members shown in header mini-list (not 3)
-function v27(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div class="ed-hero" style="padding:180px 48px 40px;border-bottom:3px solid '+E.tc+';background:'+E.bg+';display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:16px;">The People Behind It</span>'+
-    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:0.95;transform:skewX(-4deg);transform-origin:left;margin-bottom:0;">The<br><span style="color:'+E.ac+';">Team</span></h1></div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="display:flex;flex-direction:column;gap:10px;padding-top:8px;">'+
-      M.slice(0,5).map(function(m){return '<div style="display:flex;gap:12px;align-items:start;padding-bottom:10px;border-bottom:0.5px solid '+E.b08+';">'+
-        '<img src="'+m.img+'" style="width:36px;height:36px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(20%);"/>'+
-        '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.85rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;color:'+E.lc+';margin-top:1px;">'+m.role+'</div></div></div>';}).join('')+
+// v25: Click-expand accordion rows
+function v25(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var rows=M.map(function(m,i){return '<div class="edr" style="border-bottom:1px solid '+E.b08+';">'+
+    '<div onclick="tEDA(this)" style="display:flex;justify-content:space-between;align-items:center;padding:28px 48px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background=\'rgba(10,10,10,0.02)\'" onmouseout="this.style.background=\'transparent\'">'+
+      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:'+E.lc+';margin-top:4px;">'+m.r+'</div></div>'+
+      '<div class="edi" style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;color:'+E.ac+';">+</div>'+
     '</div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="padding-top:8px;"><p style="font-size:0.88rem;line-height:1.9;color:'+E.b5+';font-family:\'DM Sans\',sans-serif;">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-    '<div style="margin-top:20px;font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:'+E.b3+';border-top:1px solid '+E.b08+';padding-top:14px;">9 Personnel · Est. 2023</div></div>'+
-  '</div>'+edGrid({})+edJoin();}
-
-// v28: Role label in Josefin Sans at 0.85rem — elevated weight
-function v28(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+
-  '<div class="ed-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
-  M.map(function(m,i){var bdr=i%2===0?'border-right:0.5px solid '+E.b08+';':'';
-    return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+'">'+
-      '<img src="'+m.img+'" style="width:72px;height:90px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);"/>'+
-      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.85rem;letter-spacing:0.06em;color:'+E.lc+';margin-bottom:12px;">'+m.role+'</div>'+
-      '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.bio+'</p></div></div>';}).join('')+'</div>'+edJoin();}
-
-// v29: Circle-cropped photos
-function v29(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({circle:true,ph:'80px',pw:'80px'})+edJoin();}
-
-// v30: Left gold border on each card
-function v30(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+
-  '<div class="ed-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
-  M.map(function(m,i){var bdr=i%2===0?'border-right:0.5px solid '+E.b08+';':'';
-    return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';border-left:3px solid '+E.ac+';'+bdr+'">'+
-      '<img src="'+m.img+'" style="width:72px;height:90px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);"/>'+
-      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.role+'</div>'+
-      '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.bio+'</p></div></div>';}).join('')+'</div>'+edJoin();}
-
-// v31: Member number prominent in Bebas beside name
-function v31(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({showNum:true})+edJoin();}
-
-// v32: 4-col header (adds location column)
-function v32(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div class="ed-hero" style="padding:180px 48px 40px;border-bottom:3px solid '+E.tc+';background:'+E.bg+';display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr 2px 160px;gap:24px;align-items:start;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:16px;">The People Behind It</span>'+
-    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:0.95;transform:skewX(-4deg);transform-origin:left;">The<br><span style="color:'+E.ac+';">Team</span></h1></div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="display:flex;flex-direction:column;gap:14px;padding-top:8px;">'+
-      M.slice(0,3).map(function(m){return '<div style="padding-bottom:10px;border-bottom:0.5px solid '+E.b08+';">'+
-        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.9rem;letter-spacing:0.06em;color:'+E.tc+';">'+m.name+'</div>'+
-        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;color:'+E.lc+';">'+m.role+'</div></div>';}).join('')+
+    '<div class="edab" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.3s;opacity:0;">'+
+      '<div style="display:grid;grid-template-columns:320px 1fr;border-top:0.5px solid '+E.b08+';">'+
+        '<img src="'+m.i+'" style="width:100%;height:400px;object-fit:cover;object-position:top;filter:grayscale(15%);display:block;"/>'+
+        '<div style="padding:48px 56px;background:'+E.tc+';">'+
+          '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-bottom:16px;">'+m.l+'</div>'+
+          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;color:'+E.ac+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+m.n+'</div>'+
+          '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,236,0.4);margin-bottom:24px;">'+m.r+'</div>'+
+          '<p style="font-size:0.88rem;line-height:1.8;color:rgba(244,241,236,0.5);">'+m.b+'</p>'+
+        '</div>'+
+      '</div>'+
     '</div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="padding-top:8px;"><p style="font-size:0.82rem;line-height:1.9;color:'+E.b5+';font-family:\'DM Sans\',sans-serif;">A cross-border crew spread across Hong Kong, Shanghai, Melbourne, and beyond.</p></div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="padding-top:8px;">'+M.map(function(m){return '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;color:'+E.b3+';margin-bottom:6px;">'+m.loc+'</div>';}).join('')+'</div>'+
-  '</div>'+edGrid({})+edJoin();}
+  '</div>';}).join('');
+  return edH()+rows+
+  '<script>window.tEDA=function(el){var r=el.closest(\'.edr\');var b=r.querySelector(\'.edab\');var ic=r.querySelector(\'.edi\');var o=r.classList.contains(\'edo\');document.querySelectorAll(\'.edr\').forEach(function(x){x.classList.remove(\'edo\');x.querySelector(\'.edab\').style.maxHeight=\'0\';x.querySelector(\'.edab\').style.opacity=\'0\';x.querySelector(\'.edi\').textContent=\'+\';});if(!o){r.classList.add(\'edo\');b.style.maxHeight=\'500px\';b.style.opacity=\'1\';ic.textContent=\'\\u2212\';}}<\/script>'+
+  edJ();
+}
 
-// v33: Name at bottom of card (reversed order)
-function v33(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({nameBottom:true})+edJoin();}
-
-// v34: Full colour photos (no greyscale)
-function v34(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({colour:true})+edJoin();}
-
-// v35: Join section gold bg instead of black
-function v35(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({})+
-  '<div class="ed-join" style="background:'+E.ac+';padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(10,10,10,0.45);display:block;margin-bottom:14px;">'+JOIN.label+'</span>'+
-    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,4.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:1;transform:skewX(-4deg);transform-origin:left;">'+JOIN.title+'</div></div>'+
-    '<div><p style="font-size:0.88rem;line-height:1.85;color:rgba(10,10,10,0.6);margin-bottom:24px;">'+JOIN.bio+'</p>'+
-    '<a href="'+JOIN.href+'" style="display:inline-block;padding:12px 32px;border:1.5px solid rgba(10,10,10,0.35);color:'+E.tc+';font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;">'+JOIN.cta+'</a></div>'+
-  '</div>';}
-
-// v36: Header intro text in Josefin Sans large
-function v36(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return '<div class="ed-hero" style="padding:180px 48px 40px;border-bottom:3px solid '+E.tc+';background:'+E.bg+';display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
-    '<div><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:16px;">The People Behind It</span>'+
-    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);letter-spacing:0.06em;color:'+E.tc+';line-height:0.95;transform:skewX(-4deg);transform-origin:left;">The<br><span style="color:'+E.ac+';">Team</span></h1></div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="display:flex;flex-direction:column;gap:14px;padding-top:8px;">'+
-      M.slice(0,3).map(function(m){return '<div style="display:flex;gap:14px;align-items:start;padding-bottom:14px;border-bottom:0.5px solid '+E.b08+';">'+
-        '<img src="'+m.img+'" style="width:48px;height:48px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(20%);"/>'+
-        '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.95rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.name+'</div>'+
-        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-top:2px;">'+m.role+'</div></div></div>';}).join('')+
+// v26: Feature card top + 8-member list below
+function v26(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  var hero=M[0];var rest=M.slice(1);
+  return edH()+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;min-height:480px;border-bottom:1px solid '+E.b08+';">'+
+    '<img src="'+hero.i+'" style="width:100%;height:100%;min-height:480px;object-fit:cover;object-position:top;filter:grayscale(15%);display:block;"/>'+
+    '<div style="padding:64px 56px;display:flex;flex-direction:column;justify-content:center;border-left:0.5px solid '+E.b08+';">'+
+      '<span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:'+E.ac+';display:block;margin-bottom:24px;">Featured</span>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+hero.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:'+E.ac+';margin-bottom:24px;border-left:2px solid '+E.ac+';padding-left:16px;">'+hero.r+'</div>'+
+      '<p style="font-size:0.9rem;line-height:1.85;color:'+E.b5+';">'+hero.b+'</p>'+
     '</div>'+
-    '<div class="ed-divider" style="background:'+E.tc+';align-self:stretch;"></div>'+
-    '<div style="padding-top:8px;"><p style="font-family:\'Josefin Sans\',sans-serif;font-size:0.75rem;letter-spacing:0.12em;line-height:1.9;color:'+E.b5+';">A cross-border crew of designers, engineers, strategists, and operators — spread across Hong Kong, Shanghai, Melbourne, and beyond.</p>'+
-    '<div style="margin-top:20px;font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:'+E.b3+';border-top:1px solid '+E.b08+';padding-top:14px;">9 Personnel · Est. 2023</div></div>'+
-  '</div>'+edGrid({})+edJoin();}
+  '</div>'+
+  '<div class="ed-grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
+  rest.map(function(m,i){var bdr=i%2===0?'border-right:0.5px solid '+E.b08+';':'';
+    return '<div class="ec" style="display:flex;gap:16px;align-items:start;padding:20px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+'">'+
+      '<img src="'+m.i+'" style="width:60px;height:75px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);"/>'+
+      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.n+'</div>'+
+      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:8px;">'+m.r+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:'+E.b5+';">'+m.b+'</p></div>'+
+    '</div>';}).join('')+'</div>'+edJ();
+}
 
-// v37: Cards with hover photo scale effect
-function v37(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({hover:true})+edJoin();}
+// v27: 4-col broadsheet
+function v27(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({},4)+edJ();
+}
+
+// v28: Numbered rows — no photos, pure type
+function v28(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+
+  '<div style="border-top:1px solid '+E.tc+';"><div style="display:grid;grid-template-columns:64px 1fr 1fr 160px;padding:12px 48px;border-bottom:1px solid '+E.tc+';">'+
+    ['No.','Name / Role','Bio','Location'].map(function(h){return '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:'+E.b3+';">'+h+'</div>';}).join('')+
+  '</div>'+
+  M.map(function(m,i){return '<div style="display:grid;grid-template-columns:64px 1fr 1fr 160px;align-items:center;padding:32px 48px;border-bottom:0.5px solid '+E.b08+';transition:background 0.2s;" onmouseover="this.style.background=\'rgba(10,10,10,0.015)\'" onmouseout="this.style.background=\'transparent\'">'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:2.5rem;color:rgba(10,10,10,0.06);line-height:1;transform:skewX(-4deg);">'+('0'+(i+1)).slice(-2)+'</div>'+
+    '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.2rem,2.5vw,2rem);letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;">'+m.n+'</div>'+
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-top:4px;">'+m.r+'</div></div>'+
+    '<div style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';padding-right:32px;">'+m.b+'</div>'+
+    '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:'+E.ac+';text-align:right;">'+m.l+'</div>'+
+  '</div>';}).join('')+'</div>'+edJ();
+}
+
+// v29: Hover reveal — cream version
+function v29(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+
+  '<div style="border-top:3px solid '+E.tc+';">'+
+  '<div style="padding:12px 48px;border-bottom:0.5px solid '+E.b08+';"><span style="font-family:\'Josefin Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:'+E.b3+';">The Team · Hover to reveal</span></div>'+
+  M.map(function(m,i){return '<div style="position:relative;border-bottom:0.5px solid '+E.b08+';overflow:hidden;" onmouseenter="this.querySelector(\'.chi\').style.opacity=\'0.12\'" onmouseleave="this.querySelector(\'.chi\').style.opacity=\'0\'">'+
+    '<img class="chi" src="'+m.i+'" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(10%) brightness(0.9);opacity:0;transition:opacity 0.4s;pointer-events:none;"/>'+
+    '<div style="position:relative;z-index:1;display:flex;justify-content:space-between;align-items:baseline;padding:24px 48px;">'+
+      '<div style="display:flex;align-items:baseline;gap:24px;">'+
+        '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:'+E.lc+';flex-shrink:0;">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.8rem,4vw,4rem);letter-spacing:0.04em;color:'+E.tc+';line-height:1;transform:skewX(-4deg);display:inline-block;">'+m.n+'</span>'+
+      '</div>'+
+      '<div style="text-align:right;">'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.ac+';">'+m.r+'</div>'+
+        '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:'+E.b3+';margin-top:4px;">'+m.l+'</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';}).join('')+'</div>'+edJ();
+}
+
+// v30: CAD texture bg — cream editorial with texture
+function v30(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return '<div style="position:fixed;inset:0;background-image:url(\'cad_texture.jpeg\');background-size:cover;background-position:center;opacity:0.06;pointer-events:none;z-index:0;"></div>'+
+  '<div style="position:relative;z-index:1;">'+edH()+edGrid()+edJ()+'</div>';
+}
+
+// v31: Left gold border on every card
+function v31(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({leftBorder:true})+edJ();
+}
+
+// v32: Member number prominent in Bebas beside name
+function v32(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({showNum:true})+edJ();
+}
+
+// v33: Name at bottom — bio leads, name as caption
+function v33(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({nameBottom:true})+edJ();
+}
+
+// v34: Full colour photos
+function v34(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({colour:true})+edJ();
+}
+
+// v35: Gold join section bg
+function v35(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid()+edJ(E.ac,'rgba(10,10,10,0.45)',E.tc);
+}
+
+// v36: Josefin Sans intro text in header (logo font elevated)
+function v36(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH(3,'\'Josefin Sans\',sans-serif')+edGrid()+edJ();
+}
+
+// v37: Hover scale on photos
+function v37(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({hover:true})+edJ();
+}
 
 // v38: Location shown on each card
-function v38(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({showLoc:true})+edJoin();}
+function v38(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({showLoc:true})+edJ();
+}
 
-// v39: Asymmetric 60/40 grid split
-function v39(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+
+// v39: Asymmetric 60/40 grid
+function v39(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+
   '<div style="display:grid;grid-template-columns:3fr 2fr;gap:0;border-bottom:1px solid '+E.b08+';">'+
   M.map(function(m,i){var bdr=i%2===0?'border-right:0.5px solid '+E.b08+';':'';
-    return '<div class="ec" style="display:flex;gap:20px;align-items:start;padding:28px 40px;border-bottom:0.5px solid '+E.b08+';'+bdr+'">'+
-      '<img src="'+m.img+'" style="width:72px;height:90px;object-fit:cover;object-position:top;flex-shrink:0;filter:grayscale(15%);"/>'+
-      '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+E.tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+m.name+'</div>'+
-      '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.role+'</div>'+
-      '<p style="font-size:0.78rem;line-height:1.75;color:'+E.b5+';">'+m.bio+'</p></div></div>';}).join('')+'</div>'+edJoin();}
+    return edCard(m,i,{});
+  }).join('')+'</div>'+edJ();
+}
 
-// v40: Square photos (90×90) — uniform crop
-function v40(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({ph:'90px',pw:'90px'})+edJoin();}
+// v40: Square 90x90 photos
+function v40(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH()+edGrid({ph:'90px',pw:'90px'})+edJ();
+}
 
-// v41: Compound — Josefin name + gold rule + colour photos + location
-function v41(){navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
-  return edHero()+edGrid({josefinName:true,goldRule:true,colour:true,showLoc:true,ph:'110px',pw:'88px'})+edJoin();}
+// v41: Compound — Josefin name + gold rule + colour + location + larger photo
+function v41(){
+  navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif;font-weight:300;');
+  return edH(5)+edGrid({josefin:true,goldRule:true,colour:true,showLoc:true,ph:'110px',pw:'88px',hover:true})+edJ();
+}
 
-// ── VARIANT MAP ──
+// ── MAP + SWITCHER ──
 var VV={0:v0,1:v1,2:v2,3:v3,4:v4,5:v5,6:v6,7:v7,8:v8,9:v9,10:v10,11:v11,12:v12,13:v13,14:v14,15:v15,16:v16,17:v17,18:v18,19:v19,20:v20,21:v21,22:v22,23:v23,24:v24,25:v25,26:v26,27:v27,28:v28,29:v29,30:v30,31:v31,32:v32,33:v33,34:v34,35:v35,36:v36,37:v37,38:v38,39:v39,40:v40,41:v41};
-
-// ── SWITCHER ──
 var sw=document.getElementById('psw');
 for(var i=0;i<=41;i++){(function(n){var b=document.createElement('button');b.className='sb'+(n===0?' active':'');b.textContent=n;b.onclick=function(){applyOpt(n);};sw.appendChild(b);})(i);}
 function applyOpt(n){
