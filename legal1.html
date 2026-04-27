@@ -1,408 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <style>
+<style>
 body { font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
 </style>
-<meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Silent Foundry</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=Noto+Sans+SC:wght@100&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="sf-styles.css" />
-  <style>
-    /* ── KILL ALL REVEAL ANIMATIONS ON CONTACT PAGE ── */
-    .reveal, .reveal-left, .reveal-right,
-    .reveal-delay-1, .reveal-delay-2, .reveal-delay-3, .reveal-delay-4 {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-    /* ── HERO ── */
-    .hero {
-      padding: 180px 48px 100px;
-      border-bottom: 1px solid rgba(244,241,236,0.08);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      opacity: 0;
-      animation: fadein 1s 0.3s forwards;
-    }
-    .hero h1 em {
-      font-family: var(--font-serif);
-      font-style: italic;
-      color: var(--accent);
-      font-size: 0.88em;
-    }
-    .hero-label { opacity: 0; animation: fadein 1s 0.1s forwards; }
-    .hero-sub {
-      margin-top: 40px;
-      max-width: 480px;
-      font-size: 1rem;
-      line-height: 1.7;
-      color: rgba(244,241,236,0.55);
-      opacity: 0;
-      animation: fadein 1s 0.5s forwards;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── CONTACT BODY ── */
-    .contact-body {
-      padding: 160px 48px 160px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 100px;
-      align-items: start; min-height: 80vh; position:relative; z-index:1;
-    }
-
-/* ── CONTACT D4 MATRIX ── */
-.contact-matrix-wrap { position:relative; }
-.f-matrix-contact { position:absolute; inset:0; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(4,1fr); pointer-events:none; z-index:0; overflow:hidden; }
-@keyframes fFlicker { 0%,100%{opacity:0.15} 50%{opacity:0.9} }
-    /* ── PATH CARDS ── */
-    .paths { display: flex; flex-direction: column; gap: 2px; height: 100%; }
-
-    .path-card {
-      border: 1px solid rgba(244,241,236,0.08);
-      padding: 32px 36px;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .path-card:hover { border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.04); }
-    .path-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 3px; height: 0;
-      background: var(--accent);
-      transition: height 0.4s ease;
-    }
-    .path-card:hover::before { height: 100%; }
-
-    .path-num {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      line-height: 1;
-      color: rgba(200,169,110,0.12);
-      margin-bottom: 20px;
-    }
-    .path-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      letter-spacing: 0.04em;
-      margin-bottom: 10px;
-      color: var(--white);
-    }
-    .path-card .path-sub {
-      font-size: 0.82rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .path-card p {
-      font-size: 0.9rem;
-      line-height: 1.75;
-      color: rgba(244,241,236,0.5);
-    }
-
-    /* ── FORM ── */
-    .form-wrap {
-      position: static;
-    }
-
-    .form-wrap h2 {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .form-wrap > p {
-      font-size: 0.88rem;
-      color: rgba(244,241,236,0.45);
-      margin-bottom: 48px;
-      line-height: 1.6;
-    }
-
-    .form-group { margin-bottom: 24px; }
-
-    .form-group label {
-      display: block;
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      background: rgba(244,241,236,0.04);
-      border: 1px solid rgba(244,241,236,0.12);
-      color: var(--white);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 300;
-      padding: 16px 20px;
-      outline: none;
-      transition: border-color 0.3s, background 0.3s;
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--accent);
-      background: rgba(200,169,110,0.05);
-    }
-    .form-group select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 18px center;
-      cursor: pointer;
-    }
-    .form-group select option { background: #1a1a1a; color: var(--white); }
-    .form-group textarea { resize: vertical; min-height: 140px; }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder { color: rgba(244,241,236,0.2); }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .submit-btn {
-      width: 100%;
-      padding: 18px 32px;
-      background: var(--accent);
-      border: none;
-      color: var(--black);
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.25s, transform 0.2s;
-      margin-top: 8px;
-    }
-    .submit-btn:hover { background: #d4b87a; transform: translateY(-1px); }
-    .submit-btn:active { transform: translateY(0); }
-
-    /* ── OFFICES ── */
-    .offices {
-      background: var(--cream);
-      color: var(--black);
-      padding: 120px 48px 140px;
-    }
-    .offices .label { color: #8a6e3a; }
-    .offices-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 64px;
-    }
-    .office-card {
-      padding: 48px 40px;
-      border: 1px solid rgba(10,10,10,0.08);
-      transition: border-color 0.3s;
-    }
-    .office-card:hover { border-color: #8a6e3a; }
-    .office-city {
-      font-family: var(--font-display);
-      font-size: 2.5rem;
-      letter-spacing: 0.04em;
-      color: var(--black);
-      margin-bottom: 6px;
-    }
-    .office-country {
-      font-size: 0.68rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #8a6e3a;
-      margin-bottom: 28px;
-    }
-    .office-card address {
-      font-style: normal;
-      font-size: 0.88rem;
-      line-height: 1.9;
-      color: rgba(10,10,10,0.55);
-    }
-    .office-card .office-chinese {
-      font-size: 0.82rem;
-      color: rgba(10,10,10,0.4);
-      margin-top: 16px;
-    }
-
-    /* success state */
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 60px 0;
-    }
-    .form-success .tick {
-      font-size: 3rem;
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-    .form-success h3 {
-      font-family: var(--font-display);
-      font-size: 2rem;
-      letter-spacing: 0.06em;
-      margin-bottom: 12px;
-    }
-    .form-success p {
-      font-size: 0.9rem;
-      color: rgba(244,241,236,0.5);
-      line-height: 1.7;
-    }
-
-    /* ══════════════════════════════
-       MOBILE
-       ══════════════════════════════ */
-    @media (max-width: 900px) {
-      .hero { padding: 140px 24px 80px; }
-      .contact-body { grid-template-columns: 1fr; gap: 64px; padding: 64px 24px 100px; }
-      .form-wrap { position: static; }
-      .offices { padding: 80px 24px; }
-      .offices-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Silent Foundry</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sf-styles.css" />
 <style>
-/* ── SHARED NAV — matches index exactly ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 48px;
-  transition: opacity 0.4s ease;
-  overflow: visible;
+:root { --black:#0a0a0a; --white:#f4f1ec; --cream:#ede8e0; --accent:#c8a96e; --gold:#8a6e3a; --mid:#6b6560; }
+*{ margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.8; cursor:none; }
+/* NAV */
+#legal-nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 48px;
+  background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%);
+  transition:opacity 0.4s ease;
+  overflow:visible;
 }
-nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%);
-  pointer-events: none;
-}
-nav.scrolled { opacity: 0.3; }
-nav.scrolled:hover { opacity: 1; }
+#legal-nav::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%); pointer-events:none; }
+#legal-nav.scrolled { opacity:0.3; }
+#legal-nav.scrolled:hover { opacity:1; }
 .nav-logo {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-self: center;
-  transform: skewX(-4deg);
-  transform-origin: left center;
-  line-height: 0.76;
-  transition: opacity 0.5s ease;
-  /* Fixed width prevents stamp from shifting links */
-  width: 140px;
-  overflow: visible;
+  position:relative; z-index:1; flex-shrink:0; width:140px;
+  text-decoration:none; display:flex; flex-direction:column;
+  justify-content:center; align-self:center;
+  transform:skewX(-4deg); transform-origin:left center;
+  line-height:0.76; transition:opacity 1.5s ease;
+  font-family:'Bebas Neue',sans-serif; color:var(--white);
 }
+.nav-logo span { font-size:53px; letter-spacing:0.06em; -webkit-text-stroke:0.5px rgba(244,241,236,0.9); display:block; transition:font-size 0.5s ease; }
+#legal-nav.scrolled .nav-logo span { font-size:42px; }
 @keyframes sharedLogoStamp {
-  0%   { transform: skewX(-4deg) scale(1.08); opacity: 0; }
-  60%  { transform: skewX(-4deg) scale(0.99); opacity: 1; }
-  100% { transform: skewX(-4deg) scale(1);    opacity: 1; }
+  0%   { transform:skewX(-4deg) scale(1.08); opacity:0; }
+  60%  { transform:skewX(-4deg) scale(0.99); opacity:1; }
+  100% { transform:skewX(-4deg) scale(1); opacity:1; }
 }
-.nav-logo.do-stamp {
-  animation: sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.nav-links {
-  display: flex;
-  gap: 36px;
-  list-style: none;
-  position: relative;
-  z-index: 1;
-  align-items: center;
-  align-self: center;
-}
-.nav-links a {
-  font-family: 'DM Sans', sans-serif !important;
-  font-size: 0.72rem !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  font-weight: 300 !important;
-  color: rgba(244,241,236,0.5) !important;
-  opacity: 1 !important;
-  position: relative;
-  text-decoration: none;
-  transition: color 0.2s, text-shadow 0.3s !important;
-}
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px; left: 0;
-  width: 0; height: 1px;
-  background: #c8a96e;
-  transition: width 0.3s ease;
-}
-.nav-links a:hover::after { width: 100%; }
-.nav-links a:hover, .nav-links a.active {
-  color: #c8a96e !important;
-  text-shadow: 0 0 12px rgba(200,169,110,0.3) !important;
-}
-@media (max-width: 900px) {
-  nav { padding: 14px 24px; }
-  .nav-links { display: none; }
-  .nav-toggle { display: flex; }
-}
-  @media (max-width: 900px) {
-    nav > div[style*="gap:8px"] {
-      position: absolute !important;
-      right: 58px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-    }
-    .mobile-menu a { color: rgba(10,10,10,0.7) !important; }
-    .mobile-menu a:hover { color: rgba(10,10,10,1) !important; }
-    .footer-tagline { padding-left: 10px !important; }
-    .footer-col { padding-left: 10px !important; }
-  }
-/* Logo scroll shrink */
-.nav-logo span { transition: font-size 0.5s ease; }
-nav.scrolled .nav-logo span { font-size: 42px !important; }
-/* Logo hide on last section */
-body.hide-logo .nav-logo {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transition: opacity 0.5s ease !important;
-}
-@media(max-width:768px) {
-  .path-acc-item {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-}
+.nav-logo.do-stamp { animation:sharedLogoStamp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+.nav-links { display:flex; gap:36px; list-style:none; position:relative; z-index:1; align-items:center; }
+.nav-links a { font-family:'DM Sans',sans-serif; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:300; color:rgba(244,241,236,0.5); text-decoration:none; position:relative; transition:color 0.2s; }
+.nav-links a::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:1px; background:#c8a96e; transition:width 0.3s ease; }
+.nav-links a:hover::after { width:100%; }
+.nav-links a:hover { color:#c8a96e; text-shadow:0 0 12px rgba(200,169,110,0.3); }
+.nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; z-index:1; position:relative; }
+.nav-toggle span { display:block; width:22px; height:1.5px; background:rgba(244,241,236,0.6); transition:all 0.3s; }
+.mobile-menu { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(10,10,10,0.97); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:32px; }
+.mobile-menu.open { display:flex; }
+.mobile-menu a { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; letter-spacing:0.1em; color:rgba(244,241,236,0.8); text-decoration:none; }
+/* CONTENT */
+.container { padding:160px 8vw 100px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.5rem,5vw,4rem); letter-spacing:0.1em; text-transform:uppercase; color:rgba(244,241,236,0.82); margin-bottom:8px; }
+.page-sub { font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:80px; }
+.doc-section { margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid rgba(200,169,110,0.1); }
+.doc-section:last-child { border-bottom:none; }
+.doc-title { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(244,241,236,0.82); margin-bottom:8px; }
+.doc-date { font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(200,169,110,0.5); margin-bottom:36px; display:block; }
+h3 { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin:32px 0 10px; }
+p { font-size:0.92rem; color:rgba(244,241,236,0.55); margin-bottom:16px; }
+ul { padding-left:20px; margin-bottom:16px; }
+li { font-size:0.92rem; color:rgba(244,241,236,0.55); margin-bottom:8px; }
+a { color:var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+/* FOOTER */
 .footer-bottom{padding:16px 48px !important;background:var(--black) !important;}
 .footer-bottom span{font-size:0.52rem !important;letter-spacing:0.12em !important;}
 .f-m6{font-size:0.52rem !important;}
@@ -421,233 +87,182 @@ footer{align-items:start !important;position:relative !important;display:block !
   pointer-events: none;
   opacity: 0.5;
 }
+@media(max-width:900px) {
+  .nav-links, #legal-nav > div { display:none; }
+  .nav-toggle { display:flex; }
+  #legal-nav { padding:14px 24px; }
+  .container { padding:120px 6vw 80px; }
+  .footer-inner { grid-template-columns:1fr !important; padding:40px 24px 32px !important; gap:24px !important; }
+  .footer-bottom { flex-direction:column !important; gap:8px !important; text-align:center !important; padding:16px 24px !important; }
+}
 </style>
 </head>
 <body>
 
-  <!-- MOBILE MENU -->
-  <div class="mobile-menu" style="background:#ede8e0;">
-    <a href="index.html#how" style="color:rgba(10,10,10,0.7);">HOW IT WORKS</a>
-    <a href="index.html#funds" style="color:rgba(10,10,10,0.7);">INVESTORS</a>
-    <a href="sf-team.html" style="color:rgba(10,10,10,0.7);">TEAM</a>
-    <a href="sf-contact.html" style="color:rgba(10,10,10,0.7);">CONTACT</a>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="index.html#how">How It Works</a>
+  <a href="index.html#funds">Investors</a>
+  <a href="sf-team.html" target="_blank">Team</a>
+  <a href="sf-contact.html" target="_blank">Contact</a>
+</div>
+
+<nav id="legal-nav">
+  <a href="index.html" class="nav-logo" id="legal-logo">
+  <span class="sf-mark">
+    <span class="sf-mark-line sf-mark-line--silent" style="color:rgba(244,241,236,0.55);-webkit-text-stroke-color:rgba(244,241,236,0.55);"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
+    <span class="sf-mark-line" style="color:rgba(244,241,236,0.35);-webkit-text-stroke-color:rgba(244,241,236,0.35);"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+  </span>
+  </a>
+  <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;margin-left:6px;">
+    <a href="index.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.color='rgba(244,241,236,0.8)'" onmouseout="this.style.color='rgba(244,241,236,0.4)'">← Site</a>
+    <a href="zh-legal.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;transition:all 0.2s;">中文</a>
+    <span style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;">EN</span>
+  </div>
+  <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mobile-menu').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="container">
+
+  <div class="page-title">Legal</div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="doc-section" id="privacy">
+    <div class="doc-title">Privacy Policy</div>
+    <span class="doc-date">Effective date: January 2026</span>
+
+    <p>Silent Foundry ("we", "us", or "our") operates the website silentfoundry.com (the "Site"). This Privacy Policy explains how we collect, use, and protect information from visitors to our Site.</p>
+
+    <h3>1. Information We Collect</h3>
+    <p>We may collect the following types of information:</p>
+    <ul>
+      <li><strong>Contact information</strong> — name and email address submitted through our contact form.</li>
+      <li><strong>Usage data</strong> — pages visited, time spent on pages, referring URLs, browser type, and device information, collected through cookies and analytics tools.</li>
+      <li><strong>Communications</strong> — any information you voluntarily provide when contacting us by email or through the Site.</li>
+    </ul>
+    <p>We do not collect sensitive personal data such as financial details, health information, or government identification numbers through this Site.</p>
+
+    <h3>2. How We Use Your Information</h3>
+    <p>We use the information we collect for the following purposes:</p>
+    <ul>
+      <li>To respond to enquiries and communicate with potential partners and investors.</li>
+      <li>To understand how visitors use the Site and improve our content and user experience.</li>
+      <li>To send relevant updates or information, with your consent.</li>
+    </ul>
+    <p>We do not sell, rent, or trade your personal information to third parties.</p>
+
+    <h3>3. Cookies</h3>
+    <p>Our Site uses cookies to improve functionality and collect analytics data. Cookies are small text files stored on your device. You can disable cookies through your browser settings, though this may affect the functionality of parts of the Site.</p>
+    <p>We may use third-party analytics tools (such as Google Analytics) that set their own cookies. These tools help us understand site usage in aggregate and anonymous form.</p>
+
+    <h3>4. Data Storage and Security</h3>
+    <p>Your information is stored securely and we take reasonable precautions to protect it against unauthorised access, loss, or misuse. However, no method of electronic transmission or storage is 100% secure, and we cannot guarantee absolute security.</p>
+    <p>We retain personal data only for as long as necessary to fulfil the purposes outlined in this policy or as required by law.</p>
+
+    <h3>5. Third-Party Links</h3>
+    <p>Our Site may contain links to third-party websites. We are not responsible for the privacy practices or content of those sites. We encourage you to review the privacy policies of any external sites you visit.</p>
+
+    <h3>6. Your Rights</h3>
+    <p>Depending on your location, you may have rights to access, correct, or request deletion of your personal data. To exercise any of these rights, please contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="660a0301070a26150f0a0308120009130802141f4805090b">[email&#160;protected]</a>.</p>
+
+    <h3>7. Changes to This Policy</h3>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. Continued use of the Site after changes constitutes acceptance of the revised policy.</p>
+
+    <h3>8. Contact</h3>
+    <p>For any questions about this Privacy Policy, please contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f29e9795939eb2819b9e979c86949d879c96808bdc919d9f">[email&#160;protected]</a>.</p>
   </div>
 
-  <!-- NAV -->
-  <!-- NAV -->
-  <nav>
-    <a href="index.html" class="nav-logo">
-      <span class="sf-mark">
-        <span class="sf-mark-line sf-mark-line--silent" style="color:rgba(244,241,236,0.55);-webkit-text-stroke-color:rgba(244,241,236,0.55);"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
-        <span class="sf-mark-line" style="color:rgba(244,241,236,0.35);-webkit-text-stroke-color:rgba(244,241,236,0.35);"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
-      </span>
-    </a>
-        
-    <div style="display:flex;align-items:center;gap:8px;position:relative;z-index:1;">
-      <a href="index.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;transition:all 0.2s;white-space:nowrap;" onmouseover="this.style.color='rgba(244,241,236,0.8)'" onmouseout="this.style.color='rgba(244,241,236,0.4)'">← Site</a>
-      <a href="zh-contact.html" style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(244,241,236,0.25);color:rgba(244,241,236,0.4);padding:4px 10px;text-decoration:none;transition:all 0.2s;">中文</a>
-      <span style="font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.8);padding:4px 10px;">EN</span>
-    </div>
-    <button class="nav-toggle" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+  <!-- TERMS OF USE -->
+  <div class="doc-section" id="terms">
+    <div class="doc-title">Terms of Use</div>
+    <span class="doc-date">Effective date: January 2026</span>
 
-  <!-- MARQUEE -->
-  
-  <!-- CONTACT BODY -->
-  <div class="contact-matrix-wrap">
-  <div class="contact-body">
+    <p>By accessing and using the Silent Foundry website (the "Site"), you agree to be bound by these Terms of Use. If you do not agree, please do not use the Site.</p>
 
-    <!-- PATH CARDS -->
-    <div class="paths">
-      <style>
-        .path-acc-item { border-bottom:1px solid rgba(244,241,236,0.08); }
-        .path-acc-header {
-          display:flex; justify-content:space-between; align-items:center;
-          padding:24px 0; cursor:pointer; transition:opacity 0.2s;
-        }
-        .path-acc-header:hover { opacity:0.8; }
-        .path-acc-left { display:flex; flex-direction:column; gap:4px; }
-        .path-acc-title {
-          font-family:'Bebas Neue',sans-serif; font-size:1.4rem;
-          letter-spacing:0.06em; text-transform:uppercase; color:var(--white);
-        }
-        .path-acc-sub {
-          font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase;
-          color:rgba(244,241,236,0.45);
-        }
-        .path-acc-icon {
-          font-size:1.4rem; color:var(--accent); font-weight:300;
-          transition:transform 0.3s; flex-shrink:0;
-        }
-        .path-acc-icon.open { transform: rotate(45deg); }
-        .path-acc-body {
-          max-height:0; overflow:hidden;
-          transition:max-height 0.4s ease, opacity 0.3s, padding 0.3s;
-          opacity:0; padding-bottom:0;
-        }
-        .path-acc-body.open {
-          max-height:200px; opacity:1; padding-bottom:24px;
-        }
-        .path-acc-body p {
-          font-size:0.9rem; line-height:1.75;
-          color:rgba(244,241,236,0.5);
-        }
-        @media(max-width:900px){
-          .path-acc-title { font-size:1.2rem; }
-        }
-      </style>
-      <script>
-        function togglePath(el){
-          var body = el.nextElementSibling;
-          var icon = el.querySelector('.path-acc-icon');
-          var isOpen = body.classList.contains('open');
-          document.querySelectorAll('.path-acc-body').forEach(function(b){ b.classList.remove('open'); });
-          document.querySelectorAll('.path-acc-icon').forEach(function(i){ i.classList.remove('open'); });
-          if(!isOpen){
-            body.classList.add('open');
-            icon.classList.add('open');
-          }
-        }
-      </script>
+    <h3>1. Use of the Site</h3>
+    <p>The Site is intended for informational purposes only — to introduce Silent Foundry, our model, and our projects to potential investors, partners, and collaborators.</p>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Use the Site for any unlawful purpose or in a way that violates any applicable laws or regulations.</li>
+      <li>Attempt to gain unauthorised access to any part of the Site or its related systems.</li>
+      <li>Copy, reproduce, or redistribute any content from the Site without our express written permission.</li>
+      <li>Use automated tools to scrape, crawl, or harvest data from the Site.</li>
+    </ul>
 
-      <div class="path-acc-item">
-        <div class="path-acc-header" onclick="togglePath(this)">
-          <div class="path-acc-left">
-            <span class="path-acc-title">Partner Brand</span>
-            <span class="path-acc-sub">Brand looking to productize</span>
-          </div>
-          <span class="path-acc-icon open">⌀</span>
-        </div>
-        <div class="path-acc-body open">
-          <p>You have an audience, a story, and brand equity. You want to expand into premium physical products but don't have the industrial system to do it. We translate your DNA into manufacturable, marketable products.</p>
-          <a href="#" style="display:inline-block;margin-top:12px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);border:0.5px solid rgba(200,169,110,0.4);padding:6px 14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">↓ Download Partner Deck</a>
-        </div>
-      </div>
+    <h3>2. Intellectual Property</h3>
+    <p>All content on this Site — including text, images, graphics, logos, and design — is owned by or licensed to Silent Foundry and is protected by applicable intellectual property laws. Nothing on this Site grants you any licence or right to use our intellectual property without prior written consent.</p>
 
-      <div class="path-acc-item">
-        <div class="path-acc-header" onclick="togglePath(this)">
-          <div class="path-acc-left">
-            <span class="path-acc-title">Investor</span>
-            <span class="path-acc-sub">Looking to deploy capital</span>
-          </div>
-          <span class="path-acc-icon">∠</span>
-        </div>
-        <div class="path-acc-body">
-          <p>You're interested in brand-led product expansion with earlier, cleaner exit pathways. We offer direct co-investment opportunities through dedicated SPVs and our two-fund structure.</p>
-          <a href="#" style="display:inline-block;margin-top:12px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);border:0.5px solid rgba(200,169,110,0.4);padding:6px 14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">↓ Download Investor Deck</a>
-        </div>
-      </div>
+    <h3>3. No Investment Advice</h3>
+    <p>Nothing on this Site constitutes investment, financial, or legal advice. Any information about investment opportunities is provided for informational purposes only. You should seek independent professional advice before making any investment decisions.</p>
 
-      <div class="path-acc-item">
-        <div class="path-acc-header" onclick="togglePath(this)">
-          <div class="path-acc-left">
-            <span class="path-acc-title">Factory or Operator</span>
-            <span class="path-acc-sub">Manufacturing &amp; distribution</span>
-          </div>
-          <span class="path-acc-icon">⊥</span>
-        </div>
-        <div class="path-acc-body">
-          <p>You have production capacity or distribution reach in China and are looking for premium, authentic brand demand with strong design and engineering support.</p>
-          <a href="#" style="display:inline-block;margin-top:12px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);border:0.5px solid rgba(200,169,110,0.4);padding:6px 14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">↓ Download Factory Brief</a>
-        </div>
-      </div>
+    <h3>4. Disclaimer of Warranties</h3>
+    <p>The Site and its content are provided "as is" without any warranties of any kind, express or implied. We do not warrant that the Site will be uninterrupted, error-free, or free of viruses or other harmful components. We make no representations about the accuracy, completeness, or suitability of the content for any particular purpose.</p>
 
-      <div class="path-acc-item">
-        <div class="path-acc-header" onclick="togglePath(this)">
-          <div class="path-acc-left">
-            <span class="path-acc-title">Join the Team</span>
-            <span class="path-acc-sub">Talent &amp; partnerships</span>
-          </div>
-          <span class="path-acc-icon">±</span>
-        </div>
-        <div class="path-acc-body">
-          <p>You believe in what we're building and want to be part of a high-performing cross-border team working at the intersection of brand, product, and capital.</p>
-          <a href="#" style="display:inline-block;margin-top:12px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.5);border:0.5px solid rgba(200,169,110,0.4);padding:6px 14px;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(200,169,110,0.08)'" onmouseout="this.style.background='transparent'">↓ Download Careers Brief</a>
-        </div>
-      </div>
-    </div>
+    <h3>5. Limitation of Liability</h3>
+    <p>To the fullest extent permitted by law, Silent Foundry shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of, or inability to use, the Site or its content.</p>
 
-    <!-- FORM -->
-    <div class="form-wrap">
-      <h2>Send a message</h2>
-      <p>Fill in the form and we'll get back to you within 48 hours.</p>
+    <h3>6. Third-Party Links</h3>
+    <p>The Site may contain links to external websites. These links are provided for your convenience only. We have no control over the content of those sites and accept no responsibility for them or for any loss or damage that may arise from your use of them.</p>
 
-      <div id="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" placeholder="James" id="fname" />
-          </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" placeholder="Cooper" id="lname" />
-          </div>
-        </div>
+    <h3>7. Governing Law</h3>
+    <p>These Terms of Use shall be governed by and construed in accordance with the laws of Hong Kong SAR. Any disputes arising from these terms or your use of the Site shall be subject to the exclusive jurisdiction of the courts of Hong Kong SAR.</p>
 
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="hello@yourbrand.com" id="email" />
-        </div>
+    <h3>8. Changes to These Terms</h3>
+    <p>We reserve the right to update these Terms of Use at any time. Changes will be posted on this page with an updated effective date. Your continued use of the Site after any changes constitutes your acceptance of the new terms.</p>
 
-        <div class="form-group">
-          <label>Organisation / Brand</label>
-          <input type="text" placeholder="Your brand or company name" id="org" />
-        </div>
-
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Tell us about your brand, what you're trying to build, and why you think we'd be a good fit..." id="message"></textarea>
-        </div>
-
-        <button class="submit-btn" onclick="handleSubmit()">Send Message ↧</button>
-      </div>
-
-      <div class="form-success" id="form-success">
-        <div class="tick">✦</div>
-        <h3>Message Sent</h3>
-        <p>Thanks for reaching out. We review every submission personally and will be in touch within 48 hours.</p>
-      </div>
-    </div>
-
+    <h3>9. Contact</h3>
+    <p>For any questions about these Terms of Use, please contact us at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c6aaa3a1a7aa86b5afaaa3a8b2a0a9b3a8a2b4bfe8a5a9ab">[email&#160;protected]</a>.</p>
   </div>
 
+</div>
 
 
 
-    <!-- FOOTER -->
-  <script>
-  (function(){
-    function gold(a){return 'rgba(200,169,110,'+a+')';}
-    function mk(t){return document.createElement(t);}
-    function rp(el){if(el&&window.getComputedStyle(el).position==='static')el.style.position='relative';}
-    function mkGrid(el,sp,col){
-      if(!el)return; rp(el);
-      var g=mk('div');
-      g.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px),repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px);';
-      el.appendChild(g);
-    }
-    document.addEventListener('DOMContentLoaded',function(){
-      var ftEl=document.querySelector('footer');
-      if(ftEl){rp(ftEl);mkGrid(ftEl,16,gold(0.04));}
-      var fb=document.querySelector('.footer-bottom');
-      if(fb){rp(fb);
-        var m6=mk('span');
-        m6.style.cssText='font-family:"Courier New",monospace;font-size:0.52rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;';
-        m6.textContent='⌀3×M6';
-        fb.appendChild(m6);
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function(){
+  var nav = document.getElementById('legal-nav');
+  var logo = document.getElementById('legal-logo');
+  var stamped = false;
+
+  // Stamp logo
+  window.addEventListener('DOMContentLoaded', function(){
+    if (stamped) return; stamped = true;
+    if (!logo) return;
+    logo.classList.remove('do-stamp');
+    void logo.offsetWidth;
+    logo.classList.add('do-stamp');
+  });
+
+  // Nav scroll fade + logo shrink + logo hide
+  window.addEventListener('scroll', function(){
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
+    var footer = document.querySelector('footer');
+    if (footer && logo) {
+      var ft = footer.getBoundingClientRect().top;
+      logo.style.transition = 'opacity 1.5s ease';
+      var nearBottom = (window.scrollY + window.innerHeight) >= (document.body.scrollHeight - 300);
+      if (nearBottom) {
+        logo.style.opacity = '0';
+        logo.style.pointerEvents = 'none';
+      } else {
+        logo.style.opacity = '';
+        logo.style.pointerEvents = '';
       }
-    });
-  })();
-  </script>
-  </div><!-- /contact-matrix-wrap -->
-
+    }
+  }, {passive:true});
+})();
+</script>
+  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
     <div class="footer-logo-wrap">
-      <a href="index.html" class="footer-logo" style="display:block;width:160px;height:50px;">
-        <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg>
+      <a href="index.html" class="footer-logo">
+        <span class="sf-mark">
+          <span class="sf-mark-line sf-mark-line--silent"><span class="gm">∫</span><span class="gm">⌐</span><span class="gm">∥</span>EN<span class="gm">↧</span></span>
+          <span class="sf-mark-line"><span class="gm">¬</span><span class="gm">◎</span>U<span class="gm">∧</span>DR<span class="gm">▽</span></span>
+        </span>
       </a>
       <p class="footer-tagline">A cross-border venture studio that turns authentic brands into real products.</p>
     </div>
@@ -673,61 +288,28 @@ footer{align-items:start !important;position:relative !important;display:block !
     <span>© 2026 Silent Foundry Group. All rights reserved.</span>
 
   </div>
-
-
-
-
-  <script src="sf-scripts.js"></script>
-  <script>
-    function handleSubmit() {
-      const fname = document.getElementById('fname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const type  = document.getElementById('type').value;
-      const msg   = document.getElementById('message').value.trim();
-
-      if (!fname || !email || !type || !msg) {
-        alert('Please fill in all required fields before sending.');
-        return;
-      }
-
-      document.getElementById('contact-form').style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-    }
-  </script>
 <script>
 (function(){
-  var nav = document.querySelector('nav');
-  window.addEventListener('scroll', function(){
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, {passive:true});
-  var stamped = false;
-  window.addEventListener('DOMContentLoaded', function(){
-    if (stamped) return; stamped = true;
-    var logo = document.querySelector('.nav-logo');
-    if (!logo) return;
-    logo.classList.remove('do-stamp');
-    void logo.offsetWidth;
-    logo.classList.add('do-stamp');
-    logo.addEventListener('animationend', function() {
-      logo.classList.remove('do-stamp');
-    }, { once: true });
-    setTimeout(function() { logo.classList.remove('do-stamp'); }, 1000);
-  });
-  window.addEventListener('scroll', function(){
-    var footer = document.querySelector('footer');
-    var logo = document.querySelector('.nav-logo');
-    if (!footer || !logo) return;
-    var ftop = footer.getBoundingClientRect().top;
-    logo.style.transition = 'opacity 0.6s ease';
-    var nearBottom = footer.getBoundingClientRect().top < window.innerHeight;
-    if (nearBottom) {
-      logo.style.opacity = '0';
-      logo.style.pointerEvents = 'none';
-    } else {
-      logo.style.opacity = '';
-      logo.style.pointerEvents = '';
+  function gold(a){return 'rgba(200,169,110,'+a+')';}
+  function mk(t){return document.createElement(t);}
+  function rp(el){if(el&&window.getComputedStyle(el).position==='static')el.style.position='relative';}
+  function mkGrid(el,sp,col){
+    if(!el)return; rp(el);
+    var g=mk('div');
+    g.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;background-image:repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px),repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px);';
+    el.appendChild(g);
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var ftEl=document.querySelector('footer');
+    if(ftEl){rp(ftEl);mkGrid(ftEl,16,gold(0.04));}
+    var fb=document.querySelector('.footer-bottom');
+    if(fb){rp(fb);
+      var m6=mk('span');
+      m6.style.cssText='font-family:"Courier New",monospace;font-size:0.52rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);pointer-events:none;position:absolute;bottom:14px;right:24px;';
+      m6.textContent='⌀3×M6';
+      fb.appendChild(m6);
     }
-  }, {passive:true});
+  });
 })();
 </script>
 <!-- V11 CURSOR SYSTEM -->
@@ -980,16 +562,14 @@ body.v11-active.v11-cream-zone #v11-status-dot { color: rgba(10,10,10,0.6) !impo
 body.v11-active.v11-cta-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; }
 body.v11-active #v11-cursor-dot { background: #c8a96e; }
 body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4) !important; }
-body.v11-active.v11-cta-zone #v11-cursor-dot { background: #2c1e4a !important; }
+body.v11-active.v11-cta-zone #v11-cursor-dot { background: rgba(10,10,10,0.7) !important; }
 body.v11-active.v11-cta-zone #v11-cursor-ring span:first-child { color: rgba(10,10,10,0.3) !important; }
 body.v11-active.v11-cta-zone #v11-status-dot { color: rgba(10,10,10,0.6) !important; transition: none !important; }
 body.v11-active.v11-cta-zone #v11-status { color: rgba(10,10,10,0.55) !important; transition: none !important; }
-body.v11-active.v11-footer-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
-body.v11-active.v11-footer-cursor-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
-body.v11-active.v11-footer-zone #v11-cursor-dot { background: #2c1e4a !important; transition: none !important; }
-body.v11-active.v11-footer-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
-body.v11-active.v11-footer-cursor-zone #v11-cursor-dot { background: #2c1e4a !important; transition: none !important; }
-body.v11-active.v11-footer-cursor-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
+body.v11-active.v11-footer-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
+body.v11-active.v11-footer-cursor-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
+body.v11-active.v11-footer-zone #v11-cursor-dot { background: rgba(244,241,236,0.85) !important; transition: background 0.3s ease !important; }
+body.v11-active.v11-footer-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
 body.v11-active.v11-footer-cursor-zone #v11-cursor-dot { background: rgba(244,241,236,0.85) !important; transition: background 0.3s ease !important; }
 body.v11-active.v11-footer-cursor-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: color 0.3s ease !important; }
 
@@ -1121,7 +701,7 @@ body.v11-active #v11-badge {
   </svg>
 </div>
 
-<div id="v11-cursor" style="display:none;position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%) skewX(-4deg);position:fixed;">
+<div id="v11-cursor" style="display:none;position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%) skewX(-4deg);transition:color 0.3s;position:fixed;">
   <span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:rgba(200,169,110,0.85);line-height:1;display:block;position:relative;">◎<span id="v11-cursor-dot" style="position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:#c8a96e;display:block;pointer-events:none;"></span></span>
 </div>
 <div id="v11-cursor-ring" style="display:none;position:fixed;pointer-events:none;z-index:99998;transform:translate(-50%,-50%) skewX(-4deg);">
@@ -1705,29 +1285,5 @@ body.v11-active #v11-badge {
 })();
 </script>
 <!-- ══ END V1.1 ══ -->
-<script>
-(function(){
-  var wrap = document.querySelector('.contact-matrix-wrap');
-  if(!wrap) return;
-  var mx = document.createElement('div');
-  mx.className = 'f-matrix-contact';
-  var icons = ['⌀','±','∠','⊥','∥','⇕'];
-  for(var i=0;i<32;i++){
-    var cell = document.createElement('span');
-    var delay = (Math.random()*6).toFixed(1);
-    var dur = (2+Math.random()*6).toFixed(1);
-    var show = Math.random()>0.5;
-    cell.style.cssText =
-      'font-family:"Courier New",monospace;'+
-      'font-size:clamp(11px,1.1vw,15px);'+
-      'display:flex;align-items:center;justify-content:center;'+
-      'animation:fFlicker '+dur+'s ease-in-out infinite;'+
-      'animation-delay:'+delay+'s;'+
-      'color:rgba(200,169,110,'+(show?'0.12':'0.04')+');';
-    cell.textContent = icons[i%icons.length];
-    mx.appendChild(cell);
-  }
-  wrap.insertBefore(mx, wrap.firstChild);
-})();
-</script>
 </body>
+</html>
