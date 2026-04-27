@@ -4510,7 +4510,7 @@ function applyLayout(sec, inner, opt, tc) {
       inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:0;padding-left:0;';
       // Skip lc (label) entirely on mobile
       var cc=document.createElement('div');cc.className='tsw-injected';
-      cc.style.cssText='display:flex;flex-direction:column;align-items:center;padding:16px 20px 0;width:100%;';
+      cc.style.cssText='display:flex;flex-direction:column;align-items:center;padding:0 20px;width:100%;';
       if(l1){l1.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.74rem,3.04vw,0.96rem);color:rgba(237,232,224,0.76);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;display:block;margin:0 0 2px 0;text-align:center;width:100%;';l1.textContent='The best products';cc.appendChild(l1);}
       if(l2){l2.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(0.74rem,3.04vw,0.96rem);color:rgba(107,101,96,0.62);letter-spacing:0.12em;line-height:1.15;text-transform:uppercase;display:block;margin:0 0 14px 0;text-align:center;width:100%;';l2.textContent="Won't be invented";cc.appendChild(l2);}
       if(l3){l3.style.cssText='font-family:"Bebas Neue",sans-serif;font-size:clamp(2.08rem,8vw,3.04rem);color:rgba(200,169,110,0.75);letter-spacing:0.06em;line-height:0.9;text-transform:uppercase;transform:skewX(-4deg);display:block;margin:0;text-align:center;width:100%;';l3.innerHTML="THEY'LL BE<br>EXTRACTED";cc.appendChild(l3);}
@@ -4575,34 +4575,6 @@ document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){
 })();
 
 })();
-</script>
-
-<script>
-/* ── TEMP MEASUREMENT OVERLAY ── */
-function measureThesis() {
-  var existing = document.getElementById('sf-measure-overlay');
-  if (existing) existing.remove();
-  var sec = document.getElementById('thesis-section');
-  if (!sec) return;
-  var secR = sec.getBoundingClientRect();
-  var l1 = sec.querySelector('.th-l1');
-  var atw = sec.querySelector('.th-attr-wrap') || sec.querySelector('.th-attr');
-  if (!l1 || !atw) return;
-  var l1R = l1.getBoundingClientRect();
-  var atwR = atw.getBoundingClientRect();
-  var topGap = Math.round(l1R.top - secR.top);
-  var botGap = Math.round(secR.bottom - atwR.bottom);
-  var overlay = document.createElement('div');
-  overlay.id = 'sf-measure-overlay';
-  overlay.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#c8a96e;font-family:monospace;font-size:12px;padding:10px 16px;z-index:9999;border:1px solid #c8a96e;border-radius:4px;white-space:nowrap;line-height:2;text-align:left;';
-  overlay.innerHTML =
-    'Section H: <b>' + Math.round(secR.height) + 'px</b><br>' +
-    'Top gap (section → THE BEST PRODUCTS): <b>' + topGap + 'px</b><br>' +
-    'Bot gap (MATTHEW → section bottom): <b>' + botGap + 'px</b><br>' +
-    'Offset (bot − top): <b>' + (botGap - topGap) + 'px</b>';
-  document.body.appendChild(overlay);
-}
-window.addEventListener('load', function(){ setTimeout(measureThesis, 600); });
 </script>
 
 
