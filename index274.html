@@ -763,8 +763,6 @@ body.v11-active nav * { cursor: none !important; }
         justify-content: center !important;
         flex: none !important;
         width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
         padding: 0 !important;
         text-align: center !important;
       }
@@ -829,19 +827,6 @@ body.v11-active nav * { cursor: none !important; }
 
       /* Hide corner brackets */
       .th-cnr { display: none !important; }
-
-      /* Thesis paragraphs — ensure centred with padding */
-      #thesis-inner > p {
-        padding: 0 24px !important;
-        width: 100% !important;
-        text-align: center !important;
-        box-sizing: border-box !important;
-      }
-      #thesis-inner > span {
-        text-align: center !important;
-        width: 100% !important;
-        padding: 0 24px !important;
-      }
     }
 
     /* ── TRANSLATION LAYOUT ── */
@@ -1402,7 +1387,6 @@ body.v11-active nav * { cursor: none !important; }
         padding: 20px 16px 8px !important;
       }
     }
-    @media (max-width: 900px) {
       #thesis-inner .th-l1,
       #thesis-inner .th-l2 {
         font-size: clamp(0.82rem, 4.2vw, 1.1rem) !important;
@@ -4438,14 +4422,12 @@ function buildThesis(opt) {
   var overlay = document.getElementById('thesis-overlay');
   var inner = document.getElementById('thesis-inner');
 
-  var isMobile = window.innerWidth <= 900;
   if (opt === 0) {
     // Original: restore cream
-    var pad0 = isMobile ? '64px 32px' : '100px 48px';
-    sec.style.cssText = "padding:"+pad0+";background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;"+(isMobile?'display:flex;align-items:center;justify-content:center;':'');
+    sec.style.cssText = "padding:100px 48px;background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;";
     if (overlay) { overlay.style.background='#ede8e0'; overlay.style.opacity='0.92'; }
     if (inner) {
-      inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:'+(isMobile?'100%':'700px')+';margin:0 auto;text-align:center;';
+      inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:700px;margin:0 auto;';
       inner.innerHTML = originalThesisHTML;
     }
     return;
@@ -4457,13 +4439,12 @@ function buildThesis(opt) {
 
   // 3. Set section bg
   var isGrad=(bg&&bg.indexOf('gradient')>-1);
-  var pad = isMobile ? '64px 32px' : '80px 48px';
-  sec.style.cssText = 'padding:'+pad+';background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';text-align:center;position:relative;overflow:hidden;'+(isMobile?'display:flex;align-items:center;justify-content:center;':'');
+  sec.style.cssText = 'padding:80px 48px;background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';text-align:center;position:relative;overflow:hidden;';
   if (overlay) { overlay.style.background = bg; overlay.style.opacity = '0.95'; }
 
   // 4. Reset inner
   if (inner) {
-    inner.style.cssText = 'position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:'+(isMobile?'100%':'720px')+';margin:0 auto;text-align:center;';
+    inner.style.cssText = 'position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:720px;margin:0 auto;';
   }
 
   // 5. Build inner HTML fresh
