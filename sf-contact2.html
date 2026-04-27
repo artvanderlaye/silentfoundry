@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Silent Foundry</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sf-styles.css"/>
+<style>
+:root{--black:#0a0a0a;--white:#f4f1ec;--cream:#ede8e0;--accent:#c8a96e;--mid:#6b6560;--gdk:#8a6e3a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;padding-bottom:52px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s;overflow:visible;}
+nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;}
+nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
+.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-28px;}
+.nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
+.nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;transition:all 0.2s;cursor:pointer;}
+.nbtn:hover{color:rgba(10,10,10,0.9);}
+.nbtn-en{background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.9);font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;position:relative;z-index:1;}
+.nav-toggle span{display:block;width:24px;height:1px;background:rgba(10,10,10,0.6);transition:all 0.3s;}
+.mmenu{display:none;position:fixed;inset:0;background:#ede8e0;z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:24px;}
+.mmenu.open{display:flex;}
+.mmenu a{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.12em;color:rgba(10,10,10,0.7);text-decoration:none;text-transform:uppercase;}
+@media(max-width:900px){nav{padding:14px 24px;}.nav-right{display:none;}.nav-toggle{display:flex;}.nav-logo{width:120px;height:60px;margin-left:-13px;}}
+footer{background:#0a0a0a;padding:0;}
+.fi{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;align-items:start;}
+.fl{display:block;width:160px;height:50px;margin-left:-18px;}
+.ft{font-size:0.82rem;line-height:1.8;color:var(--mid);max-width:280px;margin-top:16px;padding-left:10px;}
+.fc h5{font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;}
+.fc address,.fc a{font-size:0.82rem;line-height:1.8;color:var(--mid);font-style:normal;display:block;text-decoration:none;margin-bottom:8px;}
+.fc a:hover{color:var(--white);}
+.fb{padding:16px 48px;background:#0a0a0a;border-top:1px solid rgba(244,241,236,0.06);display:flex;justify-content:space-between;align-items:center;}
+.fb span{font-size:0.52rem;color:rgba(244,241,236,0.25);letter-spacing:0.12em;}
+@media(max-width:900px){.fi{grid-template-columns:1fr;gap:24px;padding:40px 24px 32px;}.ft,.fc{padding-left:10px;}.fb{flex-direction:column;gap:8px;text-align:center;padding:16px 24px;}.fl{margin-left:-13px;}}
+#psw{position:fixed;bottom:0;left:0;right:0;z-index:9000;display:flex;align-items:center;justify-content:center;gap:2px;background:rgba(28,26,20,0.97);border-top:0.5px solid rgba(200,169,110,0.25);padding:5px 8px 7px;flex-wrap:wrap;}
+#psw .sl{font-family:'DM Sans',sans-serif;font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.4);margin-right:5px;white-space:nowrap;}
+#psw .sb{font-family:'DM Sans',sans-serif;font-size:0.52rem;color:rgba(180,180,180,0.55);background:rgba(180,180,180,0.1);border:0.5px solid rgba(180,180,180,0.18);cursor:pointer;padding:3px 7px;transition:all 0.15s;}
+#psw .sb:hover{color:rgba(244,241,236,0.85);background:rgba(180,180,180,0.18);}
+#psw .sb.active{color:rgba(200,169,110,0.95);background:rgba(200,169,110,0.14);border-color:rgba(200,169,110,0.38);}
+#pc{min-height:60vh;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes blink{50%{opacity:0;}}
+</style>
+</head>
+<body>
+<div class="mmenu" id="mmenu">
+  <a href="index.html#how">HOW IT WORKS</a>
+  <a href="index.html#funds">INVESTORS</a>
+  <a href="sf-team.html">TEAM</a>
+  <a href="sf-contact.html">CONTACT</a>
+</div>
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="80"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(10,10,10,0.75)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(10,10,10,0.75)">FOUNDRY</text></g></svg>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nbtn">HOME</a>
+    <a href="zh-contact.html" class="nbtn">中文</a>
+    <span class="nbtn-en">EN</span>
+  </div>
+  <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mmenu').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div id="pc"></div>
+<footer>
+  <div class="fi">
+    <div>
+      <a href="index.html" class="fl"><svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="200" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg></a>
+      <p class="ft">A cross-border venture studio that turns authentic brands into real products.</p>
+    </div>
+    <div class="fc"><h5>Navigate</h5><a href="sf-team.html">Team</a><a href="sf-contact.html">Contact</a><a href="legal.html#privacy">Privacy Policy</a><a href="legal.html#terms">Terms of Use</a></div>
+    <div class="fc"><h5>Hong Kong</h5><address>Flat/Rm A, 20/F<br>Kiu Fu Commercial Building<br>300 Lockhart Road<br>Wanchai</address></div>
+    <div class="fc"><h5>Shanghai</h5><address>Room 333, 3/F<br>Building 1, No. 2001<br>Yanggao North Road<br>Free Trade Zone</address></div>
+  </div>
+</footer>
+<div class="fb"><span>© 2026 Silent Foundry Group. All rights reserved.</span><span>⌀3×M6</span></div>
+<div id="psw"><span class="sl">CONTACT</span></div>
+<script src="sf-scripts.js"></script>
+<script>
+(function(){
+// ── DATA ──
+var PATHS=[
+  {t:'Partner Brand',s:'Brand looking to productize',i:'⌀',b:'You have an audience, a story, and brand equity. You want to expand into premium physical products but don\'t have the industrial system to do it. We translate your DNA into manufacturable, marketable products.',d:'↓ Download Partner Deck'},
+  {t:'Investor',s:'Looking to deploy capital',i:'∠',b:'You\'re interested in brand-led product expansion with earlier, cleaner exit pathways. We offer direct co-investment opportunities through dedicated SPVs and our two-fund structure.',d:'↓ Download Investor Deck'},
+  {t:'Factory or Operator',s:'Manufacturing & distribution',i:'⊥',b:'You have production capacity or distribution reach in China and are looking for premium, authentic brand demand with strong design and engineering support.',d:'↓ Download Factory Brief'},
+  {t:'Join the Team',s:'Talent & partnerships',i:'±',b:'You believe in what we\'re building and want to be part of a high-performing cross-border team working at the intersection of brand, product, and capital.',d:'↓ Download Careers Brief'}
+];
+var OFFICES=[
+  {city:'Hong Kong',country:'SAR China',addr:'Flat/Rm A, 20/F<br>Kiu Fu Commercial Building<br>300 Lockhart Road, Wanchai'},
+  {city:'Shanghai',country:'China',addr:'Room 333, 3/F<br>Building 1, No. 2001<br>Yanggao North Road, Free Trade Zone'},
+  {city:'Melbourne',country:'Australia',addr:'Available on request'}
+];
+
+// ── HELPERS ──
+function form(tc,ib,ibr,ic,bb,bt){
+  tc=tc||'rgba(10,10,10,0.85)';ib=ib||'rgba(10,10,10,0.04)';ibr=ibr||'rgba(10,10,10,0.15)';ic=ic||'rgba(10,10,10,0.85)';bb=bb||'#c8a96e';bt=bt||'#0a0a0a';
+  var is='width:100%;background:'+ib+';border:1px solid '+ibr+';color:'+ic+';font-family:\'DM Sans\',sans-serif;font-size:0.9rem;font-weight:300;padding:14px 18px;outline:none;appearance:none;-webkit-appearance:none;margin-bottom:16px;display:block;';
+  var ls='display:block;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;margin-bottom:8px;';
+  return '<div id="cfi"><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div><label style="'+ls+'">First Name</label><input type="text" placeholder="James" style="'+is+'"></div><div><label style="'+ls+'">Last Name</label><input type="text" placeholder="Cooper" style="'+is+'"></div></div>'+
+    '<label style="'+ls+'">Email</label><input type="email" placeholder="hello@yourbrand.com" style="'+is+'">'+
+    '<label style="'+ls+'">Organisation</label><input type="text" placeholder="Your brand or company" style="'+is+'">'+
+    '<label style="'+ls+'">Message</label><textarea placeholder="Tell us about your brand..." style="'+is+'resize:vertical;min-height:120px;"></textarea>'+
+    '<button onclick="submitForm()" style="width:100%;padding:16px;background:'+bb+';border:none;color:'+bt+';font-family:\'DM Sans\',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">Send Message ↧</button></div>'+
+    '<div id="cfs" style="display:none;text-align:center;padding:60px 0;"><div style="font-size:2.5rem;color:#c8a96e;margin-bottom:16px;">✦</div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.1em;color:'+tc+';margin-bottom:12px;">Message Sent</div><p style="font-size:0.85rem;color:rgba(10,10,10,0.45);line-height:1.7;">We\'ll be in touch within 48 hours.</p></div>';
+}
+window.submitForm=function(){var fi=document.getElementById('cfi');var fs=document.getElementById('cfs');if(fi)fi.style.display='none';if(fs)fs.style.display='block';};
+
+function acc(bc,tc,sc,pc,ic){
+  bc=bc||'rgba(10,10,10,0.12)';tc=tc||'rgba(10,10,10,0.85)';sc=sc||'rgba(10,10,10,0.45)';pc=pc||'rgba(10,10,10,0.6)';ic=ic||'#c8a96e';
+  return PATHS.map(function(p,i){
+    return '<div style="border-bottom:1px solid '+bc+';">'+
+      '<div onclick="tPath(this)" style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;cursor:pointer;">'+
+        '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase;color:'+tc+';transform:skewX(-4deg);transform-origin:left;">'+p.t+'</div>'+
+        '<div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:'+sc+';margin-top:4px;">'+p.s+'</div></div>'+
+        '<span style="font-size:1.4rem;color:'+ic+';flex-shrink:0;transition:transform 0.3s;" class="pi">'+(i===0?'−':p.i)+'</span>'+
+      '</div>'+
+      '<div class="pb" style="overflow:hidden;transition:max-height 0.4s ease,opacity 0.3s,padding 0.3s;'+(i===0?'max-height:200px;opacity:1;padding-bottom:24px;':'max-height:0;opacity:0;')+'">'+
+        '<p style="font-size:0.88rem;line-height:1.75;color:'+pc+';">'+p.b+'</p>'+
+        '<a href="#" style="display:inline-block;margin-top:12px;font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:'+ic+';border:0.5px solid '+ic+';opacity:0.6;padding:6px 14px;text-decoration:none;">'+p.d+'</a>'+
+      '</div></div>';
+  }).join('');
+}
+window.tPath=function(el){
+  var b=el.nextElementSibling;var ic=el.querySelector('.pi');
+  var isOpen=b.style.maxHeight!=='0px'&&b.style.maxHeight!=='';
+  document.querySelectorAll('.pb').forEach(function(x){x.style.maxHeight='0';x.style.opacity='0';x.style.paddingBottom='0';});
+  document.querySelectorAll('.pi').forEach(function(x,i){x.textContent=PATHS[i].i;});
+  if(!isOpen){b.style.maxHeight='200px';b.style.opacity='1';b.style.paddingBottom='24px';ic.textContent='−';}
+};
+
+function offices(bg,hc,tc){
+  bg=bg||'#ede8e0';hc=hc||'#0a0a0a';tc=tc||'rgba(10,10,10,0.5)';
+  return '<div style="background:'+bg+';padding:80px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:48px;border-top:1px solid rgba(200,169,110,0.1);">'+
+    OFFICES.map(function(o){return '<div>'+
+      '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:12px;">'+o.country+'</span>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;color:'+hc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:8px;">'+o.city+'</div>'+
+      '<address style="font-style:normal;font-size:0.78rem;line-height:1.8;color:'+tc+';">'+o.addr+'</address>'+
+    '</div>';}).join('')+'</div>';
+}
+
+function pathCards(bg,icon_c,title_c,sub_c,body_c){
+  return '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,169,110,0.08);">'+
+    PATHS.map(function(p){return '<div style="background:'+bg+';padding:40px 28px;">'+
+      '<div style="font-size:1.8rem;color:'+icon_c+';margin-bottom:16px;">'+p.i+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:'+title_c+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:'+sub_c+';margin-bottom:12px;">'+p.s+'</div>'+
+      '<p style="font-size:0.75rem;line-height:1.7;color:'+body_c+';">'+p.b+'</p>'+
+    '</div>';}).join('')+'</div>';
+}
+
+function setBody(bg,tc,navMode){
+  document.body.style.background=bg;document.body.style.color=tc;
+  var lf=(navMode==='light')?'rgba(10,10,10,0.75)':'rgba(244,241,236,0.85)';
+  document.querySelectorAll('.nav-logo svg text').forEach(function(t){t.setAttribute('fill',lf);});
+  var dark=navMode!=='light';
+  document.querySelectorAll('.nbtn').forEach(function(b){b.style.borderColor=dark?'rgba(244,241,236,0.25)':'rgba(10,10,10,0.25)';b.style.color=dark?'rgba(244,241,236,0.4)':'rgba(10,10,10,0.5)';});
+  document.querySelectorAll('.nav-toggle span').forEach(function(s){s.style.background=dark?'rgba(244,241,236,0.7)':'rgba(10,10,10,0.6)';});
+  var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
+  if(navMode==='light') st.textContent='nav::before{background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%)!important;}';
+  else if(navMode==='navy') st.textContent='nav::before{background:linear-gradient(to bottom,rgba(14,20,40,0.97) 0%,transparent 100%)!important;}';
+  else if(navMode==='gold') st.textContent='nav::before{background:linear-gradient(to bottom,rgba(200,169,110,0.97) 0%,transparent 100%)!important;}';
+  else if(navMode==='charcoal') st.textContent='nav::before{background:linear-gradient(to bottom,rgba(40,43,51,0.97) 0%,transparent 100%)!important;}';
+  else if(navMode==='bronze') st.textContent='nav::before{background:linear-gradient(to bottom,rgba(28,26,20,0.97) 0%,transparent 100%)!important;}';
+  else st.textContent='nav::before{background:linear-gradient(to bottom,rgba(10,10,10,0.95) 0%,transparent 100%)!important;}';
+}
+
+// ── VARIANTS ──
+var V={
+  // 0: Original — cream 2-col accordion/form + offices
+  0:function(){
+    setBody('#ede8e0','#0a0a0a','light');
+    return hero('light','Get In Touch','Contact','We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.')+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:80px 48px;align-items:start;">'+
+      '<div>'+acc()+'</div>'+
+      '<div>'+fmHead('rgba(10,10,10,0.85)','Send a message','Fill in the form and we\'ll get back to you within 48 hours.')+form()+'</div>'+
+    '</div>'+offices('#ede8e0','#0a0a0a','rgba(10,10,10,0.5)');
+  },
+  // 1: Cream Alt — huge ghost headline, 4-col path cards, form below
+  1:function(){
+    setBody('#ede8e0','#0a0a0a','light');
+    return '<div style="padding:180px 48px 0;border-bottom:2px solid rgba(200,169,110,0.3);">'+
+      '<div style="display:grid;grid-template-columns:2fr 1fr;gap:48px;align-items:end;">'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,18rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.05);transform:skewX(-4deg);transform-origin:left;line-height:0.85;-webkit-text-stroke:0.5px rgba(10,10,10,0.08);padding-bottom:48px;">Contact</h1>'+
+        '<div style="padding-bottom:48px;"><span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;">Get In Touch</span><p style="font-size:0.88rem;line-height:1.8;color:rgba(10,10,10,0.5);">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p></div>'+
+      '</div>'+
+    '</div>'+
+    pathCards('#ede8e0','rgba(200,169,110,0.3)','#0a0a0a','#8a6e3a','rgba(10,10,10,0.5)')+
+    '<div style="padding:80px 48px;"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.08em;margin-bottom:32px;color:#0a0a0a;">Send a Message</h2><div style="max-width:640px;">'+form()+'</div></div>'+
+    offices('#ede8e0','#0a0a0a','rgba(10,10,10,0.5)');
+  },
+  // 2: Foundry Dark — black, massive hero, gold path cards grid
+  2:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="padding:200px 48px 80px;border-bottom:1px solid rgba(200,169,110,0.15);position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(200,169,110,0.025) 19px,rgba(200,169,110,0.025) 20px);pointer-events:none;"></div>'+
+      '<div style="position:relative;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">⌀ Get In Touch</span>'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,15vw,18rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(244,241,236,0.05);transform:skewX(-4deg);transform-origin:left;line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.15);">Contact</h1>'+
+        '<p style="font-size:0.85rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+      '</div></div>'+
+    pathCards('#0a0a0a','rgba(200,169,110,0.35)','#c8a96e','rgba(200,169,110,0.4)','rgba(244,241,236,0.35)')+
+    '<div style="padding:80px 48px;"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.08em;margin-bottom:32px;color:#f4f1ec;">Send a Message</h2><div style="max-width:640px;">'+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div></div>'+
+    offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 3: Blueprint — navy grid, spec rows, terminal form
+  3:function(){
+    setBody('#0d1117','#f4f1ec','navy');
+    return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid rgba(0,180,216,0.2);position:relative;">'+
+      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(0,180,216,0.04) 39px,rgba(0,180,216,0.04) 40px);pointer-events:none;"></div>'+
+      '<div style="position:relative;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(0,180,216,0.5);display:block;margin-bottom:24px;">∠ Inquiry Specification / Rev.2026</span>'+
+        '<h1 style="font-family:\'DM Sans\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.7);font-weight:300;">Get In Touch</h1>'+
+        '<p style="font-family:\'Courier New\',monospace;font-size:0.72rem;color:rgba(0,180,216,0.4);margin-top:16px;">// SELECT path FROM inquiry_types WHERE fit=true;</p>'+
+      '</div></div>'+
+    '<div style="padding:0 48px;">'+
+    PATHS.map(function(p,i){return '<div style="display:grid;grid-template-columns:80px 40px 1fr 1fr;border-bottom:0.5px solid rgba(0,180,216,0.08);padding:40px 0;gap:0;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(0,180,216,0.3);padding-top:4px;">'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-size:1.5rem;color:rgba(0,180,216,0.4);">'+p.i+'</div>'+
+      '<div style="border-left:0.5px solid rgba(0,180,216,0.15);padding-left:24px;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.08em;color:rgba(0,180,216,0.8);margin-bottom:4px;">'+p.t+'</div>'+
+        '<div style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(0,180,216,0.35);">'+p.s+'</div>'+
+      '</div>'+
+      '<div style="border-left:0.5px solid rgba(0,180,216,0.08);padding-left:24px;"><p style="font-family:\'Courier New\',monospace;font-size:0.68rem;line-height:1.75;color:rgba(244,241,236,0.3);">'+p.b+'</p></div>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="border:0.5px solid rgba(0,180,216,0.15);border-top:1px solid rgba(0,180,216,0.4);margin:48px;padding:64px;">'+
+      '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:rgba(0,180,216,0.35);display:block;margin-bottom:24px;">// INSERT INTO inquiries (name, email, org, message)</span>'+
+      form('rgba(0,180,216,0.7)','rgba(0,180,216,0.04)','rgba(0,180,216,0.2)','rgba(244,241,236,0.7)','rgba(0,180,216,0.15)','rgba(0,180,216,0.8)')+
+    '</div>'+offices('#0d1117','rgba(0,180,216,0.7)','rgba(0,180,216,0.35)');
+  },
+  // 4: Brutalist — zero padding, massive type, raw grid
+  4:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="padding:180px 0 0;overflow:hidden;">'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(6rem,18vw,22rem);letter-spacing:-0.02em;text-transform:uppercase;color:#f4f1ec;line-height:0.82;padding:0 24px;transform:skewX(-4deg);transform-origin:left;border-bottom:4px solid #f4f1ec;">Contact</h1>'+
+      '<p style="font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.35);padding:24px;border-bottom:1px solid rgba(244,241,236,0.1);">We work with a select number of partners each year — brand DNA worth industrialising</p>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#222;padding:4px;">'+
+    PATHS.map(function(p){return '<div style="background:#0a0a0a;padding:40px 32px;">'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:3rem;color:rgba(200,169,110,0.12);line-height:1;margin-bottom:16px;transform:skewX(-4deg);">'+p.i+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.04em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+      '<div style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.3);margin-bottom:12px;">'+p.s+'</div>'+
+      '<p style="font-size:0.78rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+p.b+'</p>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="background:#f4f1ec;padding:64px 48px;border-top:4px solid #0a0a0a;">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:3rem;letter-spacing:0.04em;color:#0a0a0a;margin-bottom:32px;">Send a Message</h2>'+
+      form('rgba(10,10,10,0.85)','rgba(10,10,10,0.05)','rgba(10,10,10,0.15)','rgba(10,10,10,0.85)','#0a0a0a','#f4f1ec')+
+    '</div>'+offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 5: Gold Rush — full gold, single word hero, simple list paths
+  5:function(){
+    setBody('#c8a96e','#0a0a0a','gold');
+    return '<div style="min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:180px 48px 80px;text-align:center;border-bottom:1px solid rgba(10,10,10,0.12);">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(10,10,10,0.4);display:block;margin-bottom:32px;">Silent Foundry</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,22vw,30rem);letter-spacing:0.04em;text-transform:uppercase;color:rgba(10,10,10,0.06);transform:skewX(-4deg);line-height:0.85;">Contact</h1>'+
+      '<p style="font-size:0.85rem;color:rgba(10,10,10,0.5);margin-top:32px;max-width:480px;line-height:1.8;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+    '</div>'+
+    '<div style="padding:0 48px;background:#c8a96e;">'+
+    PATHS.map(function(p,i){return '<div style="display:flex;justify-content:space-between;align-items:center;padding:28px 0;border-bottom:0.5px solid rgba(10,10,10,0.12);">'+
+      '<div style="display:flex;align-items:center;gap:24px;"><span style="font-size:1.2rem;color:rgba(10,10,10,0.25);">'+p.i+'</span><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.5rem,3vw,2.5rem);letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;">'+p.t+'</div></div>'+
+      '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.4);">'+p.s+'</div>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="background:#0a0a0a;padding:80px 48px;"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.08em;margin-bottom:32px;color:#c8a96e;">Send a Message</h2><div style="max-width:640px;">'+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div></div>'+
+    offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 6: Ghost — near white, watermark type, barely visible
+  6:function(){
+    setBody('#f4f1ec','rgba(10,10,10,0.2)','light');
+    return '<div style="padding:200px 48px 80px;position:relative;overflow:hidden;border-bottom:0.5px solid rgba(10,10,10,0.06);">'+
+      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;pointer-events:none;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:35vw;color:rgba(10,10,10,0.025);transform:skewX(-4deg);white-space:nowrap;">CONTACT</div></div>'+
+      '<div style="position:relative;"><span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:rgba(200,169,110,0.3);display:block;margin-bottom:32px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.1em;color:rgba(10,10,10,0.07);-webkit-text-stroke:0.5px rgba(10,10,10,0.1);">Silent Foundry Contact</h1>'+
+      '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.18);max-width:480px;margin-top:24px;">We work with a select number of partners each year.</p></div></div>'+
+    pathCards('#f4f1ec','rgba(200,169,110,0.2)','rgba(10,10,10,0.12)','rgba(200,169,110,0.25)','rgba(10,10,10,0.14)')+
+    '<div style="padding:80px 48px;border-top:0.5px solid rgba(10,10,10,0.06);"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.08em;color:rgba(10,10,10,0.15);margin-bottom:24px;">Send a Message</h2><div style="max-width:600px;">'+form('rgba(10,10,10,0.2)','rgba(10,10,10,0.03)','rgba(10,10,10,0.08)','rgba(10,10,10,0.3)','rgba(10,10,10,0.08)','rgba(10,10,10,0.3)')+'</div></div>';
+  },
+  // 7: Shanghai Night — navy/purple, horizontal path scroll, split form
+  7:function(){
+    setBody('#1e2a4a','#f4f1ec','navy');
+    return '<div style="padding:180px 48px 80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;border-bottom:0.5px solid rgba(200,169,110,0.15);background:linear-gradient(135deg,#1e2a4a 0%,#2c1e4a 100%);">'+
+      '<div><span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⊕ Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,8vw,10rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">Contact</h1></div>'+
+      '<div style="padding-bottom:16px;"><p style="font-size:0.9rem;line-height:1.9;color:rgba(244,241,236,0.4);border-left:2px solid rgba(200,169,110,0.3);padding-left:24px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p></div>'+
+    '</div>'+
+    '<div style="overflow-x:auto;display:flex;gap:1px;background:rgba(200,169,110,0.08);">'+
+    PATHS.map(function(p){return '<div style="flex:0 0 320px;background:linear-gradient(135deg,#1e2a4a,#2c1e4a);padding:48px 32px;border-right:0.5px solid rgba(200,169,110,0.1);">'+
+      '<div style="font-size:2rem;color:rgba(200,169,110,0.3);margin-bottom:20px;">'+p.i+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+      '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-bottom:16px;">'+p.s+'</div>'+
+      '<p style="font-size:0.78rem;line-height:1.7;color:rgba(244,241,236,0.3);">'+p.b+'</p>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="padding:80px 48px;background:linear-gradient(135deg,#1e2a4a,#2c1e4a);">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.08em;margin-bottom:32px;color:#c8a96e;">Send a Message</h2><div style="max-width:640px;">'+form('rgba(244,241,236,0.7)','rgba(244,241,236,0.04)','rgba(200,169,110,0.2)','rgba(244,241,236,0.7)','#c8a96e','#0a0a0a')+'</div></div>'+
+    offices('linear-gradient(135deg,#1e2a4a,#2c1e4a)','#c8a96e','rgba(244,241,236,0.35)');
+  },
+  // 8: Newspaper — cream, DM Serif, 3-col editorial, small path list
+  8:function(){
+    setBody('#ede8e0','#0a0a0a','light');
+    return '<div style="padding:180px 48px 40px;border-bottom:3px solid #0a0a0a;">'+
+      '<div style="display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr;gap:32px;align-items:start;">'+
+        '<div><span style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:0.82rem;color:#8a6e3a;display:block;margin-bottom:16px;">Get In Touch</span>'+
+          '<h1 style="font-family:\'DM Serif Display\',serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:-0.01em;color:#0a0a0a;line-height:1.05;"><em style="color:#c8a96e;">Con</em>tact</h1></div>'+
+        '<div style="background:#0a0a0a;align-self:stretch;"></div>'+
+        '<div style="padding-top:8px;">'+acc('rgba(10,10,10,0.1)','rgba(10,10,10,0.85)','#8a6e3a','rgba(10,10,10,0.55)','#c8a96e')+'</div>'+
+        '<div style="background:#0a0a0a;align-self:stretch;"></div>'+
+        '<div style="padding-top:8px;"><p style="font-size:0.88rem;line-height:1.9;color:rgba(10,10,10,0.5);font-family:\'DM Serif Display\',serif;margin-bottom:24px;">We work with a select number of partners each year.</p>'+form()+'</div>'+
+      '</div></div>'+
+    offices('#ede8e0','#0a0a0a','rgba(10,10,10,0.5)');
+  },
+  // 9: Machine — terminal readout, Courier, all paths as code rows
+  9:function(){
+    setBody('#0a0a0a','rgba(200,169,110,0.7)','dark');
+    return '<div style="padding:180px 48px 60px;border-bottom:1px solid rgba(200,169,110,0.15);">'+
+      '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.35);display:block;margin-bottom:8px;">// SILENT FOUNDRY INQUIRY INTERFACE v2.6</span>'+
+      '<span style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.35);display:block;margin-bottom:32px;">// STATUS: ACCEPTING_INQUIRIES | RESPONSE_TIME: 48H</span>'+
+      '<h1 style="font-family:\'Courier New\',monospace;font-size:clamp(1.5rem,3vw,3.5rem);color:#c8a96e;font-weight:400;letter-spacing:0.08em;">CONTACT<span style="animation:blink 1s step-end infinite;">_</span></h1>'+
+    '</div>'+
+    '<div style="padding:0 48px;">'+
+    PATHS.map(function(p,i){return '<div style="border-bottom:0.5px solid rgba(200,169,110,0.1);padding:32px 0;display:grid;grid-template-columns:48px 32px 1fr 1fr;gap:24px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.65rem;color:rgba(200,169,110,0.3);padding-top:4px;">['+('0'+(i+1)).slice(-2)+']</div>'+
+      '<div style="font-size:1.2rem;color:rgba(200,169,110,0.35);">'+p.i+'</div>'+
+      '<div><div style="font-family:\'Courier New\',monospace;font-size:0.82rem;color:#c8a96e;letter-spacing:0.08em;">'+p.t.toUpperCase()+'</div><div style="font-family:\'Courier New\',monospace;font-size:0.58rem;color:rgba(200,169,110,0.35);margin-top:4px;">'+p.s.toUpperCase()+'</div></div>'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.68rem;line-height:1.8;color:rgba(200,169,110,0.3);">'+p.b+'</div>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="margin:48px;border:0.5px solid rgba(200,169,110,0.15);border-top:1px solid rgba(200,169,110,0.4);padding:48px;">'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.55rem;color:rgba(200,169,110,0.3);margin-bottom:24px;">// INSERT INTO inquiries VALUES (name, email, org, message)</div>'+
+      form('rgba(200,169,110,0.7)','rgba(200,169,110,0.04)','rgba(200,169,110,0.15)','rgba(200,169,110,0.7)','rgba(200,169,110,0.12)','rgba(200,169,110,0.8)')+
+    '</div>';
+  },
+  // 10: Label-as-Hero — label blown to 10vw, form+acc side by side
+  10:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="min-height:60vh;display:flex;flex-direction:column;justify-content:flex-end;padding:180px 48px 80px;border-bottom:1px solid rgba(200,169,110,0.12);position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(200,169,110,0.02) 19px,rgba(200,169,110,0.02) 20px);pointer-events:none;"></div>'+
+      '<div style="position:relative;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,12vw,16rem);letter-spacing:0.32em;text-transform:uppercase;color:rgba(200,169,110,0.04);transform:skewX(-4deg);transform-origin:left;line-height:0.9;-webkit-text-stroke:0.5px rgba(200,169,110,0.06);">Get In Touch</div>'+
+        '<div style="margin-top:48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;">'+
+          '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2rem,4vw,5rem);letter-spacing:0.1em;text-transform:uppercase;color:#f4f1ec;">Contact</h1>'+
+          '<p style="font-size:0.88rem;line-height:1.9;color:rgba(244,241,236,0.35);align-self:end;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:80px 48px;">'+
+      '<div>'+acc('rgba(244,241,236,0.1)','rgba(244,241,236,0.85)','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)','#c8a96e')+'</div>'+
+      '<div>'+fmHead('#f4f1ec','Send a Message','Fill in the form and we\'ll get back to you within 48 hours.')+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div>'+
+    '</div>'+offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 11: Inversion — alternating dark/cream sections
+  11:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="background:#ede8e0;padding:180px 48px 80px;color:#0a0a0a;border-bottom:none;">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:20px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.06em;text-transform:uppercase;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">Contact</h1>'+
+      '<p style="font-size:0.9rem;line-height:1.8;color:rgba(10,10,10,0.55);max-width:560px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+    '</div>'+
+    '<div style="background:#0a0a0a;padding:80px 48px;">'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(200,169,110,0.1);">'+
+        PATHS.map(function(p){return '<div style="background:#0a0a0a;padding:40px;border:0.5px solid rgba(200,169,110,0.08);">'+
+          '<div style="font-size:1.5rem;color:rgba(200,169,110,0.3);margin-bottom:16px;">'+p.i+'</div>'+
+          '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+p.t+'</div>'+
+          '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.35);margin-bottom:12px;">'+p.s+'</div>'+
+          '<p style="font-size:0.78rem;line-height:1.7;color:rgba(244,241,236,0.35);">'+p.b+'</p>'+
+        '</div>';}).join('')+
+      '</div>'+
+    '</div>'+
+    '<div style="background:#ede8e0;padding:80px 48px;color:#0a0a0a;">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.06em;margin-bottom:32px;color:#0a0a0a;">Send a Message</h2>'+
+      '<div style="max-width:640px;">'+form()+'</div>'+
+    '</div>'+offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 12: Charcoal — left gold border, accordion, indented form
+  12:function(){
+    setBody('#282b33','#f4f1ec','charcoal');
+    return '<div style="padding:180px 0 60px 0;border-left:4px solid #c8a96e;margin-left:48px;padding-left:48px;">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.08em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.9;margin-bottom:24px;">Contact</h1>'+
+      '<p style="font-size:0.9rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+    '</div>'+
+    '<div style="margin-left:48px;border-left:4px solid rgba(200,169,110,0.15);padding-left:48px;">'+
+      acc('rgba(200,169,110,0.1)','rgba(244,241,236,0.85)','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)','#c8a96e')+
+    '</div>'+
+    '<div style="margin:48px 48px 48px 100px;border-left:4px solid rgba(200,169,110,0.15);padding-left:48px;">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;margin-bottom:24px;color:#c8a96e;">Send a Message</h2>'+
+      form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(200,169,110,0.15)','rgba(244,241,236,0.7)','#c8a96e','#282b33')+
+    '</div>'+offices('#282b33','#c8a96e','rgba(244,241,236,0.35)');
+  },
+  // 13: White Heat — cream, DM Serif italic hero, 4-col paths
+  13:function(){
+    setBody('#ede8e0','#0a0a0a','light');
+    return '<div style="padding:180px 48px 60px;border-bottom:0.5px solid #c8a96e;">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:32px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'DM Serif Display\',serif;font-size:clamp(4rem,10vw,14rem);font-style:italic;letter-spacing:-0.01em;color:#0a0a0a;line-height:0.9;margin-bottom:32px;"><em style="color:#c8a96e;">Con</em>tact</h1>'+
+      '<p style="font-size:0.88rem;line-height:1.85;color:rgba(10,10,10,0.45);max-width:480px;font-family:\'DM Serif Display\',serif;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+    '</div>'+
+    pathCards('#ede8e0','rgba(200,169,110,0.3)','#0a0a0a','#8a6e3a','rgba(10,10,10,0.5)')+
+    '<div style="padding:80px 48px;background:#0a0a0a;">'+
+      '<h2 style="font-family:\'DM Serif Display\',serif;font-style:italic;font-size:2rem;margin-bottom:32px;color:#c8a96e;">Send a Message</h2>'+
+      '<div style="max-width:640px;">'+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div>'+
+    '</div>'+offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 14: CAD Texture — full-bleed factory poster hero
+  14:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="min-height:70vh;display:flex;flex-direction:column;justify-content:flex-end;padding:180px 48px 80px;background-image:url(\'cad_texture.jpeg\');background-size:cover;background-position:center;background-attachment:fixed;position:relative;">'+
+      '<div style="position:absolute;inset:0;background:#0a0a0a;opacity:0.88;pointer-events:none;"></div>'+
+      '<div style="position:relative;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:32px;">⌀ Contact / Silent Foundry</span>'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;transform:skewX(-4deg);transform-origin:left;line-height:0.85;">'+
+          '<span style="display:block;font-size:clamp(2rem,5vw,6rem);letter-spacing:0.12em;color:rgba(244,241,236,0.2);">Get In</span>'+
+          '<span style="display:block;font-size:clamp(5rem,12vw,15rem);letter-spacing:0.04em;color:#f4f1ec;">Touch</span>'+
+        '</h1>'+
+        '<p style="font-size:0.82rem;line-height:1.8;color:rgba(244,241,236,0.35);max-width:480px;margin-top:32px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+      '</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:80px 48px;background:#0a0a0a;">'+
+      '<div>'+acc('rgba(244,241,236,0.1)','rgba(244,241,236,0.85)','rgba(200,169,110,0.4)','rgba(244,241,236,0.4)','#c8a96e')+'</div>'+
+      '<div>'+fmHead('#f4f1ec','Send a Message','Fill in the form and we\'ll get back to you within 48 hours.')+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div>'+
+    '</div>'+offices('#0a0a0a','#f4f1ec','rgba(244,241,236,0.4)');
+  },
+  // 15: Split — hard 50/50 dark/cream every row
+  15:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="display:grid;grid-template-columns:1fr 1fr;">'+
+      '<div style="background:#0a0a0a;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">Silent Foundry</span>'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.06em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;">Get In Touch</h1>'+
+      '</div>'+
+      '<div style="background:#ede8e0;padding:180px 48px 80px;display:flex;flex-direction:column;justify-content:flex-end;">'+
+        '<p style="font-size:0.9rem;line-height:1.9;color:rgba(10,10,10,0.55);border-left:3px solid #c8a96e;padding-left:24px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+      '</div>'+
+    '</div>'+
+    PATHS.map(function(p,i){var dk=i%2===0;return '<div style="display:grid;grid-template-columns:1fr 1fr;">'+
+      '<div style="background:'+(dk?'#0a0a0a':'#ede8e0')+';padding:48px;">'+
+        '<div style="font-size:1.8rem;color:'+(dk?'rgba(200,169,110,0.3)':'rgba(10,10,10,0.15)')+';margin-bottom:16px;">'+p.i+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.5rem;letter-spacing:0.06em;color:'+(dk?'#c8a96e':'#0a0a0a')+';transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+        '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(dk?'rgba(200,169,110,0.4)':'#8a6e3a')+';margin-bottom:12px;">'+p.s+'</div>'+
+      '</div>'+
+      '<div style="background:'+(dk?'#ede8e0':'#0a0a0a')+';padding:48px;">'+
+        '<p style="font-size:0.82rem;line-height:1.75;color:'+(dk?'rgba(10,10,10,0.5)':'rgba(244,241,236,0.4)')+';margin-bottom:16px;">'+p.b+'</p>'+
+        '<a href="#" style="font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(dk?'#8a6e3a':'rgba(200,169,110,0.5)')+';text-decoration:none;border-bottom:0.5px solid currentColor;padding-bottom:2px;">'+p.d+'</a>'+
+      '</div>'+
+    '</div>';}).join('')+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;">'+
+      '<div style="background:#c8a96e;padding:80px 48px;">'+
+        '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2.5rem;letter-spacing:0.06em;color:#0a0a0a;margin-bottom:24px;">Send a Message</h2>'+
+        form('rgba(10,10,10,0.85)','rgba(10,10,10,0.06)','rgba(10,10,10,0.15)','rgba(10,10,10,0.85)','#0a0a0a','#f4f1ec')+
+      '</div>'+
+      '<div style="background:#0a0a0a;padding:80px 48px;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:#c8a96e;display:block;margin-bottom:24px;">Our Offices</span>'+
+        OFFICES.map(function(o){return '<div style="margin-bottom:28px;"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+o.city+'</div><div style="font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;margin-bottom:6px;">'+o.country+'</div><address style="font-style:normal;font-size:0.75rem;line-height:1.8;color:rgba(244,241,236,0.35);">'+o.addr+'</address></div>';}).join('')+
+      '</div>'+
+    '</div>';
+  },
+  // 16: Gold Engineering Annotation — hairlines, dimension callouts
+  16:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="padding:180px 48px 80px;position:relative;border-bottom:none;">'+
+      '<div style="position:absolute;top:140px;left:48px;right:48px;height:0.5px;background:rgba(200,169,110,0.3);"></div>'+
+      '<div style="position:absolute;top:140px;left:48px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.35);transform:translateY(-100%);padding-bottom:4px;">↕ 140px</div>'+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.5);display:block;margin-bottom:24px;position:relative;">⌀ Contact Specification</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;line-height:0.88;position:relative;">Get In Touch</h1>'+
+      '<div style="position:absolute;right:48px;top:50%;transform:translateY(-50%);text-align:right;"><div style="font-family:\'Courier New\',monospace;font-size:0.52rem;color:rgba(200,169,110,0.3);line-height:2;">↔ 4 Inquiry Paths<br>↕ 48h Response Time<br>∠ Limited Partners / Year<br>⌀ Cross-border Focus</div></div>'+
+    '</div>'+
+    '<div style="position:relative;">'+
+      '<div style="position:absolute;left:0;top:0;bottom:0;width:0.5px;background:rgba(200,169,110,0.15);"></div>'+
+      PATHS.map(function(p,i){return '<div style="display:grid;grid-template-columns:80px 1fr;border-bottom:0.5px solid rgba(200,169,110,0.08);">'+
+        '<div style="padding:32px 24px;border-right:0.5px solid rgba(200,169,110,0.08);display:flex;align-items:flex-start;justify-content:center;padding-top:36px;"><div style="font-family:\'Courier New\',monospace;font-size:0.55rem;color:rgba(200,169,110,0.3);writing-mode:vertical-rl;letter-spacing:0.15em;">'+('0'+(i+1)).slice(-2)+'</div></div>'+
+        '<div style="padding:32px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;">'+
+          '<div><div style="font-size:1.5rem;color:rgba(200,169,110,0.3);margin-bottom:12px;">'+p.i+'</div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:4px;">'+p.t+'</div><div style="font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,169,110,0.35);">'+p.s+'</div></div>'+
+          '<div><p style="font-size:0.8rem;line-height:1.8;color:rgba(244,241,236,0.35);">'+p.b+'</p></div>'+
+        '</div>'+
+      '</div>';}).join('')+
+    '</div>'+
+    '<div style="border:0.5px solid rgba(200,169,110,0.2);border-top:1px solid #c8a96e;margin:48px;padding:64px;position:relative;">'+
+      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;">∠ SUBMIT INQUIRY</div>'+
+      form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(200,169,110,0.15)','rgba(244,241,236,0.7)','#c8a96e','#0a0a0a')+
+    '</div>';
+  },
+  // 17: Trace — outline only, all text stroked, ghost form
+  17:function(){
+    setBody('#0d1117','rgba(200,169,110,0.5)','navy');
+    return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.08);">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.25);display:block;margin-bottom:32px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,11vw,14rem);letter-spacing:0.06em;text-transform:uppercase;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.2);transform:skewX(-4deg);transform-origin:left;line-height:0.85;">Contact</h1>'+
+      '<p style="font-size:0.82rem;line-height:1.8;color:rgba(200,169,110,0.2);max-width:480px;margin-top:32px;">We work with a select number of partners each year. If you have brand DNA worth industrialising.</p>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">'+
+    PATHS.map(function(p){return '<div style="border:0.5px solid rgba(200,169,110,0.06);padding:40px 32px;">'+
+      '<div style="font-size:1.5rem;color:rgba(200,169,110,0.2);margin-bottom:20px;">'+p.i+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.1rem;letter-spacing:0.06em;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.3);margin-bottom:6px;">'+p.t+'</div>'+
+      '<div style="font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.18);margin-bottom:12px;">'+p.s+'</div>'+
+      '<p style="font-size:0.72rem;line-height:1.7;color:rgba(200,169,110,0.18);">'+p.b+'</p>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="margin:48px;border:0.5px solid rgba(200,169,110,0.1);border-top:0.5px solid rgba(200,169,110,0.3);padding:64px;">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;color:transparent;-webkit-text-stroke:0.5px rgba(200,169,110,0.3);margin-bottom:24px;">Send a Message</h2>'+
+      form('rgba(200,169,110,0.4)','rgba(200,169,110,0.03)','rgba(200,169,110,0.12)','rgba(200,169,110,0.5)','rgba(200,169,110,0.08)','rgba(200,169,110,0.5)')+
+    '</div>';
+  },
+  // 18: Stamped — glyph watermark cream, oversized hero, 2-col path grid
+  18:function(){
+    setBody('#ede8e0','#0a0a0a','light');
+    return '<div style="padding:180px 48px 60px;position:relative;overflow:hidden;border-bottom:4px solid #0a0a0a;">'+
+      '<div style="position:absolute;right:-80px;top:-40px;font-family:\'Bebas Neue\',sans-serif;font-size:40vw;color:rgba(10,10,10,0.025);line-height:1;pointer-events:none;transform:skewX(-4deg);">∠</div>'+
+      '<div style="position:relative;">'+
+        '<span style="font-size:0.52rem;letter-spacing:0.4em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:24px;">Get In Touch</span>'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(5rem,14vw,18rem);letter-spacing:0.02em;text-transform:uppercase;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;line-height:0.82;">Contact</h1>'+
+        '<p style="font-size:0.82rem;line-height:1.8;color:rgba(10,10,10,0.45);max-width:480px;margin-top:32px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+      '</div></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">'+
+    PATHS.map(function(p,i){return '<div style="padding:40px 48px;border-bottom:1px solid rgba(10,10,10,0.08);border-right:'+(i%2===0?'1px solid rgba(10,10,10,0.08)':'none')+';position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;right:-8px;bottom:-16px;font-family:\'Bebas Neue\',sans-serif;font-size:6rem;color:rgba(10,10,10,0.025);line-height:1;transform:skewX(-4deg);">'+p.i+'</div>'+
+      '<div style="position:relative;">'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.3rem;letter-spacing:0.06em;color:#0a0a0a;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+        '<div style="font-size:0.55rem;letter-spacing:0.16em;text-transform:uppercase;color:#8a6e3a;margin-bottom:12px;">'+p.s+'</div>'+
+        '<p style="font-size:0.78rem;line-height:1.75;color:rgba(10,10,10,0.5);">'+p.b+'</p>'+
+      '</div></div>';}).join('')+'</div>'+
+    '<div style="background:#0a0a0a;padding:80px 48px;position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;right:-20px;top:-20px;font-family:\'Bebas Neue\',sans-serif;font-size:18rem;color:rgba(200,169,110,0.025);line-height:1;transform:skewX(-4deg);">⌀</div>'+
+      '<div style="position:relative;"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.06em;margin-bottom:32px;color:#c8a96e;">Send a Message</h2>'+
+      '<div style="max-width:640px;">'+form('rgba(244,241,236,0.85)','rgba(244,241,236,0.04)','rgba(244,241,236,0.12)','rgba(244,241,236,0.85)','#c8a96e','#0a0a0a')+'</div></div>'+
+    '</div>'+offices('#ede8e0','#0a0a0a','rgba(10,10,10,0.5)');
+  },
+  // 19: Wire — schematic gold hairline boxes
+  19:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="margin:120px 48px 0;border:0.5px solid rgba(200,169,110,0.25);padding:64px;position:relative;">'+
+      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;letter-spacing:0.15em;">SF/CONTACT/2026</div>'+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;border-bottom:0.5px solid rgba(200,169,110,0.15);padding-bottom:16px;">Get In Touch — Inquiry Interface</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,7vw,9rem);letter-spacing:0.08em;color:rgba(244,241,236,0.7);-webkit-text-stroke:0.5px rgba(200,169,110,0.2);transform:skewX(-4deg);transform-origin:left;">Contact</h1>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0 48px;border:0.5px solid rgba(200,169,110,0.15);border-top:none;">'+
+    PATHS.map(function(p,i){return '<div style="border-right:'+(i<3?'0.5px solid rgba(200,169,110,0.1)':'none')+';padding:32px;position:relative;">'+
+      '<div style="position:absolute;top:0;left:0;right:0;height:1px;background:rgba(200,169,110,0.2);"></div>'+
+      '<div style="font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.25);margin-bottom:12px;">PATH_'+('0'+(i+1)).slice(-2)+'</div>'+
+      '<div style="font-size:1.2rem;color:rgba(200,169,110,0.2);margin-bottom:12px;">'+p.i+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1rem;letter-spacing:0.06em;color:rgba(244,241,236,0.6);-webkit-text-stroke:0.3px rgba(200,169,110,0.2);margin-bottom:4px;">'+p.t+'</div>'+
+      '<div style="font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(200,169,110,0.25);margin-bottom:12px;">'+p.s+'</div>'+
+      '<p style="font-size:0.68rem;line-height:1.7;color:rgba(244,241,236,0.2);font-family:\'Courier New\',monospace;">'+p.b.substring(0,80)+'...</p>'+
+    '</div>';}).join('')+'</div>'+
+    '<div style="margin:0 48px 48px;border:0.5px solid rgba(200,169,110,0.2);border-top:1px solid rgba(200,169,110,0.4);padding:48px;position:relative;">'+
+      '<div style="position:absolute;top:-1px;left:24px;font-family:\'Courier New\',monospace;font-size:0.45rem;color:rgba(200,169,110,0.4);background:#0a0a0a;padding:0 8px;">∠ SUBMIT_INQUIRY</div>'+
+      form('rgba(244,241,236,0.7)','rgba(244,241,236,0.03)','rgba(200,169,110,0.12)','rgba(244,241,236,0.6)','rgba(200,169,110,0.1)','rgba(200,169,110,0.6)')+
+    '</div>';
+  },
+  // 20: Frequency — scan lines, ticker, data display
+  20:function(){
+    setBody('#0a0a0a','#f4f1ec','dark');
+    return '<div style="padding:180px 48px 80px;position:relative;overflow:hidden;border-bottom:1px solid rgba(200,169,110,0.08);">'+
+      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.02) 3px,rgba(200,169,110,0.02) 4px);pointer-events:none;z-index:0;"></div>'+
+      '<div style="position:relative;z-index:1;">'+
+        '<span style="font-family:\'Courier New\',monospace;font-size:0.52rem;letter-spacing:0.2em;color:rgba(200,169,110,0.35);display:block;margin-bottom:16px;">SFG // CONTACT // 2026 ▌</span>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(8rem,20vw,26rem);letter-spacing:0.02em;color:rgba(200,169,110,0.04);line-height:0.85;-webkit-text-stroke:0.5px rgba(200,169,110,0.08);">04</div>'+
+        '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:0.1em;text-transform:uppercase;color:#f4f1ec;transform:skewX(-4deg);transform-origin:left;margin-top:-40px;position:relative;">Inquiry Paths</h1>'+
+      '</div></div>'+
+    '<div style="background:rgba(200,169,110,0.04);border-top:0.5px solid rgba(200,169,110,0.1);border-bottom:0.5px solid rgba(200,169,110,0.1);overflow:hidden;padding:10px 0;">'+
+      '<div style="display:flex;white-space:nowrap;animation:marquee 20s linear infinite;">'+
+        [1,2].map(function(){return PATHS.map(function(p){return '<span style="font-family:\'Courier New\',monospace;font-size:0.62rem;letter-spacing:0.15em;color:rgba(200,169,110,0.35);padding:0 40px;">'+p.t.toUpperCase()+' '+p.i+' </span>';}).join('');}).join('')+
+      '</div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:80px 48px;position:relative;">'+
+      '<div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(200,169,110,0.01) 3px,rgba(200,169,110,0.01) 4px);pointer-events:none;"></div>'+
+      '<div style="position:relative;">'+acc('rgba(200,169,110,0.1)','rgba(244,241,236,0.7)','rgba(200,169,110,0.35)','rgba(244,241,236,0.35)','#c8a96e')+'</div>'+
+      '<div style="position:relative;"><h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:1.8rem;letter-spacing:0.06em;margin-bottom:24px;color:#c8a96e;text-shadow:0 0 20px rgba(200,169,110,0.2);">Send a Message</h2>'+form('rgba(244,241,236,0.7)','rgba(244,241,236,0.03)','rgba(200,169,110,0.15)','rgba(244,241,236,0.6)','rgba(200,169,110,0.12)','rgba(200,169,110,0.7)')+'</div>'+
+    '</div>';
+  },
+  // 21: Value Card Expand — click-reveal path cards, bronze archive bg
+  21:function(){
+    setBody('#1c1a14','#c8a96e','bronze');
+    return '<div style="padding:180px 48px 80px;border-bottom:0.5px solid rgba(200,169,110,0.15);">'+
+      '<span style="font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,169,110,0.4);display:block;margin-bottom:24px;">Get In Touch</span>'+
+      '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(4rem,9vw,11rem);letter-spacing:0.06em;text-transform:uppercase;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;line-height:0.88;margin-bottom:24px;">Contact</h1>'+
+      '<p style="font-size:0.88rem;line-height:1.8;color:rgba(200,169,110,0.4);max-width:480px;">We work with a select number of partners each year. If you have brand DNA worth industrialising — let\'s talk.</p>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(200,169,110,0.08);">'+
+    PATHS.map(function(p,i){return '<div onclick="tValCard(this)" style="background:#1c1a14;cursor:pointer;border:0.5px solid rgba(200,169,110,0.08);transition:background 0.3s;" onmouseover="if(!this.classList.contains(\'vc-open\'))this.style.background=\'rgba(200,169,110,0.04)\'" onmouseout="if(!this.classList.contains(\'vc-open\'))this.style.background=\'#1c1a14\'">'+
+      '<div style="padding:48px 32px;border-bottom:0.5px solid rgba(200,169,110,0.08);">'+
+        '<div style="font-size:2rem;color:rgba(200,169,110,0.3);margin-bottom:20px;">'+p.i+'</div>'+
+        '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.2rem;letter-spacing:0.06em;color:#c8a96e;transform:skewX(-4deg);transform-origin:left;margin-bottom:6px;">'+p.t+'</div>'+
+        '<div style="font-size:0.52rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(200,169,110,0.35);">'+p.s+'</div>'+
+      '</div>'+
+      '<div class="vcb" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease,opacity 0.4s;opacity:0;">'+
+        '<div style="padding:24px 32px;">'+
+          '<p style="font-size:0.78rem;line-height:1.75;color:rgba(200,169,110,0.45);">'+p.b+'</p>'+
+          '<a href="#" style="display:inline-block;margin-top:12px;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(200,169,110,0.5);border:0.5px solid rgba(200,169,110,0.2);padding:6px 12px;text-decoration:none;font-family:\'DM Sans\',sans-serif;">'+p.d+'</a>'+
+        '</div>'+
+      '</div>'+
+    '</div>';}).join('')+'</div>'+
+    '<script>window.tValCard=function(el){var b=el.querySelector(\'.vcb\');var isOpen=el.classList.contains(\'vc-open\');document.querySelectorAll(\'.vcb\').forEach(function(x){x.style.maxHeight=\'0\';x.style.opacity=\'0\';x.parentElement.classList.remove(\'vc-open\');x.parentElement.style.background=\'#1c1a14\';});if(!isOpen){b.style.maxHeight=\'200px\';b.style.opacity=\'1\';el.classList.add(\'vc-open\');el.style.background=\'rgba(200,169,110,0.06)\';}};<\/script>'+
+    '<div style="padding:80px 48px;background:rgba(200,169,110,0.04);border-top:0.5px solid rgba(200,169,110,0.1);">'+
+      '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:2rem;letter-spacing:0.06em;margin-bottom:32px;color:#c8a96e;">Send a Message</h2>'+
+      '<div style="max-width:640px;">'+form('rgba(200,169,110,0.7)','rgba(200,169,110,0.04)','rgba(200,169,110,0.15)','rgba(200,169,110,0.7)','rgba(200,169,110,0.12)','rgba(200,169,110,0.7)')+'</div>'+
+    '</div>'+offices('#1c1a14','#c8a96e','rgba(200,169,110,0.35)');
+  }
+};
+
+// ── SHARED HERO ──
+function hero(navMode,label,h1,sub){
+  var light=navMode==='light';
+  var tc=light?'rgba(10,10,10,0.82)':'rgba(244,241,236,0.88)';
+  var lc=light?'#8a6e3a':'rgba(200,169,110,0.5)';
+  var pc=light?'rgba(10,10,10,0.55)':'rgba(244,241,236,0.45)';
+  var bc=light?'rgba(10,10,10,0.1)':'rgba(200,169,110,0.15)';
+  return '<div style="padding:180px 48px 80px;border-bottom:1px solid '+bc+';">'+
+    '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:'+lc+';display:block;margin-bottom:20px;">'+label+'</span>'+
+    '<h1 style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(3rem,6vw,7rem);letter-spacing:0.1em;text-transform:uppercase;color:'+tc+';transform:skewX(-4deg);transform-origin:left;margin-bottom:16px;">'+h1+'</h1>'+
+    '<p style="font-size:1rem;line-height:1.8;color:'+pc+';font-weight:300;max-width:600px;">'+sub+'</p>'+
+  '</div>';
+}
+function fmHead(tc,h,sub){
+  return '<h2 style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;letter-spacing:0.06em;margin-bottom:8px;color:'+(tc||'rgba(10,10,10,0.85)')+';">'+h+'</h2><p style="font-size:0.82rem;color:rgba(10,10,10,0.5);margin-bottom:32px;line-height:1.6;">'+sub+'</p>';
+}
+
+// ── SWITCHER ──
+var cur=0;
+var sw=document.getElementById('psw');
+for(var i=0;i<=21;i++){(function(n){var b=document.createElement('button');b.className='sb'+(n===0?' active':'');b.textContent=n;b.onclick=function(){applyOpt(n);};sw.appendChild(b);})(i);}
+
+function applyOpt(n){
+  cur=n;var pc=document.getElementById('pc');
+  if(V[n])pc.innerHTML=V[n]();
+  document.querySelectorAll('#psw .sb').forEach(function(b,i){b.classList.toggle('active',i===n);});
+  window.scrollTo(0,0);
+}
+applyOpt(0);
+window.addEventListener('scroll',function(){document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);},{passive:true});
+})();
+</script>
+</body>
+</html>
