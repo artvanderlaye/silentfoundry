@@ -25,7 +25,7 @@ nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
 .mmenu{display:none;position:fixed;inset:0;background:#ede8e0;z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:24px;}
 .mmenu.open{display:flex;}
 .mmenu a{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.12em;color:rgba(10,10,10,0.7);text-decoration:none;text-transform:uppercase;}
-@media(max-width:900px){nav{padding:14px 24px;}.nav-right{display:none;}.nav-toggle{display:flex;}.nav-logo{width:120px;height:60px;margin-left:-20px;}}
+@media(max-width:900px){nav{padding:14px 24px;}.nav-right{display:flex!important;}.nav-home{display:none!important;}.nav-toggle{display:flex;}.nav-logo{width:120px;height:60px;margin-left:-20px;}}
 footer{background:#0a0a0a;padding:0;display:block;border-top:none;}
 .footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;position:relative;align-items:start;}
 .footer-tagline{font-size:clamp(0.7rem,0.85vw,0.8rem);line-height:1.8;color:#6b6560;max-width:280px;}
@@ -41,14 +41,18 @@ footer{background:#0a0a0a;padding:0;display:block;border-top:none;}
 @keyframes blink{50%{opacity:0;}}
 @media(max-width:900px){
   nav{padding:14px 24px !important;}
-  .nav-right{display:none;}
+  .nav-right{display:flex!important;}
+  .nav-home{display:none!important;}
   .nav-toggle{display:flex;}
   .nav-logo{width:120px !important;height:60px !important;margin-left:-20px !important;}
   /* v8 Newspaper — collapse 5-col to 1-col */
-  div[style*="grid-template-columns:1fr 1px 1fr 1px 1fr"]{grid-template-columns:1fr !important;padding:120px 24px 32px !important;}
+  div[style*="grid-template-columns:1fr 1px 1fr 1px 1fr"]{grid-template-columns:1fr !important;}
   div[style*="repeat(3,1fr)"][style*="padding:80px 48px"]{grid-template-columns:1fr !important;padding:48px 24px !important;}
   div[style*="grid-template-columns:1fr 1fr;gap:16px"]{grid-template-columns:1fr !important;}
   div[style*="padding:180px 48px 0"]{padding:100px 24px 32px !important;}
+  div[style*="padding:180px 48px 0"] > div > div:first-child{display:none!important;}
+  div[style*="padding:180px 48px 0"] > div > div:nth-child(2){display:none!important;}
+  div[style*="padding:180px 48px 0"] > div > div:nth-child(4){display:none!important;}
   /* Footer */
   .footer-inner{grid-template-columns:1fr !important;gap:24px !important;padding:40px 24px 32px !important;}
   .footer-bottom{flex-direction:column;gap:8px;padding:16px 24px;}
@@ -76,9 +80,9 @@ footer{background:#0a0a0a;padding:0;display:block;border-top:none;}
     <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">FOUNDRY</text></g></svg>
   </a>
   <div class="nav-right">
-    <a href="index.html" class="nbtn">HOME</a>
-    <a href="zh-contact.html" class="nbtn">中文</a>
-    <span class="nbtn-en">EN</span>
+    <a href="index.html" class="nbtn nav-home">HOME</a>
+    <a href="zh-contact.html" class="nbtn nav-zh">中文</a>
+    <span class="nbtn-en nav-en">EN</span>
   </div>
   <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('mmenu').classList.toggle('open')">
     <span></span><span></span><span></span>
