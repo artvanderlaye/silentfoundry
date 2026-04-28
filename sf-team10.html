@@ -14,7 +14,7 @@ body{font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s;}
 nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;transition:background 0.3s;}
 nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
-.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-10px;}
+.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:0;}
 .nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
 .nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;cursor:pointer;}
 .nbtn-en{background:rgba(200,169,110,0.1);border:0.5px solid rgba(200,169,110,0.5);color:rgba(200,169,110,0.9);font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:4px 10px;}
@@ -181,7 +181,7 @@ function edH(){
     '<div class="ed-div" style="background:rgba(10,10,10,0.1);align-self:stretch;"></div>'+
     '<div style="display:flex;flex-direction:column;gap:14px;padding-top:8px;">'+
       '<p style="font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;margin-bottom:16px;font-family:\'DM Sans\',sans-serif;font-weight:300;">Board of Directors</p>'+
-      ['Michel Riis Eriksen|Co-Founder / Head of Design','Matthew Waddick|Co-Founder / CEO','James Cooper|Co-Founder / Head of Creative Strategy'].map(function(s){var p=s.split('|');return '<div style="padding-bottom:14px;border-bottom:0.5px solid rgba(10,10,10,0.1);margin-bottom:14px;">'+'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+p[0]+'</div>'+'<div style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;font-family:\'DM Sans\',sans-serif;font-weight:300;">'+p[1]+'</div>'+'</div>';}).join('')+
+      ['Michel Riis Eriksen|Co-Founder / Head of Design','Matthew Waddick|Co-Founder / CEO','James Cooper|Co-Founder / Head of Creative Strategy'].map(function(s){var p=s.split('|');return '<div style="padding-bottom:14px;border-bottom:0.5px solid rgba(10,10,10,0.1);margin-bottom:14px;">'+'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+p[0]+' '+SYM[p[0]]+'</div>'+'<div style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;font-family:\'DM Sans\',sans-serif;font-weight:300;">'+p[1]+'</div>'+'</div>';}).join('')+
     '</div>'+
     '<div class="ed-div" style="background:rgba(10,10,10,0.1);align-self:stretch;"></div>'+
     '<div style="padding-top:8px;">'+
@@ -199,8 +199,8 @@ function edCard(m,i,showLoc){
       '<img src="'+m.i+'" style="width:100%;height:100%;object-fit:cover;object-position:top;filter:brightness(0.85) grayscale(0.2);transition:transform 0.6s ease;" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'"/>'+
     '</div>'+
     '<div style="flex:1;">'+
-      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+m.n+'</div>'+
-      '<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;font-family:\'DM Sans\',sans-serif;">'+m.r+' '+SYM[m.n]+'</div>'+
+      '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+m.n+' '+SYM[m.n]+'</div>'+
+      '<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;font-family:\'DM Sans\',sans-serif;">'+m.r+'</div>'+
       '<p style="font-size:0.82rem;line-height:1.98;color:'+E.b5+';letter-spacing:0.01em;">'+m.b+'</p>'+
     '</div>'+
   '</div>';
@@ -211,8 +211,8 @@ function edGrid(showLoc){
   '</div>';
 }
 function edJ(){
-  return '<div class="ed-j" style="background:'+E.tc+';padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">'+
-    '<div style="padding-top:8px;">'+
+  return '<div class="ed-j" style="background:'+E.tc+';padding:72px 48px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+
+    '<div>'+
       '<span style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:'+S.g5+';display:block;margin-bottom:14px;font-family:\'DM Sans\',sans-serif;">'+JN.lb+'</span>'+
       '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);letter-spacing:0.22em;color:'+E.ac+';line-height:0.92;text-transform:uppercase;">'+JN.tt+'</div>'+
     '</div>'+
@@ -245,11 +245,11 @@ navL();bc('background:'+E.bg+';color:'+E.tc+';font-family:\'DM Sans\',sans-serif
     +M.map(function(m,i){return '<div style="flex:0 0 250px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);border-left:2px solid transparent;transition:border-color 0.3s;" onmouseover="this.style.borderLeftColor=\'#8a6e3a\'" onmouseout="this.style.borderLeftColor=\'transparent\'">'
       +'<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:'+PH+';object-fit:cover;object-position:top;filter:brightness(0.85) grayscale(0.2);transition:transform 0.6s ease;display:block;" onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'\'"/></div>'
       +'<div style="padding:20px 28px 28px;">'
-      +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+m.n+'</div>'
-      +'<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.r+' '+SYM[m.n]+'</div>'
+      +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+m.n+' '+SYM[m.n]+'</div>'
+      +'<div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+E.lc+';margin-bottom:10px;">'+m.r+'</div>'
       +'<p style="font-size:0.82rem;line-height:1.98;color:'+E.b5+';">'+m.b+'</p>'
       +'</div></div>';}).join('')+'</div>';
-  var join='<div style="padding:72px 48px;border-top:1px solid rgba(138,110,58,0.1);background:'+E.bg+';display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">'+  '<div style="padding-top:8px;">'+    '<span style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:14px;">'+JN.lb+'</span>'+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);letter-spacing:0.22em;color:'+E.ac+';line-height:0.92;text-transform:uppercase;">'+JN.tt+'</div>'+  '</div>'+  '<div style="border-left:0.5px solid rgba(10,10,10,0.1);padding-left:48px;display:flex;flex-direction:column;justify-content:center;">'+    '<p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.98;color:'+E.b5+';margin-bottom:24px;">'+JN.bb+'</p>'+    '<a href="'+JN.hr+'" style="display:inline-block;align-self:flex-start;padding:6px 14px;border:0.5px solid rgba(10,10,10,0.2);color:'+E.tc+';font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'rgba(10,10,10,0.5)\'" onmouseout="this.style.borderColor=\'rgba(10,10,10,0.2)\'">'+JN.ct+' ⌙</a>'+  '</div>'+'</div>';
+  var join='<div style="padding:72px 48px;border-top:1px solid rgba(138,110,58,0.1);background:'+E.bg+';display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">'+  '<div>'+    '<span style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:'+E.lc+';display:block;margin-bottom:14px;">'+JN.lb+'</span>'+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);letter-spacing:0.22em;color:'+E.ac+';line-height:0.92;text-transform:uppercase;">'+JN.tt+'</div>'+  '</div>'+  '<div style="border-left:0.5px solid rgba(10,10,10,0.1);padding-left:48px;display:flex;flex-direction:column;justify-content:center;">'+    '<p style="font-size:clamp(0.9rem,1.2vw,1.05rem);line-height:1.98;color:'+E.b5+';margin-bottom:24px;">'+JN.bb+'</p>'+    '<a href="'+JN.hr+'" style="display:inline-block;align-self:flex-start;padding:6px 14px;border:0.5px solid rgba(10,10,10,0.2);color:'+E.tc+';font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'rgba(10,10,10,0.5)\'" onmouseout="this.style.borderColor=\'rgba(10,10,10,0.2)\'">'+JN.ct+' ⌙</a>'+  '</div>'+'</div>';
   return hdr+strip+join;
 })();
 
