@@ -4472,7 +4472,7 @@ function buildThesis(opt) {
   if (opt === 0) {
     // Original: restore cream
     var pad0 = isMobile ? '0' : '115px 48px';
-    sec.style.cssText = "padding:"+pad0+";background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;"+(isMobile?'display:flex;align-items:center;justify-content:center;min-height:60vh;':'');
+    sec.style.cssText = "padding:"+pad0+";background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;"+(isMobile?'height:100vh;min-height:100vh;display:flex;align-items:center;justify-content:center;':'');
     if (overlay) { overlay.style.background='#ede8e0'; overlay.style.opacity='0.92'; }
     if (inner) {
       inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:'+(isMobile?'100%':'700px')+';margin:0 auto;text-align:center;';
@@ -4536,8 +4536,9 @@ function applyLayout(sec, inner, opt, tc) {
     if (isMobile) {
       // ── MOBILE LAYOUT ──
       if(lbl) lbl.style.display = 'none';
-      sec.style.cssText='height:100vh;min-height:100vh;padding:0;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;';
-      inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:0;padding:0 24px;';
+      var navEl=document.querySelector('nav');var navH=navEl?navEl.getBoundingClientRect().height:64;
+      sec.style.cssText='height:100vh;min-height:100vh;padding:0;overflow:hidden;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+      inner.style.cssText='position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%;min-height:0;padding:0 24px;margin:0;';
       // Skip lc (label) entirely on mobile
       var cc=document.createElement('div');cc.className='tsw-injected';
       cc.style.cssText='display:flex;flex-direction:column;align-items:center;padding:0;width:100%;';
