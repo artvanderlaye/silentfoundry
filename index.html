@@ -28,7 +28,7 @@
       }
       /* Mobile: thesis switcher grid collapses to single column */
       @media (max-width: 768px) {
-        #thesis-section { padding: 40px 20px 63px 20px !important; }
+        #thesis-section { padding: 0 !important; }
         .tsw-injected[style*='display:grid'] {
           display: flex !important;
           flex-direction: column !important;
@@ -752,8 +752,9 @@ body.v11-active nav * { cursor: none !important; }
     @media (max-width: 900px) {
       /* ── THESIS SECTION — MOBILE ── */
       #thesis-section {
-        height: auto !important;
-        padding: 40px 32px 79px 32px !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        padding: 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -769,7 +770,7 @@ body.v11-active nav * { cursor: none !important; }
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
-        padding: 0 !important;
+        padding: 0 24px !important;
         text-align: center !important;
       }
 
@@ -4470,8 +4471,8 @@ function buildThesis(opt) {
   var isMobile = window.innerWidth <= 900;
   if (opt === 0) {
     // Original: restore cream
-    var pad0 = isMobile ? '40px 32px 79px 32px' : '115px 48px';
-    sec.style.cssText = "padding:"+pad0+";background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;"+(isMobile?'display:flex;align-items:center;justify-content:center;':'');
+    var pad0 = isMobile ? '0' : '115px 48px';
+    sec.style.cssText = "padding:"+pad0+";background:#ede8e0;background-image:url('cad_texture.jpeg');background-size:cover;background-position:center;background-attachment:fixed;text-align:center;position:relative;overflow:hidden;"+(isMobile?'display:flex;align-items:center;justify-content:center;min-height:60vh;':'');
     if (overlay) { overlay.style.background='#ede8e0'; overlay.style.opacity='0.92'; }
     if (inner) {
       inner.style.cssText = 'position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:'+(isMobile?'100%':'700px')+';margin:0 auto;text-align:center;';
@@ -4486,8 +4487,8 @@ function buildThesis(opt) {
 
   // 3. Set section bg
   var isGrad=(bg&&bg.indexOf('gradient')>-1);
-  var pad = isMobile ? '40px 32px 79px 32px' : '95px 48px';
-  sec.style.cssText = 'padding:'+pad+';background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';text-align:center;position:relative;overflow:hidden;'+(isMobile?'display:flex;align-items:center;justify-content:center;':'');
+  var pad = isMobile ? '0' : '95px 48px';
+  sec.style.cssText = 'padding:'+pad+';background:'+(isGrad?'none':bg)+';background-image:'+(isGrad?bg:'none')+';text-align:center;position:relative;overflow:hidden;'+(isMobile?'display:flex;align-items:center;justify-content:center;min-height:60vh;':'');
   if (overlay) { overlay.style.background = bg; overlay.style.opacity = '0.95'; }
 
   // 4. Reset inner
