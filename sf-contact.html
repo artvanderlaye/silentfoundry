@@ -11,7 +11,8 @@
 <style>
 :root{--black:#0a0a0a;--white:#f4f1ec;--cream:#ede8e0;--accent:#c8a96e;--mid:#6b6560;--gdk:#8a6e3a;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;}
+html{overflow-x:hidden;max-width:100%;}
+body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;max-width:100%;}
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s;overflow:visible;}
 nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;}
 nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
@@ -185,7 +186,7 @@ var OFFICES=[
 // ── HELPERS ──
 function form(tc,ib,ibr,ic,bb,bt){
   tc=tc||'rgba(10,10,10,0.85)';ib=ib||'rgba(10,10,10,0.04)';ibr=ibr||'rgba(10,10,10,0.15)';ic=ic||'rgba(10,10,10,0.85)';bb=bb||'#c8a96e';bt=bt||'#0a0a0a';
-  var is='width:100%;background:'+ib+';border:1px solid '+ibr+';color:'+ic+';font-family:\'DM Sans\',sans-serif;font-size:0.9rem;font-weight:300;padding:14px 18px;outline:none;appearance:none;-webkit-appearance:none;margin-bottom:16px;display:block;';
+  var is='width:100%;max-width:100%;background:'+ib+';border:1px solid '+ibr+';color:'+ic+';font-family:\'DM Sans\',sans-serif;font-size:16px;font-weight:300;padding:14px 18px;outline:none;appearance:none;-webkit-appearance:none;margin-bottom:16px;display:block;';
   var ls='display:block;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#c8a96e;margin-bottom:8px;';
   return '<div id="cfi"><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;"><div><label style="'+ls+'">First Name</label><input type="text" placeholder="James" style="'+is+'"></div><div><label style="'+ls+'">Last Name</label><input type="text" placeholder="Cooper" style="'+is+'"></div></div>'+
     '<label style="'+ls+'">Email</label><input type="email" placeholder="hello@yourbrand.com" style="'+is+'">'+
@@ -1337,6 +1338,13 @@ body.v11-active.v11-cream-zone #v11-cursor-ring span:first-child{color:rgba(200,
 @media(max-width:768px){
   div[style*="grid-template-columns:1fr 1fr;gap:32px"]{grid-template-columns:1fr!important;}
   div[style*="grid-template-columns:1fr 1fr;gap:0"]{grid-template-columns:1fr!important;}
+  /* Force form and all inputs to stay within viewport */
+  #cfi{width:100%!important;max-width:100%!important;}
+  #cfi input, #cfi textarea, #cfi button{width:100%!important;max-width:100%!important;box-sizing:border-box!important;}
+  #cfi > div[style*="grid-template-columns"]{grid-template-columns:1fr!important;gap:0!important;}
+  /* Prevent any injected content from overflowing */
+  #clsw-slot, #clsw-slot > div{max-width:100%!important;overflow-x:hidden!important;}
+  #clsw-slot input, #clsw-slot textarea{max-width:100%!important;width:100%!important;font-size:16px!important;}
 }
 </style>
 <script>
