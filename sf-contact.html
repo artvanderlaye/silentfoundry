@@ -1279,10 +1279,22 @@ function clApply(idx){
   var slot=document.getElementById('clsw-slot');
   if(!slot) return;
   var h=L.html;
-  // Replace '+acc(args)+' placeholder with real acc() output
-  h=h.replace(/\'\+acc\(([^)]+)\)\+\'/g,function(m,a){try{return eval('acc('+a+')');}catch(e){return '';}});
-  // Replace '+form()+'
-  h=h.replace(/\'\+form\(\)\+\'/g,function(){try{return form();}catch(e){return '';}});
+  // Split on acc placeholder and rejoin with evaluated output
+  var ACC_PH="'+acc(";
+  var FORM_PH="'+form()+'";
+  // Handle acc() placeholders
+  var parts=h.split(ACC_PH);
+  for(var i=1;i<parts.length;i++){
+    var close=parts[i].indexOf(")+'");
+    if(close>=0){
+      var args=parts[i].substring(0,close);
+      var rest=parts[i].substring(close+3);
+      try{parts[i]=eval('acc('+args+')')+rest;}catch(e){parts[i]=rest;}
+    }
+  }
+  h=parts.join('');
+  // Handle form() placeholder
+  h=h.split(FORM_PH).join(function(){try{return form();}catch(e){return '';}}());
   slot.innerHTML=h;
   document.querySelectorAll('.clsw-btn').forEach(function(b,i){b.classList.toggle('active',i===idx);});
 }
