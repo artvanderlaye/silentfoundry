@@ -259,7 +259,7 @@ setBody('#ede8e0','#0a0a0a','light');
 '</div>'
 })();
 document.getElementById('clsw-slot').innerHTML=_r;
-})();
+});
 window.addEventListener('scroll',function(){
   document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);
   var nl=document.getElementById('nl');
@@ -268,6 +268,8 @@ window.addEventListener('scroll',function(){
     else{nl.style.width='240px';nl.style.height='80px';}
   }
 },{passive:true});
+window._sfAcc=acc;
+window._sfForm=form;
 })();
 </script>
 <!-- V1.1 DOM elements -->
@@ -1289,12 +1291,12 @@ function clApply(idx){
     if(close>=0){
       var args=parts[i].substring(0,close);
       var rest=parts[i].substring(close+3);
-      try{parts[i]=eval('acc('+args+')')+rest;}catch(e){parts[i]=rest;}
+      try{parts[i]=eval('window._sfAcc('+args+')')+rest;}catch(e){parts[i]=rest;}
     }
   }
   h=parts.join('');
   // Handle form() placeholder
-  h=h.split(FORM_PH).join(function(){try{return form();}catch(e){return '';}}());
+  h=h.split(FORM_PH).join(function(){try{return window._sfForm();}catch(e){return '';}}());
   slot.innerHTML=h;
   document.querySelectorAll('.clsw-btn').forEach(function(b,i){b.classList.toggle('active',i===idx);});
 }
