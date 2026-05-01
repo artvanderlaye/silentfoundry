@@ -127,9 +127,12 @@ footer{background:#0a0a0a;padding:0;display:block;border-top:none;}
       <p style="font-size:0.82rem;line-height:1.7;color:rgba(10,10,10,0.45);max-width:380px;">Occasional updates on what we're building, thinking, and making — straight from the studio.</p>
     </div>
     <div>
-      <div style="display:flex;gap:0;">
-        <input type="email" placeholder="your@email.com" style="flex:1;background:rgba(10,10,10,0.05);border:1px solid rgba(10,10,10,0.15);border-right:none;color:rgba(10,10,10,0.85);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:300;padding:14px 18px;outline:none;"/>
-        <button style="background:#0a0a0a;border:none;color:#ede8e0;font-family:'DM Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;padding:14px 22px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Subscribe ⏙</button>
+      <div id="sf-nl-form" style="display:flex;gap:0;">
+        <input id="sf-nl-input" type="email" placeholder="your@email.com" style="flex:1;background:rgba(10,10,10,0.05);border:1px solid rgba(10,10,10,0.15);border-right:none;color:rgba(10,10,10,0.85);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:300;padding:14px 18px;outline:none;max-width:100%;"/>
+        <button onclick="sfNLSubmit()" style="background:#0a0a0a;border:none;color:#ede8e0;font-family:'DM Sans',sans-serif;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;padding:14px 22px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Subscribe ⏙</button>
+      </div>
+      <div id="sf-nl-success" style="display:none;padding:14px 0;">
+        <span style="font-size:0.82rem;color:#8a6e3a;letter-spacing:0.06em;">⌀ You're subscribed. We'll be in touch.</span>
       </div>
       <p style="font-size:0.68rem;color:rgba(10,10,10,0.3);margin-top:10px;letter-spacing:0.04em;">No spam. Unsubscribe anytime.</p>
     </div>
@@ -1390,5 +1393,18 @@ function clApply(idx){
 }
 clApply(0);
 window.addEventListener('DOMContentLoaded',function(){clApply(0);});
-</script></body>
+</script><script>
+window.sfNLSubmit = function(){
+  var input = document.getElementById('sf-nl-input');
+  var form = document.getElementById('sf-nl-form');
+  var success = document.getElementById('sf-nl-success');
+  if (!input || !input.value || !input.value.includes('@')) {
+    input.style.borderColor = 'rgba(200,100,100,0.5)';
+    return;
+  }
+  if (form) form.style.display = 'none';
+  if (success) success.style.display = 'block';
+};
+</script>
+</body>
 </html>
