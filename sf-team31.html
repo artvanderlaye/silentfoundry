@@ -44,7 +44,6 @@ nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
   /* Join section */
   .ed-j{grid-template-columns:1fr!important;padding:48px 24px!important;}
   .ed-j>div:last-child{border-left:none!important;padding-left:0!important;}
-  .ed-j>div:first-child{align-items:flex-start!important;text-align:left!important;}
   /* Footer */
       .footer-logo{margin-left:-10px!important;}
 }
@@ -62,7 +61,7 @@ nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
   .ed-grid-2{grid-template-columns:1fr!important;}
   .ed-grid-2 .ec{border-right:none!important;}
   .ed-j{grid-template-columns:1fr!important;padding:48px 24px!important;}
-  .ed-j>div:first-child{align-items:flex-start!important;text-align:left!important;}
+}
 footer{background:#0a0a0a;display:block;padding:0;}
 .footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding:72px 48px 48px;position:relative;align-items:start;}
 .footer-tagline{font-size:clamp(0.7rem,0.85vw,0.8rem);line-height:1.8;color:#6b6560;max-width:280px;}
@@ -185,7 +184,7 @@ function bc(css){document.body.style.cssText=css+'overflow-x:hidden;font-family:
 
 // ── ED HELPERS (for v2 / original v38) ──
 function edH(){
-  var PAD='padding:180px 48px 40px;border-bottom:0.5px solid rgba(10,10,10,0.08);';
+  var PAD='padding:180px 48px 40px;border-bottom:1px solid rgba(10,10,10,0.1);';
   var col1=(
     '<div class="ed-col1" style="padding-top:8px;">'+
     '<p style="font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;display:block;margin-bottom:16px;font-family:\'DM Sans\',sans-serif;font-weight:300;">The People Behind It</p>'+
@@ -217,9 +216,8 @@ function edH(){
     '</div></div></div>'
   );
   return (
-    '<div class="ed-hero-g" style="'+PAD+'display:grid;grid-template-columns:1fr 0.5px 1fr;gap:48px;align-items:start;">'+
+    '<div class="ed-hero-g" style="'+PAD+'display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">'+
     col1+
-    '<div style="background:rgba(10,10,10,0.08);align-self:stretch;"></div>'+
     col2+
     '</div>'+
     boardstrip
@@ -297,8 +295,8 @@ var hdr=edH();
     +M.map(function(m,i){
       var preview=(function(s){if(s.length<=80)return s;var t=s.substring(0,80);var last=t.lastIndexOf(' ');return t.substring(0,last>0?last:80)+'...';  })(m.b);
       var uid='tc'+i;
-      var toggleFn="(function(el){var uid=el.dataset.uid;var b=document.getElementById('bio-'+uid);var btn=document.getElementById('btn-'+uid);var open=b.style.maxHeight&&b.style.maxHeight!=='0px';document.querySelectorAll('.tc-card').forEach(function(c){if(c!==el){var ob=document.getElementById('bio-'+c.dataset.uid);var obtn=document.getElementById('btn-'+c.dataset.uid);if(ob){ob.style.maxHeight='0px';ob.style.opacity='0';}if(obtn)obtn.style.transform='rotate(0deg)';c.style.borderLeftColor='transparent';}});b.style.maxHeight=open?'0px':(b.scrollHeight+'px');b.style.opacity=open?'0':'1';btn.style.transform=open?'rotate(0deg)':'rotate(45deg)';el.style.borderLeftColor=open?'transparent':'#8a6e3a';})(this)";
-      return '<div class="tc-card" data-uid="'+uid+'" style="flex:0 0 250px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);border-left:2px solid transparent;transition:border-color 0.3s;cursor:pointer;display:flex;flex-direction:column;" onclick="'+toggleFn+'">'
+      var toggleFn="(function(el){var b=document.getElementById('bio-"+uid+"');var btn=document.getElementById('btn-"+uid+"');var open=b.style.maxHeight&&b.style.maxHeight!=='0px';b.style.maxHeight=open?'0px':(b.scrollHeight+'px');b.style.opacity=open?'0':'1';btn.style.transform=open?'rotate(0deg)':'rotate(45deg)';el.style.borderLeftColor=open?'transparent':'#8a6e3a';})(this)";
+      return '<div style="flex:0 0 250px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);border-left:2px solid transparent;transition:border-color 0.3s;cursor:pointer;display:flex;flex-direction:column;" onclick="'+toggleFn+'">'
         +'<div style="overflow:hidden;"><img src="'+m.i+'" style="width:100%;height:'+PH+';object-fit:cover;object-position:top;filter:brightness(0.85) grayscale(0.2);transition:transform 0.6s ease;display:block;"/></div>'
         +'<div style="padding:20px 28px 24px;position:relative;display:flex;flex-direction:column;flex:1;">'
         +'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(1rem,1.4vw,1.5rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:4px;">'+m.n+'</div>'
