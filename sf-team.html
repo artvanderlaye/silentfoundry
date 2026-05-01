@@ -207,13 +207,13 @@ function edH(){
   );
   var boardstrip=(
     '<div style="padding:0 48px;">'+
-    '<div style="border-top:0.5px solid rgba(10,10,10,0.08);border-bottom:0.5px solid rgba(10,10,10,0.08);padding:28px 0;">'+
+    '<div style="border-bottom:0.5px solid rgba(10,10,10,0.08);padding:28px 0;">'+
     '<p style="font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;margin-bottom:16px;font-family:\'DM Sans\',sans-serif;font-weight:300;">Board of Directors</p>'+
     '<div style="display:flex;gap:48px;flex-wrap:wrap;">'+
     [['Michel Riis Eriksen','Co-Founder / Head of Design'],['Matthew Waddick','Co-Founder / CEO'],['James Cooper','Co-Founder / Head of Creative Strategy']].map(function(p){
       return '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(0.9rem,1.2vw,1.3rem);letter-spacing:0.14em;text-transform:uppercase;color:rgba(10,10,10,0.75);margin-bottom:3px;">'+p[0]+'</div><div style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:#8a6e3a;font-family:\'DM Sans\',sans-serif;font-weight:300;">'+p[1]+'</div></div>';
     }).join('')+
-    '</div></div>'
+    '</div></div></div>'
   );
   return (
     '<div class="ed-hero-g" style="'+PAD+'display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">'+
@@ -293,7 +293,7 @@ var hdr=edH();
   var strip='<div style="padding:16px 48px;border-bottom:0.5px solid '+E.b08+';display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:#8a6e3a;font-family:\'DM Sans\',sans-serif;font-weight:300;">Our People</span><span style="font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:'+E.b3+';">SCROLL ⇥</span></div>'
     +'<div class="hscroll">'
     +M.map(function(m,i){
-      var preview=(m.b.length>80?m.b.substring(0,80).trim()+'...':m.b);
+      var preview=(function(s){if(s.length<=80)return s;var t=s.substring(0,80);var last=t.lastIndexOf(' ');return t.substring(0,last>0?last:80)+'...';  })(m.b);
       var uid='tc'+i;
       var toggleFn="(function(el){var b=document.getElementById('bio-"+uid+"');var btn=document.getElementById('btn-"+uid+"');var open=b.style.maxHeight&&b.style.maxHeight!=='0px';b.style.maxHeight=open?'0px':(b.scrollHeight+'px');b.style.opacity=open?'0':'1';btn.style.transform=open?'rotate(0deg)':'rotate(45deg)';el.style.borderLeftColor=open?'transparent':'#8a6e3a';})(this)";
       return '<div style="flex:0 0 250px;background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.1);border-left:2px solid transparent;transition:border-color 0.3s;cursor:pointer;display:flex;flex-direction:column;" onclick="'+toggleFn+'">'
