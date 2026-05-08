@@ -3030,13 +3030,9 @@ body.v11-active.v11-hide-logo .nav-logo {
   pointer-events: none !important;
 }
 
-/* ── 2. LOGO SCROLL SHRINK — smooth ── */
+/* ── 2. LOGO SCROLL SHRINK — smooth, transform only ── */
 body.v11-active .nav-logo {
-  transition: opacity 0.4s ease, width 0.65s cubic-bezier(0.22,1,0.36,1);
-  transform-origin: left center;
-}
-body.v11-active .nav-logo span {
-  display: block;
+  transition: opacity 0.4s ease;
 }
 body.v11-active .nav-logo .sf-mark {
   transition: font-size 0.65s cubic-bezier(0.22,1,0.36,1);
@@ -3046,15 +3042,6 @@ body.v11-active .nav-logo .sf-mark-ring {
 }
 body.v11-active .nav-logo .gm {
   display: inline !important;
-}
-/* Scrolled state — shrink nav logo width to match contact page (120px) */
-body.v11-active.v11-scrolled .nav-logo {
-  width: 130px !important;
-  height: 55px !important;
-}
-body.v11-active.v11-scrolled .nav-logo svg {
-  width: 130px !important;
-  height: 55px !important;
 }
 /* gmPulse animations removed */
 
@@ -3428,24 +3415,27 @@ body.v11-active #v11-badge {
 
   // ── Ring zone — hit-test at the ring's actual lagged position ──
   var ringZone = 'gold';
+  function getZoneFromNode(node) {
+    while (node && node !== document.body) {
+      var tag = node.tagName ? node.tagName.toLowerCase() : '';
+      if (tag === 'footer')                                      return 'footer';
+      if (node.classList && node.classList.contains('cta'))      return 'footer';
+      if (node.id === 'funds')                                   return 'black';
+      if (node.classList && node.classList.contains('funds'))    return 'black';
+      if (node.classList && node.classList.contains('logos'))    return 'switch';
+      if (node.id === 'featured')                                return 'switch';
+      node = node.parentElement;
+    }
+    return null; // no match — keep looking
+  }
   function getRingZoneAtPoint(x, y) {
     var els = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [];
     for (var i = 0; i < els.length; i++) {
       var el = els[i];
       var cs = window.getComputedStyle(el).position;
-      if (cs === 'fixed') continue; // skip fixed UI overlays
-      var node = el;
-      while (node && node !== document.body) {
-        var tag = node.tagName ? node.tagName.toLowerCase() : '';
-        if (tag === 'footer')                                      return 'footer';
-        if (node.classList && node.classList.contains('cta'))      return 'footer';
-        if (node.id === 'funds')                                   return 'black';
-        if (node.classList && node.classList.contains('funds'))    return 'black';
-        if (node.classList && node.classList.contains('logos'))    return 'switch';
-        if (node.id === 'featured')                                return 'switch';
-        node = node.parentElement;
-      }
-      return 'gold'; // first non-fixed element's ambient zone
+      if (cs === 'fixed') continue; // skip fixed UI overlays (cursor, nav, status)
+      var z = getZoneFromNode(el);
+      if (z !== null) return z;
     }
     return 'gold';
   }
@@ -5041,15 +5031,14 @@ document.addEventListener('DOMContentLoaded',function(){
 nav{padding-top:44px!important;}
 .nav-logo{width:240px!important;height:80px!important;overflow:visible!important;display:flex!important;align-items:flex-end!important;}
 .nav-logo svg{width:240px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;}
-/* Scrolled shrink — must override logo-switcher !important */
-body.v11-active.v11-scrolled .nav-logo{width:130px!important;height:55px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
-body.v11-active.v11-scrolled .nav-logo svg{width:130px!important;height:55px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
-/* Unscrolled restore */
-body.v11-active:not(.v11-scrolled) .nav-logo{width:240px!important;height:80px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
-body.v11-active:not(.v11-scrolled) .nav-logo svg{width:240px!important;height:80px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
+/* Scrolled shrink — transform only, zero layout impact on nav bar */
+body.v11-active .nav-logo{transform-origin:left center!important;transition:transform 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
+body.v11-active.v11-scrolled .nav-logo{transform:scale(0.54)!important;}
+body.v11-active:not(.v11-scrolled) .nav-logo{transform:scale(1)!important;}
 @media(max-width:768px){
   .nav-logo{width:120px!important;height:60px!important;overflow:visible!important;display:flex!important;align-items:flex-end!important;}
   .nav-logo svg{width:120px!important;height:60px!important;flex-shrink:0!important;overflow:visible!important;}
+  body.v11-active.v11-scrolled .nav-logo{transform:scale(1)!important;}
 }
 </style>
 <div id="logo-switcher" style="display:none;"><span class="hsw-label">LOGO</span><div class="logo-btn-grid"><button class="hsw-btn" onclick="applyLogoOpt(0)">1</button><button class="hsw-btn active" onclick="applyLogoOpt(1)">2</button><button class="hsw-btn" onclick="applyLogoOpt(2)">3</button><button class="hsw-btn" onclick="applyLogoOpt(3)">4</button><button class="hsw-btn" onclick="applyLogoOpt(4)">5</button><button class="hsw-btn" onclick="applyLogoOpt(5)">6</button><button class="hsw-btn" onclick="applyLogoOpt(6)">7</button><button class="hsw-btn" onclick="applyLogoOpt(7)">8</button><button class="hsw-btn" onclick="applyLogoOpt(8)">9</button><button class="hsw-btn" onclick="applyLogoOpt(9)">10</button><button class="hsw-btn" onclick="applyLogoOpt(10)">11</button><button class="hsw-btn" onclick="applyLogoOpt(11)">12</button><button class="hsw-btn" onclick="applyLogoOpt(12)">13</button><button class="hsw-btn" onclick="applyLogoOpt(13)">14</button><button class="hsw-btn" onclick="applyLogoOpt(14)">15</button><button class="hsw-btn" onclick="applyLogoOpt(15)">16</button></div></div></div>
