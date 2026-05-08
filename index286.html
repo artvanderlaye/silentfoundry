@@ -3032,15 +3032,11 @@ body.v11-active.v11-hide-logo .nav-logo {
 
 /* ── 2. LOGO SCROLL SHRINK — smooth ── */
 body.v11-active .nav-logo {
-  transition: opacity 0.4s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1);
-  transform-origin: left center;
+  transition: font-size 0.5s ease, opacity 0.4s;
 }
 body.v11-active .nav-logo span {
-  transition: font-size 0.65s cubic-bezier(0.22,1,0.36,1), letter-spacing 0.65s ease, line-height 0.65s ease;
+  transition: font-size 0.5s ease, letter-spacing 0.5s ease, line-height 0.5s ease;
   display: block;
-}
-body.v11-active .nav-logo .sf-mark {
-  transition: font-size 0.65s cubic-bezier(0.22,1,0.36,1);
 }
 body.v11-active .nav-logo .sf-mark-ring {
   display: inline !important;
@@ -3048,11 +3044,8 @@ body.v11-active .nav-logo .sf-mark-ring {
 body.v11-active .nav-logo .gm {
   display: inline !important;
 }
-/* Scrolled state — shrink sf-mark font to match contact page logo size */
-body.v11-active.v11-scrolled .nav-logo .sf-mark {
-  font-size: 36px !important;
-}
 /* gmPulse animations removed */
+/* logo scroll shrink removed — opacity only */
 
 /* ── 5. LOGO STAMP ON LOAD ── */
 @keyframes v11LogoStamp {
@@ -3248,7 +3241,7 @@ body.v11-active.v11-footer-zone #v11-badge { opacity: 0 !important; transition: 
 /* ── CREAM ZONE CURSOR ── */
 body.v11-active.v11-cream-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; transition: none !important; }
 body.v11-active.v11-cream-zone #v11-cursor-dot { background: rgba(10,10,10,0.8) !important; transition: none !important; }
-/* ring color managed independently by JS — no CSS override here */
+body.v11-active.v11-cream-zone #v11-cursor-ring span:first-child { color: rgba(10,10,10,0.5) !important; transition: none !important; }
 
 /* ── STATUS DOT CREAM SECTIONS — INSTANT SNAP ── */
 /* Status dot always visible — slight opacity on cream */
@@ -3257,17 +3250,17 @@ body.v11-active.v11-cream-zone #v11-status-dot { color: rgba(10,10,10,0.6) !impo
 /* Dark cursor on gold CTA sections */
 body.v11-active.v11-cta-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; }
 body.v11-active #v11-cursor-dot { background: #c8a96e; }
-body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4) !important; } /* default, overridden by JS */
+body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4) !important; }
 body.v11-active.v11-cta-zone #v11-cursor-dot { background: #2c1e4a !important; }
-/* cta ring color set by JS applyRingZone */
+body.v11-active.v11-cta-zone #v11-cursor-ring span:first-child { color: rgba(10,10,10,0.3) !important; }
 body.v11-active.v11-cta-zone #v11-status-dot { color: rgba(10,10,10,0.6) !important; transition: none !important; }
 body.v11-active.v11-cta-zone #v11-status { color: rgba(10,10,10,0.55) !important; transition: none !important; }
 body.v11-active.v11-footer-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
 body.v11-active.v11-footer-cursor-zone #v11-cursor span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
 body.v11-active.v11-footer-zone #v11-cursor-dot { background: #2c1e4a !important; transition: none !important; }
-/* footer ring color set by JS applyRingZone */
+body.v11-active.v11-footer-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
 body.v11-active.v11-footer-cursor-zone #v11-cursor-dot { background: #2c1e4a !important; transition: none !important; }
-/* footer-cursor ring color set by JS applyRingZone */
+body.v11-active.v11-footer-cursor-zone #v11-cursor-ring span:first-child { color: rgba(244,241,236,0.6) !important; transition: none !important; }
 
 /* Always show status dot */
 body.v11-active #v11-status { display: flex !important; }
@@ -3282,7 +3275,7 @@ body.v11-active.v11-switch-zone .hero-scroll span { color: #00b4d8 !important; t
 /* nav stays SF colours in switch zone */
 body.v11-active.v11-switch-zone #v11-cursor span:first-child { color: rgba(0,180,216,0.8) !important; transition: none !important; }
 body.v11-active.v11-switch-zone #v11-cursor-dot { background: #00b4d8 !important; transition: none !important; }
-/* ring color for switch zone set by JS applyRingZone */
+body.v11-active.v11-switch-zone #v11-cursor-ring span:first-child { color: rgba(0,180,216,0.25) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .scroll-indicator-line { background: linear-gradient(to bottom, #00b4d8, transparent) !important; transition: none !important; }
 body.v11-active.v11-switch-zone .scroll-indicator span { color: #00b4d8 !important; transition: none !important; }
 body.v11-active.v11-switch-zone .fcar-btn { border-color: rgba(0,180,216,0.4) !important; color: rgba(0,180,216,0.8) !important; transition: none !important; }
@@ -3422,53 +3415,13 @@ body.v11-active #v11-badge {
     return 'gold';
   }
 
-  // ── Ring zone — hit-test at the ring's actual lagged position ──
-  var ringZone = 'gold';
-  function getRingZoneAtPoint(x, y) {
-    var els = document.elementsFromPoint ? document.elementsFromPoint(x, y) : [];
-    for (var i = 0; i < els.length; i++) {
-      var el = els[i];
-      var cs = window.getComputedStyle(el).position;
-      if (cs === 'fixed') continue; // skip fixed UI overlays
-      var node = el;
-      while (node && node !== document.body) {
-        var tag = node.tagName ? node.tagName.toLowerCase() : '';
-        if (tag === 'footer')                                      return 'footer';
-        if (node.classList && node.classList.contains('cta'))      return 'footer';
-        if (node.id === 'funds')                                   return 'black';
-        if (node.classList && node.classList.contains('funds'))    return 'black';
-        if (node.classList && node.classList.contains('logos'))    return 'switch';
-        if (node.id === 'featured')                                return 'switch';
-        node = node.parentElement;
-      }
-      return 'gold'; // first non-fixed element's ambient zone
-    }
-    return 'gold';
-  }
-
-  function applyRingZone(zone) {
-    if (zone === ringZone) return;
-    ringZone = zone;
-    var ringSpan = curRing ? curRing.querySelector('span') : null;
-    if (!ringSpan) return;
-    if (zone === 'switch') {
-      ringSpan.style.color = 'rgba(0,180,216,0.25)';
-    } else if (zone === 'black') {
-      ringSpan.style.color = 'rgba(10,10,10,0.3)';
-    } else if (zone === 'footer') {
-      ringSpan.style.color = 'rgba(244,241,236,0.6)';
-    } else {
-      ringSpan.style.color = 'rgba(200,169,110,0.4)';
-    }
-  }
-
   document.addEventListener('mousemove', function(e) {
     if (!v11Active) return;
     curX = e.clientX; curY = e.clientY;
     cur.style.left = curX + 'px'; cur.style.top = curY + 'px';
     // Force cursor:none on hovered element to beat UA stylesheet
     if (e.target && e.target.style) e.target.style.cursor = 'none';
-    // Zone detection — cursor dot only, instant snap
+    // Zone detection — hover based, instant snap
     var zone = getCursorZone(e.target);
     document.body.classList.toggle('v11-switch-zone', zone === 'switch');
     document.body.classList.toggle('v11-cta-zone',    zone === 'black');
@@ -3476,19 +3429,13 @@ body.v11-active #v11-badge {
     document.body.classList.remove('v11-cream-zone');
   });
 
-  // Lagging ring — independently tracks its own zone by hit-testing at its actual position
-  var ringZoneFrame = 0;
+  // Lagging ring
   function animateRing() {
     if (!v11Active) { requestAnimationFrame(animateRing); return; }
     ringX += (curX - ringX) * 0.28;
     ringY += (curY - ringY) * 0.28;
     curRing.style.left = ringX + 'px';
     curRing.style.top = ringY + 'px';
-    // Hit-test ring zone every 3 frames (performance)
-    ringZoneFrame++;
-    if (ringZoneFrame % 3 === 0) {
-      applyRingZone(getRingZoneAtPoint(ringX, ringY));
-    }
     requestAnimationFrame(animateRing);
   }
   animateRing();
@@ -4865,14 +4812,8 @@ function initF1(){
       return '"Noto Sans SC",sans-serif';
     }
     var chSp=mk('span'); chSp.textContent='◎';
-    chSp.style.cssText='font-family:var(--font-display);font-weight:900;font-size:clamp(140px,22vw,280px);letter-spacing:0;user-select:none;pointer-events:none;color:rgba(10,10,10,0.038);transform:skewX(-4deg);display:inline-block;line-height:1;position:relative;';
+    chSp.style.cssText='font-family:var(--font-display);font-weight:900;font-size:clamp(140px,22vw,280px);letter-spacing:0;user-select:none;pointer-events:none;color:rgba(10,10,10,0.06);transform:skewX(-4deg);display:inline-block;line-height:1;';
     window._chWatermarkSp = chSp;
-    /* Off-center dot — SF DNA signature */
-    var chDot=mk('span');
-    chDot.style.cssText='position:absolute;border-radius:50%;background:rgba(10,10,10,0.055);pointer-events:none;user-select:none;'
-      +'width:clamp(6px,1.1vw,14px);height:clamp(6px,1.1vw,14px);'
-      +'top:47%;left:53.5%;transform:translate(-50%,-50%) skewX(-4deg);';
-    chSp.appendChild(chDot);
     chWrap.appendChild(chSp);
     chinaLeft.insertBefore(chWrap,chinaLeft.firstChild);
   }
