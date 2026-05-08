@@ -3032,11 +3032,10 @@ body.v11-active.v11-hide-logo .nav-logo {
 
 /* ── 2. LOGO SCROLL SHRINK — smooth ── */
 body.v11-active .nav-logo {
-  transition: opacity 0.4s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1);
+  transition: opacity 0.4s ease, width 0.65s cubic-bezier(0.22,1,0.36,1);
   transform-origin: left center;
 }
 body.v11-active .nav-logo span {
-  transition: font-size 0.65s cubic-bezier(0.22,1,0.36,1), letter-spacing 0.65s ease, line-height 0.65s ease;
   display: block;
 }
 body.v11-active .nav-logo .sf-mark {
@@ -3048,9 +3047,14 @@ body.v11-active .nav-logo .sf-mark-ring {
 body.v11-active .nav-logo .gm {
   display: inline !important;
 }
-/* Scrolled state — shrink sf-mark font to match contact page logo size */
-body.v11-active.v11-scrolled .nav-logo .sf-mark {
-  font-size: 36px !important;
+/* Scrolled state — shrink nav logo width to match contact page (120px) */
+body.v11-active.v11-scrolled .nav-logo {
+  width: 130px !important;
+  height: 55px !important;
+}
+body.v11-active.v11-scrolled .nav-logo svg {
+  width: 130px !important;
+  height: 55px !important;
 }
 /* gmPulse animations removed */
 
@@ -3257,7 +3261,7 @@ body.v11-active.v11-cream-zone #v11-status-dot { color: rgba(10,10,10,0.6) !impo
 /* Dark cursor on gold CTA sections */
 body.v11-active.v11-cta-zone #v11-cursor span:first-child { color: rgba(10,10,10,0.7) !important; }
 body.v11-active #v11-cursor-dot { background: #c8a96e; }
-body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4) !important; } /* default, overridden by JS */
+body.v11-active #v11-cursor-ring span:first-child { color: rgba(200,169,110,0.4); } /* default, JS applyRingZone overrides via inline style */
 body.v11-active.v11-cta-zone #v11-cursor-dot { background: #2c1e4a !important; }
 /* cta ring color set by JS applyRingZone */
 body.v11-active.v11-cta-zone #v11-status-dot { color: rgba(10,10,10,0.6) !important; transition: none !important; }
@@ -5037,6 +5041,12 @@ document.addEventListener('DOMContentLoaded',function(){
 nav{padding-top:44px!important;}
 .nav-logo{width:240px!important;height:80px!important;overflow:visible!important;display:flex!important;align-items:flex-end!important;}
 .nav-logo svg{width:240px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;}
+/* Scrolled shrink — must override logo-switcher !important */
+body.v11-active.v11-scrolled .nav-logo{width:130px!important;height:55px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
+body.v11-active.v11-scrolled .nav-logo svg{width:130px!important;height:55px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
+/* Unscrolled restore */
+body.v11-active:not(.v11-scrolled) .nav-logo{width:240px!important;height:80px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
+body.v11-active:not(.v11-scrolled) .nav-logo svg{width:240px!important;height:80px!important;transition:width 0.65s cubic-bezier(0.22,1,0.36,1),height 0.65s cubic-bezier(0.22,1,0.36,1)!important;}
 @media(max-width:768px){
   .nav-logo{width:120px!important;height:60px!important;overflow:visible!important;display:flex!important;align-items:flex-end!important;}
   .nav-logo svg{width:120px!important;height:60px!important;flex-shrink:0!important;overflow:visible!important;}
