@@ -1335,6 +1335,29 @@ body.v11-cards-zone #v11-status-dot  { color: rgba(200,169,110,0.5) !important; 
   });
 })();
 </script>
+<script>
+// ── FOOTER GRID + M6 TAG ──
+(function(){
+  function gold(a){return 'rgba(200,169,110,'+a+')';}
+  function mk(t){return document.createElement(t);}
+  function rp(el){if(el&&window.getComputedStyle(el).position==='static')el.style.position='relative';}
+  function mkGrid(el,sp,col){
+    if(!el)return; rp(el);
+    var g=mk('div'); g.className='f-grid';
+    g.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:0;background-repeat:repeat;';
+    g.style.backgroundImage=
+      'repeating-linear-gradient(0deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px),'+
+      'repeating-linear-gradient(90deg,transparent,transparent '+(sp-1)+'px,'+col+' '+(sp-1)+'px,'+col+' '+sp+'px)';
+    el.appendChild(g);
+  }
+  document.addEventListener('DOMContentLoaded',function(){
+    var ftEl=document.querySelector('footer');
+    if(ftEl){rp(ftEl); mkGrid(ftEl,16,gold(0.04));}
+    var fb=document.querySelector('.footer-bottom');
+    if(fb){rp(fb); var m6=mk('span'); m6.className='f-m6'; m6.textContent='\u22003\u00d7M6'; fb.appendChild(m6);}
+  });
+})();
+</script>
 <style>
 /* Logo alignment — flush with hero grid */
 .nav-logo { margin-left: -20px !important; }
