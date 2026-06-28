@@ -34,3 +34,14 @@ to the project's configured instructions.
 - This site is deployed via Cloudflare Pages from `main`. Use Chrome (live) to
   confirm rendered results — source can differ from render (logo is an injected
   SVG, image extensions don't match content, etc.).
+
+## Response style (how to report back to Matthew)
+- Do the full detailed work as usual — backups, edits, triple-checks, live
+  verification. Matthew likes that the detail is there and visible.
+- BUT always END every response with a short, plain-language summary:
+  1-2 lines, no jargon, just "here's what changed / where we are."
+- At decision points, give ONE clear, simple choice in plain words — not a
+  wall of options or technical trade-offs.
+- Matthew often can't read the long technical parts — the short summary and the
+  simple choice at the END are what he actually reads. Put them last, keep them
+  human.
