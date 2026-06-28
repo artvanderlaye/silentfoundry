@@ -17,12 +17,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;}
 nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
 .nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-20px;transition:width 0.4s ease,height 0.4s ease;}
-/* ── Logo unified to homepage: size + scroll-shrink (transform) + X-position ── */
-.nav-logo svg{width:240px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;transition:transform 0.65s cubic-bezier(0.22,1,0.36,1)!important;transform-origin:12.47% 100%!important;}
-body.v11-active.v11-scrolled .nav-logo svg{transform:scale(0.54)!important;}
-body.v11-active:not(.v11-scrolled) .nav-logo svg{transform:scale(1)!important;}
-@media(min-width:901px){ body.v11-active nav .nav-logo{margin-left:-31px!important;} }
-@media(max-width:768px){ .nav-logo svg{width:120px!important;height:60px!important;} body.v11-active.v11-scrolled .nav-logo svg{transform:scale(1)!important;} }
 .nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
 .nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;transition:all 0.2s;cursor:pointer;}
 .nbtn:hover{color:rgba(10,10,10,0.9);}
@@ -348,7 +342,11 @@ document.getElementById('clsw-slot').innerHTML=_r;
 })();
 window.addEventListener('scroll',function(){
   document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);
-  /* logo shrink handled by CSS transform on v11-scrolled (matches homepage) */
+  var nl=document.getElementById('nl');
+  if(nl){
+    if(window.scrollY>60){nl.style.width='140px';nl.style.height='46px';}
+    else{nl.style.width='240px';nl.style.height='80px';}
+  }
 },{passive:true});
 })();
 </script>

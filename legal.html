@@ -38,6 +38,14 @@ body { background:#ede8e0; color:rgba(10,10,10,0.85); font-family:'DM Sans',sans
 }
 .nav-logo span { font-size:53px; letter-spacing:0.06em; -webkit-text-stroke:0.5px rgba(244,241,236,0.9); display:block; transition:font-size 0.5s ease; }
 #legal-nav.scrolled .nav-logo span { font-size:42px; }
+/* ── Logo unified to homepage: size + scroll-shrink (transform) + X-position ── */
+/* legal logo is a static inline SVG that ignores CSS transform — scale the PARENT (skew preserved) */
+.nav-logo{transition:transform 0.65s cubic-bezier(0.22,1,0.36,1)!important;transform-origin:12.47% 100%!important;}
+.nav-logo svg{width:240px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;}
+body.v11-active.v11-scrolled .nav-logo{transform:skewX(-4deg) scale(0.54)!important;}
+body.v11-active:not(.v11-scrolled) .nav-logo{transform:skewX(-4deg) scale(1)!important;}
+@media(min-width:901px){ body.v11-active nav .nav-logo{margin-left:-31px!important;} }
+@media(max-width:768px){ .nav-logo svg{width:120px!important;height:60px!important;} body.v11-active.v11-scrolled .nav-logo{transform:skewX(-4deg) scale(1)!important;} }
 @keyframes sharedLogoStamp {
   0%   { transform:skewX(-4deg) scale(1.08); opacity:0; }
   60%  { transform:skewX(-4deg) scale(0.99); opacity:1; }
