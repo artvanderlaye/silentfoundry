@@ -16,14 +16,13 @@ body{background:var(--cream);color:var(--black);font-family:'DM Sans',sans-serif
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:44px 48px 14px;transition:opacity 0.4s;overflow:visible;}
 nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(237,232,224,0.98) 0%,transparent 100%);pointer-events:none;}
 nav.scrolled{opacity:0.3;}nav.scrolled:hover{opacity:1;}
-.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:240px;height:80px;margin-left:-20px;transition:width 0.4s ease,height 0.4s ease;}
-/* ── Logo identical to homepage: skewX(4) group in SVG + parent skewX(-4) (upright) + smooth SVG shrink + -28 margin ── */
-.nav-logo{transform:skewX(-4deg) scale(1)!important;transform-origin:12.47% 100%!important;}
-.nav-logo svg{width:240px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;transition:transform 0.65s cubic-bezier(0.22,1,0.36,1)!important;transform-origin:12.47% 100%!important;}
+.nav-logo{position:relative;z-index:1;flex-shrink:0;text-decoration:none;display:block;width:224px;height:80px;margin-left:0;transition:width 0.4s ease,height 0.4s ease;}
+/* ── Logo: artwork cropped so the SVG box edge = the visible letters; logo sits flush on the 48px/24px gutter with NO negative margin; shrinks straight down from its left edge. No magic numbers — works at every width. ── */
+.nav-logo{transform:none!important;margin-left:0!important;}
+.nav-logo svg{width:224px!important;height:80px!important;flex-shrink:0!important;overflow:visible!important;transition:transform 0.65s cubic-bezier(0.22,1,0.36,1)!important;transform-origin:left bottom!important;}
 body.v11-active:not(.v11-scrolled) .nav-logo svg{transform:scale(1)!important;}
 body.v11-active.v11-scrolled .nav-logo svg{transform:scale(0.54)!important;}
-@media(min-width:901px){ body.v11-active nav .nav-logo{margin-left:-28px!important;} }
-@media(max-width:768px){ .nav-logo svg{width:120px!important;height:60px!important;} body.v11-active.v11-scrolled .nav-logo svg{transform:scale(1)!important;} }
+@media(max-width:768px){ .nav-logo{width:112px!important;height:60px!important;} .nav-logo svg{width:112px!important;height:60px!important;} body.v11-active.v11-scrolled .nav-logo svg{transform:scale(1)!important;} }
 .nav-right{display:flex;align-items:center;gap:8px;position:relative;z-index:1;}
 .nbtn{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;background:none;border:0.5px solid rgba(10,10,10,0.25);color:rgba(10,10,10,0.5);padding:4px 10px;text-decoration:none;transition:all 0.2s;cursor:pointer;}
 .nbtn:hover{color:rgba(10,10,10,0.9);}
@@ -86,7 +85,7 @@ body>footer{margin-top:auto;}
   .nav-right{display:flex!important;}
   .nav-home{display:none!important;}
   .nav-toggle{display:flex;}
-  .nav-logo{width:120px!important;height:60px!important;margin-left:-10px!important;}
+  .nav-logo{width:112px!important;height:60px!important;margin-left:0!important;}
 
   div[style*="padding:180px 48px 0"]{padding:100px 24px 0!important;}
   div[style*="padding-top:8px"]{padding:24px 0!important;}
@@ -116,7 +115,7 @@ body>footer{margin-top:auto;}
 </div>
 <nav id="main-nav">
   <a href="index.html" class="nav-logo" id="nl">
-    <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><g transform="skewX(4)"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">FOUNDRY</text></g></svg>
+    <svg viewBox="10 36 112 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-size="14" font-weight="300" letter-spacing="6" fill="rgba(10,10,10,0.75)">FOUNDRY</text></svg>
   </a>
   <div class="nav-right">
     <a href="index.html" class="nbtn nav-home">HOME</a>
@@ -427,7 +426,7 @@ body.v11-active .nav-logo.v11-stamp {
   transform-origin: left center;
 }
 body.v11-active nav { align-items: center !important; }
-body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 240px; overflow: visible; }
+body.v11-active .nav-logo { position: relative; flex-shrink: 0; width: 224px; overflow: visible; }
 /* Stamp uses transform only — no layout change */
 @keyframes v11LogoStamp {
   0%   { transform: scale(1.08); opacity: 0; }
@@ -715,11 +714,11 @@ body.v11-active #v11-badge {
   }
 }
 @media (min-width: 901px) {
-  .nav-logo { margin-left: -28px !important; }
+  .nav-logo { margin-left: 0 !important; }
   .footer-logo { margin-left: -18px !important; }
 }
 @media (max-width: 900px) {
-  .nav-logo { margin-left: -13px !important; }
+  .nav-logo { margin-left: 0 !important; }
   .footer-logo { margin-left: -13px !important; }
 }
 @media (max-width: 900px) {
