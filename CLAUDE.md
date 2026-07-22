@@ -45,3 +45,16 @@ to the project's configured instructions.
 - Matthew often can't read the long technical parts — the short summary and the
   simple choice at the END are what he actually reads. Put them last, keep them
   human.
+
+## Matthew ALWAYS pushes — never blame the push
+- Matthew reliably runs the full push (add + commit + push). Do NOT default to
+  "did you push?" / "you need to push" as the troubleshooting step, and do NOT
+  tell him to push repeatedly. It's almost never the issue and it frustrates him.
+- If something isn't live, diagnose the REAL cause yourself, without asking:
+  - Confirm it's on GitHub: read `.git/refs/heads/main` vs
+    `.git/refs/remotes/origin/main` (same hash = pushed) and `.git/logs/HEAD`
+    for the commit history/messages. (Read these files; never RUN git.)
+  - If it IS on origin/main but not live, it's a Cloudflare Pages DEPLOY issue,
+    not git: cache-buster the URL (`?cb=123`) to rule out cache, then it's a
+    stale/failed/pending Cloudflare build — point Matthew to the Cloudflare
+    Pages → Deployments tab (retry deploy / check build error), not to git.
