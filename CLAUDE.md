@@ -30,6 +30,33 @@ to the project's configured instructions.
   (only `index.html` has the switcher + scroll-shrink). Standardizing that is a
   separate, queued project.
 
+## Design reference — the Marshall case study is the benchmark
+- The Marshall DNA-translation section on `index.html` is the layout that WORKS.
+  Matthew has confirmed it's the strongest section on the site. Treat it as the
+  house pattern and adapt other sections to match over time.
+- Why it works: it PROVES instead of claiming. The rhythm is
+  eyebrow -> big display headline -> short setup paragraph -> hard numbers
+  (1962 / 60+ / $4B+ / $1.1B) -> image -> concrete attribute grid (6 short
+  labelled items) -> outcome. Text and image alternate, so it breathes.
+- Already reused once: the SWITCH featured project uses the same shape
+  (Form, Structure, CMF, Signature Details, Stance, Manufacturing). Repeating it
+  is deliberate — it's becoming the site's signature.
+- Queued: rebuild the TEAM page on this rhythm (it's currently ~1,140 words,
+  cramped and unbalanced). Other sections to follow.
+
+## Voice / taste (learned from the copy pass)
+- Matthew is chasing RESTRAINT, not impact. When given bold vs calm options he
+  picks calm (chose the cream contained video layout over full-bleed cinematic,
+  chose the no-eyebrow full-width text block).
+- Strip corporate/consulting language on sight: "scalable", "product systems",
+  "unit economics", "price architecture", "channel logic", "credible paths to
+  liquidity". He calls this "try hard" and wants it gone sitewide.
+- Also removing decorative try-hard elements (e.g. the "Open for 2026
+  partnerships" floating badge was deleted from all pages).
+- Positioning: NOT a "studio" (too small/agency). The Foundry for Brand DNA.
+  Anchor line that works: "The world's strongest brands deserve more than
+  merchandise."
+
 ## Verify before shipping
 - This site is deployed via Cloudflare Pages from `main`. Use Chrome (live) to
   confirm rendered results — source can differ from render (logo is an injected
