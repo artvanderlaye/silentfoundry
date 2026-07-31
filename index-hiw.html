@@ -5344,14 +5344,27 @@ function css(r){
  c+="#fv-stage .fv-paird{display:block;font-family:'DM Sans',sans-serif;font-size:0.72rem;line-height:1.65;color:"+mt+";}";
  c+='@media(max-width:960px){#fv-stage div[style*="grid-template-columns"],#fv-stage .fv-dna,#fv-stage .fv-cats,#fv-stage .fv-pair{grid-template-columns:1fr !important;}}';
  return c;}
+function origBlocks(){
+ /* #featured is unclosed in the source, so the rest of the page parses INSIDE it.
+    Only hide the nodes that belong to the featured block itself. */
+ var orig=document.getElementById('featured'), stage=document.getElementById('fv-stage');
+ if(!orig) return [];
+ if(stage && orig.contains(stage)){
+   var out=[],ch=orig.children;
+   for(var i=0;i<ch.length;i++){ if(ch[i]===stage) break; out.push(ch[i]); }
+   return out;
+ }
+ return [orig];
+}
+function showOrig(on){ origBlocks().forEach(function(n){ n.style.display = on?'':'none'; }); }
 function render(k){
- var stage=document.getElementById('fv-stage'), orig=document.getElementById('featured');
+ var stage=document.getElementById('fv-stage');
  if(!stage)return false;
  qa('.fv-style').forEach(function(n){n.parentNode.removeChild(n);});
  stage.innerHTML='';
  var r=V[String(k)]; if(!r)return false;
- if(r.L==='original'){ if(orig)orig.style.display=''; stage.style.display='none'; }
- else { if(orig)orig.style.display='none'; stage.style.display='';
+ if(r.L==='original'){ showOrig(true); stage.style.display='none'; }
+ else { showOrig(false); stage.style.display='';
    layout(r).forEach(function(n){if(n)stage.appendChild(n);});
    var st=document.createElement('style');st.className='fv-style';st.textContent=css(r);document.head.appendChild(st); }
  qa('#fv-sw button').forEach(function(b){b.className=(b.getAttribute('data-v')==String(k))?'on':'';});
