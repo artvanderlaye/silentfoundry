@@ -66,6 +66,14 @@ to the project's configured instructions.
   confirm rendered results — source can differ from render (logo is an injected
   SVG, image extensions don't match content, etc.).
 
+## ALWAYS give the URL — every single time
+- Matthew works across many preview pages and the address changes constantly.
+  EVERY response that touches a page must end with the full clickable URL of the
+  page that changed. Never make him ask "what's the site?".
+- Root homepage: `https://silentfoundry.pages.dev`
+- Any other page: `https://silentfoundry.pages.dev/<filename-without-.html>`
+- If several pages changed, list each one.
+
 ## Response style (how to report back to Matthew)
 - Do the full detailed work as usual — backups, edits, triple-checks, live
   verification. Matthew likes that the detail is there and visible.
