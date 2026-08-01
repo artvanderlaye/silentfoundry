@@ -54,8 +54,12 @@ to the project's configured instructions.
 - Also removing decorative try-hard elements (e.g. the "Open for 2026
   partnerships" floating badge was deleted from all pages).
 - Positioning: NOT a "studio" (too small/agency). The Foundry for Brand DNA.
-  Anchor line that works: "The world's strongest brands deserve more than
-  merchandise."
+  Anchor line (updated Aug 2026): "The world's best brands deserve more than
+  merch." (Superseded: "...strongest brands deserve more than merchandise.")
+- Not a design consultancy either. Positioning is a VENTURE PLATFORM built
+  around physical products: finds authentic brand DNA, turns it into
+  world-class products, and has the manufacturing network, commercial
+  structure and investment relationships to build ventures around them.
 
 ## Verify before shipping
 - This site is deployed via Cloudflare Pages from `main`. Use Chrome (live) to
