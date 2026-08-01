@@ -5026,21 +5026,10 @@ document.addEventListener('DOMContentLoaded',function(){
       update(false);
     })();
     </script>
-
-<style id="su-bar-css">
-#su-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2147483647;display:flex;align-items:center;gap:5px;background:rgba(10,10,10,0.97);border:1px solid rgba(200,169,110,0.55);padding:9px 14px;border-radius:3px;box-shadow:0 8px 30px rgba(0,0,0,0.7);}
-#su-bar button{font-family:'DM Sans',sans-serif;font-size:0.78rem;background:rgba(244,241,236,0.07);border:1px solid rgba(244,241,236,0.16);color:rgba(244,241,236,0.8);cursor:pointer;padding:6px 11px;border-radius:2px;min-width:30px;}
-#su-bar button:hover,#su-bar button.on{color:#0a0a0a;background:#c8a96e;border-color:#c8a96e;}
-#su-name{font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.1em;color:#f4f1ec;margin-left:8px;min-width:210px;}
-</style>
-<script id="su-js">(function(){
+<script id="one-js">(function(){
 "use strict";
-var NAMES=["Original","Tall anchor + wide closer","Second wide cell","Three-column sheet",
-"Banner anchor + note row","Anchor with detail crop","Even 4x2 — no span"];
 function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e;}
 function dv(c,k){var d=el('div',c);(k||[]).forEach(function(x){if(x)d.appendChild(x);});return d;}
-function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
-var stage=null;
 var DNA=[["Form","Rectilinear geometry."],["Structure","Exposed engineering."],["CMF","Honest materials."],
 ["Signature Details","Functional hardware."],["Stance","Balanced proportions."],["Manufacturing","Assembly-first thinking."],
 ["Modularity","Components that recombine."],["Serviceability","Built to be opened."]];
@@ -5048,73 +5037,39 @@ var H1="Designed DNA",
  P1="These principles define the SWITCH platform rather than any individual product. They establish a transferable industrial language that can support entirely new commercial categories.",
  H2="Product Portfolio",
  P2="Each application demonstrates the same design system expressed through different functions and markets. Together they illustrate the commercial breadth of the SWITCH platform.";
+/* order: Speaker and Bench System swapped — Speaker now sits in the bottom row */
 var P=[
-["images/eSCRAMBLER_dirt-13.jpg","Mobility","Off-Road","The origin product taken off tarmac — the same chassis logic and exposed hardware meeting rougher ground.","Steel tube · brushed alloy","Form · Structure · Stance"],
-["images/snowboard.jpg","Lifestyle","Snowboard","Balances exposed construction with minimal geometry to create high-performance alpine equipment unmistakably rooted in the SWITCH language.","Composite · anodised insert","Form · CMF · Manufacturing"],
-["images/guitar.jpg","Audio","Guitar","Precision hardware and brushed metal read as instrument-grade the moment the same tolerances are applied to a body and neck.","Ash · brushed steel","Signature Details · CMF"],
-["images/Upscaled_amp.png","Audio","Amplifier","Reinterprets SWITCH's structural ribbing and functional detailing as premium consumer audio rather than motorcycle hardware.","Extruded alloy · ABS","Structure · CMF"],
-["images/switch_speaker.png","Audio","Speaker","Cabinet proportion follows the battery block and the grille repeats the cooling fin — nothing styled to resemble a motorcycle.","Alloy · acoustic textile","Form · Signature Details"],
-["images/switch_battery.jpg","Energy","Battery Pack","Energy hardware where the cell architecture is the product rather than something concealed behind a cover.","Alloy extrusion · PC","Modularity · Serviceability"],
-["images/cnc-cutting.jpg","Professional","Task Light","Carries the same engineering honesty into professional workspace equipment designed for daily industrial use.","Machined alloy · glass","Structure · Manufacturing"],
-["images/prototype_assembly.jpg","Workspace","Bench System","Modularity and serviceability scaled up — workshop structure assembled from the same logic as the vehicle built on it.","Steel · alloy fixings","Modularity · Assembly-first"]];
+["images/eSCRAMBLER_dirt-13.jpg","Mobility","Off-Road","The origin product taken off tarmac — the same chassis logic, exposed hardware and bolt rhythm meeting rougher ground.","Steel tube · brushed alloy","Form · Structure · Stance","Frame geometry is unchanged from the road bike; only ride height, tyre package and guarding differ. Nothing was restyled to suit the category."],
+["images/snowboard.jpg","Lifestyle","Snowboard","Balances exposed construction with minimal geometry to create high-performance alpine equipment unmistakably rooted in the SWITCH language.","Composite · anodised insert","Form · CMF · Manufacturing",""],
+["images/guitar.jpg","Audio","Guitar","Precision hardware and brushed metal read as instrument-grade the moment the same tolerances are applied to a body and neck.","Ash · brushed steel","Signature Details · CMF",""],
+["images/Upscaled_amp.png","Audio","Amplifier","Reinterprets SWITCH's structural ribbing and functional detailing as premium consumer audio rather than motorcycle hardware.","Extruded alloy · ABS","Structure · CMF",""],
+["images/prototype_assembly.jpg","Workspace","Bench System","Modularity and serviceability scaled up — workshop structure assembled from the same logic as the vehicle built on it.","Steel · alloy fixings","Modularity · Assembly-first",""],
+["images/switch_battery.jpg","Energy","Battery Pack","Energy hardware where the cell architecture is the product rather than something concealed behind a cover.","Alloy extrusion · PC","Modularity · Serviceability",""],
+["images/cnc-cutting.jpg","Professional","Task Light","Carries the same engineering honesty into professional workspace equipment designed for daily industrial use.","Machined alloy · glass","Structure · Manufacturing",""],
+["images/switch_speaker.png","Audio","Speaker","Cabinet proportion follows the battery block and the grille repeats the cooling fin — nothing styled to resemble a motorcycle.","Alloy · acoustic textile","Form · Signature Details",""]];
 
-function EY(t){return el('p','u-ey',t);}
-function LEAD(t){return el('p','u-lead',t);}
 function IMG(p,c){var i=document.createElement('img');i.src=p[0];i.alt=p[2];i.className='u-img'+(c?' '+c:'');return i;}
-function CROP(p,c){var i=document.createElement('img');i.src=p[0];i.alt=p[2]+' detail';i.className='u-crop'+(c?' '+c:'');return i;}
-function CAT(p){return el('span','u-cat',p[1]);}
-function NM(p,c){return el('span','u-name'+(c?' '+c:''),p[2]);}
-function DESC(p){return el('span','u-desc',p[3]);}
-function META(p){return el('span','u-meta','<b>Principles</b> '+p[5]);}
-function head(){var f=document.createDocumentFragment();
- f.appendChild(EY(H1));f.appendChild(LEAD(P1));
+function build(){
+ var w=el('div','u1');
+ w.appendChild(el('p','u-ey',H1));w.appendChild(el('p','u-lead',P1));
  var g=el('div','u-dna');DNA.forEach(function(d){g.appendChild(dv('u-d',[el('span','u-k',d[0]),el('span','u-v',d[1])]));});
- f.appendChild(g);f.appendChild(EY(H2));f.appendChild(LEAD(P2));return f;}
-function cell(p,cls,extra){return dv('u-c'+(cls?' '+cls:''),[IMG(p),dv('u-tx',[CAT(p),NM(p),DESC(p)].concat(extra?[META(p)]:[]))]);}
-
-var A={};
-/* 1 — the original, unchanged: one empty cell at the end, tall anchor */
-A[1]=function(){var w=el('div','u1');w.appendChild(head());
- var g=el('div','u-g');
- P.forEach(function(p,i){g.appendChild(cell(p,i===0?'u-anchor':''));});
- w.appendChild(g);return w;};
-/* 2 — anchor image made tall so it fills two rows; last product spans 2 to close the grid */
-A[2]=function(){var w=el('div','u2');w.appendChild(head());
- var g=el('div','u-g');
- P.forEach(function(p,i){g.appendChild(cell(p,i===0?'u-anchor':(i===7?'u-wide':''),i===0));});
- w.appendChild(g);return w;};
-/* 3 — a second 2-wide cell mid-grid absorbs the gap and adds a middle tier */
-A[3]=function(){var w=el('div','u3');w.appendChild(head());
- var g=el('div','u-g');
- P.forEach(function(p,i){g.appendChild(cell(p,i===0?'u-anchor':(i===4?'u-wide':''),i===0||i===4));});
- w.appendChild(g);return w;};
-/* 4 — three columns instead of four; anchor 2x2, one wide closer */
-A[4]=function(){var w=el('div','u4');w.appendChild(head());
- var g=el('div','u-g u-g3');
- P.forEach(function(p,i){g.appendChild(cell(p,i===0?'u-anchor':(i===7?'u-wide':''),i===0));});
- w.appendChild(g);return w;};
-/* 5 — anchor becomes a full-width banner; a closing note row fills the last three slots */
-A[5]=function(){var w=el('div','u5');w.appendChild(head());
- var g=el('div','u-g');
- P.forEach(function(p,i){g.appendChild(cell(p,i===0?'u-banner':'',i===0));});
- g.appendChild(dv('u-c u-note',[el('span','u-cat','Platform'),
-   el('span','u-desc','Open-ended. New categories enter without altering the system.')]));
- w.appendChild(g);return w;};
-/* 6 — anchor holds image + detail crop, filling its two rows honestly */
-A[6]=function(){var w=el('div','u6');w.appendChild(head());
- var g=el('div','u-g');
+ w.appendChild(g);
+ w.appendChild(el('p','u-ey',H2));w.appendChild(el('p','u-lead',P2));
+ var grid=el('div','u-g');
  P.forEach(function(p,i){
-  if(i===0){g.appendChild(dv('u-c u-anchor',[IMG(p),CROP(p),dv('u-tx',[CAT(p),NM(p),DESC(p),META(p)])]));}
-  else g.appendChild(cell(p,i===7?'u-wide':''));});
- w.appendChild(g);return w;};
-/* 7 — no spans at all: eight equal cells, 4x2, zero empty space */
-A[7]=function(){var w=el('div','u7');w.appendChild(head());
- var g=el('div','u-g');
- P.forEach(function(p,i){g.appendChild(cell(p,'',i===0));});
- w.appendChild(g);return w;};
+  var anchor=(i===0), twin=(p[2]==='Speaker');
+  var c=el('div','u-c'+(anchor?' u-anchor':'')+(twin?' u-twin':''));
+  if(twin){var im=dv('u-tw',[IMG(p,'u-t1'),IMG(p,'u-t2')]);c.appendChild(im);}
+  else c.appendChild(IMG(p));
+  var tx=dv('u-tx',[el('span','u-cat',p[1]),el('span','u-name',p[2]),el('span','u-desc',p[3])]);
+  if(anchor){tx.appendChild(el('span','u-meta','<b>Material</b> '+p[4]));
+             tx.appendChild(el('span','u-meta','<b>Principles</b> '+p[5]));
+             tx.appendChild(el('span','u-note',p[6]));}
+  c.appendChild(tx);grid.appendChild(c);});
+ w.appendChild(grid);return w;}
 
 var I=function(a){return 'rgba(10,10,10,'+a+')';}, G='#8a6e3a', CY='rgba(0,180,216,0.5)';
-var BASE=
+var CSS=
 "#su .u-ey{font-family:'DM Sans',sans-serif;font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:"+G+";display:block;margin:0 0 16px 0;}"+
 "#su .u-lead{font-family:'DM Sans',sans-serif;font-size:0.8rem;line-height:1.95;font-weight:300;color:"+I(0.55)+";max-width:620px;margin:0 0 38px 0;}"+
 "#su .u-dna{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 30px;margin-bottom:52px;}"+
@@ -5122,69 +5077,29 @@ var BASE=
 "#su .u-k{font-family:'DM Sans',sans-serif;font-size:0.7rem;letter-spacing:0.2em;font-weight:500;text-transform:uppercase;color:"+I(0.8)+";display:block;margin-bottom:4px;}"+
 "#su .u-v{font-family:'DM Sans',sans-serif;font-size:0.64rem;line-height:1.6;font-weight:300;color:"+I(0.5)+";display:block;}"+
 "#su .u-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:"+I(0.09)+";border:1px solid "+I(0.09)+";}"+
-"#su .u-g3{grid-template-columns:repeat(3,1fr);}"+
 "#su .u-c{background:#efece6;padding:20px;display:flex;flex-direction:column;}"+
 "#su .u-img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;filter:grayscale(0.32) contrast(1.07);}"+
 "#su .u-tx{margin-top:auto;padding-top:12px;}"+
 "#su .u-cat{font-family:'DM Sans',sans-serif;font-size:0.44rem;letter-spacing:0.26em;text-transform:uppercase;color:"+G+";display:block;border-left:2px solid "+CY+";padding-left:8px;}"+
 "#su .u-name{font-family:Bebas Neue,sans-serif;font-size:0.95rem;letter-spacing:0.2em;text-transform:uppercase;color:"+I(0.82)+";display:block;margin-top:5px;}"+
 "#su .u-desc{font-family:'DM Sans',sans-serif;font-size:0.62rem;line-height:1.75;font-weight:300;color:"+I(0.48)+";display:block;margin-top:8px;}"+
-"#su .u-meta{font-family:'DM Sans',sans-serif;font-size:0.54rem;color:"+I(0.42)+";display:block;margin-top:8px;}"+
+"#su .u-meta{font-family:'DM Sans',sans-serif;font-size:0.54rem;color:"+I(0.42)+";display:block;margin-top:7px;}"+
 "#su .u-meta b{font-weight:500;color:"+G+";letter-spacing:0.14em;text-transform:uppercase;font-size:0.44rem;margin-right:6px;}"+
+"#su .u-note{font-family:'DM Sans',sans-serif;font-size:0.58rem;line-height:1.8;font-weight:300;color:"+I(0.45)+";display:block;margin-top:12px;padding-top:12px;border-top:1px solid "+I(0.08)+";max-width:44ch;}"+
+/* anchor: taller image + fuller text so the 2x2 cell is filled */
 "#su .u-anchor{grid-column:span 2;grid-row:span 2;}"+
-"#su .u-wide{grid-column:span 2;}"+
-"#su .u-banner{grid-column:span 4;}"+
-"@media(max-width:900px){#su .u-g{grid-template-columns:1fr !important;}#su .u-anchor,#su .u-wide,#su .u-banner{grid-column:span 1 !important;grid-row:span 1 !important;}}";
-var S={};
-S[1]="#su .u1 .u-anchor .u-img{aspect-ratio:16/10;}#su .u1 .u-anchor .u-name{font-size:1.35rem;}";
-S[2]="#su .u2 .u-anchor .u-img{aspect-ratio:3/4;}#su .u2 .u-anchor .u-name{font-size:1.5rem;}"+
- "#su .u2 .u-wide .u-img{aspect-ratio:21/9;}";
-S[3]="#su .u3 .u-anchor .u-img{aspect-ratio:3/4;}#su .u3 .u-anchor .u-name{font-size:1.5rem;}"+
- "#su .u3 .u-wide .u-img{aspect-ratio:16/7;}#su .u3 .u-wide .u-name{font-size:1.15rem;}";
-S[4]="#su .u4 .u-anchor .u-img{aspect-ratio:1/1;}#su .u4 .u-anchor .u-name{font-size:1.5rem;}"+
- "#su .u4 .u-wide .u-img{aspect-ratio:21/9;}";
-S[5]="#su .u5 .u-banner{display:grid;grid-template-columns:1.7fr 1fr;gap:34px;align-items:end;}"+
- "#su .u5 .u-banner .u-img{aspect-ratio:21/9;}#su .u5 .u-banner .u-name{font-size:1.6rem;}"+
- "#su .u5 .u-banner .u-tx{margin-top:0;padding-top:0;}"+
- "#su .u5 .u-note{justify-content:center;}"+
- "#su .u5 .u-note .u-desc{max-width:46ch;font-style:italic;}";
-S[6]="#su .u6 .u-anchor{gap:1px;}#su .u6 .u-anchor .u-img{aspect-ratio:16/10;}"+
- "#su .u6 .u-crop{width:100%;aspect-ratio:16/6;object-fit:cover;object-position:40% 60%;display:block;filter:grayscale(0.32) contrast(1.07);margin-top:1px;}"+
- "#su .u6 .u-anchor .u-name{font-size:1.35rem;}#su .u6 .u-wide .u-img{aspect-ratio:21/9;}";
-S[7]="#su .u7 .u-c:first-child .u-name{font-size:1.2rem;}#su .u7 .u-img{aspect-ratio:4/3;}";
+"#su .u-anchor .u-img{aspect-ratio:4/3;}"+
+"#su .u-anchor .u-name{font-size:1.45rem;}"+
+"#su .u-anchor .u-desc{font-size:0.68rem;max-width:48ch;}"+
+/* twin: two stacked frames totalling one normal image height */
+"#su .u-twin .u-tw{display:grid;grid-template-rows:1fr 1fr;gap:1px;}"+
+"#su .u-twin .u-img{aspect-ratio:3/1;}"+
+"@media(max-width:900px){#su .u-g{grid-template-columns:1fr !important;}#su .u-anchor{grid-column:span 1 !important;grid-row:span 1 !important;}}";
 
-var cur=1;
-function render(n){n=Math.max(1,Math.min(7,parseInt(n,10)||1));if(!stage)return false;
- stage.innerHTML='';stage.appendChild(A[n]());
- var st=document.getElementById('su-style');if(!st){st=document.createElement('style');st.id='su-style';document.head.appendChild(st);}
- st.textContent=BASE+(S[n]||'');cur=n;
- qa('#su-bar button[data-v]').forEach(function(b){b.className=(b.getAttribute('data-v')===String(n))?'on':'';});
- var nm=document.getElementById('su-name');if(nm)nm.textContent=String(n).padStart(2,'0')+' · '+NAMES[n-1];
- try{localStorage.setItem('suv',String(n));}catch(e){}return true;}
-window.__suRender=render;
-window.__suAudit=function(){var o=[];for(var n=1;n<=7;n++){render(n);
- var g=stage.querySelector('.u-g');
- var cols=(getComputedStyle(g).gridTemplateColumns.match(/px/g)||[]).length||parseInt((S[n]||'').indexOf('u-g3')>-1?3:4,10);
- var cells=g.children.length,slots=0;
- Array.prototype.slice.call(g.children).forEach(function(c){
-   var cs=getComputedStyle(c);var sp=(c.className.indexOf('u-banner')>-1?4:(c.className.indexOf('u-anchor')>-1||c.className.indexOf('u-wide')>-1||c.className.indexOf('u-note')>-1?(c.className.indexOf('u-note')>-1?1:2):1));
-   var rows=(c.className.indexOf('u-anchor')>-1?2:1);slots+=sp*rows;});
- var C=(n===4?3:4);
- o.push({v:n,name:NAMES[n-1],cols:C,cells:cells,slots:slots,rows:Math.ceil(slots/C),
-   empty:Math.ceil(slots/C)*C-slots,imgs:stage.querySelectorAll('img').length});}
- return o;};
 function init(){var host=document.getElementById('sw28');if(!host){setTimeout(init,400);return;}
- stage=el('div');stage.id='su';host.innerHTML='';host.appendChild(stage);
- var bar=el('div');bar.id='su-bar';var b='';for(var i=1;i<=7;i++)b+='<button data-v="'+i+'">'+i+'</button>';
- bar.innerHTML='<button id="su-prev">‹</button>'+b+'<button id="su-next">›</button><span id="su-name"></span>';
- document.body.appendChild(bar);
- qa('#su-bar button[data-v]').forEach(function(x){x.onclick=function(){render(x.getAttribute('data-v'));};});
- document.getElementById('su-prev').onclick=function(){render(cur===1?7:cur-1);};
- document.getElementById('su-next').onclick=function(){render(cur===7?1:cur+1);};
- document.addEventListener('keydown',function(e){if(e.target&&/INPUT|SELECT/.test(e.target.tagName))return;
-  if(e.key==='ArrowLeft'){e.preventDefault();render(cur===1?7:cur-1);}
-  if(e.key==='ArrowRight'){e.preventDefault();render(cur===7?1:cur+1);}});
- var k=1;try{var v=parseInt(localStorage.getItem('suv'),10);if(v>=1&&v<=7)k=v;}catch(e){}render(k);}
+ var s=el('div');s.id='su';host.innerHTML='';host.appendChild(s);s.appendChild(build());
+ var st=el('style');st.id='su-style';st.textContent=CSS;document.head.appendChild(st);
+ window.__one={grid:s.querySelector('.u-g'),cells:s.querySelectorAll('.u-c').length};}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(init,900);});
 else setTimeout(init,900);
 })();
