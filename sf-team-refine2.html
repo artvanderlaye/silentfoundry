@@ -541,7 +541,7 @@ function BOT(c){
  var bg=c.bg||T34, pad=c.pad||'25px 0', d=(bg!==CRM);
  function wrap(inner,extra){return '<section style="background:'+bg+';padding:'+pad+';overflow:hidden;position:relative;'+(extra||'')+'">'+inner+'</section>';}
  var B=BEL({dark:d,al:c.al,big:c.big,skew:c.skew,nobr:c.nobr,bls:c.bls,attr:c.attr,max:c.max,small:c.small});
- var inv=c.noInv?'':INV({dark:c.idark,shape:c.ishape,al:c.ial,bg:c.ibg,pad:c.ipad,mw:c.imw});
+ var inv=INV({dark:c.idark,shape:c.ishape,al:c.ial,bg:c.ibg,pad:c.ipad,mw:c.imw});
  var row='<div style="position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:'+
    (c.mh||'320px')+';padding-left:'+(c.pl||'32px')+';">';
  switch(c.s){
@@ -1227,17 +1227,14 @@ yadd('Flush Strip','The hairlines between cards removed so the strip reads as on
 yadd('Heavier Rules','The opposite — the hairlines between cards strengthened so the grid structure of the strip is unmistakable.',function(){
  return INTRO_B() + HY({gap:'2px',line:'rgba(10,10,10,0.16)'}) + MV_SECTION() + ORIG_BOTTOM();});
 
-yadd('Beliefs on the Grid','Mission, Vision and Opportunities all hang from the same three-column label gutter, stacked on one set of alignment lines. Opportunities reads as a third belief rather than a call to action, so the manifesto closes the page alone.',function(){
- function gridRow(lb,tx,extra,last){
-  return '<div class="x-12"'+(last?'':' style="padding-bottom:34px;"')+'>'+
-   '<div style="grid-column:1/4;">'+xEy(lb,'0')+'</div>'+
-   '<div style="grid-column:4/11;">'+xBd(tx,'100%')+(extra||'')+'</div></div>'+
-   (last?'':'<div class="x-rule" style="margin-bottom:34px;"></div>');}
+yadd('Beliefs on the Grid','Mission and Vision hang from the same three-column label gutter, stacked one above the other on a single set of alignment lines that also governs the introduction.',function(){
  return INTRO_B({span:'9'}) + HY() +
-   xs(gridRow(C.missionLb,C.mission)+gridRow(C.visionLb,C.vision)+
-      gridRow(C.oppLb,C.oppBb,g(26)+oCta(false),true),
-   {p:'clamp(80px,11vh,130px) '+XPAD,bt:K.r08})
- + BOT({s:'wall',bg:T34B,symOp:'0.14',noInv:true});});
+   xs('<div class="x-12" style="padding-bottom:34px;"><div style="grid-column:1/4;">'+xEy(C.missionLb,'0')+'</div>'+
+   '<div style="grid-column:4/11;">'+xBd(C.mission,'100%')+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:34px;"></div>'+
+   '<div class="x-12"><div style="grid-column:1/4;">'+xEy(C.visionLb,'0')+'</div>'+
+   '<div style="grid-column:4/11;">'+xBd(C.vision,'100%')+'</div></div>',
+   {p:'clamp(80px,11vh,130px) '+XPAD,bt:K.r08}) + ORIG_BOTTOM();});
 
 yadd('Cards Open Full Bleed','The strip opens the page edge to edge before the title appears at all — the photography is the entrance.',function(){
  return HY({bt:false,scroll:false,labP:'clamp(120px,16vh,160px) '+XPAD+' 20px',carP:'0 '+XPAD+' 0',w:'clamp(260px,27vw,330px)',h:'clamp(330px,42vh,400px)'})
@@ -1256,11 +1253,8 @@ yadd('Vision Closes','Mission sits with the introduction; Vision is held back to
    {p:'clamp(160px,22vh,215px) '+XPAD+' clamp(64px,9vh,100px)'})
  + HY() + VIS({centre:true,wrap:'640px'}) + ORIG_BOTTOM();});
 
-/* keeping the original, 01 and 27 */
-var KEEP=[1,27];
 var V=[{k:'orig',n:0,t:'The New Original',note:'Architectural-grid intro, original people, original manifesto.',f:NEW_ORIGINAL}]
- .concat(KEEP.map(function(num){var y=Y[num-1];
-   return {k:'r'+num,n:num,t:y.t,note:y.note,f:y.f};}));
+ .concat(Y.map(function(y,i){return {k:'r'+(i+1),n:i+1,t:y.t,note:y.note,f:y.f};}));
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
