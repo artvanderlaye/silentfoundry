@@ -1878,39 +1878,9 @@ badd('10 · Final Production Candidate',
   textTop:'clamp(72px,10vh,112px)',textBot:'clamp(72px,10vh,112px)',
   mvGap:22,oppGap:96,gridRuleGap:44,qPad:'clamp(116px,17vh,200px)',qMinH:'46vh',sigGap:26});
 
-/* ═══════════ THE COMBINED VERSION ═══════════
-   hero, intro/Mission/Vision and quote as the original.
-   Portraits at 08's scale with the reviewed crops.
-   Opportunities lifted onto 09's soft tonal ground as the chapter break. */
-function FINAL_PAGE(){
- var c={crops:true,w:'clamp(290px,30vw,360px)',h:'clamp(400px,52vh,500px)',pad:'22px',blh:'1.85',
-        labTop:'clamp(40px,6vh,64px)',stripBot:'clamp(88px,13vh,145px)'};
- /* hero — original */
- var hero=bs('<div class="x-12" style="align-items:end;"><div style="grid-column:1/8;">'+TT()+'</div>'+
-   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',c,
-   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'});
- /* people — 08's scale, reviewed crops */
- var people=B_people(c);
- /* intro · Mission · Vision — original spacing */
- var text=bs('<div class="x-rule" style="margin-bottom:40px;"></div><div class="x-12">'+
-   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
-   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
-     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',c,
-   {p:'clamp(56px,8vh,88px) '+XPAD+' clamp(56px,8vh,88px)'});
- /* Opportunities — 09's soft tonal ground, same columns, the ground is the break */
- var opp='<section style="background:'+SOFT+';padding:clamp(72px,10vh,116px) '+XPAD+';">'+
-   '<div class="x-12"><div style="grid-column:7/12;">'+
-   xEy(C.oppLb,'10px')+xBd(C.oppBb,'100%')+g(24)+oCtaX()+'</div></div></section>';
- /* quote — original */
- var quote=B_quote({});
- return hero+people+text+opp+quote;
-}
-/* the live page first, the combined version second, then the ten */
+/* the live page first, then the ten */
 var V=[{k:'orig',n:0,t:'Original — the live page',note:'sf-team.html exactly as it is now.',
-        f:function(){return PZ[0].f();}},
-       {k:'final',n:-1,t:'COMBINED — your final spec',
-        note:'Original order and hero. Portraits at 08 scale with reviewed crops. Opportunities on 09 tonal ground. Original quote.',
-        f:FINAL_PAGE}]
+        f:function(){return PZ[0].f();}}]
  .concat(BZ.map(function(z,i){return {k:'r'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};}));
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
@@ -1941,12 +1911,12 @@ function idxOf(){var h=(location.hash||'').replace('#','').toLowerCase();
  for(var i=0;i<V.length;i++)if(V[i].k===h)return i; return 0;}
 function render(n){document.getElementById('pc').innerHTML=V[n].f();
  document.querySelectorAll('.v-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
- var l=document.getElementById('v-swlab'); if(l)l.textContent=(V[n].n<=0?'':('0'+V[n].n).slice(-2)+'  ·  ')+V[n].t;
+ var l=document.getElementById('v-swlab'); if(l)l.textContent=(V[n].n===0?'':('0'+V[n].n).slice(-2)+'  ·  ')+V[n].t;
  window.scrollTo(0,0);}
 function mount(){
  var s=document.createElement('div');s.className='v-sw';
  s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){
-  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n<=0?' class="orig"':'')+'>'+(v.n===0?'ORIG':v.n===-1?'FINAL':('0'+v.n).slice(-2))+'</b>';}).join('')+'</div>';
+  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n===0?' class="orig"':'')+'>'+(v.n===0?'ORIG':('0'+v.n).slice(-2))+'</b>';}).join('')+'</div>';
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
