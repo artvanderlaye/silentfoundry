@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<title>Team — Final Quote Options · Silent Foundry</title>
+<title>Team — Quote & Ending · Silent Foundry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css"/>
@@ -1606,70 +1606,7 @@ zaddT('Under Vision · vertical signature','Under Vision. The signature rotates 
 zaddT('Under the intro · reversed','Left-column Opportunities. The payoff comes first and the setup follows beneath a short rule, like a caption.','1/6',{},{s:'reverse'});
 zaddT('Under Vision · cream ground','Under Vision. The whole manifesto moves to cream with dark type and the gold reveal, marks still washing behind.','7/12',{},{s:'plain',bg:CRM2,cs:'dark'});
 
-
-/* ═══════════ FINAL · 56's arrangement + six quote treatments ═══════════
-   Every quote now sits on the same twelve-column grid as the text above it:
-   left block = columns 1–6, right block = columns 7–12, exactly as the
-   introduction and the Mission / Vision / Opportunities column. */
-var QBIG='clamp(2.6rem,4vw,4.6rem)',       /* stepped down from 5.72rem */
-    QMID='clamp(2rem,3.2vw,3.6rem)',
-    QSM ='clamp(1.14rem,1.72vw,1.79rem)';
-function fl(t,sz,col,ls,lh,skew,al){return '<p style="font-family:\'Bebas Neue\',sans-serif;font-size:'+sz+';color:'+col+
- ';letter-spacing:'+ls+';line-height:'+(lh||'0.9')+';text-transform:uppercase;display:block;margin:0;text-align:'+(al||'left')+';'+
- (skew?'transform:skewX(-4deg);':'')+'">'+t+'</p>';}
-function fsig(col,al){return '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.42rem;letter-spacing:0.16em;'+
- 'text-transform:uppercase;color:'+col+';margin-top:16px;text-align:'+(al||'left')+';">'+BATTR+'</div>';}
-function fwall(col,op){return '<div style="position:absolute;inset:0;font-family:\'Bebas Neue\',sans-serif;'+
- 'font-size:clamp(0.72rem,1.08vw,1.14rem);letter-spacing:0.2em;color:'+col+';word-break:break-all;line-height:1.4;'+
- 'opacity:'+(op||'0.13')+';padding:40px;pointer-events:none;">'+SYM+SYM+SYM+SYM+'</div>';}
-function fsym(col,st){return '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(0.72rem,1.08vw,1.14rem);'+
- 'letter-spacing:0.2em;color:'+col+';word-break:break-all;line-height:1.4;opacity:0.22;'+(st||'')+'">'+SYM+'</div>';}
-function ftri(col,side){return '<div style="position:absolute;top:50%;'+(side||'right')+':48px;transform:translateY(-50%);'+
- 'font-size:0.72rem;color:'+col+';font-family:\'Bebas Neue\',sans-serif;pointer-events:none;z-index:3;">△</div>';}
-function FQ(c){
- var cs=CS[c.cs||'cream'], big=c.big||QBIG, sk=c.skew!==false, bls=c.bls||'0.06em';
- var A=fl(BL1,QSM,cs.a,'0.12em','1.15',false,c.aal||'left');
- var B=fl(BL3,big,cs.b,bls,'0.9',sk,c.bal||'left');
- var body;
- switch(c.s){
-  case 'stack':  /* the original — one column, aligned to the intro column */
-   body='<div class="x-12"><div style="grid-column:1/11;">'+A+'<div style="height:14px"></div>'+B+fsig(cs.at)+'</div></div>'; break;
-  case 'sbs':    /* side by side, on the grid: setup 1–6, gold line 7–13 */
-   body='<div class="x-12" style="align-items:center;">'+
-    '<div style="grid-column:1/6;">'+A+fsig(cs.at)+'</div>'+
-    '<div style="grid-column:7/13;">'+B+'</div></div>'; break;
-  case 'sbsRule':/* the same split with a hairline sitting on the column boundary */
-   body='<div class="x-12" style="align-items:stretch;">'+
-    '<div style="grid-column:1/6;display:flex;flex-direction:column;justify-content:center;">'+A+fsig(cs.at)+'</div>'+
-    '<div style="grid-column:6/7;justify-self:center;width:0.5px;background:'+cs.at+';opacity:0.5;"></div>'+
-    '<div style="grid-column:7/13;display:flex;flex-direction:column;justify-content:center;">'+B+'</div></div>'; break;
-  case 'spine':  /* symbol column on the left, text from column 3 */
-   body='<div class="x-12" style="align-items:center;">'+
-    '<div style="grid-column:1/3;">'+fsym(cs.at)+'</div>'+
-    '<div style="grid-column:3/12;">'+A+'<div style="height:14px"></div>'+B+fsig(cs.at)+'</div></div>'; break;
-  case 'mirror': /* pinned to the outer columns */
-   body='<div class="x-12" style="align-items:flex-end;">'+
-    '<div style="grid-column:1/6;">'+A+fsig(cs.at)+'</div>'+
-    '<div style="grid-column:7/13;">'+fl(BL3,big,cs.b,bls,'0.9',sk,'right')+'</div></div>'; break;
-  default:
-   body='<div class="x-12"><div style="grid-column:1/11;">'+A+'<div style="height:14px"></div>'+B+fsig(cs.at)+'</div></div>';
- }
- return '<section style="background:'+(c.bg||GRD_B)+';padding:'+(c.p||'clamp(88px,13vh,160px) '+XPAD)+
-  ';overflow:hidden;position:relative;">'+(c.wall===false?'':fwall(cs.at,c.wallOp))+
-  '<div style="position:relative;z-index:2;">'+body+'</div>'+(c.tri===false?'':ftri(cs.at))+'</section>';}
-
-/* 56's arrangement: Opportunities under Vision in columns 7–12, eyebrow above its text */
-function FINAL_TOP(){return TOP2('7/12',{});}
-var FZ=[];
-function fadd(t,note,q){FZ.push({t:t,note:note,f:function(){return FINAL_TOP()+FQ(q);}});}
-
-fadd('Original','The quote as it was — one column, marks washing behind, aligned to the introduction column.',{s:'stack'});
-fadd('Smaller','The same single column with the gold line a further step down, so the quote sits closer in weight to the text above it.',{s:'stack',big:QMID});
-fadd('Side by side · divided','Setup and signature in columns 1–6, gold line in 7–12, a hairline on the column boundary between them — the same split as the section above.',{s:'sbsRule'});
-fadd('Symbol spine','The symbol string holds columns 1–2 as a vertical rule of type; the quote runs from column 3.',{s:'spine'});
-fadd('Side by side · gold','The grid split with both lines in graduated gold rather than cream then gold.',{s:'sbs',cs:'gold'});
-fadd('Mirrored','Setup on the left columns, gold line pushed to the right edge of the grid and set flush right.',{s:'mirror'});
-var V=FZ.map(function(z,i){return {k:'f'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};});
+var V=Z.map(function(z,i){return {k:'q'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};});
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
