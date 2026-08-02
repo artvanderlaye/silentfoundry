@@ -110,8 +110,8 @@ nav::before {
   display: inline-block;
   font-size: 53px;          /* nav size — footer overrides */
   line-height: 0.76;
-  /* skewX removed - the wordmark must sit level on screen and in print.
-     The 4deg engineering motif is retained on glyphs, dots and buttons site-wide. */
+  transform: skewX(-4deg);
+  transform-origin: left center;
 }
 .sf-mark-line {
   display: block;
@@ -140,7 +140,7 @@ nav::before {
   color: var(--accent);
   font-style: normal;
   display: inline-block;
-  /* skewX removed - part of the wordmark, must stay level */
+  transform: skewX(-4deg);
 }
 
 /* Footer variant */
@@ -428,19 +428,4 @@ html { background: var(--black); }
 @media (max-width: 768px) {
   footer .footer-inner { grid-template-columns: 1fr !important; gap: 24px !important; padding: 40px 24px 32px !important; }
   .footer-bottom.footer-bottom { flex-direction: column !important; gap: 8px !important; text-align: center !important; padding: 16px 24px !important; }
-}
-
-/* ── PRINT ─────────────────────────────────────────────────────────
-   The site had no print rules. The wordmark must render level and the
-   engineering motif must not slant text that is being read on paper. */
-@media print {
-  .sf-mark,
-  .sf-mark-line,
-  .nav-ring,
-  .footer-logo .sf-mark { transform: none !important; font-style: normal !important; }
-  body { visibility: visible !important; }
-  nav, .nav-links, #v11-status { position: static !important; }
-  .accordion-body { max-height: none !important; overflow: visible !important; opacity: 1 !important; }
-  img { max-width: 100% !important; }
-  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
