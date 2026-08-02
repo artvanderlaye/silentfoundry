@@ -455,58 +455,30 @@ O.push(['Compact', function(){return sec('<div class="op-2a" style="gap:clamp(28
  g(30)+MI_(),{p:'clamp(140px,18vh,170px) '+PAD+' clamp(36px,5vh,56px)'});}]);
 
 
-/* ═════ CLOSING STUDIES — from #thesis-section in index11.html ═════ */
-var TEX="url('images/cad_texture.jpeg')", CRM='#ede8e0', BK='#0a0a0a',
-    QBG='linear-gradient(135deg,#282b33 0%,#1e2a4a 45%,#0a0a0a 100%)',
-    GR='linear-gradient(135deg,#282b33 0%,#1e2a4a 55%,#2c1e4a 100%)';
-var GOLD='#c8a96e', LAB='#8a6e3a', G4='rgba(200,169,110,0.4)', G35='rgba(200,169,110,0.35)',
-    G2='rgba(200,169,110,0.2)', G5='rgba(200,169,110,0.5)',
-    D1='rgba(10,10,10,0.1)', D2='rgba(10,10,10,0.3)',
-    L1='rgba(244,241,236,0.14)', L2='rgba(244,241,236,0.38)',
-    CR45='rgba(244,241,236,0.45)', INK55='rgba(10,10,10,0.55)';
-/* the belief, broken to three lines the way the thesis breaks */
+/* ═════ CLOSING STUDIES — built from the index.html Foundry Thesis block ═════ */
+var QBG='linear-gradient(135deg,#282b33 0%,#1e2a4a 45%,#0a0a0a 100%)';
+var GR='linear-gradient(135deg,#282b33 0%,#1e2a4a 55%,#2c1e4a 100%)', BK='#0a0a0a', CRM='#ede8e0';
+var GOLD='#c8a96e', LAB='#8a6e3a', G9='rgba(200,169,110,0.9)', G5='rgba(200,169,110,0.5)',
+    G4='rgba(200,169,110,0.4)', G35='rgba(200,169,110,0.35)', G2='rgba(200,169,110,0.2)',
+    L1='rgba(244,241,236,0.42)', L2='rgba(244,241,236,0.62)', CR45='rgba(244,241,236,0.45)',
+    INK55='rgba(10,10,10,0.55)';
+/* the quote, broken to three lines the way the homepage breaks its thesis */
 var QL=['The best brands are not invented.','They are extracted from culture','and made real.'];
-var QZ={x:'clamp(2rem,4.2vw,4.8rem)', l:'clamp(1.7rem,3.4vw,3.6rem)',
-        m:'clamp(1.6rem,2.8vw,2.6rem)', s:'clamp(1.3rem,2vw,1.9rem)'};
+var QSZ={xl:'clamp(3.4rem,5.2vw,5.6rem)', l:'clamp(2.4rem,3.8vw,4rem)',
+         m:'clamp(1.6rem,2.8vw,2.6rem)',  s:'clamp(1.3rem,2vw,1.9rem)'};
 
-function thBg(cfg){
- if(cfg.tex===false) return 'background:'+(cfg.bg||CRM)+';';
- return 'background:'+(cfg.bg||CRM)+';background-image:'+TEX+';background-size:cover;background-position:center;'+
-        (cfg.fixed===false?'':'background-attachment:fixed;');
-}
-function thOverlay(cfg){
- if(cfg.tex===false) return '';
- return '<div style="position:absolute;inset:0;background:'+(cfg.bg||CRM)+';opacity:'+(cfg.op||'0.92')+';pointer-events:none;z-index:0;"></div>';
-}
-function qEy(dark){return '<span style="font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;color:'+
- (dark?GOLD:LAB)+';display:block;margin-bottom:40px;">'+C.quoteLb+'</span>';}
-function qLine(t,col,sz,ls,skew,al){return '<p style="font-family:\'Bebas Neue\',sans-serif;font-size:'+sz+
- ';letter-spacing:'+(ls||'0.1em')+';text-transform:uppercase;line-height:0.9;color:'+col+
- ';text-align:'+(al||'center')+';width:100%;margin:0;'+(skew===false?'':'transform:skewX(-4deg);')+'display:block;">'+t+'</p>';}
-function qBody(dark,cfg){
- var sz=cfg.qsz||QZ.l, ls=cfg.qls, sk=cfg.skew, al=cfg.qal||'center';
- var c1=dark?L1:D1, c2=dark?L2:D2, c3=GOLD;
- if(cfg.flat){c1=c2=c3=dark?CR45:INK55;c3=GOLD;}
- return qLine(QL[0],c1,sz,ls,sk,al)+qLine(QL[1],c2,sz,ls,sk,al)+qLine(QL[2],c3,sz,ls,sk,al);
-}
-function qAttr(dark,cfg){
- if(cfg.attr===false) return '';
- var col=dark?'rgba(244,241,236,0.55)':INK55;
- if(cfg.attr==='plain') return '<p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:'+col+';margin:36px 0 0;">'+C.quoteAttr+'</p>';
- return '<div style="display:flex;align-items:center;justify-content:'+(cfg.qal==='left'?'flex-start':'center')+
-  ';gap:14px;margin-top:36px;">'+
-  '<div style="width:20px;height:1px;background:'+G4+';"></div>'+
-  '<p style="font-size:0.52rem;letter-spacing:0.24em;text-transform:uppercase;color:'+col+';margin:0;">'+C.quoteAttr+'</p>'+
-  '<div style="width:20px;height:1px;background:'+G4+';"></div></div>';
-}
-function THESIS(cfg){
- var dark = (cfg.bg&&cfg.bg!==CRM);
- return '<section style="'+thBg(cfg)+'text-align:center;position:relative;padding:'+(cfg.pad||'clamp(110px,17vh,190px) '+PAD)+';">'+
-  thOverlay(cfg)+
-  '<div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:'+
-   (cfg.qal==='left'?'flex-start':'center')+';justify-content:center;width:100%;max-width:'+(cfg.mw||'1000px')+';margin:0 auto;">'+
-  qEy(dark)+qBody(dark,cfg)+qAttr(dark,cfg)+'</div></section>';
-}
+function qEy(dark){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.54rem;letter-spacing:0.34em;'+
+ 'text-transform:uppercase;font-weight:400;color:'+(dark?GOLD:LAB)+';display:block;margin-bottom:34px;">'+C.quoteLb+'</span>';}
+function qLine(t,col,sz,ls){return '<p style="font-family:\'Bebas Neue\',sans-serif;font-size:'+sz+';letter-spacing:'+(ls||'0.22em')+
+ ';text-transform:uppercase;line-height:0.92;margin:0 0 10px 0;color:'+col+';">'+t+'</p>';}
+function qBody(dark,sz,ls){
+ var c1=dark?L1:'rgba(10,10,10,0.34)', c2=dark?L2:'rgba(10,10,10,0.55)', c3=LAB;
+ return qLine(QL[0],c1,sz||QSZ.xl,ls)+qLine(QL[1],c2,sz||QSZ.xl,ls)+qLine(QL[2],c3,sz||QSZ.xl,ls);}
+function qAttr(dark,show){return show?'<p class="a-mi" style="margin-top:18px;font-size:0.48rem;letter-spacing:0.22em;color:'+
+ (dark?'rgba(244,241,236,0.38)':'rgba(10,10,10,0.3)')+';">'+C.quoteAttr+'</p>':'';}
+function QB(dark,sz,ls,align,attr){return '<div style="'+(align?'text-align:'+align+';':'')+'">'+
+ qEy(dark)+qBody(dark,sz,ls)+qAttr(dark,attr)+'</div>';}
+
 function oLb(dark){return '<span class="a-eb" style="display:block;color:'+(dark?G5:LAB)+';margin-bottom:14px;">'+C.oppLb+'</span>';}
 function oBd(dark,mw){return '<p class="a-bd" style="color:'+(dark?CR45:INK55)+';margin:0 0 22px;max-width:'+(mw||'52ch')+';">'+C.oppBb+'</p>';}
 function oCta(dark){return '<a href="'+C.oppHr+'" class="a-cta" style="border-color:'+(dark?G35:'rgba(138,110,58,0.38)')+
@@ -514,58 +486,87 @@ function oCta(dark){return '<a href="'+C.oppHr+'" class="a-cta" style="border-co
 function OB(dark,align,mw){return '<div style="display:flex;flex-direction:column;'+
  (align==='c'?'align-items:center;text-align:center;':align==='r'?'align-items:flex-end;text-align:right;':'align-items:flex-start;')+'">'+
  oLb(dark)+oBd(dark,mw)+oCta(dark)+'</div>';}
-function oSecB(cfg){var d=(cfg.obg&&cfg.obg!==CRM);
- return '<section style="background:'+(cfg.obg||CRM)+';padding:'+(cfg.opad||('clamp(56px,8vh,88px) '+PAD))+';">'+
-  (cfg.oshape==='row'
-   ? '<div class="cl-row">'+oLb(d)+'<div style="flex:1;min-width:280px;">'+oBd(d,cfg.omw)+'</div>'+oCta(d)+'</div>'
-   : cfg.oshape==='two'
-   ? '<div class="cl-2" style="grid-template-columns:0.8fr 1.2fr;gap:48px;align-items:start;">'+oLb(d)+'<div>'+oBd(d,cfg.omw)+g(22)+oCta(d)+'</div></div>'
-   : OB(d,cfg.oal,cfg.omw))+'</section>';}
-function CL(cfg){return THESIS(cfg)+oSecB(cfg);}
 
+function vDiv(c){return '<div style="width:0.5px;background:'+(c||G2)+';align-self:stretch;"></div>';}
+function hDiv(c,wd){return '<div style="height:0.5px;background:'+(c||G2)+';width:'+(wd||'100%')+';"></div>';}
+function two(a,b,cols,gapv,align){return '<div class="cl-2" style="grid-template-columns:'+(cols||'1fr 1fr')+
+ ';gap:'+(gapv||'48px')+';align-items:'+(align||'start')+';">'+a+b+'</div>';}
+function bgSec(inner,bg,pad){return '<section style="background:'+bg+';padding:'+(pad||'104px '+PAD)+';">'+inner+'</section>';}
+
+function CL(cfg){
+ var d=cfg.bg!==CRM, sz=cfg.qsz||QSZ.xl, ls=cfg.qls, pad=cfg.pad||('104px '+PAD);
+ var Q=QB(d,sz,ls,cfg.qal,cfg.attr), Ob=OB(d,cfg.oal,cfg.omw);
+ switch(cfg.shape){
+  case 'thesis':   return bgSec(Q,cfg.bg,pad)+bgSec(Ob,cfg.bg2||CRM,cfg.padB||('64px '+PAD));
+  case 'thesisD':  return bgSec(Q,cfg.bg,pad)+bgSec(Ob,cfg.bg2||BK,cfg.padB||('64px '+PAD));
+  case 'q-then-o': return bgSec(Q+g(cfg.sp||64)+hDiv(d?G2:K.r08,cfg.rule||'64px')+g(cfg.sp||64)+Ob,cfg.bg,pad);
+  case 'o-then-q': return bgSec(Ob+g(cfg.sp||64)+hDiv(d?G2:K.r08,cfg.rule||'64px')+g(cfg.sp||64)+Q,cfg.bg,pad);
+  case 'ob-rule':  return bgSec(two(Ob,'<div style="border-left:0.5px solid '+(d?G2:K.r08)+';padding-left:48px;">'+Q+'</div>',cfg.cols,cfg.gap,cfg.al),cfg.bg,pad);
+  case 'bo-rule':  return bgSec(two('<div style="border-right:0.5px solid '+(d?G2:K.r08)+';padding-right:48px;">'+Q+'</div>',Ob,cfg.cols,cfg.gap,cfg.al),cfg.bg,pad);
+  case 'ob-div':   return bgSec('<div class="cl-3" style="gap:'+(cfg.gap||'48px')+';">'+Ob+vDiv(d?G2:K.r08)+Q+'</div>',cfg.bg,pad);
+  case 'bo-div':   return bgSec('<div class="cl-3" style="gap:'+(cfg.gap||'48px')+';">'+Q+vDiv(d?G2:K.r08)+Ob+'</div>',cfg.bg,pad);
+  case 'ob-plain': return bgSec(two(Ob,Q,cfg.cols,cfg.gap,cfg.al),cfg.bg,pad);
+  case 'bo-plain': return bgSec(two(Q,Ob,cfg.cols,cfg.gap,cfg.al),cfg.bg,pad);
+  case 'split':    return '<div class="cl-split">'+
+     '<div style="background:'+(cfg.bgA||QBG)+';padding:'+pad+';display:flex;align-items:center;">'+QB(cfg.bgA!==CRM,sz,ls,cfg.qal,cfg.attr)+'</div>'+
+     '<div style="background:'+(cfg.bgB||CRM)+';padding:'+pad+';display:flex;align-items:center;">'+OB(cfg.bgB!==CRM,cfg.oal,cfg.omw)+'</div></div>';
+  case 'splitR':   return '<div class="cl-split">'+
+     '<div style="background:'+(cfg.bgA||CRM)+';padding:'+pad+';display:flex;align-items:center;">'+OB(cfg.bgA!==CRM,cfg.oal,cfg.omw)+'</div>'+
+     '<div style="background:'+(cfg.bgB||QBG)+';padding:'+pad+';display:flex;align-items:center;">'+QB(cfg.bgB!==CRM,sz,ls,cfg.qal,cfg.attr)+'</div></div>';
+  case 'hang':     return bgSec('<div class="cl-hang">'+qEy(d)+'<div>'+qBody(d,sz,ls)+qAttr(d,cfg.attr)+'</div></div>'+
+     g(cfg.sp||56)+hDiv(d?G2:K.r08)+g(cfg.sp||56)+'<div class="cl-hang">'+oLb(d)+'<div>'+oBd(d,cfg.omw)+oCta(d)+'</div></div>',cfg.bg,pad);
+  case 'inline':   return bgSec(Q+g(cfg.sp||56)+'<div class="cl-row">'+oLb(d)+'<div style="flex:1;min-width:280px;">'+oBd(d,cfg.omw)+'</div>'+oCta(d)+'</div>',cfg.bg,pad);
+  case 'wide-bo':  return bgSec(two(Q,Ob,'1.45fr 0.55fr',cfg.gap||'72px','center'),cfg.bg,pad);
+  case 'wide-ob':  return bgSec(two(Ob,Q,'0.55fr 1.45fr',cfg.gap||'72px','center'),cfg.bg,pad);
+  default:         return bgSec(Q,cfg.bg,pad)+bgSec(Ob,CRM,'64px '+PAD);
+ }
+}
+
+/* 20 closes on opening 07 */
 var CFG_A=[
- ['Thesis · exact',        {}],
- ['Thesis · literal size', {qsz:QZ.x, mw:'700px'}],
- ['No texture',            {tex:false}],
- ['Texture stronger',      {op:'0.84'}],
- ['Texture subtle',        {op:'0.96'}],
- ['No skew',               {skew:false}],
- ['Wide tracking',         {qls:'0.2em'}],
- ['Tight tracking',        {qls:'0.06em'}],
- ['Quote medium',          {qsz:QZ.m}],
- ['Quote small',           {qsz:QZ.s}],
- ['Left aligned',          {qal:'left', mw:'900px', oal:'l'}],
- ['Plain signature',       {attr:'plain'}],
- ['No signature',          {attr:false}],
- ['Invitation inline',     {oshape:'row'}],
- ['Invitation two-up',     {oshape:'two'}],
- ['Invitation centred',    {oal:'c'}],
- ['Dark thesis',           {bg:QBG, tex:false, obg:CRM}],
- ['Dark thesis · texture', {bg:QBG, op:'0.86', obg:CRM}],
- ['Invitation on dark',    {obg:BK, oal:'c'}],
- ['Generous',              {pad:'clamp(150px,24vh,260px) '+PAD, opad:'clamp(72px,10vh,110px) '+PAD}]
+ ['Thesis · exact',         {shape:'thesis',   bg:QBG}],
+ ['Thesis · dark tail',     {shape:'thesisD',  bg:QBG}],
+ ['Thesis · gradient',      {shape:'thesis',   bg:GR}],
+ ['Thesis · centred',       {shape:'thesis',   bg:QBG, qal:'center', oal:'c'}],
+ ['Thesis · with signature',{shape:'thesis',   bg:QBG, attr:true}],
+ ['Quote then Invitation',  {shape:'q-then-o', bg:QBG}],
+ ['Invitation then Quote',  {shape:'o-then-q', bg:QBG}],
+ ['Quote Large',            {shape:'thesis',   bg:QBG, qsz:QSZ.l}],
+ ['Quote Medium',           {shape:'thesis',   bg:QBG, qsz:QSZ.m}],
+ ['Quote Small · Two Up',   {shape:'ob-rule',  bg:QBG, qsz:QSZ.s}],
+ ['Two Up · Belief Left',   {shape:'bo-rule',  bg:QBG, qsz:QSZ.s}],
+ ['Centre Divider',         {shape:'ob-div',   bg:QBG, qsz:QSZ.s}],
+ ['Split · Blue / Cream',   {shape:'split',    bgA:QBG, bgB:CRM, qsz:QSZ.m}],
+ ['Split · Cream / Blue',   {shape:'splitR',   bgA:CRM, bgB:QBG, qsz:QSZ.m}],
+ ['Hanging Labels',         {shape:'hang',     bg:QBG, qsz:QSZ.m}],
+ ['Inline Invitation',      {shape:'inline',   bg:QBG, qsz:QSZ.l}],
+ ['Belief Dominant',        {shape:'wide-bo',  bg:QBG, qsz:QSZ.m}],
+ ['Tight Tracking',         {shape:'thesis',   bg:QBG, qls:'0.14em'}],
+ ['Wide Tracking',          {shape:'thesis',   bg:QBG, qls:'0.3em', qsz:QSZ.l}],
+ ['Generous',               {shape:'thesis',   bg:QBG, pad:'clamp(130px,20vh,220px) '+PAD}]
 ];
+/* 20 different closes on opening 17 */
 var CFG_B=[
- ['Thesis · exact · 17',   {opad:'clamp(64px,9vh,96px) '+PAD}],
- ['Literal · no fixed',    {qsz:QZ.x, mw:'700px', fixed:false}],
- ['Flat colours',          {flat:true}],
- ['Flat · no skew',        {flat:true, skew:false}],
- ['Texture strongest',     {op:'0.78'}],
- ['Overlay near-solid',    {op:'0.98'}],
- ['Very wide tracking',    {qls:'0.28em', qsz:QZ.m}],
- ['Medium · no skew',      {qsz:QZ.m, skew:false}],
- ['Small · left',          {qsz:QZ.s, qal:'left', mw:'860px', oal:'l'}],
- ['Left · plain sig',      {qal:'left', mw:'900px', attr:'plain', oal:'l'}],
- ['Signature hidden · row',{attr:false, oshape:'row'}],
- ['Row · dark tail',       {oshape:'row', obg:BK}],
- ['Two-up · dark tail',    {oshape:'two', obg:GR}],
- ['Gradient thesis',       {bg:GR, tex:false, obg:CRM, oal:'c'}],
- ['Black thesis',          {bg:BK, tex:false, obg:CRM}],
- ['Black thesis · texture',{bg:BK, op:'0.88', obg:CRM, oal:'c'}],
- ['Narrow measure',        {mw:'760px', qsz:QZ.m}],
- ['Very wide measure',     {mw:'1240px', qsz:QZ.l}],
- ['Compact',               {pad:'clamp(72px,10vh,110px) '+PAD, opad:'clamp(44px,6vh,64px) '+PAD, qsz:QZ.m}],
- ['Extra generous',        {pad:'clamp(170px,26vh,290px) '+PAD, opad:'clamp(80px,11vh,120px) '+PAD, oal:'c'}]
+ ['Thesis · right',         {shape:'thesis',   bg:QBG, qal:'right', oal:'r'}],
+ ['Thesis · black tail',    {shape:'thesisD',  bg:QBG, bg2:BK, qal:'center', oal:'c'}],
+ ['Thesis · cream tail',    {shape:'thesis',   bg:GR, bg2:CRM, qal:'right', oal:'l'}],
+ ['Quote then Rule',        {shape:'q-then-o', bg:QBG, sp:88, rule:'100%'}],
+ ['Invitation Leads',       {shape:'o-then-q', bg:GR, sp:80, oal:'c', qal:'center'}],
+ ['Large · Centred',        {shape:'thesis',   bg:QBG, qsz:QSZ.l, qal:'center', oal:'c'}],
+ ['Medium · Right',         {shape:'thesis',   bg:QBG, qsz:QSZ.m, qal:'right', oal:'r'}],
+ ['Small · Divider',        {shape:'bo-div',   bg:QBG, qsz:QSZ.s, gap:'72px'}],
+ ['Small · Narrow Belief',  {shape:'ob-plain', bg:QBG, qsz:QSZ.s, cols:'1.4fr 0.6fr', gap:'64px'}],
+ ['Small · Narrow Opp',     {shape:'bo-plain', bg:QBG, qsz:QSZ.s, cols:'1.4fr 0.6fr', gap:'64px'}],
+ ['Split · Gradient/Cream', {shape:'split',    bgA:GR, bgB:CRM, qsz:QSZ.m}],
+ ['Split · Cream/Gradient', {shape:'splitR',   bgA:CRM, bgB:GR, qsz:QSZ.m}],
+ ['Hanging · Gradient',     {shape:'hang',     bg:GR, qsz:QSZ.s, sp:72}],
+ ['Inline · Medium',        {shape:'inline',   bg:QBG, qsz:QSZ.m, sp:72}],
+ ['Invitation Dominant',    {shape:'wide-ob',  bg:QBG, qsz:QSZ.s}],
+ ['Cream Belief',           {shape:'thesis',   bg:CRM, bg2:QBG, qal:'center'}],
+ ['Signature Shown',        {shape:'q-then-o', bg:QBG, attr:true, qsz:QSZ.l}],
+ ['Tight · Compact',        {shape:'thesis',   bg:QBG, qsz:QSZ.m, pad:'clamp(64px,9vh,96px) '+PAD, padB:'48px '+PAD}],
+ ['Extra Generous',         {shape:'q-then-o', bg:QBG, pad:'clamp(140px,22vh,240px) '+PAD, sp:100, qal:'center', oal:'c'}],
+ ['Two Up · Cream',         {shape:'ob-rule',  bg:CRM, qsz:QSZ.s}]
 ];
 function OPEN07(){return O[6][1]();}
 function OPEN17(){return O[16][1]();}
