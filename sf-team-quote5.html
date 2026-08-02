@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<title>Team — Quote Placement · Silent Foundry</title>
+<title>Team — Final Quote Options · Silent Foundry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css"/>
@@ -1673,52 +1673,7 @@ fadd('Side by side · divided','Setup and signature in columns 1–6, gold line 
 fadd('Symbol spine','The symbol string holds columns 1–2 as a vertical rule of type; the quote runs from column 3.',{s:'spine'});
 fadd('Side by side · gold','The grid split with both lines in graduated gold rather than cream then gold.',{s:'sbs',cs:'gold'});
 fadd('Mirrored','Setup on the left columns, gold line pushed to the right edge of the grid and set flush right.',{s:'mirror'});
-
-/* ═══════════ QUOTE PLACEMENT · all on option 02's treatment ═══════════ */
-/* the page in three pieces, so the quote can be dropped between them */
-function P_head(){return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
-  '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
-  {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'});}
-function P_cards(){return PEOPLE_F('280px','310px');}
-function P_text(){
- var grid='<div class="x-rule" style="margin-bottom:40px;"></div><div class="x-12">'+
-   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
-   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
-     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>';
- return xs(grid+g(46)+OPP_LINE('7/12'),{p:'clamp(56px,8vh,88px) '+XPAD});}
-/* option 02's quote, positioned */
-function PQ(o){o=o||{};
- var cs=CS.cream, big=o.big||QMID, sk=o.skew!==false, al=o.al||'left';
- var A=fl(BL1,QSM,cs.a,'0.12em','1.15',false,al);
- var B=fl(BL3,big,cs.b,'0.06em','0.9',sk,al);
- var body='<div class="x-12"><div style="grid-column:'+(o.col||'1/11')+';'+
-   (al==='center'?'text-align:center;':al==='right'?'text-align:right;':'')+'">'+
-   A+'<div style="height:14px"></div>'+B+fsig(cs.at,al)+'</div></div>';
- if(o.narrow) body='<div style="max-width:'+o.narrow+';margin:0 auto;text-align:center;">'+
-   A+'<div style="height:14px"></div>'+B+fsig(cs.at,'center')+'</div>';
- return '<section style="background:'+GRD_B+';padding:'+(o.p||'clamp(88px,13vh,160px) '+XPAD)+
-   ';overflow:hidden;position:relative;">'+fwall(cs.at,'0.13')+
-   '<div style="position:relative;z-index:2;">'+body+'</div>'+
-   (o.tri===false?'':ftri(cs.at,o.triSide))+'</section>';}
-
-var PZ=[];function padd(t,note,f){PZ.push({t:t,note:note,f:f});}
-
-padd('02 · as chosen','The quote as you picked it — left aligned at the foot of the page, smaller gold line.',
- function(){return P_head()+P_cards()+P_text()+PQ({});});
-padd('Centred at the bottom','The same quote centred across the full measure at the foot of the page.',
- function(){return P_head()+P_cards()+P_text()+PQ({al:'center',col:'1/13',tri:false});});
-padd('Centred · narrow','Centred on a short measure with more space around it, so it reads as a closing statement rather than a band of text.',
- function(){return P_head()+P_cards()+P_text()+PQ({al:'center',narrow:'760px',tri:false,p:'clamp(120px,18vh,220px) '+XPAD});});
-padd('Centred · full bleed','Centred, with the section taller and the marks running the full height behind it.',
- function(){return P_head()+P_cards()+P_text()+PQ({al:'center',col:'1/13',tri:false,p:'clamp(150px,24vh,280px) '+XPAD});});
-padd('Right aligned','Pushed to the right edge of the grid, mirroring the Opportunities column above it.',
- function(){return P_head()+P_cards()+P_text()+PQ({al:'right',col:'3/13',triSide:'left'});});
-padd('Between cards and text','The quote moved up to sit between the people and the written sections, so the page ends on the invitation instead.',
- function(){return P_head()+P_cards()+PQ({al:'center',col:'1/13',tri:false})+P_text();});
-padd('Under the title','The quote placed at the very top, directly beneath the title — it opens the page rather than closing it.',
- function(){return P_head()+PQ({al:'left'})+P_cards()+P_text();});
-
-var V=PZ.map(function(z,i){return {k:'p'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};});
+var V=FZ.map(function(z,i){return {k:'f'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};});
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
