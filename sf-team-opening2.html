@@ -454,10 +454,7 @@ O.push(['Compact', function(){return sec('<div class="op-2a" style="gap:clamp(28
  g(30)+MI_(),{p:'clamp(140px,18vh,170px) '+PAD+' clamp(36px,5vh,56px)'});}]);
 
 function TAIL(){return PEOPLE_F('280px','310px')+CLOSE();}
-/* keeping studies 07 and 17 only — the other eighteen stay defined above but are not shown */
-var KEEP=[7,17];
-var V=KEEP.map(function(num){var x=O[num-1];
- return {k:'v'+num,n:num,t:x[0],f:function(){return x[1]()+TAIL();}};});
+var V=O.map(function(x,i){return {k:'v'+(i+1),t:x[0],f:function(){return x[1]()+TAIL();}};});
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
 function navLight(){document.querySelectorAll('#nl svg text').forEach(function(t){t.setAttribute('fill','rgba(10,10,10,0.75)');});
@@ -486,10 +483,10 @@ function idxOf(){var h=(location.hash||'').replace('#','').toLowerCase();
  for(var i=0;i<V.length;i++)if(V[i].k===h)return i; return 0;}
 function render(n){document.getElementById('pc').innerHTML=V[n].f();
  document.querySelectorAll('.v-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
- var l=document.getElementById('v-swlab'); if(l)l.textContent=('0'+V[n].n).slice(-2)+' · '+V[n].t;
+ var l=document.getElementById('v-swlab'); if(l)l.textContent=('0'+(n+1)).slice(-2)+' · '+V[n].t;
  window.scrollTo(0,0);}
 function mount(){var s=document.createElement('div');s.className='v-sw';
- s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){return '<b data-n="'+i+'" title="'+v.t+'">'+('0'+v.n).slice(-2)+'</b>';}).join('')+'</div>';
+ s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){return '<b data-n="'+i+'" title="'+v.t+'">'+('0'+(i+1)).slice(-2)+'</b>';}).join('')+'</div>';
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
