@@ -168,7 +168,6 @@ img.ph{width:100%;object-fit:cover;display:block;transition:transform .8s ease,f
 .tc.on{border-left-color:#8a6e3a;}
 
 .b-row{display:flex;gap:48px;flex-wrap:wrap;}
-.fmark{width:22px;height:1.5px;background:#8a6e3a;margin-bottom:14px;}
 .strip{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap;}
 .c-2{display:grid;grid-template-columns:1.15fr 0.85fr;gap:clamp(40px,6vw,88px);align-items:center;}
 
@@ -268,42 +267,6 @@ function PEOPLE(w,h){
     '<div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">'+
     '<span class="sym" style="font-size:0.65rem;color:'+K.lab+';opacity:0.5;">'+m.s+'</span></div></div></div>';}).join('')+'</div>';
 }
-/* ── board-format row: gold label far left, content far right ── */
-function fmtRow(label,content,first){
- return sec('<div class="strip" style="align-items:baseline;">'+eb(label,K.lab,'0')+
-  '<div style="text-align:right;max-width:56ch;">'+content+'</div></div>',
-  {bt:first?'':K.r08,p:'clamp(34px,5vh,52px) '+PAD});
-}
-/* ── OPENING C — headline block, then Mission/Vision as board-format rows ── */
-function OPEN_C(){
- return sec('<div style="max-width:920px;">'+eb(C.eyebrow)+dp(C.h1,T.disp)+g(34)+
-   bd(C.intro,K.i55,'54ch')+'</div>',{p:'168px '+PAD+' clamp(40px,6vh,64px)'})
- + fmtRow(C.missionLb, bd(C.mission,K.i55,'100%'))
- + fmtRow(C.visionLb,  bd(C.vision,K.i55,'100%'))
- + sec(mi(C.locs),{bt:K.r08,p:'clamp(30px,4vh,44px) '+PAD});
-}
-/* ── OPENING D — The Team, Mission and Vision all in the board format ── */
-function OPEN_D(){
- return sec(eb(C.eyebrow,K.lab,'0'),{p:'168px '+PAD+' clamp(30px,4vh,46px)'})
- + fmtRow(C.h1, dp(C.h1,T.disp)+g(18)+bd(C.intro,K.i55,'100%'), true)
- + fmtRow(C.missionLb, bd(C.mission,K.i55,'100%'))
- + fmtRow(C.visionLb,  bd(C.vision,K.i55,'100%'))
- + sec(mi(C.locs),{bt:K.r08,p:'clamp(30px,4vh,44px) '+PAD});
-}
-/* ── carousel with the three co-founders marked by a gold hairline ── */
-function PEOPLE_F(w,h){
- return sec('<div class="strip" style="align-items:center;">'+eb(C.peopleLb,K.lab,'0')+
-   '<span class="a-mi" style="color:'+K.i3+';">'+C.scrollLb+'</span></div>',{p:'clamp(28px,4vh,44px) '+PAD+' 18px',bt:K.r08})
- + '<div class="hs">'+M.map(function(m,i){
-   return '<div class="tc'+(m.board?' fdr':'')+'" data-i="'+i+'" style="flex:0 0 '+w+';">'+
-    '<div style="overflow:hidden;"><img class="ph" src="'+m.i+'" alt="'+m.n+'" style="height:'+h+';object-position:'+m.f+';filter:grayscale(1) brightness(0.93) contrast(1.04);"/></div>'+
-    '<div style="padding:22px 28px 26px;display:flex;flex-direction:column;flex:1;">'+
-    (m.board?'<div class="fmark"></div>':'')+nm(m.n)+rl(m.r)+
-    '<p class="a-bd" style="font-size:0.75rem;line-height:1.7;color:'+K.i45+';">'+prev(m.b)+'</p>'+
-    '<div class="bio"><p class="a-bd" style="color:'+K.i55+';padding-top:10px;">'+m.b+'</p></div>'+
-    '<div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">'+
-    '<span class="sym" style="font-size:0.65rem;color:'+K.lab+';opacity:0.5;">'+m.s+'</span></div></div></div>';}).join('')+'</div>';
-}
 /* ── BELIEF + INVITATION (identical in both options) ── */
 function CLOSE(){
  return sec('<div class="c-2">'+
@@ -344,9 +307,7 @@ function ORIG(){
 var V=[
  {k:'orig',t:'Original',f:ORIG},
  {k:'a',t:'Option A · Board as original',f:function(){return OPEN()+BOARD('inline')+PEOPLE('280px','310px')+CLOSE();}},
- {k:'b',t:'Option B · Board right-aligned',f:function(){return OPEN()+BOARD('right')+PEOPLE('clamp(280px,30vw,330px)','clamp(320px,40vh,370px)')+CLOSE();}},
- {k:'c',t:'Option C · No board, Mission/Vision as rows',f:function(){return OPEN_C()+PEOPLE_F('280px','310px')+CLOSE();}},
- {k:'d',t:'Option D · No board, everything as rows',f:function(){return OPEN_D()+PEOPLE_F('clamp(280px,30vw,330px)','clamp(320px,40vh,370px)')+CLOSE();}}
+ {k:'b',t:'Option B · Board right-aligned',f:function(){return OPEN()+BOARD('right')+PEOPLE('clamp(280px,30vw,330px)','clamp(320px,40vh,370px)')+CLOSE();}}
 ];
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
@@ -378,12 +339,12 @@ function render(n){document.getElementById('pc').innerHTML=V[n].f();
  document.querySelectorAll('.v-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
  window.scrollTo(0,0);}
 function mount(){var s=document.createElement('div');s.className='v-sw';
- s.innerHTML=V.map(function(v,i){return '<b data-n="'+i+'" title="'+v.t+'">'+(i===0?'Original':'Option '+String.fromCharCode(64+i))+'</b>';}).join('');
+ s.innerHTML=V.map(function(v,i){return '<b data-n="'+i+'">'+(i===0?'Original':'Option '+String.fromCharCode(64+i))+'</b>';}).join('');
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
  document.addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
-  var n=idxOf()+(e.key==='ArrowRight'?1:-1);if(n<0)n=V.length-1;if(n>V.length-1)n=0;location.hash=V[n].k;render(n);});
+  var n=idxOf()+(e.key==='ArrowRight'?1:-1);if(n<0)n=2;if(n>2)n=0;location.hash=V[n].k;render(n);});
  paint();wire();render(idxOf());[120,400,1200].forEach(function(t){setTimeout(navLight,t);});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 window.addEventListener('scroll',function(){var mn=document.getElementById('mn');
