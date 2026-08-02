@@ -754,6 +754,29 @@ V.push({t:'Homepage Evolution',
    + sec(wrap(blkOpp(false),'780px'),{bt:K.r08});
  }});
 
+/* ═══════════ PAGE PAINT ═══════════
+   sf-styles.css sets body{background:var(--black)} for the whole site.
+   The old team renderer overrode it at runtime via bc()/navL(). Those calls
+   went out with the renderer, so this restores them. Without this every
+   variant draws dark ink on a black page. */
+function ngrad(c){
+  var st=document.getElementById('ngs');
+  if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
+  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';
+}
+function navLight(){
+  document.querySelectorAll('#nl svg text').forEach(function(t){t.setAttribute('fill','rgba(10,10,10,0.75)');});
+  document.querySelectorAll('.nbtn').forEach(function(b){b.style.borderColor='rgba(10,10,10,0.25)';b.style.color='rgba(10,10,10,0.5)';});
+  document.querySelectorAll('.nav-toggle span').forEach(function(s){s.style.background='rgba(10,10,10,0.6)';});
+  ngrad('rgba(237,232,224,0.98)');
+}
+function paint(){
+  document.documentElement.style.background=K.bg;
+  document.body.style.background=K.bg;
+  document.body.style.color=K.ink;
+  navLight();
+}
+
 /* ═══════════ RENDER + SWITCHER ═══════════ */
 function keyOf(){var h=location.hash.match(/v(\d+)/);return h?Math.min(20,Math.max(1,+h[1])):1;}
 function render(n){
@@ -780,7 +803,9 @@ function mount(){
       if(n<1)n=20; if(n>20)n=1; location.hash='v'+n; render(n);
     }
   });
+  paint();
   render(keyOf());
+  [120,400,1200].forEach(function(t){setTimeout(navLight,t);});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount); else mount();
 
