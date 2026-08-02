@@ -66,13 +66,20 @@ to the project's configured instructions.
   confirm rendered results — source can differ from render (logo is an injected
   SVG, image extensions don't match content, etc.).
 
-## ALWAYS give the URL — every single time
+## ALWAYS give the URL — every single time. LEAD with it.
 - Matthew works across many preview pages and the address changes constantly.
-  EVERY response that touches a page must end with the full clickable URL of the
-  page that changed. Never make him ask "what's the site?".
+- Put the live URL of the page that changed at the very TOP of the response, on
+  its own line, before any explanation, audit or code. Repeat it at the bottom.
+  Do NOT bury it under a long technical report — he has repeatedly had to ask,
+  and it frustrates him. If he has to ask "what's the link", that's a failure.
+- Give the link to the PAGE THAT CHANGED — never the homepage as a substitute.
 - Root homepage: `https://silentfoundry.pages.dev`
 - Any other page: `https://silentfoundry.pages.dev/<filename-without-.html>`
 - If several pages changed, list each one.
+- Current working pages:
+  - `https://silentfoundry.pages.dev/sf-team-explore`  30 explorations + ORIG
+  - `https://silentfoundry.pages.dev/sf-team-final`    the chosen baseline (layout 27)
+  - `https://silentfoundry.pages.dev/sf-team`          the live team page
 
 ## Response style (how to report back to Matthew)
 - Do the full detailed work as usual — backups, edits, triple-checks, live

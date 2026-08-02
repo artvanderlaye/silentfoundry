@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<title>The Team · Silent Foundry</title>
+<title>Team — Refinements · Silent Foundry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css"/>
@@ -1057,7 +1057,57 @@ function ORIG_BOTTOM(){return BOT(B60[26]);}
 function NEW_ORIGINAL(){return NEW_INTRO()+ORIG_PEOPLE()+ORIG_BOTTOM();}
 
 /* ── the original (layout 27) sits first, then the thirty explorations ── */
-var V=[{k:'orig',n:0,t:'The Team',note:'',f:NEW_ORIGINAL}];
+
+/* ═══════════ 10 REFINEMENTS ON THE NEW ORIGINAL ═══════════ */
+var Y=[];function yadd(t,note,f){Y.push({t:t,note:note,f:f});}
+
+yadd('People First','The carousel moves above everything. You meet the nine before you read a word about them; the introduction, Mission and Vision follow as explanation.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'})
+ + PEOPLE_F('280px','310px')
+ + xs('<div class="x-rule" style="margin-bottom:40px;"></div><div class="x-12">'+
+   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
+     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',{p:'clamp(56px,8vh,88px) '+XPAD})
+ + ORIG_BOTTOM();});
+
+yadd('Mission & Vision Split','Mission and Vision are lifted out of the introduction and given a section of their own beneath it, so the intro carries one idea and the beliefs carry another.',function(){
+ return INTRO_ONLY() + MV_SECTION() + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Beliefs Before People','Same split, but the beliefs sit directly above the carousel — so the philosophy is stated, then the people appear as the evidence for it.',function(){
+ return INTRO_ONLY({wide:true}) + MV_SECTION({p:'clamp(80px,11vh,130px) '+XPAD}) + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Beliefs on Dark','Mission and Vision take their own section on the deep gradient, which sets up the manifesto at the foot of the page rather than arriving from nowhere.',function(){
+ return INTRO_ONLY() + MV_SECTION({dark:true,bg:T34B,p:'clamp(88px,13vh,150px) '+XPAD}) + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Product Cards · 3 up','The people rendered in the SWITCH product-card language from the homepage — cream cards on a one-pixel hairline grid, small wide-tracked names, tight descriptions.',function(){
+ return NEW_INTRO() + XU({cols:3,h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · 4 up','The same card language at four across, matching the homepage portfolio grid exactly. Denser, more catalogue than gallery.',function(){
+ return NEW_INTRO() + XU({cols:4,h:'240px',pad:'18px',nsz:'0.9rem'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · slider','The product-card language kept, but running horizontally as a snap carousel — the homepage cards behave this way on mobile.',function(){
+ return NEW_INTRO() + XU({carousel:true,flex:'clamp(250px,27vw,330px)',h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · split beliefs','Product-card people, with Mission and Vision in their own section. The two strongest ideas from this round combined.',function(){
+ return INTRO_ONLY() + MV_SECTION() + XU({cols:3,h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('People First · split beliefs','People open the page, the introduction follows, and Mission and Vision close the upper half before the manifesto.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'})
+ + XU({carousel:true,flex:'clamp(250px,27vw,330px)',h:'280px',bt:false,labP:'0 '+XPAD+' 20px'})
+ + xs('<div class="x-12"><div style="grid-column:1/9;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div></div>',
+   {p:'clamp(56px,8vh,88px) '+XPAD,bt:K.r08})
+ + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Full Sequence','Every idea from this round in the order that reads best: title, introduction, people as product cards, then Mission and Vision as the closing statement before the manifesto.',function(){
+ return INTRO_ONLY({wide:true}) + XU({cols:3,h:'280px'}) + MV_SECTION({p:'clamp(80px,11vh,130px) '+XPAD}) + ORIG_BOTTOM();});
+
+var V=[{k:'orig',n:0,t:'The New Original',note:'Architectural-grid intro, original people, original manifesto.',f:NEW_ORIGINAL}]
+ .concat(Y.map(function(y,i){return {k:'r'+(i+1),n:i+1,t:y.t,note:y.note,f:y.f};}));
+
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
 function navLight(){document.querySelectorAll('#nl svg text').forEach(function(t){t.setAttribute('fill','rgba(10,10,10,0.75)');});
@@ -1082,13 +1132,23 @@ function wire(){var pc=document.getElementById('pc');
   function mu(ev){document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu,true);
    hs.classList.remove('grab');if(mv){ev.preventDefault();ev.stopPropagation();}}
   document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu,true);});}
-function idxOf(){return 0;}
+function idxOf(){var h=(location.hash||'').replace('#','').toLowerCase();
+ for(var i=0;i<V.length;i++)if(V[i].k===h)return i; return 0;}
 function render(n){document.getElementById('pc').innerHTML=V[n].f();
  document.querySelectorAll('.v-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
  var l=document.getElementById('v-swlab'); if(l)l.textContent=(V[n].n===0?'':('0'+V[n].n).slice(-2)+'  ·  ')+V[n].t;
  window.scrollTo(0,0);}
-function mount(){ paint(); wire(); render(0);
- [120,400,1200].forEach(function(t){setTimeout(navLight,t);}); }
+function mount(){
+ var s=document.createElement('div');s.className='v-sw';
+ s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){
+  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n===0?' class="orig"':'')+'>'+(v.n===0?'ORIG':('0'+v.n).slice(-2))+'</b>';}).join('')+'</div>';
+ document.body.appendChild(s);
+ s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
+  if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
+ document.addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+  var n=idxOf()+(e.key==='ArrowRight'?1:-1);if(n<0)n=V.length-1;if(n>V.length-1)n=0;location.hash=V[n].k;render(n);});
+ paint(); wire(); render(idxOf());
+ [120,400,1200].forEach(function(t){setTimeout(navLight,t);});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 window.addEventListener('scroll',function(){var mn=document.getElementById('mn');
  if(mn)mn.classList.toggle('scrolled',window.scrollY>60);},{passive:true});
