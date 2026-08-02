@@ -2162,6 +2162,85 @@ body.v11-active nav * { cursor: none !important; }
 #su .u-c .u-note{font-size:0.58rem !important;line-height:1.8 !important;color:rgba(10,10,10,0.45) !important;margin-top:16px !important;padding-top:14px !important;border-top:1px solid rgba(10,10,10,0.09) !important;max-width:52ch !important;}
 @media(max-width:768px){#su .u-c.u-anchor .u-name{font-size:1.1rem !important;}#su .u-c{padding:18px !important;}}
 </style>
+
+<style id="mobile-pass">
+/* ══════════════ RESPONSIVE PASS ══════════════
+   Adds the missing tablet tier (768-1024) so nothing jumps straight from
+   multi-column to single column, and finishes the elements added in the
+   last pass that had no mobile treatment. */
+
+/* ---------- TABLET 901-1180: intermediate column counts ---------- */
+@media (max-width:1180px) and (min-width:901px){
+  body .funds-grid{grid-template-columns:repeat(2,1fr) !important;gap:2px !important;}
+  body #su .u-g{grid-template-columns:repeat(2,1fr) !important;}
+  body #su .u-anchor{grid-column:span 2 !important;grid-row:span 1 !important;}
+  body #su .u-twin{grid-column:span 2 !important;}
+  #su .u-anchor .u-img{aspect-ratio:16/9 !important;}
+  .logo-grid{grid-template-columns:repeat(4,1fr) !important;gap:48px 16px !important;}
+}
+
+/* ---------- TABLET 769-900: two-up, not one ---------- */
+@media (max-width:900px) and (min-width:769px){
+  body .funds-grid{grid-template-columns:repeat(2,1fr) !important;gap:2px !important;}
+  body #su .u-g{grid-template-columns:repeat(2,1fr) !important;}
+  body #su .u-anchor,body #su .u-twin{grid-column:span 2 !important;grid-row:span 1 !important;}
+  body #su .u-anchor .u-img{aspect-ratio:16/9 !important;}
+  body #su .u-twin .u-tw{grid-template-columns:1fr 1fr !important;}
+  .cs-dna-split{grid-template-columns:1fr 1fr !important;gap:28px !important;}
+  .cs-dmets{grid-template-columns:repeat(4,1fr) !important;}
+  .logo-grid{grid-template-columns:repeat(3,1fr) !important;gap:44px 16px !important;}
+  #hiw-stage .ec2-slide{flex:0 0 calc(50% - 1.5px) !important;}
+  #hiw-stage .ec2-track{margin-left:-25% !important;}
+}
+
+/* ---------- MOBILE <=768 ---------- */
+@media (max-width:768px){
+  /* the Marshall metrics read better 2-up than 4-up at this width */
+  .cs-dmets{grid-template-columns:repeat(2,1fr) !important;gap:22px 0 !important;}
+  .cs-dmet{border-right:none !important;padding-right:0 !important;margin-right:0 !important;}
+
+  /* DNA split keeps its two labels stacked, never merged into one list */
+  .cs-dna-split{grid-template-columns:1fr !important;gap:30px !important;}
+  .cs-dsub{margin-bottom:12px !important;}
+
+  /* elements added last pass that had no mobile treatment */
+  .wwd-close{margin-top:30px !important;width:40px !important;}
+  .cs-bridge{font-size:0.84rem !important;line-height:1.8 !important;margin-bottom:18px !important;}
+  #su .u-note{font-size:0.62rem !important;margin-top:14px !important;padding-top:12px !important;max-width:none !important;}
+  #su .u-c .u-desc,#su .u-c.u-anchor .u-desc{max-width:none !important;}
+
+  /* twin card: side-by-side frames would be tiny — stack them */
+  body #su .u-twin .u-tw{grid-template-columns:1fr !important;grid-template-rows:1fr 1fr !important;}
+
+  /* engineering strip: never a single full-width frame */
+  body #hiw-stage .ec2-slide{flex:0 0 calc(50% - 1.5px) !important;}
+  body #hiw-stage .ec2-track{margin-left:0 !important;}
+  #hiw-stage .ec2-wrap{height:clamp(200px,42vw,300px) !important;}
+
+  /* accordion: reclaim the 32px indent, keep the type system */
+  #hiw-stage .accordion-header{padding:16px 0 !important;}
+  #hiw-stage .accordion-body{padding:0 0 0 0 !important;}
+  #hiw-stage .accordion-item .accordion-body.open{padding-top:8px !important;padding-bottom:16px !important;}
+  #hiw-stage .accordion-item .accordion-body p{font-size:0.8rem !important;line-height:1.9 !important;max-width:none !important;}
+
+  /* touch targets — 9px dots and 32px arrows are below the 44px guideline */
+  .fdot{width:9px !important;height:9px !important;padding:16px !important;
+        background-clip:content-box !important;box-sizing:content-box !important;margin:-16px !important;}
+  .fcar-btn,.ec2-btn{width:44px !important;height:44px !important;}
+  .fund-toggle-btn{padding:12px !important;margin:-12px !important;}
+}
+
+/* ---------- SMALL PHONES <=430 ---------- */
+@media (max-width:430px){
+  .cs-dmets{grid-template-columns:repeat(2,1fr) !important;}
+  .logo-grid{grid-template-columns:repeat(2,1fr) !important;gap:36px 14px !important;}
+  #su .u-c{padding:16px !important;}
+  #su .u-c .u-name{font-size:0.9rem !important;}
+  #su .u-c.u-anchor .u-name{font-size:1.05rem !important;}
+  #hiw-stage .ec2-wrap{height:clamp(180px,48vw,260px) !important;}
+  .wwd-close{margin-top:26px !important;}
+}
+</style>
 </head>
 <body>
 <div id="hero-switcher" style="display:none;"><span class="hsw-label">HERO</span><button class="hsw-btn active" onclick="applyHeroOpt(0)">0</button><button class="hsw-btn" onclick="applyHeroOpt(1)">1</button><button class="hsw-btn" onclick="applyHeroOpt(2)">2</button><button class="hsw-btn" onclick="applyHeroOpt(3)">3</button><button class="hsw-btn" onclick="applyHeroOpt(4)">4</button><button class="hsw-btn" onclick="applyHeroOpt(5)">5</button><button class="hsw-btn" onclick="applyHeroOpt(6)">6</button><button class="hsw-btn" onclick="applyHeroOpt(7)">7</button><button class="hsw-btn" onclick="applyHeroOpt(8)">8</button><button class="hsw-btn" onclick="applyHeroOpt(9)">9</button><button class="hsw-btn" onclick="applyHeroOpt(10)">10</button><button class="hsw-btn" onclick="applyHeroOpt(11)">11</button></div>
