@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<title>Team — 10 Explorations · Silent Foundry</title>
+<title>Team — Ending Studies · Silent Foundry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css"/>
@@ -541,7 +541,7 @@ function BOT(c){
  var bg=c.bg||T34, pad=c.pad||'25px 0', d=(bg!==CRM);
  function wrap(inner,extra){return '<section style="background:'+bg+';padding:'+pad+';overflow:hidden;position:relative;'+(extra||'')+'">'+inner+'</section>';}
  var B=BEL({dark:d,al:c.al,big:c.big,skew:c.skew,nobr:c.nobr,bls:c.bls,attr:c.attr,max:c.max,small:c.small});
- var inv=INV({dark:c.idark,shape:c.ishape,al:c.ial,bg:c.ibg,pad:c.ipad,mw:c.imw});
+ var inv=c.noInv?'':INV({dark:c.idark,shape:c.ishape,al:c.ial,bg:c.ibg,pad:c.ipad,mw:c.imw});
  var row='<div style="position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:'+
    (c.mh||'320px')+';padding-left:'+(c.pl||'32px')+';">';
  switch(c.s){
@@ -990,12 +990,340 @@ xadd('Closing Invitation','The invitation is lifted out of the tail and given a 
  + XPH({p:'clamp(130px,20vh,230px) '+XPAD})
  + XO({shape:'stack',al:'c',wrap:'640px',centre:true,p:'clamp(96px,14vh,160px) '+XPAD});});
 
+
+/* ═══════════ THE NEW ORIGINAL ═══════════
+   Intro   — exploration 09, Architectural Grid
+   People  — as the previous original
+   Bottom  — as the previous original */
+function NEW_INTRO(){
+ return xs('<div class="x-12" style="margin-bottom:56px;"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:40px;"></div>'+
+   '<div class="x-12">'+
+   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
+     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',
+   {p:'clamp(160px,22vh,215px) '+XPAD+' clamp(64px,9vh,100px)'});
+}
+/* mission + vision lifted out of the intro into their own section */
+function MV_SECTION(o){o=o||{};
+ var d=o.dark, lc=d?G5:K.lab, tc=d?'rgba(244,241,236,0.55)':K.i55;
+ var body = o.stack
+  ? '<div>'+'<p class="a-eb" style="color:'+lc+';margin-bottom:10px;">'+C.missionLb+'</p>'+xBd(C.mission,'50ch',null,tc)+
+    g(38)+'<p class="a-eb" style="color:'+lc+';margin-bottom:10px;">'+C.visionLb+'</p>'+xBd(C.vision,'50ch',null,tc)+'</div>'
+  : '<div class="x-12">'+
+    '<div style="grid-column:1/6;"><p class="a-eb" style="color:'+lc+';margin-bottom:10px;">'+C.missionLb+'</p>'+xBd(C.mission,'100%',null,tc)+'</div>'+
+    '<div style="grid-column:7/12;"><p class="a-eb" style="color:'+lc+';margin-bottom:10px;">'+C.visionLb+'</p>'+xBd(C.vision,'100%',null,tc)+'</div></div>';
+ return '<section style="'+(o.bg?'background:'+o.bg+';':'')+'padding:'+(o.p||('clamp(72px,10vh,120px) '+XPAD))+';'+
+  (o.bt===false?'':'border-top:0.5px solid '+(d?K.cr08:K.r08)+';')+'">'+(o.mw?xw(body,o.mw,o.centre):body)+'</section>';}
+/* intro alone, without mission and vision */
+function INTRO_ONLY(o){o=o||{};
+ return xs('<div class="x-12" style="margin-bottom:56px;"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:40px;"></div>'+
+   '<div class="x-12"><div style="grid-column:'+(o.wide?'1/9':'1/6')+';">'+
+   xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div></div>',
+   {p:o.p||('clamp(160px,22vh,215px) '+XPAD+' clamp(56px,8vh,88px)')});}
+
+/* ── SWITCH product-card treatment, from #su .u-c on index.html ── */
+var UBG='#efece6', ULN='rgba(10,10,10,0.09)';
+function ucard(m,i,o){
+ return '<div class="tc u-c'+(m.board?' fdr':'')+'" data-i="'+i+'" style="background:'+UBG+';padding:'+(o.pad||'20px')+
+  ';display:flex;flex-direction:column;border:none;'+(o.flex?'flex:0 0 '+o.flex+';scroll-snap-align:center;':'')+'">'+
+  '<div style="overflow:hidden;"><img class="ph" src="'+m.i+'" alt="'+m.n+'" style="height:'+(o.h||'260px')+
+   ';object-position:'+m.f+';filter:grayscale(1) brightness(0.94) contrast(1.04);"/></div>'+
+  (m.board?'<div class="fmark" style="margin-top:14px;margin-bottom:0;"></div>':'')+
+  '<div class="u-name" style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||'0.95rem')+
+   ';letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.82);display:block;margin-top:'+(m.board?'10px':'5px')+';">'+m.n+'</div>'+
+  '<div class="a-rl" style="color:'+K.lab+';margin-top:6px;margin-bottom:0;">'+m.r+'</div>'+
+  '<div class="u-desc" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;line-height:1.75;font-weight:300;'+
+   'color:rgba(10,10,10,0.48);display:block;margin-top:8px;">'+prev(m.b)+'</div>'+
+  '<div class="bio"><p class="a-bd" style="font-size:0.62rem;line-height:1.75;color:'+K.i55+';padding-top:8px;">'+m.b+'</p></div>'+
+  '</div>';}
+function XU(o){o=o||{};
+ var lab=xs('<div class="x-row">'+xEy(C.peopleLb,'0')+
+   (o.scroll===false?'':'<span class="a-mi" style="color:'+K.i3+';">'+C.scrollLb+'</span>')+'</div>',
+   {p:o.labP||('clamp(44px,6vh,72px) '+XPAD+' 20px'),bt:o.bt===false?'':K.r08});
+ var inner = o.carousel
+  ? '<div class="hs" style="gap:1px;background:'+ULN+';border-top:1px solid '+ULN+';border-bottom:1px solid '+ULN+
+    ';margin:0 calc(-1 * '+XPAD+');padding:0;scroll-snap-type:x mandatory;">'+
+    M.map(function(m,i){return ucard(m,i,{flex:o.flex||'clamp(240px,26vw,320px)',h:o.h,pad:o.pad,nsz:o.nsz});}).join('')+'</div>'
+  : '<div class="u-g" style="display:grid;grid-template-columns:repeat('+(o.cols||3)+',1fr);gap:1px;background:'+ULN+
+    ';border:1px solid '+ULN+';">'+
+    M.map(function(m,i){return ucard(m,i,{h:o.h,pad:o.pad,nsz:o.nsz});}).join('')+'</div>';
+ return lab + xs(inner,{p:o.carP||('0 '+XPAD+' clamp(64px,9vh,100px)')});}
+function ORIG_PEOPLE(){return PEOPLE_F('280px','310px');}
+function ORIG_BOTTOM(){return BOT(B60[26]);}
+function NEW_ORIGINAL(){return NEW_INTRO()+ORIG_PEOPLE()+ORIG_BOTTOM();}
+
 /* ── the original (layout 27) sits first, then the thirty explorations ── */
-var V=[{k:'orig',n:0,t:'Original — layout 27',note:'The chosen baseline, unchanged.',
-        f:function(){return OPEN_1C()+BODY()+BOT(B60[26]);}}]
- .concat(X.map(function(x,i){return {k:'x'+(i+1),n:i+1,t:x.t,note:x.note,f:x.f};}));
+
+/* ═══════════ 10 REFINEMENTS ON THE NEW ORIGINAL ═══════════ */
+var Y=[];function yadd(t,note,f){Y.push({t:t,note:note,f:f});}
+
+yadd('People First','The carousel moves above everything. You meet the nine before you read a word about them; the introduction, Mission and Vision follow as explanation.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'})
+ + PEOPLE_F('280px','310px')
+ + xs('<div class="x-rule" style="margin-bottom:40px;"></div><div class="x-12">'+
+   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
+     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',{p:'clamp(56px,8vh,88px) '+XPAD})
+ + ORIG_BOTTOM();});
+
+yadd('Mission & Vision Split','Mission and Vision are lifted out of the introduction and given a section of their own beneath it, so the intro carries one idea and the beliefs carry another.',function(){
+ return INTRO_ONLY() + MV_SECTION() + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Beliefs Before People','Same split, but the beliefs sit directly above the carousel — so the philosophy is stated, then the people appear as the evidence for it.',function(){
+ return INTRO_ONLY({wide:true}) + MV_SECTION({p:'clamp(80px,11vh,130px) '+XPAD}) + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Beliefs on Dark','Mission and Vision take their own section on the deep gradient, which sets up the manifesto at the foot of the page rather than arriving from nowhere.',function(){
+ return INTRO_ONLY() + MV_SECTION({dark:true,bg:T34B,p:'clamp(88px,13vh,150px) '+XPAD}) + ORIG_PEOPLE() + ORIG_BOTTOM();});
+
+yadd('Product Cards · 3 up','The people rendered in the SWITCH product-card language from the homepage — cream cards on a one-pixel hairline grid, small wide-tracked names, tight descriptions.',function(){
+ return NEW_INTRO() + XU({cols:3,h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · 4 up','The same card language at four across, matching the homepage portfolio grid exactly. Denser, more catalogue than gallery.',function(){
+ return NEW_INTRO() + XU({cols:4,h:'240px',pad:'18px',nsz:'0.9rem'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · slider','The product-card language kept, but running horizontally as a snap carousel — the homepage cards behave this way on mobile.',function(){
+ return NEW_INTRO() + XU({carousel:true,flex:'clamp(250px,27vw,330px)',h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('Product Cards · split beliefs','Product-card people, with Mission and Vision in their own section. The two strongest ideas from this round combined.',function(){
+ return INTRO_ONLY() + MV_SECTION() + XU({cols:3,h:'280px'}) + ORIG_BOTTOM();});
+
+yadd('People First · split beliefs','People open the page, the introduction follows, and Mission and Vision close the upper half before the manifesto.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'})
+ + XU({carousel:true,flex:'clamp(250px,27vw,330px)',h:'280px',bt:false,labP:'0 '+XPAD+' 20px'})
+ + xs('<div class="x-12"><div style="grid-column:1/9;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div></div>',
+   {p:'clamp(56px,8vh,88px) '+XPAD,bt:K.r08})
+ + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Full Sequence','Every idea from this round in the order that reads best: title, introduction, people as product cards, then Mission and Vision as the closing statement before the manifesto.',function(){
+ return INTRO_ONLY({wide:true}) + XU({cols:3,h:'280px'}) + MV_SECTION({p:'clamp(80px,11vh,130px) '+XPAD}) + ORIG_BOTTOM();});
 
 
+/* ═══════════ HYBRID CARD — original horizontal strip, product-card styling ═══════════
+   Card design, size and behaviour stay as the original. What changes is the surface:
+   #efece6 fill, 1px hairline separators on rgba(10,10,10,0.09), and the product-card
+   type scale (Bebas 0.95rem / 0.2em name, 0.62rem / 1.75 description). */
+function hycard(m,i,o){
+ return '<div class="tc'+(m.board?' fdr':'')+'" data-i="'+i+'" style="flex:0 0 '+(o.w||'280px')+
+  ';background:'+UBG+';border:none;padding:'+(o.pad||'0')+';">'+
+  '<div style="overflow:hidden;"><img class="ph" src="'+m.i+'" alt="'+m.n+'" style="height:'+(o.h||'310px')+
+   ';object-position:'+m.f+';filter:grayscale(1) brightness(0.94) contrast(1.04);"/></div>'+
+  '<div style="padding:'+(o.cpad||'20px')+';display:flex;flex-direction:column;flex:1;">'+
+  (m.board?'<div class="fmark"></div>':'')+
+  '<div class="u-name" style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||'0.95rem')+
+   ';letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.82);display:block;margin-top:5px;">'+m.n+'</div>'+
+  '<div class="a-rl" style="color:'+K.lab+';margin-top:7px;margin-bottom:0;">'+m.r+'</div>'+
+  '<div class="u-desc" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;line-height:1.75;font-weight:300;'+
+   'color:rgba(10,10,10,0.48);display:block;margin-top:10px;">'+prev(m.b)+'</div>'+
+  '<div class="bio"><p class="a-bd" style="font-size:0.62rem;line-height:1.75;color:'+K.i55+';padding-top:10px;">'+m.b+'</p></div>'+
+  '<div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">'+
+  '<span class="sym" style="font-size:0.65rem;color:'+K.lab+';opacity:0.5;">'+m.s+'</span></div>'+
+  '</div></div>';}
+function HY(o){o=o||{};
+ var lab = o.lab===false ? '' :
+  xs('<div class="x-row">'+xEy(C.peopleLb,'0')+
+    (o.scroll===false?'':'<span class="a-mi" style="color:'+K.i3+';">'+C.scrollLb+'</span>')+'</div>',
+    {p:o.labP||('clamp(44px,6vh,72px) '+XPAD+' 20px'),bt:o.bt===false?'':K.r08});
+ var strip='<div class="hs" style="gap:'+(o.gap||'1px')+';background:'+(o.line||ULN)+
+   ';border-top:1px solid '+(o.line||ULN)+';border-bottom:1px solid '+(o.line||ULN)+
+   ';margin:0 calc(-1 * '+XPAD+');padding:0;">'+
+   M.map(function(m,i){return hycard(m,i,o);}).join('')+'</div>';
+ return lab + xs(strip,{p:o.carP||('0 '+XPAD+' clamp(64px,9vh,100px)')});}
+
+/* ── the intro block, on its own ── */
+function INTRO_B(o){o=o||{};
+ var head = o.head===false ? '' :
+   '<div class="x-12" style="margin-bottom:'+(o.hm||'56px')+';"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:40px;"></div>';
+ var body = o.centre
+   ? xw(xEy(C.eyebrow,'10px')+xBd(C.intro,'100%'),o.mw||'640px',true)
+   : '<div class="x-12"><div style="grid-column:1/'+(o.span||'6')+';">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div></div>';
+ return xs(head+body,{p:o.p||('clamp(160px,22vh,215px) '+XPAD+' clamp(56px,8vh,88px)'),
+   bt:o.bt?K.r08:'',x:o.centre?'text-align:center;':''});}
+/* ── mission and vision, separately or together ── */
+function ONE(lb,tx,o){o=o||{};
+ var d=o.dark, lc=d?G5:K.lab, tc=d?'rgba(244,241,236,0.55)':K.i55;
+ var body='<p class="a-eb" style="color:'+lc+';margin-bottom:10px;">'+lb+'</p>'+xBd(tx,o.mw||'52ch',o.fs,tc);
+ if(o.grid) body='<div class="x-12"><div style="grid-column:1/4;"><p class="a-eb" style="color:'+lc+';margin:0;">'+lb+'</p></div>'+
+   '<div style="grid-column:5/11;">'+xBd(tx,'100%',o.fs,tc)+'</div></div>';
+ return '<section style="'+(o.bg?'background:'+o.bg+';':'')+'padding:'+(o.p||('clamp(64px,9vh,104px) '+XPAD))+';'+
+   (o.bt===false?'':'border-top:0.5px solid '+(d?K.cr08:K.r08)+';')+(o.centre?'text-align:center;':'')+'">'+
+   (o.wrap?xw(body,o.wrap,true):body)+'</section>';}
+function MIS(o){return ONE(C.missionLb,C.mission,o);}
+function VIS(o){return ONE(C.visionLb,C.vision,o);}
+
+/* ═══════════ 20 FURTHER · intro split from Mission & Vision, hybrid cards ═══════════ */
+yadd('Intro · Cards · Beliefs','The introduction stands alone at the top, the people follow immediately, and Mission and Vision arrive afterwards as their own section. The hybrid card: original strip, product-card surface.',function(){
+ return INTRO_B() + HY() + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Intro · Cards · Mission · Vision','Same order, but Mission and Vision are two separate sections rather than one, each with its own hairline above it.',function(){
+ return INTRO_B() + HY() + MIS() + VIS() + ORIG_BOTTOM();});
+
+yadd('Cards · Intro · Beliefs','The people come first with no preamble at all. The introduction explains them afterwards, and the beliefs close the upper half.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(30px,4vh,44px)'})
+ + HY({bt:false,labP:'0 '+XPAD+' 20px'}) + INTRO_B({head:false,bt:true,span:'9'}) + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Intro · Mission · Cards · Vision','Mission sits between the introduction and the people; Vision waits until after them. The two beliefs bracket the team.',function(){
+ return INTRO_B() + MIS() + HY() + VIS() + ORIG_BOTTOM();});
+
+yadd('Beliefs · Intro · Cards','Mission and Vision open the page as a statement of intent. The introduction and the people then follow as the proof.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>'+
+   '<div class="x-rule" style="margin:44px 0 40px;"></div>'+
+   '<div class="x-12"><div style="grid-column:1/6;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',
+   {p:'clamp(160px,22vh,215px) '+XPAD+' clamp(64px,9vh,100px)'})
+ + INTRO_B({head:false,bt:true,span:'9'}) + HY() + ORIG_BOTTOM();});
+
+yadd('Beliefs on Dark After Cards','Introduction, then the people, then Mission and Vision on the deep gradient — which hands straight over to the manifesto.',function(){
+ return INTRO_B() + HY() + MV_SECTION({dark:true,bg:T34B,p:'clamp(88px,13vh,150px) '+XPAD}) + ORIG_BOTTOM();});
+
+yadd('Beliefs Between','The beliefs are placed between the introduction and the people, so you read what the studio thinks before you meet who thinks it.',function(){
+ return INTRO_B() + MV_SECTION() + HY() + ORIG_BOTTOM();});
+
+yadd('Cards · Beliefs · Intro','Reversed entirely — people, then beliefs, then the introduction last as a closing note before the manifesto.',function(){
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(30px,4vh,44px)'})
+ + HY({bt:false,labP:'0 '+XPAD+' 20px'}) + MV_SECTION() + INTRO_B({head:false,bt:true,span:'9'}) + ORIG_BOTTOM();});
+
+yadd('Beliefs as a Band','Mission and Vision set as one wide two-column band beneath the cards, on the twelve-column grid rather than a narrow measure.',function(){
+ return INTRO_B() + HY() + MV_SECTION({p:'clamp(88px,12vh,140px) '+XPAD}) + ORIG_BOTTOM();});
+
+yadd('Centred Intro','The introduction is centred on a narrow measure, the cards run full width beneath it, and the beliefs return to the grid.',function(){
+ return INTRO_B({centre:true,mw:'620px'}) + HY() + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Labelled Rows','Mission and Vision each become a labelled row on the grid — label in the left three columns, text in the middle six. Catalogue logic.',function(){
+ return INTRO_B() + HY() + MIS({grid:true}) + VIS({grid:true}) + ORIG_BOTTOM();});
+
+yadd('Four Visible','Narrower cards so four sit on screen at once, with the introduction above and beliefs below.',function(){
+ return INTRO_B() + HY({w:'232px',h:'270px',cpad:'18px',nsz:'0.9rem'}) + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Tall Cards','Taller portraits with the same product-card surface, giving the photography more weight against the text sections.',function(){
+ return INTRO_B() + HY({w:'clamp(280px,29vw,340px)',h:'clamp(380px,48vh,460px)'}) + MV_SECTION({stack:true,mw:'760px'}) + ORIG_BOTTOM();});
+
+yadd('Mission Beside Title','Mission is lifted to sit beside the page title as an opening statement; Vision stays below with the introduction and the cards between them.',function(){
+ return xs('<div class="x-12" style="margin-bottom:52px;"><div style="grid-column:1/7;">'+TT()+'</div>'+
+   '<div style="grid-column:8/13;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:40px;"></div>'+
+   '<div class="x-12"><div style="grid-column:1/7;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(160px,22vh,215px) '+XPAD+' clamp(64px,9vh,100px)'})
+ + HY() + VIS() + ORIG_BOTTOM();});
+
+yadd('Flush Strip','The hairlines between cards removed so the strip reads as one continuous band of photography, with the product-card surface kept.',function(){
+ return INTRO_B() + HY({gap:'0px',line:'transparent'}) + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Heavier Rules','The opposite — the hairlines between cards strengthened so the grid structure of the strip is unmistakable.',function(){
+ return INTRO_B() + HY({gap:'2px',line:'rgba(10,10,10,0.16)'}) + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Beliefs on the Grid','Mission, Vision and Opportunities all hang from the same three-column label gutter, stacked on one set of alignment lines. Opportunities reads as a third belief rather than a call to action, so the manifesto closes the page alone.',function(){
+ function gridRow(lb,tx,extra,last){
+  return '<div class="x-12"'+(last?'':' style="padding-bottom:34px;"')+'>'+
+   '<div style="grid-column:1/4;">'+xEy(lb,'0')+'</div>'+
+   '<div style="grid-column:4/11;">'+xBd(tx,'100%')+(extra||'')+'</div></div>'+
+   (last?'':'<div class="x-rule" style="margin-bottom:34px;"></div>');}
+ return INTRO_B({span:'9'}) + HY() +
+   xs(gridRow(C.missionLb,C.mission)+gridRow(C.visionLb,C.vision)+
+      gridRow(C.oppLb,C.oppBb,g(26)+oCta(false),true),
+   {p:'clamp(80px,11vh,130px) '+XPAD,bt:K.r08})
+ + BOT({s:'wall',bg:T34B,symOp:'0.14',noInv:true});});
+
+yadd('Cards Open Full Bleed','The strip opens the page edge to edge before the title appears at all — the photography is the entrance.',function(){
+ return HY({bt:false,scroll:false,labP:'clamp(120px,16vh,160px) '+XPAD+' 20px',carP:'0 '+XPAD+' 0',w:'clamp(260px,27vw,330px)',h:'clamp(330px,42vh,400px)'})
+ + INTRO_B({bt:true,hm:'44px',p:'clamp(64px,9vh,100px) '+XPAD+' clamp(56px,8vh,88px)'})
+ + MV_SECTION() + ORIG_BOTTOM();});
+
+yadd('Beliefs Dark Between','A dark band carrying Mission and Vision sits between the introduction and the people, breaking the cream in the middle of the page rather than at the end.',function(){
+ return INTRO_B() + MV_SECTION({dark:true,bg:K.dkf,p:'clamp(80px,11vh,130px) '+XPAD}) + HY({bt:false}) + ORIG_BOTTOM();});
+
+yadd('Vision Closes','Mission sits with the introduction; Vision is held back to the very end, arriving as the last thing before the manifesto.',function(){
+ return xs('<div class="x-12" style="margin-bottom:56px;"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>'+
+   '<div class="x-rule" style="margin-bottom:40px;"></div>'+
+   '<div class="x-12"><div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+'</div></div>',
+   {p:'clamp(160px,22vh,215px) '+XPAD+' clamp(64px,9vh,100px)'})
+ + HY() + VIS({centre:true,wrap:'640px'}) + ORIG_BOTTOM();});
+
+
+/* ═══════════ SIX ENDINGS — everything above is fixed (variant 01) ═══════════ */
+function E_top(){   /* 01 above the ending, unchanged */
+ return xs('<div class="x-12"><div style="grid-column:1/8;">'+TT()+'</div>'+
+   '<div style="grid-column:9/13;align-self:end;">'+xMi(C.locs)+'</div></div>',
+   {p:'clamp(150px,20vh,195px) '+XPAD+' clamp(32px,4vh,48px)'})
+ + PEOPLE_F('280px','310px')
+ + xs('<div class="x-rule" style="margin-bottom:40px;"></div><div class="x-12">'+
+   '<div style="grid-column:1/6;">'+xEy(C.eyebrow,'10px')+xBd(C.intro,'100%')+'</div>'+
+   '<div style="grid-column:7/12;">'+xEy(C.missionLb,'10px')+xBd(C.mission,'100%')+g(40)+
+     xEy(C.visionLb,'10px')+xBd(C.vision,'100%')+'</div></div>',{p:'clamp(56px,8vh,88px) '+XPAD});}
+/* the manifesto, with or without the invitation riding along */
+function E_mani(inner,pad){
+ return '<section style="background:'+T34B+';padding:'+(pad||'25px 0')+';overflow:hidden;position:relative;">'+
+  SYMB({sym:'wall',symOp:'0.14'})+
+  '<div style="position:relative;z-index:2;display:flex;flex-direction:row;align-items:stretch;width:100%;min-height:320px;padding-left:32px;">'+
+  '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:38px 29px 38px 0;">'+
+  BEL({dark:true,al:'left',big:BG_.x})+(inner||'')+'</div></div>'+TRI({})+'</section>';}
+function invBits(dark,mw,fs){
+ var lc=dark?G5:K.lab, tc=dark?CR45:K.i55;
+ return {lb:'<span class="a-eb" style="display:block;color:'+lc+';margin-bottom:12px;">'+C.oppLb+'</span>',
+   bd:'<p class="a-bd" style="color:'+tc+';margin:0 0 22px;max-width:'+(mw||'44ch')+';font-size:'+(fs||'0.8rem')+';">'+C.oppBb+'</p>',
+   cta:'<a href="'+C.oppHr+'" class="a-cta" style="border-color:'+(dark?G35:'rgba(138,110,58,0.38)')+
+       ';color:'+(dark?GOLD:K.lab)+';">'+C.oppCt+' ⌙</a>'};}
+
+var Z=[];function zadd(t,note,f){Z.push({t:t,note:note,f:f});}
+
+zadd('As it is now','The current ending, for comparison — its own cream section beneath the manifesto, left aligned, 52ch.',function(){
+ var b=invBits(false,'52ch','0.9rem');
+ return E_top()+E_mani()+xs('<div>'+b.lb+b.bd+b.cta+'</div>',{p:'clamp(56px,8vh,88px) '+XPAD});});
+
+zadd('On the dark, low','My recommendation. The invitation shares the manifesto’s ground, dropped well below it behind a gold hairline. The page ends once — loud, then quiet.',function(){
+ var b=invBits(true);
+ return E_top()+E_mani(g(64)+'<div style="height:0.5px;background:'+G2+';width:64px;"></div>'+g(48)+
+   '<div style="display:flex;flex-direction:column;align-items:flex-start;">'+b.lb+b.bd+b.cta+'</div>','clamp(56px,8vh,90px) 0');});
+
+zadd('On the dark, opposite corner','Same idea but the invitation sits to the right of the belief rather than under it, so the two occupy opposite corners of one dark field.',function(){
+ var b=invBits(true,'40ch','0.78rem');
+ return E_top()+
+  '<section style="background:'+T34B+';padding:clamp(56px,8vh,90px) 0;overflow:hidden;position:relative;">'+
+  SYMB({sym:'wall',symOp:'0.14'})+
+  '<div style="position:relative;z-index:2;display:flex;flex-direction:row;align-items:flex-end;width:100%;min-height:360px;padding:0 '+XPAD+' 0 32px;gap:clamp(40px,6vw,110px);">'+
+  '<div style="flex:1.3;padding:38px 0;">'+BEL({dark:true,al:'left',big:BG_.x})+'</div>'+
+  '<div style="flex:0.7;padding-bottom:38px;border-left:0.5px solid '+G2+';padding-left:clamp(24px,3vw,48px);">'+b.lb+b.bd+b.cta+'</div>'+
+  '</div></section>';});
+
+zadd('Cream, centred, with air','Kept as its own cream section but centred on a short measure with roughly double the space around it, so it reads as a deliberate closing gesture.',function(){
+ var b=invBits(false,'100%','0.85rem');
+ return E_top()+E_mani()+
+  xs(xw('<div style="display:flex;flex-direction:column;align-items:center;text-align:center;">'+b.lb+b.bd+b.cta+'</div>','480px',true),
+    {p:'clamp(110px,16vh,180px) '+XPAD});});
+
+zadd('One line on the footer edge','No section of its own. The invitation becomes a single row on the top edge of the footer, label and text left, CTA right — the manifesto becomes the true end of the page.',function(){
+ var b=invBits(false,'56ch','0.8rem');
+ return E_top()+E_mani()+
+  xs('<div class="cl-row" style="align-items:center;">'+
+    '<span class="a-eb" style="color:'+K.lab+';margin:0;">'+C.oppLb+'</span>'+
+    '<div style="flex:1;min-width:280px;">'+b.bd.replace('margin:0 0 22px','margin:0')+'</div>'+b.cta+'</div>',
+    {p:'clamp(40px,6vh,64px) '+XPAD,bt:K.r08});});
+
+zadd('Dark band, full width','The invitation gets its own narrow dark band directly under the manifesto — same ground, but a distinct beat, so it is neither a cream section nor buried in the corner.',function(){
+ var b=invBits(true,'52ch','0.82rem');
+ return E_top()+E_mani()+
+  '<section style="background:'+K.dkf+';padding:clamp(48px,7vh,76px) '+XPAD+';border-top:0.5px solid '+G2+';">'+
+  '<div class="cl-row" style="align-items:center;">'+b.lb.replace('margin-bottom:12px','margin:0')+
+  '<div style="flex:1;min-width:280px;">'+b.bd.replace('margin:0 0 22px','margin:0')+'</div>'+b.cta+'</div></section>';});
+
+var V=Z.map(function(z,i){return {k:'e'+(i+1),n:i+1,t:z.t,note:z.note,f:z.f};});
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
@@ -1027,14 +1355,17 @@ function render(n){document.getElementById('pc').innerHTML=V[n].f();
  document.querySelectorAll('.v-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
  var l=document.getElementById('v-swlab'); if(l)l.textContent=(V[n].n===0?'':('0'+V[n].n).slice(-2)+'  ·  ')+V[n].t;
  window.scrollTo(0,0);}
-function mount(){var s=document.createElement('div');s.className='v-sw';
- s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){return '<b data-n="'+i+'" title="'+v.t+' — '+v.note+'"'+(v.n===0?' class="orig"':'')+'>'+(v.n===0?'ORIG':('0'+v.n).slice(-2))+'</b>';}).join('')+'</div>';
+function mount(){
+ var s=document.createElement('div');s.className='v-sw';
+ s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){
+  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n===1?' class="orig"':'')+'>'+('0'+v.n).slice(-2)+'</b>';}).join('')+'</div>';
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
  document.addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
   var n=idxOf()+(e.key==='ArrowRight'?1:-1);if(n<0)n=V.length-1;if(n>V.length-1)n=0;location.hash=V[n].k;render(n);});
- paint();wire();render(idxOf());[120,400,1200].forEach(function(t){setTimeout(navLight,t);});}
+ paint(); wire(); render(idxOf());
+ [120,400,1200].forEach(function(t){setTimeout(navLight,t);});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
 window.addEventListener('scroll',function(){var mn=document.getElementById('mn');
  if(mn)mn.classList.toggle('scrolled',window.scrollY>60);},{passive:true});
