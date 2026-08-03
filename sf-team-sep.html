@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
-<title>Team — Two Options · Silent Foundry</title>
+<title>Team — Section Break · Silent Foundry</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="sf-styles.css"/>
@@ -2195,10 +2195,49 @@ function THESIS_14(){
    fl(BL1,QSM,cs.a,'0.12em','1.15',false,'center')+g(14)+
    fl(BL3,QMID,cs.b,'0.06em','0.9',true,'center')+'</div>'))+'</div>'+ftri(cs.at)+'</section>';}
 
-function PAGE_A(){return TOP_A()+STRIP()+BOARD_29()+MID_29()+THESIS_14();}
-function PAGE_B(){return TOP_B()+STRIP()+BOARD_29()+MID_29()+THESIS_14();}
-var V=[{k:'a',n:1,t:'Option A — catalogue header',note:'Exploration 07 top: title and cities share one baseline above a rule. Board, middle and thesis as agreed.',f:PAGE_A},
-       {k:'b',n:2,t:'Option B — deep field',note:'Exploration 27 top with the empty field cut right back. Board, middle and thesis as agreed.',f:PAGE_B}];
+
+/* ═══════════ 10 SEPARATIONS between VISION and OPPORTUNITIES ═══════════
+   Option A throughout. Only the transition changes. */
+var SOFT1='#eae6df', SOFT2='#e8e4dc';   /* 0.9% and 1.8% darker than the page */
+function MID_SEP(sep){
+ var eb=function(t){return '<p class="a-eb" style="color:'+K.lab+';margin-bottom:10px;">'+t+'</p>';};
+ var bd=function(t){return '<p class="a-bd" style="color:'+K.i55+';max-width:100%;">'+t+'</p>';};
+ function row(lbl,txt,extra,cols){return G12(CELL(cols?cols[0]:1,cols?cols[1]:9,eb(lbl)+bd(txt)+(extra||'')));}
+ var head=row(C.eyebrow,C.intro)+g(46)+row(C.missionLb,C.mission)+g(46)+row(C.visionLb,C.vision);
+ var opp=row(C.oppLb,C.oppBb,g(24)+oCtaX(),sep==='indent'?[3,11]:null);
+ var P='clamp(44px,6vh,70px) '+PAD2+' clamp(48px,7vh,78px)';
+ var mark;
+ switch(sep){
+  case 'short':   mark=g(46)+G12(CELL(1,9,RL(RULE,'64px')))+g(46); break;
+  case 'measure': mark=g(46)+G12(CELL(1,9,RL(RULE,'100%')))+g(46); break;
+  case 'tiny':    mark=g(46)+G12(CELL(1,9,RL('rgba(10,10,10,0.16)','22px')))+g(46); break;
+  case 'gold':    mark=g(46)+G12(CELL(1,9,RL('rgba(200,169,110,0.4)','48px')))+g(46); break;
+  case 'glyph':   mark=g(42)+G12(CELL(1,9,'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.68rem;'+
+                    'color:rgba(200,169,110,0.45);line-height:1;">△</div>'))+g(42); break;
+  case 'dots':    mark=g(46)+G12(CELL(1,9,'<div style="height:1px;width:120px;background-image:radial-gradient('+
+                    'rgba(10,10,10,0.22) 0.5px,transparent 0.5px);background-size:5px 1px;"></div>'))+g(46); break;
+  case 'indent':  mark=g(46); break;
+  case 'label':   mark=g(46)+G12(CELL(1,4,RL('rgba(10,10,10,0.14)','100%')))+g(46); break;
+  case 'panel':   return SEC(head,P.replace('clamp(48px,7vh,78px)','clamp(52px,7vh,80px)'))+
+                    '<section style="background:'+SOFT2+';padding:clamp(52px,7vh,80px) '+PAD2+';">'+opp+'</section>';
+  case 'wash':    return SEC(head,P.replace('clamp(48px,7vh,78px)','clamp(52px,7vh,80px)'))+
+                    '<section style="background:'+SOFT1+';padding:clamp(52px,7vh,80px) '+PAD2+';">'+opp+'</section>';
+  default:        mark=g(46);}
+ return SEC(head+mark+opp,P);}
+function PAGE_SEP(sep){return TOP_A()+STRIP()+BOARD_29()+MID_SEP(sep)+THESIS_14();}
+var SEPS=[
+ ['Short rule',      'A 64px hairline on the text column — the quietest mark that still reads as a break.','short'],
+ ['Full measure rule','The hairline runs the full width of the text column, so the break is unmistakable but still only a line.','measure'],
+ ['Tiny rule',       'A 22px mark, slightly darker so it holds at that length. Almost a punctuation mark rather than a rule.','tiny'],
+ ['Gold rule',       'A 48px hairline in gold at 40 percent — the break picks up the accent used for every label on the page.','gold'],
+ ['Single glyph',    'One triangle from the site’s symbol set, small and gold. A section mark rather than a divider.','glyph'],
+ ['Dotted rule',     'A 120px dotted line — softer than a solid rule, closer to a drawing annotation.','dots'],
+ ['Column indent',   'No mark at all. Opportunities shifts from columns 1–9 to 3–11, so the change is structural rather than drawn.','indent'],
+ ['Label-width rule','The hairline spans only the first three columns, aligning with the label gutter rather than the text.','label'],
+ ['Tonal panel',     'Opportunities sits on a ground 1.8 percent darker. No line at all — you feel the change without seeing it.','panel'],
+ ['Faintest wash',   'The same idea at 0.9 percent — the most subtle option here, barely at the threshold of perception.','wash']];
+var V=SEPS.map(function(s,i){return {k:'s'+(i+1),n:i+1,t:s[0],note:s[1],
+ f:(function(kind){return function(){return PAGE_SEP(kind);};})(s[2])};});
 
 function ngrad(c){var st=document.getElementById('ngs');if(!st){st=document.createElement('style');st.id='ngs';document.head.appendChild(st);}
  st.textContent='nav::before{background:linear-gradient(to bottom,'+c+' 0%,transparent 100%)!important;}';}
@@ -2233,7 +2272,7 @@ function render(n){document.getElementById('pc').innerHTML=V[n].f();
 function mount(){
  var s=document.createElement('div');s.className='v-sw';
  s.innerHTML='<span id="v-swlab"></span><div class="v-swb">'+V.map(function(v,i){
-  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n<=0?' class="orig"':'')+'>'+(v.n===1?'A':'B')+'</b>';}).join('')+'</div>';
+  return '<b data-n="'+i+'" title="'+v.t+(v.note?' — '+v.note:'')+'"'+(v.n<=0?' class="orig"':'')+'>'+('0'+v.n).slice(-2)+'</b>';}).join('')+'</div>';
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined){location.hash=V[+n].k;render(+n);}});
