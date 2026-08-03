@@ -228,6 +228,7 @@ function acc(bc,tc,sc,pc,ic){
       '</div></div>';
   }).join('');
 }
+window._sfPATHS=PATHS;window._sfOFFICES=OFFICES;window._sfFormHTML=form;window._sfAccHTML=acc;
 window.tPath=function(el){
   var b=el.nextElementSibling;var ic=el.querySelector('.pi');
   var isOpen=b.style.maxHeight!=='0px'&&b.style.maxHeight!=='';
@@ -1673,5 +1674,1089 @@ document.addEventListener('DOMContentLoaded',function(){
 
 })();
 </script>
+<script id="cx-js">
+(function(){
+'use strict';
+var P=window._sfPATHS, O=window._sfOFFICES, FORM=window._sfFormHTML, ACC=window._sfAccHTML;
+/* ── copy, taken verbatim from the current page ── */
+var X={ey:'Get In Touch', tt:'Contact Silent Foundry',
+ p1:'We work with brand owners, factories, operators, investors, and specialist partners across product development, manufacturing, capital, and China market entry.',
+ p2:'Download the relevant deck, then send us a short note about your project, your company, or the kind of partnership you have in mind.',
+ p3:'We read every message and will get back to you directly.',
+ note:"We review every submission personally. If there's a fit, you'll hear from one of the founding team directly.",
+ dl:'Downloads', msg:'Send A Message'};
+/* ── palette + type, unchanged from the site ── */
+var I82='rgba(10,10,10,0.82)',I85='rgba(10,10,10,0.85)',I75='rgba(10,10,10,0.75)',I6='rgba(10,10,10,0.6)',
+    I55='rgba(10,10,10,0.55)',I45='rgba(10,10,10,0.45)',I3='rgba(10,10,10,0.3)',I25='rgba(10,10,10,0.25)',
+    R08='rgba(10,10,10,0.08)',R12='rgba(10,10,10,0.12)',R06='rgba(10,10,10,0.06)',
+    GOLD='#c8a96e',LAB='#8a6e3a',CRM='#ede8e0',CRM2='#efece6',SOFT='#e8e4dc',
+    DK='linear-gradient(135deg,#282b33 0%,#1e2a4a 45%,#0a0a0a 100%)',NAVY='#1e2a4a',INKB='#0a0a0a';
+var T_H='clamp(1.3rem,2vw,1.9rem)', T_M='clamp(1.6rem,2.8vw,2.6rem)', T_L='clamp(2rem,4.2vw,4.8rem)',
+    T_S='clamp(1rem,1.4vw,1.5rem)', T_XS='clamp(0.9rem,1.2vw,1.3rem)';
+var PADX='clamp(24px,5vw,64px)';
+function g(h){return '<div style="height:'+h+'px"></div>';}
+function eb(t,c,mb){return '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.28em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||LAB)+';margin:0 0 '+(mb||14)+'px;">'+t+'</p>';}
+function ttl(t,sz,c,ls){return '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(sz||T_H)+
+ ';letter-spacing:'+(ls||'0.26em')+';line-height:1.15;text-transform:uppercase;color:'+(c||I82)+';font-weight:400;">'+t+'</div>';}
+function bd(t,c,mw,fs){return '<p style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:'+(fs||'0.85rem')+
+ ';line-height:1.95;color:'+(c||I55)+';margin:0;max-width:'+(mw||'none')+';">'+t+'</p>';}
+function mi(t,c){return '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||I25)+';margin:0;">'+t+'</p>';}
+function rule(c,w,m){return '<div style="height:0.5px;background:'+(c||R08)+';width:'+(w||'100%')+';'+(m?'margin:'+m+';':'')+'"></div>';}
+function vrule(c){return '<div style="width:0.5px;background:'+(c||R08)+';align-self:stretch;"></div>';}
+function sec(inner,pad,o){o=o||{};return '<section style="padding:'+pad+';'+(o.bg?'background:'+o.bg+';':'')+
+ (o.bt?'border-top:0.5px solid '+R08+';':'')+(o.bb?'border-bottom:0.5px solid '+R08+';':'')+(o.x||'')+'">'+inner+'</section>';}
+function grid(cols,gap,inner,al){return '<div style="display:grid;grid-template-columns:'+cols+';gap:'+gap+
+ ';align-items:'+(al||'start')+';">'+inner+'</div>';}
+function INTRO(o){o=o||{};
+ return (o.noEy?'':eb(X.ey))+ttl(X.tt,o.tsz,null,o.tls)+g(o.g1||26)+
+  bd(X.p1,null,o.mw)+g(o.g2||18)+bd(X.p2,null,o.mw)+g(o.g2||18)+bd(X.p3,null,o.mw)+
+  (o.note===false?'':g(o.g3||30)+bd(X.note,I45,o.mw,'0.78rem'));}
+
+/* ═══ DOWNLOADS — nine treatments ═══ */
+function DL(kind,o){o=o||{};
+ var lb=o.noLb?'':eb(X.dl)+g(o.lbGap||18);
+ function dlink(p,c){return '<a href="'+p.f+'" download style="display:inline-block;font-family:\'DM Sans\',sans-serif;'+
+  'font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:'+(c||GOLD)+';border:0.5px solid '+(c||GOLD)+
+  ';opacity:0.65;padding:6px 14px;text-decoration:none;transition:opacity .25s,background .25s;" '+
+  'onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.65">'+p.d+'</a>';}
+ switch(kind){
+ case 'acc':   return lb+ACC(R12,I85,LAB,I55,GOLD);
+ case 'cards': return lb+'<div style="display:grid;grid-template-columns:repeat('+(o.cols||2)+',1fr);gap:1px;background:'+R08+';border:1px solid '+R08+';">'+
+   P.map(function(p){return '<div style="background:'+CRM2+';padding:'+(o.pad||'26px 24px')+';display:flex;flex-direction:column;">'+
+    '<div style="font-size:1.1rem;color:'+GOLD+';margin-bottom:14px;">'+p.i+'</div>'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.95rem;letter-spacing:0.2em;text-transform:uppercase;color:'+I82+';">'+p.t+'</div>'+
+    '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:'+LAB+';margin-top:7px;">'+p.s+'</div>'+
+    '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;line-height:1.85;font-weight:300;color:rgba(10,10,10,0.48);margin:12px 0 18px;">'+p.b+'</p>'+
+    '<div style="margin-top:auto;">'+dlink(p)+'</div></div>';}).join('')+'</div>';
+ case 'rows':  return lb+P.map(function(p,i){return '<div style="display:grid;grid-template-columns:'+(o.rc||'1fr 2fr auto')+
+   ';gap:clamp(18px,3vw,44px);align-items:baseline;padding:'+(o.rp||'22px')+' 0;border-top:0.5px solid '+R08+';">'+
+   '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</div>'+
+   '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';margin-top:5px;">'+p.s+'</div></div>'+
+   '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.68rem;line-height:1.85;font-weight:300;color:'+I45+';margin:0;">'+p.b+'</p>'+
+   '<div>'+dlink(p)+'</div></div>';}).join('')+rule();
+ case 'list':  return lb+P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;'+
+   'gap:24px;padding:15px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   '<a href="'+p.f+'" download style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;white-space:nowrap;transition:color .25s;" onmouseover="this.style.color=\''+GOLD+'\'" onmouseout="this.style.color=\''+LAB+'\'">'+p.d+'</a></div>';}).join('');
+ case 'cat':   return lb+P.map(function(p,i){return '<div style="display:grid;grid-template-columns:46px 1fr auto;gap:clamp(16px,2.4vw,36px);'+
+   'align-items:baseline;padding:18px 0;border-top:0.5px solid '+R08+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.8rem;letter-spacing:0.14em;color:'+I25+';">'+('0'+(i+1)).slice(-2)+'</span>'+
+   '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</div>'+
+   '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;line-height:1.8;font-weight:300;color:'+I45+';margin:8px 0 0;max-width:52ch;">'+p.b+'</p></div>'+
+   '<div>'+dlink(p)+'</div></div>';}).join('')+rule();
+ case 'big':   return lb+P.map(function(p,i){return '<div style="padding:'+(o.bp||'34px')+' 0;border-top:0.5px solid '+R08+';">'+
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;">'+
+   '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.bsz||T_M)+';letter-spacing:0.12em;text-transform:uppercase;color:'+I82+';">'+p.t+'</div>'+
+   '<span style="font-size:1rem;color:'+GOLD+';">'+p.i+'</span></div>'+
+   '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.7rem;line-height:1.9;font-weight:300;color:'+I45+';margin:14px 0 16px;max-width:56ch;">'+p.b+'</p>'+
+   dlink(p)+'</div>';}).join('')+rule();
+ case 'strip': return lb+'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:'+R08+';">'+
+   P.map(function(p){return '<div style="background:'+CRM+';padding:22px 18px;">'+
+    '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.9rem;letter-spacing:0.18em;text-transform:uppercase;color:'+I82+';">'+p.t+'</div>'+
+    '<div style="margin-top:14px;">'+dlink(p)+'</div></div>';}).join('')+'</div>';
+ case 'dark':  return (o.noLb?'':eb(X.dl,'rgba(200,169,110,0.6)')+g(18))+P.map(function(p){
+   return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:20px 0;border-bottom:0.5px solid rgba(244,241,236,0.1);">'+
+   '<div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,241,236,0.85);">'+p.t+'</div>'+
+   '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(200,169,110,0.6);margin-top:5px;">'+p.s+'</div></div>'+
+   dlink(p,GOLD)+'</div>';}).join('');
+ default:      return lb+ACC(R12,I85,LAB,I55,GOLD);}}
+
+/* ═══ FORM — five treatments, all reusing the working submit handler ═══ */
+function FRM(kind,o){o=o||{};
+ var lb=o.noLb?'':eb(X.msg)+g(o.lbGap||18);
+ if(kind==='dark') return (o.noLb?'':eb(X.msg,'rgba(200,169,110,0.6)')+g(18))+
+   '<div style="border-top:0.5px solid rgba(244,241,236,0.16);padding-top:26px;">'+
+   FORM('rgba(244,241,236,0.85)','rgba(244,241,236,0.05)','rgba(244,241,236,0.18)','rgba(244,241,236,0.9)',GOLD,INKB)+'</div>';
+ if(kind==='panel') return '<div style="background:'+CRM2+';padding:clamp(26px,4vw,44px);">'+lb+FORM()+'</div>';
+ if(kind==='ruled') return lb+'<div style="border-top:0.5px solid '+R12+';padding-top:26px;">'+FORM()+'</div>';
+ if(kind==='soft')  return '<div style="background:'+SOFT+';padding:clamp(26px,4vw,44px);">'+lb+FORM()+'</div>';
+ return lb+FORM();}
+
+/* ═══ OFFICES — three treatments ═══ */
+function OFF(kind){
+ if(kind==='none') return '';
+ if(kind==='inline') return '<div style="display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap;">'+O.map(function(o){
+   return '<div>'+mi(o.country,LAB)+'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I75+';margin:6px 0 5px;">'+o.city+'</div>'+
+   '<address style="font-style:normal;font-family:\'DM Sans\',sans-serif;font-size:0.65rem;line-height:1.85;font-weight:300;color:'+I45+';">'+o.addr+'</address></div>';}).join('')+'</div>';
+ if(kind==='stack') return O.map(function(o){return '<div style="padding:14px 0;border-top:0.5px solid '+R08+';">'+
+   '<div style="display:flex;justify-content:space-between;gap:20px;"><span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I75+';">'+o.city+'</span>'+mi(o.country,LAB)+'</div>'+
+   '<address style="font-style:normal;font-family:\'DM Sans\',sans-serif;font-size:0.65rem;line-height:1.85;font-weight:300;color:'+I45+';margin-top:6px;">'+o.addr+'</address></div>';}).join('');
+ return '';}
+
+/* ═══ NEWSLETTER — the live node, relocated and reframed ═══ */
+function NLSLOT(style){return '<div data-nl="'+(style||'')+'"></div>';}
+function placeNL(){
+ var node=document.getElementById('sf-nl-section'); if(!node)return;
+ var slot=document.querySelector('#pc [data-nl]');
+ if(!slot){node.style.display='';return;}
+ slot.appendChild(node); node.style.display='';
+ var k=slot.getAttribute('data-nl');
+ node.style.padding = k==='tight' ? 'clamp(40px,6vh,64px) '+PADX
+   : k==='airy' ? 'clamp(110px,16vh,190px) '+PADX
+   : k==='band' ? 'clamp(72px,10vh,120px) '+PADX : '';
+ node.style.background = k==='soft' ? SOFT : k==='cream2' ? CRM2 : '';
+ node.style.borderTop = k==='ruled' ? '0.5px solid '+R08 : '';
+}
+
+/* ═══════════ 50 COMPOSITIONS ═══════════ */
+var TOP='clamp(150px,20vh,200px)';
+function P3(c){   /* three-column family (1–20) */
+ var d=c.div===false?'':vrule(c.divc||R08);
+ var cols=c.cols||'1fr 0.5px 1fr 0.5px 1fr';
+ var inner=grid(cols,c.gap||'clamp(24px,3vw,48px)',
+   '<div>'+INTRO(c.intro||{})+(c.off?g(34)+OFF(c.off):'')+'</div>'+d+
+   '<div>'+DL(c.dl||'acc',c.dlo)+'</div>'+d+
+   '<div>'+FRM(c.form||'plain',c.formo)+'</div>', c.al||'start');
+ return sec(inner,(c.top||TOP)+' '+PADX+' '+(c.bot||'clamp(56px,8vh,90px)'),{bg:c.bg})+NLSLOT(c.nl);}
+function P2(c){   /* two column */
+ return sec(grid(c.cols||'1fr 1fr',c.gap||'clamp(32px,5vw,88px)',
+   '<div>'+INTRO(c.intro||{})+g(c.g||44)+DL(c.dl||'rows',c.dlo)+(c.off?g(40)+OFF(c.off):'')+'</div>'+
+   '<div>'+FRM(c.form||'plain',c.formo)+'</div>',c.al),
+   (c.top||TOP)+' '+PADX+' '+(c.bot||'clamp(56px,8vh,90px)'),{bg:c.bg})+NLSLOT(c.nl);}
+function PB(c){   /* horizontal bands */
+ var b=[];
+ b.push(sec(INTRO(c.intro||{mw:'62ch'}),(c.top||TOP)+' '+PADX+' clamp(44px,6vh,72px)'));
+ if(c.off)b.push(sec(OFF(c.off),'clamp(36px,5vh,56px) '+PADX,{bt:1}));
+ b.push(sec(DL(c.dl||'big',c.dlo),'clamp(48px,7vh,80px) '+PADX,{bt:1,bg:c.dlbg}));
+ b.push(sec('<div style="max-width:'+(c.fw||'720px')+';">'+FRM(c.form||'plain',c.formo)+'</div>','clamp(48px,7vh,84px) '+PADX,{bt:1,bg:c.fbg}));
+ return b.join('')+NLSLOT(c.nl);}
+function PP(c){   /* portfolio — downloads as modules */
+ return sec(INTRO(c.intro||{mw:'58ch'}),(c.top||TOP)+' '+PADX+' clamp(40px,6vh,64px)')+
+  sec(DL(c.dl||'cards',c.dlo||{cols:c.mcols||2}),'0 '+PADX+' clamp(48px,7vh,80px)')+
+  sec(grid(c.cols||'1fr 1fr','clamp(32px,5vw,80px)',
+    '<div>'+(c.off?OFF(c.off):'')+'</div><div>'+FRM(c.form||'plain',c.formo)+'</div>'),
+    'clamp(48px,7vh,80px) '+PADX+' clamp(56px,8vh,90px)',{bt:1})+NLSLOT(c.nl);}
+function PA(c){   /* asymmetric editorial */
+ return sec(grid(c.cols||'0.42fr 0.58fr','clamp(40px,7vw,130px)',
+   '<div>'+INTRO(c.intro||{tsz:T_M,mw:'34ch'})+(c.off?g(44)+OFF(c.off):'')+'</div>'+
+   '<div>'+DL(c.dl||'big',c.dlo)+g(c.g||56)+FRM(c.form||'plain',c.formo)+'</div>'),
+   (c.top||TOP)+' '+PADX+' clamp(56px,8vh,90px)',{bg:c.bg})+NLSLOT(c.nl);}
+function PX(c){   /* exhibition — one thing at a time */
+ return sec('<div style="max-width:'+(c.mw||'640px')+';margin:0 auto;text-align:center;">'+
+   INTRO(c.intro||{mw:'100%'})+'</div>',(c.top||'clamp(180px,25vh,250px)')+' '+PADX+' clamp(80px,12vh,140px)')+
+  sec(DL(c.dl||'list',c.dlo),'clamp(56px,8vh,96px) '+PADX,{bt:1})+
+  sec('<div style="max-width:'+(c.fw||'620px')+';margin:0 auto;">'+FRM(c.form||'plain',c.formo)+'</div>',
+   'clamp(56px,8vh,96px) '+PADX,{bt:1})+NLSLOT(c.nl||'airy');}
+
+/* ═══ SWITCHER ═══ */
+function V0(){var l=window.CLAYOUTS&&window.CLAYOUTS[0];return l?l.html:'';}
+
+
+/* ═══════════ 30 ONE-COLUMN VARIATIONS — D as the base ═══════════ */
+/* own form renderer so the submit can match the site CTA */
+function FORM2(o){o=o||{};
+ var is='width:100%;max-width:100%;background:'+(o.ib||'rgba(10,10,10,0.04)')+';border:1px solid '+(o.ibr||'rgba(10,10,10,0.15)')+
+  ';color:'+(o.ic||'rgba(10,10,10,0.85)')+';font-family:\'DM Sans\',sans-serif;font-size:16px;font-weight:300;padding:'+
+  (o.ip||'14px 18px')+';outline:none;appearance:none;-webkit-appearance:none;margin-bottom:'+(o.gap||16)+'px;display:block;'+
+  'transition:border-color .25s,background .25s;';
+ var ls='display:block;font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:'+
+  (o.lc||GOLD)+';margin-bottom:8px;';
+ var btn=o.btn==='outline'
+  ? '<button onclick="submitForm()" class="cx-cta" style="display:inline-block;padding:12px 22px;background:transparent;'+
+    'border:0.5px solid '+(o.dark?'rgba(200,169,110,0.4)':'rgba(138,110,58,0.4)')+';color:'+(o.dark?GOLD:LAB)+
+    ';font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;'+
+    'margin-top:8px;transition:border-color .25s,color .25s;">Send Message ⌙</button>'
+  : '<button onclick="submitForm()" style="width:'+(o.bw||'100%')+';padding:16px;background:'+GOLD+';border:none;color:'+INKB+
+    ';font-family:\'DM Sans\',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;margin-top:8px;">Send Message ↧</button>';
+ var pair=o.stack? '<div><label style="'+ls+'">First Name</label><input type="text" placeholder="James" style="'+is+'"></div>'+
+   '<div><label style="'+ls+'">Last Name</label><input type="text" placeholder="Cooper" style="'+is+'"></div>'
+  : '<div style="display:grid;grid-template-columns:1fr 1fr;gap:'+(o.gap||16)+'px;"><div><label style="'+ls+'">First Name</label>'+
+    '<input type="text" placeholder="James" style="'+is+'"></div><div><label style="'+ls+'">Last Name</label>'+
+    '<input type="text" placeholder="Cooper" style="'+is+'"></div></div>';
+ return '<div id="cfi">'+pair+
+  '<label style="'+ls+'">Email</label><input type="email" placeholder="hello@yourbrand.com" style="'+is+'">'+
+  '<label style="'+ls+'">Organisation</label><input type="text" placeholder="Your brand or company" style="'+is+'">'+
+  '<label style="'+ls+'">Message</label><textarea placeholder="Tell us about your brand..." style="'+is+'resize:vertical;min-height:'+(o.ta||'120px')+';"></textarea>'+
+  btn+'</div><div id="cfs" style="display:none;padding:40px 0;"><div style="font-size:2rem;color:'+GOLD+';margin-bottom:14px;">⌀</div>'+
+  '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.6rem;letter-spacing:0.1em;color:'+I82+';margin-bottom:10px;">Message Sent</div>'+
+  '<p style="font-size:0.8rem;color:'+I45+';line-height:1.7;">We\'ll be in touch shortly.</p></div>';}
+
+/* ═══ DOWNLOADS — deliberately quiet ═══ */
+function DL2(kind,o){o=o||{};
+ var lb=eb(X.dl)+g(o.lbGap||18);
+ function dl(p,c){return '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;'+
+  'letter-spacing:0.2em;text-transform:uppercase;color:'+(c||LAB)+';text-decoration:none;white-space:nowrap;transition:color .25s;">'+p.d+'</a>';}
+ switch(kind){
+ case 'list':   return lb+P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
+   'padding:'+(o.rp||15)+'px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('');
+ case 'drop':   return lb+P.map(function(p){return '<div class="cx-acc" style="border-bottom:0.5px solid '+R06+';">'+
+   '<div onclick="cxT(this)" style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:'+(o.rp||16)+'px 0;cursor:pointer;">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   '<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.6rem;color:'+LAB+';transition:transform .3s;">+</span></div>'+
+   '<div class="cx-p" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s,padding .3s;">'+
+   '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.68rem;line-height:1.9;font-weight:300;color:'+I45+';margin:0 0 12px;max-width:56ch;">'+p.b+'</p>'+
+   dl(p)+'<div style="height:16px"></div></div></div>';}).join('');
+ case 'sub':    return lb+P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
+   'padding:'+(o.rp||17)+'px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<div><span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   '<div style="font-family:\'DM Sans\',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:'+I3+';margin-top:5px;">'+p.s+'</div></div>'+
+   dl(p)+'</div>';}).join('');
+ case 'num':    return lb+P.map(function(p,i){return '<div style="display:grid;grid-template-columns:38px 1fr auto;gap:20px;align-items:baseline;'+
+   'padding:'+(o.rp||15)+'px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.72rem;letter-spacing:0.14em;color:'+I25+';">'+('0'+(i+1)).slice(-2)+'</span>'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('');
+ case 'glyph':  return lb+P.map(function(p){return '<div style="display:grid;grid-template-columns:30px 1fr auto;gap:18px;align-items:baseline;'+
+   'padding:'+(o.rp||15)+'px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-size:0.78rem;color:'+GOLD+';opacity:0.6;">'+p.i+'</span>'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('');
+ case 'two':    return lb+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(28px,4vw,64px);">'+
+   P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;'+
+   'padding:14px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('')+'</div>';
+ case 'hidden': return lb+'<div onclick="cxReveal(this)" class="cx-rv" style="display:flex;justify-content:space-between;align-items:baseline;'+
+   'cursor:pointer;padding:15px 0;border-top:0.5px solid '+R08+';border-bottom:0.5px solid '+R08+';">'+
+   '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:'+I55+';">Four decks available</span>'+
+   '<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.6rem;color:'+LAB+';transition:transform .3s;">+</span></div>'+
+   '<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .5s ease,opacity .3s;">'+
+   P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;padding:14px 0;border-bottom:0.5px solid '+R06+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('')+'</div>';
+ case 'dense':  return lb+P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:9px 0;">'+
+   '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;letter-spacing:0.1em;color:'+I75+';">'+p.t+'</span>'+dl(p)+'</div>';}).join('');
+ case 'ruled':  return lb+rule(R12)+P.map(function(p){return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
+   'padding:18px 0;border-bottom:0.5px solid '+R12+';">'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+   dl(p)+'</div>';}).join('');
+ default:       return DL2('list',o);}}
+
+/* ═══ NEWSLETTER — rebuilt with the same ids so the handler keeps working ═══ */
+function NL2(kind,o){o=o||{};
+ var d=o.dark;
+ var lc=d?'rgba(200,169,110,0.6)':LAB, tc=d?'rgba(244,241,236,0.85)':I82,
+     bc=d?'rgba(244,241,236,0.45)':I45, fc=d?'rgba(244,241,236,0.3)':I3;
+ var inp='flex:1;min-width:0;background:'+(d?'rgba(244,241,236,0.06)':'rgba(10,10,10,0.05)')+';border:1px solid '+
+  (d?'rgba(244,241,236,0.18)':'rgba(10,10,10,0.15)')+';border-right:none;color:'+(d?'rgba(244,241,236,0.9)':I85)+
+  ';font-family:\'DM Sans\',sans-serif;font-size:16px;font-weight:300;padding:14px 18px;outline:none;transition:border-color .25s;';
+ var btn=o.btn==='outline'
+  ? 'background:transparent;border:1px solid '+(d?'rgba(200,169,110,0.45)':'rgba(138,110,58,0.45)')+';border-left:none;color:'+(d?GOLD:LAB)+';'
+  : 'background:'+(d?GOLD:INKB)+';border:none;color:'+(d?INKB:CRM)+';';
+ var field='<div id="sf-nl-form" style="display:flex;gap:0;'+(o.fw?'max-width:'+o.fw+';':'')+(o.centre?'margin:0 auto;':'')+'">'+
+  '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="'+inp+'"/>'+
+  '<button onclick="sfNLSubmit()" class="cx-nlb" style="'+btn+'font-family:\'DM Sans\',sans-serif;font-size:0.58rem;'+
+  'letter-spacing:0.18em;text-transform:uppercase;padding:14px 22px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:opacity .25s;">Subscribe ⏙</button></div>'+
+  '<div id="sf-nl-success" style="display:none;padding:14px 0;"><span style="font-size:0.82rem;color:'+(d?GOLD:LAB)+';letter-spacing:0.06em;">⌀ You\'re subscribed. We\'ll be in touch.</span></div>';
+ var head=eb('Stay Updated',lc)+
+  '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.tsz||'clamp(1.1rem,1.6vw,1.8rem)')+
+  ';letter-spacing:0.1em;line-height:0.95;text-transform:uppercase;color:'+tc+';margin-bottom:12px;">The SF Newsletter</div>'+
+  bd("Occasional updates on what we're building, thinking, and making — straight from the studio.",bc,o.mw||'52ch')+g(24);
+ var fine='<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+fc+';margin-top:10px;letter-spacing:0.04em;">No spam. Unsubscribe anytime.</p>';
+ var bgc=o.bg||(d?DK:'');
+ var pad=o.pad||'clamp(56px,8vh,90px) '+PADX;
+ if(kind==='row') return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+(d?'rgba(244,241,236,0.12)':R12)+';">'+
+   '<div style="display:grid;grid-template-columns:'+(o.cols||'1fr 1fr')+';gap:clamp(28px,5vw,80px);align-items:end;">'+
+   '<div>'+eb('Stay Updated',lc)+'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.tsz||'clamp(1.1rem,1.6vw,1.8rem)')+
+   ';letter-spacing:0.1em;line-height:0.95;text-transform:uppercase;color:'+tc+';margin-bottom:12px;">The SF Newsletter</div>'+
+   bd("Occasional updates on what we\'re building, thinking, and making — straight from the studio.",bc,o.mw||'44ch')+'</div>'+
+   '<div>'+field+fine+'</div></div></section>';
+ if(kind==='strip') return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+(o.pad||'clamp(30px,4vh,48px) '+PADX)+
+   ';border-top:0.5px solid '+(d?'rgba(244,241,236,0.12)':R12)+';">'+
+   '<div style="display:flex;align-items:center;gap:clamp(20px,3vw,48px);flex-wrap:wrap;">'+
+   '<div><span style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:'+lc+';display:block;">Stay Updated</span>'+
+   '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.95rem;letter-spacing:0.14em;text-transform:uppercase;color:'+tc+';display:block;margin-top:5px;">The SF Newsletter</span></div>'+
+   '<div style="flex:1;min-width:280px;">'+bd("Occasional updates on what we\'re building, thinking, and making — straight from the studio.",bc,'46ch','0.72rem')+
+   '<div style="height:12px"></div>'+field+fine+'</div></div></section>';
+ if(kind==='centre') return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+(d?'rgba(244,241,236,0.12)':R12)+
+   ';text-align:center;"><div style="max-width:'+(o.mw2||'560px')+';margin:0 auto;">'+head+field+fine+'</div></section>';
+ if(kind==='box') return '<section style="padding:'+pad+';"><div style="border:0.5px solid '+R12+';padding:clamp(28px,4vw,52px);max-width:'+
+   (o.mw2||'720px')+';">'+head+field+fine+'</div></section>';
+ return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+(d?'rgba(244,241,236,0.12)':R12)+';">'+
+   '<div style="max-width:'+(o.mw2||'620px')+';">'+head+field+fine+'</div></section>';}
+
+/* ═══ the page ═══ */
+function ONE2(c){
+ var b=[];
+ b.push(sec('<div style="max-width:'+(c.mw||'760px')+';">'+INTRO(c.intro||{})+'</div>',
+   (c.top||TOP)+' '+PADX+' '+(c.gA||'clamp(44px,6vh,72px)')));
+ b.push(sec('<div style="max-width:'+(c.dmw||'760px')+';">'+DL2(c.dl,c.dlo)+'</div>',
+   (c.gA2||'clamp(44px,6vh,72px)')+' '+PADX+' '+(c.gB||'clamp(44px,6vh,72px)'),{bt:1,bg:c.dlbg}));
+ b.push(sec('<div style="max-width:'+(c.fmw||'620px')+';">'+eb(X.msg)+g(16)+
+   (c.rule===false?'':'<div style="border-top:0.5px solid '+R12+';padding-top:26px;">')+
+   FORM2(c.formo||{btn:'outline'})+(c.rule===false?'':'</div>')+'</div>',
+   (c.gB2||'clamp(44px,6vh,72px)')+' '+PADX+' '+(c.gC||'clamp(52px,7vh,84px)'),{bt:1,bg:c.fbg}));
+ b.push(NL2(c.nl,c.nlo||{}));
+ return b.join('');}
+
+var THIRTY=[
+ ['01 Base','D as it stands — plain list, rule under the label, outline send button matching the site CTA.',{dl:'list',nl:'left'}],
+ ['02 Subtle dropdowns','Each deck opens on click to reveal its description. Closed by default, so the section stays quiet.',{dl:'drop',nl:'left'}],
+ ['03 Hidden decks','One line — “Four decks available”. The list only appears if you ask for it.',{dl:'hidden',nl:'left'}],
+ ['04 With subtitles','The list carries each audience beneath the deck name.',{dl:'sub',nl:'left'}],
+ ['05 Numbered','Catalogue numbering down the left of the list.',{dl:'num',nl:'left'}],
+ ['06 Glyphs','The symbol set marks each deck instead of a number.',{dl:'glyph',nl:'left'}],
+ ['07 Two across','The four decks in two columns rather than a single stack.',{dl:'two',nl:'left'}],
+ ['08 Dense','The tightest list — no rules, minimal padding.',{dl:'dense',nl:'left'}],
+ ['09 Ruled','Full rules above and below every row.',{dl:'ruled',nl:'left'}],
+ ['10 Dropdowns · wide','Dropdowns with the measure opened up to 900px.',{dl:'drop',mw:'900px',dmw:'900px',fmw:'720px',nl:'left'}],
+ ['11 Newsletter row','Label left, field right, across the full width.',{dl:'list',nl:'row'}],
+ ['12 Newsletter strip','A single quiet line — the smallest possible ending.',{dl:'list',nl:'strip'}],
+ ['13 Newsletter centred','Centred on a short measure as a closing gesture.',{dl:'list',nl:'centre'}],
+ ['14 Newsletter boxed','Held inside a hairline box.',{dl:'list',nl:'box'}],
+ ['15 Newsletter dark','The newsletter inverts to the deep gradient and closes the page.',{dl:'list',nl:'left',nlo:{dark:true}}],
+ ['16 Newsletter dark row','Dark ground with the label and field across the width.',{dl:'drop',nl:'row',nlo:{dark:true}}],
+ ['17 Newsletter dark centred','Dark, centred, outline subscribe button.',{dl:'list',nl:'centre',nlo:{dark:true,btn:'outline',mw2:'520px'}}],
+ ['18 Newsletter outline','Cream ground, but the subscribe button becomes an outline to match the CTA.',{dl:'list',nl:'left',nlo:{btn:'outline'}}],
+ ['19 Newsletter large','The newsletter title at section scale.',{dl:'list',nl:'left',nlo:{tsz:T_M,mw2:'700px'}}],
+ ['20 Newsletter tight','Minimal padding — the newsletter tucks straight into the footer.',{dl:'list',nl:'left',nlo:{pad:'clamp(34px,5vh,54px) '+PADX}}],
+ ['21 Wide measure','Everything on a 900px measure rather than 620–760.',{dl:'sub',mw:'900px',dmw:'900px',fmw:'760px',nl:'row'}],
+ ['22 Narrow measure','A 560px measure throughout — the most editorial rhythm.',{dl:'list',mw:'560px',dmw:'560px',fmw:'560px',nl:'left',nlo:{mw2:'560px'}}],
+ ['23 Airy','Every gap roughly doubled.',{dl:'drop',gA:'clamp(80px,11vh,130px)',gA2:'clamp(80px,11vh,130px)',gB:'clamp(80px,11vh,130px)',gB2:'clamp(80px,11vh,130px)',nl:'left',nlo:{pad:'clamp(90px,13vh,150px) '+PADX}}],
+ ['24 Compact','Tight throughout — the whole page on one screen and a half.',{dl:'dense',top:'clamp(120px,16vh,160px)',gA:'clamp(28px,4vh,44px)',gA2:'clamp(28px,4vh,44px)',gB:'clamp(28px,4vh,44px)',gB2:'clamp(28px,4vh,44px)',nl:'strip'}],
+ ['25 Soft downloads','The downloads band lifts onto the soft tonal ground.',{dl:'drop',dlbg:SOFT,nl:'left'}],
+ ['26 Soft form','The message band on the soft ground instead.',{dl:'list',fbg:SOFT,nl:'left'}],
+ ['27 Dark downloads','Downloads invert; the rest stays cream.',{dl:'drop',dlbg:DK,nl:'left'}],
+ ['28 No rule','The rule under Send A Message removed — label and fields sit on space alone.',{dl:'list',rule:false,nl:'left'}],
+ ['29 Solid send','The original solid gold submit rather than the outline.',{dl:'list',formo:{btn:'solid'},nl:'left'}],
+ ['30 Stacked fields','First and last name stack rather than sharing a row — a single narrow column of fields.',{dl:'drop',formo:{btn:'outline',stack:true},fmw:'520px',nl:'centre'}]
+];
+var V=[{n:0,t:'Version 0 — the live page',note:'sf-contact.html exactly as it ships.',f:V0}]
+ .concat(THIRTY.map(function(c,i){return {n:i+1,t:c[0],note:c[1],
+   f:(function(cfg){return function(){return ONE2(cfg);};})(c[2])};}));
+
+/* ═══════════ 31–60 · contact box promoted above downloads ═══════════
+   Reading: intro and the contact box carry the page; downloads and the
+   newsletter are secondary and can share a row. */
+function NLIN(o){o=o||{};   /* newsletter as a column, not a full band */
+ var d=o.dark, lc=d?'rgba(200,169,110,0.6)':LAB, tc=d?'rgba(244,241,236,0.85)':I82,
+     bc=d?'rgba(244,241,236,0.45)':I45, fc=d?'rgba(244,241,236,0.3)':I3;
+ var inp='flex:1;min-width:0;background:'+(d?'rgba(244,241,236,0.06)':'rgba(10,10,10,0.05)')+';border:1px solid '+
+  (d?'rgba(244,241,236,0.18)':'rgba(10,10,10,0.15)')+';border-right:none;color:'+(d?'rgba(244,241,236,0.9)':I85)+
+  ';font-family:\'DM Sans\',sans-serif;font-size:16px;font-weight:300;padding:13px 16px;outline:none;';
+ var btn=o.btn==='outline'
+  ? 'background:transparent;border:1px solid '+(d?'rgba(200,169,110,0.45)':'rgba(138,110,58,0.45)')+';border-left:none;color:'+(d?GOLD:LAB)+';'
+  : 'background:'+(d?GOLD:INKB)+';border:none;color:'+(d?INKB:CRM)+';';
+ return eb('Stay Updated',lc)+
+  '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.tsz||T_XS)+';letter-spacing:0.14em;'+
+  'line-height:1.1;text-transform:uppercase;color:'+tc+';margin-bottom:10px;">The SF Newsletter</div>'+
+  bd("Occasional updates on what we're building, thinking, and making — straight from the studio.",bc,o.mw||'44ch','0.72rem')+
+  g(18)+'<div id="sf-nl-form" style="display:flex;gap:0;">'+
+  '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="'+inp+'"/>'+
+  '<button onclick="sfNLSubmit()" class="cx-nlb" style="'+btn+'font-family:\'DM Sans\',sans-serif;font-size:0.55rem;'+
+  'letter-spacing:0.18em;text-transform:uppercase;padding:13px 18px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:opacity .25s;">Subscribe ⏙</button></div>'+
+  '<div id="sf-nl-success" style="display:none;padding:12px 0;"><span style="font-size:0.78rem;color:'+(d?GOLD:LAB)+';">⌀ You\'re subscribed. We\'ll be in touch.</span></div>'+
+  '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.6rem;color:'+fc+';margin-top:9px;">No spam. Unsubscribe anytime.</p>';}
+
+function ONE3(c){
+ var b=[];
+ var S=function(inner,o){o=o||{};return sec('<div style="max-width:'+(o.mw||c.mw||'760px')+';'+(o.centre?'margin:0 auto;':'')+'">'+inner+'</div>',
+   (o.top||c.gap||'clamp(46px,6.5vh,76px)')+' '+PADX+' '+(o.bot||c.gap||'clamp(46px,6.5vh,76px)'),
+   {bt:o.bt!==false,bg:o.bg});};
+ /* 1 — introduction */
+ b.push(sec('<div style="max-width:'+(c.mw||'760px')+';">'+INTRO(c.intro||{})+'</div>',
+   (c.top||TOP)+' '+PADX+' '+(c.gap||'clamp(46px,6.5vh,76px)')));
+ /* 2 — the contact box, promoted */
+ var fm=eb(X.msg,c.fdark?'rgba(200,169,110,0.6)':LAB)+g(16)+
+   (c.rule===false?'':'<div style="border-top:0.5px solid '+(c.fdark?'rgba(244,241,236,0.16)':R12)+';padding-top:26px;">')+
+   FORM2(c.formo||{btn:'outline',dark:c.fdark})+(c.rule===false?'':'</div>');
+ b.push(S(fm,{mw:c.fmw||'640px',bg:c.fbg,centre:c.fcentre}));
+ /* 3 — downloads, secondary. optionally paired with the newsletter */
+ if(c.pair){
+   b.push(sec(grid(c.pcols||'1fr 1fr',c.pgap||'clamp(32px,5vw,80px)',
+     '<div>'+DL2(c.dl,c.dlo)+'</div><div>'+NLIN(c.nlo||{})+'</div>'),
+     (c.gap||'clamp(46px,6.5vh,76px)')+' '+PADX+' '+(c.gapEnd||'clamp(56px,8vh,90px)'),{bt:1,bg:c.pbg}));
+ }else{
+   b.push(S(DL2(c.dl,c.dlo),{mw:c.dmw||'700px',bg:c.dlbg}));
+   b.push(NL2(c.nl||'left',c.nlo||{}));
+ }
+ return b.join('');}
+
+var SIXTY=[
+ ['31 Contact first','The contact box moves directly under the introduction. Downloads and the newsletter follow as supporting material.',{dl:'list'}],
+ ['32 Contact first · dropdowns','Same order with the decks behind subtle dropdowns.',{dl:'drop'}],
+ ['33 Contact first · hidden decks','Downloads reduced to a single line beneath the form.',{dl:'hidden'}],
+ ['34 Paired footer','Downloads and the newsletter share a row beneath the contact box.',{dl:'list',pair:true}],
+ ['35 Paired · dropdowns','The paired row with dropdown decks on the left.',{dl:'drop',pair:true}],
+ ['36 Paired · numbered','Numbered decks beside the newsletter.',{dl:'num',pair:true}],
+ ['37 Paired · dense','The tightest deck list beside the newsletter.',{dl:'dense',pair:true}],
+ ['38 Paired · two thirds','Downloads take two thirds of the row.',{dl:'sub',pair:true,pcols:'2fr 1fr'}],
+ ['39 Paired · one third','The newsletter takes the larger share.',{dl:'list',pair:true,pcols:'1fr 2fr'}],
+ ['40 Paired · soft ground','The supporting row lifts onto the soft tonal ground.',{dl:'drop',pair:true,pbg:SOFT}],
+ ['41 Paired · dark','The supporting row inverts, so the page closes dark.',{dl:'dark',pair:true,pbg:DK,nlo:{dark:true}}],
+ ['42 Dark contact box','The contact box inverts against a cream page.',{dl:'list',fdark:true,fbg:DK}],
+ ['43 Dark contact · paired','Dark contact box with the supporting row beneath it.',{dl:'drop',fdark:true,fbg:DK,pair:true}],
+ ['44 Dark contact · dark close','Both the contact box and the supporting row inverted.',{dl:'dark',fdark:true,fbg:DK,pair:true,pbg:NAVY,nlo:{dark:true}}],
+ ['45 Soft contact box','The contact box on the soft tonal ground.',{dl:'list',fbg:SOFT}],
+ ['46 Wide contact box','The form opened out to a 900px measure.',{dl:'list',fmw:'900px',mw:'900px',dmw:'900px'}],
+ ['47 Narrow contact box','The form pulled in to 520px, everything else wider.',{dl:'list',fmw:'520px'}],
+ ['48 Centred contact box','The form centred on its measure, everything else left.',{dl:'list',fcentre:true,fmw:'600px'}],
+ ['49 Stacked fields','First and last name stack, so the form is one narrow column.',{dl:'drop',formo:{btn:'outline',stack:true},fmw:'520px'}],
+ ['50 Solid send','The original solid gold submit rather than the outline.',{dl:'list',formo:{btn:'solid'}}],
+ ['51 No rule','The rule under Send A Message removed.',{dl:'list',rule:false}],
+ ['52 Airy','Every gap between sections roughly doubled.',{dl:'drop',gap:'clamp(84px,12vh,140px)',gapEnd:'clamp(84px,12vh,140px)'}],
+ ['53 Compact','The tightest of the set — the whole page on a screen and a half.',{dl:'dense',top:'clamp(120px,16vh,160px)',gap:'clamp(30px,4vh,46px)',pair:true}],
+ ['54 Narrow measure','A 560px measure throughout.',{dl:'list',mw:'560px',fmw:'560px',dmw:'560px',nlo:{mw2:'560px'}}],
+ ['55 Wide measure','A 900px measure throughout, downloads two across.',{dl:'two',mw:'900px',fmw:'760px',dmw:'900px'}],
+ ['56 Newsletter strip close','Contact box promoted, downloads plain, newsletter as a single quiet strip.',{dl:'list',nl:'strip'}],
+ ['57 Newsletter centred close','The newsletter centred as a closing gesture.',{dl:'drop',nl:'centre'}],
+ ['58 Newsletter dark close','The newsletter inverts and closes the page.',{dl:'list',nl:'left',nlo:{dark:true}}],
+ ['59 Newsletter boxed close','The newsletter held inside a hairline box.',{dl:'num',nl:'box'}],
+ ['60 Downloads last','Contact box, then the newsletter, then the decks as the quietest thing on the page.',{dl:'dense',nl:'row'}]
+];
+/* 60 puts downloads after the newsletter */
+function ONE3b(c){
+ var b=[];
+ b.push(sec('<div style="max-width:760px;">'+INTRO({})+'</div>',TOP+' '+PADX+' clamp(46px,6.5vh,76px)'));
+ b.push(sec('<div style="max-width:640px;">'+eb(X.msg)+g(16)+
+   '<div style="border-top:0.5px solid '+R12+';padding-top:26px;">'+FORM2({btn:'outline'})+'</div></div>',
+   'clamp(46px,6.5vh,76px) '+PADX+' clamp(46px,6.5vh,76px)',{bt:1}));
+ b.push(NL2('row',{}));
+ b.push(sec('<div style="max-width:700px;">'+DL2('dense',{})+'</div>','clamp(46px,6.5vh,76px) '+PADX+' clamp(56px,8vh,90px)',{bt:1}));
+ return b.join('');}
+V=V.concat(SIXTY.map(function(c,i){return {n:31+i,t:c[0],note:c[1],
+  f:(function(cfg,idx){return function(){return idx===29?ONE3b(cfg):ONE3(cfg);};})(c[2],i)};}));
+
+/* ═══ NEWSLETTER as the final chapter ═══ */
+function NLFIN(kind,o){o=o||{};
+ var d=o.dark, lc=d?'rgba(200,169,110,0.6)':LAB, tc=d?'rgba(244,241,236,0.85)':I82,
+     bc=d?'rgba(244,241,236,0.45)':I45, fc=d?'rgba(244,241,236,0.28)':I3;
+ var inp='flex:1;min-width:0;background:'+(d?'rgba(244,241,236,0.06)':'rgba(10,10,10,0.04)')+';border:1px solid '+
+  (d?'rgba(244,241,236,0.18)':'rgba(10,10,10,0.14)')+';border-right:none;color:'+(d?'rgba(244,241,236,0.9)':I85)+
+  ';font-family:\'DM Sans\',sans-serif;font-size:16px;font-weight:300;padding:15px 18px;outline:none;transition:border-color .25s;';
+ var btn='background:transparent;border:1px solid '+(d?'rgba(200,169,110,0.45)':'rgba(138,110,58,0.42)')+';border-left:none;color:'+(d?GOLD:LAB)+';';
+ var field='<div id="sf-nl-form" style="display:flex;gap:0;'+(o.fw?'max-width:'+o.fw+';':'')+(o.centre?'margin:0 auto;':'')+'">'+
+  '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="'+inp+'"/>'+
+  '<button onclick="sfNLSubmit()" class="cx-nlb" style="'+btn+'font-family:\'DM Sans\',sans-serif;font-size:0.58rem;'+
+  'letter-spacing:0.18em;text-transform:uppercase;padding:15px 22px;cursor:pointer;flex-shrink:0;white-space:nowrap;transition:border-color .25s,color .25s;">Subscribe ⏙</button></div>'+
+  '<div id="sf-nl-success" style="display:none;padding:15px 0;"><span style="font-size:0.82rem;color:'+(d?GOLD:LAB)+';">⌀ You\'re subscribed. We\'ll be in touch.</span></div>';
+ var fine='<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+fc+';margin-top:12px;">No spam. Unsubscribe anytime.</p>';
+ var head=eb('Stay Updated',lc,18)+
+  '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.tsz||T_M)+';letter-spacing:0.1em;line-height:1.05;'+
+  'text-transform:uppercase;color:'+tc+';margin-bottom:16px;">The SF Newsletter</div>'+
+  bd("Occasional updates on what we're building, thinking, and making — straight from the studio.",bc,o.mw||'50ch')+g(28);
+ var pad=o.pad||'clamp(90px,13vh,150px) '+PADX;
+ var bgc=o.bg||(d?DK:'');
+ if(kind==='centre') return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+
+   (d?'rgba(244,241,236,0.12)':R08)+';text-align:center;"><div style="max-width:'+(o.mw2||'560px')+';margin:0 auto;">'+
+   head+field+fine+'</div></section>';
+ if(kind==='row') return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+
+   (d?'rgba(244,241,236,0.12)':R08)+';"><div style="display:grid;grid-template-columns:'+(o.cols||'1fr 1fr')+
+   ';gap:clamp(32px,5vw,90px);align-items:end;"><div>'+eb('Stay Updated',lc,18)+
+   '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.tsz||T_M)+';letter-spacing:0.1em;line-height:1.05;'+
+   'text-transform:uppercase;color:'+tc+';margin-bottom:16px;">The SF Newsletter</div>'+
+   bd("Occasional updates on what we're building, thinking, and making — straight from the studio.",bc,'42ch')+'</div>'+
+   '<div>'+field+fine+'</div></div></section>';
+ return '<section style="'+(bgc?'background:'+bgc+';':'')+'padding:'+pad+';border-top:0.5px solid '+
+   (d?'rgba(244,241,236,0.12)':R08)+';"><div style="max-width:'+(o.mw2||'640px')+';">'+head+field+fine+'</div></section>';}
+
+/* ═══ J · TEN DISCLOSURE TRIGGERS ═══
+   J's frame is fixed: 900px measure, 660px form, dark newsletter closing into the footer.
+   The only variable is how the downloads announce themselves. All subtle. */
+
+function jRow(p,o){o=o||{};
+ return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
+  'padding:'+(o.rp||15)+'px 0;border-bottom:0.5px solid '+R06+';">'+
+  '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+T_XS+';letter-spacing:0.14em;'+
+  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>'+
+  '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;'+
+  'letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;white-space:nowrap;'+
+  'transition:color .25s;">'+p.d+'</a></div>';}
+
+function jPanel(o){o=o||{};
+ return '<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;'+
+  'transition:max-height .55s ease,opacity .35s;">'+(o.lead?g(o.lead):'')+
+  P.map(function(p){return jRow(p,o);}).join('')+'</div>';}
+
+/* the eyebrow, exactly the site's — 0.62rem / 0.28em / gold */
+function jEy(t,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;'+
+ 'letter-spacing:0.28em;text-transform:uppercase;color:'+(c||LAB)+';transition:color .3s;">'+t+'</span>';}
+
+var jI='<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+I3+
+ ';line-height:1;transition:transform .35s,color .25s;">+</span>';
+
+function DJ(kind,o){o=o||{};
+ var hit='onclick="cxReveal(this)" class="cx-rv" style="cursor:pointer;';
+ switch(kind){
+ /* 1 · the eyebrow alone on a hairline, + at the far right of the measure */
+ case 'rule': return '<div '+hit+'display:flex;justify-content:space-between;align-items:center;'+
+   'border-top:0.5px solid '+R08+';padding:'+(o.vp||22)+'px 0;">'+jEy(X.dl)+jI+'</div>'+jPanel(o);
+
+ /* 2 · the word and the + sitting together, nothing else — the quietest */
+ case 'tight': return '<div '+hit+'display:inline-flex;align-items:center;gap:14px;padding:'+(o.vp||6)+'px 0;">'+
+   jEy(X.dl)+jI+'</div>'+jPanel({rp:o.rp,lead:20});
+
+ /* 3 · the count is the only hint that there is anything behind it */
+ case 'count': return '<div '+hit+'display:flex;justify-content:space-between;align-items:center;'+
+   'border-top:0.5px solid '+R08+';border-bottom:0.5px solid '+R08+';padding:'+(o.vp||20)+'px 0;">'+
+   jEy(X.dl)+'<span style="font-family:\'DM Sans\',sans-serif;font-size:0.55rem;letter-spacing:0.22em;color:'+I3+';">FOUR</span></div>'+jPanel(o);
+
+ /* 4 · no mark at all. the word underlines on hover and opens */
+ case 'word': return '<div '+hit+'display:inline-block;padding:'+(o.vp||8)+'px 0;border-bottom:0.5px solid transparent;">'+
+   jEy(X.dl)+'</div>'+jPanel({rp:o.rp,lead:22});
+
+ /* 5 · a small chevron instead of a plus */
+ case 'chev': return '<div '+hit+'display:flex;justify-content:space-between;align-items:center;'+
+   'border-top:0.5px solid '+R08+';padding:'+(o.vp||22)+'px 0;">'+jEy(X.dl)+
+   '<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.7rem;color:'+I3+
+   ';line-height:1;transition:transform .35s,color .25s;">⌄</span></div>'+jPanel(o);
+
+ /* 6 · centred on the measure, a rule running out either side */
+ case 'centre': return '<div '+hit+'display:flex;align-items:center;gap:20px;padding:'+(o.vp||10)+'px 0;">'+
+   '<div style="flex:1;height:0.5px;background:'+R08+';"></div>'+jEy(X.dl)+jI+
+   '<div style="flex:1;height:0.5px;background:'+R08+';"></div></div>'+jPanel({rp:o.rp,lead:18});
+
+ /* 7 · the eyebrow over a short gold rule */
+ case 'gold': return '<div '+hit+'display:inline-block;padding:'+(o.vp||6)+'px 0;">'+
+   jEy(X.dl)+'<div style="height:0.5px;background:rgba(138,110,58,0.45);width:'+(o.w||'52px')+';margin-top:9px;"></div></div>'+
+   '<div style="display:flex;justify-content:flex-end;margin-top:-14px;">'+jI+'</div>'+jPanel({rp:o.rp,lead:16});
+
+ /* 8 · a genuinely short line — the sentence, cut to its bone */
+ case 'line': return '<div '+hit+'display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
+   'border-top:0.5px solid '+R08+';padding:'+(o.vp||22)+'px 0;"><div>'+jEy(X.dl)+
+   '<div style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.78rem;color:'+I45+
+   ';margin-top:10px;">'+(o.txt||'One for each kind of partner.')+'</div></div>'+jI+'</div>'+jPanel(o);
+
+ /* 9 · the four names sit greyed across, and open on touch */
+ case 'names': return '<div '+hit+'border-top:0.5px solid '+R08+';padding:'+(o.vp||22)+'px 0;">'+
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+jEy(X.dl)+jI+'</div>'+
+   '<div style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:0.16em;'+
+   'text-transform:uppercase;color:'+I25+';margin-top:12px;">'+
+   P.map(function(p){return p.t;}).join(' &nbsp;·&nbsp; ')+'</div></div>'+jPanel(o);
+
+ /* 10 · the widest, most architectural: eyebrow left, rule across, mark right */
+ default: return '<div '+hit+'display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;'+
+   'padding:'+(o.vp||18)+'px 0;">'+jEy(X.dl)+'<div style="height:0.5px;background:'+R08+';"></div>'+jI+'</div>'+
+   '<div style="height:0.5px;background:'+R08+';"></div>'+jPanel({rp:o.rp,lead:14});}}
+
+/* J's frame, unchanged in every one of the ten */
+function JPAGE(dj,o){o=o||{};
+ return sec('<div style="max-width:900px;">'+INTRO({})+'</div>',
+        'clamp(160px,21vh,205px) '+PADX+' clamp(52px,7vh,84px)')
+      + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
+        '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
+        FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
+        'clamp(52px,7vh,84px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
+      + sec('<div style="max-width:900px;">'+DJ(dj,o)+'</div>',
+        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
+      + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FINAL REFINEMENT — the opening, and the expanded downloads.
+   Every token below is measured from sf-team.html / index.html.
+   Nothing else on the page changes.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* shorter copy — the layout is asked to carry the meaning */
+var Y={
+ lead :'We work with brand owners, factories, operators and investors — across product development, manufacturing, capital, and China market entry.',
+ short:'Download the relevant deck, then tell us what you have in mind.',
+ reply:'We read every message, and reply directly.',
+ ways :'Ways To Work Together',
+ four :'Four ways in.'};
+
+/* devices lifted from the team page and the homepage */
+function EY(t,c,mb){return '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;letter-spacing:0.28em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||LAB)+';margin:0 0 '+(mb||14)+'px;">'+(t||X.ey)+'</p>';}
+function TT(sz,ls,c){return '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(sz||T_H)+
+ ';letter-spacing:'+(ls||'0.26em')+';line-height:1.35;text-transform:uppercase;font-weight:400;color:'+(c||I82)+';">'+X.tt+'</div>';}
+function MI(t,c){return '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||I25)+';margin:0;">'+t+'</p>';}
+function RL(t,c){return '<p style="font-family:\'DM Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.18em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||LAB)+';margin:0 0 10px;">'+t+'</p>';}
+function BODY(t,mw,c,fs){return '<p style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:'+(fs||'0.9rem')+
+ ';line-height:1.8;color:'+(c||I55)+';max-width:'+(mw||'54ch')+';margin:0;">'+t+'</p>';}
+function HR(w,c,m){return '<div style="height:0.5px;background:'+(c||R08)+';width:'+(w||'100%')+';'+(m?'margin:'+m+';':'')+'"></div>';}
+function WORD(sz,ls,c){return '<div style="font-family:\'Josefin Sans\',sans-serif;font-size:'+(sz||'0.6rem')+
+ ';font-weight:400;letter-spacing:'+(ls||'0.42em')+';line-height:1.6;color:'+(c||I25)+';">SILENT<br>FOUNDRY</div>';}
+function IDX(c){return MI(P.map(function(p){return p.t;}).join(' &nbsp;·&nbsp; '),c||I25);}
+function NUM(n,c){return '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:0.72rem;letter-spacing:0.14em;color:'+(c||I25)+';">'+n+'</span>';}
+function G12(inner){return '<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(16px,2vw,32px);align-items:end;">'+inner+'</div>';}
+function CL(a,b,inner,al){return '<div style="grid-column:'+a+'/'+b+';'+(al?'align-self:'+al+';':'')+'">'+inner+'</div>';}
+function SPLIT(l,r,cols){return '<div class="cx-sp" style="display:grid;grid-template-columns:'+(cols||'0.85fr 1.15fr')+
+ ';gap:clamp(26px,4vw,44px);align-items:start;"><div>'+l+'</div><div>'+r+'</div></div>';}
+
+/* ── AREA 2 · the expanded state, as a catalogue rather than a file list ── */
+function one(t){var i=t.indexOf('. ');return i>0?t.slice(0,i+1):t;}
+function DLA(p,k,o){o=o||{};
+ var nm='<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||T_XS)+';letter-spacing:0.14em;'+
+  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>';
+ var act=function(lab,al){return '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;'+
+  'font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;'+
+  'white-space:nowrap;transition:color .25s,letter-spacing .25s;'+(al||'')+'">'+lab+'</a>';};
+ var key='<span style="font-family:\'DM Sans\',sans-serif;font-size:0.44rem;letter-spacing:0.16em;'+
+  'text-transform:uppercase;color:rgba(10,10,10,0.38);font-weight:300;display:block;margin-bottom:2px;">'+p.s+'</span>';
+ switch(k){
+ /* A · one concise sentence, then the action */
+ case 'a': return nm+g(10)+BODY(one(p.b),'46ch',I45,'0.8rem')+g(14)+act('Download PDF →');
+ /* C · a single line saying who it is for */
+ case 'c': return nm+g(9)+MI(p.s,I3)+g(16)+act('Download ↓');
+ /* D · nothing but a beautifully aligned action */
+ case 'd': return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+nm+act('↓')+'</div>';
+ /* two columns — the DNA split */
+ case 'sp': return SPLIT(nm+g(8)+MI(p.s,I3), BODY(one(p.b),'44ch',I45,'0.78rem')+g(14)+act('Download →'),'0.8fr 1.2fr');
+ /* the glyph carried through from the path cards */
+ case 'gl': return '<div style="display:flex;align-items:baseline;gap:16px;"><span style="font-family:\'DM Sans\',sans-serif;'+
+   'font-size:0.8rem;color:'+LAB+';">'+p.i+'</span><div style="flex:1;">'+nm+g(8)+MI(p.s,I3)+'</div>'+act('↓')+'</div>';
+ /* catalogue key / value */
+ case 'cat': return key+g(6)+nm+g(12)+HR('28px','rgba(138,110,58,0.45)')+g(12)+act('Download');
+ /* centred and generous */
+ case 'ctr': return '<div style="text-align:center;">'+nm+g(10)+MI(p.s,I3)+g(18)+act('Download ↓')+'</div>';
+ /* indented, a rule between the name and the content */
+ default:  return nm+g(12)+HR('100%',R06)+g(14)+'<div style="padding-left:clamp(0px,3vw,40px);">'+
+   BODY(one(p.b),'46ch',I45,'0.78rem')+g(14)+act('Download →')+'</div>';}}
+
+/* the rows, and how they sit against each other */
+function DLX(k,o){o=o||{};
+ var div=o.div===false?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';
+ if(k==='grid') return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax('+(o.min||'220px')+',1fr));'+
+   'gap:1px;background:'+R08+';border:1px solid '+R08+';margin-top:'+(o.mt||22)+'px;">'+
+   P.map(function(p){return '<div style="background:'+CRM2+';padding:'+(o.cp||'22px 22px 24px')+';">'+DLA(p,o.a,o)+'</div>';}).join('')+'</div>';
+ if(k==='stag') return '<div style="margin-top:'+(o.mt||22)+'px;">'+P.map(function(p,i){
+   return '<div style="'+div+'padding:'+(o.rp||22)+'px 0;padding-left:'+(i*(o.step||26))+'px;">'+DLA(p,o.a,o)+'</div>';}).join('')+'</div>';
+ return '<div style="margin-top:'+(o.mt||22)+'px;">'+P.map(function(p,i){
+   return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+(o.dc||R06)+';':'')+div+
+   'padding:'+(o.rp||20)+'px 0;">'+DLA(p,o.a,o)+'</div>';}).join('')+'</div>';}
+
+/* the collapsed trigger — J2's restraint is the default; only the mark varies */
+function TRIG(o){o=o||{};
+ var mk=o.mark===false?'':'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:'+(o.msz||'0.62rem')+
+  ';color:'+I3+';line-height:1;transition:transform .35s,color .25s;">'+(o.glyph||'+')+'</span>';
+ var lb='<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+LAB+';">'+(o.lab||X.dl)+'</span>';
+ var st=o.wide?'display:flex;justify-content:space-between;align-items:center;'
+              :'display:inline-flex;align-items:center;gap:14px;';
+ return '<div onclick="cxReveal(this)" class="cx-rv" style="cursor:pointer;'+st+
+  (o.rule?'border-top:0.5px solid '+R08+';':'')+'padding:'+(o.vp||6)+'px 0;">'+lb+mk+'</div>';}
+
+function DISC2(o){o=o||{};
+ return TRIG(o)+'<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height '+
+  (o.dur||'.55s')+' ease,opacity .35s;">'+DLX(o.rows,o)+'</div>';}
+
+/* ── AREA 1 · twenty-two openings ── */
+function OPEN(k,o){o=o||{};
+ var D=o.dl?DISC2(o.dl):'';                       /* downloads, when they belong to the opening */
+ switch(k){
+ case 1: return EY()+TT()+g(30)+HR()+g(26)+RL(Y.ways)+g(16)+BODY(Y.lead,'58ch')+g(34)+D;
+ case 2: return EY()+TT()+g(24)+BODY(Y.short,'50ch')+g(38)+D;
+ case 3: return G12(CL(1,8,EY()+TT())+CL(9,13,IDX(),'end'))+g(30)+HR()+g(30)+BODY(Y.lead,'56ch')+g(36)+D;
+ case 4: return EY()+g(4)+TT(T_M,'0.18em')+g(28)+HR('120px','rgba(138,110,58,0.5)')+g(28)+BODY(Y.short,'46ch')+g(40)+D;
+ case 5: return HR()+g(26)+G12(CL(1,6,EY()+TT())+CL(7,13,BODY(Y.lead,'46ch')))+g(34)+HR()+g(30)+D;
+ case 6: return EY()+TT()+g(34)+SPLIT(RL(Y.ways)+MI(Y.four,I3), BODY(Y.lead,'50ch'))+g(38)+D;
+ case 7: return G12(CL(1,9,EY()+TT()+g(26)+BODY(Y.short,'46ch'))+CL(10,13,WORD(),'end'))+g(38)+HR()+g(26)+D;
+ case 8: return EY()+TT(T_M,'0.2em')+g(30)+HR()+g(22)+IDX(I3)+g(30)+HR()+g(32)+BODY(Y.reply,'44ch')+g(34)+D;
+ case 9: return '<div style="text-align:center;">'+EY()+TT()+g(26)+BODY(Y.short,'46ch',null,null).replace('margin:0','margin:0 auto')+'</div>'+g(40)+D;
+ case 10:return NUM('01')+g(14)+EY()+TT()+g(28)+BODY(Y.lead,'54ch')+g(36)+HR()+g(24)+D;
+ case 11:return EY()+TT(T_L,'0.06em')+g(30)+BODY(Y.short,'50ch')+g(40)+D;
+ case 12:return SPLIT(EY()+TT()+g(20)+MI(Y.four,I3), BODY(Y.lead,'48ch')+g(26)+HR()+g(22)+D,'0.9fr 1.1fr');
+ case 13:return EY()+TT()+g(30)+HR()+g(18)+'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+
+   MI(Y.ways.toUpperCase(),LAB)+MI('Four',I25)+'</div>'+g(18)+HR()+g(34)+BODY(Y.short,'48ch')+g(34)+D;
+ case 14:return G12(CL(1,3,WORD('0.52rem'))+CL(4,13,EY()+TT()+g(24)+BODY(Y.lead,'52ch')))+g(38)+D;
+ case 15:return EY()+TT()+g(32)+HR()+g(30)+G12(CL(1,5,RL(Y.ways))+CL(6,13,BODY(Y.lead,'50ch')))+g(36)+D;
+ case 16:return EY()+g(2)+TT(T_M,'0.16em')+g(34)+D;
+ case 17:return EY()+TT()+g(28)+BODY(Y.short,'48ch')+g(30)+HR('100%',R12)+g(28)+RL(Y.ways)+g(6)+D;
+ case 18:return '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:clamp(24px,5vw,80px);flex-wrap:wrap;">'+
+   '<div>'+EY()+TT()+'</div>'+'<div style="max-width:38ch;">'+BODY(Y.lead,'38ch')+'</div></div>'+g(40)+HR()+g(28)+D;
+ case 19:return EY()+TT()+g(26)+BODY(Y.short,'48ch')+g(34)+HR()+g(20)+
+   '<div style="display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);">'+P.map(function(p,i){
+    return '<div>'+NUM(('0'+(i+1)).slice(-2))+'<div style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;'+
+    'letter-spacing:0.22em;text-transform:uppercase;color:'+I3+';margin-top:6px;">'+p.t+'</div></div>';}).join('')+
+   '</div>'+g(24)+HR()+g(30)+D;
+ case 20:return HR('100%',R12)+g(24)+EY()+TT(T_M,'0.2em')+g(24)+BODY(Y.reply,'42ch')+g(24)+HR('100%',R12)+g(34)+D;
+ case 21:return G12(CL(1,7,EY()+TT()+g(22)+MI(Y.four,I3))+CL(8,13,BODY(Y.lead,'42ch')+g(24)+D))+'';
+ default:return EY()+TT()+g(28)+HR()+g(26)+SPLIT(RL(Y.ways)+g(4)+MI(Y.four,I3),
+   BODY(Y.lead,'50ch')+g(28)+D,'0.75fr 1.25fr');}}
+
+/* the page. everything below the opening is J2, unchanged. */
+function RPAGE(c){
+ var top=sec('<div style="max-width:'+(c.mw||'900px')+';">'+OPEN(c.top,c)+'</div>',
+   (c.pt||'clamp(160px,21vh,205px)')+' '+PADX+' '+(c.pb||'clamp(60px,8vh,96px)'));
+ var form=sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
+   '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
+   FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
+   'clamp(52px,7vh,84px) '+PADX+' clamp(52px,7vh,84px)',{bt:1});
+ var after=c.dlAfter?sec('<div style="max-width:'+(c.mw||'900px')+';">'+DISC2(c.dlAfter)+'</div>',
+   'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1}):'';
+ return top+form+after+NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
+
+/* 22 pairings — a distinct opening, and a distinct expanded state */
+var R22=[
+ ['Rule and a section label','A rule under the title, then WAYS TO WORK TOGETHER as a section label. Rows open to one sentence and an action.',
+  {top:1,  dl:{rows:'plain',a:'a'}}],
+ ['Two lines only','The shortest opening on the site. Rows give the audience line, nothing more.',
+  {top:2,  dl:{rows:'plain',a:'c',rp:22}}],
+ ['Title left, index right','The four names sit right-aligned against the title, as the cities do on the team page.',
+  {top:3,  dl:{rows:'plain',a:'d',rp:24,topRule:true}}],
+ ['Gold underline','A short gold rule under a larger title. Rows open as a catalogue key over the name.',
+  {top:4,  dl:{rows:'plain',a:'cat',rp:26}}],
+ ['Bracketed by rules','Rules above and below the whole opening. Rows split into two columns.',
+  {top:5,  dl:{rows:'plain',a:'sp',rp:26}}],
+ ['Label and body, split','The DNA split: label and count left, the paragraph right. Rows carry their glyph.',
+  {top:6,  dl:{rows:'plain',a:'gl',rp:22}}],
+ ['Wordmark right','SILENT FOUNDRY set small at the right edge. Rows open into an indented reveal.',
+  {top:7,  dl:{rows:'plain',a:'ind',rp:24}}],
+ ['Index between rules','The four names between two rules, in the team page’s mini-list type. Rows centred.',
+  {top:8,  dl:{rows:'plain',a:'ctr',rp:28}}],
+ ['Centred opening','The whole opening centred on the measure. Rows open as a four-up grid.',
+  {top:9,  dl:{rows:'grid',a:'c'}}],
+ ['Numbered chapter','01 above the eyebrow — the page as another chapter. Rows staggered.',
+  {top:10, dl:{rows:'stag',a:'c',step:22}}],
+ ['Display title','The title at the homepage section scale. Rows: name and an aligned action, nothing else.',
+  {top:11, dl:{rows:'plain',a:'d',rp:26}}],
+ ['Downloads in the right column','Title left, paragraph and downloads right — the opening resolves into the decks.',
+  {top:12, dl:{rows:'plain',a:'c',rp:20,div:true}}],
+ ['Ruled band','A ruled band carrying the section label and the count. Rows open to one sentence.',
+  {top:13, dl:{rows:'plain',a:'a',rp:24}}],
+ ['Wordmark left','The wordmark as a margin element at the left, title beside it. Rows as a catalogue grid.',
+  {top:14, dl:{rows:'grid',a:'cat'}}],
+ ['Label column','A twelve-column rule, then the label in its own column against the paragraph.',
+  {top:15, dl:{rows:'plain',a:'sp',rp:26}}],
+ ['Nothing but the title','Eyebrow, title, downloads. No paragraph at all — the most restrained opening.',
+  {top:16, dl:{rows:'plain',a:'a',rp:24,mt:8}}],
+ ['Heading above the decks','The section label sits directly above the disclosure, so DOWNLOADS reads as its content.',
+  {top:17, dl:{rows:'plain',a:'ind',rp:22,mark:false}}],
+ ['Title and body, opposed','Title hard left, paragraph hard right, a rule across beneath them.',
+  {top:18, dl:{rows:'plain',a:'gl',rp:24}}],
+ ['Numbered index','The four numbered across between two rules — the strongest editorial rhythm.',
+  {top:19, dl:{rows:'plain',a:'a',rp:24}}],
+ ['Framed',' Rules top and bottom at a heavier weight, the opening cut to two lines. Rows staggered.',
+  {top:20, dl:{rows:'stag',a:'cat',step:24,rp:24}}],
+ ['Split page','Title and count left, paragraph and downloads right, over the twelve-column grid.',
+  {top:21, dl:{rows:'plain',a:'c',rp:20}}],
+ ['The considered one','Rule, label and count against the paragraph, downloads resolving beneath. Rows open into an indented reveal.',
+  {top:22, dl:{rows:'plain',a:'ind',rp:24,dur:'.6s'}}]
+];
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FINAL POLISH — Option 1 refined twenty ways.
+   Opening:  eyebrow · title · one paragraph · rule · downloads · form.
+   No section heading. No second paragraph. Nothing new invented.
+   ════════════════════════════════════════════════════════════════════ */
+
+var LEAD='We work with brand owners, factories, operators and investors — across product development, manufacturing, capital, and China market entry.';
+
+/* the site's own marks: ◎ set in gold, and the 22 × 1.5px gold bar from the team cards */
+function SYM(sz,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:'+(sz||'0.9rem')+
+ ';color:'+(c||'rgba(200,169,110,0.85)')+';line-height:1;display:inline-block;">◎</span>';}
+function FMARK(w){return '<div style="width:'+(w||22)+'px;height:1.5px;background:#8a6e3a;"></div>';}
+
+function OPEN2(o){o=o||{};
+ var G=o.g||[26,32,28];
+ var rule=o.rw==='none'?'':HR(o.rw||'100%',o.rc||R08,o.ral==='centre'?'0 auto':null);
+ var head=EY()+TT(o.tsz,o.tls);
+ var para=BODY(LEAD,o.mw||'54ch',o.pc,o.psz);
+ if(o.ctr)para='<div style="text-align:center;">'+BODY(LEAD,o.mw||'46ch',o.pc,o.psz).replace('margin:0','margin:0 auto')+'</div>';
+
+ var s=o.sym;                                    /* where the mark sits */
+ if(s==='above')  head=SYM(o.ssz)+g(18)+head;
+ if(s==='bar')    head=FMARK(o.sw)+g(16)+head;
+ if(s==='right')  head='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;">'+
+                       '<div>'+EY()+TT(o.tsz,o.tls)+'</div>'+SYM(o.ssz)+'</div>';
+ if(s==='under')  head=head+g(20)+FMARK(o.sw);
+ if(s==='rule')   rule='<div style="display:flex;align-items:center;gap:16px;">'+
+                       '<div style="flex:1;height:0.5px;background:'+(o.rc||R08)+';"></div>'+SYM(o.ssz)+
+                       '<div style="flex:1;height:0.5px;background:'+(o.rc||R08)+';"></div></div>';
+
+ var body=head+g(G[0])+para+g(G[1])+rule+g(G[2]);
+ if(o.rulePos==='before') body=head+g(G[0])+rule+g(G[1])+para+g(G[2]);
+ if(o.rulePos==='both')   body=head+g(G[0])+rule+g(G[1])+para+g(G[1])+rule+g(G[2]);
+ if(o.rulePos==='none')   body=head+g(G[0])+para+g(G[2]);
+ return body+WHO(o.dl||{});}
+
+/* ── the expanded state, cut to the minimum ── */
+function ROW(p,o){o=o||{};
+ var nm='<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||T_XS)+';letter-spacing:0.14em;'+
+  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>';
+ var act='<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;font-size:'+
+  (o.asz||'0.52rem')+';letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;'+
+  'white-space:nowrap;transition:color .25s,letter-spacing .25s;">'+(o.alab||'Download')+(o.arrow||' ↓')+'</a>';
+ var meta='<span style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
+  'text-transform:uppercase;font-weight:300;color:'+I3+';">'+p.s+'</span>';
+ switch(o.a){
+ /* A · one concise sentence, the action beneath */
+ case 'a': return nm+g(10)+BODY(one(p.b),o.bmw||'44ch',I45,'0.78rem')+g(o.ag||14)+act;
+ /* B · the audience line as a meta label, the action beneath */
+ case 'b': return nm+g(9)+meta+g(o.ag||16)+act;
+ /* C · the sentence and the action on one baseline */
+ case 'c': return nm+g(10)+'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:'+
+   (o.gap||'32px')+';flex-wrap:wrap;">'+BODY(one(p.b),o.bmw||'40ch',I45,'0.78rem')+act+'</div>';
+ /* D · the action alone, aligned */
+ default:  return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+nm+act+'</div>';}}
+
+function DISC3(o){o=o||{};
+ var mk=o.mark===false?'':'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+I3+
+  ';line-height:1;transition:transform .35s,color .25s;">'+(o.glyph||'+')+'</span>';
+ var lb='<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+LAB+';">'+X.dl+'</span>';
+ var st=o.wide?'display:flex;justify-content:space-between;align-items:center;'
+              :'display:inline-flex;align-items:center;gap:14px;';
+ var div=o.div==='none'?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';
+ var rows=P.map(function(p,i){return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+(o.dc||R06)+';':'')+
+   div+'padding:'+(o.rp||20)+'px 0;'+(o.ind?'padding-left:'+o.ind+'px;':'')+'">'+ROW(p,o)+'</div>';}).join('');
+ return '<div onclick="cxReveal(this)" class="cx-rv" style="cursor:pointer;'+st+'padding:'+(o.tp||6)+'px 0;">'+lb+mk+'</div>'+
+  '<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height '+(o.dur||'.55s')+
+  ' cubic-bezier(0.22,0.61,0.36,1),opacity '+(o.odur||'.35s')+';"><div style="margin-top:'+(o.mt||20)+'px;">'+rows+'</div></div>';}
+
+/* ── the four, always open: WHO'S CONTACTING US ── */
+var WHOLB="Who's Contacting Us";
+function WROW(p,o){o=o||{};
+ var nm='<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||T_XS)+';letter-spacing:0.14em;'+
+  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>';
+ var meta='<span style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
+  'text-transform:uppercase;font-weight:300;color:'+I3+';">'+p.s+'</span>';
+ switch(o.a){
+ case 'a': return nm+g(10)+BODY(one(p.b),o.bmw||'46ch',I45,'0.78rem');
+ case 'b': return nm+g(9)+meta;
+ case 'c': return '<div style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:clamp(20px,3vw,40px);align-items:baseline;">'+
+   '<div>'+nm+'</div><div>'+BODY(one(p.b),o.bmw||'42ch',I45,'0.78rem')+'</div></div>';
+ default:  return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+nm+meta+'</div>';}}
+
+function WHO(o){o=o||{};
+ var div=o.div==='none'?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';
+ return '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+LAB+';">'+WHOLB+'</span>'+
+  '<div style="margin-top:'+(o.mt||22)+'px;">'+P.map(function(p,i){
+   return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+(o.dc||R06)+';':'')+div+
+   'padding:'+(o.rp||20)+'px 0;'+(o.ind?'padding-left:'+o.ind+'px;':'')+'">'+WROW(p,o)+'</div>';}).join('')+'</div>';}
+
+/* ── one deck, below the form ── */
+var DECKF='/decks/silent-foundry-partner-deck.pdf';
+function DECK(o){o=o||{};
+ return '<div style="display:flex;align-items:center;gap:12px;">'+
+  '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;color:rgba(200,169,110,0.85);line-height:1;">◎</span>'+
+  '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+LAB+';">'+X.dl+'</span></div>'+
+  g(o.g||16)+
+  '<a href="'+DECKF+'" download class="cx-dl" style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.sz||T_XS)+
+  ';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';text-decoration:none;display:inline-flex;'+
+  'align-items:baseline;gap:14px;transition:color .25s;">Download The Deck'+
+  '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.7rem;color:'+LAB+';">↓</span></a>';}
+
+/* Option 1, rebuilt: intro · who's contacting us · form · the deck · newsletter */
+function PPAGE(c){
+ var o=c.dl||{};
+ return sec('<div style="max-width:'+(c.mw2||'900px')+';">'+OPEN2(c)+'</div>',
+        (c.pt||'clamp(160px,21vh,205px)')+' '+PADX+' '+(c.pb||'clamp(26px,3.4vh,34px)'))
+      + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
+        '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
+        FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
+        'clamp(26px,3.4vh,34px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
+      + sec('<div style="max-width:'+(c.mw2||'900px')+';">'+DECK(o)+'</div>',
+        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
+      + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
+var P20=[
+ ['Baseline, tightened','Option 1 with the heading gone. Rule at full measure, rows open to one sentence.',
+  {g:[26,32,28],mw:'54ch',dl:{a:'a'}}],
+ ['Wider paragraph, half rule','A longer measure and a rule that runs only half the width.',
+  {g:[26,34,30],mw:'62ch',rw:'50%',dl:{a:'a',rp:22}}],
+ ['Short gold rule','The rule cut to 120px in the site’s gold. Rows show only the audience line.',
+  {g:[24,32,30],mw:'52ch',rw:'120px',rc:'rgba(138,110,58,0.5)',dl:{a:'b',rp:22}}],
+ ['Rule above the paragraph','The rule sits between title and paragraph, so the text reads as a caption.',
+  {g:[26,28,34],mw:'52ch',rulePos:'before',dl:{a:'a'}}],
+ ['Bracketed paragraph','A rule above and below the paragraph. The calmest hierarchy.',
+  {g:[26,26,32],mw:'50ch',rulePos:'both',dl:{a:'b',rp:24}}],
+ ['Mark above the eyebrow','◎ set small in gold above GET IN TOUCH.',
+  {sym:'above',g:[26,32,30],mw:'54ch',dl:{a:'a'}}],
+ ['Mark at the right','◎ held at the right edge, level with the eyebrow.',
+  {sym:'right',g:[28,32,30],mw:'54ch',dl:{a:'c'}}],
+ ['Gold bar','The 22px gold bar from the team cards, above the eyebrow.',
+  {sym:'bar',g:[26,32,30],mw:'54ch',dl:{a:'a',rp:22}}],
+ ['Mark on the rule','The rule breaks around ◎ at its centre.',
+  {sym:'rule',g:[26,34,32],mw:'54ch',dl:{a:'b'}}],
+ ['Bar under the title','The gold bar beneath the title, the paragraph below it.',
+  {sym:'under',g:[24,30,28],mw:'54ch',sw:34,dl:{a:'a'}}],
+ ['Generous','Much more air at every interval. Nothing else changes.',
+  {g:[36,48,44],mw:'54ch',pt:'clamp(190px,25vh,240px)',dl:{a:'a',rp:26,mt:26}}],
+ ['Tight','The opposite: everything drawn in close and quiet.',
+  {g:[18,24,22],mw:'48ch',dl:{a:'d',rp:16,mt:14}}],
+ ['Narrow measure','A 42ch paragraph — a single column of text under a wide rule.',
+  {g:[26,34,30],mw:'42ch',dl:{a:'a',rp:22}}],
+ ['Centred opening','Eyebrow, title and paragraph centred; the rule runs the full measure.',
+  {ctr:true,g:[26,32,30],mw:'46ch',dl:{a:'b',rp:22}}],
+ ['No rule at all','Whitespace does the dividing. The downloads simply follow.',
+  {rulePos:'none',g:[26,54,0],mw:'52ch',dl:{a:'a',topRule:true,rp:22}}],
+ ['Larger title','The title at the homepage section scale, everything else held.',
+  {tsz:T_M,tls:'0.18em',g:[28,34,30],mw:'54ch',dl:{a:'a'}}],
+ ['Downloads on the rule','DOWNLOADS and the mark sit apart on one line, the full measure wide.',
+  {g:[26,32,26],mw:'54ch',dl:{a:'b',wide:true,rp:22}}],
+ ['Hairline rows','Dividers dropped to a whisper; rows breathe further apart.',
+  {g:[26,32,30],mw:'54ch',dl:{a:'a',dc:'rgba(10,10,10,0.04)',rp:28,mt:24}}],
+ ['No dividers','The rows carry no rules at all — only spacing separates them.',
+  {g:[26,32,30],mw:'54ch',dl:{a:'c',div:'none',rp:22,mt:22}}],
+ ['The considered one','A 56ch paragraph, the rule at three-quarters, and a slower reveal to one quiet sentence.',
+  {g:[28,36,32],mw:'56ch',rw:'75%',dl:{a:'a',rp:24,mt:24,dur:'.65s',odur:'.45s',bmw:'42ch'}}]
+];
+
+var _P0=function(){return RPAGE({top:1,dl:{rows:'plain',a:'a'}});};   /* Option 1, untouched */
+V=[{t:'Contact',note:'live',f:function(){return PPAGE(P20[0][2]);}}];
+
+
+/* ════════════════════════════════════════════════════════════════════
+   21–40 · downloads BELOW the contact box, and twenty different dropdowns.
+   ════════════════════════════════════════════════════════════════════ */
+function dlab(p,l,c){return '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;'+
+ 'font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+(c||LAB)+';text-decoration:none;'+
+ 'white-space:nowrap;transition:color .25s,letter-spacing .25s;">'+(l||'Download ↓')+'</a>';}
+function dnm(p,sz,c){return '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(sz||T_XS)+
+ ';letter-spacing:0.14em;text-transform:uppercase;color:'+(c||I82)+';">'+p.t+'</span>';}
+function dsub(p,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
+ 'text-transform:uppercase;font-weight:300;color:'+(c||I3)+';">'+p.s+'</span>';}
+function dgl(p,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.8rem;color:'+(c||LAB)+';">'+p.i+'</span>';}
+
+function DROP(k,o){o=o||{};
+ var R=function(inner,st){return '<div style="'+(st||'')+'">'+inner+'</div>';};
+ var line=function(i,last){return (o.div===false||last&&o.lastDiv===false)?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';};
+ switch(k){
+ case 1: return P.map(function(p,i){return R(dnm(p)+'<span style="float:right;">'+dlab(p)+'</span>',
+   line(i)+'padding:20px 0;overflow:hidden;');}).join('');
+ case 2: return P.map(function(p,i){return R('<div style="display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:baseline;">'+
+   NUM(('0'+(i+1)).slice(-2))+dnm(p)+dlab(p,'↓')+'</div>',line(i)+'padding:22px 0;');}).join('');
+ case 3: return P.map(function(p,i){return R('<div style="display:flex;align-items:baseline;gap:18px;">'+dgl(p)+
+   '<div style="flex:1;">'+dnm(p)+'</div>'+dlab(p)+'</div>',line(i)+'padding:20px 0;');}).join('');
+ case 4: return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:'+R08+
+   ';border:1px solid '+R08+';">'+P.map(function(p){return R(dnm(p)+g(9)+dsub(p)+g(16)+dlab(p),
+   'background:'+CRM2+';padding:24px 22px 26px;');}).join('')+'</div>';
+ case 5: return P.map(function(p,i){return R('<span style="font-family:\'DM Sans\',sans-serif;font-size:0.44rem;'+
+   'letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.38);display:block;margin-bottom:4px;">'+p.s+'</span>'+
+   dnm(p)+g(12)+HR('26px','rgba(138,110,58,0.5)')+g(12)+dlab(p,'Download'),line(i)+'padding:22px 0;');}).join('');
+ case 6: return P.map(function(p,i){return R('<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
+   dnm(p)+dlab(p)+'</div>',line(i)+'padding:20px 0 20px '+(i*26)+'px;');}).join('');
+ case 7: return P.map(function(p,i){return '<div class="cx-acc" style="'+line(i)+'">'+
+   '<div onclick="cxT(this)" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;cursor:pointer;padding:20px 0;">'+
+   dnm(p)+'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.58rem;color:'+I3+
+   ';transition:transform .35s,color .25s;">+</span></div>'+
+   '<div class="cx-p" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s;">'+
+   BODY(one(p.b),'46ch',I45,'0.76rem')+g(12)+dlab(p)+g(20)+'</div></div>';}).join('');
+ case 8: return '<div style="display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,64px);padding:6px 0 4px;">'+
+   P.map(function(p){return R(dnm(p,'clamp(0.9rem,1.2vw,1.3rem)')+g(6)+dsub(p)+g(14)+dlab(p,'↓'));}).join('')+'</div>';
+ case 9: return '<div style="text-align:center;">'+P.map(function(p,i){return R(dnm(p)+g(9)+dsub(p)+g(14)+dlab(p),
+   line(i)+'padding:26px 0;');}).join('')+'</div>';
+ case 10:return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;">'+
+   P.map(function(p,i){return R(dnm(p)+g(10)+dsub(p)+g(16)+dlab(p,'↓'),
+   'padding:4px clamp(16px,2.2vw,28px);'+(i?'border-left:0.5px solid '+R08+';':'padding-left:0;'));}).join('')+'</div>';
+ case 11:return '<div style="text-align:right;">'+P.map(function(p,i){return R(dnm(p)+g(9)+dlab(p),
+   line(i)+'padding:20px 0;');}).join('')+'</div>';
+ case 12:return P.map(function(p,i){return R('<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;">'+
+   dnm(p,T_S)+dlab(p,'PDF ↓')+'</div>',line(i)+'padding:30px 0;');}).join('');
+ case 13:return P.map(function(p,i){return '<div class="cx-hv" style="'+line(i)+'display:flex;justify-content:space-between;'+
+   'align-items:baseline;gap:20px;padding:20px 0;">'+dnm(p)+
+   '<span class="cx-hva" style="opacity:0.35;transform:translateX(-6px);transition:opacity .3s,transform .3s;">'+dlab(p)+'</span></div>';}).join('');
+ case 14:return P.map(function(p,i){return R('<div style="display:flex;align-items:baseline;gap:16px;">'+
+   '<div style="width:18px;height:1.5px;background:#8a6e3a;flex-shrink:0;transform:translateY(-4px);"></div>'+
+   '<div style="flex:1;">'+dnm(p)+'</div>'+dlab(p)+'</div>',line(i)+'padding:20px 0;');}).join('');
+ case 15:return P.map(function(p,i){return R('<div class="cx-sp" style="display:grid;grid-template-columns:0.8fr 1.2fr;'+
+   'gap:clamp(20px,3vw,40px);align-items:start;"><div>'+dnm(p)+'</div><div>'+
+   BODY(one(p.b),'42ch',I45,'0.76rem')+g(12)+dlab(p)+'</div></div>',line(i)+'padding:24px 0;');}).join('');
+ case 16:return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(14px,2vw,22px);">'+
+   P.map(function(p){return R(dgl(p)+g(14)+dnm(p)+g(9)+dsub(p)+g(18)+dlab(p),
+   'background:'+SOFT+';padding:24px 22px 26px;');}).join('')+'</div>';
+ case 17:return P.map(function(p,i){return '<a href="'+p.f+'" download class="cx-dl" style="display:block;text-decoration:none;'+
+   line(i)+'padding:22px 0;">'+dnm(p)+'</a>';}).join('');
+ case 18:return P.map(function(p,i){return R(NUM(('0'+(i+1)).slice(-2))+g(10)+dnm(p)+
+   '<div style="padding-left:clamp(0px,4vw,54px);margin-top:12px;">'+BODY(one(p.b),'44ch',I45,'0.76rem')+g(12)+dlab(p)+'</div>',
+   line(i)+'padding:22px 0;');}).join('');
+ case 19:return '<div style="background:'+DK+';padding:clamp(24px,4vw,38px);">'+P.map(function(p,i){
+   return R('<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
+   dnm(p,null,'rgba(244,241,236,0.85)')+dlab(p,'Download ↓',GOLD)+'</div>',
+   (i<P.length-1?'border-bottom:0.5px solid rgba(244,241,236,0.12);':'')+'padding:20px 0;');}).join('')+'</div>';
+ default:return P.map(function(p,i){return R(dnm(p)+g(8)+dsub(p),
+   (i<P.length-1?'':'')+'padding:14px 0;');}).join('')+g(20)+HR('100%',R06)+g(18)+
+   '<div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,36px);">'+P.map(function(p){
+   return dlab(p,p.t.split(' ')[0]+' ↓');}).join('')+'</div>';}}
+
+function QPAGE(c){
+ var o=c.o||{};
+ var trig='<div onclick="cxReveal(this)" class="cx-rv" style="cursor:pointer;'+
+  (o.wide?'display:flex;justify-content:space-between;align-items:center;':'display:inline-flex;align-items:center;gap:14px;')+
+  (o.rule?'border-top:0.5px solid '+R08+';':'')+'padding:'+(o.tp||6)+'px 0;">'+
+  '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+LAB+';">'+X.dl+'</span>'+
+  (o.mark===false?'':'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+I3+
+  ';line-height:1;transition:transform .35s,color .25s;">'+(o.glyph||'+')+'</span>')+'</div>';
+ var panel='<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height '+(o.dur||'.55s')+
+  ' cubic-bezier(0.22,0.61,0.36,1),opacity '+(o.odur||'.35s')+';"><div style="margin-top:'+(o.mt||22)+'px;">'+
+  DROP(c.k,o)+'</div></div>';
+ return sec('<div style="max-width:900px;">'+EY()+TT()+g(26)+BODY(LEAD,c.mw||'54ch')+'</div>',
+        'clamp(160px,21vh,205px) '+PADX+' clamp(56px,7.5vh,90px)')
+      + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
+        '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
+        FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
+        'clamp(52px,7vh,84px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
+      + sec('<div style="max-width:900px;">'+trig+panel+'</div>',
+        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
+      + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
+
+var Q20=[
+ ['Name and link','The simplest row: the name left, the action floated right.',{k:1}],
+ ['Numbered','01–04 in a fixed column, the action as a bare arrow.',{k:2}],
+ ['Glyph led','Each row opens with its own mark — ⌀ ∠ ⊥ ±, as on the path cards.',{k:3}],
+ ['Four cards','A four-up card grid on the 1px hairline, as the DNA modules are built.',{k:4}],
+ ['Catalogue entry','The audience line set above the name, over a short gold rule.',{k:5}],
+ ['Staggered','Each row indents further than the last.',{k:6}],
+ ['Nested accordion','Each row opens again — the name first, the sentence only if asked for.',{k:7}],
+ ['Flat band','All four across the screen at once, as the board of directors sits.',{k:8}],
+ ['Centred','The whole set centred on the measure, generously spaced.',{k:9}],
+ ['Ruled columns','Vertical hairlines between four columns — a single ruled table.',{k:10}],
+ ['Right aligned','The set pushed to the right edge of the measure.',{k:11}],
+ ['Large names','The names at the section scale, rows twice as tall.',{k:12,mt:26}],
+ ['Action on hover','The download sits faint until the row is hovered, then slides in.',{k:13}],
+ ['Gold bar rows','The 22px team-card bar leading each row.',{k:14}],
+ ['Split rows','Name left, one sentence and the action right, over the DNA split.',{k:15}],
+ ['Tonal cards','Four cards on the soft ground used for OPPORTUNITIES.',{k:16}],
+ ['The row is the link','No separate action — the entire row is the download.',{k:17}],
+ ['Numbered and indented','Numbered, with the sentence and action indented beneath.',{k:18}],
+ ['Dark panel','The panel opens dark, closing the page’s cream before the newsletter.',{k:19,mt:26}],
+ ['Index then actions','The four listed quietly, then the four actions gathered on one line beneath a rule.',{k:20}]
+];
+
+/* interactions */
+window.cxT=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx-i');
+ var open=p.style.maxHeight&&p.style.maxHeight!=='0px';
+ var box=el.closest('.cx-acc').parentNode;
+ box.querySelectorAll('.cx-p').forEach(function(x){x.style.maxHeight='0px';x.style.opacity='0';});
+ box.querySelectorAll('.cx-i').forEach(function(x){x.style.transform='';});
+ if(!open){p.style.maxHeight=p.scrollHeight+'px';p.style.opacity='1';if(i)i.style.transform='rotate(45deg)';}};
+window.cxReveal=function(el){
+ var p=el.nextElementSibling;
+ while(p&&!(p.classList&&p.classList.contains('cx-rvp')))p=p.nextElementSibling;
+ if(!p)p=el.parentNode.querySelector('.cx-rvp');
+ var i=el.querySelector('.cx-i')||el.parentNode.querySelector('.cx-i');
+ var open=p.style.maxHeight&&p.style.maxHeight!=='0px';
+ p.style.maxHeight=open?'0px':p.scrollHeight+'px';p.style.opacity=open?'0':'1';
+ if(i)i.style.transform=open?'':'rotate(45deg)';};
+
+var _origNL=null;
+function render(n){
+ var pc=document.getElementById('pc');
+ /* the page ships a static newsletter below #pc. Every variation renders its own,
+    reusing the same ids — so the original must be hidden or there are two, and the
+    handler binds to whichever comes first in the document. */
+ if(!_origNL)_origNL=document.getElementById('sf-nl-section');
+ if(_origNL&&_origNL.parentNode)_origNL.parentNode.removeChild(_origNL);   /* detach so the ids stay unique */
+ pc.innerHTML=V[n].f();
+ document.querySelectorAll('.cx-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
+ var l=document.getElementById('cx-lab'); if(l)l.textContent=V[n].t;
+ window.scrollTo(0,0);
+}
+function mount(){ render(0); }
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(mount,260);});
+else setTimeout(mount,260);
+})();
+</script>
+<style>
+.cx-sw{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:900;display:flex;flex-direction:column;
+ align-items:center;gap:7px;background:rgba(237,232,224,0.95);backdrop-filter:blur(10px);
+ border:0.5px solid rgba(10,10,10,0.14);padding:9px 12px;max-width:calc(100vw - 26px);}
+#cx-lab{font-family:'DM Sans',sans-serif;font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:#8a6e3a;}
+.cx-b{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:min(760px,calc(100vw - 44px));}
+.cx-sw b{font-family:'DM Sans',sans-serif;font-weight:400;font-size:0.55rem;letter-spacing:0.06em;cursor:pointer;
+ padding:5px 6px;min-width:25px;text-align:center;color:rgba(10,10,10,0.4);border:0.5px solid transparent;transition:.2s;}
+.cx-sw b:hover{color:rgba(10,10,10,0.85);border-color:rgba(10,10,10,0.15);}
+.cx-sw b.on{color:#0a0a0a;border-color:#8a6e3a;}
+.cx-dl:hover{color:#c8a96e !important;}
+.cx-hv:hover .cx-hva{opacity:1 !important;transform:translateX(0) !important;}
+.cx-cta:hover{border-color:rgba(200,169,110,0.85) !important;color:#c8a96e !important;}
+.cx-nlb:hover{opacity:0.82;}
+.cx-rv:hover .cx-i,.cx-acc:hover .cx-i{color:#c8a96e;}
+.cx-sw b.z{color:#8a6e3a;border-color:rgba(138,110,58,0.35);min-width:34px;}
+@media(max-width:768px){.cx-sw{bottom:10px;padding:7px 9px;}.cx-sw b{min-width:22px;padding:4px 5px;font-size:0.5rem;}}
+</style>
+
 </body>
 </html>
