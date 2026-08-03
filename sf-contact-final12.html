@@ -2584,86 +2584,9 @@ var P20=[
 ];
 
 var _P0=function(){return RPAGE({top:1,dl:{rows:'plain',a:'a'}});};   /* Option 1, untouched */
-V=[{t:'Version 0 — the live page',note:'sf-contact.html exactly as it ships.',f:function(){return PPAGE(P20[0][2]);}}];
-/* ════════════════════════════════════════════════════════════════════
-   TOP SECTION — ten ways to stop saying it three times.
-   Below the opening nothing changes: form, deck, newsletter, footer.
-   ════════════════════════════════════════════════════════════════════ */
-var LEAD2='We partner with brand owners, manufacturers, operators and investors to build premium products and ventures.';
-
-/* the four, as rows. no label above them unless a version chooses one. */
-function TROW(p,o){o=o||{};
- var nm='<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||T_XS)+';letter-spacing:0.14em;'+
-  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>';
- var sen=BODY(p.b,o.bmw||'52ch',I45,o.bsz||'0.78rem');
- if(o.split) return '<div style="display:grid;grid-template-columns:'+(o.cols||'0.7fr 1.3fr')+
-   ';gap:clamp(20px,3vw,44px);align-items:baseline;"><div>'+nm+'</div><div>'+sen+'</div></div>';
- if(o.num!==undefined) return '<div style="display:grid;grid-template-columns:40px 1fr;gap:18px;align-items:baseline;">'+
-   NUM(('0'+(o.num+1)).slice(-2))+'<div>'+nm+g(9)+sen+'</div></div>';
- return nm+g(o.ng||9)+sen;}
-
-function TROWS(o){o=o||{};
- var div=o.div==='none'?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';
- return '<div style="margin-top:'+(o.mt||24)+'px;">'+P.map(function(p,i){
-  var oo={}; for(var k in o)oo[k]=o[k]; if(o.numbered)oo.num=i;
-  return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+(o.dc||R06)+';':'')+
-   (i===P.length-1&&o.lastDiv===false?'':div)+'padding:'+(o.rp||22)+'px 0;">'+TROW(p,oo)+'</div>';}).join('')+'</div>';}
-
-function TOPX(k,o){o=o||{};
- var ey=EY(), ti=TT(o.tsz,o.tls), pa=BODY(LEAD2,o.mw||'50ch');
- switch(k){
- /* 1 · drop the eyebrow. two levels instead of three. */
- case 1: return ti+g(28)+pa+g(34)+HR()+TROWS({rp:22,mt:26});
- /* 2 · keep the eyebrow, lose the third label. the four speak for themselves. */
- case 2: return ey+ti+g(26)+pa+g(32)+HR()+TROWS({rp:22,mt:28});
- /* 3 · the only label sits low, above the four — nothing at the top. */
- case 3: return ti+g(26)+pa+g(38)+HR()+g(26)+
-   '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
-   'text-transform:uppercase;color:'+LAB+';">'+X.ey+'</span>'+TROWS({rp:22,mt:22});
- /* 4 · eyebrow and title on one baseline — two lines become one band. */
- case 4: return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;">'+
-   ti+'<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
-   'text-transform:uppercase;color:'+LAB+';">'+X.ey+'</span></div>'+g(28)+pa+g(34)+HR()+TROWS({rp:22,mt:26});
- /* 5 · the title is the only voice. nothing labels anything. */
- case 5: return TT(T_M,'0.18em')+g(30)+BODY(LEAD2,'46ch')+g(40)+HR()+TROWS({rp:24,mt:28,split:true});
- /* 6 · no labels — the four are numbered instead. */
- case 6: return ti+g(26)+pa+g(36)+HR()+TROWS({rp:24,mt:26,numbered:true});
- /* 7 · title left, the sentence right. the four run full width beneath. */
- case 7: return G12(CL(1,6,ey+ti)+CL(7,13,BODY(LEAD2,'40ch')))+g(38)+HR()+TROWS({rp:22,mt:26,split:true,cols:'0.6fr 1.4fr'});
- /* 8 · the mark stands in for the eyebrow. */
- case 8: return SYM('0.85rem')+g(20)+ti+g(26)+pa+g(34)+HR()+TROWS({rp:22,mt:26});
- /* 9 · the sentence and the four are one continuous list — no rule between them. */
- case 9: return ey+ti+g(26)+BODY(LEAD2,'50ch')+TROWS({rp:24,mt:34,topRule:true,div:'',lastDiv:false});
- /* 10 · one label, generous rhythm, the four given room. */
- default:return ey+g(4)+ti+g(30)+BODY(LEAD2,'52ch')+g(44)+HR('75%')+TROWS({rp:26,mt:32,split:true,dc:'rgba(10,10,10,0.05)'});}}
-
-/* the page below the opening is untouched — identical to what ships now */
-function TPAGE(k,c){c=c||{};
- return sec('<div style="max-width:900px;">'+TOPX(k,c)+'</div>',
-        'clamp(160px,21vh,205px) '+PADX+' clamp(26px,3.4vh,34px)')
-      + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
-        '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
-        FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
-        'clamp(26px,3.4vh,34px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
-      + sec('<div style="max-width:900px;">'+DECK({})+'</div>',
-        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
-      + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
-
-var T10=[
- ['No eyebrow','GET IN TOUCH removed. Title, sentence, the four. Two levels of hierarchy instead of three.'],
- ['Label at the top only','The eyebrow stays, the third heading goes. The four introduce themselves.'],
- ['Label moved down','Nothing labels the top. The single label sits low, immediately above the four.'],
- ['Eyebrow on the title line','GET IN TOUCH held at the right edge, level with the title. Two lines collapse into one band.'],
- ['Title alone','No eyebrow, no heading. A larger title, one sentence, the four split into two columns.'],
- ['Numbered','No labels anywhere. 01–04 carry the four instead.'],
- ['Title left, sentence right','The opening splits across the twelve-column grid; the four run full width beneath.'],
- ['The mark instead','◎ stands where the eyebrow was — a mark rather than a word.'],
- ['One continuous list','No rule between the sentence and the four. They read as one editorial run.'],
- ['The considered one','One label, a three-quarter rule, and the four given real room in two columns.']
-];
-V=[V[0]].concat(T10.map(function(c,i){return {t:(i+1)+' · '+c[0],note:c[1],
- f:(function(n){return function(){return TPAGE(n,{});};})(i+1)};}));
-
+V=[{t:'Version 0 — Option 1',note:'The current direction, exactly as it stands.',f:_P0}]
+ .concat(P20.map(function(c,i){return {t:(i+1)+' · '+c[0],note:c[1],
+   f:(function(cfg){return function(){return PPAGE(cfg);};})(c[2])};}));
 
 
 /* ════════════════════════════════════════════════════════════════════
