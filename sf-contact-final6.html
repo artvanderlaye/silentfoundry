@@ -2550,127 +2550,6 @@ V=[{t:'Version 0 — Option 1',note:'The current direction, exactly as it stands
  .concat(P20.map(function(c,i){return {t:(i+1)+' · '+c[0],note:c[1],
    f:(function(cfg){return function(){return PPAGE(cfg);};})(c[2])};}));
 
-
-/* ════════════════════════════════════════════════════════════════════
-   21–40 · downloads BELOW the contact box, and twenty different dropdowns.
-   ════════════════════════════════════════════════════════════════════ */
-function dlab(p,l,c){return '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;'+
- 'font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:'+(c||LAB)+';text-decoration:none;'+
- 'white-space:nowrap;transition:color .25s,letter-spacing .25s;">'+(l||'Download ↓')+'</a>';}
-function dnm(p,sz,c){return '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(sz||T_XS)+
- ';letter-spacing:0.14em;text-transform:uppercase;color:'+(c||I82)+';">'+p.t+'</span>';}
-function dsub(p,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
- 'text-transform:uppercase;font-weight:300;color:'+(c||I3)+';">'+p.s+'</span>';}
-function dgl(p,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.8rem;color:'+(c||LAB)+';">'+p.i+'</span>';}
-
-function DROP(k,o){o=o||{};
- var R=function(inner,st){return '<div style="'+(st||'')+'">'+inner+'</div>';};
- var line=function(i,last){return (o.div===false||last&&o.lastDiv===false)?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';};
- switch(k){
- case 1: return P.map(function(p,i){return R(dnm(p)+'<span style="float:right;">'+dlab(p)+'</span>',
-   line(i)+'padding:20px 0;overflow:hidden;');}).join('');
- case 2: return P.map(function(p,i){return R('<div style="display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:baseline;">'+
-   NUM(('0'+(i+1)).slice(-2))+dnm(p)+dlab(p,'↓')+'</div>',line(i)+'padding:22px 0;');}).join('');
- case 3: return P.map(function(p,i){return R('<div style="display:flex;align-items:baseline;gap:18px;">'+dgl(p)+
-   '<div style="flex:1;">'+dnm(p)+'</div>'+dlab(p)+'</div>',line(i)+'padding:20px 0;');}).join('');
- case 4: return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:'+R08+
-   ';border:1px solid '+R08+';">'+P.map(function(p){return R(dnm(p)+g(9)+dsub(p)+g(16)+dlab(p),
-   'background:'+CRM2+';padding:24px 22px 26px;');}).join('')+'</div>';
- case 5: return P.map(function(p,i){return R('<span style="font-family:\'DM Sans\',sans-serif;font-size:0.44rem;'+
-   'letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.38);display:block;margin-bottom:4px;">'+p.s+'</span>'+
-   dnm(p)+g(12)+HR('26px','rgba(138,110,58,0.5)')+g(12)+dlab(p,'Download'),line(i)+'padding:22px 0;');}).join('');
- case 6: return P.map(function(p,i){return R('<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
-   dnm(p)+dlab(p)+'</div>',line(i)+'padding:20px 0 20px '+(i*26)+'px;');}).join('');
- case 7: return P.map(function(p,i){return '<div class="cx-acc" style="'+line(i)+'">'+
-   '<div onclick="cxT(this)" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;cursor:pointer;padding:20px 0;">'+
-   dnm(p)+'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.58rem;color:'+I3+
-   ';transition:transform .35s,color .25s;">+</span></div>'+
-   '<div class="cx-p" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s;">'+
-   BODY(one(p.b),'46ch',I45,'0.76rem')+g(12)+dlab(p)+g(20)+'</div></div>';}).join('');
- case 8: return '<div style="display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,64px);padding:6px 0 4px;">'+
-   P.map(function(p){return R(dnm(p,'clamp(0.9rem,1.2vw,1.3rem)')+g(6)+dsub(p)+g(14)+dlab(p,'↓'));}).join('')+'</div>';
- case 9: return '<div style="text-align:center;">'+P.map(function(p,i){return R(dnm(p)+g(9)+dsub(p)+g(14)+dlab(p),
-   line(i)+'padding:26px 0;');}).join('')+'</div>';
- case 10:return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;">'+
-   P.map(function(p,i){return R(dnm(p)+g(10)+dsub(p)+g(16)+dlab(p,'↓'),
-   'padding:4px clamp(16px,2.2vw,28px);'+(i?'border-left:0.5px solid '+R08+';':'padding-left:0;'));}).join('')+'</div>';
- case 11:return '<div style="text-align:right;">'+P.map(function(p,i){return R(dnm(p)+g(9)+dlab(p),
-   line(i)+'padding:20px 0;');}).join('')+'</div>';
- case 12:return P.map(function(p,i){return R('<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;">'+
-   dnm(p,T_S)+dlab(p,'PDF ↓')+'</div>',line(i)+'padding:30px 0;');}).join('');
- case 13:return P.map(function(p,i){return '<div class="cx-hv" style="'+line(i)+'display:flex;justify-content:space-between;'+
-   'align-items:baseline;gap:20px;padding:20px 0;">'+dnm(p)+
-   '<span class="cx-hva" style="opacity:0.35;transform:translateX(-6px);transition:opacity .3s,transform .3s;">'+dlab(p)+'</span></div>';}).join('');
- case 14:return P.map(function(p,i){return R('<div style="display:flex;align-items:baseline;gap:16px;">'+
-   '<div style="width:18px;height:1.5px;background:#8a6e3a;flex-shrink:0;transform:translateY(-4px);"></div>'+
-   '<div style="flex:1;">'+dnm(p)+'</div>'+dlab(p)+'</div>',line(i)+'padding:20px 0;');}).join('');
- case 15:return P.map(function(p,i){return R('<div class="cx-sp" style="display:grid;grid-template-columns:0.8fr 1.2fr;'+
-   'gap:clamp(20px,3vw,40px);align-items:start;"><div>'+dnm(p)+'</div><div>'+
-   BODY(one(p.b),'42ch',I45,'0.76rem')+g(12)+dlab(p)+'</div></div>',line(i)+'padding:24px 0;');}).join('');
- case 16:return '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(14px,2vw,22px);">'+
-   P.map(function(p){return R(dgl(p)+g(14)+dnm(p)+g(9)+dsub(p)+g(18)+dlab(p),
-   'background:'+SOFT+';padding:24px 22px 26px;');}).join('')+'</div>';
- case 17:return P.map(function(p,i){return '<a href="'+p.f+'" download class="cx-dl" style="display:block;text-decoration:none;'+
-   line(i)+'padding:22px 0;">'+dnm(p)+'</a>';}).join('');
- case 18:return P.map(function(p,i){return R(NUM(('0'+(i+1)).slice(-2))+g(10)+dnm(p)+
-   '<div style="padding-left:clamp(0px,4vw,54px);margin-top:12px;">'+BODY(one(p.b),'44ch',I45,'0.76rem')+g(12)+dlab(p)+'</div>',
-   line(i)+'padding:22px 0;');}).join('');
- case 19:return '<div style="background:'+DK+';padding:clamp(24px,4vw,38px);">'+P.map(function(p,i){
-   return R('<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
-   dnm(p,null,'rgba(244,241,236,0.85)')+dlab(p,'Download ↓',GOLD)+'</div>',
-   (i<P.length-1?'border-bottom:0.5px solid rgba(244,241,236,0.12);':'')+'padding:20px 0;');}).join('')+'</div>';
- default:return P.map(function(p,i){return R(dnm(p)+g(8)+dsub(p),
-   (i<P.length-1?'':'')+'padding:14px 0;');}).join('')+g(20)+HR('100%',R06)+g(18)+
-   '<div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,36px);">'+P.map(function(p){
-   return dlab(p,p.t.split(' ')[0]+' ↓');}).join('')+'</div>';}}
-
-function QPAGE(c){
- var o=c.o||{};
- var trig='<div onclick="cxReveal(this)" class="cx-rv" style="cursor:pointer;'+
-  (o.wide?'display:flex;justify-content:space-between;align-items:center;':'display:inline-flex;align-items:center;gap:14px;')+
-  (o.rule?'border-top:0.5px solid '+R08+';':'')+'padding:'+(o.tp||6)+'px 0;">'+
-  '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
-  'text-transform:uppercase;color:'+LAB+';">'+X.dl+'</span>'+
-  (o.mark===false?'':'<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:0.62rem;color:'+I3+
-  ';line-height:1;transition:transform .35s,color .25s;">'+(o.glyph||'+')+'</span>')+'</div>';
- var panel='<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height '+(o.dur||'.55s')+
-  ' cubic-bezier(0.22,0.61,0.36,1),opacity '+(o.odur||'.35s')+';"><div style="margin-top:'+(o.mt||22)+'px;">'+
-  DROP(c.k,o)+'</div></div>';
- return sec('<div style="max-width:900px;">'+EY()+TT()+g(26)+BODY(LEAD,c.mw||'54ch')+g(32)+HR(c.rw||'100%')+'</div>',
-        'clamp(160px,21vh,205px) '+PADX+' clamp(56px,7.5vh,90px)')
-      + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
-        '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
-        FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
-        'clamp(52px,7vh,84px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
-      + sec('<div style="max-width:900px;">'+trig+panel+'</div>',
-        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
-      + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
-
-var Q20=[
- ['Name and link','The simplest row: the name left, the action floated right.',{k:1}],
- ['Numbered','01–04 in a fixed column, the action as a bare arrow.',{k:2}],
- ['Glyph led','Each row opens with its own mark — ⌀ ∠ ⊥ ±, as on the path cards.',{k:3}],
- ['Four cards','A four-up card grid on the 1px hairline, as the DNA modules are built.',{k:4}],
- ['Catalogue entry','The audience line set above the name, over a short gold rule.',{k:5}],
- ['Staggered','Each row indents further than the last.',{k:6}],
- ['Nested accordion','Each row opens again — the name first, the sentence only if asked for.',{k:7}],
- ['Flat band','All four across the screen at once, as the board of directors sits.',{k:8}],
- ['Centred','The whole set centred on the measure, generously spaced.',{k:9}],
- ['Ruled columns','Vertical hairlines between four columns — a single ruled table.',{k:10}],
- ['Right aligned','The set pushed to the right edge of the measure.',{k:11}],
- ['Large names','The names at the section scale, rows twice as tall.',{k:12,mt:26}],
- ['Action on hover','The download sits faint until the row is hovered, then slides in.',{k:13}],
- ['Gold bar rows','The 22px team-card bar leading each row.',{k:14}],
- ['Split rows','Name left, one sentence and the action right, over the DNA split.',{k:15}],
- ['Tonal cards','Four cards on the soft ground used for OPPORTUNITIES.',{k:16}],
- ['The row is the link','No separate action — the entire row is the download.',{k:17}],
- ['Numbered and indented','Numbered, with the sentence and action indented beneath.',{k:18}],
- ['Dark panel','The panel opens dark, closing the page’s cream before the newsletter.',{k:19,mt:26}],
- ['Index then actions','The four listed quietly, then the four actions gathered on one line beneath a rule.',{k:20}]
-];
-V=V.concat(Q20.map(function(c,i){return {t:(i+21)+' · '+c[0],note:c[1],
- f:(function(cfg){return function(){return QPAGE({k:cfg.k,o:cfg,mw:cfg.mw,rw:cfg.rw});};})(c[2])};}));
-
 /* interactions */
 window.cxT=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx-i');
  var open=p.style.maxHeight&&p.style.maxHeight!=='0px';
@@ -2727,7 +2606,6 @@ else setTimeout(mount,260);
 .cx-sw b:hover{color:rgba(10,10,10,0.85);border-color:rgba(10,10,10,0.15);}
 .cx-sw b.on{color:#0a0a0a;border-color:#8a6e3a;}
 .cx-dl:hover{color:#c8a96e !important;}
-.cx-hv:hover .cx-hva{opacity:1 !important;transform:translateX(0) !important;}
 .cx-cta:hover{border-color:rgba(200,169,110,0.85) !important;color:#c8a96e !important;}
 .cx-nlb:hover{opacity:0.82;}
 .cx-rv:hover .cx-i,.cx-acc:hover .cx-i{color:#c8a96e;}
