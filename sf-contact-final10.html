@@ -2457,7 +2457,7 @@ function OPEN2(o){o=o||{};
  if(o.rulePos==='before') body=head+g(G[0])+rule+g(G[1])+para+g(G[2]);
  if(o.rulePos==='both')   body=head+g(G[0])+rule+g(G[1])+para+g(G[1])+rule+g(G[2]);
  if(o.rulePos==='none')   body=head+g(G[0])+para+g(G[2]);
- return body+WHO(o.dl||{});}
+ return body+DISC3(o.dl||{});}
 
 /* ── the expanded state, cut to the minimum ── */
 function ROW(p,o){o=o||{};
@@ -2493,53 +2493,15 @@ function DISC3(o){o=o||{};
   '<div class="cx-rvp" style="overflow:hidden;max-height:0;opacity:0;transition:max-height '+(o.dur||'.55s')+
   ' cubic-bezier(0.22,0.61,0.36,1),opacity '+(o.odur||'.35s')+';"><div style="margin-top:'+(o.mt||20)+'px;">'+rows+'</div></div>';}
 
-/* ── the four, always open: WHO'S CONTACTING US ── */
-var WHOLB="Who's Contacting Us";
-function WROW(p,o){o=o||{};
- var nm='<span style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.nsz||T_XS)+';letter-spacing:0.14em;'+
-  'text-transform:uppercase;color:'+I82+';">'+p.t+'</span>';
- var meta='<span style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;letter-spacing:0.22em;'+
-  'text-transform:uppercase;font-weight:300;color:'+I3+';">'+p.s+'</span>';
- switch(o.a){
- case 'a': return nm+g(10)+BODY(one(p.b),o.bmw||'46ch',I45,'0.78rem');
- case 'b': return nm+g(9)+meta;
- case 'c': return '<div style="display:grid;grid-template-columns:0.8fr 1.2fr;gap:clamp(20px,3vw,40px);align-items:baseline;">'+
-   '<div>'+nm+'</div><div>'+BODY(one(p.b),o.bmw||'42ch',I45,'0.78rem')+'</div></div>';
- default:  return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;">'+nm+meta+'</div>';}}
-
-function WHO(o){o=o||{};
- var div=o.div==='none'?'':'border-bottom:0.5px solid '+(o.dc||R06)+';';
- return '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
-  'text-transform:uppercase;color:'+LAB+';">'+WHOLB+'</span>'+
-  '<div style="margin-top:'+(o.mt||22)+'px;">'+P.map(function(p,i){
-   return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+(o.dc||R06)+';':'')+div+
-   'padding:'+(o.rp||20)+'px 0;'+(o.ind?'padding-left:'+o.ind+'px;':'')+'">'+WROW(p,o)+'</div>';}).join('')+'</div>';}
-
-/* ── one deck, below the form ── */
-var DECKF='/decks/silent-foundry-partner-deck.pdf';
-function DECK(o){o=o||{};
- return '<div style="display:flex;align-items:center;gap:12px;">'+
-  '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.72rem;color:rgba(200,169,110,0.85);line-height:1;">◎</span>'+
-  '<span style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
-  'text-transform:uppercase;color:'+LAB+';">'+X.dl+'</span></div>'+
-  g(o.g||16)+
-  '<a href="'+DECKF+'" download class="cx-dl" style="font-family:\'Bebas Neue\',sans-serif;font-size:'+(o.sz||T_XS)+
-  ';letter-spacing:0.14em;text-transform:uppercase;color:'+I82+';text-decoration:none;display:inline-flex;'+
-  'align-items:baseline;gap:14px;transition:color .25s;">Download The Deck'+
-  '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.7rem;color:'+LAB+';">↓</span></a>';}
-
-/* Option 1, rebuilt: intro · who's contacting us · form · the deck · newsletter */
 function PPAGE(c){
- var o=c.dl||{};
  return sec('<div style="max-width:'+(c.mw2||'900px')+';">'+OPEN2(c)+'</div>',
         (c.pt||'clamp(160px,21vh,205px)')+' '+PADX+' '+(c.pb||'clamp(60px,8vh,96px)'))
       + sec('<div style="max-width:660px;">'+eb(X.msg,LAB)+g(18)+
         '<div style="border-top:0.5px solid '+R12+';padding-top:30px;">'+
         FORM2({btn:'outline',gap:18,ta:'140px'})+'</div></div>',
         'clamp(52px,7vh,84px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})
-      + sec('<div style="max-width:'+(c.mw2||'900px')+';">'+DECK(o)+'</div>',
-        'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
       + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
+
 var P20=[
  ['Baseline, tightened','Option 1 with the heading gone. Rule at full measure, rows open to one sentence.',
   {g:[26,32,28],mw:'54ch',dl:{a:'a'}}],
@@ -2706,6 +2668,8 @@ var Q20=[
  ['Dark panel','The panel opens dark, closing the page’s cream before the newsletter.',{k:19,mt:26}],
  ['Index then actions','The four listed quietly, then the four actions gathered on one line beneath a rule.',{k:20}]
 ];
+V=V.concat(Q20.map(function(c,i){return {t:(i+21)+' · '+c[0],note:c[1],
+ f:(function(cfg){return function(){return QPAGE({k:cfg.k,o:cfg,mw:cfg.mw,rw:cfg.rw});};})(c[2])};}));
 
 /* interactions */
 window.cxT=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx-i');
