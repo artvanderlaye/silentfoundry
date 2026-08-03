@@ -2030,12 +2030,16 @@ window.cxReveal=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx
  p.style.maxHeight=open?'0px':p.scrollHeight+'px';p.style.opacity=open?'0':'1';
  if(i)i.style.transform=open?'':'rotate(45deg)';};
 
+var _origNL=null;
 function render(n){
  var pc=document.getElementById('pc');
- var nl=document.getElementById('sf-nl-section');
- if(nl&&nl.parentNode!==document.body){document.body.insertBefore(nl,document.querySelector('footer'));}
+ /* the page ships a static newsletter below #pc. Every variation renders its own,
+    reusing the same ids — so the original must be hidden or there are two, and the
+    handler binds to whichever comes first in the document. */
+ if(!_origNL)_origNL=document.getElementById('sf-nl-section');
+ if(_origNL&&_origNL.parentNode)_origNL.parentNode.removeChild(_origNL);   /* detach so the ids stay unique */
  pc.innerHTML=V[n].f();
- if(n===0){if(nl)nl.style.display='';}else{placeNL();}
+ if(n===0&&_origNL)document.body.insertBefore(_origNL,document.querySelector('footer'));
  document.querySelectorAll('.cx-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
  var l=document.getElementById('cx-lab'); if(l)l.textContent=V[n].t;
  window.scrollTo(0,0);
