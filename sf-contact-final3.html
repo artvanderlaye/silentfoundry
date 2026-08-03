@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact · Silent Foundry</title>
+<title>Contact — J, ten disclosures · Silent Foundry</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -2235,7 +2235,21 @@ function JPAGE(dj,o){o=o||{};
         'clamp(52px,7vh,84px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})
       + NLFIN('left',{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'});}
 
-V=[{t:'Contact',note:'J2 — the word and the mark',f:function(){return JPAGE('tight',{});}}];
+var JV=[
+ ['J1 · eyebrow on a rule','A hairline, the word DOWNLOADS, and a + at the far right. Nothing else.',['rule',{}]],
+ ['J2 · the word and the mark','No rule at all. The eyebrow and the + sit together, small, left. The quietest of the ten.',['tight',{}]],
+ ['J3 · the count','Bracketed by two hairlines. FOUR is the only clue that anything is behind it.',['count',{}]],
+ ['J4 · the word alone','No mark whatsoever. DOWNLOADS underlines on hover, and opens.',['word',{}]],
+ ['J5 · chevron','The same rule, but a small ⌄ in place of the +. Reads as a menu rather than an accordion.',['chev',{}]],
+ ['J6 · centred','The eyebrow centred on the measure with a rule running out to both edges.',['centre',{}]],
+ ['J7 · gold underline','The eyebrow over a short gold rule — the site’s own accent doing the work.',['gold',{}]],
+ ['J8 · one short line','The sentence cut to its bone: “One for each kind of partner.”',['line',{}]],
+ ['J9 · the four, greyed','The four names sit faint beneath the eyebrow, so the set is legible before it opens.',['names',{}]],
+ ['J10 · architectural','Eyebrow left, hairline running the full measure, mark right. The most considered.',['nav',{}]]
+];
+V=[{n:0,t:'Version 0 — the live page',note:'sf-contact.html exactly as it ships.',f:V0}]
+ .concat(JV.map(function(c){return {t:c[0],note:c[1],
+   f:(function(a){return function(){return JPAGE(a[0],a[1]);};})(c[2])};}));
 
 /* interactions */
 window.cxT=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx-i');
@@ -2262,11 +2276,23 @@ function render(n){
  if(!_origNL)_origNL=document.getElementById('sf-nl-section');
  if(_origNL&&_origNL.parentNode)_origNL.parentNode.removeChild(_origNL);   /* detach so the ids stay unique */
  pc.innerHTML=V[n].f();
+ if(n===0&&_origNL)document.body.insertBefore(_origNL,document.querySelector('footer'));
  document.querySelectorAll('.cx-sw b').forEach(function(b,i){b.classList.toggle('on',i===n);});
  var l=document.getElementById('cx-lab'); if(l)l.textContent=V[n].t;
  window.scrollTo(0,0);
 }
-function mount(){ render(0); }
+function mount(){
+ var s=document.createElement('div');s.className='cx-sw';
+ s.innerHTML='<span id="cx-lab"></span><div class="cx-b">'+V.map(function(v,i){
+  return '<b data-n="'+i+'" title="'+v.t+' — '+v.note+'"'+(i===0?' class="z"':'')+'>'+(''+i)+'</b>';}).join('')+'</div>';
+ document.body.appendChild(s);
+ s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
+  if(n!==null&&n!==undefined)render(+n);});
+ document.addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
+  var cur=[].indexOf.call(s.querySelectorAll('b'),s.querySelector('b.on'));
+  var n=cur+(e.key==='ArrowRight'?1:-1); if(n<0)n=V.length-1; if(n>V.length-1)n=0; render(n);});
+ render(1);
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(mount,260);});
 else setTimeout(mount,260);
 })();
