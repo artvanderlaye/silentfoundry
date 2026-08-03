@@ -2244,82 +2244,6 @@ V=[{n:0,t:'Version 0 — the live page',note:'sf-contact.html exactly as it ship
  .concat(FINAL.map(function(c,i){return {n:i+1,t:c[0],note:c[1],
    f:(function(cfg){return function(){return FIN(cfg);};})(c[2])};}));
 
-
-/* ═══ THE FOUR PATHS, FLAT ACROSS THE SCREEN ═══
-   Same treatment as BOARD OF DIRECTORS on sf-team.html:
-   gold eyebrow · one horizontal band · Bebas name · gold sub-label · hairline underneath. */
-var BD_N='clamp(0.9rem,1.2vw,1.3rem)';           /* board name  */
-var BD_R='0.52rem', BD_RL='0.22em';               /* board role  */
-
-function plus(sz){return '<span class="cx-i" style="font-family:\'DM Sans\',sans-serif;font-size:'+(sz||'0.62rem')+
- ';color:'+I3+';line-height:1;transition:transform .35s,color .25s;">+</span>';}
-
-function nm(t,c){return '<div style="font-family:\'Bebas Neue\',sans-serif;font-size:'+BD_N+';letter-spacing:0.14em;'+
- 'text-transform:uppercase;color:'+(c||I75)+';margin-bottom:3px;transition:color .3s;">'+t+'</div>';}
-function rl(t,c){return '<div style="font-family:\'DM Sans\',sans-serif;font-weight:300;font-size:'+BD_R+
- ';letter-spacing:'+BD_RL+';text-transform:uppercase;color:'+(c||LAB)+';transition:color .3s;">'+t+'</div>';}
-
-/* the drawer that opens underneath the flat band */
-function drawer(o){o=o||{};
- return '<div class="cx-dwrap" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .5s ease,opacity .35s;">'+
-  P.map(function(p,i){return '<div class="cx-dw" data-i="'+i+'" style="display:none;padding:'+(o.pad||'30px 0 34px')+';">'+
-   '<div style="display:grid;grid-template-columns:'+(o.cols||'1fr auto')+';gap:clamp(24px,4vw,64px);align-items:end;">'+
-   '<div>'+bd(p.b,I45,o.mw||'58ch','0.78rem')+'</div>'+
-   '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;font-size:0.52rem;'+
-   'letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;white-space:nowrap;'+
-   'border-bottom:0.5px solid rgba(138,110,58,0.4);padding-bottom:5px;transition:color .25s;">'+p.d+'</a>'+
-   '</div></div>';}).join('')+'</div>';}
-
-function FLAT(kind,o){o=o||{};
- var lab=o.nolab?'':eb(o.lab||X.dl,LAB,o.labGap||16);
- var band=o.band===false?'':'border-bottom:0.5px solid '+R08+';';
- var top=o.top?'border-top:0.5px solid '+R08+';':'';
- var vp=o.vp||28;
-
- /* one item, board proportions */
- function item(p,i,extra){
-  return '<div class="cx-it" data-i="'+i+'" onclick="cxFlat(this)" style="cursor:pointer;'+(extra||'')+'">'+
-   (o.num?'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:0.68rem;letter-spacing:0.14em;color:'+I25+
-     ';margin-bottom:10px;">'+('0'+(i+1)).slice(-2)+'</div>':'')+
-   (o.stack?nm(p.t)+rl(p.s)+'<div style="margin-top:12px;">'+plus()+'</div>'
-          :'<div style="display:flex;align-items:flex-start;gap:12px;"><div>'+nm(p.t)+rl(p.s)+'</div>'+plus()+'</div>')+
-   '</div>';}
-
- switch(kind){
- /* ── in place: a 4-up grid, each column opens beneath itself ── */
- case 'inplace': return lab+'<div style="'+top+band+'padding:'+vp+'px 0;">'+
-   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax('+(o.min||'190px')+',1fr));'+
-   'gap:'+(o.gap||'clamp(28px,4vw,56px)')+';align-items:start;">'+
-   P.map(function(p,i){return '<div class="cx-acc">'+
-    '<div onclick="cxT(this)" style="cursor:pointer;display:flex;align-items:flex-start;gap:12px;">'+
-    '<div style="flex:1;">'+nm(p.t)+rl(p.s)+'</div>'+plus()+'</div>'+
-    '<div class="cx-p" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .45s ease,opacity .3s;">'+
-    g(16)+bd(p.b,I45,'100%','0.72rem')+g(12)+
-    '<a href="'+p.f+'" download class="cx-dl" style="font-family:\'DM Sans\',sans-serif;font-size:0.5rem;'+
-    'letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';text-decoration:none;">'+p.d+'</a></div></div>';}).join('')+
-   '</div></div>';
-
- /* ── ruled: hairlines standing between the four columns ── */
- case 'ruled': return lab+'<div class="cx-flat" style="'+top+band+'padding:'+vp+'px 0;">'+
-   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax('+(o.min||'200px')+',1fr));gap:1px;background:'+R08+';">'+
-   P.map(function(p,i){return item(p,i,'background:'+(o.cbg||CRM)+';padding:'+(o.cp||'4px clamp(18px,2.4vw,30px)')+
-     ';'+(i===0?'padding-left:0;':''));}).join('')+'</div>'+drawer(o)+'</div>';
-
- /* ── 2 × 2, the flat band given more room ── */
- case 'quad': return lab+'<div class="cx-flat" style="'+top+band+'padding:'+vp+'px 0;">'+
-   '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:'+(o.gap||'clamp(30px,5vw,72px)')+
-   ' clamp(30px,5vw,72px);">'+P.map(function(p,i){return item(p,i);}).join('')+'</div>'+drawer(o)+'</div>';
-
- /* ── index: no label, the four simply sit across as a horizontal contents line ── */
- case 'index': return '<div class="cx-flat" style="border-top:0.5px solid '+R08+';border-bottom:0.5px solid '+R08+
-   ';padding:'+vp+'px 0;"><div style="display:flex;flex-wrap:wrap;gap:'+(o.gap||'clamp(32px,5vw,72px)')+';">'+
-   P.map(function(p,i){return item(p,i);}).join('')+'</div>'+drawer(o)+'</div>';
-
- /* ── board: the sf-team treatment, verbatim proportions, drawer beneath ── */
- default: return lab+'<div class="cx-flat" style="'+top+band+'padding:'+vp+'px 0;">'+
-   '<div style="display:flex;flex-wrap:wrap;gap:'+(o.gap||'48px')+';">'+
-   P.map(function(p,i){return item(p,i);}).join('')+'</div>'+drawer(o)+'</div>';}}
-
 /* interactions */
 window.cxT=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx-i');
  var open=p.style.maxHeight&&p.style.maxHeight!=='0px';
@@ -2332,91 +2256,7 @@ window.cxReveal=function(el){var p=el.nextElementSibling,i=el.querySelector('.cx
  p.style.maxHeight=open?'0px':p.scrollHeight+'px';p.style.opacity=open?'0':'1';
  if(i)i.style.transform=open?'':'rotate(45deg)';};
 
-/* the flat band's drawer: one panel underneath, its contents swapped by whichever is chosen */
-window.cxFlat=function(el){
- var box=el.closest('.cx-flat'), wrap=box.querySelector('.cx-dwrap'), i=el.getAttribute('data-i');
- var was=el.classList.contains('on');
- box.querySelectorAll('.cx-it').forEach(function(x){x.classList.remove('on');
-  var n=x.querySelector('div[style*="Bebas"]'), r=x.querySelector('div[style*="0.22em"]'), p=x.querySelector('.cx-i');
-  if(n)n.style.color=''; if(r)r.style.color=''; if(p){p.style.transform='';p.style.color='';}});
- wrap.querySelectorAll('.cx-dw').forEach(function(x){x.style.display='none';});
- if(was){wrap.style.maxHeight='0px';wrap.style.opacity='0';return;}
- el.classList.add('on');
- var n=el.querySelector('div[style*="Bebas"]'), p=el.querySelector('.cx-i');
- if(n)n.style.color='rgba(10,10,10,0.95)'; if(p){p.style.transform='rotate(45deg)';p.style.color=GOLD;}
- var pan=wrap.querySelector('.cx-dw[data-i="'+i+'"]'); if(pan)pan.style.display='block';
- wrap.style.maxHeight=wrap.scrollHeight+'px'; wrap.style.opacity='1';};
-
 var _origNL=null;
-
-function FLATPAGE(c){
- var MW=c.mw||'900px', b=[];
- b.push(sec('<div style="max-width:'+(c.imw||MW)+';">'+INTRO(c.intro||{})+'</div>',
-   (c.top||'clamp(160px,21vh,205px)')+' '+PADX+' '+(c.g1||'clamp(52px,7vh,84px)')));
- b.push(sec('<div style="max-width:'+(c.fmw||'640px')+';'+(c.fcentre?'margin:0 auto;':'')+'">'+
-   eb(X.msg,LAB)+g(18)+'<div style="border-top:0.5px solid '+R12+';padding-top:'+(c.rgap||28)+'px;">'+
-   FORM2({btn:'outline',gap:c.fgap,ta:c.ta})+'</div></div>',
-   (c.g1||'clamp(52px,7vh,84px)')+' '+PADX+' '+(c.g2||'clamp(52px,7vh,84px)'),{bt:1}));
- b.push(sec('<div style="max-width:'+(c.dmw||'100%')+';">'+FLAT(c.fl,c.flo)+'</div>',
-   (c.g2||'clamp(52px,7vh,84px)')+' '+PADX+' '+(c.g3||'clamp(56px,8vh,92px)'),{bt:c.dbt===false?0:1}));
- b.push(NLFIN(c.nl,c.nlo||{}));
- return b.join('');}
-
-var FLATV=[
- ['K · board, verbatim','The sf-team board treatment exactly — gold label, one flex row, 48px gaps, hairline under. The deck opens as a drawer beneath the whole band.',
-  {fl:'board',nl:'left'}],
- ['L · board, dark close','Same flat band, but the newsletter closes the page dark, as on Version 58.',
-  {fl:'board',nl:'left',nlo:{dark:true}}],
- ['M · four columns, in place','A true 4-up grid. Each column opens beneath itself rather than into a shared drawer.',
-  {fl:'inplace',nl:'left',flo:{gap:'clamp(28px,4vw,56px)'}}],
- ['N · numbered band','The board row with 01–04 set above each name — the four read as an index.',
-  {fl:'board',nl:'centre',flo:{num:true,gap:'clamp(40px,6vw,80px)',vp:32}}],
- ['O · ruled columns','Hairlines stand between the four columns, so the band reads as a single ruled table.',
-  {fl:'ruled',nl:'left',nlo:{dark:true}}],
- ['P · stacked plus','Board proportions with the + dropped onto its own line beneath each sub-label. Quieter.',
-  {fl:'board',nl:'row',flo:{stack:true,gap:'clamp(44px,7vw,96px)',vp:32}}],
- ['Q · two by two','The four break into a 2 × 2 field — flat, but with far more air around each.',
-  {fl:'quad',nl:'centre',flo:{vp:34},g2:'clamp(72px,10vh,120px)',g3:'clamp(72px,10vh,120px)'}],
- ['R · horizontal index','No label at all. The four sit between two rules as a horizontal contents line.',
-  {fl:'index',nl:'left',flo:{vp:30},mw:'980px',fmw:'660px'}],
- ['S · bracketed band','Ruled above and below, numbered, generous — the most architectural of the ten.',
-  {fl:'board',nl:'centre',flo:{top:true,num:true,vp:34,gap:'clamp(44px,6.5vw,88px)'},
-   g1:'clamp(80px,11vh,130px)',g2:'clamp(80px,11vh,130px)',g3:'clamp(80px,11vh,130px)',
-   nlo:{pad:'clamp(120px,17vh,200px) '+PADX,mw2:'560px'}}],
- ['T · production candidate','The most restrained resolution: board band verbatim, wide drawer, dark close into the footer.',
-  {fl:'board',nl:'left',flo:{gap:'clamp(40px,5.5vw,72px)',vp:30,pad:'32px 0 36px'},
-   fmw:'660px',rgap:30,fgap:18,ta:'140px',
-   nlo:{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'}}]
-];
-var FLATV=[
- ['K · board, verbatim','The sf-team board treatment exactly — gold label, one flex row, 48px gaps, hairline under. The deck opens as a drawer beneath the whole band.',
-  {fl:'board',nl:'left'}],
- ['L · board, dark close','Same flat band, but the newsletter closes the page dark, as on Version 58.',
-  {fl:'board',nl:'left',nlo:{dark:true}}],
- ['M · four columns, in place','A true 4-up grid. Each column opens beneath itself rather than into a shared drawer.',
-  {fl:'inplace',nl:'left',flo:{gap:'clamp(28px,4vw,56px)'}}],
- ['N · numbered band','The board row with 01–04 set above each name — the four read as an index.',
-  {fl:'board',nl:'centre',flo:{num:true,gap:'clamp(40px,6vw,80px)',vp:32}}],
- ['O · ruled columns','Hairlines stand between the four columns, so the band reads as a single ruled table.',
-  {fl:'ruled',nl:'left',nlo:{dark:true}}],
- ['P · stacked plus','Board proportions with the + dropped onto its own line beneath each sub-label. Quieter.',
-  {fl:'board',nl:'row',flo:{stack:true,gap:'clamp(44px,7vw,96px)',vp:32}}],
- ['Q · two by two','The four break into a 2 × 2 field — flat, but with far more air around each.',
-  {fl:'quad',nl:'centre',flo:{vp:34},g2:'clamp(72px,10vh,120px)',g3:'clamp(72px,10vh,120px)'}],
- ['R · horizontal index','No label at all. The four sit between two rules as a horizontal contents line.',
-  {fl:'index',nl:'left',flo:{vp:30},mw:'980px',fmw:'660px'}],
- ['S · bracketed band','Ruled above and below, numbered, generous — the most architectural of the ten.',
-  {fl:'board',nl:'centre',flo:{top:true,num:true,vp:34,gap:'clamp(44px,6.5vw,88px)'},
-   g1:'clamp(80px,11vh,130px)',g2:'clamp(80px,11vh,130px)',g3:'clamp(80px,11vh,130px)',
-   nlo:{pad:'clamp(120px,17vh,200px) '+PADX,mw2:'560px'}}],
- ['T · production candidate','The most restrained resolution: board band verbatim, wide drawer, dark close into the footer.',
-  {fl:'board',nl:'left',flo:{gap:'clamp(40px,5.5vw,72px)',vp:30,pad:'32px 0 36px'},
-   fmw:'660px',rgap:30,fgap:18,ta:'140px',
-   nlo:{dark:true,pad:'clamp(110px,15vh,180px) '+PADX,mw2:'620px'}}]
-];
-V=V.concat(FLATV.map(function(c){return {t:c[0],note:c[1],
-  f:(function(cfg){return function(){return FLATPAGE(cfg);};})(c[2])};}));
-
 function render(n){
  var pc=document.getElementById('pc');
  /* the page ships a static newsletter below #pc. Every variation renders its own,
@@ -2433,7 +2273,7 @@ function render(n){
 function mount(){
  var s=document.createElement('div');s.className='cx-sw';
  s.innerHTML='<span id="cx-lab"></span><div class="cx-b">'+V.map(function(v,i){
-  return '<b data-n="'+i+'" title="'+v.t+' — '+v.note+'"'+(i===0?' class="z"':'')+'>'+(i===0?'0':'ABCDEFGHIJKLMNOPQRST'.charAt(i-1))+'</b>';}).join('')+'</div>';
+  return '<b data-n="'+i+'" title="'+v.t+' — '+v.note+'"'+(i===0?' class="z"':'')+'>'+(i===0?'0':'ABCDEFGHIJ'.charAt(i-1))+'</b>';}).join('')+'</div>';
  document.body.appendChild(s);
  s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
   if(n!==null&&n!==undefined)render(+n);});
