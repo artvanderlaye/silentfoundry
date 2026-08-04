@@ -5646,126 +5646,132 @@ else setTimeout(build,1300);
 </script>
 
 <!-- SWITCH -->
-<script id="sf-sw-js-switch">(function(){
-var CY='rgba(0,180,216,0.85)', CY2='rgba(0,180,216,0.18)', GOLD='#c8a96e',
-    INK='rgba(10,10,10,0.8)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
-    RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var A='#su';
-function set(el,o){if(!el)return;for(var k in o){o[k]===null?el.style.removeProperty(k):el.style.setProperty(k,o[k],'important');}}
+<script id="sf-sw-js-switch">
+(function(){
+var CY='rgba(0,180,216,0.85)', CY4='rgba(0,180,216,0.4)', CY2='rgba(0,180,216,0.18)',
+    LAB='#8a6e3a', INK='rgba(10,10,10,0.8)', SUB='rgba(10,10,10,0.5)',
+    FAINT='rgba(10,10,10,0.28)', RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif";
+var A='#su';                        /* the block is re-rendered at runtime with .u-* classes */
 
-/* ══ BAKED FOR EVERY STATE ══ */
-function baked(){
- /* 1 · no left-to-right gradient over the opening photograph */
- [].forEach.call(document.querySelectorAll('#c16s-wrap ~ div, #c16s ~ div'),function(d){
-   var s=d.getAttribute('style')||''; if(/linear-gradient\(to right/.test(s))set(d,{opacity:'0'});});
- /* 2 · the opening photograph becomes genuinely first, so dot 1 reads as current */
- var stage=document.getElementById('c16s'); if(stage&&!stage.__reordered){
-   var act=stage.querySelector('.c16-slide.active');
-   if(act&&act!==stage.firstElementChild){stage.insertBefore(act,stage.firstElementChild);}
-   stage.__reordered=1;
-   var dots=[].slice.call(document.querySelectorAll('.c16-dot'));
-   dots.forEach(function(d,i){d.classList.toggle('active',i===0);});
- }
- /* 3 · the SWITCH logo, legible against the cream caption */
- var lg=document.getElementById('switch-logo-img');
- if(lg)set(lg,{filter:'invert(1) brightness(0.25)',opacity:'0.9'});
- /* 4 · the caption, out from over the photograph and set as a portfolio footer */
- var ov=document.getElementById('c16-overlay');
- if(ov&&!ov.__moved){ ov.__moved=1;
-   var host=document.createElement('div'); host.id='sf-cap';
-   var st=document.getElementById('c16s-wrap')||ov.parentNode;
-   st.parentNode.insertBefore(host,st.nextSibling); host.appendChild(ov); }
- var cap=document.getElementById('sf-cap');
- if(cap){ set(cap,{padding:'18px 48px 0'});
-  set(ov,{position:'static',bottom:'auto',left:'auto','z-index':'auto',display:'grid',
-   'grid-template-columns':'auto 1fr','gap':'clamp(20px,3vw,44px)','align-items':'end',
-   'border-top':'1px solid '+CY2,'padding-top':'16px'});
-  [].forEach.call(ov.querySelectorAll('img'),function(im){
-    if(im.id!=='switch-logo-img')set(im,{filter:'invert(1) brightness(0.25)',opacity:'0.75'});
-    set(im,{'max-height':'26px',width:'auto'});});
-  var ey=ov.querySelector('span'); if(ey)set(ey,{'font-family':DM,'font-size':'0.44rem',
-    'letter-spacing':'0.28em','text-transform':'uppercase',color:CY,display:'block','margin-bottom':'8px'});
-  var p=ov.querySelector('.fp-body-text'); if(p)set(p,{'font-family':DM,'font-weight':'300',
-    'font-size':'0.72rem','line-height':'1.7',color:SUB,'max-width':'52ch',margin:'0'});
- }
- /* 5 · the DNA taxonomy — option 2, Technical drawing */
- var st2=document.getElementById('sfcss-switch-baked');
- if(!st2){st2=document.createElement('style');st2.id='sfcss-switch-baked';document.head.appendChild(st2);}
- st2.textContent=
-  A+' .u-ey{font-size:0.54rem !important;letter-spacing:0.34em !important;color:'+CY+' !important;margin-bottom:16px !important;}'+
-  A+' .u-lead{font-size:0.78rem !important;line-height:1.9 !important;}'+
-  A+' .u-dna{gap:18px 26px !important;}'+
-  A+' .u-d{border-top:0.5px solid '+RULE+' !important;padding:10px 0 !important;}'+
-  A+" .u-k{font-family:"+BEBAS+" !important;font-size:0.86rem !important;letter-spacing:0.16em !important;font-weight:400 !important;}"+
-  A+' .u-v{font-size:0.64rem !important;line-height:1.6 !important;}'+
-  /* the speaker twin card: matched height, split down the middle */
-  A+' .u-twin .u-img{aspect-ratio:32/9 !important;}'+
-  A+' .u-twin{position:relative;}'+
-  A+' .u-twin::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;'+
-  'background:rgba(237,232,224,0.55);pointer-events:none;z-index:2;}';
-}
+/* ── one type system across the whole SWITCH section ── */
+var TYPE=A+' .u-ey{font-size:0.54rem !important;letter-spacing:0.3em !important;margin-bottom:16px !important;}'+
+ A+' .u-lead{font-size:0.78rem !important;line-height:1.9 !important;}'+
+ A+' .u-k{font-size:0.7rem !important;letter-spacing:0.2em !important;}'+
+ A+' .u-v{font-size:0.64rem !important;line-height:1.6 !important;}'+
+ A+' .u-name{font-size:0.92rem !important;letter-spacing:0.2em !important;}'+
+ A+' .u-cat{font-size:0.44rem !important;letter-spacing:0.26em !important;}'+
+ A+' .u-desc{font-size:0.62rem !important;line-height:1.75 !important;}';
 
-/* ══ TEN PRODUCT PORTFOLIO CARD REFINEMENTS ══ */
-var P=[
- ['Original.',''],
- ['Hairline frame — each card outlined, tight interior padding.',
-  A+' .u-c{border:0.5px solid '+RULE+' !important;padding:0 0 16px !important;}'+
-  A+' .u-tx{padding:14px 16px 0 !important;}'],
- ['Caption rule — a fine line between image and text.',
-  A+' .u-tx{border-top:0.5px solid '+CY2+' !important;padding-top:12px !important;margin-top:12px !important;}'+
-  A+' .u-c{padding:0 !important;}'],
- ['Category above the name, in cyan.',
-  A+' .u-cat{color:'+CY+' !important;font-size:0.42rem !important;letter-spacing:0.28em !important;margin-bottom:6px !important;}'+
-  A+' .u-name{font-size:0.92rem !important;margin-top:0 !important;}'],
- ['Larger names, description pulled back.',
-  A+' .u-name{font-size:1.1rem !important;letter-spacing:0.18em !important;}'+
-  A+' .u-desc{font-size:0.58rem !important;line-height:1.7 !important;color:rgba(10,10,10,0.4) !important;}'],
- ['Tonal ground — cards sit on the soft OPPORTUNITIES cream.',
-  A+' .u-c{background:#e8e4dc !important;padding:0 0 18px !important;}'+
-  A+' .u-tx{padding:14px 18px 0 !important;}'],
- ['Numbered — a quiet index figure above each category.',
-  A+' .u-c{counter-increment:sfc;position:relative;}'+
-  A+' .u-tx::before{counter-reset:none;content:counter(sfc,decimal-leading-zero);display:block;'+
-  'font-family:'+BEBAS+';font-size:0.6rem;letter-spacing:0.14em;color:'+FAINT+';margin-bottom:6px;}'+
-  A+' .u-g{counter-reset:sfc;}'],
- ['Compact — shorter images, tighter type, more cards in view.',
-  A+' .u-img{aspect-ratio:3/2 !important;}'+
-  A+' .u-name{font-size:0.86rem !important;margin-top:8px !important;}'+
-  A+' .u-desc{font-size:0.58rem !important;margin-top:7px !important;}'],
- ['Editorial split — name left, description right beneath the image.',
-  A+' .u-tx{display:grid !important;grid-template-columns:0.8fr 1.2fr !important;gap:16px !important;align-items:baseline !important;}'+
-  A+' .u-desc{margin-top:0 !important;}'],
- ['Cyan hairline under the category only.',
-  A+' .u-cat{display:inline-block !important;border-bottom:1px solid '+CY2+' !important;padding-bottom:5px !important;}'+
-  A+' .u-name{margin-top:9px !important;}'],
- ['Archive — hairline top rule, wide tracking, most restrained.',
-  A+' .u-tx{border-top:0.5px solid '+RULE+' !important;padding-top:13px !important;margin-top:13px !important;}'+
-  A+' .u-cat{letter-spacing:0.3em !important;color:'+FAINT+' !important;}'+
-  A+' .u-name{letter-spacing:0.22em !important;font-size:0.9rem !important;}'+
-  A+' .u-desc{font-size:0.6rem !important;line-height:1.75 !important;}']
+function DNA(css){return TYPE+css;}
+var SW=[
+ ['Original.','',null],
+ ['Industrial archive — cyan hairlines above each principle, labels quietened.',
+  DNA(A+' .u-d{border-top:1px solid '+CY2+' !important;padding:11px 0 !important;}'+
+      A+' .u-k{font-weight:400 !important;}'+A+' .u-ey{color:'+CY+' !important;}'),'strip'],
+ ['Technical drawing — construction rules, Bebas keys, cyan eyebrow.',
+  DNA(A+' .u-dna{gap:18px 26px !important;}'+
+      A+' .u-d{border-top:0.5px solid '+RULE+' !important;padding:10px 0 !important;}'+
+      A+' .u-ey{color:'+CY+' !important;letter-spacing:0.34em !important;}'+
+      A+" .u-k{font-family:'Bebas Neue',sans-serif !important;font-size:0.86rem !important;letter-spacing:0.16em !important;font-weight:400 !important;}"),'strip'],
+ ['Product catalogue — two wide columns, cyan only on the rules.',
+  DNA(A+' .u-dna{grid-template-columns:repeat(2,1fr) !important;gap:22px 56px !important;}'+
+      A+' .u-d{border-top:1px solid '+CY2+' !important;padding:13px 0 !important;}'+
+      A+' .u-k{font-size:0.74rem !important;}'),'beside'],
+ ['Exhibition panel — principles as specimens, no rules, eyebrow almost silent.',
+  DNA(A+' .u-dna{gap:26px 30px !important;}'+
+      A+' .u-d{border-top:none !important;padding:0 !important;}'+
+      A+' .u-ey{font-size:0.44rem !important;color:'+CY4+' !important;letter-spacing:0.34em !important;}'+
+      A+" .u-k{font-family:'Bebas Neue',sans-serif !important;font-size:0.92rem !important;letter-spacing:0.16em !important;font-weight:400 !important;margin-bottom:7px !important;}"),'caption'],
+ ['Engineering documentation — dense four-up, tight leading, cyan eyebrow.',
+  DNA(A+' .u-dna{gap:14px 24px !important;}'+
+      A+' .u-d{border-top:0.5px solid '+RULE+' !important;padding:9px 0 !important;}'+
+      A+' .u-v{font-size:0.62rem !important;line-height:1.5 !important;}'+
+      A+' .u-ey{color:'+CY+' !important;}'),'spec'],
+ ['Premium design portfolio — wide rhythm, cyan on the eyebrow alone.',
+  DNA(A+' .u-dna{gap:30px 34px !important;}'+
+      A+' .u-d{border-top:1px solid '+RULE+' !important;padding:14px 0 !important;}'+
+      A+' .u-ey{color:'+CY+' !important;}'+A+' .u-k{letter-spacing:0.22em !important;}'),'beside'],
+ ['Luxury product presentation — left cyan rules instead of top rules.',
+  DNA(A+' .u-dna{grid-template-columns:repeat(4,1fr) !important;gap:24px 30px !important;}'+
+      A+' .u-d{border-top:none !important;border-left:1px solid '+CY2+' !important;padding:2px 0 2px 14px !important;}'),'strip'],
+ ['Museum archive — bracketed by hairlines, labels at their quietest.',
+  DNA(A+' .u-dna{gap:20px 28px !important;}'+
+      A+' .u-d{border-top:0.5px solid '+RULE+' !important;border-bottom:0.5px solid '+CY2+' !important;padding:11px 0 !important;}'+
+      A+' .u-k{color:'+SUB+' !important;font-weight:400 !important;}'+A+' .u-v{color:'+FAINT+' !important;}'),'caption'],
+ ['Specification sheet — two columns, cyan rules, wider tracking.',
+  DNA(A+' .u-dna{grid-template-columns:repeat(2,1fr) !important;gap:0 56px !important;}'+
+      A+' .u-d{border-top:0.5px solid '+CY2+' !important;padding:12px 0 !important;}'+
+      A+' .u-k{letter-spacing:0.26em !important;font-size:0.66rem !important;}'),'spec'],
+ ['Modern editorial — the most restrained. Cyan on the eyebrow and nowhere else.',
+  DNA(A+' .u-dna{gap:26px 32px !important;}'+
+      A+' .u-d{border-top:1px solid '+RULE+' !important;padding:12px 0 !important;}'+
+      A+' .u-ey{color:'+CY+' !important;}'+A+' .u-k{font-weight:400 !important;letter-spacing:0.22em !important;}'),'beside']
 ];
+
+/* ── the hero caption, moved out from over the photograph ── */
+var OV=null, OVPARENT=null, OVNEXT=null, OVSTYLE=null, CAPHOST=null;
+function capture(){
+ OV=document.getElementById('c16-overlay'); if(!OV)return false;
+ OVPARENT=OV.parentNode; OVNEXT=OV.nextSibling; OVSTYLE=OV.getAttribute('style');
+ return true;
+}
+function caption(mode){
+ if(!OV)return;
+ if(!mode){ OV.setAttribute('style',OVSTYLE);
+   if(OVPARENT&&OV.parentNode!==OVPARENT)OVPARENT.insertBefore(OV,OVNEXT);
+   if(CAPHOST){CAPHOST.parentNode&&CAPHOST.parentNode.removeChild(CAPHOST);CAPHOST=null;}
+   return; }
+ if(!CAPHOST){
+   CAPHOST=document.createElement('div'); CAPHOST.id='sf-cap';
+   var stage=document.getElementById('c16s-wrap')||OVPARENT;
+   stage.parentNode.insertBefore(CAPHOST,stage.nextSibling);
+ }
+ CAPHOST.appendChild(OV);
+ var base='position:static;bottom:auto;left:auto;z-index:auto;display:flex;';
+ var map={
+  strip  :base+'align-items:center;gap:22px;padding:16px 0 0;border-top:1px solid '+CY2+';',
+  beside :base+'align-items:flex-end;gap:34px;padding:18px 0 0;',
+  caption:base+'flex-direction:column;align-items:flex-start;gap:10px;padding:18px 0 0;',
+  spec   :base+'align-items:baseline;gap:20px;padding:14px 0 0;border-top:0.5px solid '+CY2+
+          ';border-bottom:0.5px solid '+RULE+';padding-bottom:14px;'
+ };
+ OV.setAttribute('style',map[mode]||map.strip);
+}
 
 function build(){
  if(document.getElementById('sf-sw-switch'))return;
- if(!document.querySelector('#su .u-c')){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- baked();
- var st=document.createElement('style'); st.id='sfcss-portfolio'; document.head.appendChild(st);
- var bar=document.createElement('div'); bar.id='sf-sw-switch';
+ if(!capture())return;
+ var st=document.createElement('style'); st.id='sfcss-switch-switch'; document.head.appendChild(st);
+ /* applied to every variation: the photograph is no longer dimmed by the gradient,
+    and the caption never sits on top of it */
+ var baked=document.createElement('style'); baked.id='sfcss-switch-switch-baked';
+ baked.textContent='#c16s-wrap ~ div[style*="linear-gradient(to right"]{opacity:0 !important;}'+
+  '#sf-cap{padding:0 48px;}'+
+  '#sf-cap .fp-body-text{line-height:1.75 !important;font-size:0.72rem !important;color:rgba(10,10,10,0.5) !important;max-width:52ch;margin:0;}'+
+  '#sf-cap span{color:'+CY+' !important;}'+
+  '#sf-cap img{filter:invert(1) !important;opacity:0.75 !important;}'+
+  /* the speaker spans two cards: match the row height and split it down the middle */
+  '#su .u-twin .u-img{aspect-ratio:32/9 !important;}'+
+  '#su .u-twin{position:relative;}'+
+  '#su .u-twin::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;'+
+  'background:rgba(237,232,224,0.55);pointer-events:none;z-index:2;}';
+ document.head.appendChild(baked);
+ var bx=document.createElement('div'); bx.id='sf-sw-switch';
  var note=document.createElement('div'); note.className='sf-note';
+ note.textContent='0 is the current design. 1–10 move the caption beneath the photograph.';
  var row=document.createElement('div'); row.className='sf-row';
- var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Portfolio'; row.appendChild(lab);
- P.forEach(function(o,i){
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='SWITCH'; row.appendChild(l);
+ SW.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-   b.classList.add('on'); st.textContent=o[1];
-   note.innerHTML='Portfolio '+i+' — '+o[0]+
-    '<br><span class="sf-m">DNA option 2 and the hero fixes are baked into every state</span>';};
+   b.classList.add('on'); st.textContent=o[1]; baked.disabled=(i===0); caption(o[2]);
+   note.textContent='SWITCH '+i+' — '+o[0];};
   row.appendChild(b);});
- bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Portfolio 0 — '+P[0][0]+'<br><span class="sf-m">DNA option 2 and the hero fixes are baked into every state</span>';
+ bx.appendChild(row); bx.appendChild(note); SFSTACK().appendChild(bx);
+ baked.disabled=true;
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1400);});
-else setTimeout(build,1400);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1200);});
+else setTimeout(build,1200);
 })();
 </script>
 <!-- VENTURE MODELS -->
