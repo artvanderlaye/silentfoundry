@@ -5345,17 +5345,6 @@ section.sf-video{padding-top:34px !important;padding-bottom:40px !important;}
 #sf-glance .cs-dmetv{font-size:1.1rem !important;letter-spacing:0.1em !important;color:rgba(10,10,10,0.66) !important;}
 #sf-glance .cs-dmetl{font-size:0.34rem !important;letter-spacing:0.24em !important;
  color:rgba(10,10,10,0.3) !important;margin-top:6px !important;}
-
-/* ── APPLIED TO EVERY VERSION ─────────────────────────────────────────
-   1 · the rule above EXTRACTED DNA removed (row 1 bottom divider only —
-       the one above TRANSLATION is left in place)
-   2 · the gap between the paragraph and EXTRACTED DNA closed:
-       row pads 28 -> 10, label margin-top 20 -> 0, headings pulled in   */
-#sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}
-#sfsec-dna .cs-row-left{padding-top:10px !important;padding-bottom:10px !important;}
-#sfsec-dna .cs-dslabel{margin-top:0 !important;}
-#sfsec-dna .cs-dey{margin-bottom:14px !important;}
-#sfsec-dna .cs-dh{margin-bottom:8px !important;}
 </style>
 
 <!-- ══ GAP EXPLORER — exploration only, never on index.html ══ -->
@@ -5380,24 +5369,39 @@ section.sf-video{padding-top:34px !important;padding-bottom:40px !important;}
 </style>
 <script id="sf-sw-js">
 (function(){
-/* The rule above EXTRACTED DNA is gone and the paragraph gap is already closed in
-   every version — both are baked in above. These five go further. All scoped to #sfsec-dna. */
+/* The gap under ROCK & ROLL NEVER DIES is four things stacked:
+     slack (row height is set by the 249px photo) + row1 bottom pad
+     + row2 top pad + the "Extracted DNA" label margin-top.
+   Everything below is scoped to #sfsec-dna. */
 var PAD =function(t,b){return '#sfsec-dna .cs-row-left{padding-top:'+t+'px !important;padding-bottom:'+b+'px !important;}';};
-var LEAD=function(l){return '#sfsec-dna .cs-dp{line-height:'+l+' !important;}';};
-var DNA =function(r,c,sub){return '#sfsec-dna .cs-dna-split{gap:'+r+'px '+c+'px !important;}'+
-  '#sfsec-dna .cs-dsub{margin-top:'+sub+'px !important;}'+
-  '#sfsec-dna .cs-ddna-v{line-height:1.5 !important;}';};
-/* the remaining slack can only go by letting the row 1 photo sit shorter */
-var CAP =function(h){return '#sfsec-dna .cs-row-right-r1{align-self:start !important;height:'+h+'px !important;}';};
+var LABEL=function(m){return '#sfsec-dna .cs-dslabel{margin-top:'+m+'px !important;}';};
+var HEAD =function(ey,dh){return '#sfsec-dna .cs-dey{margin-bottom:'+ey+'px !important;}'+
+  '#sfsec-dna .cs-dh{margin-bottom:'+dh+'px !important;}';};
+var LEAD =function(l){return '#sfsec-dna .cs-dp{line-height:'+l+' !important;}';};
+var DNA  =function(r,c,sub){return '#sfsec-dna .cs-dna-split{gap:'+r+'px '+c+'px !important;}'+
+  '#sfsec-dna .cs-dsub{margin-top:'+sub+'px !important;}';};
+/* the slack itself — only removable by letting the row 1 photo sit shorter */
+var CAP  =function(h){return '#sfsec-dna .cs-row-right-r1{align-self:start !important;height:'+h+'px !important;}';};
 
 var G=[
- ['Baseline — rule removed, gap closed. Nothing further.',''],
- ['Body leading 1.98 → 1.65.',LEAD(1.65)],
- ['Leading, plus the DNA taxonomy pulled in to 20/40.',LEAD(1.65)+DNA(20,40,8)],
- ['Hard — row pads down to 6, leading 1.6, DNA 18/36.',PAD(6,6)+LEAD(1.6)+DNA(18,36,6)],
- ['Closes the remaining slack — row 1 photo 249 → 210px. TOUCHES PHOTOGRAPHY.',CAP(210)],
- ['Everything — hard spacing and the shorter row 1 photo.',
-  PAD(6,6)+LEAD(1.6)+DNA(18,36,6)+CAP(210)]
+ ['Current.',''],
+
+ ['Padding and label — row pads 28→10, “Extracted DNA” margin 20→0. Photo untouched.',
+  PAD(10,10)+LABEL(0)+HEAD(14,8)],
+
+ ['Padding, label and leading — as 1, plus body leading 1.98→1.65.',
+  PAD(10,10)+LABEL(0)+HEAD(14,8)+LEAD(1.65)],
+
+ ['Hard — pads 6, label 0, tight headings, leading 1.6, DNA gaps 20/40.',
+  PAD(6,6)+LABEL(0)+HEAD(12,4)+LEAD(1.6)+DNA(20,40,8)+
+  '#sfsec-dna .cs-ddna-v{line-height:1.5 !important;}'],
+
+ ['Close the slack — row 1 photo sits at 210px instead of 249px. TOUCHES PHOTOGRAPHY.',
+  PAD(10,10)+LABEL(0)+HEAD(14,8)+CAP(210)],
+
+ ['Everything — hard spacing and the shorter row 1 photo together.',
+  PAD(6,6)+LABEL(0)+HEAD(12,4)+LEAD(1.6)+DNA(20,40,8)+
+  '#sfsec-dna .cs-ddna-v{line-height:1.5 !important;}'+CAP(210)]
 ];
 
 function build(){
@@ -5412,27 +5416,26 @@ function build(){
   var p=sec.querySelector('.cs-dp');
   var lab=[].filter.call(sec.querySelectorAll('.cs-dslabel'),function(x){
     return /extracted dna/i.test(x.textContent);})[0];
-  var rule=sec.querySelector('.cs-dbody > .cs-row-left:first-child');
-  var vis='—';
-  if(rule){var cs=getComputedStyle(rule,'::after'); vis=(cs.display==='none')?'gone':'still there';}
-  return {gap:(p&&lab)?Math.round(lab.getBoundingClientRect().top-p.getBoundingClientRect().bottom):0,
-          h:Math.round(sec.getBoundingClientRect().height), rule:vis};
+  var gap=(p&&lab)?Math.round(lab.getBoundingClientRect().top-p.getBoundingClientRect().bottom):0;
+  return {gap:gap,h:Math.round(sec.getBoundingClientRect().height)};
  }
  var base=null;
- function show(i,label){
-  setTimeout(function(){
-   var m=measure(); if(base===null)base=m;
-   note.innerHTML=label+'<br><span class="sf-m">paragraph → EXTRACTED DNA: '+m.gap+
-    'px &nbsp;·&nbsp; rule above it: '+m.rule+' &nbsp;·&nbsp; section: '+m.h+'px'+
-    (i>0?' &nbsp;·&nbsp; saved '+(base.h-m.h)+'px':'')+'</span>';},60);}
  G.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){
    row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
-   st.textContent=o[1]; show(i,'Gap '+i+' — '+o[0]);};
+   st.textContent=o[1];
+   setTimeout(function(){
+    var m=measure(); if(i===0||base===null)base=m;
+    note.innerHTML='Gap '+i+' — '+o[0]+'<br><span class="sf-m">paragraph → EXTRACTED DNA: '+m.gap+
+     'px &nbsp;·&nbsp; section height: '+m.h+'px'+(i>0?' &nbsp;·&nbsp; saved '+(base.h-m.h)+'px':'')+'</span>';
+   },60);};
   row.appendChild(b);});
  bar.appendChild(row); bar.appendChild(note); document.body.appendChild(bar);
- show(0,'Gap 0 — '+G[0][0]);
+ var m=measure();
+ note.innerHTML='0 is the current design.<br><span class="sf-m">paragraph → EXTRACTED DNA: '+m.gap+
+  'px &nbsp;·&nbsp; section height: '+m.h+'px</span>';
+ base=m;
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1000);});
 else setTimeout(build,1000);
