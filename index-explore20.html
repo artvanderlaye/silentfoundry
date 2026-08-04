@@ -5541,67 +5541,79 @@ else setTimeout(build,1100);
 </script>
 <!-- NAV -->
 <script id="sf-sw-js-nav">(function(){
-var GOLD='#c8a96e', FAINT='rgba(244,241,236,0.16)', DIM='rgba(244,241,236,0.34)', DM="'DM Sans',sans-serif";
-var SW=null,BTNS=[],WRAP=null,TRACK=null,SLIDES=[],OSW='',OB=[],OW='',OT='',N=9,OML='';
+var GOLD='#c8a96e', FAINT='rgba(244,241,236,0.16)', DIM='rgba(244,241,236,0.34)',
+    QUIET='rgba(244,241,236,0.22)', DM="'DM Sans',sans-serif";
+var SW=null,BTNS=[],WRAP=null,TRACK=null,SLIDES=[],OSW='',OB=[],OW='',OT='',IND=null,BARF=null,N=9;
 
-function set(el,o){if(!el)return;for(var k in o){o[k]===null?el.style.removeProperty(k):el.style.setProperty(k,o[k],'important');}}
-function reset(){ if(SW)SW.setAttribute('style',OSW); BTNS.forEach(function(b,i){b.setAttribute('style',OB[i]||'');});
- if(WRAP)WRAP.setAttribute('style',OW); if(TRACK)TRACK.setAttribute('style',OT);
- SLIDES.forEach(function(s){s.style.removeProperty('scroll-snap-align');}); }
+function set(el,o){for(var k in o){o[k]===null?el.style.removeProperty(k):el.style.setProperty(k,o[k],'important');}}
 
-/* bleed = keep the track's negative margin so images run off both edges, as they did originally
-   aligned = zero it so the first and last sit flush to the gutter                              */
-function strip(mode,snap){
- set(WRAP,{'overflow-x':'auto','overflow-y':'hidden','-webkit-overflow-scrolling':'touch',
-  'scrollbar-width':'none',cursor:'grab','scroll-snap-type':(snap||'none')});
- set(TRACK,{animation:'none',transform:'none','margin-left':(mode==='bleed'?OML:'0')});
- SLIDES.forEach(function(s){ snap&&snap!=='none' ? set(s,{'scroll-snap-align':'start'})
-                                                 : s.style.removeProperty('scroll-snap-align'); });
- if(!WRAP.__nosb){WRAP.__nosb=1; var st=document.createElement('style');
-  st.textContent='.ec2-wrap::-webkit-scrollbar{display:none;}'; document.head.appendChild(st);}
+/* ── the team-page mechanism: a native scroll strip with snap, no click arrows ── */
+function strip(on,snap){
+ if(!WRAP)return;
+ if(!on){ WRAP.setAttribute('style',OW); TRACK.setAttribute('style',OT);
+   SLIDES.forEach(function(s){s.style.removeProperty('scroll-snap-align');}); return; }
+ set(WRAP,{'overflow-x':'auto','overflow-y':'hidden','scroll-snap-type':(snap||'x mandatory'),
+   '-webkit-overflow-scrolling':'touch','scrollbar-width':'none',cursor:'grab'});
+ set(TRACK,{animation:'none',transform:'none','margin-left':'0'});
+ SLIDES.forEach(function(s){set(s,{'scroll-snap-align':'start'});});
+ if(!WRAP.__nosb){WRAP.__nosb=1;
+   var st=document.createElement('style'); st.textContent='.ec2-wrap::-webkit-scrollbar{display:none;}';
+   document.head.appendChild(st);}
  if(!WRAP.__drag){WRAP.__drag=1; var x0=null,l0=0;
-  WRAP.addEventListener('mousedown',function(e){x0=e.clientX;l0=WRAP.scrollLeft;WRAP.style.cursor='grabbing';});
-  window.addEventListener('mouseup',function(){x0=null;if(WRAP)WRAP.style.cursor='grab';});
-  window.addEventListener('mousemove',function(e){if(x0===null)return;WRAP.scrollLeft=l0-(e.clientX-x0);});}
- BTNS.forEach(function(b){set(b,{display:'none'});});
+   WRAP.addEventListener('mousedown',function(e){x0=e.clientX;l0=WRAP.scrollLeft;WRAP.style.cursor='grabbing';});
+   window.addEventListener('mouseup',function(){x0=null;if(WRAP)WRAP.style.cursor='grab';});
+   window.addEventListener('mousemove',function(e){if(x0===null)return;WRAP.scrollLeft=l0-(e.clientX-x0);});}
 }
-/* the word — the page gutter is 48px, so left-aligned means padding-left:48px, not 0 */
 function word(t,o){ if(!SW)return; SW.textContent=t;
  set(SW,Object.assign({'font-family':DM,'font-weight':'300','font-size':'0.44rem','letter-spacing':'0.26em',
-  'text-transform':'uppercase',color:DIM,margin:'14px 0 0',display:'block','text-align':'left',
-  'padding-left':'48px','padding-right':'48px'},o||{})); }
+  'text-transform':'uppercase',color:DIM,margin:'14px 0 0',display:'block','text-align':'left'},o||{})); }
 function noword(){ if(SW)set(SW,{display:'none'}); }
+function hideArrows(){ BTNS.forEach(function(b){set(b,{display:'none'});}); }
+
+/* a hairline that follows the scroll position */
+function progress(o){
+ if(!IND){ IND=document.createElement('div'); IND.id='sf-ind';
+   BARF=document.createElement('span'); IND.appendChild(BARF);
+   if(SW&&SW.parentNode)SW.parentNode.insertBefore(IND,SW.nextSibling);
+   WRAP.addEventListener('scroll',function(){ if(!BARF)return;
+     var p=WRAP.scrollLeft/Math.max(1,WRAP.scrollWidth-WRAP.clientWidth);
+     BARF.style.setProperty('transform','translateX('+(p*100*(1/0.22-1))+'%)','important'); }); }
+ IND.style.cssText=''; BARF.style.cssText='';
+ set(IND,Object.assign({display:'block',height:'1px',background:FAINT,'margin-top':'12px',
+   'max-width':'240px',overflow:'hidden'},o||{}));
+ set(BARF,{display:'block',width:'22%',height:'100%',background:GOLD,transition:'transform .15s linear'});
+}
+function noprog(){ if(IND)set(IND,{display:'none'}); }
+function reset(){ if(SW)SW.setAttribute('style',OSW); BTNS.forEach(function(b,i){b.setAttribute('style',OB[i]||'');});
+ strip(false); noprog(); }
 
 var NAV=[
- ['Original — click arrows, images bleeding off both edges.',function(){reset();}],
-
- ['Bleed · free scroll · SCROLL → on the 48px gutter.',function(){
-   reset(); strip('bleed','none'); word('Scroll  →'); }],
- ['Bleed · free scroll · word centred beneath.',function(){
-   reset(); strip('bleed','none'); word('Scroll  →',{'text-align':'center'}); }],
- ['Bleed · free scroll · word held to the right gutter.',function(){
-   reset(); strip('bleed','none'); word('Scroll  →',{'text-align':'right'}); }],
- ['Bleed · free scroll · word indented to the text measure, not the edge.',function(){
-   reset(); strip('bleed','none'); word('Scroll  →',{'padding-left':'clamp(48px,12vw,180px)'}); }],
- ['Bleed · free scroll · word on the gutter under a short hairline.',function(){
-   reset(); strip('bleed','none');
-   word('Scroll  →',{'border-top':'0.5px solid '+FAINT,'padding-top':'12px','margin':'16px 48px 0',
-    'max-width':'220px','padding-left':'0','padding-right':'0'}); }],
- ['Bleed · free scroll · SCROLL left, 01 — 09 right, both on the gutter.',function(){
-   reset(); strip('bleed','none');
-   word('Scroll',{display:'flex','justify-content':'space-between'});
-   if(SW&&!SW.querySelector('i')){var c=document.createElement('i');
-     c.style.cssText='font-style:normal;'; c.textContent='01 — 0'+N; SW.appendChild(c);} }],
- ['Bleed · gentle snap · word on the gutter. Settles without forcing.',function(){
-   reset(); strip('bleed','x proximity'); word('Scroll  →'); }],
- ['Bleed · free scroll · word at its faintest, wide tracking.',function(){
-   reset(); strip('bleed','none');
+ ['Original — click arrows, no scrolling.',function(){reset();}],
+ ['Scroll strip · the word SCROLL, small and left. Nothing else.',function(){
+   strip(true); hideArrows(); noprog(); word('Scroll'); }],
+ ['Scroll strip · SCROLL → with a hairline above it.',function(){
+   strip(true); hideArrows(); noprog();
+   word('Scroll  →',{'border-top':'0.5px solid '+FAINT,'padding-top':'12px','margin-top':'16px','max-width':'240px'}); }],
+ ['Scroll strip · the word centred beneath the images.',function(){
+   strip(true); hideArrows(); noprog(); word('Scroll',{'text-align':'center'}); }],
+ ['Scroll strip · the word held to the right edge.',function(){
+   strip(true); hideArrows(); noprog(); word('Scroll  →',{'text-align':'right'}); }],
+ ['Scroll strip · word plus a hairline that follows your position.',function(){
+   strip(true); hideArrows(); word('Scroll'); progress(); }],
+ ['Scroll strip · progress hairline only, no word.',function(){
+   strip(true); hideArrows(); noword(); progress({'max-width':'100%','margin-top':'16px'}); }],
+ ['Scroll strip · a small gold mark before the word.',function(){
+   strip(true); hideArrows(); noprog(); word('◦  Scroll',{color:QUIET}); }],
+ ['Scroll strip · the word at its faintest, tracking wide.',function(){
+   strip(true); hideArrows(); noprog();
    word('Scroll',{color:'rgba(244,241,236,0.18)','letter-spacing':'0.42em','font-size':'0.4rem'}); }],
-
- ['ALIGNED edges · firm snap · word on the gutter. For comparison.',function(){
-   reset(); strip('aligned','x mandatory'); word('Scroll  →'); }],
- ['ALIGNED edges · firm snap · word centred. For comparison.',function(){
-   reset(); strip('aligned','x mandatory'); word('Scroll  →',{'text-align':'center'}); }]
+ ['Scroll strip · SCROLL left, 01 — 09 right, on one line.',function(){
+   strip(true); hideArrows(); noprog();
+   word('Scroll',{display:'flex','justify-content':'space-between','max-width':'100%'});
+   if(SW&&!SW.querySelector('i')){var c=document.createElement('i');
+     c.style.cssText='font-style:normal;';c.textContent='01 — 0'+N;SW.appendChild(c);} }],
+ ['Scroll strip · nothing at all. It simply scrolls.',function(){
+   strip(true,'x proximity'); hideArrows(); noword(); noprog(); }]
 ];
 
 function build(){
@@ -5610,7 +5622,6 @@ function build(){
  WRAP=document.querySelector('.ec2-wrap'); TRACK=document.querySelector('.ec2-track');
  SLIDES=[].slice.call(document.querySelectorAll('.ec2-slide'));
  if(!WRAP||!TRACK){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- OML=getComputedStyle(TRACK).marginLeft;                 /* the original bleed offset */
  var seen={},u=0; SLIDES.forEach(function(s){var im=s.querySelector('img'); if(im){var k=im.getAttribute('src');
    if(!seen[k]){seen[k]=1;u++;}}}); N=u||9;
  OSW=SW?(SW.getAttribute('style')||''):''; OB=BTNS.map(function(b){return b.getAttribute('style')||'';});
@@ -5620,10 +5631,8 @@ function build(){
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Nav'; row.appendChild(lab);
  function apply(i){ NAV[i][1]();
-  setTimeout(function(){
-   var off=TRACK?getComputedStyle(TRACK).marginLeft:'—';
-   note.innerHTML='Nav '+i+' — '+NAV[i][0]+'<br><span class="sf-m">track offset '+off+
-    ' &nbsp;·&nbsp; '+(off==='0px'?'edges flush':'images bleed off both edges')+'</span>';},60);}
+  note.innerHTML='Nav '+i+' — '+NAV[i][0]+
+   '<br><span class="sf-m">'+(i?'scrolls and drags like the team page':'click arrows')+'</span>';}
  NAV.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
@@ -5753,70 +5762,6 @@ function build(){
     '<br><span class="sf-m">DNA option 2 and the hero fixes are baked into every state</span>';};
   row.appendChild(b);});
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
-
- /* ── a second row: the SWITCH featured carousel's own dots and arrows ── */
- var D=[].slice.call(document.querySelectorAll('.c16-dot')),
-     AB=[].slice.call(document.querySelectorAll('.fcar-btn'));
- if(D.length){
-  var OD=D.map(function(x){return x.getAttribute('style')||'';}),
-      OA=AB.map(function(x){return x.getAttribute('style')||'';});
-  function dset(o,act){ D.forEach(function(x,i){ x.setAttribute('style',OD[i]||''); set(x,o);
-    if(x.classList.contains('active')&&act)set(x,act); }); }
-  function aset(o){ AB.forEach(function(x,i){ x.setAttribute('style',OA[i]||''); set(x,o); }); }
-  var HID={display:'none'};
-  var SN=[
-   ['Original.',function(){D.forEach(function(x,i){x.setAttribute('style',OD[i]||'');});
-     AB.forEach(function(x,i){x.setAttribute('style',OA[i]||'');});}],
-   ['Dots at 5px, centred. Arrows hidden.',function(){
-     dset({width:'5px',height:'5px','border-radius':'50%',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0 4px',transform:'none'},{background:GOLD}); aset(HID);}],
-   ['Bars — the active one runs longer.',function(){
-     dset({width:'8px',height:'1px','border-radius':'0',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0 3px',transform:'none',transition:'width .3s'},
-      {width:'22px',background:GOLD}); aset(HID);}],
-   ['Outline dots, filled only when active.',function(){
-     dset({width:'6px',height:'6px','border-radius':'50%',background:'transparent',
-      border:'1px solid rgba(244,241,236,0.16)',margin:'0 5px',transform:'none'},
-      {background:GOLD,'border-color':GOLD}); aset(HID);}],
-   ['Hairline track — three thin segments.',function(){
-     dset({width:'26px',height:'1px','border-radius':'0',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0',transform:'none'},{background:GOLD}); aset(HID);}],
-   ['Wide segmented bars.',function(){
-     dset({width:'44px',height:'2px','border-radius':'0',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0 2px',transform:'none'},{background:GOLD}); aset(HID);}],
-   ['Dots plus very quiet arrows.',function(){
-     dset({width:'4px',height:'4px','border-radius':'50%',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0 4px',transform:'none'},{background:GOLD});
-     aset({opacity:'0.3','font-size':'0.95rem'});}],
-   ['Arrows only, no dots.',function(){ D.forEach(function(x,i){x.setAttribute('style',OD[i]||'');set(x,HID);});
-     aset({opacity:'0.4','font-size':'1.05rem'});}],
-   ['Barely there — 3px dots.',function(){
-     dset({width:'3px',height:'3px','border-radius':'50%',background:'rgba(244,241,236,0.22)',
-      border:'none',margin:'0 5px',transform:'none'},{background:GOLD}); aset(HID);}],
-   ['Cyan active dot instead of gold.',function(){
-     dset({width:'5px',height:'5px','border-radius':'50%',background:'rgba(244,241,236,0.16)',
-      border:'none',margin:'0 4px',transform:'none'},{background:CY}); aset(HID);}],
-   ['Nothing at all — drag or click the image.',function(){
-     D.forEach(function(x,i){x.setAttribute('style',OD[i]||'');set(x,HID);}); aset(HID);}]
-  ];
-  var bar2=document.createElement('div'); bar2.id='sf-sw-swnav';
-  var note2=document.createElement('div'); note2.className='sf-note';
-  var row2=document.createElement('div'); row2.className='sf-row';
-  var lab2=document.createElement('span'); lab2.className='sf-lb'; lab2.textContent='SW Nav'; row2.appendChild(lab2);
-  var cur2=0;
-  SN.forEach(function(o,i){
-   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
-   b.onclick=function(){row2.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-    b.classList.add('on'); cur2=i; o[1]();
-    note2.innerHTML='SW Nav '+i+' — '+o[0]+'<br><span class="sf-m">featured carousel · hero fixes stay baked</span>';};
-   row2.appendChild(b);});
-  bar2.appendChild(row2); bar2.appendChild(note2); SFSTACK().appendChild(bar2);
-  note2.innerHTML='SW Nav 0 — '+SN[0][0]+'<br><span class="sf-m">featured carousel · hero fixes stay baked</span>';
-  /* the carousel re-marks the active dot as it advances — keep the chosen look on it */
-  if(D[0]&&D[0].parentElement){ new MutationObserver(function(){ if(cur2)SN[cur2][1](); })
-    .observe(D[0].parentElement,{attributes:true,subtree:true,attributeFilter:['class']}); }
- }
-
  note.innerHTML='Portfolio 0 — '+P[0][0]+'<br><span class="sf-m">DNA option 2 and the hero fixes are baked into every state</span>';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1400);});
