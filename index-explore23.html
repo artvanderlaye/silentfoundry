@@ -5633,12 +5633,62 @@ var G=A+' .u-g', C=A+' .u-c', I=A+' .u-img', T=A+' .u-tx',
     NM=A+' .u-name', CT=A+' .u-cat', DS=A+' .u-desc', TW=A+' .u-twin';
 var P=[
  ['Original.',''],
+ ['TWO COLUMNS — large cards, 3:2 images, generous room.',
+  G+'{grid-template-columns:repeat(2,1fr) !important;gap:clamp(20px,3vw,40px) !important;}'+
+  I+'{aspect-ratio:3/2 !important;}'+NM+'{font-size:1.15rem !important;}'+
+  TW+'{grid-column:span 2 !important;}'],
+ ['THREE COLUMNS — tighter grid, shorter images.',
+  G+'{grid-template-columns:repeat(3,1fr) !important;gap:18px !important;}'+
+  I+'{aspect-ratio:4/3 !important;}'+NM+'{font-size:0.86rem !important;}'+
+  DS+'{font-size:0.58rem !important;}'+TW+'{grid-column:span 3 !important;}'],
  ['CAPTION OVER IMAGE — text sits on the photograph under a gradient.',
   C+'{position:relative !important;padding:0 !important;}'+
   T+'{position:absolute !important;left:0;right:0;bottom:0;padding:20px 18px 16px !important;'+
   'background:linear-gradient(to top,rgba(10,10,10,0.85),transparent) !important;margin:0 !important;}'+
   NM+'{color:rgba(244,241,236,0.95) !important;}'+CT+'{color:'+CY+' !important;}'+
-  DS+'{color:rgba(244,241,236,0.6) !important;}']
+  DS+'{color:rgba(244,241,236,0.6) !important;}'],
+ ['EDITORIAL LIST — one per row, image left, text right. Not a grid at all.',
+  G+'{display:block !important;}'+
+  C+'{display:grid !important;grid-template-columns:0.9fr 1.1fr !important;gap:clamp(20px,3vw,44px) !important;'+
+  'align-items:center !important;padding:24px 0 !important;border-top:0.5px solid '+RULE+' !important;}'+
+  I+'{aspect-ratio:16/9 !important;}'+T+'{margin:0 !important;}'+NM+'{font-size:1.2rem !important;}'+
+  TW+'{grid-column:auto !important;}'],
+ ['FULL BLEED MOSAIC — edge to edge, 1px gaps, no card padding.',
+  G+'{grid-template-columns:repeat(4,1fr) !important;gap:1px !important;background:'+RULE+' !important;}'+
+  C+'{background:#ede8e0 !important;padding:0 0 14px !important;}'+
+  T+'{padding:12px 12px 0 !important;}'+I+'{aspect-ratio:1/1 !important;}'+
+  NM+'{font-size:0.78rem !important;}'+DS+'{display:none !important;}'],
+ ['PORTRAIT — tall 3:4 images, two up, captions beneath.',
+  G+'{grid-template-columns:repeat(2,1fr) !important;gap:clamp(20px,3vw,36px) !important;}'+
+  I+'{aspect-ratio:3/4 !important;}'+NM+'{font-size:1.05rem !important;}'+
+  TW+'{grid-column:span 2 !important;}'+TW+' .u-img{aspect-ratio:16/9 !important;}'],
+ ['FRAMED CARDS — outlined, category as a small chip above the name.',
+  G+'{grid-template-columns:repeat(3,1fr) !important;gap:16px !important;}'+
+  C+'{border:0.5px solid '+RULE+' !important;padding:0 0 18px !important;}'+
+  T+'{padding:14px 16px 0 !important;}'+
+  CT+'{display:inline-block !important;border:0.5px solid '+CY2+' !important;padding:4px 8px !important;'+
+  'color:'+CY+' !important;margin-bottom:9px !important;}'+TW+'{grid-column:span 3 !important;}'],
+ ['DESCRIPTION ON HOVER — clean grid, text revealed only on approach.',
+  G+'{grid-template-columns:repeat(3,1fr) !important;gap:20px !important;}'+
+  I+'{aspect-ratio:16/9 !important;}'+
+  DS+'{max-height:0 !important;opacity:0 !important;overflow:hidden !important;'+
+  'transition:max-height .35s ease,opacity .3s !important;margin-top:0 !important;}'+
+  C+':hover .u-desc{max-height:120px !important;opacity:1 !important;margin-top:10px !important;}'+
+  TW+'{grid-column:span 3 !important;}'],
+ ['INDEX — small thumbnails beside rows of text, like a contents page.',
+  G+'{display:block !important;}'+
+  C+'{display:grid !important;grid-template-columns:120px 1fr auto !important;gap:22px !important;'+
+  'align-items:center !important;padding:14px 0 !important;border-bottom:0.5px solid '+RULE+' !important;}'+
+  I+'{aspect-ratio:16/9 !important;}'+T+'{margin:0 !important;}'+
+  NM+'{font-size:0.9rem !important;}'+DS+'{font-size:0.58rem !important;margin-top:5px !important;}'+
+  TW+'{grid-column:auto !important;}'],
+ ['ASYMMETRIC SPREAD — a wide lead card, the rest at three up.',
+  G+'{grid-template-columns:repeat(6,1fr) !important;gap:18px !important;}'+
+  C+'{grid-column:span 2 !important;}'+
+  A+' .u-c:first-child{grid-column:span 6 !important;}'+
+  A+' .u-c:first-child .u-img{aspect-ratio:21/9 !important;}'+
+  A+' .u-c:first-child .u-name{font-size:1.3rem !important;}'+
+  I+'{aspect-ratio:4/3 !important;}'+TW+'{grid-column:span 6 !important;}']
 ];
 
 function build(){
