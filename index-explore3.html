@@ -5331,27 +5331,13 @@ section.sf-video{padding-top:34px !important;padding-bottom:40px !important;}
  letter-spacing:0.16em !important;color:rgba(10,10,10,0.78) !important;margin-bottom:10px !important;}
 #sfsec-dna .cs-ddna-v{font-size:0.7rem !important;line-height:1.7 !important;max-width:34ch !important;}
 @media(max-width:768px){#sfsec-dna .cs-dna-split{grid-template-columns:1fr !important;gap:26px !important;}}
-
-/* ── STATS 5 · Museum Caption ── */
-#sfsec-dna .cs-wrap{padding-bottom:26px !important;}
-#sf-glance{margin-top:6px !important;}
-#sf-glance .cs-dslabel{margin-top:10px !important;margin-bottom:8px !important;font-size:0.44rem !important;
- letter-spacing:0.26em !important;color:rgba(10,10,10,0.3) !important;}
-#sf-glance .cs-bridge{margin-bottom:14px !important;}
-#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;
- align-items:baseline !important;gap:0 !important;border-top:0.5px solid rgba(10,10,10,0.1) !important;
- padding-top:15px !important;}
-#sf-glance .cs-dmet{border-right:none !important;padding:0 22px 0 0 !important;margin:0 !important;}
-#sf-glance .cs-dmetv{font-size:1.1rem !important;letter-spacing:0.1em !important;color:rgba(10,10,10,0.66) !important;}
-#sf-glance .cs-dmetl{font-size:0.34rem !important;letter-spacing:0.24em !important;
- color:rgba(10,10,10,0.3) !important;margin-top:6px !important;}
 </style>
 
-<!-- ══ SPACING EXPLORER — exploration only, never on index.html ══ -->
+<!-- ══ STATISTICS EXPLORER — exploration only, never on index.html ══ -->
 <style id="sf-sw-css">
 #sf-sw{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(10,10,10,0.93);
  border:0.5px solid rgba(200,169,110,0.22);border-radius:2px;padding:9px 11px;
- font-family:'DM Sans',sans-serif;max-width:min(560px,92vw);}
+ font-family:'DM Sans',sans-serif;max-width:min(540px,92vw);}
 #sf-sw .sf-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:4px 0;}
 #sf-sw .sf-lb{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:#c8a96e;
  width:72px;flex-shrink:0;font-weight:300;}
@@ -5368,56 +5354,98 @@ section.sf-video{padding-top:34px !important;padding-bottom:40px !important;}
 </style>
 <script id="sf-sw-js">
 (function(){
-/* Vertical spacing inside the Marshall case study only. Everything is scoped to
-   #sfsec-dna. No rule addresses the photography column, the copy or the type system. */
-var R=function(p){return '#sfsec-dna .cs-row-left{padding-top:'+p+'px !important;padding-bottom:'+p+'px !important;}';};
-var LEAD=function(lh){return '#sfsec-dna .cs-dp{line-height:'+lh+' !important;}';};
-var HEADS=function(ey,lab,dh){return '#sfsec-dna .cs-dey{margin-bottom:'+ey+'px !important;}'+
- '#sfsec-dna .cs-dslabel{margin-top:'+lab+'px !important;margin-bottom:'+Math.round(lab*0.5)+'px !important;}'+
- '#sfsec-dna .cs-dh{margin-bottom:'+dh+'px !important;}';};
-var DNAGAP=function(r,c,sub,k){return '#sfsec-dna .cs-dna-split{gap:'+r+'px '+c+'px !important;}'+
- '#sfsec-dna .cs-dsub{margin-top:'+sub+'px !important;}'+
- '#sfsec-dna .cs-ddna-k{margin-bottom:'+k+'px !important;}';};
-var WRAP=function(t){return '#sfsec-dna .cs-wrap{padding-top:'+t+'px !important;}';};
+/* Everything below is scoped to #sf-glance — the MARSHALL AT A GLANCE block —
+   plus the case study's own bottom padding, which is the gap into the dark section.
+   The photography column is never referenced. */
+var TRANS=function(pb){return '#sfsec-dna .cs-wrap{padding-bottom:'+pb+'px !important;}';};
 
-var SP=[
- ['Current — 28px rows, 1.98 leading, 44/56 DNA gaps.',''],
+var STATS=[
+ ['Current — exactly as it ships.',''],
 
- ['Gaps only — rows 28→18, headings pulled in. Copy leading untouched.',
-  R(18)+HEADS(16,12,8)+DNAGAP(30,48,10,8)],
+ ['Technical Specification Strip — one baseline, vertical dividers, 30% tighter.',
+  TRANS(34)+
+  '#sf-glance{margin-top:8px !important;}'+
+  '#sf-glance .cs-dslabel{margin-top:12px !important;margin-bottom:8px !important;}'+
+  '#sf-glance .cs-bridge{margin-bottom:12px !important;}'+
+  '#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;'+
+  'align-items:baseline !important;gap:0 !important;border-top:0.5px solid rgba(10,10,10,0.14) !important;'+
+  'padding-top:14px !important;}'+
+  '#sf-glance .cs-dmet{border-right:0.5px solid rgba(10,10,10,0.12) !important;'+
+  'padding:0 16px !important;margin:0 !important;}'+
+  '#sf-glance .cs-dmet:first-child{padding-left:0 !important;}'+
+  '#sf-glance .cs-dmet:last-child{border-right:none !important;padding-right:0 !important;}'],
 
- ['Leading only — body leading 1.98→1.70. The single biggest saving, nothing moves.',
-  LEAD(1.70)+'#sfsec-dna .cs-ddna-v{line-height:1.55 !important;}'],
+ ['Annual Report — four equal columns, larger numbers, smaller labels.',
+  TRANS(38)+
+  '#sf-glance .cs-dslabel{margin-top:14px !important;margin-bottom:9px !important;}'+
+  '#sf-glance .cs-bridge{margin-bottom:14px !important;}'+
+  '#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:0 !important;}'+
+  '#sf-glance .cs-dmet{border-right:1px solid rgba(10,10,10,0.09) !important;'+
+  'padding:2px 18px !important;margin:0 !important;}'+
+  '#sf-glance .cs-dmet:first-child{padding-left:0 !important;}'+
+  '#sf-glance .cs-dmet:last-child{border-right:none !important;}'+
+  '#sf-glance .cs-dmetv{font-size:1.5rem !important;letter-spacing:0.05em !important;'+
+  'color:rgba(10,10,10,0.78) !important;}'+
+  '#sf-glance .cs-dmetl{font-size:0.34rem !important;letter-spacing:0.18em !important;margin-top:5px !important;}'],
 
- ['Balanced — both, at half strength. The safest overall reduction.',
-  R(20)+HEADS(18,14,8)+DNAGAP(32,50,12,8)+LEAD(1.78)+'#sfsec-dna .cs-ddna-v{line-height:1.6 !important;}'],
+ ['Editorial Footer — lighter, smaller numbers, calm transition.',
+  TRANS(40)+
+  '#sf-glance .cs-dslabel{margin-top:14px !important;margin-bottom:8px !important;}'+
+  '#sf-glance .cs-bridge{margin-bottom:14px !important;}'+
+  '#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;'+
+  'align-items:baseline !important;gap:0 !important;}'+
+  '#sf-glance .cs-dmet{border-right:none !important;padding:0 20px 0 0 !important;margin:0 !important;}'+
+  '#sf-glance .cs-dmetv{font-size:1.05rem !important;color:rgba(10,10,10,0.6) !important;}'+
+  '#sf-glance .cs-dmetl{font-size:0.36rem !important;letter-spacing:0.16em !important;'+
+  'color:rgba(10,10,10,0.28) !important;margin-top:4px !important;}'],
 
- ['DNA block only — the taxonomy compressed hard, rows 1 and 3 left alone.',
-  DNAGAP(20,40,8,6)+'#sfsec-dna .cs-ddna-v{line-height:1.5 !important;}'+
-  '#sfsec-dna .cs-ddna-k{font-size:0.88rem !important;}'+
-  '#sfsec-dna .cs-dsub{margin-bottom:0 !important;}'],
+ ['Industrial Data Panel — construction lines, label above the figure.',
+  TRANS(32)+
+  '#sf-glance{margin-top:8px !important;}'+
+  '#sf-glance .cs-dslabel{margin-top:12px !important;margin-bottom:8px !important;}'+
+  '#sf-glance .cs-bridge{margin-bottom:12px !important;}'+
+  '#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;gap:0 !important;'+
+  'border-top:0.5px solid rgba(138,110,58,0.35) !important;'+
+  'border-bottom:0.5px solid rgba(10,10,10,0.1) !important;padding:13px 0 !important;}'+
+  '#sf-glance .cs-dmet{display:flex !important;flex-direction:column-reverse !important;'+
+  'justify-content:flex-end !important;border-right:0.5px solid rgba(10,10,10,0.1) !important;'+
+  'padding:0 16px !important;margin:0 !important;}'+
+  '#sf-glance .cs-dmet:first-child{padding-left:0 !important;}'+
+  '#sf-glance .cs-dmet:last-child{border-right:none !important;}'+
+  '#sf-glance .cs-dmetv{font-size:1.25rem !important;color:rgba(10,10,10,0.75) !important;}'+
+  '#sf-glance .cs-dmetl{font-size:0.34rem !important;letter-spacing:0.2em !important;'+
+  'color:rgba(138,110,58,0.75) !important;margin:0 0 7px 0 !important;}'],
 
- ['Full compression — everything tightened, including the section’s own top padding.',
-  R(16)+HEADS(14,10,6)+DNAGAP(20,40,8,6)+LEAD(1.65)+
-  '#sfsec-dna .cs-ddna-v{line-height:1.5 !important;}'+WRAP(32)]
+ ['Museum Caption — a quiet strip bridging into the dark section.',
+  TRANS(26)+
+  '#sf-glance{margin-top:6px !important;}'+
+  '#sf-glance .cs-dslabel{margin-top:10px !important;margin-bottom:8px !important;'+
+  'font-size:0.44rem !important;letter-spacing:0.26em !important;color:rgba(10,10,10,0.3) !important;}'+
+  '#sf-glance .cs-bridge{margin-bottom:14px !important;}'+
+  '#sf-glance .cs-dmets{display:grid !important;grid-template-columns:repeat(4,1fr) !important;'+
+  'align-items:baseline !important;gap:0 !important;border-top:0.5px solid rgba(10,10,10,0.1) !important;'+
+  'padding-top:15px !important;}'+
+  '#sf-glance .cs-dmet{border-right:none !important;padding:0 22px 0 0 !important;margin:0 !important;}'+
+  '#sf-glance .cs-dmetv{font-size:1.1rem !important;letter-spacing:0.1em !important;'+
+  'color:rgba(10,10,10,0.66) !important;}'+
+  '#sf-glance .cs-dmetl{font-size:0.34rem !important;letter-spacing:0.24em !important;'+
+  'color:rgba(10,10,10,0.3) !important;margin-top:6px !important;}']
 ];
 
 function build(){
  if(document.getElementById('sf-sw'))return;
- var sec=document.getElementById('sfsec-dna'); if(!sec)return;
- var st=document.createElement('style'); st.id='sfcss-sp'; document.head.appendChild(st);
+ var g=document.getElementById('sf-glance'); if(!g)return;
+ var st=document.createElement('style'); st.id='sfcss-stats'; document.head.appendChild(st);
  var bar=document.createElement('div'); bar.id='sf-sw';
  var note=document.createElement('div'); note.className='sf-note';
- note.textContent='0 is the current spacing. Copy, type and photography untouched.';
+ note.textContent='0 is the current design. Photography is never touched.';
  var row=document.createElement('div'); row.className='sf-row';
- var lb=document.createElement('span'); lb.className='sf-lb'; lb.textContent='Spacing'; row.appendChild(lb);
- SP.forEach(function(o,i){
+ var lb=document.createElement('span'); lb.className='sf-lb'; lb.textContent='Stats'; row.appendChild(lb);
+ STATS.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){
    row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
-   st.textContent=o[1];
-   var h=sec.getBoundingClientRect().height;
-   note.textContent='Spacing '+i+' — '+o[0]+'   ·   section height '+Math.round(h)+'px';};
+   st.textContent=o[1]; note.textContent='Stats '+i+' — '+o[0];};
   row.appendChild(b);});
  bar.appendChild(row); bar.appendChild(note); document.body.appendChild(bar);
 }
