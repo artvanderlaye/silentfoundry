@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — 22 refinements · Silent Foundry</title>
+<title>Contact — paths layout · Silent Foundry</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -2661,8 +2661,7 @@ var T10=[
  ['One continuous list','No rule between the sentence and the four. They read as one editorial run.'],
  ['The considered one','One label, a three-quarter rule, and the four given real room in two columns.']
 ];
-V=[V[0]].concat(T10.map(function(c,i){return {t:(i+1)+' · '+c[0],note:c[1],
- f:(function(n){return function(){return TPAGE(n,{});};})(i+1)};}));
+V=[{t:'Contact',note:'live',f:function(){return TPAGE(9,{});}}];
 
 
 
@@ -2813,18 +2812,7 @@ function render(n){
  var l=document.getElementById('cx-lab'); if(l)l.textContent=V[n].t;
  window.scrollTo(0,0);
 }
-function mount(){
- var s=document.createElement('div');s.className='cx-sw';
- s.innerHTML='<span id="cx-lab"></span><div class="cx-b">'+V.map(function(v,i){
-  return '<b data-n="'+i+'" title="'+v.t+' — '+v.note+'"'+(i===0?' class="z"':'')+'>'+i+'</b>';}).join('')+'</div>';
- document.body.appendChild(s);
- s.addEventListener('click',function(e){var n=e.target.getAttribute&&e.target.getAttribute('data-n');
-  if(n!==null&&n!==undefined)render(+n);});
- document.addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;
-  var cur=[].indexOf.call(s.querySelectorAll('b'),s.querySelector('b.on'));
-  var n=cur+(e.key==='ArrowRight'?1:-1); if(n<0)n=V.length-1; if(n>V.length-1)n=0; render(n);});
- render(0);
-}
+function mount(){ render(0); }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(mount,260);});
 else setTimeout(mount,260);
 })();
@@ -2850,3 +2838,126 @@ else setTimeout(mount,260);
 
 </body>
 </html>
+<style id="sf-sw-css">
+#sf-sw{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(10,10,10,0.93);
+ border:0.5px solid rgba(200,169,110,0.22);border-radius:2px;padding:9px 11px;font-family:'DM Sans',sans-serif;max-width:min(600px,92vw);}
+#sf-sw .sf-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:4px 0;}
+#sf-sw .sf-lb{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:#c8a96e;width:52px;flex-shrink:0;font-weight:300;}
+#sf-sw b{display:inline-block;min-width:20px;text-align:center;padding:3px 6px;cursor:pointer;font-size:0.56rem;
+ color:rgba(244,241,236,0.5);border:0.5px solid rgba(244,241,236,0.12);border-radius:1px;transition:color .2s,border-color .2s;}
+#sf-sw b:hover{color:#c8a96e;border-color:rgba(200,169,110,0.4);}
+#sf-sw b.on{color:#0a0a0a;background:#c8a96e;border-color:#c8a96e;}
+#sf-sw .sf-note{font-size:0.48rem;color:rgba(244,241,236,0.4);margin-top:7px;padding-top:7px;
+ border-top:0.5px solid rgba(244,241,236,0.1);line-height:1.6;}
+#sf-sw .sf-m{color:#c8a96e;}
+</style>
+<script id="cx-sw-js">(function(){
+var LAB='#8a6e3a', INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.28)',
+    RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var IMG=['images/frame_factory-285.jpg','images/cnc-cutting.jpg','images/prototype_assembly.jpg','images/cad-screen.jpg'];
+var FILT='filter:brightness(.84) saturate(.88);';
+var HOST=null, ORIG='', FORMSEC=null, FORMHTML='', DECKSEC=null, SECS=[];
+
+function K(t){return '<span style="font-family:'+BEBAS+';font-size:clamp(0.9rem,1.2vw,1.3rem);letter-spacing:0.14em;'+
+ 'text-transform:uppercase;color:'+INK+';display:block;margin-bottom:9px;">'+t+'</span>';}
+function V(t,mw){return '<p style="font-family:'+DM+';font-weight:300;font-size:0.72rem;line-height:1.7;color:'+SUB+
+ ';max-width:'+(mw||'46ch')+';margin:0;">'+t+'</p>';}
+function rows(cols,gap,rule){return '<div style="display:grid;grid-template-columns:repeat('+cols+',1fr);'+
+ 'gap:'+(gap||'26px 40px')+';">'+DATA.map(function(p){
+  return '<div style="'+(rule?'border-top:0.5px solid '+RULE+';padding-top:14px;':'')+'">'+K(p.t)+V(p.b)+'</div>';}).join('')+'</div>';}
+function img(src,ar,f){return '<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;'+
+ (ar?'aspect-ratio:'+ar+';':'')+(f||FILT)+'">';}
+/* the Marshall shape: a text column beside a fixed image column */
+function marshall(inner,right,w){return '<div class="cx-mar" style="display:grid;grid-template-columns:1fr '+(w||'380px')+
+ ';gap:0;align-items:stretch;">'+'<div style="padding-right:clamp(24px,4vw,48px);">'+inner+'</div>'+
+ '<div style="overflow:hidden;">'+right+'</div></div>';}
+function stack(n){return '<div style="display:grid;grid-template-rows:repeat('+n+',1fr);gap:3px;height:100%;">'+
+ IMG.slice(0,n).map(function(s){return '<div style="overflow:hidden;">'+img(s)+'</div>';}).join('')+'</div>';}
+function pair(){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;height:100%;">'+
+ IMG.slice(0,2).map(function(s){return '<div style="overflow:hidden;">'+img(s)+'</div>';}).join('')+'</div>';}
+
+var DATA=[];
+function harvest(){
+ var sec=SECS[0]; if(!sec)return false;
+ var rowsEl=[].slice.call(sec.querySelectorAll('div')).filter(function(d){
+   return d.querySelector('span')&&d.querySelector('p')&&d.children.length===2;});
+ if(rowsEl.length<4){
+  var sp=[].slice.call(sec.querySelectorAll('span')).filter(function(s){return /partner brand|investor|factory or operator|join the team/i.test(s.textContent.trim());});
+  DATA=sp.map(function(s){var p=s.parentElement.querySelector('p'); return {t:s.textContent.trim(),b:p?p.textContent.trim():''};});
+ } else DATA=rowsEl.slice(0,4).map(function(d){return {t:d.querySelector('span').textContent.trim(),b:d.querySelector('p').textContent.trim()};});
+ return DATA.length===4;
+}
+
+var V10=[
+ ['Original — one column, form and deck below.',null],
+ ['Two columns beside one tall image — the Marshall shape.',function(){return marshall(rows(2),img(IMG[0],null,FILT));}],
+ ['Two columns beside two stacked images.',function(){return marshall(rows(2),stack(2));}],
+ ['Two columns beside a four-up image column.',function(){return marshall(rows(2),stack(4));}],
+ ['Two columns, image column on a wider 460px measure.',function(){return marshall(rows(2),img(IMG[1]),'460px');}],
+ ['Two columns with hairlines, beside a two-up image pair.',function(){return marshall(rows(2,'28px 44px',true),pair());}],
+ ['Image column first, the four beside it.',function(){
+   return '<div class="cx-mar" style="display:grid;grid-template-columns:380px 1fr;gap:0;align-items:stretch;">'+
+    '<div style="overflow:hidden;">'+img(IMG[2])+'</div>'+
+    '<div style="padding-left:clamp(24px,4vw,48px);">'+rows(2)+'</div></div>';}],
+ ['THE FORM beside them — two columns of paths, form on the right.',function(){return marshall(rows(2),FORMHTML,'420px');}],
+ ['THE FORM beside them — paths in one column, form on the right.',function(){return marshall(rows(1,'22px'),FORMHTML,'440px');}],
+ ['THE FORM on the left, the four beside it.',function(){
+   return '<div class="cx-mar" style="display:grid;grid-template-columns:420px 1fr;gap:0;align-items:start;">'+
+    '<div style="padding-right:clamp(24px,4vw,48px);">'+FORMHTML+'</div>'+
+    '<div>'+rows(1,'22px')+'</div></div>';}],
+ ['THE FORM beside them, with hairlines and a wider measure.',function(){
+   return marshall(rows(2,'28px 44px',true),FORMHTML,'460px');}]
+];
+
+function build(){
+ if(document.getElementById('sf-sw'))return;
+ var pc=document.getElementById('pc'); if(!pc){setTimeout(build,400);return;}
+ SECS=[].slice.call(pc.querySelectorAll('section'));
+ if(SECS.length<3){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
+ if(!harvest()){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
+ FORMSEC=SECS[1]; DECKSEC=SECS[2];
+ var inner=FORMSEC.firstElementChild;
+ FORMHTML='<div style="max-width:100%;">'+(inner?inner.innerHTML:'')+'</div>';
+ /* the block that holds the four paths, inside the opening section */
+ var first=SECS[0].firstElementChild;
+ HOST=document.createElement('div'); HOST.id='cx-host';
+ first.appendChild(HOST);
+ var sp=[].slice.call(SECS[0].querySelectorAll('span')).filter(function(s){return /partner brand/i.test(s.textContent);})[0];
+ var block=sp?sp.closest('div').parentElement:null;
+ if(block&&block!==first){ ORIG=block.outerHTML; HOST.__block=block; }
+ else { ORIG=''; }
+
+ var st=document.createElement('style'); st.id='cx-css'; document.head.appendChild(st);
+ st.textContent='@media(max-width:900px){#pc .cx-mar{grid-template-columns:1fr !important;gap:24px !important;}'+
+  '#pc .cx-mar > div{padding:0 !important;}}';
+ var bar=document.createElement('div'); bar.id='sf-sw';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Paths'; row.appendChild(lab);
+ function apply(i){
+  var b=HOST.__block;
+  /* the form section is DETACHED, not hidden — a hidden copy would duplicate
+     the field ids and submitForm would bind to the wrong ones */
+  function attach(on){
+    if(on){ if(!FORMSEC.parentNode)DECKSEC.parentNode.insertBefore(FORMSEC,DECKSEC); }
+    else  { if(FORMSEC.parentNode)FORMSEC.parentNode.removeChild(FORMSEC); }
+  }
+  if(i===0){ if(b)b.style.removeProperty('display'); HOST.innerHTML=''; attach(true); }
+  else { if(b)b.style.setProperty('display','none','important');
+    attach(i<7);                       /* 7-10 put the form beside the paths instead */
+    HOST.innerHTML=V10[i][1]();
+  }
+  note.innerHTML='Paths '+i+' — '+V10[i][0]+'<br><span class="sf-m">'+
+   (i>=7?'contact box below removed — the form sits beside the paths':'form and deck below unchanged')+'</span>';
+ }
+ V10.forEach(function(o,i){
+  var bt=document.createElement('b'); bt.textContent=i; if(i===0)bt.className='on';
+  bt.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   bt.classList.add('on'); apply(i);};
+  row.appendChild(bt);});
+ bar.appendChild(row); bar.appendChild(note); document.body.appendChild(bar); apply(0);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,900);});
+else setTimeout(build,900);
+})();
+</script>
