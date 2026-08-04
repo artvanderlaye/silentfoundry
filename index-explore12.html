@@ -5352,6 +5352,7 @@ section.sf-video{padding-top:34px !important;padding-bottom:40px !important;}
    2 · the gap between the paragraph and EXTRACTED DNA closed:
        row pads 28 -> 10, label margin-top 20 -> 0, headings pulled in   */
 #sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}
+#sfsec-dna .cs-row-left{padding-top:18px !important;padding-bottom:18px !important;}
 #sfsec-dna .cs-dslabel{margin-top:0 !important;}
 #sfsec-dna .cs-dey{margin-bottom:14px !important;}
 #sfsec-dna .cs-dh{margin-bottom:8px !important;}
@@ -5393,150 +5394,113 @@ window.SFSTACK=function(){var s=document.getElementById('sf-stack');
 
 
 <!-- EXTRACTED DNA -->
-<script id="sf-sw-js-dnax">(function(){
-var LAB='#8a6e3a', GOLD='rgba(200,169,110,0.55)', INK='rgba(10,10,10,0.78)', SUB='rgba(10,10,10,0.55)',
-    FAINT='rgba(10,10,10,0.26)', RULE='rgba(10,10,10,0.1)', HAIR='rgba(10,10,10,0.07)',
-    BEBAS="'Bebas Neue',sans-serif", DM="'DM Sans',sans-serif";
-var DATA=null, HOST=null, ORIG=null, MAINLB='', LBEL=null;
+<script id="sf-sw-js-dnax">
+(function(){
+var LAB='#8a6e3a', INK='rgba(10,10,10,0.78)', SUB='rgba(10,10,10,0.55)',
+    FAINT='rgba(10,10,10,0.26)', RULE='rgba(10,10,10,0.1)', GRULE='rgba(138,110,58,0.35)';
+var BEBAS="'Bebas Neue',sans-serif", DM="'DM Sans',sans-serif";
+
+/* every string below is read out of the live DOM — nothing is retyped */
+var DATA=null, HOST=null, ORIG=null, MAINLB='';
 
 function harvest(sec){
  var split=sec.querySelector('.cs-dna-split'); if(!split)return false;
  HOST=split; ORIG=split.innerHTML;
- LBEL=[].filter.call(sec.querySelectorAll('.cs-dslabel'),function(x){return /extracted dna/i.test(x.textContent);})[0];
- MAINLB=LBEL?LBEL.textContent.trim():'Extracted DNA';
+ var lb=[].filter.call(sec.querySelectorAll('.cs-dslabel'),function(x){return /extracted dna/i.test(x.textContent);})[0];
+ MAINLB=lb?lb.textContent.trim():'Extracted DNA';
  DATA=[].map.call(split.querySelectorAll('.cs-dna-col'),function(col){
   return {g:col.querySelector('.cs-dsub').textContent.trim(),
           it:[].map.call(col.querySelectorAll('.cs-ddna > div'),function(x){
             return {k:x.querySelector('.cs-ddna-k').textContent.trim(),
                     v:x.querySelector('.cs-ddna-v').textContent.trim()};})};});
- return DATA.length===2 && DATA[0].it.length===4 && DATA[1].it.length===4;
+ return DATA.length>0;
 }
-function K(t,sz,mb,c){return '<div style="font-family:'+BEBAS+';font-size:'+(sz||'0.86rem')+
- ';letter-spacing:0.16em;text-transform:uppercase;color:'+(c||INK)+';margin-bottom:'+(mb===undefined?7:mb)+'px;line-height:1.05;">'+t+'</div>';}
-function Vv(t,sz,mw,c){return '<div style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.66rem')+
- ';line-height:1.6;color:'+(c||SUB)+';'+(mw?'max-width:'+mw+';':'')+'">'+t+'</div>';}
-function G(t,sz,ls,c){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.4rem')+
+function K(t,sz,mb){return '<div style="font-family:'+BEBAS+';font-size:'+(sz||'0.92rem')+
+ ';letter-spacing:0.16em;text-transform:uppercase;color:'+INK+';margin-bottom:'+(mb||8)+'px;">'+t+'</div>';}
+function V(t,sz,mw){return '<div style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.7rem')+
+ ';line-height:1.6;color:'+SUB+';'+(mw?'max-width:'+mw+';':'')+'">'+t+'</div>';}
+function G(t,sz,ls,c){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.42rem')+
  ';letter-spacing:'+(ls||'0.24em')+';text-transform:uppercase;color:'+(c||FAINT)+';">'+t+'</span>';}
-function TTL(){return '<div style="margin-bottom:14px;">'+G(MAINLB,'0.46rem','0.26em',LAB)+'</div>';}
-function HR(c,m){return '<div style="height:0.5px;background:'+(c||HAIR)+';'+(m?'margin:'+m+';':'')+'"></div>';}
+function HR(c,m){return '<div style="height:0.5px;background:'+(c||RULE)+';'+(m?'margin:'+m+';':'')+'"></div>';}
 function grid(n,g){return 'display:grid;grid-template-columns:repeat('+n+',1fr);gap:'+g+';';}
-function ID(gi,i){return (gi?'T.':'I.')+'0'+(i+1);}
 
 var L=[
- /* 1 · Compact four-column catalogue */
- function(){return TTL()+DATA.map(function(d,gi){
-  return (gi?'<div style="height:22px"></div>':'')+G(d.g)+HR(HAIR,'7px 0 14px')+
-   '<div style="'+grid(4,'16px 22px')+'">'+d.it.map(function(i){
-     return '<div>'+K(i.k)+Vv(i.v,'0.64rem')+'</div>';}).join('')+'</div>';}).join('');},
+ /* 1 · COMPACT EDITORIAL — label, rule, tiny group tag, straight into the entries */
+ function(){return DATA.map(function(d,gi){
+   return (gi?'<div style="height:26px"></div>':'')+
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
+     G(gi?d.g:MAINLB+'  ·  '+d.g,'0.44rem','0.24em',gi?FAINT:LAB)+(gi?'':G(d.g==='x'?'':'','0.4rem'))+'</div>'+
+    HR(RULE,'8px 0 18px')+
+    '<div style="'+grid(2,'22px 48px')+'">'+d.it.map(function(i){return '<div>'+K(i.k)+V(i.v,'0.7rem','36ch')+'</div>';}).join('')+'</div>';
+  }).join('');},
 
- /* 2 · Two horizontal taxonomy bands */
- function(){return TTL()+DATA.map(function(d,gi){
-  return '<div style="display:grid;grid-template-columns:86px 1fr;gap:clamp(14px,2vw,26px);'+
-   (gi?'border-top:0.5px solid '+HAIR+';padding-top:20px;margin-top:20px;':'')+'">'+
-   '<div style="padding-top:2px;">'+G(d.g,'0.38rem','0.22em')+'</div>'+
-   '<div style="'+grid(4,'14px 20px')+'">'+d.it.map(function(i){
-     return '<div>'+K(i.k,'0.82rem',6)+Vv(i.v,'0.62rem')+'</div>';}).join('')+'</div></div>';}).join('');},
+ /* 2 · INLINE TAXONOMY — one header line, entries immediately beneath */
+ function(){return DATA.map(function(d,gi){
+   return (gi?'<div style="height:30px"></div>':'')+
+    '<div style="margin-bottom:14px;">'+G(MAINLB,'0.44rem','0.26em',LAB)+
+     '<span style="color:'+FAINT+';padding:0 10px;">·</span>'+G(d.g,'0.44rem','0.26em',FAINT)+'</div>'+
+    '<div style="'+grid(2,'24px 48px')+'">'+d.it.map(function(i){return '<div>'+K(i.k)+V(i.v,'0.7rem','36ch')+'</div>';}).join('')+'</div>';
+  }).join('');},
 
- /* 3 · Numbered industrial archive */
- function(){return TTL()+DATA.map(function(d,gi){
-  return (gi?'<div style="height:20px"></div>':'')+G(d.g)+HR(HAIR,'7px 0 13px')+
-   '<div style="'+grid(4,'16px 22px')+'">'+d.it.map(function(i,ix){
-     return '<div>'+G(ID(gi,ix),'0.36rem','0.2em',GOLD)+K(i.k,'0.8rem',6)+Vv(i.v,'0.62rem')+'</div>';}).join('')+'</div>';}).join('');},
-
- /* 4 · Staggered editorial grid */
- function(){return TTL()+DATA.map(function(d,gi){
-  return (gi?'<div style="height:18px"></div>':'')+G(d.g)+g8()+
-   '<div style="'+grid(4,'14px 20px')+'align-items:start;">'+d.it.map(function(i,ix){
-     return '<div style="padding-top:'+((ix%2)?(gi?0:18):(gi?18:0))+'px;border-top:0.5px solid '+
-      ((ix%2)?'transparent':HAIR)+';">'+K(i.k,'0.82rem',6)+Vv(i.v,'0.62rem')+'</div>';}).join('')+'</div>';}).join('');},
-
- /* 5 · Exhibition catalogue */
- function(){return TTL()+HR(GOLD,'0 0 16px')+DATA.map(function(d,gi){
-  return (gi?'<div style="height:24px"></div>':'')+
-   '<div style="margin-bottom:12px;">'+G(d.g,'0.36rem','0.3em')+'</div>'+
-   '<div style="'+grid(4,'20px 24px')+'">'+d.it.map(function(i){
-     return '<div>'+K(i.k,'0.84rem',8)+Vv(i.v,'0.6rem','30ch')+'</div>';}).join('')+'</div>';}).join('');},
-
- /* 6 · Split intangible / tangible */
- function(){return TTL()+'<div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,38px);">'+
+ /* 3 · MARGIN LABELS — the group sits quietly in a narrow left margin */
+ function(){return '<div style="margin-bottom:16px;">'+G(MAINLB,'0.44rem','0.26em',LAB)+'</div>'+
    DATA.map(function(d,gi){
-   return '<div style="'+(gi?'border-left:0.5px solid '+RULE+';padding-left:clamp(18px,2.6vw,34px);':'')+'">'+
-    G(d.g)+HR(HAIR,'7px 0 13px')+'<div style="'+grid(2,'14px 18px')+'">'+d.it.map(function(i){
-     return '<div>'+K(i.k,'0.8rem',6)+Vv(i.v,'0.6rem')+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';},
+   return '<div style="display:grid;grid-template-columns:92px 1fr;gap:clamp(16px,2vw,28px);'+
+    (gi?'border-top:0.5px solid '+RULE+';padding-top:22px;margin-top:22px;':'')+'">'+
+    '<div style="padding-top:3px;">'+G(d.g,'0.4rem','0.22em')+'</div>'+
+    '<div style="'+grid(2,'22px 44px')+'">'+d.it.map(function(i){return '<div>'+K(i.k)+V(i.v,'0.68rem','34ch')+'</div>';}).join('')+'</div></div>';
+  }).join('');},
 
- /* 7 · Typographic index */
- function(){return TTL()+DATA.map(function(d,gi){
-  return (gi?'<div style="height:18px"></div>':'')+G(d.g,'0.34rem','0.28em')+
-   '<div style="'+grid(4,'14px 20px')+'margin-top:10px;">'+d.it.map(function(i){
-     return '<div>'+K(i.k,'1.05rem',5)+Vv(i.v,'0.56rem',null,FAINT)+'</div>';}).join('')+'</div>';}).join('');},
+ /* 4 · RULE-BASED — rules do the organising, the label rides on the rule */
+ function(){return DATA.map(function(d,gi){
+   return '<div style="display:flex;align-items:center;gap:14px;'+(gi?'margin-top:28px;':'')+'">'+
+     G(gi?d.g:MAINLB,'0.44rem','0.26em',gi?FAINT:LAB)+
+     '<div style="flex:1;height:0.5px;background:'+(gi?RULE:GRULE)+';"></div>'+
+     (gi?'':G(d.g,'0.4rem','0.22em'))+'</div>'+
+    '<div style="'+grid(4,'20px 22px')+'margin-top:18px;">'+
+     d.it.map(function(i){return '<div>'+K(i.k,'0.82rem',7)+V(i.v,'0.64rem')+'</div>';}).join('')+'</div>';
+  }).join('');},
 
- /* 8 · Technical matrix */
- function(){return TTL()+'<div style="border:0.5px solid '+HAIR+';">'+DATA.map(function(d,gi){
-  return '<div style="display:grid;grid-template-columns:74px repeat(4,1fr);'+
-   (gi?'border-top:0.5px solid '+HAIR+';':'')+'">'+
-   '<div style="border-right:0.5px solid '+HAIR+';padding:12px 10px;">'+G(d.g,'0.34rem','0.2em')+'</div>'+
-   d.it.map(function(i,ix){return '<div style="padding:12px 14px;'+(ix<3?'border-right:0.5px solid '+HAIR+';':'')+'">'+
-     K(i.k,'0.78rem',6)+Vv(i.v,'0.6rem')+'</div>';}).join('')+'</div>';}).join('')+'</div>';},
-
- /* 9 · Margin annotation */
- function(){return TTL()+DATA.map(function(d,gi){
-  return '<div style="display:grid;grid-template-columns:20px 1fr;gap:14px;'+
-   (gi?'margin-top:18px;':'')+'">'+
-   '<div style="writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;padding-top:2px;">'+
-   G(d.g,'0.34rem','0.26em')+'</div>'+
-   '<div style="'+grid(4,'14px 20px')+'">'+d.it.map(function(i){
-     return '<div style="border-top:0.5px solid '+HAIR+';padding-top:9px;">'+K(i.k,'0.8rem',6)+Vv(i.v,'0.62rem')+'</div>';}).join('')+'</div></div>';}).join('');},
-
- /* 10 · Asymmetric portfolio spread */
- function(){return TTL()+DATA.map(function(d,gi){
-  return (gi?'<div style="height:20px"></div>':'')+G(d.g)+HR(HAIR,'7px 0 14px')+
-   '<div style="display:grid;grid-template-columns:'+(gi?'1fr 1fr 1fr 1.6fr':'1.6fr 1fr 1fr 1fr')+
-   ';gap:16px 24px;">'+d.it.map(function(i){
-     return '<div>'+K(i.k,'0.82rem',6)+Vv(i.v,'0.62rem')+'</div>';}).join('')+'</div>';}).join('');}
+ /* 5 · EXHIBITION CATALOGUE — the panel starts at the first specimen */
+ function(){return '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;">'+
+   G(MAINLB,'0.44rem','0.26em',LAB)+'</div>'+HR(GRULE,'0 0 16px')+
+   DATA.map(function(d,gi){
+   return '<div style="'+grid(4,'18px 20px')+(gi?'margin-top:20px;padding-top:16px;border-top:0.5px solid '+RULE+';':'')+'">'+
+    '<div style="grid-column:1/-1;margin-bottom:-4px;">'+G(d.g,'0.38rem','0.22em')+'</div>'+
+    d.it.map(function(i){return '<div>'+K(i.k,'0.8rem',6)+V(i.v,'0.62rem')+'</div>';}).join('')+'</div>';
+  }).join('');}
 ];
-function g8(){return '<div style="height:8px"></div>';}
-
-var NOTES=['Corrected original — gap fixed, no duplicate title.',
- 'Compact Four-Column Catalogue','Two Horizontal Taxonomy Bands','Numbered Industrial Archive',
- 'Staggered Editorial Grid','Exhibition Catalogue','Split Intangible / Tangible','Typographic Index',
- 'Technical Matrix','Margin Annotation Layout','Asymmetric Portfolio Spread'];
 
 function build(){
  if(document.getElementById('sf-sw-dnax'))return;
  var sec=document.getElementById('sfsec-dna'); if(!sec)return;
  if(!harvest(sec))return;
- var st=document.createElement('style'); st.id='sfcss-dnax'; document.head.appendChild(st);
- /* ── the gap, fixed at the parent ──────────────────────────────────────
-    the row height is set by the 249px photograph, so the text block was
-    sitting at the top of a taller cell. distributing it removes the slack
-    without touching the image; the pads then set the interval to ~64px. */
- var fix=document.createElement('style'); fix.id='sfcss-dnagap';
- fix.textContent=
-  '#sfsec-dna .cs-dbody > .cs-row-left:first-child{justify-content:space-between !important;'+
-  'padding-top:18px !important;padding-bottom:32px !important;min-height:0 !important;}'+
-  '#sfsec-dna .cs-dbody > .cs-row-left:nth-child(3){padding-top:32px !important;}'+
-  '#sfsec-dna .cs-dslabel{margin-top:0 !important;}'+
-  '#sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}';
- document.head.appendChild(fix);
-
+ var lb=[].filter.call(sec.querySelectorAll('.cs-dslabel'),function(x){return /extracted dna/i.test(x.textContent);})[0];
+ var st=document.createElement('style'); st.id='sfcss-dnax-dnax'; document.head.appendChild(st);
  var bar=document.createElement('div'); bar.id='sf-sw-dnax';
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='DNA Comp'; row.appendChild(lab);
+ var NOTES=['Original.',
+  'Compact Editorial — label and group on one line, rule, straight into the entries.',
+  'Inline Taxonomy — EXTRACTED DNA · INTANGIBLE as a single header line.',
+  'Margin Labels — groups moved into a 92px left margin as annotations.',
+  'Rule-Based — the label rides on the rule; four columns beneath.',
+  'Exhibition Catalogue — one gold rule, then four columns of specimens.'];
  function apply(i){
-  if(i===0){HOST.innerHTML=ORIG; HOST.removeAttribute('style'); st.textContent='';
-   if(LBEL)LBEL.style.display='';}
-  else{HOST.innerHTML=L[i-1](); HOST.setAttribute('style','display:block !important;');
+  if(i===0){HOST.innerHTML=ORIG; HOST.removeAttribute('style'); st.textContent=''; if(lb)lb.style.display='';}
+  else{
+   HOST.innerHTML=L[i-1]();
+   HOST.setAttribute('style','display:block !important;');
    st.textContent='#sfsec-dna .cs-dna-split *{max-width:none;}';
-   if(LBEL)LBEL.style.display='none';}       /* one title only — each layout prints its own */
+   if(lb)lb.style.display='none';   /* each layout prints EXTRACTED DNA in its own place */
+  }
   setTimeout(function(){
-   var p=sec.querySelector('.cs-dp');
-   var t=[].filter.call(HOST.querySelectorAll('span,div'),function(x){return /extracted dna/i.test(x.textContent)&&x.children.length===0;})[0]
-        || (LBEL&&LBEL.style.display!=='none'?LBEL:null);
-   var gap=(p&&t)?Math.round(t.getBoundingClientRect().top-p.getBoundingClientRect().bottom):0;
-   var titles=(sec.textContent.match(/Extracted DNA/gi)||[]).length;
-   note.innerHTML=i+' — '+NOTES[i]+'<br><span class="sf-m">paragraph → EXTRACTED DNA: '+gap+
-    'px (target 64–88) &nbsp;·&nbsp; titles on screen: '+titles+'</span>';},70);
+   var h=Math.round(sec.querySelector('.cs-dbody').children[2].getBoundingClientRect().height);
+   var first=HOST.querySelector('div[style*="Bebas"]');
+   var top=first?Math.round(first.getBoundingClientRect().top-HOST.getBoundingClientRect().top):0;
+   note.innerHTML=i+' — '+NOTES[i]+'<br><span class="sf-m">first DNA principle appears '+top+
+    'px into the block &nbsp;·&nbsp; DNA row height '+h+'px</span>';},60);
  }
  NOTES.forEach(function(_,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
