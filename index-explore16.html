@@ -5486,8 +5486,7 @@ var L=[
 ];
 function g8(){return '<div style="height:8px"></div>';}
 
-var KEEP=[0,1,3,4];
-var NOTES=['Corrected original — gap fixed, no duplicate title.','Two-Column Catalogue','Single-Column Definition List','Two Halves, One Column Each'];
+var NOTES=['Corrected original — gap fixed, no duplicate title.','Two-Column Catalogue','Three Columns, Left Label Band','Single-Column Definition List','Two Halves, One Column Each','Numbered Archive, Two Columns','Exhibition Catalogue, Three Columns','Typographic Index','Ruled Matrix','Margin Annotation, Three Columns','Asymmetric Spread'];
 
 function build(){
  if(document.getElementById('sf-sw-dnax'))return;
@@ -5515,7 +5514,7 @@ function build(){
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='DNA Comp'; row.appendChild(lab);
  function apply(i){
   if(i===0){HOST.innerHTML=TTL()+ORIG; HOST.removeAttribute('style'); st.textContent='';}
-  else{HOST.innerHTML=L[KEEP[i]-1](); HOST.setAttribute('style','display:block !important;');
+  else{HOST.innerHTML=L[i-1](); HOST.setAttribute('style','display:block !important;');
    st.textContent='#sfsec-dna .cs-dna-split *{max-width:none;}';
   }
   setTimeout(function(){
@@ -5541,90 +5540,91 @@ else setTimeout(build,1100);
 </script>
 <!-- NAV -->
 <script id="sf-sw-js-nav">(function(){
-var GOLD='#c8a96e', DIM='rgba(244,241,236,0.3)', FAINT='rgba(244,241,236,0.14)';
-var DOTS=[], BTNS=[], STAGE=null, ORIGD=[], ORIGB=[];
+var GOLD='#c8a96e', DIM='rgba(244,241,236,0.32)', FAINT='rgba(244,241,236,0.14)', DM="'DM Sans',sans-serif";
+var DOTS=null, BTNS=null, N=0, STAGE=null;
 
-function set(el,o){ for(var k in o){ if(o[k]===null)el.style.removeProperty(k);
-  else el.style.setProperty(k,o[k],'important'); } }          /* beats any stylesheet, always */
-function restore(){ DOTS.forEach(function(d,i){d.setAttribute('style',ORIGD[i]||'');});
-  BTNS.forEach(function(b,i){b.setAttribute('style',ORIGB[i]||'');}); }
-function dotsAll(o,act){ DOTS.forEach(function(d){ d.setAttribute('style',ORIGD[DOTS.indexOf(d)]||'');
-  set(d,o); if(d.classList.contains('active')&&act)set(d,act); }); }
-function arrows(o){ BTNS.forEach(function(b,i){ b.setAttribute('style',ORIGB[i]||''); set(b,o); }); }
-var HIDE={display:'none'};
-
-var NAV=[
- ['Original.',function(){restore();}],
- ['Dots, centred — 5px, the smallest possible.',function(){
-   dotsAll({width:'5px',height:'5px','border-radius':'50%',background:FAINT,border:'none',margin:'0 4px',transform:'none'},
-           {background:GOLD}); arrows(HIDE);}],
- ['Dots, left aligned.',function(){
-   dotsAll({width:'5px',height:'5px','border-radius':'50%',background:FAINT,border:'none',margin:'0 8px 0 0',transform:'none'},
-           {background:GOLD}); arrows(HIDE);
-   var p=DOTS[0]&&DOTS[0].parentElement; if(p)set(p,{left:'48px',right:'auto',transform:'none'});}],
- ['Bars — the active one runs longer.',function(){
-   dotsAll({width:'8px',height:'1px','border-radius':'0',background:FAINT,border:'none',margin:'0 3px',transform:'none',transition:'width .3s'},
-           {width:'22px',background:GOLD}); arrows(HIDE);}],
- ['Arrows only, no dots.',function(){
-   DOTS.forEach(function(d){d.setAttribute('style',ORIGD[DOTS.indexOf(d)]||'');set(d,HIDE);});
-   arrows({opacity:'0.5','font-size':'1.1rem'});}],
- ['Hairline track — one thin rule, the active segment lit.',function(){
-   dotsAll({width:'26px',height:'1px','border-radius':'0',background:FAINT,border:'none',margin:'0',transform:'none'},
-           {background:GOLD}); arrows(HIDE);}],
- ['Outline dots — filled only when active.',function(){
-   dotsAll({width:'6px',height:'6px','border-radius':'50%',background:'transparent',border:'1px solid '+FAINT,margin:'0 5px',transform:'none'},
-           {background:GOLD,'border-color':GOLD}); arrows(HIDE);}],
- ['Dots and arrows together, both very quiet.',function(){
-   dotsAll({width:'4px',height:'4px','border-radius':'50%',background:FAINT,border:'none',margin:'0 4px',transform:'none'},
-           {background:GOLD}); arrows({opacity:'0.3','font-size':'0.95rem'});}],
- ['Wide bars — a segmented progress rule.',function(){
-   dotsAll({width:'44px',height:'2px','border-radius':'0',background:FAINT,border:'none',margin:'0 2px',transform:'none'},
-           {background:GOLD}); arrows(HIDE);}],
- ['Barely there — 3px dots, arrows faded right back.',function(){
-   dotsAll({width:'3px',height:'3px','border-radius':'50%',background:'rgba(244,241,236,0.22)',border:'none',margin:'0 5px',transform:'none'},
-           {background:GOLD}); arrows({opacity:'0.12'});}],
- ['Nothing but the drag — every control hidden.',function(){
-   DOTS.forEach(function(d){d.setAttribute('style',ORIGD[DOTS.indexOf(d)]||'');set(d,HIDE);}); arrows(HIDE);}]
-];
-
+/* ── drag / swipe, so it slides rather than only clicking ── */
 function addDrag(){
- if(!STAGE||STAGE.__drag)return; STAGE.__drag=1; var x0=null;
+ if(!STAGE||STAGE.__drag)return; STAGE.__drag=1;
+ var x0=null;
  function down(e){x0=(e.touches?e.touches[0].clientX:e.clientX);}
  function up(e){ if(x0===null)return;
   var x=(e.changedTouches?e.changedTouches[0].clientX:e.clientX), dx=x-x0; x0=null;
   if(Math.abs(dx)<40)return;
   if(window.c16Step)window.c16Step(dx<0?1:-1);
-  else{var i=DOTS.findIndex(function(b){return b.classList.contains('active');});
-       var n=(i+(dx<0?1:-1)+DOTS.length)%DOTS.length; DOTS[n]&&DOTS[n].click();}}
+  else{var d=[].slice.call(DOTS), i=d.findIndex(function(b){return b.classList.contains('active');});
+       var n=(i+(dx<0?1:-1)+d.length)%d.length; d[n]&&d[n].click();}}
  STAGE.addEventListener('mousedown',down); STAGE.addEventListener('mouseup',up);
  STAGE.addEventListener('touchstart',down,{passive:true}); STAGE.addEventListener('touchend',up,{passive:true});
- STAGE.style.setProperty('cursor','grab','important');
+ STAGE.style.cursor='grab';
 }
+
+function css(s){return s;}
+var NAV=[
+ ['Original.',''],
+ ['Dots, centred — the smallest possible.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:5px !important;height:5px !important;border-radius:50% !important;background:'+FAINT+' !important;border:none !important;margin:0 4px !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'],
+ ['Dots, left aligned.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:5px !important;height:5px !important;border-radius:50% !important;background:'+FAINT+' !important;border:none !important;margin:0 4px 0 0 !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'+
+  '#c16s-wrap ~ div[style*="z-index:3"],#c16s-wrap ~ div[style*="z-index: 3"]{left:48px !important;right:auto !important;transform:none !important;}'],
+ ['Bars — the active one runs longer.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:8px !important;height:1px !important;border-radius:0 !important;background:'+FAINT+' !important;border:none !important;margin:0 3px !important;transition:width .3s !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{width:22px !important;background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'],
+ ['Arrows only, no dots.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{display:none !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{opacity:0.45 !important;font-size:1.1rem !important;}'+
+  'body .fcar-btn.fcar-prev:hover,body .fcar-btn.fcar-next:hover{opacity:1 !important;color:'+GOLD+' !important;}'],
+ ['Hairline track — one thin rule, the active segment lit.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:26px !important;height:1px !important;border-radius:0 !important;background:'+FAINT+' !important;border:none !important;margin:0 !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'],
+ ['Outline dots — filled only when active.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:6px !important;height:6px !important;border-radius:50% !important;background:transparent !important;border:1px solid '+FAINT+' !important;margin:0 5px !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;border-color:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'],
+ ['Dots and arrows together, both very quiet.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:4px !important;height:4px !important;border-radius:50% !important;background:'+FAINT+' !important;border:none !important;margin:0 4px !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{opacity:0.3 !important;font-size:0.95rem !important;}'+
+  'body .fcar-btn.fcar-prev:hover,body .fcar-btn.fcar-next:hover{opacity:0.85 !important;}'],
+ ['Wide bars — a segmented progress rule.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:44px !important;height:2px !important;border-radius:0 !important;background:'+FAINT+' !important;border:none !important;margin:0 2px !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}'],
+ ['Barely there — dots at 3px, arrows hidden until hover.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{width:3px !important;height:3px !important;border-radius:50% !important;background:rgba(244,241,236,0.22) !important;border:none !important;margin:0 5px !important;}'+
+  'body #c16s-wrap ~ div .c16-dot.fdot.active,body .c16-dot.fdot.active{background:'+GOLD+' !important;}'+
+  'body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{opacity:0 !important;transition:opacity .3s !important;}'+
+  '#c16s:hover ~ .fcar-btn,body .fcar-btn.fcar-prev:hover,body .fcar-btn.fcar-next:hover{opacity:0.7 !important;}'],
+ ['Nothing but the drag — all controls hidden, the image slides.',
+  'body #c16s-wrap ~ div .c16-dot.fdot,body .c16-dot.fdot{display:none !important;}body .fcar-btn.fcar-prev,body .fcar-btn.fcar-next{display:none !important;}']
+];
 
 function build(){
  if(document.getElementById('sf-sw-nav'))return;
- DOTS=[].slice.call(document.querySelectorAll('.c16-dot'));
- BTNS=[].slice.call(document.querySelectorAll('.fcar-btn'));
- if(!DOTS.length){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- ORIGD=DOTS.map(function(d){return d.getAttribute('style')||'';});
- ORIGB=BTNS.map(function(b){return b.getAttribute('style')||'';});
- STAGE=document.getElementById('c16s')||document.getElementById('c16s-wrap'); addDrag();
+ DOTS=document.querySelectorAll('.c16-dot');
+ if(!DOTS.length){ if(build.tries=(build.tries||0)+1, build.tries<12){setTimeout(build,400);} return; }
+ N=DOTS.length;
+ STAGE=document.getElementById('c16s')||document.getElementById('c16s-wrap');
+ addDrag();
+ var st=document.createElement('style'); st.id='sfcss-nav'; document.head.appendChild(st);
  var bar=document.createElement('div'); bar.id='sf-sw-nav';
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Nav'; row.appendChild(lab);
- var cur=0;
- function apply(i){ cur=i; NAV[i][1]();
-  note.innerHTML='Nav '+i+' — '+NAV[i][0]+'<br><span class="sf-m">drag or swipe the image works in every state</span>';}
  NAV.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-   b.classList.add('on'); apply(i);};
+   b.classList.add('on'); st.textContent=o[1];
+   note.innerHTML='Nav '+i+' — '+o[0]+'<br><span class="sf-m">drag or swipe the image works in every state</span>';};
   row.appendChild(b);});
- bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar); apply(0);
- /* the carousel re-marks the active dot as it advances — keep the chosen look on it */
- new MutationObserver(function(){ if(cur)NAV[cur][1](); })
-  .observe(DOTS[0].parentElement,{attributes:true,subtree:true,attributeFilter:['class']});
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ note.innerHTML='Nav 0 — '+NAV[0][0]+'<br><span class="sf-m">drag or swipe the image works in every state</span>';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1200);});
 else setTimeout(build,1200);
