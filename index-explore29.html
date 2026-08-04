@@ -5614,7 +5614,9 @@ function baked(){
   A+' .u-d{border-top:0.5px solid '+RULE+' !important;padding:10px 0 !important;}'+
   A+" .u-k{font-family:"+BEBAS+" !important;font-size:0.86rem !important;letter-spacing:0.16em !important;font-weight:400 !important;}"+
   A+' .u-v{font-size:0.64rem !important;line-height:1.6 !important;}'+
-  A+' .u-twin .u-img{aspect-ratio:21/9 !important;object-fit:cover !important;object-position:center !important;}';
+  A+' .u-twin .u-img{aspect-ratio:32/9 !important;}'+A+' .u-twin{position:relative;}'+
+  A+' .u-twin::after{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;'+
+  'background:rgba(237,232,224,0.55);pointer-events:none;z-index:2;}';
 }
 
 /* ══ TEN PORTFOLIO LAYOUTS — structurally different, not restyled ══ */
@@ -5655,213 +5657,133 @@ else setTimeout(build,1400);
   h.textContent='Sections — click to hide';
   h.onclick=function(){[].forEach.call(s.children,function(c,i){if(i)c.style.display=c.style.display==='none'?'':'none';});};
   s.appendChild(h);document.body.appendChild(s);} return s;};</script>
-<script id="sf-sw-js-v3">(function(){
-var CY='#4FA8C7', CY8='rgba(79,168,199,0.85)', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.10)',
-    INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
-    RULE='rgba(10,10,10,0.08)', CRM='rgba(244,241,236,0.94)', CRM6='rgba(244,241,236,0.62)',
-    DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var A='#su', T=A+' .u-tx', N=A+' .u-name', C=A+' .u-cat', D=A+' .u-desc', CD=A+' .u-c';
+<script id="sf-sw-js-sw20">/* ══ TWO ROWS: the featured-project caption, and the portfolio card text ══ */
+(function(){
+var CY='rgba(0,180,216,0.85)',CY2='rgba(0,180,216,0.18)',GOLD='#c8a96e',
+    INK='rgba(10,10,10,0.8)',SUB='rgba(10,10,10,0.5)',FAINT='rgba(10,10,10,0.3)',
+    RULE='rgba(10,10,10,0.08)',DK='rgba(10,10,10,0.9)',CREAM='rgba(244,241,236,0.92)',
+    DM="'DM Sans',sans-serif",BEBAS="'Bebas Neue',sans-serif";
+var O='#c16-overlay', CAP='#sf-cap', A='#su';
 
-/* ══ A · FEATURED PROJECT caption — markup rebuilt per design ══ */
-var OV=null, PARTS=null;
-function grab(){
- OV=document.getElementById('c16-overlay'); if(!OV||PARTS)return !!PARTS;
- var ey=OV.querySelector('span'), p=OV.querySelector('.fp-body-text');
- PARTS={ey:ey?ey.textContent.trim():'Featured Project',
-        txt:p?p.textContent.trim():'',
-        logos:[].map.call(OV.querySelectorAll('img'),function(i){return i.outerHTML;})};
- OV.__orig=OV.innerHTML; OV.__style=OV.getAttribute('style');
- return true;
-}
-function EY(c,sz,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
- ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+PARTS.ey+'</span>';}
-function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
- ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'52ch')+';margin:0;">'+PARTS.txt+'</p>';}
-function LG(h,op){return '<span style="display:inline-flex;align-items:center;gap:14px;">'+
- PARTS.logos.join('')+'</span>';}
-function HR(c,h){return '<div style="height:'+(h||'1px')+';background:'+(c||CY2)+';"></div>';}
-function ROW(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+';gap:'+(gap||'clamp(20px,3vw,48px)')+
- ';align-items:'+(al||'end')+';">'+a+b+'</div>';}
-function NUM(n){return '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.14em;color:'+CY+';">'+n+'</span>';}
-
+/* ── A · the FEATURED PROJECT caption, twenty portfolio treatments ── */
+function cap(css){return css;}
 var CAPS=[
- ['Current.',null],
- ['Specimen label — 01, rule, logos, sentence.',function(){return NUM('01')+'<div style="height:10px"></div>'+
-   EY()+'<div style="height:12px"></div>'+HR()+'<div style="height:16px"></div>'+ROW('<div>'+LG()+'</div>','<div>'+TX()+'</div>','auto 1fr');}],
- ['Cyan spine — a vertical rule down the left edge.',function(){return '<div style="border-left:2px solid '+CY+
-   ';padding-left:20px;">'+EY()+'<div style="height:12px"></div>'+LG()+'<div style="height:14px"></div>'+TX()+'</div>';}],
- ['Framed lockup — logos boxed in cyan, sentence beside.',function(){return ROW(
-   '<div style="border:1px solid '+CY2+';padding:18px 20px;">'+LG()+'</div>','<div>'+EY()+'<div style="height:10px"></div>'+TX()+'</div>','auto 1fr','clamp(20px,3vw,44px)','center');}],
- ['Inverted band — the caption reads out of black.',function(){return '<div style="background:#0a0a0a;padding:24px 26px;">'+
-   EY(CY)+'<div style="height:14px"></div>'+LG()+'<div style="height:14px"></div>'+TX('0.72rem',CRM6)+'</div>';}],
- ['Display sentence — the line set large, logos small above.',function(){return LG()+'<div style="height:16px"></div>'+
-   TX('1.05rem',INK,'30ch','1.35');}],
- ['Metadata row — eyebrow, category and year on one line.',function(){return
-   '<div style="display:flex;gap:22px;align-items:baseline;flex-wrap:wrap;">'+EY()+
-   '<span style="font-family:'+DM+';font-size:0.44rem;letter-spacing:0.3em;text-transform:uppercase;color:'+FAINT+';">Electric Motorcycle</span>'+
-   '<span style="font-family:'+DM+';font-size:0.44rem;letter-spacing:0.3em;color:'+FAINT+';">2026</span></div>'+
-   '<div style="height:12px"></div>'+HR(RULE)+'<div style="height:16px"></div>'+ROW('<div>'+LG()+'</div>','<div>'+TX()+'</div>','auto 1fr');}],
- ['Exhibition label — a bordered card, left, nothing else.',function(){return
-   '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:20px 22px;max-width:520px;">'+
-   EY()+'<div style="height:12px"></div>'+LG()+'<div style="height:12px"></div>'+TX('0.68rem')+'</div>';}],
- ['Two columns split by a cyan rule.',function(){return
-   '<div style="display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3vw,44px);">'+
-   '<div style="padding-right:clamp(22px,3vw,44px);border-right:1px solid '+CY2+';">'+EY()+'<div style="height:12px"></div>'+LG()+'</div>'+
-   '<div>'+TX()+'</div></div>';}],
- ['Stacked and centred on the measure.',function(){return '<div style="text-align:center;">'+EY()+
-   '<div style="height:14px"></div>'+LG()+'<div style="height:14px"></div>'+
-   '<div style="display:flex;justify-content:center;">'+TX('0.72rem',SUB,'46ch')+'</div></div>';}],
- ['Cyan chip eyebrow.',function(){return '<span style="display:inline-block;background:'+CY1+';border:0.5px solid '+CY2+
-   ';padding:5px 10px;">'+EY()+'</span><div style="height:14px"></div>'+ROW('<div>'+LG()+'</div>','<div>'+TX()+'</div>','auto 1fr');}],
- ['Rule riding through the eyebrow.',function(){return
-   '<div style="display:flex;align-items:center;gap:16px;">'+EY()+'<div style="flex:1;">'+HR()+'</div></div>'+
-   '<div style="height:18px"></div>'+ROW('<div>'+LG()+'</div>','<div>'+TX()+'</div>','auto 1fr');}],
- ['Twelve-column — logos in the first three.',function(){return
-   '<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,2vw,28px);align-items:end;">'+
-   '<div style="grid-column:1/4;">'+EY()+'<div style="height:10px"></div>'+LG()+'</div>'+
-   '<div style="grid-column:5/12;">'+TX()+'</div></div>';}],
- ['Sentence across two columns beneath the logos.',function(){return EY()+'<div style="height:12px"></div>'+LG()+
-   '<div style="height:16px"></div><div style="columns:2;column-gap:clamp(24px,4vw,56px);">'+TX('0.68rem',SUB,'none')+'</div>';}],
- ['Minimal — sentence only, logos small at the right.',function(){return ROW('<div>'+TX('0.72rem',SUB,'46ch')+'</div>',
-   '<div style="opacity:0.55;transform:scale(0.8);transform-origin:right bottom;">'+LG()+'</div>','1fr auto');}],
- ['Cyan underline beneath the logo lockup.',function(){return EY()+'<div style="height:12px"></div>'+
-   '<div style="display:inline-block;border-bottom:2px solid '+CY+';padding-bottom:12px;">'+LG()+'</div>'+
-   '<div style="height:16px"></div>'+TX();}],
- ['Everything on one baseline.',function(){return
-   '<div style="display:flex;align-items:baseline;gap:clamp(18px,3vw,40px);flex-wrap:wrap;">'+
-   EY()+LG()+'<div style="flex:1;min-width:280px;">'+TX('0.68rem')+'</div></div>';}],
- ['Contained card on the tonal ground.',function(){return
-   '<div style="background:#e8e4dc;padding:24px 26px;">'+ROW('<div>'+EY()+'<div style="height:12px"></div>'+LG()+'</div>',
-   '<div>'+TX()+'</div>','auto 1fr',null,'center')+'</div>';}],
- ['Cyan gradient hairline above.',function(){return
-   '<div style="height:2px;background:linear-gradient(to right,'+CY+',rgba(79,168,199,0));"></div>'+
-   '<div style="height:18px"></div>'+ROW('<div>'+EY()+'<div style="height:10px"></div>'+LG()+'</div>','<div>'+TX()+'</div>','auto 1fr');}],
- ['Archive label — wide tracking, reference number right.',function(){return
-   '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EY(FAINT,'0.4rem','0.4em')+
-   '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span></div>'+
-   '<div style="height:12px"></div>'+HR(RULE)+'<div style="height:16px"></div>'+ROW('<div>'+LG()+'</div>','<div>'+TX('0.66rem')+'</div>','auto 1fr');}],
- ['The most restrained — logos, a thin cyan rule, one quiet line.',function(){return LG()+
-   '<div style="height:14px"></div><div style="width:44px;height:1px;background:'+CY+';"></div>'+
-   '<div style="height:14px"></div>'+TX('0.66rem',FAINT,'46ch');}]
+ ['Current — logos left, sentence right, cyan rule above.',''],
+ ['Stacked — logos over the sentence, left aligned.',
+  O+'{grid-template-columns:1fr !important;gap:14px !important;}'],
+ ['Centred — everything on the centre line.',
+  O+'{grid-template-columns:1fr !important;gap:14px !important;justify-items:center !important;text-align:center !important;}'+
+  O+' .fp-body-text{margin:0 auto !important;}'],
+ ['Right aligned — the block held to the right edge.',
+  O+'{grid-template-columns:1fr !important;justify-items:end !important;text-align:right !important;}'],
+ ['Wide sentence — logos narrow, text taking the measure.',
+  O+'{grid-template-columns:180px 1fr !important;gap:clamp(24px,4vw,64px) !important;}'],
+ ['Sentence first, logos to the right.',
+  O+'{grid-template-columns:1fr auto !important;direction:rtl !important;}'+O+' > *{direction:ltr !important;}'],
+ ['No rule — whitespace alone separates it from the photograph.',
+  O+'{border-top:none !important;padding-top:26px !important;}'],
+ ['Gold rule instead of cyan.',O+'{border-top:1px solid rgba(200,169,110,0.45) !important;}'],
+ ['Full hairline, very quiet.',O+'{border-top:0.5px solid '+RULE+' !important;}'],
+ ['Rule above and below — a contained band.',
+  O+'{border-top:1px solid '+CY2+' !important;border-bottom:1px solid '+CY2+' !important;padding-bottom:16px !important;}'],
+ ['Dark band — the caption inverts out of the cream.',
+  CAP+'{background:'+DK+' !important;padding:22px 48px !important;}'+
+  O+'{border-top:none !important;}'+O+' .fp-body-text{color:rgba(244,241,236,0.6) !important;}'+
+  O+' img{filter:none !important;opacity:0.9 !important;}'],
+ ['Tonal band — the soft OPPORTUNITIES ground behind it.',
+  CAP+'{background:#e8e4dc !important;padding:20px 48px !important;}'],
+ ['Larger sentence, tighter logos.',
+  O+' .fp-body-text{font-size:0.84rem !important;line-height:1.75 !important;max-width:44ch !important;}'+
+  O+' img{max-height:20px !important;}'],
+ ['Smaller sentence, larger logos.',
+  O+' .fp-body-text{font-size:0.64rem !important;}'+O+' img{max-height:34px !important;}'],
+ ['Eyebrow to the right of the logos.',
+  O+'{grid-template-columns:auto auto 1fr !important;align-items:center !important;}'],
+ ['Tight — everything drawn in close.',
+  CAP+'{padding-top:12px !important;}'+O+'{gap:18px !important;padding-top:12px !important;}'+
+  O+' .fp-body-text{line-height:1.6 !important;}'],
+ ['Generous — much more air around the block.',
+  CAP+'{padding:34px 48px 0 !important;}'+O+'{gap:clamp(36px,6vw,88px) !important;padding-top:26px !important;}'],
+ ['Three columns — eyebrow, logos, sentence.',
+  O+'{grid-template-columns:auto auto 1fr !important;gap:clamp(20px,3vw,48px) !important;align-items:end !important;}'],
+ ['Sentence indented to the text measure.',
+  O+'{grid-template-columns:1fr !important;}'+O+' .fp-body-text{margin-left:clamp(0px,12vw,200px) !important;}'],
+ ['Baseline aligned rather than bottom aligned.',
+  O+'{align-items:baseline !important;}'],
+ ['The most restrained — no rule, small type, wide tracking on the eyebrow.',
+  O+'{border-top:none !important;padding-top:22px !important;gap:clamp(20px,3vw,48px) !important;}'+
+  O+' .fp-body-text{font-size:0.66rem !important;color:'+FAINT+' !important;}'+
+  O+' img{max-height:22px !important;opacity:0.6 !important;}']
 ];
 
-/* ══ B · PORTFOLIO card text — built from 4, 6, 7, 15, 18, 20 ══ */
-var band='background:linear-gradient(to top,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.72) 45%,transparent 100%) !important;';
-var hide='max-height:0 !important;opacity:0 !important;overflow:hidden !important;margin:0 !important;'+
-         'transition:max-height .4s cubic-bezier(.22,.61,.36,1),opacity .3s !important;';
-var show='max-height:180px !important;opacity:1 !important;margin-top:10px !important;';
+/* ── B · the PORTFOLIO card TEXT. the image layout is never referenced. ── */
+var T=A+' .u-tx', N=A+' .u-name', C=A+' .u-cat', D=A+' .u-desc', CD=A+' .u-c';
+var over='position:absolute !important;left:0;right:0;bottom:0;padding:20px 18px 16px !important;'+
+ 'background:linear-gradient(to top,rgba(10,10,10,0.85),transparent) !important;margin:0 !important;';
 var TXT=[
- ['Current.',''],
- ['Black fade, name and category only. Description gone.',T+'{'+band+'}'+D+'{display:none !important;}'],
- ['Black fade — description slides open on hover.',T+'{'+band+'}'+D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Black fade — the whole caption fades in on hover.',T+'{'+band+'opacity:0 !important;transition:opacity .45s !important;}'+CD+':hover .u-tx{opacity:1 !important;}'],
- ['CLICK TO OPEN — a + reveals the description.',T+'{'+band+'}'+D+'{'+hide+'}'+A+' .u-c.sf-open .u-desc{'+show+'}'+
-  A+' .u-c::after{content:"+";position:absolute;right:16px;bottom:16px;z-index:3;color:'+CY+';font-family:'+DM+
-  ';font-size:0.8rem;line-height:1;transition:transform .35s;pointer-events:none;}'+
-  A+' .u-c.sf-open::after{transform:rotate(45deg);}','click'],
- ['CLICK TO OPEN — cyan bar marks the open card.',T+'{'+band+'}'+D+'{'+hide+'}'+A+' .u-c.sf-open .u-desc{'+show+'}'+
-  A+' .u-c::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;z-index:3;transition:background .3s;}'+
-  A+' .u-c.sf-open::before{background:'+CY+';}','click'],
- ['Name only until hover, then the category and line appear.',T+'{'+band+'}'+
-  C+','+D+'{'+hide+'}'+CD+':hover .u-cat,'+CD+':hover .u-desc{'+show+'}'],
- ['Caption rises from the bottom edge on hover.',T+'{'+band+'transform:translateY(30%) !important;'+
-  'transition:transform .45s cubic-bezier(.22,.61,.36,1) !important;}'+CD+':hover .u-tx{transform:none !important;}'+
-  D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Eyebrow and name pinned to the top, text pops up below on hover.',
-  T+'{top:0 !important;bottom:auto !important;background:linear-gradient(to bottom,rgba(10,10,10,0.9),transparent) !important;padding:18px !important;}'+
-  D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Eyebrow top, name bottom — text appears between them on hover.',
-  T+'{top:0 !important;bottom:auto !important;background:linear-gradient(to bottom,rgba(10,10,10,0.9),transparent) !important;}'+
-  N+'{position:absolute;left:18px;bottom:-999px;}'+D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Full black wash on hover, description centred within it.',
-  T+'{'+band+'}'+D+'{'+hide+'}'+
-  CD+':hover .u-tx{background:rgba(10,10,10,0.86) !important;top:0 !important;display:flex !important;'+
-  'flex-direction:column !important;justify-content:flex-end !important;transition:background .4s !important;}'+
-  CD+':hover .u-desc{'+show+'}'],
- ['Category in cyan above a large name, no description.',T+'{'+band+'}'+
-  C+'{color:'+CY+' !important;font-size:0.44rem !important;letter-spacing:0.3em !important;}'+
-  N+'{font-size:1.15rem !important;letter-spacing:0.18em !important;}'+D+'{display:none !important;}'],
- ['Cyan tick before the category, description on hover.',T+'{'+band+'}'+
-  C+'{color:'+CY+' !important;}'+C+'::before{content:"| ";color:'+CY+';}'+D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['CLICK TO OPEN — the panel expands the card downward.',T+'{'+band+'}'+D+'{'+hide+'}'+
-  A+' .u-c.sf-open .u-desc{max-height:220px !important;opacity:1 !important;margin-top:12px !important;}'+
-  A+' .u-c.sf-open .u-tx{background:rgba(10,10,10,0.9) !important;}','click'],
- ['Quietest — small name, no gradient, description on hover.',
-  T+'{background:none !important;}'+N+'{font-size:0.82rem !important;}'+D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['No gradient, cyan name, description on hover.',T+'{background:none !important;}'+
-  N+'{color:'+CY+' !important;}'+D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Thin black bar only behind the type.',T+'{background:rgba(10,10,10,0.78) !important;padding:12px 16px !important;}'+
-  D+'{'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['Description slides in from the left on hover.',T+'{'+band+'}'+
-  D+'{opacity:0 !important;transform:translateX(-16px) !important;max-height:0 !important;overflow:hidden !important;margin:0 !important;'+
-  'transition:opacity .35s,transform .4s,max-height .4s !important;}'+
-  CD+':hover .u-desc{opacity:1 !important;transform:none !important;max-height:180px !important;margin-top:10px !important;}'],
- ['Name and category beneath the image, description on hover over it.',
-  CD+'{position:static !important;}'+T+'{position:static !important;background:none !important;padding:13px 0 0 !important;}'+
-  N+'{color:'+INK+' !important;}'+C+'{color:'+CY+' !important;}'+
-  D+'{color:'+SUB+' !important;'+hide+'}'+CD+':hover .u-desc{'+show+'}'],
- ['CLICK TO OPEN — beneath the image, a quiet editorial disclosure.',
-  CD+'{position:static !important;}'+T+'{position:static !important;background:none !important;'+
+ ['Current — caption over the image under a gradient.',''],
+ ['Beneath the image, plain.',CD+'{position:static !important;}'+T+'{position:static !important;background:none !important;padding:14px 0 0 !important;}'+
+  N+'{color:'+INK+' !important;}'+C+'{color:'+CY+' !important;}'+D+'{color:'+SUB+' !important;}'],
+ ['Beneath, under a hairline.',CD+'{position:static !important;}'+T+'{position:static !important;background:none !important;'+
   'border-top:0.5px solid '+RULE+' !important;padding:13px 0 0 !important;margin-top:13px !important;}'+
-  N+'{color:'+INK+' !important;}'+C+'{color:'+CY+' !important;}'+
-  D+'{color:'+SUB+' !important;'+hide+'}'+A+' .u-c.sf-open .u-desc{'+show+'}','click'],
- ['The considered one — black fade, cyan category, click to open.',
-  T+'{'+band+'padding:22px 18px 16px !important;}'+
-  C+'{color:'+CY+' !important;letter-spacing:0.3em !important;}'+
-  N+'{font-size:1.0rem !important;letter-spacing:0.18em !important;margin-top:7px !important;}'+
-  D+'{'+hide+'}'+A+' .u-c.sf-open .u-desc{'+show+'}'+
-  A+' .u-c::after{content:"+";position:absolute;right:16px;bottom:16px;z-index:3;color:'+CY+
-  ';font-family:'+DM+';font-size:0.78rem;line-height:1;transition:transform .35s;pointer-events:none;}'+
-  A+' .u-c.sf-open::after{transform:rotate(45deg);}','click']
+  N+'{color:'+INK+' !important;}'+C+'{color:'+CY+' !important;}'+D+'{color:'+SUB+' !important;}'],
+ ['Over the image, no gradient — type only.',T+'{background:none !important;}'],
+ ['Over the image, solid dark band.',T+'{background:rgba(10,10,10,0.72) !important;}'],
+ ['Over the image, cyan hairline above the name.',T+'{border-top:1px solid '+CY2+' !important;}'],
+ ['Description hidden until hover.',D+'{max-height:0 !important;opacity:0 !important;overflow:hidden !important;'+
+  'transition:max-height .35s ease,opacity .3s !important;margin:0 !important;}'+
+  CD+':hover .u-desc{max-height:140px !important;opacity:1 !important;margin-top:9px !important;}'],
+ ['Everything fades in on hover.',T+'{opacity:0 !important;transition:opacity .4s ease !important;}'+
+  CD+':hover .u-tx{opacity:1 !important;}'],
+ ['Name always, the rest fades in.',C+',' +D+'{opacity:0 !important;transition:opacity .35s !important;}'+
+  CD+':hover .u-cat,'+CD+':hover .u-desc{opacity:1 !important;}'],
+ ['Caption slides up on hover.',T+'{transform:translateY(14px) !important;opacity:0 !important;'+
+  'transition:transform .4s ease,opacity .35s !important;}'+CD+':hover .u-tx{transform:none !important;opacity:1 !important;}'],
+ ['Category only, name on hover.',N+'{max-height:0 !important;opacity:0 !important;overflow:hidden !important;'+
+  'transition:max-height .3s,opacity .3s !important;}'+CD+':hover .u-name{max-height:60px !important;opacity:1 !important;}'],
+ ['Larger names.',N+'{font-size:1.2rem !important;letter-spacing:0.18em !important;}'],
+ ['Smaller, tighter type.',N+'{font-size:0.8rem !important;}'+D+'{font-size:0.56rem !important;line-height:1.6 !important;}'],
+ ['Category beneath the name rather than above.',T+'{display:flex !important;flex-direction:column !important;}'+
+  C+'{order:2 !important;margin-top:8px !important;}'+N+'{order:1 !important;margin-top:0 !important;}'+D+'{order:3 !important;}'],
+ ['Category as a cyan chip.',C+'{display:inline-block !important;border:0.5px solid '+CY2+' !important;'+
+  'padding:4px 8px !important;color:'+CY+' !important;}'],
+ ['No description at all — name and category only.',D+'{display:none !important;}'],
+ ['Description in a lighter weight, wider measure.',D+'{color:rgba(244,241,236,0.55) !important;'+
+  'font-size:0.6rem !important;line-height:1.8 !important;max-width:52ch !important;}'],
+ ['Left rule beside the caption.',T+'{border-left:1px solid '+CY2+' !important;padding-left:14px !important;}'],
+ ['Caption pinned to the top of the image.',T+'{top:0 !important;bottom:auto !important;'+
+  'background:linear-gradient(to bottom,rgba(10,10,10,0.85),transparent) !important;padding:18px !important;}'],
+ ['Centred over the image.',T+'{text-align:center !important;}'+D+'{margin-left:auto !important;margin-right:auto !important;}'],
+ ['The quietest — small type, no gradient, description on hover.',
+  T+'{background:none !important;}'+N+'{font-size:0.82rem !important;}'+
+  D+'{max-height:0 !important;opacity:0 !important;overflow:hidden !important;transition:max-height .35s,opacity .3s !important;margin:0 !important;}'+
+  CD+':hover .u-desc{max-height:140px !important;opacity:1 !important;margin-top:8px !important;}']
 ];
 
-function mk(bar,note,label,SET,id,onApply){
- var st=document.getElementById(id);
- if(!st){st=document.createElement('style');st.id=id;document.head.appendChild(st);}
+function mkrow(bar,note,label,SET,styleId){
+ var st=document.getElementById(styleId);
+ if(!st){st=document.createElement('style');st.id=styleId;document.head.appendChild(st);}
  var row=document.createElement('div'); row.className='sf-row';
  var l=document.createElement('span'); l.className='sf-lb'; l.textContent=label; row.appendChild(l);
  SET.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-   b.classList.add('on'); onApply(i,o,st);
-   note.innerHTML=label+' '+i+' — '+o[0]+(o[2]==='click'?'<br><span class="sf-m">click a card to open its text</span>':'');};
+   b.classList.add('on'); st.textContent=o[1];
+   note.innerHTML=label+' '+i+' — '+o[0]+'<br><span class="sf-m">image layout is never touched</span>';};
   row.appendChild(b);});
  bar.appendChild(row);
 }
 function go(){
- if(document.getElementById('sf-sw-v3'))return;
- if(!document.getElementById('c16-overlay')||!document.querySelector('#su .u-c')){
+ if(document.getElementById('sf-sw-sw20'))return;
+ /* the caption rules are pure CSS and apply whenever the element appears,
+    so the panel must not wait on another script having built it */
+ if(!document.getElementById('c16-overlay')){
   go.t=(go.t||0)+1; if(go.t<40)setTimeout(go,300); return; }
- grab();
- /* cards become clickable once, for the disclosure designs */
- [].forEach.call(document.querySelectorAll('#su .u-c'),function(c){
-  c.style.position='relative';
-  if(c.__clk)return; c.__clk=1;
-  c.addEventListener('click',function(e){
-   if(e.target.closest('a'))return;
-   if(!document.body.classList.contains('sf-clickmode'))return;
-   c.classList.toggle('sf-open');});});
- var bar=document.createElement('div'); bar.id='sf-sw-v3';
+ var bar=document.createElement('div'); bar.id='sf-sw-sw20';
  var note=document.createElement('div'); note.className='sf-note';
  note.textContent='0 in either row is the current design.';
- mk(bar,note,'Caption',CAPS,'sfcss-cap3',function(i,o,st){
-  st.textContent='';
-  if(i===0){OV.innerHTML=OV.__orig; OV.setAttribute('style',OV.__style||'');}
-  else{
-   var html=o[1]();
-   /* safety net — no design may drop the eyebrow, the logos or the sentence */
-   var probe=document.createElement('div'); probe.innerHTML=html;
-   if(!probe.querySelector('img'))html=LG()+'<div style="height:14px"></div>'+html;
-   if(!/Featured Project/i.test(probe.textContent))html=EY()+'<div style="height:12px"></div>'+html;
-   if(probe.textContent.indexOf(PARTS.txt.slice(0,24))<0)html=html+'<div style="height:14px"></div>'+TX();
-   OV.innerHTML=html;
-   OV.setAttribute('style','position:static;display:block;border-top:none;padding-top:18px;');}
- });
- mk(bar,note,'Card Text',TXT,'sfcss-txt3',function(i,o,st){
-  st.textContent=o[1];
-  document.body.classList.toggle('sf-clickmode',o[2]==='click');
-  if(o[2]!=='click')[].forEach.call(document.querySelectorAll('#su .u-c.sf-open'),function(c){c.classList.remove('sf-open');});
- });
+ mkrow(bar,note,'Caption',CAPS,'sfcss-cap20');
+ mkrow(bar,note,'Card Text',TXT,'sfcss-txt20');
  bar.appendChild(note); SFSTACK().appendChild(bar);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,700);});
