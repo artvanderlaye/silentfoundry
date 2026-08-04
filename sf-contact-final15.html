@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Silent Foundry</title>
+<title>Contact — paths layout · Silent Foundry</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23c9a84c'/%3E%3Ctext x='50' y='67' font-family='Arial' font-weight='bold' font-size='44' text-anchor='middle' fill='%230a0a0a'%3ESF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Josefin+Sans:wght@200;300;400&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -2838,61 +2838,133 @@ else setTimeout(mount,260);
 
 </body>
 </html>
-
+<style id="sf-sw-css">
+#sf-sw{position:fixed;left:12px;bottom:12px;z-index:9999;background:rgba(10,10,10,0.93);
+ border:0.5px solid rgba(200,169,110,0.22);border-radius:2px;padding:9px 11px;font-family:'DM Sans',sans-serif;max-width:min(600px,92vw);}
+#sf-sw .sf-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:4px 0;}
+#sf-sw .sf-lb{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:#c8a96e;width:56px;flex-shrink:0;font-weight:300;}
+#sf-sw b{display:inline-block;min-width:20px;text-align:center;padding:3px 6px;cursor:pointer;font-size:0.56rem;
+ color:rgba(244,241,236,0.5);border:0.5px solid rgba(244,241,236,0.12);border-radius:1px;transition:color .2s,border-color .2s;}
+#sf-sw b:hover{color:#c8a96e;border-color:rgba(200,169,110,0.4);}
+#sf-sw b.on{color:#0a0a0a;background:#c8a96e;border-color:#c8a96e;}
+#sf-sw .sf-note{font-size:0.48rem;color:rgba(244,241,236,0.4);margin-top:7px;padding-top:7px;
+ border-top:0.5px solid rgba(244,241,236,0.1);line-height:1.6;}
+#sf-sw .sf-m{color:#c8a96e;}
+</style>
 <script id="cx-sw-js">(function(){
 var INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', RULE='rgba(10,10,10,0.08)',
     LAB='#8a6e3a', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var DATA=[],HOST=null,BLOCK=null,FORMSEC=null,FORMINNER=null,DECKSEC=null,EYE='';
+var IM=['images/frame_factory-285.jpg','images/cnc-cutting.jpg','images/prototype_assembly.jpg',
+        'images/cad-screen.jpg','images/frame_factory-157.jpg','images/cnc_1-14.jpg'];
+var F='filter:brightness(.84) saturate(.88);';
+var DATA=[],HOST=null,BLOCK=null,FORMSEC=null,FORMINNER=null,DECKSEC=null,PARA=null;
 
 function K(t){return '<span style="font-family:'+BEBAS+';font-size:clamp(0.9rem,1.2vw,1.3rem);letter-spacing:0.14em;'+
  'text-transform:uppercase;color:'+INK+';display:block;margin-bottom:9px;">'+t+'</span>';}
-function V(t){return '<p style="font-family:'+DM+';font-weight:300;font-size:0.72rem;line-height:1.7;color:'+SUB+
- ';max-width:44ch;margin:0;">'+t+'</p>';}
-function eyebrow(t){return '<p style="font-family:'+DM+';font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
- 'text-transform:uppercase;color:'+LAB+';margin:0 0 18px;">'+t+'</p>';}
+function V(t,mw){return '<p style="font-family:'+DM+';font-weight:300;font-size:0.72rem;line-height:1.7;color:'+SUB+
+ ';max-width:'+(mw||'44ch')+';margin:0;">'+t+'</p>';}
+function P1(gap,rule){return '<div style="display:grid;gap:'+(gap||'24px')+';">'+DATA.map(function(p){
+  return '<div style="'+(rule?'border-top:0.5px solid '+RULE+';padding-top:14px;':'')+'">'+K(p.t)+V(p.b)+'</div>';}).join('')+'</div>';}
+function IMG(s,extra){return '<img src="'+s+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;'+F+(extra||'')+'">';}
+function COL(n){return '<div style="display:grid;grid-template-rows:repeat('+n+',1fr);gap:3px;height:100%;">'+
+ IM.slice(0,n).map(function(s){return '<div style="overflow:hidden;">'+IMG(s)+'</div>';}).join('')+'</div>';}
+function GRID2(){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;height:100%;">'+
+ IM.slice(0,4).map(function(s){return '<div style="overflow:hidden;">'+IMG(s)+'</div>';}).join('')+'</div>';}
+function SH(l,r,cols,gap,align,cls){return '<div class="cx-mar '+(cls||'')+'" style="display:grid;grid-template-columns:'+cols+
+ ';gap:'+(gap||'clamp(28px,4vw,56px)')+';align-items:'+(align||'start')+';">'+
+ '<div class="cx-a">'+l+'</div><div class="cx-b">'+(r||'')+'</div></div>';}
 
-function build(){
- if(document.getElementById('cx-host'))return;
- var pc=document.getElementById('pc'); if(!pc){setTimeout(build,400);return;}
- var SECS=[].slice.call(pc.querySelectorAll('section'));
- if(SECS.length<3){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- var sp=[].slice.call(SECS[0].querySelectorAll('span')).filter(function(s){
+/* ── ten with an image column ── */
+var IMGV=[
+ ['Original — one column, no image, contact box below.',null],
+ ['One tall image right, 380px — the Marshall shape.',        function(){return SH(P1(),IMG(IM[0]),'1fr 380px');}],
+ ['One tall image right, 460px.',                              function(){return SH(P1(),IMG(IM[1]),'1fr 460px');}],
+ ['Two stacked images right.',                                 function(){return SH(P1(),COL(2),'1fr 400px');}],
+ ['Three stacked images right.',                               function(){return SH(P1(),COL(3),'1fr 360px');}],
+ ['A four-up square of images right.',                         function(){return SH(P1(),GRID2(),'1fr 420px');}],
+ ['Image column LEFT, paths beside it.',                       function(){return SH(IMG(IM[2]),P1(),'380px 1fr',null,'stretch','swap');}],
+ ['Image right with a hairline between the columns.',          function(){return SH(P1(),IMG(IM[3]),'1fr 400px',null,'start','rule');}],
+ ['Proportional 60 / 40 image rather than a fixed width.',     function(){return SH(P1(),IMG(IM[4]),'1.5fr 1fr');}],
+ ['Hairlines above each path, two images right.',              function(){return SH(P1('26px',true),COL(2),'1fr 400px');}],
+ ['A wide gutter, one image right, columns centred.',          function(){return SH(P1(),IMG(IM[5]),'1fr 420px','clamp(48px,7vw,96px)','center');}]
+];
+/* ── ten with the contact form beside (moved, never rebuilt) ── */
+var FORMV=[
+ ['Original — contact box below.',null],
+ ['Form right at 440px, tops aligned.',            function(){return SH(P1(),'','1fr 440px');}],
+ ['Form right at 400px.',                          function(){return SH(P1(),'','1fr 400px');}],
+ ['Form right at 480px.',                          function(){return SH(P1(),'','1fr 480px');}],
+ ['Proportional 58 / 42.',                         function(){return SH(P1(),'','1.38fr 1fr');}],
+ ['Form LEFT, paths beside it.',                   function(){return SH('',P1(),'440px 1fr',null,'start','swap');}],
+ ['Hairline rule between the columns.',            function(){return SH(P1(),'','1fr 440px',null,'start','rule');}],
+ ['Hairlines above each path.',                    function(){return SH(P1('26px',true),'','1fr 440px');}],
+ ['Wider gutter between the columns.',             function(){return SH(P1(),'','1fr 440px','clamp(48px,7vw,96px)');}],
+ ['Columns centred on each other.',                function(){return SH(P1(),'','1fr 440px',null,'center');}],
+ ['Form right at 440px, paths given a tighter rhythm.', function(){return SH(P1('18px'),'','1fr 440px');}]
+];
+
+function harvest(sec){
+ var sp=[].slice.call(sec.querySelectorAll('span')).filter(function(s){
   return /^(partner brand|investor|factory or operator|join the team)$/i.test(s.textContent.trim());});
- if(sp.length!==4){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
  DATA=sp.map(function(s){var d=s.parentElement,p=d.querySelector('p');
   return {t:s.textContent.trim(),b:p?p.textContent.trim():'',el:d};});
+ return DATA.length===4;
+}
+function build(){
+ if(document.getElementById('sf-sw'))return;
+ var pc=document.getElementById('pc'); if(!pc){setTimeout(build,400);return;}
+ var SECS=[].slice.call(pc.querySelectorAll('section'));
+ if(SECS.length<3||!harvest(SECS[0])){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
  FORMSEC=SECS[1]; DECKSEC=SECS[2]; FORMINNER=FORMSEC.firstElementChild;
  BLOCK=DATA[0].el.parentElement;
-
- /* the form's own eyebrow, matched exactly for the paths column */
- var fe=FORMINNER.querySelector('p,span');
- EYE=(fe&&/send a message/i.test(fe.textContent))?fe.textContent.trim():'Send A Message';
-
+ PARA=[].slice.call(SECS[0].querySelectorAll('p')).filter(function(p){return /We partner with brand owners/i.test(p.textContent);})[0];
  HOST=document.createElement('div'); HOST.id='cx-host';
  BLOCK.parentNode.insertBefore(HOST,BLOCK.nextSibling);
- BLOCK.style.setProperty('display','none','important');
-
- HOST.innerHTML='<div class="cx-mar" style="display:grid;grid-template-columns:1fr 440px;'+
-  'gap:clamp(28px,4vw,56px);align-items:center;">'+
-  '<div class="cx-a">'+eyebrow("Who's Contacting Us")+
-   '<div style="display:grid;gap:24px;">'+DATA.map(function(p){
-     return '<div>'+K(p.t)+V(p.b)+'</div>';}).join('')+'</div></div>'+
-  '<div class="cx-b"></div></div>';
- HOST.querySelector('.cx-b').appendChild(FORMINNER);
- if(FORMSEC.parentNode)FORMSEC.parentNode.removeChild(FORMSEC);
-
  var st=document.createElement('style'); st.id='cx-css'; document.head.appendChild(st);
  st.textContent=
+  /* the bunching: give the paths real air under the opening paragraph */
   '#pc #cx-host{margin-top:clamp(44px,6vh,72px) !important;}'+
+  '#pc #cx-host > .cx-mar > .cx-a > div > div:first-child{margin-top:0 !important;}'+
   '#pc .cx-a,#pc .cx-b{min-width:0;}'+
-  /* the form was sized for a 660px section; it now lives in a 440px column */
-  '#pc .cx-b > div{max-width:100% !important;}'+
-  '#pc .cx-b input,#pc .cx-b textarea,#pc .cx-b button{max-width:100% !important;box-sizing:border-box !important;}'+
-  '@media(max-width:900px){'+
-   '#pc .cx-mar{grid-template-columns:1fr !important;gap:40px !important;align-items:start !important;}'+
-   '#pc #cx-host{margin-top:clamp(34px,5vh,52px) !important;}'+
-  '}'+
-  '@media(max-width:600px){#pc .cx-mar{gap:32px !important;}}';
+  '#pc .cx-mar.rule .cx-b{border-left:0.5px solid '+RULE+';padding-left:clamp(28px,4vw,56px);}'+
+  '#pc .cx-mar.rule.swap .cx-b{border-left:none;border-right:0.5px solid '+RULE+';padding-left:0;padding-right:clamp(28px,4vw,56px);}'+
+  '@media(max-width:900px){#pc .cx-mar{grid-template-columns:1fr !important;gap:32px !important;}'+
+  '#pc .cx-mar.rule .cx-b{border:none;padding:0;}}';
+ /* the same air when the original one-column block is showing */
+ BLOCK.style.setProperty('margin-top','clamp(44px,6vh,72px)','important');
+
+ var bar=document.createElement('div'); bar.id='sf-sw';
+ var note=document.createElement('div'); note.className='sf-note';
+ function home(){ if(FORMINNER&&FORMINNER.parentNode!==FORMSEC)FORMSEC.appendChild(FORMINNER);
+   if(!FORMSEC.parentNode)DECKSEC.parentNode.insertBefore(FORMSEC,DECKSEC); }
+ function mk(label,SET,useForm){
+  var row=document.createElement('div'); row.className='sf-row';
+  var l=document.createElement('span'); l.className='sf-lb'; l.textContent=label; row.appendChild(l);
+  function apply(i){
+   [].forEach.call(bar.querySelectorAll('.sf-row'),function(r){ if(r!==row)
+     r.querySelectorAll('b').forEach(function(x,j){x.classList.toggle('on',j===0);}); });
+   home(); HOST.innerHTML='';
+   if(i===0){ BLOCK.style.removeProperty('display'); }
+   else{ BLOCK.style.setProperty('display','none','important');
+     HOST.innerHTML=SET[i][1]();
+     var mar=HOST.querySelector('.cx-mar');
+     if(useForm){ var slot=HOST.querySelector(mar.classList.contains('swap')?'.cx-a':'.cx-b');
+       slot.appendChild(FORMINNER); if(FORMSEC.parentNode)FORMSEC.parentNode.removeChild(FORMSEC); }
+   }
+   var mar=HOST.querySelector('.cx-mar');
+   note.innerHTML=label+' '+i+' — '+SET[i][0]+'<br><span class="sf-m">'+
+    (i&&mar?('columns '+getComputedStyle(mar).gridTemplateColumns.split(' ').map(function(x){return Math.round(parseFloat(x))+'px';}).join(' / ')+
+     ' · aligned '+getComputedStyle(mar).alignItems+' · gap above paths '+
+     Math.round(parseFloat(getComputedStyle(HOST).marginTop))+'px'):'original layout')+'</span>';
+  }
+  SET.forEach(function(o,i){ var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on'); apply(i);}; row.appendChild(b);});
+  bar.appendChild(row);
+ }
+ mk('Image',IMGV,false); mk('Form',FORMV,true);
+ bar.appendChild(note); document.body.appendChild(bar);
+ note.innerHTML='0 in either row is the current page.<br><span class="sf-m">the two rows are alternatives — pick from one</span>';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,900);});
 else setTimeout(build,900);
