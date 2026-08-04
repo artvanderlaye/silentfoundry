@@ -73,12 +73,18 @@ to the project's configured instructions.
   Do NOT bury it under a long technical report — he has repeatedly had to ask,
   and it frustrates him. If he has to ask "what's the link", that's a failure.
 - Give the link to the PAGE THAT CHANGED — never the homepage as a substitute.
+- It must be the LIVE pages.dev URL — the address where he will see the change
+  AFTER he pushes. That is the link he wants, every single time, without asking.
+  A `file:///` path is an EXTRA, never a substitute. Put the pages.dev URL first.
+- This applies to EVERY output that touches a page — including small fixes,
+  re-outputs and follow-ups. Never omit it because "it's the same link as before".
 - Root homepage: `https://silentfoundry.pages.dev`
 - Any other page: `https://silentfoundry.pages.dev/<filename-without-.html>`
 - If several pages changed, list each one.
 - Current working pages:
-  - `https://silentfoundry.pages.dev/sf-team-explore`  30 explorations + ORIG
-  - `https://silentfoundry.pages.dev/sf-team-final`    the chosen baseline (layout 27)
+  - `https://silentfoundry.pages.dev/index-explore`    homepage section explorer
+  - `https://silentfoundry.pages.dev/sf-contact`       the live contact page
+  - `https://silentfoundry.pages.dev/sf-contact-final` contact slider
   - `https://silentfoundry.pages.dev/sf-team`          the live team page
 
 ## Response style (how to report back to Matthew)
