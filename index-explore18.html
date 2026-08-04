@@ -5541,98 +5541,82 @@ else setTimeout(build,1100);
 </script>
 <!-- NAV -->
 <script id="sf-sw-js-nav">(function(){
-var GOLD='#c8a96e', FAINT='rgba(244,241,236,0.16)', DIM='rgba(244,241,236,0.34)',
-    QUIET='rgba(244,241,236,0.22)', DM="'DM Sans',sans-serif";
-var SW=null,BTNS=[],WRAP=null,TRACK=null,SLIDES=[],OSW='',OB=[],OW='',OT='',IND=null,BARF=null,N=9;
+var GOLD='#c8a96e', FAINT='rgba(244,241,236,0.16)', DIM='rgba(244,241,236,0.34)', DM="'DM Sans',sans-serif";
+var SW=null, BTNS=[], WRAP=null, OSW='', OB=[], IND=null, N=0;
 
 function set(el,o){for(var k in o){o[k]===null?el.style.removeProperty(k):el.style.setProperty(k,o[k],'important');}}
-
-/* ── the team-page mechanism: a native scroll strip with snap, no click arrows ── */
-function strip(on,snap){
- if(!WRAP)return;
- if(!on){ WRAP.setAttribute('style',OW); TRACK.setAttribute('style',OT);
-   SLIDES.forEach(function(s){s.style.removeProperty('scroll-snap-align');}); return; }
- set(WRAP,{'overflow-x':'auto','overflow-y':'hidden','scroll-snap-type':(snap||'x mandatory'),
-   '-webkit-overflow-scrolling':'touch','scrollbar-width':'none',cursor:'grab'});
- set(TRACK,{animation:'none',transform:'none','margin-left':'0'});
- SLIDES.forEach(function(s){set(s,{'scroll-snap-align':'start'});});
- if(!WRAP.__nosb){WRAP.__nosb=1;
-   var st=document.createElement('style'); st.textContent='.ec2-wrap::-webkit-scrollbar{display:none;}';
-   document.head.appendChild(st);}
- if(!WRAP.__drag){WRAP.__drag=1; var x0=null,l0=0;
-   WRAP.addEventListener('mousedown',function(e){x0=e.clientX;l0=WRAP.scrollLeft;WRAP.style.cursor='grabbing';});
-   window.addEventListener('mouseup',function(){x0=null;if(WRAP)WRAP.style.cursor='grab';});
-   window.addEventListener('mousemove',function(e){if(x0===null)return;WRAP.scrollLeft=l0-(e.clientX-x0);});}
-}
-function word(t,o){ if(!SW)return; SW.textContent=t;
- set(SW,Object.assign({'font-family':DM,'font-weight':'300','font-size':'0.44rem','letter-spacing':'0.26em',
-  'text-transform':'uppercase',color:DIM,margin:'14px 0 0',display:'block','text-align':'left'},o||{})); }
-function noword(){ if(SW)set(SW,{display:'none'}); }
-function hideArrows(){ BTNS.forEach(function(b){set(b,{display:'none'});}); }
-
-/* a hairline that follows the scroll position */
-function progress(o){
- if(!IND){ IND=document.createElement('div'); IND.id='sf-ind';
-   BARF=document.createElement('span'); IND.appendChild(BARF);
-   if(SW&&SW.parentNode)SW.parentNode.insertBefore(IND,SW.nextSibling);
-   WRAP.addEventListener('scroll',function(){ if(!BARF)return;
-     var p=WRAP.scrollLeft/Math.max(1,WRAP.scrollWidth-WRAP.clientWidth);
-     BARF.style.setProperty('transform','translateX('+(p*100*(1/0.22-1))+'%)','important'); }); }
- IND.style.cssText=''; BARF.style.cssText='';
- set(IND,Object.assign({display:'block',height:'1px',background:FAINT,'margin-top':'12px',
-   'max-width':'240px',overflow:'hidden'},o||{}));
- set(BARF,{display:'block',width:'22%',height:'100%',background:GOLD,transition:'transform .15s linear'});
-}
-function noprog(){ if(IND)set(IND,{display:'none'}); }
 function reset(){ if(SW)SW.setAttribute('style',OSW); BTNS.forEach(function(b,i){b.setAttribute('style',OB[i]||'');});
- strip(false); noprog(); }
+  if(IND)IND.style.setProperty('display','none','important'); }
+function txt(t,o){ if(!SW)return; SW.textContent=t;
+  set(SW,Object.assign({'font-family':DM,'font-weight':'300','font-size':'0.46rem','letter-spacing':'0.24em',
+   'text-transform':'uppercase',color:DIM,margin:'14px 0 0',display:'block'},o||{})); }
+function hideTxt(){ if(SW)set(SW,{display:'none'}); }
+function arr(o){ BTNS.forEach(function(b,i){ b.setAttribute('style',OB[i]||''); set(b,o); }); }
+var HIDE={display:'none'};
+
+/* a small indicator, built once and shown only when a variation asks for it */
+function ind(style,fill){
+ if(!IND){ IND=document.createElement('div'); IND.id='sf-ind';
+   var n=Math.max(2,Math.round(N/3));
+   for(var i=0;i<n;i++){var s=document.createElement('span'); IND.appendChild(s);}
+   (SW&&SW.parentNode)?SW.parentNode.insertBefore(IND,SW):null; }
+ IND.style.cssText=''; set(IND,Object.assign({display:'flex',gap:'3px','margin-top':'12px',
+   'max-width':'220px','align-items':'center'},style||{}));
+ [].forEach.call(IND.children,function(s,i){ s.style.cssText='';
+   set(s,Object.assign({flex:'1',height:'1px',background:i===0?GOLD:FAINT},fill||{})); });
+}
 
 var NAV=[
- ['Original — click arrows, no scrolling.',function(){reset();}],
- ['Scroll strip · the word SCROLL, small and left. Nothing else.',function(){
-   strip(true); hideArrows(); noprog(); word('Scroll'); }],
- ['Scroll strip · SCROLL → with a hairline above it.',function(){
-   strip(true); hideArrows(); noprog();
-   word('Scroll  →',{'border-top':'0.5px solid '+FAINT,'padding-top':'12px','margin-top':'16px','max-width':'240px'}); }],
- ['Scroll strip · the word centred beneath the images.',function(){
-   strip(true); hideArrows(); noprog(); word('Scroll',{'text-align':'center'}); }],
- ['Scroll strip · the word held to the right edge.',function(){
-   strip(true); hideArrows(); noprog(); word('Scroll  →',{'text-align':'right'}); }],
- ['Scroll strip · word plus a hairline that follows your position.',function(){
-   strip(true); hideArrows(); word('Scroll'); progress(); }],
- ['Scroll strip · progress hairline only, no word.',function(){
-   strip(true); hideArrows(); noword(); progress({'max-width':'100%','margin-top':'16px'}); }],
- ['Scroll strip · a small gold mark before the word.',function(){
-   strip(true); hideArrows(); noprog(); word('◦  Scroll',{color:QUIET}); }],
- ['Scroll strip · the word at its faintest, tracking wide.',function(){
-   strip(true); hideArrows(); noprog();
-   word('Scroll',{color:'rgba(244,241,236,0.18)','letter-spacing':'0.42em','font-size':'0.4rem'}); }],
- ['Scroll strip · SCROLL left, 01 — 09 right, on one line.',function(){
-   strip(true); hideArrows(); noprog();
-   word('Scroll',{display:'flex','justify-content':'space-between','max-width':'100%'});
-   if(SW&&!SW.querySelector('i')){var c=document.createElement('i');
-     c.style.cssText='font-style:normal;';c.textContent='01 — 0'+N;SW.appendChild(c);} }],
- ['Scroll strip · nothing at all. It simply scrolls.',function(){
-   strip(true,'x proximity'); hideArrows(); noword(); noprog(); }]
+ ['Original.',function(){reset();}],
+ ['SCROLL → left, hairline progress beneath. Arrows hidden.',function(){
+   reset(); txt('Scroll  →'); arr(HIDE); ind(); }],
+ ['Slide counter and a construction rule. Engineering feel.',function(){
+   reset(); txt('Applications  01 — '+N,{color:'rgba(244,241,236,0.28)','letter-spacing':'0.26em'});
+   arr(HIDE); ind({'max-width':'320px'},{height:'0.5px'}); }],
+ ['Centred, understated arrows, no instruction text.',function(){
+   reset(); hideTxt(); arr({opacity:'0.35','font-size':'1rem'}); ind({'margin-left':'auto','margin-right':'auto','max-width':'120px'}); }],
+ ['Arrows only — quiet, no text, no indicator.',function(){
+   reset(); hideTxt(); arr({opacity:'0.4','font-size':'1.05rem'}); }],
+ ['EXPLORE THE PLATFORM under a full-width rule.',function(){
+   reset(); txt('Explore The Platform',{'border-top':'0.5px solid '+FAINT,'padding-top':'14px','margin-top':'16px'});
+   arr({opacity:'0.3','font-size':'0.95rem'}); }],
+ ['Gold segmented bar, text removed.',function(){
+   reset(); hideTxt(); arr(HIDE); ind({'max-width':'260px',gap:'2px'},{height:'2px'}); }],
+ ['NEXT APPLICATION → with the arrows kept.',function(){
+   reset(); txt('Next Application  →'); arr({opacity:'0.35','font-size':'1rem'}); }],
+ ['A single hairline the full width, nothing else.',function(){
+   reset(); hideTxt(); arr(HIDE); ind({'max-width':'100%',gap:'0'},{height:'0.5px'}); }],
+ ['Text at its faintest, indicator only on the first segment.',function(){
+   reset(); txt('Swipe',{color:'rgba(244,241,236,0.2)','font-size':'0.42rem'}); arr(HIDE);
+   ind({'max-width':'160px'},{height:'1px'}); }],
+ ['Nothing at all — arrows and text gone, drag only.',function(){
+   reset(); hideTxt(); arr(HIDE); }]
 ];
 
 function build(){
  if(document.getElementById('sf-sw-nav'))return;
- SW=document.querySelector('.u-swipe'); BTNS=[].slice.call(document.querySelectorAll('.ec2-btn'));
- WRAP=document.querySelector('.ec2-wrap'); TRACK=document.querySelector('.ec2-track');
- SLIDES=[].slice.call(document.querySelectorAll('.ec2-slide'));
- if(!WRAP||!TRACK){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- var seen={},u=0; SLIDES.forEach(function(s){var im=s.querySelector('img'); if(im){var k=im.getAttribute('src');
-   if(!seen[k]){seen[k]=1;u++;}}}); N=u||9;
+ SW=document.querySelector('.u-swipe');
+ BTNS=[].slice.call(document.querySelectorAll('.ec2-btn'));
+ WRAP=document.querySelector('.ec2-wrap');
+ if(!SW&&!BTNS.length){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
+ N=document.querySelectorAll('.ec2-slide').length||18;
+ var seen={},u=0;[].forEach.call(document.querySelectorAll('.ec2-slide img'),function(im){
+  var k=im.getAttribute('src'); if(!seen[k]){seen[k]=1;u++;}}); N=u||9;
  OSW=SW?(SW.getAttribute('style')||''):''; OB=BTNS.map(function(b){return b.getAttribute('style')||'';});
- OW=WRAP.getAttribute('style')||''; OT=TRACK.getAttribute('style')||'';
+ /* drag / swipe on the strip itself */
+ if(WRAP&&!WRAP.__drag){WRAP.__drag=1; var x0=null;
+  var down=function(e){x0=(e.touches?e.touches[0].clientX:e.clientX);};
+  var up=function(e){ if(x0===null)return; var x=(e.changedTouches?e.changedTouches[0].clientX:e.clientX),dx=x-x0; x0=null;
+    if(Math.abs(dx)<40)return; if(window.ec2Step)window.ec2Step('e2t',dx<0?1:-1);};
+  WRAP.addEventListener('mousedown',down); WRAP.addEventListener('mouseup',up);
+  WRAP.addEventListener('touchstart',down,{passive:true}); WRAP.addEventListener('touchend',up,{passive:true});
+  WRAP.style.setProperty('cursor','grab','important');}
  var bar=document.createElement('div'); bar.id='sf-sw-nav';
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Nav'; row.appendChild(lab);
  function apply(i){ NAV[i][1]();
-  note.innerHTML='Nav '+i+' — '+NAV[i][0]+
-   '<br><span class="sf-m">'+(i?'scrolls and drags like the team page':'click arrows')+'</span>';}
+  note.innerHTML='Nav '+i+' — '+NAV[i][0]+'<br><span class="sf-m">applications carousel · drag works in every state</span>';}
  NAV.forEach(function(o,i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
