@@ -5503,9 +5503,7 @@ function build(){
   'padding-top:18px !important;padding-bottom:32px !important;min-height:0 !important;}'+
   '#sfsec-dna .cs-dbody > .cs-row-left:nth-child(3){padding-top:32px !important;}'+
   '#sfsec-dna .cs-dslabel{margin-top:0 !important;}'+
-  '#sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}'+
-  /* the larger EXTRACTED DNA eyebrow is removed outright — each state prints one title of its own */
-  '#sfsec-dna .cs-dslabel.dna-label{display:none !important;}';
+  '#sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}';
  document.head.appendChild(fix);
 
  var bar=document.createElement('div'); bar.id='sf-sw-dnax';
@@ -5513,10 +5511,11 @@ function build(){
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='DNA Comp'; row.appendChild(lab);
  function apply(i){
-  if(i===0){HOST.innerHTML=TTL()+ORIG; HOST.removeAttribute('style'); st.textContent='';}
+  if(i===0){HOST.innerHTML=ORIG; HOST.removeAttribute('style'); st.textContent='';
+   if(LBEL)LBEL.style.display='';}
   else{HOST.innerHTML=L[i-1](); HOST.setAttribute('style','display:block !important;');
    st.textContent='#sfsec-dna .cs-dna-split *{max-width:none;}';
-  }
+   if(LBEL)LBEL.style.display='none';}       /* one title only — each layout prints its own */
   setTimeout(function(){
    var p=sec.querySelector('.cs-dp');
    var t=[].filter.call(HOST.querySelectorAll('span,div'),function(x){return /extracted dna/i.test(x.textContent)&&x.children.length===0;})[0]
