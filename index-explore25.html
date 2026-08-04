@@ -5490,13 +5490,14 @@ var KEEP=[0,1,4];
 var NOTES=['Original — for reference.','Two-Column Catalogue','Two Halves, One Column Each'];
 
 function build(){
+ if(document.getElementById('sf-sw-dnax'))return;
  var sec=document.getElementById('sfsec-dna'); if(!sec)return;
- if(sec.__dna)return;
- if(!harvest(sec)){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
- sec.__dna=1;
+ if(!harvest(sec))return;
  var st=document.createElement('style'); st.id='sfcss-dnax'; document.head.appendChild(st);
- /* the gap, fixed at the parent: the row height is set by the 249px photograph,
-    so the text block was sitting at the top of a taller cell */
+ /* ── the gap, fixed at the parent ──────────────────────────────────────
+    the row height is set by the 249px photograph, so the text block was
+    sitting at the top of a taller cell. distributing it removes the slack
+    without touching the image; the pads then set the interval to ~64px. */
  var fix=document.createElement('style'); fix.id='sfcss-dnagap';
  fix.textContent=
   '#sfsec-dna .cs-dbody > .cs-row-left:first-child{justify-content:space-between !important;'+
@@ -5504,11 +5505,35 @@ function build(){
   '#sfsec-dna .cs-dbody > .cs-row-left:nth-child(3){padding-top:32px !important;}'+
   '#sfsec-dna .cs-dslabel{margin-top:0 !important;}'+
   '#sfsec-dna .cs-dbody > .cs-row-left:first-child.cs-has-divider::after{display:none !important;}'+
+  /* the larger EXTRACTED DNA eyebrow is removed outright — each state prints one title of its own */
   '#sfsec-dna .cs-dslabel.dna-label{display:none !important;}';
  document.head.appendChild(fix);
- HOST.innerHTML=L[0]();                       /* Two-Column Catalogue */
- HOST.setAttribute('style','display:block !important;');
- st.textContent='#sfsec-dna .cs-dna-split *{max-width:none;}';
+
+ var bar=document.createElement('div'); bar.id='sf-sw-dnax';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='DNA Comp'; row.appendChild(lab);
+ function apply(i){
+  if(i===0){HOST.innerHTML=TTL()+ORIG; HOST.removeAttribute('style'); st.textContent='';}
+  else{HOST.innerHTML=L[KEEP[i]-1](); HOST.setAttribute('style','display:block !important;');
+   st.textContent='#sfsec-dna .cs-dna-split *{max-width:none;}';
+  }
+  setTimeout(function(){
+   var p=sec.querySelector('.cs-dp');
+   var t=[].filter.call(HOST.querySelectorAll('span,div'),function(x){return /extracted dna/i.test(x.textContent)&&x.children.length===0;})[0]
+        || (LBEL&&LBEL.style.display!=='none'?LBEL:null);
+   var gap=(p&&t)?Math.round(t.getBoundingClientRect().top-p.getBoundingClientRect().bottom):0;
+   var titles=(sec.textContent.match(/Extracted DNA/gi)||[]).length;
+   note.innerHTML=i+' — '+NOTES[i]+'<br><span class="sf-m">paragraph → EXTRACTED DNA: '+gap+
+    'px (target 64–88) &nbsp;·&nbsp; titles on screen: '+titles+'</span>';},70);
+ }
+ NOTES.forEach(function(_,i){
+  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on'); apply(i);};
+  row.appendChild(b);});
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ apply(0);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1100);});
 else setTimeout(build,1100);
