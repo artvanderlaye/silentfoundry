@@ -2852,89 +2852,109 @@ else setTimeout(mount,260);
 #sf-sw .sf-m{color:#c8a96e;}
 </style>
 <script id="cx-sw-js">(function(){
-var INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', RULE='rgba(10,10,10,0.08)',
-    DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var DATA=[], HOST=null, BLOCK=null, FORMSEC=null, FORMINNER=null, FORMHOME=null, DECKSEC=null, SECS=[];
+var LAB='#8a6e3a', INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.28)',
+    RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var IMG=['images/frame_factory-285.jpg','images/cnc-cutting.jpg','images/prototype_assembly.jpg','images/cad-screen.jpg'];
+var FILT='filter:brightness(.84) saturate(.88);';
+var HOST=null, ORIG='', FORMSEC=null, FORMHTML='', DECKSEC=null, SECS=[];
 
 function K(t){return '<span style="font-family:'+BEBAS+';font-size:clamp(0.9rem,1.2vw,1.3rem);letter-spacing:0.14em;'+
  'text-transform:uppercase;color:'+INK+';display:block;margin-bottom:9px;">'+t+'</span>';}
 function V(t,mw){return '<p style="font-family:'+DM+';font-weight:300;font-size:0.72rem;line-height:1.7;color:'+SUB+
- ';max-width:'+(mw||'44ch')+';margin:0;">'+t+'</p>';}
-function paths(cols,gap,rule){return '<div style="display:grid;grid-template-columns:repeat('+cols+',1fr);'+
+ ';max-width:'+(mw||'46ch')+';margin:0;">'+t+'</p>';}
+function rows(cols,gap,rule){return '<div style="display:grid;grid-template-columns:repeat('+cols+',1fr);'+
  'gap:'+(gap||'26px 40px')+';">'+DATA.map(function(p){
   return '<div style="'+(rule?'border-top:0.5px solid '+RULE+';padding-top:14px;':'')+'">'+K(p.t)+V(p.b)+'</div>';}).join('')+'</div>';}
+function img(src,ar,f){return '<img src="'+src+'" alt="" style="width:100%;height:100%;object-fit:cover;display:block;'+
+ (ar?'aspect-ratio:'+ar+';':'')+(f||FILT)+'">';}
+/* the Marshall shape: a text column beside a fixed image column */
+function marshall(inner,right,w){return '<div class="cx-mar" style="display:grid;grid-template-columns:1fr '+(w||'380px')+
+ ';gap:0;align-items:stretch;">'+'<div style="padding-right:clamp(24px,4vw,48px);">'+inner+'</div>'+
+ '<div style="overflow:hidden;">'+right+'</div></div>';}
+function stack(n){return '<div style="display:grid;grid-template-rows:repeat('+n+',1fr);gap:3px;height:100%;">'+
+ IMG.slice(0,n).map(function(s){return '<div style="overflow:hidden;">'+img(s)+'</div>';}).join('')+'</div>';}
+function pair(){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:3px;height:100%;">'+
+ IMG.slice(0,2).map(function(s){return '<div style="overflow:hidden;">'+img(s)+'</div>';}).join('')+'</div>';}
 
-/* the form is MOVED, never copied — its internal markup and widths are untouched */
-function shell(left,right,cols,gap,align){
- return '<div class="cx-mar" style="display:grid;grid-template-columns:'+cols+';gap:'+(gap||'clamp(28px,4vw,56px)')+
-  ';align-items:'+(align||'start')+';">'+
-  '<div class="cx-a">'+left+'</div><div class="cx-b"></div></div>';}
-function placeForm(){ var slot=HOST.querySelector('.cx-b'); if(slot&&FORMINNER)slot.appendChild(FORMINNER); }
-function homeForm(){ if(FORMINNER&&FORMHOME&&FORMINNER.parentNode!==FORMHOME)FORMHOME.appendChild(FORMINNER); }
-
-var V10=[
- ['Original — one column, contact box below.',null,null],
- ['8 · paths one column, form right at 440px. Tops aligned.',       function(){return shell(paths(1,'24px'),1,'1fr 440px');}],
- ['8 · form right at 400px — a touch more room for the paths.',      function(){return shell(paths(1,'24px'),1,'1fr 400px');}],
- ['8 · form right at 480px — a touch more room for the form.',       function(){return shell(paths(1,'24px'),1,'1fr 480px');}],
- ['8 · proportional 58 / 42 rather than a fixed form width.',        function(){return shell(paths(1,'24px'),1,'1.38fr 1fr');}],
- ['8 · form on the LEFT, paths beside it.',                          function(){return shell(paths(1,'24px'),1,'440px 1fr',null,'start');},'swap'],
- ['8 · a hairline rule between the two columns.',                    function(){return shell(paths(1,'24px'),1,'1fr 440px','clamp(28px,4vw,56px)');},'rule'],
- ['8 · paths in two columns, form right at 440px.',                  function(){return shell(paths(2,'26px 36px'),1,'1fr 440px');}],
- ['8 · hairlines above each path, form right.',                      function(){return shell(paths(1,'26px',true),1,'1fr 440px');}],
- ['8 · wider gutter between the columns.',                           function(){return shell(paths(1,'24px'),1,'1fr 440px','clamp(48px,7vw,96px)');}],
- ['8 · columns centred on each other rather than top aligned.',      function(){return shell(paths(1,'24px'),1,'1fr 440px',null,'center');}]
-];
-
-function harvest(sec){
- var sp=[].slice.call(sec.querySelectorAll('span')).filter(function(s){
-  return /^(partner brand|investor|factory or operator|join the team)$/i.test(s.textContent.trim());});
- DATA=sp.map(function(s){var d=s.parentElement, p=d.querySelector('p');
-  return {t:s.textContent.trim(), b:p?p.textContent.trim():'', el:d};});
+var DATA=[];
+function harvest(){
+ var sec=SECS[0]; if(!sec)return false;
+ var rowsEl=[].slice.call(sec.querySelectorAll('div')).filter(function(d){
+   return d.querySelector('span')&&d.querySelector('p')&&d.children.length===2;});
+ if(rowsEl.length<4){
+  var sp=[].slice.call(sec.querySelectorAll('span')).filter(function(s){return /partner brand|investor|factory or operator|join the team/i.test(s.textContent.trim());});
+  DATA=sp.map(function(s){var p=s.parentElement.querySelector('p'); return {t:s.textContent.trim(),b:p?p.textContent.trim():''};});
+ } else DATA=rowsEl.slice(0,4).map(function(d){return {t:d.querySelector('span').textContent.trim(),b:d.querySelector('p').textContent.trim()};});
  return DATA.length===4;
 }
+
+var V10=[
+ ['Original — one column, form and deck below.',null],
+ ['Two columns beside one tall image — the Marshall shape.',function(){return marshall(rows(2),img(IMG[0],null,FILT));}],
+ ['Two columns beside two stacked images.',function(){return marshall(rows(2),stack(2));}],
+ ['Two columns beside a four-up image column.',function(){return marshall(rows(2),stack(4));}],
+ ['Two columns, image column on a wider 460px measure.',function(){return marshall(rows(2),img(IMG[1]),'460px');}],
+ ['Two columns with hairlines, beside a two-up image pair.',function(){return marshall(rows(2,'28px 44px',true),pair());}],
+ ['Image column first, the four beside it.',function(){
+   return '<div class="cx-mar" style="display:grid;grid-template-columns:380px 1fr;gap:0;align-items:stretch;">'+
+    '<div style="overflow:hidden;">'+img(IMG[2])+'</div>'+
+    '<div style="padding-left:clamp(24px,4vw,48px);">'+rows(2)+'</div></div>';}],
+ ['THE FORM beside them — two columns of paths, form on the right.',function(){return marshall(rows(2),FORMHTML,'420px');}],
+ ['THE FORM beside them — paths in one column, form on the right.',function(){return marshall(rows(1,'22px'),FORMHTML,'440px');}],
+ ['THE FORM on the left, the four beside it.',function(){
+   return '<div class="cx-mar" style="display:grid;grid-template-columns:420px 1fr;gap:0;align-items:start;">'+
+    '<div style="padding-right:clamp(24px,4vw,48px);">'+FORMHTML+'</div>'+
+    '<div>'+rows(1,'22px')+'</div></div>';}],
+ ['THE FORM beside them, with hairlines and a wider measure.',function(){
+   return marshall(rows(2,'28px 44px',true),FORMHTML,'460px');}]
+];
+
 function build(){
  if(document.getElementById('sf-sw'))return;
  var pc=document.getElementById('pc'); if(!pc){setTimeout(build,400);return;}
  SECS=[].slice.call(pc.querySelectorAll('section'));
- if(SECS.length<3||!harvest(SECS[0])){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
+ if(SECS.length<3){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
+ if(!harvest()){ build.t=(build.t||0)+1; if(build.t<15)setTimeout(build,400); return; }
  FORMSEC=SECS[1]; DECKSEC=SECS[2];
- FORMINNER=FORMSEC.firstElementChild; FORMHOME=FORMSEC;
- BLOCK=DATA[0].el.parentElement;
+ var inner=FORMSEC.firstElementChild;
+ FORMHTML='<div style="max-width:100%;">'+(inner?inner.innerHTML:'')+'</div>';
+ /* the block that holds the four paths, inside the opening section */
+ var first=SECS[0].firstElementChild;
  HOST=document.createElement('div'); HOST.id='cx-host';
- BLOCK.parentNode.insertBefore(HOST,BLOCK.nextSibling);
+ first.appendChild(HOST);
+ var sp=[].slice.call(SECS[0].querySelectorAll('span')).filter(function(s){return /partner brand/i.test(s.textContent);})[0];
+ var block=sp?sp.closest('div').parentElement:null;
+ if(block&&block!==first){ ORIG=block.outerHTML; HOST.__block=block; }
+ else { ORIG=''; }
+
  var st=document.createElement('style'); st.id='cx-css'; document.head.appendChild(st);
- st.textContent='#pc .cx-b{min-width:0;}#pc .cx-a{min-width:0;}'+
-  '#pc .cx-mar.rule .cx-b{border-left:0.5px solid '+RULE+';padding-left:clamp(28px,4vw,56px);}'+
-  '@media(max-width:900px){#pc .cx-mar{grid-template-columns:1fr !important;gap:32px !important;}'+
-  '#pc .cx-mar.rule .cx-b{border-left:none;padding-left:0;}}';
+ st.textContent='@media(max-width:900px){#pc .cx-mar{grid-template-columns:1fr !important;gap:24px !important;}'+
+  '#pc .cx-mar > div{padding:0 !important;}}';
  var bar=document.createElement('div'); bar.id='sf-sw';
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var lab=document.createElement('span'); lab.className='sf-lb'; lab.textContent='Paths'; row.appendChild(lab);
  function apply(i){
-  homeForm(); HOST.innerHTML='';
-  if(i===0){ BLOCK.style.removeProperty('display');
-    if(!FORMSEC.parentNode)DECKSEC.parentNode.insertBefore(FORMSEC,DECKSEC); }
-  else{ BLOCK.style.setProperty('display','none','important');
-    HOST.innerHTML=V10[i][1]();
-    var mar=HOST.querySelector('.cx-mar');
-    if(V10[i][2]==='rule')mar.classList.add('rule');
-    if(V10[i][2]==='swap'){ var a=HOST.querySelector('.cx-a'), b=HOST.querySelector('.cx-b');
-      mar.insertBefore(b,a); }                      /* form column first */
-    placeForm();
-    if(FORMSEC.parentNode)FORMSEC.parentNode.removeChild(FORMSEC);   /* detached, never a hidden copy */
+  var b=HOST.__block;
+  /* the form section is DETACHED, not hidden — a hidden copy would duplicate
+     the field ids and submitForm would bind to the wrong ones */
+  function attach(on){
+    if(on){ if(!FORMSEC.parentNode)DECKSEC.parentNode.insertBefore(FORMSEC,DECKSEC); }
+    else  { if(FORMSEC.parentNode)FORMSEC.parentNode.removeChild(FORMSEC); }
   }
-  var mar=HOST.querySelector('.cx-mar');
+  if(i===0){ if(b)b.style.removeProperty('display'); HOST.innerHTML=''; attach(true); }
+  else { if(b)b.style.setProperty('display','none','important');
+    attach(i<7);                       /* 7-10 put the form beside the paths instead */
+    HOST.innerHTML=V10[i][1]();
+  }
   note.innerHTML='Paths '+i+' — '+V10[i][0]+'<br><span class="sf-m">'+
-   (i?('columns '+getComputedStyle(mar).gridTemplateColumns.split(' ').map(function(x){return Math.round(parseFloat(x))+'px';}).join(' / ')+
-       ' · aligned '+getComputedStyle(mar).alignItems):'contact box below, unchanged')+'</span>';
+   (i>=7?'contact box below removed — the form sits beside the paths':'form and deck below unchanged')+'</span>';
  }
  V10.forEach(function(o,i){
-  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
-  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-   b.classList.add('on'); apply(i);};
-  row.appendChild(b);});
+  var bt=document.createElement('b'); bt.textContent=i; if(i===0)bt.className='on';
+  bt.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   bt.classList.add('on'); apply(i);};
+  row.appendChild(bt);});
  bar.appendChild(row); bar.appendChild(note); document.body.appendChild(bar); apply(0);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,900);});
