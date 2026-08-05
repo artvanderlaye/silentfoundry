@@ -5778,116 +5778,227 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 else setTimeout(go,700);
 })();
 </script>
-<script id="sf-sw-js-v7">(function(){
+<script id="sf-sw-js-v5">/* extra caption designs 21-40 — the sentence BESIDE the logos, plus left-edge alignment */
+(function(){
+var CY='#4FA8C7', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.09)',
+    INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
+    RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+
+/* ── align the caption's left edge with DESIGNED DNA below it ── */
+function align(){
+ var cap=document.getElementById('sf-cap'); if(!cap)return;
+ var ref=document.querySelector('#su .u-ey')||document.querySelector('#su');
+ if(!ref)return;
+ var host=cap.offsetParent||document.body;
+ var x=ref.getBoundingClientRect().left-host.getBoundingClientRect().left;
+ if(x>0&&x<400){cap.style.setProperty('padding-left',Math.round(x)+'px','important');
+                cap.style.setProperty('padding-right','48px','important');}
+ var r=document.querySelector('#su');
+ if(r){var w=r.getBoundingClientRect().width; cap.style.setProperty('max-width',Math.round(w+x+8)+'px','important');}
+}
+window.__sfAlignCap=align;
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(align,1500);});
+else setTimeout(align,1500);
+window.addEventListener('resize',function(){clearTimeout(window.__sfA);window.__sfA=setTimeout(align,150);});
+
+/* ── twenty more, the sentence beside the logos ── */
+function ext(){
+ var bar=document.getElementById('sf-sw-v4'); if(!bar){setTimeout(ext,400);return;}
+ if(bar.__ext)return; bar.__ext=1;
+ var row=bar.querySelector('.sf-row'), OV=document.getElementById('c16-overlay');
+ var sp=OV.querySelector('span'), pp=OV.querySelector('.fp-body-text');
+ var P={ey:'Featured Project', txt:'', logos:[]};
+ /* read from whatever the current design left behind, falling back to the stored original */
+ var tmp=document.createElement('div'); tmp.innerHTML=OV.__orig||OV.innerHTML;
+ P.ey=(tmp.querySelector('span')||{textContent:'Featured Project'}).textContent.trim();
+ P.txt=(tmp.querySelector('.fp-body-text')||{textContent:''}).textContent.trim();
+ P.logos=[].map.call(tmp.querySelectorAll('img'),function(i){
+   var h=i.outerHTML;
+   if(/Switchlogowhite|switch-logo/i.test(h))
+     h=h.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'').replace(/style="/i,
+       'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
+   return h;});
+ function EY(c,sz,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
+  ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+P.ey+'</span>';}
+ function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
+  ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'46ch')+';margin:0;">'+P.txt+'</p>';}
+ function LG(){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;">'+P.logos.join('')+'</span>';}
+ function G(n){return '<div style="height:'+n+'px"></div>';}
+ function BAR(w,c,h){return '<div style="width:'+(w||'44px')+';height:'+(h||'1px')+';background:'+(c||CY)+';"></div>';}
+ function R2(a,b,cols,gap,al,extra){return '<div style="display:grid;grid-template-columns:'+cols+
+  ';gap:'+(gap||'clamp(22px,3.5vw,56px)')+';align-items:'+(al||'end')+';text-align:left;'+(extra||'')+'">'+
+  '<div>'+a+'</div><div>'+b+'</div></div>';}
+
+ var MORE=[
+  ['Beside — logos left, sentence right.',function(){return R2(LG(),TX(),'auto 1fr');}],
+  ['Beside — eyebrow and logos left, sentence right.',function(){return R2(EY()+G(12)+LG(),TX(),'auto 1fr');}],
+  ['Beside — eyebrow above, then logos and sentence side by side.',function(){return EY()+G(14)+R2(LG(),TX(),'auto 1fr');}],
+  ['Beside — a cyan rule dividing the two columns.',function(){return R2(EY()+G(12)+LG(),TX(),'auto 1fr',null,'start',
+    '')+'';},'rule'],
+  ['Beside — proportional 40 / 60.',function(){return R2(EY()+G(12)+LG(),TX('0.72rem',SUB,'none'),'0.66fr 1fr');}],
+  ['Beside — narrow logo column at 200px.',function(){return R2(EY()+G(12)+LG(),TX(),'200px 1fr');}],
+  ['Beside — sentence left, logos right.',function(){return R2(EY()+G(12)+TX(),LG(),'1fr auto');}],
+  ['Beside — tops aligned rather than baselines.',function(){return R2(EY()+G(12)+LG(),TX(),'auto 1fr',null,'start');}],
+  ['Beside — sentence at display scale.',function(){return R2(EY()+G(12)+LG(),TX('0.95rem',INK,'30ch','1.45'),'auto 1fr','clamp(24px,4vw,64px)','start');}],
+  ['Beside — sentence small and faint.',function(){return R2(EY()+G(12)+LG(),TX('0.64rem',FAINT,'44ch'),'auto 1fr');}],
+  ['Beside — cyan bar over the logo column.',function(){return R2(BAR()+G(12)+EY()+G(12)+LG(),TX(),'auto 1fr');}],
+  ['Beside — reference number above the logos.',function(){return R2(
+    '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span>'+G(10)+EY()+G(12)+LG(),
+    TX(),'auto 1fr');}],
+  ['Beside — hairline across the top of both columns.',function(){return BAR('100%',RULE)+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr');}],
+  ['Beside — three columns: eyebrow, logos, sentence.',function(){
+    return R2(EY(),LG()+'<div style="height:0"></div>','auto 1fr','clamp(18px,2.5vw,36px)','end')
+      .replace('</div></div>','</div></div>')+G(14)+R2('',TX(),'auto 1fr');}],
+  ['Beside — eyebrow, logos and sentence on one row.',function(){
+    return R2(EY()+G(10)+LG(),TX('0.68rem'),'auto 1fr','clamp(18px,3vw,44px)','baseline');}],
+  ['Beside — on the soft tonal ground.',function(){return '<div style="background:#e8e4dc;padding:22px 24px;">'+
+    R2(EY()+G(12)+LG(),TX(),'auto 1fr')+'</div>';}],
+  ['Beside — contained in a bordered card with a cyan top edge.',function(){
+    var inner=R2(EY()+G(12)+LG(),TX('0.68rem'),'auto 1fr');
+    return '<div style="border:0.5px solid rgba(10,10,10,0.08);border-top:2px solid '+CY+';padding:22px 24px;">'+inner+'</div>';}],
+  ['Beside — sentence given a wider measure and looser leading.',function(){
+    return R2(EY()+G(12)+LG(),TX('0.7rem',SUB,'60ch','1.95'),'auto 1fr','clamp(24px,4vw,60px)','start');}],
+  ['Beside — logos small and quiet, sentence dominant.',function(){return R2(
+    '<div style="opacity:0.6;transform:scale(0.85);transform-origin:left bottom;">'+EY(FAINT)+G(10)+LG()+'</div>',
+    TX('0.8rem',INK,'40ch','1.65'),'auto 1fr','clamp(24px,4vw,60px)','start');}],
+  ['Beside — the considered one: cyan eyebrow, bar, logos, sentence right.',function(){return R2(
+    EY(CY,'0.42rem','0.34em')+G(11)+BAR('48px',CY)+G(15)+LG(), TX('0.7rem',SUB,'44ch','1.75'),
+    'auto 1fr','clamp(26px,4vw,64px)','end');}]
+ ];
+ var start=row.querySelectorAll('b').length;
+ MORE.forEach(function(o,k){
+  var i=start+k;
+  var b=document.createElement('b'); b.textContent=i;
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   var html; try{html=o[1]();}catch(e){html=null;}
+   if(!html){bar.querySelector('.sf-note').innerHTML='Caption '+i+' — FAILED';return;}
+   var probe=document.createElement('div'); probe.innerHTML=html;
+   if(!/Featured Project/i.test(probe.textContent))html=EY()+G(12)+html;
+   if(!probe.querySelector('img'))html=LG()+G(14)+html;
+   if(probe.textContent.indexOf(P.txt.slice(0,24))<0)html=html+G(14)+TX();
+   if(o[2]==='rule')html=html.replace('grid-template-columns:auto 1fr;',
+     'grid-template-columns:auto 1fr;').replace('<div>'+'','<div style="border-right:1px solid '+CY2+';padding-right:clamp(22px,3vw,44px);">');
+   OV.innerHTML=html;
+   OV.setAttribute('style','position:static;display:block;border-top:none;padding-top:18px;text-align:left;');
+   align();
+   bar.querySelector('.sf-note').innerHTML='Caption '+i+' — '+o[0]+
+    '<br><span class="sf-m">sentence beside the logos · left edge aligned to DESIGNED DNA</span>';};
+  row.appendChild(b);});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(ext,1400);});
+else setTimeout(ext,1400);
+})();
+</script>
+<script id="sf-sw-js-v6">/* caption 41-60 + structural left alignment */
+(function(){
 var CY='#4FA8C7', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.09)',
     INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
     RUL='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var OV=null,P=null,CAP=null,VBOX=null,VHOST=null,DNAHOME=null;
 
-function grab(){
- OV=document.getElementById('c16-overlay'); CAP=document.getElementById('sf-cap');
- if(!OV||!CAP)return false;
+/* ── alignment, done structurally rather than by measuring ──
+   the caption is moved INSIDE the block that holds DESIGNED DNA, as its first
+   child, so it inherits exactly the same left edge. no padding, no arithmetic. */
+function homeCap(){
+ var cap=document.getElementById('sf-cap'); if(!cap)return false;
+ var ey=document.querySelector('#su .u-ey'); if(!ey)return false;
+ var box=ey.parentElement;                       /* the element DESIGNED DNA sits in */
+ if(cap.parentElement===box&&box.firstElementChild===cap)return true;
+ box.insertBefore(cap,box.firstElementChild);
+ cap.style.setProperty('padding','0 0 34px 0','important');
+ cap.style.setProperty('margin','0','important');
+ cap.style.setProperty('max-width','none','important');
+ return true;
+}
+window.__sfHomeCap=homeCap;
+window.__sfAlignCap=homeCap;                      /* replaces the old measuring version */
+
+function ext(){
+ var bar=document.getElementById('sf-sw-v4');
+ if(!bar||!document.querySelector('#su .u-ey')){ ext.t=(ext.t||0)+1; if(ext.t<40)setTimeout(ext,300); return; }
+ homeCap();
+ if(bar.__v6)return; bar.__v6=1;
+ var row=bar.querySelector('.sf-row'), OV=document.getElementById('c16-overlay');
  var tmp=document.createElement('div'); tmp.innerHTML=OV.__orig||OV.innerHTML;
- P={ey:(tmp.querySelector('span')||{textContent:'Featured Project'}).textContent.trim(),
-    txt:(tmp.querySelector('.fp-body-text')||{textContent:''}).textContent.trim(),
-    logos:[].map.call(tmp.querySelectorAll('img'),function(i){var h=i.outerHTML;
-      if(/Switchlogowhite|switch-logo/i.test(h))
-        h=h.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'').replace(/style="/i,
-          'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
-      return h;})};
- var ey=document.querySelector('#su .u-ey'); DNAHOME=ey?ey.parentElement:null;
- var xh=document.querySelector('#fv-stage .x-h'); VBOX=xh?xh.parentElement:null;
- return !!(P.txt&&DNAHOME&&VBOX);
+ var P={ey:(tmp.querySelector('span')||{textContent:'Featured Project'}).textContent.trim(),
+        txt:(tmp.querySelector('.fp-body-text')||{textContent:''}).textContent.trim(),
+        logos:[].map.call(tmp.querySelectorAll('img'),function(i){var h=i.outerHTML;
+          if(/Switchlogowhite|switch-logo/i.test(h))
+            h=h.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'').replace(/style="/i,
+              'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
+          return h;})};
+ function EY(c,sz,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
+  ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+P.ey+'</span>';}
+ function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
+  ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'46ch')+';margin:0;">'+P.txt+'</p>';}
+ function LG(){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;">'+P.logos.join('')+'</span>';}
+ function G(n){return '<div style="height:'+n+'px"></div>';}
+ function BAR(w,c,h){return '<div style="width:'+(w||'44px')+';height:'+(h||'1px')+';background:'+(c||CY)+';"></div>';}
+ function R2(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+
+  ';gap:'+(gap||'clamp(22px,3.5vw,56px)')+';align-items:'+(al||'end')+';">'+
+  '<div>'+a+'</div><div>'+b+'</div></div>';}
+ function W(inner){return '<div style="text-align:left;margin:0;padding:0;">'+inner+'</div>';}
+
+ var M=[
+  ['Logos left, sentence right — flush to the DNA edge.',function(){return W(R2(LG(),TX(),'auto 1fr'));}],
+  ['Eyebrow, logos, sentence right.',function(){return W(R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+  ['Eyebrow across the top, two columns beneath.',function(){return W(EY()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
+  ['Cyan bar, then logos and sentence.',function(){return W(BAR()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
+  ['Stacked, tight.',function(){return W(EY()+G(10)+LG()+G(12)+TX());}],
+  ['Stacked, generous.',function(){return W(EY()+G(22)+LG()+G(22)+TX());}],
+  ['Sentence at display scale beside the logos.',function(){return W(R2(EY()+G(12)+LG(),TX('0.95rem',INK,'30ch','1.45'),'auto 1fr','clamp(26px,4vw,64px)','start'));}],
+  ['Sentence faint and small beside the logos.',function(){return W(R2(EY()+G(12)+LG(),TX('0.64rem',FAINT,'44ch'),'auto 1fr'));}],
+  ['Narrow logo column, 220px.',function(){return W(R2(EY()+G(12)+LG(),TX(),'220px 1fr'));}],
+  ['Proportional 45 / 55.',function(){return W(R2(EY()+G(12)+LG(),TX('0.72rem',SUB,'none'),'0.82fr 1fr'));}],
+  ['Sentence first, logos to the right.',function(){return W(R2(EY()+G(12)+TX(),LG(),'1fr auto'));}],
+  ['Hairline above the whole block.',function(){return W(BAR('100%',RUL)+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+  ['Cyan rule between the columns.',function(){return W('<div style="display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.5vw,52px);align-items:end;">'+
+    '<div style="border-right:1px solid '+CY2+';padding-right:clamp(22px,3.5vw,52px);">'+EY()+G(12)+LG()+'</div><div>'+TX()+'</div></div>');}],
+  ['Reference number opposite the eyebrow.',function(){return W(
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EY()+
+    '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span></div>'+
+    G(14)+R2(LG(),TX(),'auto 1fr'));}],
+  ['Eyebrow as a cyan chip, then two columns.',function(){return W(
+    '<span style="display:inline-block;background:'+CY1+';border:0.5px solid '+CY2+';padding:5px 10px;">'+EY()+'</span>'+
+    G(16)+R2(LG(),TX(),'auto 1fr'));}],
+  ['Rule running out from the eyebrow.',function(){return W(
+    '<div style="display:flex;align-items:center;gap:14px;">'+EY()+'<div style="flex:1;height:1px;background:'+CY2+';"></div></div>'+
+    G(16)+R2(LG(),TX(),'auto 1fr'));}],
+  ['Tonal ground, flush left.',function(){return W('<div style="background:#e8e4dc;padding:22px 24px;margin-left:-24px;">'+
+    R2(EY()+G(12)+LG(),TX(),'auto 1fr')+'</div>');}],
+  ['Cyan gradient hairline above.',function(){return W(
+    '<div style="height:2px;background:linear-gradient(to right,'+CY+',rgba(79,168,199,0));"></div>'+G(18)+
+    R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+  ['Logos quiet, sentence dominant.',function(){return W(R2(
+    '<div style="opacity:0.62;transform:scale(0.86);transform-origin:left bottom;">'+EY(FAINT)+G(10)+LG()+'</div>',
+    TX('0.8rem',INK,'40ch','1.65'),'auto 1fr','clamp(26px,4vw,60px)','start'));}],
+  ['The considered one — cyan eyebrow, bar, logos, sentence right.',function(){return W(R2(
+    EY(CY,'0.42rem','0.34em')+G(11)+BAR('48px',CY)+G(15)+LG(),TX('0.7rem',SUB,'44ch','1.75'),
+    'auto 1fr','clamp(26px,4vw,64px)','end'));}]
+ ];
+ var start=row.querySelectorAll('b').length;
+ M.forEach(function(o,k){
+  var i=start+k;
+  var b=document.createElement('b'); b.textContent=i;
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   var html; try{html=o[1]();}catch(e){html=null;}
+   if(!html){bar.querySelector('.sf-note').innerHTML='Caption '+i+' — FAILED';return;}
+   var probe=document.createElement('div'); probe.innerHTML=html;
+   if(!/Featured Project/i.test(probe.textContent))html=EY()+G(12)+html;
+   if(!probe.querySelector('img'))html=LG()+G(14)+html;
+   if(probe.textContent.indexOf(P.txt.slice(0,24))<0)html=html+G(14)+TX();
+   OV.innerHTML=html;
+   OV.setAttribute('style','position:static;display:block;border:none;padding:0;margin:0;text-align:left;');
+   homeCap();
+   bar.querySelector('.sf-note').innerHTML='Caption '+i+' — '+o[0]+
+    '<br><span class="sf-m">flush left with DESIGNED DNA — same container</span>';};
+  row.appendChild(b);});
+ /* every earlier design re-homes too */
+ [].forEach.call(row.querySelectorAll('b'),function(b){
+  var old=b.onclick; b.onclick=function(e){ old&&old.call(this,e); homeCap(); };});
 }
-function EY(c,sz,ls,t){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
- ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+(t||P.ey)+'</span>';}
-function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
- ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'46ch')+';margin:0;">'+P.txt+'</p>';}
-function LG(){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;">'+P.logos.join('')+'</span>';}
-function G(n){return '<div style="height:'+n+'px"></div>';}
-function BAR(w,c,h){return '<div style="width:'+(w||'44px')+';height:'+(h||'1px')+';background:'+(c||CY)+';"></div>';}
-function R2(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+
- ';gap:'+(gap||'clamp(22px,3.5vw,56px)')+';align-items:'+(al||'end')+';"><div>'+a+'</div><div>'+b+'</div></div>';}
-function W(x){return '<div style="text-align:left;margin:0;padding:0;">'+x+'</div>';}
-
-var L=[
- ['Logos left, sentence right.',function(){return W(R2(LG(),TX(),'auto 1fr'));}],
- ['Eyebrow, logos, sentence right.',function(){return W(R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
- ['Eyebrow across the top, two columns beneath.',function(){return W(EY()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
- ['Cyan bar, then logos and sentence.',function(){return W(BAR()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
- ['Stacked, tight.',function(){return W(EY()+G(10)+LG()+G(12)+TX());}],
- ['Stacked, generous.',function(){return W(EY()+G(22)+LG()+G(22)+TX());}],
- ['Sentence at display scale beside the logos.',function(){return W(R2(EY()+G(12)+LG(),TX('0.95rem',INK,'30ch','1.45'),'auto 1fr','clamp(26px,4vw,64px)','start'));}],
- ['Sentence faint and small.',function(){return W(R2(EY()+G(12)+LG(),TX('0.64rem',FAINT,'44ch'),'auto 1fr'));}],
- ['Narrow logo column, 220px.',function(){return W(R2(EY()+G(12)+LG(),TX(),'220px 1fr'));}],
- ['Proportional 45 / 55.',function(){return W(R2(EY()+G(12)+LG(),TX('0.72rem',SUB,'none'),'0.82fr 1fr'));}],
- ['Sentence first, logos right.',function(){return W(R2(EY()+G(12)+TX(),LG(),'1fr auto'));}],
- ['Hairline above the block.',function(){return W(BAR('100%',RUL)+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
- ['Cyan rule between the columns.',function(){return W('<div style="display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.5vw,52px);align-items:end;">'+
-   '<div style="border-right:1px solid '+CY2+';padding-right:clamp(22px,3.5vw,52px);">'+EY()+G(12)+LG()+'</div><div>'+TX()+'</div></div>');}],
- ['Reference number opposite the eyebrow.',function(){return W(
-   '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EY()+
-   '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span></div>'+G(14)+R2(LG(),TX(),'auto 1fr'));}],
- ['Eyebrow as a cyan chip.',function(){return W('<span style="display:inline-block;background:'+CY1+
-   ';border:0.5px solid '+CY2+';padding:5px 10px;">'+EY()+'</span>'+G(16)+R2(LG(),TX(),'auto 1fr'));}],
- ['Rule running out from the eyebrow.',function(){return W(
-   '<div style="display:flex;align-items:center;gap:14px;">'+EY()+'<div style="flex:1;height:1px;background:'+CY2+';"></div></div>'+
-   G(16)+R2(LG(),TX(),'auto 1fr'));}],
- ['Tonal ground.',function(){return W('<div style="background:#e8e4dc;padding:22px 24px;">'+R2(EY()+G(12)+LG(),TX(),'auto 1fr')+'</div>');}],
- ['Cyan gradient hairline above.',function(){return W(
-   '<div style="height:2px;background:linear-gradient(to right,'+CY+',rgba(79,168,199,0));"></div>'+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
- ['Logos quiet, sentence dominant.',function(){return W(R2(
-   '<div style="opacity:0.62;transform:scale(0.86);transform-origin:left bottom;">'+EY(FAINT)+G(10)+LG()+'</div>',
-   TX('0.8rem',INK,'40ch','1.65'),'auto 1fr','clamp(26px,4vw,60px)','start'));}],
- ['The considered one.',function(){return W(R2(EY(CY,'0.42rem','0.34em')+G(11)+BAR('48px',CY)+G(15)+LG(),
-   TX('0.7rem',SUB,'44ch','1.75'),'auto 1fr','clamp(26px,4vw,64px)','end'));}]
-];
-
-function belowHome(){ if(!CAP||!DNAHOME)return;
- if(CAP.parentElement!==DNAHOME||DNAHOME.firstElementChild!==CAP)DNAHOME.insertBefore(CAP,DNAHOME.firstElementChild);
- CAP.setAttribute('style','padding:0 0 34px 0 !important;margin:0 !important;max-width:none !important;'); }
-function ventureHome(){ if(!CAP||!VBOX)return;
- if(CAP.parentElement!==VBOX)VBOX.appendChild(CAP);
- CAP.setAttribute('style','padding:26px 0 0 0 !important;margin:0 !important;max-width:none !important;'); }
-function guard(html){
- var pr=document.createElement('div'); pr.innerHTML=html;
- if(!/Featured Project/i.test(pr.textContent))html=EY()+G(12)+html;
- if(!pr.querySelector('img'))html=LG()+G(14)+html;
- if(pr.textContent.indexOf(P.txt.slice(0,24))<0)html=html+G(14)+TX();
- return html; }
-
-function build(){
- if(document.getElementById('sf-sw-v7'))return;
- if(!grab()){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
- ['sf-sw-v4','sf-sw-v3','sf-sw-v2'].forEach(function(id){var e=document.getElementById(id); if(e)e.remove();});
- var bar=document.createElement('div'); bar.id='sf-sw-v7';
- var note=document.createElement('div'); note.className='sf-note';
- function mk(label,place){
-  var row=document.createElement('div'); row.className='sf-row';
-  var l=document.createElement('span'); l.className='sf-lb'; l.textContent=label; row.appendChild(l);
-  for(var i=0;i<=L.length;i++){(function(i){
-   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
-   b.onclick=function(){
-    [].forEach.call(bar.querySelectorAll('b'),function(x){x.classList.remove('on');});
-    b.classList.add('on');
-    if(i===0){ OV.innerHTML=OV.__orig; OV.setAttribute('style',OV.__style||''); belowHome();
-      note.innerHTML=label+' 0 — current, beneath the photograph.'; return; }
-    var html; try{html=L[i-1][1]();}catch(e){html=null;}
-    if(!html){note.innerHTML=label+' '+i+' — FAILED';return;}
-    OV.innerHTML=guard(html);
-    OV.setAttribute('style','position:static;display:block;border:none;padding:0;margin:0;text-align:left;');
-    place();
-    note.innerHTML=label+' '+i+' — '+L[i-1][0]+'<br><span class="sf-m">'+
-     (label==='Venture'?'integrated into FEATURED VENTURE, above the carousel':'beneath the photograph, flush with DESIGNED DNA')+'</span>';};
-   row.appendChild(b);})(i);}
-  bar.appendChild(row);
- }
- mk('Caption',belowHome); mk('Venture',ventureHome);
- bar.appendChild(note); note.innerHTML='0 in either row is the current design.';
- SFSTACK().appendChild(bar);
- belowHome();
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1700);});
-else setTimeout(build,1700);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(ext,1500);});
+else setTimeout(ext,1500);
 })();
 </script>
