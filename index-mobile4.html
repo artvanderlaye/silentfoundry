@@ -6114,12 +6114,7 @@ html body #c16s-wrap .c16-slide img{height:100% !important;width:100% !important
   /* M1 · the dots already carry padding:16px and are not border-box, so the
      40px minimum made them 72px. Size stays as designed; the tap area is a
      transparent pseudo-element instead. */
-  /* THE REAL CAUSE: the dot has padding:16px AND a background colour AND
-     content-box sizing, so the background painted the whole 44px padded
-     circle. Removing the padding is what actually shrinks it; the tap area
-     is carried by the ::after below. */
-  html body .c16-dot, html body .fdot{min-width:0 !important;min-height:0 !important;
-    padding:0 !important;position:relative !important;}
+  html body .c16-dot, html body .fdot{min-width:0 !important;min-height:0 !important;position:relative !important;}
   html body .c16-dot::after, html body .fdot::after{content:'' !important;position:absolute !important;inset:-14px !important;}
   /* NOTE: the 中文 link (27px) and the Foundry "Scroll" hint (9px, set by an
      inline !important in JS) cannot be reached by CSS. Both need a one-line
@@ -6165,102 +6160,119 @@ html body #c16s-wrap .c16-slide img{height:100% !important;width:100% !important
 @media(max-width:768px){
   html body #sf-glance .cs-dslabel{margin-top:34px !important;margin-bottom:12px !important;}
 }
-
-/* ============================================================
-   ONE SYSTEM — every text block now uses the same measure, the same
-   left margin, and breaks at the same moments.
-   ============================================================ */
-
-/* S1 · ONE MEASURE. Marshall ran to 934px (109 characters) at 1440 while the
-   others sat frozen at 666px. Everything is now capped at the same 680px and
-   shrinks with its container below that. */
-html body #sfsec-dna p,
-html body #fv-stage p,   /* the SWITCH intro carries no class after the lock-up bake */
-html body #hiw-stage p,
-html body #funds .funds-intro,
-html body .wwd-grid p{max-width:min(100%,680px) !important;}
-
-/* S2 · MARSHALL's image column was a fixed 380px, so between 900 and 1024 the
-   text was squeezed to 41-48 characters. Now it flexes. */
-@media(min-width:769px){
-  html body .cs-dbody{grid-template-columns:1fr clamp(240px,26vw,380px) !important;}
-}
-
-/* S3 · THE FOUNDRY sat on its own 1040px rail, so above 900px it was the only
-   section not on the page margin - x216 at 1440 against everyone else's x48. */
-@media(min-width:769px){
-  html body #hiw-stage div[style*="1040px"]{
-    grid-template-columns:1fr min(1600px,calc(100% - 96px)) 1fr !important;}
-}
-
-/* S4 · THE FOUNDRY's two columns were unequal and the gap grew as the screen
-   narrowed - 97px apart at 1440, 265px at 1100. Now equal. */
-@media(min-width:981px){
-  html body #hiw-stage div[data-pair]{grid-template-columns:1fr 1fr !important;}
-}
-
-/* S5 · the symbol ribbon tracked the intro column, then jumped to full width
-   when the pair stacked. Held to the same measure as the text. */
-html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
-
-/* S6 · VENTURE MODELS drift - NOT FIXED. #funds already supplies the 48px
-   inset, so adding it to the children doubled it to x96. Left as it was
-   (24px out between 768 and 900) rather than ship a regression. */
-
-/* S7 · the last two from the previous pass. */
-@media(max-width:768px){
-  html body #fv-stage{padding-top:24px !important;}
-  html body .footer-col:first-of-type{display:none !important;}
-  /* portfolio: the grid went full-bleed but kept 24px of inner padding, and
-     the cards kept their own, so the images were still inset. */
-  html body #su .u-g{padding-left:0 !important;padding-right:0 !important;gap:0 !important;}
-  html body #su .u-c{padding:0 !important;flex:0 0 100vw !important;
-    width:100vw !important;max-width:100vw !important;}
-  html body #su .u-g img{width:100% !important;}
-}
 </style>
 
-<script id="sf-menu-b">
-/* MOBILE MENU — direction B, baked. Photograph behind, items over it,
-   positioning line at the base instead of the office addresses. */
+<script id="sf-menu-sw">
+/* MOBILE MENU — three design directions on a switcher.
+   0 = current, A = ink panel, B = brand moment, C = cream structured.
+   Purely additive: the original markup/style/class is captured on load and
+   restored by 0, so nothing is permanently altered. */
 (function(){
- function build(){
-  var MM=document.querySelector('.mobile-menu');
-  if(!MM){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
-  if(MM.getAttribute('data-b'))return;
-  var LINKS=[['FOUNDRY','index.html#how',''],
-             ['TEAM','sf-team.html','_blank'],
-             ['CONTACT','sf-contact.html','_blank']];
-  var rows='';
+ var MM,ORIG,OSTYLE,OCLASS,SB;
+ var LINKS=[['FOUNDRY','index.html#how',''],
+            ['TEAM','sf-team.html','_blank'],
+            ['CONTACT','sf-contact.html','_blank']];
+ var GOLD='#c8a96e', INK='#0e1016', CREAM='#ede8e0';
+
+ function a(t,h,tg,style){return '<a href="'+h+'"'+(tg?' target="'+tg+'" rel="noopener"':'')+
+   ' style="'+style+'">'+t+'</a>';}
+
+ function rows(colour,num,rule){
+  var out='';
   LINKS.forEach(function(l,i){
-   rows+='<a href="'+l[1]+'"'+(l[2]?' target="'+l[2]+'" rel="noopener"':'')+
-     ' style="display:block;width:100%;padding:22px 0;'+
-     (i?'border-top:1px solid rgba(255,255,255,0.18);':'')+
-     'font-family:\'Bebas Neue\',sans-serif;font-size:2.1rem;letter-spacing:0.16em;'+
-     'line-height:1;color:#fff !important;text-decoration:none;">'+l[0]+'</a>';});
-  /* the open/closed state is `.mobile-menu.open{display:flex}` in the shared
-     stylesheet — setting display inline would beat it and the menu would
-     never open, so the look goes in a stylesheet rule instead. */
-  MM.removeAttribute('style');
-  if(!document.getElementById('mm-b-css')){
-   var st=document.createElement('style'); st.id='mm-b-css';
-   st.textContent='.mobile-menu{flex-direction:column !important;align-items:flex-start !important;'+
-    'justify-content:flex-end !important;padding:0 32px 48px !important;background:#000 !important;'+
-    'background-image:linear-gradient(180deg,rgba(0,0,0,0.30) 0%,rgba(0,0,0,0.86) 76%),'+
-    'url(images/SWITCH_eSCRAMBLER_bike-6.jpg) !important;'+
-    'background-size:cover !important;background-position:center !important;}'+
-    '.mobile-menu a{color:#fff !important;}';
-   document.head.appendChild(st);}
-  MM.innerHTML='<div style="width:100%;max-width:520px;">'+rows+
-   '<div style="border-top:1px solid rgba(255,255,255,0.18);margin-bottom:34px;"></div>'+
-   '<span style="display:block;font-family:\'DM Sans\',sans-serif;font-size:0.72rem;'+
-   'letter-spacing:0.34em;color:rgba(255,255,255,0.88);">SILENT FOUNDRY</span>'+
-   '<span style="display:block;margin-top:10px;font-family:\'DM Sans\',sans-serif;'+
-   'font-size:0.66rem;line-height:1.7;color:rgba(255,255,255,0.5);">'+
-   'Authentic brands into premium products.</span></div>';
-  MM.setAttribute('data-b','1');
+   out+='<div style="display:flex;align-items:baseline;gap:18px;width:100%;padding:20px 0;'+
+     (rule?'border-top:1px solid '+rule+';':'')+'">'+
+     (num?'<span style="font-family:\'DM Sans\',sans-serif;font-size:0.58rem;letter-spacing:0.2em;'+
+          'color:'+GOLD+';min-width:26px;">0'+(i+1)+'</span>':'')+
+     a(l[0],l[1],l[2],'font-family:\'Bebas Neue\',sans-serif;font-size:2.1rem;letter-spacing:0.16em;'+
+       'line-height:1;color:'+colour+' !important;text-decoration:none;')+
+     '</div>';});
+  return out;}
+
+ function eyebrow(t,c){return '<span style="font-family:\'DM Sans\',sans-serif;font-size:0.58rem;'+
+   'letter-spacing:0.32em;text-transform:uppercase;color:'+(c||GOLD)+';display:block;'+
+   'margin-bottom:34px;">'+t+'</span>';}
+
+ function addresses(c){return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;'+
+   'margin-top:44px;font-family:\'DM Sans\',sans-serif;font-size:0.62rem;line-height:1.7;color:'+c+';">'+
+   '<div><span style="display:block;letter-spacing:0.2em;color:'+GOLD+';font-size:0.52rem;'+
+   'margin-bottom:7px;">HONG KONG</span>300 Lockhart Road<br>Wanchai</div>'+
+   '<div><span style="display:block;letter-spacing:0.2em;color:'+GOLD+';font-size:0.52rem;'+
+   'margin-bottom:7px;">SHANGHAI</span>Yanggao North Road<br>Free Trade Zone</div></div>';}
+
+ var V={
+  /* A — ink panel with the site's technical grid */
+  A:function(){
+   MM.setAttribute('style','background:'+INK+';display:flex;flex-direction:column;'+
+    'align-items:flex-start;justify-content:center;padding:0 32px;'+
+    'background-image:repeating-linear-gradient(0deg,transparent,transparent 23px,'+
+    'rgba(244,241,236,0.045) 23px,rgba(244,241,236,0.045) 24px),'+
+    'repeating-linear-gradient(90deg,transparent,transparent 23px,'+
+    'rgba(244,241,236,0.045) 23px,rgba(244,241,236,0.045) 24px);');
+   MM.innerHTML='<div style="width:100%;max-width:520px;">'+eyebrow('Menu')+
+    rows('rgba(244,241,236,0.92)',true,'rgba(244,241,236,0.14)')+
+    '<div style="border-top:1px solid rgba(244,241,236,0.14);"></div>'+
+    addresses('rgba(244,241,236,0.42)')+'</div>';},
+
+  /* B — brand moment, photograph behind */
+  B:function(){
+   MM.setAttribute('style','background:#000;display:flex;flex-direction:column;'+
+    'align-items:flex-start;justify-content:flex-end;padding:0 32px 44px;'+
+    'background-image:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.88) 78%),'+
+    'url(images/SWITCH_eSCRAMBLER_bike-6.jpg);background-size:cover;background-position:center;');
+   MM.innerHTML='<div style="width:100%;max-width:520px;">'+
+    rows('#fff',false,'rgba(255,255,255,0.18)')+
+    '<div style="border-top:1px solid rgba(255,255,255,0.18);"></div>'+
+    '<span style="display:block;margin-top:34px;font-family:\'DM Sans\',sans-serif;'+
+    'font-size:0.72rem;letter-spacing:0.34em;color:rgba(255,255,255,0.85);">SILENT FOUNDRY</span>'+
+    '<span style="display:block;margin-top:9px;font-family:\'DM Sans\',sans-serif;'+
+    'font-size:0.62rem;color:rgba(255,255,255,0.45);">Hong Kong &nbsp;·&nbsp; Shanghai</span></div>';},
+
+  /* C — cream, but structured */
+  C:function(){
+   MM.setAttribute('style','background:'+CREAM+';display:flex;flex-direction:column;'+
+    'align-items:flex-start;justify-content:center;padding:0 32px;');
+   MM.innerHTML='<div style="width:100%;max-width:520px;">'+eyebrow('Menu')+
+    rows('rgba(10,10,10,0.82)',true,'rgba(10,10,10,0.12)')+
+    '<div style="border-top:1px solid rgba(10,10,10,0.12);"></div>'+
+    addresses('rgba(10,10,10,0.5)')+'</div>';}
+ };
+
+ function show(k){
+  MM.className=OCLASS; MM.setAttribute('style',OSTYLE); MM.innerHTML=ORIG;
+  if(k&&V[k])V[k]();
+  MM.classList.add('open');
+  SB.querySelectorAll('b').forEach(function(x){x.classList.toggle('on',x.textContent===(k||'0'));});
  }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,900);});
- else setTimeout(build,900);
+
+ function build(){
+  MM=document.querySelector('.mobile-menu');
+  if(!MM){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
+  ORIG=MM.innerHTML; OSTYLE=MM.getAttribute('style')||''; OCLASS=MM.className;
+
+  var css=document.createElement('style');
+  css.textContent='#sf-menu-sw-bar{position:fixed;left:10px;bottom:10px;z-index:99999;'+
+   'background:rgba(10,10,10,0.9);border:1px solid rgba(200,169,110,0.35);padding:7px 9px;'+
+   'display:flex;align-items:center;gap:5px;font-family:\'DM Sans\',sans-serif;}'+
+   '#sf-menu-sw-bar span{font-size:0.46rem;letter-spacing:0.2em;text-transform:uppercase;'+
+   'color:rgba(244,241,236,0.45);margin-right:4px;}'+
+   '#sf-menu-sw-bar b{cursor:pointer;font-weight:400;font-size:0.6rem;letter-spacing:0.1em;'+
+   'color:rgba(244,241,236,0.6);border:1px solid rgba(244,241,236,0.2);padding:3px 8px;}'+
+   '#sf-menu-sw-bar b.on{color:#0e1016;background:#c8a96e;border-color:#c8a96e;}';
+  document.head.appendChild(css);
+
+  SB=document.createElement('div'); SB.id='sf-menu-sw-bar';
+  SB.innerHTML='<span>Menu</span>';
+  ['0','A','B','C'].forEach(function(k){
+   var b=document.createElement('b'); b.textContent=k; if(k==='0')b.className='on';
+   b.onclick=function(){ show(k==='0'?null:k); };
+   SB.appendChild(b);});
+  var x=document.createElement('b'); x.textContent='close';
+  x.onclick=function(){ MM.classList.remove('open'); };
+  SB.appendChild(x);
+  document.body.appendChild(SB);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1400);});
+ else setTimeout(build,1400);
 })();
 </script>
