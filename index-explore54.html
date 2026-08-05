@@ -5711,7 +5711,7 @@ function mk(html,h,f,op){
   .replace(/(^|[;"\s])width\s*:\s*[^;"]+;?/gi,'$1')
   .replace(/height\s*:\s*[^;"]+;?/gi,'')
   .replace(/opacity\s*:\s*[\d.]+;?/gi,'')
-  .replace(/style="/i,'style="mix-blend-mode:normal;flex:0 0 auto;margin:0 !important;display:block;vertical-align:bottom;max-width:none !important;width:auto !important;'+
+  .replace(/style="/i,'style="mix-blend-mode:normal;flex:0 0 auto;margin:0 !important;vertical-align:bottom;max-width:none !important;width:auto !important;'+
    'height:'+h+'px !important;filter:'+(F[f]||F.dark)+';opacity:'+(op||1)+';');}
 function g(n){return '<div style="height:'+n+'px"></div>';}
 function R(w,c,h){return '<div style="height:'+(h||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR2)+';"></div>';}
@@ -5758,15 +5758,11 @@ function HDp(i){
 function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
  /* removing max-width made both marks wider, so the pair could wrap onto a
     second line — the two must always stay side by side */
- /* line-height:0 and font-size:0 kill the inline descender space that was holding
-    the marks a few pixels off a shared bottom edge */
  return '<span style="display:inline-flex;flex-wrap:nowrap;white-space:nowrap;max-width:none;'+
-  'line-height:0;font-size:0;'+
   'align-items:'+(c.al||'center')+';gap:'+(c.gap===undefined?11:c.gap)+'px;'+
  (c.uRule?'border-bottom:'+(c.uW||'1px')+' solid '+(c.uC||HAIR)+';padding-bottom:'+(c.uP||11)+'px;':'')+
  (c.vRule?'border-left:'+(c.vW||'2px')+' solid '+c.vRule+';padding-left:15px;':'')+'">'+
- mk(SWI,h,c.sf||'dark',c.so)+'<span style="display:flex;line-height:0;font-size:0;align-self:'+(c.al||'center')+';'+
- 'transform:translateY('+(c.dy||0)+'px);">'+
+ mk(SWI,h,c.sf||'dark',c.so)+'<span style="display:inline-block;transform:translateY('+(c.dy||0)+'px);">'+
  mk(ESI,eh,c.ef||'soft',c.eo||1)+'</span></span>';}
 function ey(c){var t=(c.eyNum?num(c.eyNum,c.eyNumC||CY,'0.6rem')+'<span style="padding:0 10px;color:'+HAIR+';">/</span>':'');
  return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(c.eySz||'0.5rem')+
