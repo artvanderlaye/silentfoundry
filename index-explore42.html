@@ -5685,108 +5685,92 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 else setTimeout(go,1400);
 })();
 </script>
-<script id="sf-sw-js-lock">(function(){
-var CY='#4FA8C7', GOLD='#8a6e3a', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)',
-    FAINT='rgba(10,10,10,0.32)', HAIR='rgba(10,10,10,0.1)', HAIR2='rgba(10,10,10,0.06)',
+<script id="sf-sw-js-micro">(function(){
+var CY='#4FA8C7', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
+    HAIR='rgba(10,10,10,0.09)', HAIR2='rgba(10,10,10,0.06)',
     DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var BOX=null,ORIG='',OSTYLE='',CAP=null,SWI='',ESI='',STAGE=null,OSTAGE='';
+var BOX=null,ORIG='',OSTYLE='',CAP=null,SW='',ES='',STAGE=null,OSTAGE='';
 var EYT='Featured Venture', HEAD='More Than A Motorcycle.';
 var BODY="SWITCH wasn't designed as a motorcycle alone. It was designed as a transferable design system. Every decision—from form and engineering to materials and manufacturing—was made so the same DNA could extend naturally into new product categories.";
 
 function harvest(){
- if(SWI)return true;
+ if(SW)return true;
  var ov=document.getElementById('c16-overlay'); if(!ov)return false;
  var t=document.createElement('div'); t.innerHTML=ov.__orig||ov.innerHTML;
  var im=[].slice.call(t.querySelectorAll('img')); if(im.length<2)return false;
- SWI=im[0].outerHTML.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
+ SW=im[0].outerHTML.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
    .replace(/style="/i,'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.94;');
- ESI=im[1].outerHTML;
+ ES=im[1].outerHTML.replace(/opacity\s*:\s*[\d.]+/,'opacity:0.62');
  return true;
 }
-function sw(hh){return SWI.replace(/height:\s*\d+px/,'height:'+(hh||30)+'px');}
-function es(hh,op){return ESI.replace(/height:\s*\d+px/,'height:'+(hh||10)+'px')
-                     .replace(/opacity\s*:\s*[\d.]+/,'opacity:'+(op||0.6));}
-/* eSCRAMBLER set as type — a trademark line rather than a second logo */
-function esT(o){o=o||{};return '<span style="font-family:'+DM+';font-weight:'+(o.w||400)+';font-size:'+(o.sz||'0.44rem')+
- ';letter-spacing:'+(o.ls||'0.34em')+';text-transform:uppercase;color:'+(o.c||FAINT)+';">eSCRAMBLER'+
- (o.tm?'<span style="font-size:0.6em;vertical-align:super;opacity:0.7;">™</span>':'')+'</span>';}
+/* the lock-up: eSCRAMBLER treated as a product designation, not a second logo */
+function lock(o){o=o||{};
+ var sw=SW.replace(/height:\s*\d+px/,'height:'+(o.sw||30)+'px');
+ var es=ES.replace(/height:\s*\d+px/,'height:'+(o.es||11)+'px');
+ if(o.esOp)es=es.replace(/opacity:[\d.]+/,'opacity:'+o.esOp);
+ return '<span style="display:inline-flex;align-items:'+(o.al||'baseline')+';gap:'+(o.gap===undefined?14:o.gap)+'px;'+
+  (o.pb?'padding-bottom:'+o.pb+'px;':'')+'">'+sw+
+  '<span style="display:inline-block;transform:translateY('+(o.dy===undefined?-2:o.dy)+'px);'+
+  (o.ls?'letter-spacing:'+o.ls+';':'')+'">'+es+'</span></span>';
+}
 function ey(o){o=o||{};return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.5rem')+
  ';letter-spacing:'+(o.ls||'0.36em')+';text-transform:uppercase;color:'+(o.c||CY)+';margin:0;">'+EYT+'</p>';}
-function hd(o){o=o||{};return '<h2 style="font-family:'+BEBAS+';font-size:'+(o.sz||'clamp(1.2rem,2.2vw,1.85rem)')+
- ';letter-spacing:'+(o.ls||'0.13em')+';line-height:'+(o.lh||'1.08')+';text-transform:uppercase;color:'+(o.c||INK)+
- ';margin:0;font-weight:400;">'+HEAD+'</h2>';}
-function bd(o){o=o||{};return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.74rem')+
+function hd(o){o=o||{};return '<h2 style="font-family:'+BEBAS+';font-size:'+(o.sz||'clamp(1.45rem,2.8vw,2.35rem)')+
+ ';letter-spacing:'+(o.ls||'0.11em')+';line-height:'+(o.lh||'1.05')+';text-transform:uppercase;color:'+(o.c||INK)+
+ ';margin:0;font-weight:'+(o.w||400)+';'+(o.mw?'max-width:'+o.mw+';':'')+'">'+HEAD+'</h2>';}
+function bd(o){o=o||{};return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.75rem')+
  ';line-height:'+(o.lh||'1.85')+';color:'+(o.c||SUB)+';max-width:'+(o.mw||'60ch')+';margin:0;">'+BODY+'</p>';}
 function g(n){return '<div style="height:'+n+'px"></div>';}
-function R(w,c,h){return '<div style="height:'+(h||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR2)+';"></div>';}
+function rule(o){o=o||{};return '<div style="height:1px;width:'+(o.w||'44px')+';background:'+(o.c||HAIR)+';"></div>';}
 function W(x,mw){return '<div style="max-width:'+(mw||'900px')+';text-align:left;">'+x+'</div>';}
-function FLEX(x,al,gap){return '<div style="display:flex;align-items:'+(al||'baseline')+';gap:'+(gap||14)+'px;">'+x+'</div>';}
 
+/* one composition: eyebrow · lock-up · headline · paragraph */
+function V(o){o=o||{};
+ return W(ey(o.ey)+g(o.g1===undefined?16:o.g1)+
+  (o.ruleTop?rule(o.ruleTop)+g(o.g1b===undefined?14:o.g1b):'')+
+  lock(o.lk)+g(o.g2===undefined?24:o.g2)+
+  (o.ruleMid?rule(o.ruleMid)+g(o.g2b===undefined?16:o.g2b):'')+
+  hd(o.h)+g(o.g3===undefined?24:o.g3)+bd(o.b), o.mw);
+}
 var L=[
- ['eSCRAMBLER stacked beneath SWITCH, tracked out as a trademark line.',function(){return W(
-   ey()+g(16)+sw(32)+g(9)+esT({ls:'0.42em',sz:'0.42rem'})+g(26)+hd()+g(22)+bd());}],
- ['eSCRAMBLER above SWITCH, very small.',function(){return W(
-   ey()+g(16)+esT({sz:'0.38rem',ls:'0.4em'})+g(8)+sw(32)+g(26)+hd()+g(22)+bd());}],
- ['eSCRAMBLER as a superscript trademark beside SWITCH.',function(){return W(
-   ey()+g(16)+'<span style="display:inline-flex;align-items:flex-start;gap:9px;">'+sw(32)+
-   '<span style="transform:translateY(2px);">'+esT({sz:'0.36rem',ls:'0.3em',tm:true})+'</span></span>'+g(26)+hd()+g(22)+bd());}],
- ['Full-width rule under the lock-up.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT(),'baseline',13)+g(16)+R('100%')+g(20)+hd()+g(22)+bd());}],
- ['Full-width rule under the eyebrow, lock-up beneath it.',function(){return W(
-   ey()+g(14)+R('100%')+g(18)+FLEX(sw(30)+esT(),'baseline',13)+g(24)+hd()+g(22)+bd());}],
- ['Two rules bracketing the lock-up.',function(){return W(
-   ey()+g(14)+R('100%')+g(16)+FLEX(sw(30)+esT(),'baseline',13)+g(16)+R('100%')+g(22)+hd()+g(22)+bd());}],
- ['Rule between the headline and the paragraph.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT(),'baseline',13)+g(24)+hd()+g(18)+R('100%')+g(20)+bd());}],
- ['Headline much smaller, lock-up dominant.',function(){return W(
-   ey()+g(16)+sw(38)+g(10)+esT({sz:'0.46rem',ls:'0.36em'})+g(24)+
-   hd({sz:'clamp(1rem,1.7vw,1.35rem)',ls:'0.2em'})+g(20)+bd());}],
- ['eSCRAMBLER in cyan.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT({c:CY,ls:'0.36em'}),'baseline',13)+g(26)+hd()+g(22)+bd());}],
- ['eSCRAMBLER in the site gold.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT({c:GOLD,ls:'0.36em'}),'baseline',13)+g(26)+hd()+g(22)+bd());}],
- ['eSCRAMBLER greyed right back, almost a whisper.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT({c:'rgba(10,10,10,0.2)',ls:'0.4em'}),'baseline',13)+g(26)+hd()+g(22)+bd());}],
- ['Lock-up left, headline right — two columns.',function(){return W(
-   ey()+g(20)+'<div style="display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,4vw,64px);align-items:end;">'+
-   '<div>'+sw(32)+g(9)+esT()+'</div><div>'+hd()+'</div></div>'+g(24)+bd({mw:'66ch'}),'980px');}],
- ['Lock-up sitting on a full-width rule, headline below.',function(){return W(
-   ey()+g(16)+'<div style="display:flex;align-items:flex-end;gap:14px;border-bottom:1px solid '+HAIR+
-   ';padding-bottom:12px;">'+sw(30)+esT()+'</div>'+g(22)+hd()+g(22)+bd());}],
- ['eSCRAMBLER under its own hairline beneath SWITCH.',function(){return W(
-   ey()+g(16)+sw(32)+g(10)+R('180px',HAIR)+g(9)+esT({sz:'0.4rem',ls:'0.38em'})+g(26)+hd()+g(22)+bd());}],
- ['SWITCH left, eSCRAMBLER pushed to the right of the measure.',function(){return W(
-   ey()+g(16)+'<div style="display:flex;align-items:flex-end;justify-content:space-between;max-width:60ch;">'+
-   sw(30)+esT({sz:'0.4rem'})+'</div>'+g(24)+hd()+g(22)+bd());}],
- ['A vertical cyan rule to the left of the lock-up.',function(){return W(
-   ey()+g(16)+'<div style="border-left:2px solid '+CY+';padding-left:16px;">'+sw(30)+g(9)+esT()+'</div>'+
-   g(24)+hd()+g(22)+bd());}],
- ['Small caps trademark line, wide tracking, no image mark.',function(){return W(
-   ey()+g(16)+sw(34)+g(11)+esT({sz:'0.46rem',ls:'0.5em',c:FAINT,tm:true})+g(26)+
-   hd({sz:'clamp(1.15rem,2vw,1.7rem)',ls:'0.16em'})+g(22)+bd());}],
- ['Rules above and below the headline — a contained band.',function(){return W(
-   ey()+g(16)+FLEX(sw(30)+esT(),'baseline',13)+g(22)+R('100%')+g(16)+hd()+g(16)+R('100%')+g(20)+bd());}],
- ['Compact — small headline, tight lock-up, one full-width rule.',function(){return W(
-   ey({sz:'0.46rem'})+g(12)+FLEX(sw(26)+esT({sz:'0.4rem'}),'baseline',11)+g(14)+R('100%')+g(16)+
-   hd({sz:'clamp(1.1rem,1.9vw,1.6rem)',ls:'0.15em'})+g(18)+bd({sz:'0.73rem',mw:'58ch'}));}],
- ['The considered one — trademark line under SWITCH, one hairline, calm headline.',function(){return W(
-   ey({sz:'0.48rem',ls:'0.38em'})+g(15)+sw(31)+g(10)+esT({sz:'0.42rem',ls:'0.4em',c:'rgba(10,10,10,0.28)'})+
-   g(20)+R('100%')+g(20)+hd({sz:'clamp(1.18rem,2.1vw,1.75rem)',ls:'0.14em'})+g(21)+bd({sz:'0.745rem',mw:'59ch'}),'920px');}]
+ ['Baseline — the chosen design, tightened a little.',{}],
+ ['Headline 6% smaller, spacing pulled in.',{h:{sz:'clamp(1.36rem,2.6vw,2.2rem)'},g1:14,g2:22,g3:22}],
+ ['Smaller lock-up, stronger hierarchy.',{lk:{sw:26,es:10,gap:12},g2:22}],
+ ['Paragraph wider, leading tighter.',{b:{mw:'68ch',lh:'1.78'},mw:'960px'}],
+ ['Short rule above the headline.',{ruleMid:{w:'40px',c:CY},g2:20,g2b:16}],
+ ['Rule below the lock-up, full text width.',{ruleMid:{w:'100%',c:HAIR2},g2:18,g2b:18}],
+ ['eSCRAMBLER smaller and closer — a tighter designation.',{lk:{sw:30,es:9,gap:10,dy:-1,esOp:'0.55'}}],
+ ['SWITCH larger, eSCRAMBLER lighter.',{lk:{sw:34,es:10,gap:14,esOp:'0.5'},g2:26}],
+ ['More air around the lock-up.',{g1:22,g2:32}],
+ ['Paragraph narrower for a calmer column.',{b:{mw:'52ch'},g3:22}],
+ ['Editorial rule aligned to the text block.',{ruleMid:{w:'60ch',c:HAIR2},g2:18,g2b:18,b:{mw:'60ch'}}],
+ ['Headline tracking opened, size held.',{h:{ls:'0.16em'},g3:22}],
+ ['Headline tracking tightened.',{h:{ls:'0.07em'}}],
+ ['Taller lock-up area, everything else compact.',{lk:{sw:36,es:12,gap:16,pb:4},g1:12,g2:26,g3:20,b:{sz:'0.74rem'}}],
+ ['Reduced gap before the image.',{g3:20,b:{mw:'58ch'}},26],
+ ['Eyebrow quieter, lock-up carrying the identity.',{ey:{c:FAINT,sz:'0.44rem',ls:'0.4em'},g1:14}],
+ ['Catalogue detail — a 24px rule above the eyebrow.',{ruleTop:{w:'24px',c:CY},g1:14,g1b:14}],
+ ['Optical alignment — lock-up baseline matched to the eyebrow.',{lk:{dy:0,al:'flex-end',gap:13},g2:24}],
+ ['The most compact — 14% shorter overall, nothing cramped.',
+  {g1:12,g2:20,g3:20,h:{sz:'clamp(1.34rem,2.55vw,2.15rem)'},b:{sz:'0.74rem',mw:'58ch',lh:'1.8'},lk:{sw:28,es:10,gap:12}},24],
+ ['The considered one — the strongest refinements together.',
+  {ey:{sz:'0.48rem',ls:'0.38em'},g1:15,lk:{sw:30,es:10,gap:12,dy:-1,esOp:'0.58'},g2:24,
+   h:{sz:'clamp(1.4rem,2.65vw,2.25rem)',ls:'0.115em'},g3:23,b:{sz:'0.745rem',mw:'59ch',lh:'1.83'},mw:'920px'},26]
 ];
 
 function build(){
- if(document.getElementById('sf-sw-lock'))return;
+ if(document.getElementById('sf-sw-micro'))return;
  var xh=document.querySelector('#fv-stage .x-h');
  if(!xh||!harvest()){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
- var old=document.getElementById('sf-sw-micro'); if(old)old.remove();
+ var old=document.getElementById('sf-sw-brand'); if(old)old.remove();
  BOX=xh.parentElement; ORIG=BOX.innerHTML; OSTYLE=BOX.getAttribute('style')||'';
  CAP=document.getElementById('sf-cap');
  STAGE=BOX.parentElement&&BOX.parentElement.querySelector('div[style*="margin-top"]');
  if(STAGE)OSTAGE=STAGE.getAttribute('style')||'';
- var bar=document.createElement('div'); bar.id='sf-sw-lock';
+ var bar=document.createElement('div'); bar.id='sf-sw-micro';
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
- var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Lock-up'; row.appendChild(l);
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Refine'; row.appendChild(l);
  for(var i=0;i<=L.length;i++){(function(i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
@@ -5794,20 +5778,20 @@ function build(){
    if(i===0){BOX.innerHTML=ORIG; BOX.setAttribute('style',OSTYLE);
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
-     note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   var html; try{html=L[i-1][1]();}catch(e){html=null;}
-   if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
+     note.innerHTML='Refine 0 — current section, unchanged.'; return;}
+   var cfg=L[i-1][1], html; try{html=V(cfg);}catch(e){html=null;}
+   if(!html){note.innerHTML='Refine '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
-   if(STAGE)STAGE.setAttribute('style','margin-top:28px;');
+   if(STAGE)STAGE.setAttribute('style','margin-top:'+(L[i-1][2]||30)+'px;');
    if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
             if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
-   note.innerHTML='Lock-up '+i+' — '+L[i-1][0]+
+   note.innerHTML='Refine '+i+' — '+L[i-1][0]+
     '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current. 1–20 are twenty different lock-up and divider treatments.';
+ note.innerHTML='Refine 0 — current. 1–20 are micro-refinements of Branded 2.';
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
-else setTimeout(build,2200);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2100);});
+else setTimeout(build,2100);
 })();
 </script>
