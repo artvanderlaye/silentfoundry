@@ -6254,23 +6254,6 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
     width:min(2200px,100vw) !important;
     margin-left:calc(50% - min(2200px,100vw)/2) !important;margin-right:0 !important;}
 }
-
-/* Q1 · ONE SIDE PADDING ON MOBILE. Measured 500-768px:
-        Marshall x24   Ventures x24   Foundry x48   SWITCH x48
-   Venture Models is the one to keep, so the other two come to 24 as well,
-   across the whole mobile band rather than only under 480. */
-@media(max-width:768px){
-  html body #hiw-stage{padding-left:24px !important;padding-right:24px !important;}
-  html body #fv-stage{padding-left:24px !important;padding-right:24px !important;}
-  html body #sfsec-dna{padding-left:0 !important;padding-right:0 !important;}
-  html body #funds{padding-left:0 !important;padding-right:0 !important;}
-}
-
-/* Q2 · MARSHALL AT A GLANCE. The rule only reached 600px, so between 601 and
-   768 it was still cramped, and 12px underneath was tight even below that. */
-@media(max-width:768px){
-  html body #sf-glance .cs-dslabel{margin-top:44px !important;margin-bottom:22px !important;}
-}
 </style>
 
 <script id="sf-menu-b">
@@ -6316,23 +6299,17 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
  /* B · the site's own nav code rewrites the menu when it is toggled, so the
     design survived the first open and was lost on the second. Re-apply
     whenever the markup is replaced or the panel is opened. */
- /* Watching the menu NODE was not enough - if the nav code replaces the whole
-    element, the observer dies with it and the design is lost from then on.
-    Watch the document instead and re-query every time, so a replaced node is
-    picked up too. */
- var busy=false;
- function ensure(){
-  if(busy)return; 
-  var MM=document.querySelector('.mobile-menu'); if(!MM)return;
-  if(MM.getAttribute('data-b')&&/Authentic brands into premium products/.test(MM.textContent))return;
-  busy=true; MM.removeAttribute('data-b'); build(); busy=false;
- }
  function watch(){
-  new MutationObserver(function(){ ensure(); })
-   .observe(document.documentElement,{childList:true,subtree:true,
-     attributes:true,attributeFilter:['class','style']});
-  document.addEventListener('click',function(){setTimeout(ensure,60);setTimeout(ensure,260);},true);
-  document.addEventListener('touchend',function(){setTimeout(ensure,60);setTimeout(ensure,260);},true);
+  var MM=document.querySelector('.mobile-menu'); if(!MM)return;
+  new MutationObserver(function(){
+   if(!MM.getAttribute('data-b')||!/Authentic brands into premium products/.test(MM.textContent)){
+    MM.removeAttribute('data-b'); build();}
+  }).observe(MM,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  document.addEventListener('click',function(){
+   setTimeout(function(){
+    if(!MM.getAttribute('data-b')||!/Authentic brands into premium products/.test(MM.textContent)){
+     MM.removeAttribute('data-b'); build();}},60);
+  },true);
  }
  function start(){ build(); setTimeout(watch,300); }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(start,900);});
