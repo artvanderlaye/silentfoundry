@@ -5796,14 +5796,7 @@ function HDp(i){
    by the difference so the two LETTER baselines agree at any size. */
 var SW_BASE=0.1102, ES_BASE=0.0172;
 function optical(h,eh){return +(SW_BASE*h - ES_BASE*eh).toFixed(2);}
-function lock(c){var h=c.h||32;
- /* M5 responsive: the fixed 34/17px lock-up measured 363px wide inside a
-    342px text column on a 390px phone. Scale both marks together below
-    768px so the ratio - and therefore the optical alignment - is kept.
-    At 768 and above the multiplier is 1, so desktop is byte-identical. */
- var vw=(window.innerWidth||1200);
- if(vw<768){ h=Math.max(20, Math.round(h*Math.min(1,(vw-56)/390))); }
- var eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
+function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
  var nudge=(c.al===undefined||c.al==='flex-end')?optical(h,eh):0;
  /* removing max-width made both marks wider, so the pair could wrap onto a
     second line — the two must always stay side by side */
@@ -6111,53 +6104,9 @@ html body #c16s-wrap .c16-slide img{height:100% !important;width:100% !important
     display:inline-flex !important;align-items:center !important;justify-content:center !important;}
   html body .footer-links a, html body .footer-nav a, html body footer nav a, html body .footer-col a{
     padding-top:10px !important;padding-bottom:10px !important;display:inline-block !important;}
-  /* M1 · the dots already carry padding:16px and are not border-box, so the
-     40px minimum made them 72px. Size stays as designed; the tap area is a
-     transparent pseudo-element instead. */
-  html body .c16-dot, html body .fdot{min-width:0 !important;min-height:0 !important;position:relative !important;}
-  html body .c16-dot::after, html body .fdot::after{content:'' !important;position:absolute !important;inset:-14px !important;}
+  html body .c16-dot, html body .fdot{min-width:40px !important;min-height:40px !important;}
   /* NOTE: the 中文 link (27px) and the Foundry "Scroll" hint (9px, set by an
      inline !important in JS) cannot be reached by CSS. Both need a one-line
      script change — flagged, not done. */
-}
-
-/* ============================================================
-   MOBILE PASS 2 — everything below is max-width only.
-   ============================================================ */
-
-/* M2 + M9 · THE FOUNDRY — 140px of padding top and bottom was a third of a
-   390px screen, and 140 + 68 left 208px of dead space before FEATURED
-   VENTURE. The decorative symbol ribbon is hidden on phones. */
-@media(max-width:768px){
-  html body #hiw-stage{padding-top:72px !important;padding-bottom:72px !important;}
-  html body #fv-stage{padding-top:48px !important;}
-  html body #hiw-stage .tsw-injected{display:none !important;}
-}
-
-/* M3 · VENTURE MODELS — the paragraph ran to the screen edge at x0 while the
-   eyebrow and heading sat at x24. */
-@media(max-width:768px){
-  html body #funds .funds-intro{padding-left:24px !important;padding-right:24px !important;}
-}
-
-/* M4 · FOOTER — links were inline and 25px tall. One per row, 44px tall. */
-@media(max-width:768px){
-  html body .footer-col a{display:block !important;padding-top:10px !important;padding-bottom:10px !important;}
-}
-
-/* M6 · PRODUCT PORTFOLIO — edge to edge on phones. */
-@media(max-width:768px){
-  html body #su .u-g{width:100vw !important;margin-left:calc(50% - 50vw) !important;
-    max-width:none !important;gap:2px !important;}
-}
-
-/* M7 · INTANGIBLE / TANGIBLE were sitting directly on PRESENCE / TACTILE. */
-@media(max-width:768px){
-  html body #sfsec-dna span:not([class]){display:block !important;margin-bottom:14px !important;}
-}
-
-/* M8 · MARSHALL AT A GLANCE was cramped against the paragraph above it. */
-@media(max-width:768px){
-  html body #sf-glance .cs-dslabel{margin-top:34px !important;margin-bottom:12px !important;}
 }
 </style>
