@@ -5703,19 +5703,12 @@ function harvest(){
  ESI=im[1].outerHTML;
  return true;
 }
-var LASTSW=30;
-function sw(hh){LASTSW=hh||30;return SWI.replace(/height:\s*\d+px/,'height:'+LASTSW+'px');}
+function sw(hh){return SWI.replace(/height:\s*\d+px/,'height:'+(hh||30)+'px');}
 function es(hh,op){return ESI.replace(/height:\s*\d+px/,'height:'+(hh||10)+'px')
                      .replace(/opacity\s*:\s*[\d.]+/,'opacity:'+(op||0.6));}
-var IMGMODE=false, EQMODE=false;
+var IMGMODE=false;
 /* eSCRAMBLER: set as type (1-20) or drawn as its own logo (21-40) — same layouts either way */
 function esT(o){o=o||{};
- if(EQMODE){
-  var eq=es(LASTSW,0.72);
-  if(o.c===CY)   eq=eq.replace('style="','style="filter:invert(58%) sepia(29%) saturate(824%) hue-rotate(153deg) brightness(92%);');
-  if(o.c===GOLD) eq=eq.replace('style="','style="filter:invert(38%) sepia(28%) saturate(760%) hue-rotate(2deg) brightness(88%);');
-  return '<span style="display:inline-block;vertical-align:baseline;">'+eq+'</span>';
- }
  if(IMGMODE){
   var hh=({'0.36rem':9,'0.38rem':9,'0.4rem':10,'0.42rem':11,'0.44rem':11,'0.46rem':12})[o.sz]||11;
   var op=(o.c==='rgba(10,10,10,0.2)'||o.c==='rgba(10,10,10,0.28)')?0.32:
@@ -5805,7 +5798,7 @@ function build(){
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Lock-up'; row.appendChild(l);
- for(var i=0;i<=L.length*3;i++){(function(i){
+ for(var i=0;i<=L.length*2;i++){(function(i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
    b.classList.add('on');
@@ -5813,20 +5806,19 @@ function build(){
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
      note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   var idx=(i-1)%L.length;
-   IMGMODE=(i>L.length&&i<=L.length*2); EQMODE=(i>L.length*2);
-   var html; try{html=L[idx][1]();}catch(e){html=null;} IMGMODE=false; EQMODE=false;
+   var idx=(i-1)%L.length; IMGMODE=(i>L.length);
+   var html; try{html=L[idx][1]();}catch(e){html=null;} IMGMODE=false;
    if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
    if(STAGE)STAGE.setAttribute('style','margin-top:28px;');
    if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
             if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
    note.innerHTML='Lock-up '+i+' — '+L[idx][0]+
-    '<br><span class="sf-m">eSCRAMBLER as '+(i>L.length*2?'its logo, matched to SWITCH':(i>L.length?'its logo, smaller':'trademark text'))+
+    '<br><span class="sf-m">eSCRAMBLER as '+(i>L.length?'its logo':'trademark text')+
     '  ·  intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current.  1–20 text.  21–40 logo, smaller.  41–60 logo, same size as SWITCH.';
+ note.innerHTML='Lock-up 0 — current.  1–20 use eSCRAMBLER as text.  21–40 use the eSCRAMBLER logo.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
 else setTimeout(build,2200);
