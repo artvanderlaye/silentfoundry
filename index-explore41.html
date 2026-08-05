@@ -5659,7 +5659,91 @@ else setTimeout(build,1400);
 
 
 
+<script id="sf-sw-js-brand">(function(){
+var CY='#4FA8C7', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
+    HAIR='rgba(10,10,10,0.09)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var BOX=null,ORIG='',OSTYLE='',CAP=null,LOGOS=[];
+var EYT='Featured Venture';
+var B=["We didn't acquire SWITCH because it made electric motorcycles.",
+       "We acquired a transferable industrial design language, engineering architecture and manufacturing system capable of extending into entirely new product categories.",
+       "The motorcycle is simply the first expression of that platform."];
+var H=['From Product To Platform.','A Platform Disguised As A Motorcycle.','The First Expression Of A Platform.',
+ 'Designed To Scale.','Transferable By Design.','Built To Extend.','The Platform Behind The Product.',
+ 'One Product. Many Futures.','The DNA, Not The Vehicle.','More Than A Motorcycle.','An Industrial Design Platform.',
+ 'Engineered For Expansion.','Design System First.','Hardware With Reusable DNA.','Platform Thinking.',
+ 'A Repeatable Product System.','Designed Beyond The Vehicle.','Scalable By Design.','Industrial DNA.',
+ 'The Foundation, Not The Finished Product.'];
 
+function harvest(){
+ if(LOGOS.length)return true;
+ var ov=document.getElementById('c16-overlay'); if(!ov)return false;
+ var tmp=document.createElement('div'); tmp.innerHTML=ov.__orig||ov.innerHTML;
+ LOGOS=[].map.call(tmp.querySelectorAll('img'),function(i){
+   var h=i.outerHTML;
+   if(/Switchlogowhite|switch-logo/i.test(h))     /* screen blend erases white art on cream */
+     h=h.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'').replace(/style="/i,
+       'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
+   return h;});
+ return LOGOS.length===2;
+}
+function lg(h){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;'+
+ (h?'zoom:'+h+';':'')+'">'+LOGOS.join('')+'</span>';}
+function ey(c,sz,ls){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.54rem')+
+ ';letter-spacing:'+(ls||'0.34em')+';text-transform:uppercase;color:'+(c||CY)+';margin:0;">'+EYT+'</p>';}
+function hd(i,sz,ls,lh,al){return '<h2 style="font-family:'+BEBAS+';font-size:'+(sz||'clamp(1.5rem,3vw,2.6rem)')+
+ ';letter-spacing:'+(ls||'0.1em')+';line-height:'+(lh||'1.04')+';text-transform:uppercase;color:'+INK+
+ ';margin:0;font-weight:400;'+(al?'text-align:'+al+';':'')+'">'+H[i]+'</h2>';}
+function p(t,sz,mw,c,lh){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.78rem')+
+ ';line-height:'+(lh||'1.9')+';color:'+(c||SUB)+';max-width:'+(mw||'62ch')+';margin:0;">'+t+'</p>';}
+function all(sz,mw,gap){return B.map(function(t,i){return p(t,sz,mw)+(i<2?g(gap||12):'');}).join('');}
+function one(sz,mw){return p(B.join(' '),sz,mw);}
+function g(n){return '<div style="height:'+n+'px"></div>';}
+function hr(w,c){return '<div style="height:1px;width:'+(w||'100%')+';background:'+(c||HAIR)+';"></div>';}
+function W(x,mw){return '<div style="max-width:'+(mw||'900px')+';text-align:left;">'+x+'</div>';}
+function two(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+';gap:'+(gap||'clamp(28px,4.5vw,72px)')+
+ ';align-items:'+(al||'start')+';"><div>'+a+'</div><div>'+b+'</div></div>';}
+
+var L=[
+ ['A hairline between the logos and the headline.',function(){return W(ey()+g(16)+lg()+g(20)+hr()+g(22)+hd(6)+g(24)+all());}],
+ ['The considered one — eyebrow, logos, headline, three short lines.',function(){return W(
+   ey(CY,'0.5rem','0.36em')+g(18)+lg()+g(26)+hd(19,'clamp(1.5rem,2.9vw,2.4rem)','0.11em')+g(26)+all('0.76rem','58ch',15),'900px');}]
+];
+
+function build(){
+ if(document.getElementById('sf-sw-brand'))return;
+ var xh=document.querySelector('#fv-stage .x-h');
+ if(!xh||!harvest()){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
+ BOX=xh.parentElement; ORIG=BOX.innerHTML; OSTYLE=BOX.getAttribute('style')||'';
+ CAP=document.getElementById('sf-cap');
+ var bar=document.createElement('div'); bar.id='sf-sw-brand';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Branded'; row.appendChild(l);
+ for(var i=0;i<=L.length;i++){(function(i){
+  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   if(i===0){BOX.innerHTML=ORIG; BOX.setAttribute('style',OSTYLE);
+     if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
+     note.innerHTML='Branded 0 — current.'; return;}
+   var html; try{html=L[i-1][1]();}catch(e){html=null;}
+   if(!html){note.innerHTML='Branded '+i+' — FAILED';return;}
+   var pr=document.createElement('div'); pr.innerHTML=html; var t=pr.textContent;
+   if(pr.querySelectorAll('img').length!==2) html=lg()+g(18)+html;
+   B.forEach(function(line){ if(t.indexOf(line.slice(0,26))<0) html=html+g(12)+p(line,'0.76rem','62ch'); });
+   if(!/Featured Venture/i.test(t)) html=ey()+g(16)+html;
+   BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
+   if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
+            if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
+   note.innerHTML='Branded '+i+' — '+L[i-1][0]+'<br><span class="sf-m">'+(i===1?H[6]:H[19])+'</span>';};
+  row.appendChild(b);})(i);}
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ note.innerHTML='Branded 0 — current.  1 = the old 7,  2 = the old 20.';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2000);});
+else setTimeout(build,2000);
+})();
+</script>
 <script id="sf-card5">
 /* CARD TEXT 5 — baked: click a card to open its description, cyan bar marks it */
 (function(){
@@ -5683,115 +5767,5 @@ function go(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,1400);});
 else setTimeout(go,1400);
-})();
-</script>
-<script id="sf-sw-js-micro">(function(){
-var CY='#4FA8C7', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
-    HAIR='rgba(10,10,10,0.09)', HAIR2='rgba(10,10,10,0.06)',
-    DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
-var BOX=null,ORIG='',OSTYLE='',CAP=null,SW='',ES='',STAGE=null,OSTAGE='';
-var EYT='Featured Venture', HEAD='More Than A Motorcycle.';
-var BODY="SWITCH wasn't designed as a motorcycle alone. It was designed as a transferable design system. Every decision—from form and engineering to materials and manufacturing—was made so the same DNA could extend naturally into new product categories.";
-
-function harvest(){
- if(SW)return true;
- var ov=document.getElementById('c16-overlay'); if(!ov)return false;
- var t=document.createElement('div'); t.innerHTML=ov.__orig||ov.innerHTML;
- var im=[].slice.call(t.querySelectorAll('img')); if(im.length<2)return false;
- SW=im[0].outerHTML.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
-   .replace(/style="/i,'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.94;');
- ES=im[1].outerHTML.replace(/opacity\s*:\s*[\d.]+/,'opacity:0.62');
- return true;
-}
-/* the lock-up: eSCRAMBLER treated as a product designation, not a second logo */
-function lock(o){o=o||{};
- var sw=SW.replace(/height:\s*\d+px/,'height:'+(o.sw||30)+'px');
- var es=ES.replace(/height:\s*\d+px/,'height:'+(o.es||11)+'px');
- if(o.esOp)es=es.replace(/opacity:[\d.]+/,'opacity:'+o.esOp);
- return '<span style="display:inline-flex;align-items:'+(o.al||'baseline')+';gap:'+(o.gap===undefined?14:o.gap)+'px;'+
-  (o.pb?'padding-bottom:'+o.pb+'px;':'')+'">'+sw+
-  '<span style="display:inline-block;transform:translateY('+(o.dy===undefined?-2:o.dy)+'px);'+
-  (o.ls?'letter-spacing:'+o.ls+';':'')+'">'+es+'</span></span>';
-}
-function ey(o){o=o||{};return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.5rem')+
- ';letter-spacing:'+(o.ls||'0.36em')+';text-transform:uppercase;color:'+(o.c||CY)+';margin:0;">'+EYT+'</p>';}
-function hd(o){o=o||{};return '<h2 style="font-family:'+BEBAS+';font-size:'+(o.sz||'clamp(1.45rem,2.8vw,2.35rem)')+
- ';letter-spacing:'+(o.ls||'0.11em')+';line-height:'+(o.lh||'1.05')+';text-transform:uppercase;color:'+(o.c||INK)+
- ';margin:0;font-weight:'+(o.w||400)+';'+(o.mw?'max-width:'+o.mw+';':'')+'">'+HEAD+'</h2>';}
-function bd(o){o=o||{};return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.75rem')+
- ';line-height:'+(o.lh||'1.85')+';color:'+(o.c||SUB)+';max-width:'+(o.mw||'60ch')+';margin:0;">'+BODY+'</p>';}
-function g(n){return '<div style="height:'+n+'px"></div>';}
-function rule(o){o=o||{};return '<div style="height:1px;width:'+(o.w||'44px')+';background:'+(o.c||HAIR)+';"></div>';}
-function W(x,mw){return '<div style="max-width:'+(mw||'900px')+';text-align:left;">'+x+'</div>';}
-
-/* one composition: eyebrow · lock-up · headline · paragraph */
-function V(o){o=o||{};
- return W(ey(o.ey)+g(o.g1===undefined?16:o.g1)+
-  (o.ruleTop?rule(o.ruleTop)+g(o.g1b===undefined?14:o.g1b):'')+
-  lock(o.lk)+g(o.g2===undefined?24:o.g2)+
-  (o.ruleMid?rule(o.ruleMid)+g(o.g2b===undefined?16:o.g2b):'')+
-  hd(o.h)+g(o.g3===undefined?24:o.g3)+bd(o.b), o.mw);
-}
-var L=[
- ['Baseline — the chosen design, tightened a little.',{}],
- ['Headline 6% smaller, spacing pulled in.',{h:{sz:'clamp(1.36rem,2.6vw,2.2rem)'},g1:14,g2:22,g3:22}],
- ['Smaller lock-up, stronger hierarchy.',{lk:{sw:26,es:10,gap:12},g2:22}],
- ['Paragraph wider, leading tighter.',{b:{mw:'68ch',lh:'1.78'},mw:'960px'}],
- ['Short rule above the headline.',{ruleMid:{w:'40px',c:CY},g2:20,g2b:16}],
- ['Rule below the lock-up, full text width.',{ruleMid:{w:'100%',c:HAIR2},g2:18,g2b:18}],
- ['eSCRAMBLER smaller and closer — a tighter designation.',{lk:{sw:30,es:9,gap:10,dy:-1,esOp:'0.55'}}],
- ['SWITCH larger, eSCRAMBLER lighter.',{lk:{sw:34,es:10,gap:14,esOp:'0.5'},g2:26}],
- ['More air around the lock-up.',{g1:22,g2:32}],
- ['Paragraph narrower for a calmer column.',{b:{mw:'52ch'},g3:22}],
- ['Editorial rule aligned to the text block.',{ruleMid:{w:'60ch',c:HAIR2},g2:18,g2b:18,b:{mw:'60ch'}}],
- ['Headline tracking opened, size held.',{h:{ls:'0.16em'},g3:22}],
- ['Headline tracking tightened.',{h:{ls:'0.07em'}}],
- ['Taller lock-up area, everything else compact.',{lk:{sw:36,es:12,gap:16,pb:4},g1:12,g2:26,g3:20,b:{sz:'0.74rem'}}],
- ['Reduced gap before the image.',{g3:20,b:{mw:'58ch'}},26],
- ['Eyebrow quieter, lock-up carrying the identity.',{ey:{c:FAINT,sz:'0.44rem',ls:'0.4em'},g1:14}],
- ['Catalogue detail — a 24px rule above the eyebrow.',{ruleTop:{w:'24px',c:CY},g1:14,g1b:14}],
- ['Optical alignment — lock-up baseline matched to the eyebrow.',{lk:{dy:0,al:'flex-end',gap:13},g2:24}],
- ['The most compact — 14% shorter overall, nothing cramped.',
-  {g1:12,g2:20,g3:20,h:{sz:'clamp(1.34rem,2.55vw,2.15rem)'},b:{sz:'0.74rem',mw:'58ch',lh:'1.8'},lk:{sw:28,es:10,gap:12}},24],
- ['The considered one — the strongest refinements together.',
-  {ey:{sz:'0.48rem',ls:'0.38em'},g1:15,lk:{sw:30,es:10,gap:12,dy:-1,esOp:'0.58'},g2:24,
-   h:{sz:'clamp(1.4rem,2.65vw,2.25rem)',ls:'0.115em'},g3:23,b:{sz:'0.745rem',mw:'59ch',lh:'1.83'},mw:'920px'},26]
-];
-
-function build(){
- if(document.getElementById('sf-sw-micro'))return;
- var xh=document.querySelector('#fv-stage .x-h');
- if(!xh||!harvest()){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
- var old=document.getElementById('sf-sw-brand'); if(old)old.remove();
- BOX=xh.parentElement; ORIG=BOX.innerHTML; OSTYLE=BOX.getAttribute('style')||'';
- CAP=document.getElementById('sf-cap');
- STAGE=BOX.parentElement&&BOX.parentElement.querySelector('div[style*="margin-top"]');
- if(STAGE)OSTAGE=STAGE.getAttribute('style')||'';
- var bar=document.createElement('div'); bar.id='sf-sw-micro';
- var note=document.createElement('div'); note.className='sf-note';
- var row=document.createElement('div'); row.className='sf-row';
- var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Refine'; row.appendChild(l);
- for(var i=0;i<=L.length;i++){(function(i){
-  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
-  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
-   b.classList.add('on');
-   if(i===0){BOX.innerHTML=ORIG; BOX.setAttribute('style',OSTYLE);
-     if(STAGE)STAGE.setAttribute('style',OSTAGE);
-     if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
-     note.innerHTML='Refine 0 — current section, unchanged.'; return;}
-   var cfg=L[i-1][1], html; try{html=V(cfg);}catch(e){html=null;}
-   if(!html){note.innerHTML='Refine '+i+' — FAILED';return;}
-   BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
-   if(STAGE)STAGE.setAttribute('style','margin-top:'+(L[i-1][2]||30)+'px;');
-   if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
-            if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
-   note.innerHTML='Refine '+i+' — '+L[i-1][0]+
-    '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
-  row.appendChild(b);})(i);}
- bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Refine 0 — current. 1–20 are micro-refinements of Branded 2.';
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2100);});
-else setTimeout(build,2100);
 })();
 </script>
