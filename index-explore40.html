@@ -5655,10 +5655,506 @@ else setTimeout(build,1400);
   h.textContent='Sections — click to hide';
   h.onclick=function(){[].forEach.call(s.children,function(c,i){if(i)c.style.display=c.style.display==='none'?'':'none';});};
   s.appendChild(h);document.body.appendChild(s);} return s;};</script>
+<script id="sf-sw-js-v4">(function(){
+var CY='#4FA8C7', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.09)',
+    INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
+    RULE='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var A='#su', OV=null, P=null;
 
+/* the SWITCH mark ships with mix-blend-mode:screen for a dark photograph.
+   rebuilding the markup restores it, so it is stripped here at the source. */
+function fixLogo(html){
+ return html.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
+            .replace(/<img /i,'<img data-sf="1" ')
+            .replace(/style="/i,'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
+}
+function grab(){
+ OV=document.getElementById('c16-overlay'); if(!OV)return false; if(P)return true;
+ var ey=OV.querySelector('span'), p=OV.querySelector('.fp-body-text');
+ var imgs=[].map.call(OV.querySelectorAll('img'),function(i){
+   var h=i.outerHTML;
+   return /Switchlogowhite|switch-logo/i.test(h)?fixLogo(h):h.replace(/opacity\s*:\s*[\d.]+/,'opacity:0.8');});
+ P={ey:ey?ey.textContent.trim():'Featured Project', txt:p?p.textContent.trim():'', logos:imgs};
+ OV.__orig=OV.innerHTML; OV.__style=OV.getAttribute('style');
+ return true;
+}
+function EY(c,sz,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
+ ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+P.ey+'</span>';}
+function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
+ ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'48ch')+';margin:0;">'+P.txt+'</p>';}
+function LG(h){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;'+
+ (h?'--h:'+h+';':'')+'">'+P.logos.join('')+'</span>';}
+function G(n){return '<div style="height:'+n+'px"></div>';}
+function BAR(w,c,h){return '<div style="width:'+(w||'44px')+';height:'+(h||'1px')+';background:'+(c||CY)+';"></div>';}
+/* every one is stacked and LEFT aligned — variation 10's shape, done properly */
+function S(){var a=[].slice.call(arguments);return '<div style="text-align:left;">'+a.join('')+'</div>';}
 
+var CAPS=[
+ ['Current.',null],
+ ['Stacked left — eyebrow, logos, sentence. The base.',function(){return S(EY(),G(14),LG(),G(14),TX());}],
+ ['Cyan rule between the logos and the sentence.',function(){return S(EY(),G(14),LG(),G(14),BAR('100%',CY2),G(14),TX());}],
+ ['Short cyan bar under the logos.',function(){return S(EY(),G(14),LG(),G(14),BAR(),G(14),TX());}],
+ ['Eyebrow under a cyan bar, logos below.',function(){return S(BAR(),G(12),EY(),G(14),LG(),G(14),TX());}],
+ ['Logos first, eyebrow beneath them.',function(){return S(LG(),G(14),EY(FAINT),G(12),TX());}],
+ ['Tight stack — everything drawn in close.',function(){return S(EY(),G(9),LG(),G(9),TX('0.68rem'));}],
+ ['Generous stack — much more air between each part.',function(){return S(EY(),G(24),LG(),G(24),TX());}],
+ ['Sentence at display scale.',function(){return S(EY(),G(14),LG(),G(16),TX('1rem',INK,'32ch','1.4'));}],
+ ['Sentence small and faint.',function(){return S(EY(),G(14),LG(),G(14),TX('0.64rem',FAINT,'44ch'));}],
+ ['Cyan spine down the left edge.',function(){return '<div style="border-left:2px solid '+CY+';padding-left:20px;text-align:left;">'+
+   EY()+G(12)+LG()+G(14)+TX()+'</div>';}],
+ ['Hairline above the whole block.',function(){return S(BAR('100%',RULE),G(18),EY(),G(14),LG(),G(14),TX());}],
+ ['Eyebrow as a cyan chip.',function(){return S('<span style="display:inline-block;background:'+CY1+
+   ';border:0.5px solid '+CY2+';padding:5px 10px;">'+EY()+'</span>',G(16),LG(),G(14),TX());}],
+ ['Rule running out from the eyebrow.',function(){return S(
+   '<div style="display:flex;align-items:center;gap:14px;">'+EY()+'<div style="flex:1;height:1px;background:'+CY2+';"></div></div>',
+   G(16),LG(),G(14),TX());}],
+ ['Reference number on the eyebrow line.',function(){return S(
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;max-width:560px;">'+EY()+
+   '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span></div>',
+   G(14),LG(),G(14),TX());}],
+ ['Bordered card containing the stack.',function(){return '<div style="border:0.5px solid '+RULE+
+   ';border-top:2px solid '+CY+';padding:22px 24px;max-width:560px;text-align:left;">'+EY()+G(12)+LG()+G(14)+TX('0.68rem')+'</div>';}],
+ ['On the soft tonal ground.',function(){return '<div style="background:#e8e4dc;padding:22px 24px;max-width:620px;text-align:left;">'+
+   EY()+G(12)+LG()+G(14)+TX()+'</div>';}],
+ ['Inverted — the stack reads out of black.',function(){return '<div style="background:#0a0a0a;padding:24px 26px;max-width:620px;text-align:left;">'+
+   EY(CY)+G(14)+'<span style="display:inline-flex;gap:16px;align-items:flex-end;">'+
+   P.logos.map(function(h){return h.replace(/filter:[^;"]*/,'filter:none').replace(/mix-blend-mode:normal/,'mix-blend-mode:screen');}).join('')+
+   '</span>'+G(14)+TX('0.72rem','rgba(244,241,236,0.62)')+'</div>';}],
+ ['Cyan gradient hairline above the stack.',function(){return S(
+   '<div style="height:2px;background:linear-gradient(to right,'+CY+',rgba(79,168,199,0));"></div>',G(18),EY(),G(14),LG(),G(14),TX());}],
+ ['Sentence indented from the logos.',function(){return S(EY(),G(14),LG(),G(14),
+   '<div style="padding-left:clamp(0px,6vw,90px);">'+TX()+'</div>');}],
+ ['The considered one — cyan eyebrow, bar, logos, one quiet line.',function(){return S(
+   EY(CY,'0.42rem','0.34em'),G(12),BAR('52px',CY),G(16),LG(),G(16),TX('0.7rem',SUB,'46ch','1.75'));}]
+];
 
+function go(){
+ if(document.getElementById('sf-sw-v4'))return;
+ if(!document.getElementById('c16-overlay')||!document.querySelector('#su .u-c')){
+  go.t=(go.t||0)+1; if(go.t<40)setTimeout(go,300); return; }
+ grab();
+ /* ── CARD TEXT 5 baked: click to open, cyan bar marks the open card ── */
+ var st=document.getElementById('sfcss-card5');
+ if(!st){st=document.createElement('style'); st.id='sfcss-card5'; document.head.appendChild(st);
+  st.textContent=
+   A+' .u-tx{background:linear-gradient(to top,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.72) 45%,transparent 100%) !important;}'+
+   A+' .u-desc{max-height:0 !important;opacity:0 !important;overflow:hidden !important;margin:0 !important;'+
+   'transition:max-height .4s cubic-bezier(.22,.61,.36,1),opacity .3s !important;}'+
+   A+' .u-c.sf-open .u-desc{max-height:180px !important;opacity:1 !important;margin-top:10px !important;}'+
+   A+' .u-c{position:relative;cursor:pointer;}'+
+   A+' .u-c::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;'+
+   'z-index:3;transition:background .3s;}'+
+   A+' .u-c.sf-open::before{background:'+CY+';}';
+  [].forEach.call(document.querySelectorAll('#su .u-c'),function(c){
+   if(c.__clk)return; c.__clk=1;
+   c.addEventListener('click',function(e){ if(e.target.closest('a'))return; c.classList.toggle('sf-open'); });});
+ }
+ var bar=document.createElement('div'); bar.id='sf-sw-v4';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Caption'; row.appendChild(l);
+ CAPS.forEach(function(o,i){
+  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   if(i===0){OV.innerHTML=OV.__orig; OV.setAttribute('style',OV.__style||'');}
+   else{
+    var html;
+    try{ html=o[1](); }catch(e){ html=null; }
+    if(!html){ note.innerHTML='Caption '+i+' — FAILED TO RENDER'; return; }
+    var probe=document.createElement('div'); probe.innerHTML=html;
+    if(!probe.querySelector('img'))html=LG()+G(14)+html;
+    if(!/Featured Project/i.test(probe.textContent))html=EY()+G(12)+html;
+    if(probe.textContent.indexOf(P.txt.slice(0,24))<0)html=html+G(14)+TX();
+    OV.innerHTML=html;
+    OV.setAttribute('style','position:static;display:block;border-top:none;padding-top:18px;text-align:left;');}
+   if(window.__sfAlignCap)window.__sfAlignCap();
+   note.innerHTML='Caption '+i+' — '+o[0]+'<br><span class="sf-m">all left aligned · Card Text 5 baked in</span>';};
+  row.appendChild(b);});
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ note.innerHTML='Caption 0 — current.<br><span class="sf-m">all left aligned · Card Text 5 baked in</span>';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,700);});
+else setTimeout(go,700);
+})();
+</script>
+<script id="sf-sw-js-v7">(function(){
+var CY='#4FA8C7', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.09)',
+    INK='rgba(10,10,10,0.82)', SUB='rgba(10,10,10,0.5)', FAINT='rgba(10,10,10,0.3)',
+    RUL='rgba(10,10,10,0.08)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var OV=null,P=null,CAP=null,VBOX=null,VHOST=null,DNAHOME=null,XH=null,NOEY=false;
 
+function grab(){
+ OV=document.getElementById('c16-overlay'); CAP=document.getElementById('sf-cap');
+ if(!OV||!CAP)return false;
+ var tmp=document.createElement('div'); tmp.innerHTML=OV.__orig||OV.innerHTML;
+ P={ey:(tmp.querySelector('span')||{textContent:'Featured Project'}).textContent.trim(),
+    txt:(tmp.querySelector('.fp-body-text')||{textContent:''}).textContent.trim(),
+    logos:[].map.call(tmp.querySelectorAll('img'),function(i){var h=i.outerHTML;
+      if(/Switchlogowhite|switch-logo/i.test(h))
+        h=h.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'').replace(/style="/i,
+          'style="mix-blend-mode:normal;filter:invert(1) brightness(0.2);opacity:0.92;');
+      return h;})};
+ var ey=document.querySelector('#su .u-ey'); DNAHOME=ey?ey.parentElement:null;
+ XH=document.querySelector('#fv-stage .x-h'); VBOX=XH?XH.parentElement:null;
+ return !!(P.txt&&DNAHOME&&VBOX);
+}
+function EY(c,sz,ls,t){ if(NOEY)return '';
+ return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.44rem')+
+ ';letter-spacing:'+(ls||'0.3em')+';text-transform:uppercase;color:'+(c||CY)+';display:block;">'+(t||P.ey)+'</span>';}
+function TX(sz,c,mw,lh){return '<p class="fp-body-text" style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.72rem')+
+ ';line-height:'+(lh||'1.7')+';color:'+(c||SUB)+';max-width:'+(mw||'46ch')+';margin:0;">'+P.txt+'</p>';}
+function LG(){return '<span style="display:inline-flex;align-items:flex-end;gap:16px;">'+P.logos.join('')+'</span>';}
+function G(n){return '<div style="height:'+n+'px"></div>';}
+function BAR(w,c,h){return '<div style="width:'+(w||'44px')+';height:'+(h||'1px')+';background:'+(c||CY)+';"></div>';}
+function R2(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+
+ ';gap:'+(gap||'clamp(22px,3.5vw,56px)')+';align-items:'+(al||'end')+';"><div>'+a+'</div><div>'+b+'</div></div>';}
+function W(x){return '<div style="text-align:left;margin:0;padding:0;">'+x+'</div>';}
+
+var L=[
+ ['Logos left, sentence right.',function(){return W(R2(LG(),TX(),'auto 1fr'));}],
+ ['Eyebrow, logos, sentence right.',function(){return W(R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+ ['Eyebrow across the top, two columns beneath.',function(){return W(EY()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
+ ['Cyan bar, then logos and sentence.',function(){return W(BAR()+G(14)+R2(LG(),TX(),'auto 1fr'));}],
+ ['Stacked, tight.',function(){return W(EY()+G(10)+LG()+G(12)+TX());}],
+ ['Stacked, generous.',function(){return W(EY()+G(22)+LG()+G(22)+TX());}],
+ ['Sentence at display scale beside the logos.',function(){return W(R2(EY()+G(12)+LG(),TX('0.95rem',INK,'30ch','1.45'),'auto 1fr','clamp(26px,4vw,64px)','start'));}],
+ ['Sentence faint and small.',function(){return W(R2(EY()+G(12)+LG(),TX('0.64rem',FAINT,'44ch'),'auto 1fr'));}],
+ ['Narrow logo column, 220px.',function(){return W(R2(EY()+G(12)+LG(),TX(),'220px 1fr'));}],
+ ['Proportional 45 / 55.',function(){return W(R2(EY()+G(12)+LG(),TX('0.72rem',SUB,'none'),'0.82fr 1fr'));}],
+ ['Sentence first, logos right.',function(){return W(R2(EY()+G(12)+TX(),LG(),'1fr auto'));}],
+ ['Hairline above the block.',function(){return W(BAR('100%',RUL)+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+ ['Cyan rule between the columns.',function(){return W('<div style="display:grid;grid-template-columns:auto 1fr;gap:clamp(22px,3.5vw,52px);align-items:end;">'+
+   '<div style="border-right:1px solid '+CY2+';padding-right:clamp(22px,3.5vw,52px);">'+EY()+G(12)+LG()+'</div><div>'+TX()+'</div></div>');}],
+ ['Reference number opposite the eyebrow.',function(){return W(
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EY()+
+   '<span style="font-family:'+BEBAS+';font-size:0.7rem;letter-spacing:0.2em;color:'+CY+';">SW—01</span></div>'+G(14)+R2(LG(),TX(),'auto 1fr'));}],
+ ['Eyebrow as a cyan chip.',function(){return W('<span style="display:inline-block;background:'+CY1+
+   ';border:0.5px solid '+CY2+';padding:5px 10px;">'+EY()+'</span>'+G(16)+R2(LG(),TX(),'auto 1fr'));}],
+ ['Rule running out from the eyebrow.',function(){return W(
+   '<div style="display:flex;align-items:center;gap:14px;">'+EY()+'<div style="flex:1;height:1px;background:'+CY2+';"></div></div>'+
+   G(16)+R2(LG(),TX(),'auto 1fr'));}],
+ ['Tonal ground.',function(){return W('<div style="background:#e8e4dc;padding:22px 24px;">'+R2(EY()+G(12)+LG(),TX(),'auto 1fr')+'</div>');}],
+ ['Cyan gradient hairline above.',function(){return W(
+   '<div style="height:2px;background:linear-gradient(to right,'+CY+',rgba(79,168,199,0));"></div>'+G(18)+R2(EY()+G(12)+LG(),TX(),'auto 1fr'));}],
+ ['Logos quiet, sentence dominant.',function(){return W(R2(
+   '<div style="opacity:0.62;transform:scale(0.86);transform-origin:left bottom;">'+EY(FAINT)+G(10)+LG()+'</div>',
+   TX('0.8rem',INK,'40ch','1.65'),'auto 1fr','clamp(26px,4vw,60px)','start'));}],
+ ['The considered one.',function(){return W(R2(EY(CY,'0.42rem','0.34em')+G(11)+BAR('48px',CY)+G(15)+LG(),
+   TX('0.7rem',SUB,'44ch','1.75'),'auto 1fr','clamp(26px,4vw,64px)','end'));}]
+];
+
+function belowHome(){ if(!CAP||!DNAHOME)return;
+ if(CAP.parentElement!==DNAHOME||DNAHOME.firstElementChild!==CAP)DNAHOME.insertBefore(CAP,DNAHOME.firstElementChild);
+ CAP.setAttribute('style','padding:0 0 34px 0 !important;margin:0 !important;max-width:none !important;'); }
+function ventureHome(){ if(!CAP||!VBOX)return;
+ if(CAP.parentElement!==VBOX)VBOX.appendChild(CAP);
+ CAP.setAttribute('style','padding:26px 0 0 0 !important;margin:0 !important;max-width:none !important;'); }
+function topHome(){ if(!CAP||!XH)return;
+ if(CAP.nextElementSibling!==XH)XH.parentElement.insertBefore(CAP,XH);
+ CAP.setAttribute('style','padding:14px 0 20px 0 !important;margin:0 !important;max-width:none !important;'); }
+function guard(html){
+ var pr=document.createElement('div'); pr.innerHTML=html;
+ if(!NOEY&&!/Featured Project/i.test(pr.textContent))html=EY()+G(12)+html;
+ if(!pr.querySelector('img'))html=LG()+G(14)+html;
+ if(pr.textContent.indexOf(P.txt.slice(0,24))<0)html=html+G(14)+TX();
+ return html; }
+
+function build(){
+ if(document.getElementById('sf-sw-v7'))return;
+ if(!grab()){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
+ ['sf-sw-v4','sf-sw-v3','sf-sw-v2'].forEach(function(id){var e=document.getElementById(id); if(e)e.remove();});
+ var bar=document.createElement('div'); bar.id='sf-sw-v7';
+ var note=document.createElement('div'); note.className='sf-note';
+ function mk(label,place){
+  var row=document.createElement('div'); row.className='sf-row';
+  var l=document.createElement('span'); l.className='sf-lb'; l.textContent=label; row.appendChild(l);
+  for(var i=0;i<=L.length;i++){(function(i){
+   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+   b.onclick=function(){
+    [].forEach.call(bar.querySelectorAll('b'),function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    if(i===0){ NOEY=false; OV.innerHTML=OV.__orig; OV.setAttribute('style',OV.__style||''); belowHome();
+      note.innerHTML=label+' 0 — current, beneath the photograph.'; return; }
+    NOEY=(label==='Top');
+    var html; try{html=L[i-1][1]();}catch(e){html=null;}
+    if(!html){note.innerHTML=label+' '+i+' — FAILED';return;}
+    OV.innerHTML=guard(html);
+    OV.setAttribute('style','position:static;display:block;border:none;padding:0;margin:0;text-align:left;');
+    place();
+    note.innerHTML=label+' '+i+' — '+L[i-1][0]+'<br><span class="sf-m">'+
+     (label==='Top'?'above MORE THAN A MOTORCYCLE — FEATURED VENTURE is the only eyebrow':
+      label==='Venture'?'integrated into FEATURED VENTURE, above the carousel':
+      'beneath the photograph, flush with DESIGNED DNA')+'</span>';};
+   row.appendChild(b);})(i);}
+  bar.appendChild(row);
+ }
+ mk('Caption',belowHome); mk('Venture',ventureHome); mk('Top',topHome);
+ bar.appendChild(note); note.innerHTML='0 in either row is the current design.';
+ SFSTACK().appendChild(bar);
+ belowHome();
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1700);});
+else setTimeout(build,1700);
+})();
+</script>
+<script id="sf-sw-js-intro">(function(){
+var CY='#4FA8C7', CY2='rgba(79,168,199,0.22)', CY1='rgba(79,168,199,0.08)',
+    INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
+    HAIR='rgba(10,10,10,0.09)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var BOX=null, ORIG='', OSTYLE='', CAP=null;
+var EYT='Featured Venture';
+var M=[['Project','SWITCH eSCRAMBLER'],['Type','Electric Motorcycle'],
+       ['Status','Relaunch'],['Opportunity','Transferable Hardware Platform']];
+var B=["We didn't acquire SWITCH because it made electric motorcycles.",
+       "We acquired a transferable industrial design language, engineering architecture and manufacturing system capable of extending into entirely new product categories.",
+       "The motorcycle is simply the first expression of that platform."];
+var H=['From Product To Platform.','A Platform Disguised As A Motorcycle.','The First Expression Of A Platform.',
+ 'Designed To Scale.','Transferable By Design.','Built To Extend.','The Platform Behind The Product.',
+ 'One Product. Many Futures.','The DNA, Not The Vehicle.','More Than A Motorcycle.','An Industrial Design Platform.',
+ 'Engineered For Expansion.','Design System First.','Hardware With Reusable DNA.','Platform Thinking.',
+ 'A Repeatable Product System.','Designed Beyond The Vehicle.','Scalable By Design.','Industrial DNA.',
+ 'The Foundation, Not The Finished Product.'];
+
+function ey(sz,ls,c){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.54rem')+
+ ';letter-spacing:'+(ls||'0.34em')+';text-transform:uppercase;color:'+(c||CY)+';margin:0;">'+EYT+'</p>';}
+function h(i,sz,ls,lh,c,al){return '<h2 style="font-family:'+BEBAS+';font-size:'+(sz||'clamp(1.6rem,3.4vw,3.2rem)')+
+ ';letter-spacing:'+(ls||'0.1em')+';line-height:'+(lh||'1.02')+';text-transform:uppercase;color:'+(c||INK)+
+ ';margin:0;font-weight:400;'+(al?'text-align:'+al+';':'')+'">'+H[i]+'</h2>';}
+function p(t,sz,mw,c,lh){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.78rem')+
+ ';line-height:'+(lh||'1.9')+';color:'+(c||SUB)+';max-width:'+(mw||'62ch')+';margin:0;">'+t+'</p>';}
+function body(sz,mw,gap){return B.map(function(t,i){return p(t,sz,mw)+(i<2?g(gap||12):'');}).join('');}
+function g(n){return '<div style="height:'+n+'px"></div>';}
+function hr(c,w,h2){return '<div style="height:'+(h2||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR)+';"></div>';}
+function k(t,sz,c,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.4rem')+
+ ';letter-spacing:'+(ls||'0.26em')+';text-transform:uppercase;color:'+(c||FAINT)+';display:block;">'+t+'</span>';}
+function v(t,sz,c,f){return '<span style="font-family:'+(f||DM)+';font-size:'+(sz||'0.72rem')+
+ ';color:'+(c||INK)+';display:block;margin-top:5px;">'+t+'</span>';}
+function meta(cols,gap,sz){return '<div style="display:grid;grid-template-columns:repeat('+(cols||4)+',1fr);gap:'+(gap||'18px 26px')+';">'+
+ M.map(function(m){return '<div>'+k(m[0])+v(m[1],sz)+'</div>';}).join('')+'</div>';}
+function metaRows(rule){return M.map(function(m,i){return '<div style="display:grid;grid-template-columns:120px 1fr;gap:18px;'+
+ (rule?'border-top:1px solid '+HAIR+';padding:10px 0;':'padding:6px 0;')+'">'+k(m[0])+
+ '<span style="font-family:'+DM+';font-size:0.72rem;color:'+INK+';">'+m[1]+'</span></div>';}).join('');}
+function metaInline(){return '<div style="display:flex;flex-wrap:wrap;gap:8px 26px;">'+M.map(function(m){
+ return '<span style="font-family:'+DM+';font-size:0.42rem;letter-spacing:0.26em;text-transform:uppercase;color:'+FAINT+';">'+
+ m[0]+' <span style="color:'+INK+';">'+m[1]+'</span></span>';}).join('')+'</div>';}
+function num(n,sz){return '<span style="font-family:'+BEBAS+';font-size:'+(sz||'2.4rem')+';letter-spacing:0.06em;color:'+CY2+
+ ';line-height:1;display:block;">'+n+'</span>';}
+function W(x,mw){return '<div style="max-width:'+(mw||'980px')+';text-align:left;">'+x+'</div>';}
+function GR(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+';gap:'+(gap||'clamp(26px,4vw,64px)')+
+ ';align-items:'+(al||'start')+';"><div>'+a+'</div><div>'+b+'</div></div>';}
+
+var L=[
+ ['Logo left, metadata right, headline under, body full width.',function(){return W(
+   GR(ey(),metaInline(),'auto 1fr',null,'baseline')+g(26)+h(0)+g(24)+hr()+g(22)+body());}],
+ ['Huge centred headline, eyebrow small above, metadata below.',function(){return W(
+   '<div style="text-align:center;">'+ey()+g(18)+h(1,'clamp(2rem,5vw,4.4rem)','0.06em','0.98',INK,'center')+g(24)+
+   '</div>'+meta(4)+g(26)+'<div style="display:flex;justify-content:center;">'+p(B.join(' '),'0.76rem','66ch')+'</div>',
+   '1040px');}],
+ ['Technical specification panel — everything as spec rows.',function(){return W(
+   ey()+g(20)+h(2,'clamp(1.4rem,2.6vw,2.3rem)')+g(24)+metaRows(true)+
+   '<div style="border-top:1px solid '+HAIR+';padding-top:18px;margin-top:4px;">'+body('0.72rem','70ch',10)+'</div>','860px');}],
+ ['Editorial — headline left, narrow body right, large air.',function(){return W(
+   ey()+g(30)+GR(h(3,'clamp(1.8rem,4vw,3.6rem)')+g(30)+metaRows(),
+   body('0.74rem','40ch'),'1.15fr 1fr','clamp(36px,6vw,96px)'),'1060px');}],
+ ['Swiss grid — four columns of information.',function(){return W(
+   ey()+g(22)+h(4,'clamp(1.5rem,3vw,2.6rem)')+g(26)+hr()+g(20)+
+   '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,3vw,34px);">'+
+   M.map(function(m){return '<div>'+k(m[0])+v(m[1])+'</div>';}).join('')+'</div>'+g(24)+hr()+g(20)+body('0.72rem','none',10));}],
+ ['Museum label — small type, very large spacing.',function(){return W(
+   ey('0.42rem','0.4em',FAINT)+g(38)+h(5,'clamp(1.2rem,2.2vw,1.9rem)','0.18em')+g(40)+
+   meta(4,'14px 30px','0.62rem')+g(40)+body('0.66rem','58ch',14),'820px');}],
+ ['Product catalogue — horizontal rules, minimal styling.',function(){return W(
+   hr(CY2,'100%','2px')+g(18)+GR(ey(),h(6,'clamp(1.3rem,2.4vw,2rem)'),'auto 1fr',null,'baseline')+g(18)+hr()+
+   g(16)+metaInline()+g(16)+hr()+g(20)+body('0.72rem','72ch',10));}],
+ ['Annual report — oversized section number, metadata column.',function(){return W(
+   GR(num('01','3.4rem')+g(14)+ey(),h(7,'clamp(1.6rem,3.2vw,2.8rem)')+g(24)+body('0.74rem','52ch')+g(24)+meta(2),
+   '160px 1fr','clamp(30px,5vw,72px)'));}],
+ ['Specification sheet — tiny labels, large values.',function(){return W(
+   ey()+g(24)+
+   '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:22px 44px;">'+
+   M.map(function(m){return '<div style="border-top:1px solid '+HAIR+';padding-top:12px;">'+k(m[0],'0.38rem')+
+    '<span style="font-family:'+BEBAS+';font-size:1.05rem;letter-spacing:0.1em;color:'+INK+';display:block;margin-top:7px;">'+m[1]+'</span></div>';}).join('')+
+   '</div>'+g(30)+h(8,'clamp(1.4rem,2.6vw,2.2rem)')+g(20)+body('0.72rem','66ch',10),'900px');}],
+ ['Investment memo — opportunity statement first.',function(){return W(
+   ey()+g(22)+p(B[1],'0.95rem','48ch',INK,'1.6')+g(26)+hr()+g(20)+
+   GR(h(9,'clamp(1.2rem,2.2vw,1.8rem)'),p(B[0],'0.72rem','40ch')+g(10)+p(B[2],'0.72rem','40ch'),'1fr 1fr')+
+   g(24)+metaInline(),'980px');}],
+ ['Vertical information rail on the left, headline centred.',function(){return W(
+   GR('<div style="border-left:2px solid '+CY+';padding-left:18px;">'+ey()+g(16)+metaRows()+'</div>',
+      '<div style="text-align:center;">'+h(10,'clamp(1.6rem,3.2vw,2.8rem)',null,null,null,'center')+g(24)+
+      '<div style="display:flex;justify-content:center;">'+p(B.join(' '),'0.74rem','52ch')+'</div></div>',
+      '260px 1fr','clamp(30px,5vw,72px)'));}],
+ ['Offset — content weighted right, large empty left.',function(){return W(
+   GR('','<div>'+ey()+g(20)+h(11,'clamp(1.7rem,3.4vw,3rem)')+g(24)+body('0.74rem','48ch')+g(24)+metaInline()+'</div>',
+   '0.5fr 1fr','clamp(30px,6vw,110px)'));}],
+ ['Caption-style — eyebrow behaves as an image caption beside a statement.',function(){return W(
+   GR('<div>'+ey()+g(10)+k('SW—01','0.4rem',CY)+'</div>',
+      h(12,'clamp(1.6rem,3.2vw,2.8rem)')+g(22)+body('0.74rem','54ch'),'150px 1fr','clamp(26px,4vw,64px)'));}],
+ ['Timeline — the product now, the platform next.',function(){return W(
+   ey()+g(24)+h(13,'clamp(1.5rem,2.8vw,2.4rem)')+g(28)+
+   '<div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,64px);">'+
+   '<div style="border-top:2px solid '+CY+';padding-top:14px;">'+k('Today')+v('Electric Motorcycle','0.86rem',INK,BEBAS)+g(12)+p(B[0],'0.7rem','36ch')+'</div>'+
+   '<div style="border-top:1px solid '+HAIR+';padding-top:14px;">'+k('Next')+v('Transferable Platform','0.86rem',INK,BEBAS)+g(12)+p(B[2],'0.7rem','36ch')+'</div></div>'+
+   g(26)+p(B[1],'0.74rem','72ch')+g(24)+hr()+g(16)+metaInline());}],
+ ['Grid of information cards, headline beneath.',function(){return W(
+   ey()+g(22)+'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:'+HAIR+';border:1px solid '+HAIR+';">'+
+   M.map(function(m){return '<div style="background:#ede8e0;padding:16px 16px 18px;">'+k(m[0])+v(m[1])+'</div>';}).join('')+
+   '</div>'+g(28)+h(14,'clamp(1.6rem,3vw,2.6rem)')+g(22)+body('0.74rem','70ch',10));}],
+ ['Typographic — the headline dominates, everything else recedes.',function(){return W(
+   h(15,'clamp(2.2rem,5.6vw,5rem)','0.04em','0.94')+g(30)+
+   GR(ey()+g(12)+metaRows(),body('0.72rem','44ch'),'260px 1fr','clamp(30px,5vw,72px)'),'1100px');}],
+ ['Blueprint — measured, structured, engineering feel.',function(){return W(
+   '<div style="border:1px solid '+HAIR+';padding:26px 28px;">'+
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+ey()+k('SW—01 / 2026','0.4rem',CY)+'</div>'+
+   g(20)+hr(CY2)+g(20)+h(16,'clamp(1.4rem,2.6vw,2.2rem)')+g(22)+metaRows(true)+g(6)+hr()+g(18)+
+   body('0.7rem','76ch',10)+'</div>','960px');}],
+ ['Case-study opening — overview, opportunity, narrative.',function(){return W(
+   ey()+g(20)+h(17,'clamp(1.6rem,3.2vw,2.8rem)')+g(28)+
+   '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,3.5vw,52px);">'+
+   '<div>'+k('Overview')+g(10)+p(B[0],'0.7rem','34ch')+'</div>'+
+   '<div>'+k('Opportunity')+g(10)+p(B[1],'0.7rem','34ch')+'</div>'+
+   '<div>'+k('Position')+g(10)+p(B[2],'0.7rem','34ch')+'</div></div>'+g(26)+hr()+g(16)+metaInline());}],
+ ['Portfolio cover — minimal, almost no decoration.',function(){return W(
+   ey('0.42rem','0.42em',FAINT)+g(46)+h(18,'clamp(1.8rem,3.6vw,3rem)','0.12em')+g(46)+
+   p(B[1],'0.74rem','54ch')+g(34)+metaInline(),'880px');}],
+ ['Editorial spread — left page, right page.',function(){return W(
+   '<div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,6vw,96px);">'+
+   '<div>'+ey()+g(22)+h(19,'clamp(1.5rem,3vw,2.6rem)')+g(24)+metaRows()+'</div>'+
+   '<div style="border-left:1px solid '+HAIR+';padding-left:clamp(28px,4vw,64px);">'+body('0.74rem','44ch',14)+'</div></div>','1100px');}]
+];
+
+function build(){
+ if(document.getElementById('sf-sw-intro'))return;
+ var xh=document.querySelector('#fv-stage .x-h');
+ if(!xh){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
+ BOX=xh.parentElement; ORIG=BOX.innerHTML; OSTYLE=BOX.getAttribute('style')||'';
+ CAP=document.getElementById('sf-cap');
+ var bar=document.createElement('div'); bar.id='sf-sw-intro';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Intro'; row.appendChild(l);
+ for(var i=0;i<=L.length;i++){(function(i){
+  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   if(i===0){BOX.innerHTML=ORIG; BOX.setAttribute('style',OSTYLE);
+     if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP);
+              CAP.style.removeProperty('display'); CAP.removeAttribute('aria-hidden'); }
+     note.innerHTML='Intro 0 — current.'; return;}
+   var html; try{html=L[i-1][1]();}catch(e){html=null;}
+   if(!html){note.innerHTML='Intro '+i+' — FAILED';return;}
+   /* guard: no design may drop the metadata or any line of the body */
+   var pr=document.createElement('div'); pr.innerHTML=html;
+   var t=pr.textContent;
+   if(M.some(function(m){return t.indexOf(m[1])<0;})) html=html+g(24)+hr()+g(16)+metaInline();
+   B.forEach(function(line){ if(t.indexOf(line.slice(0,26))<0) html=html+g(12)+p(line,'0.74rem','70ch'); });
+   if(!/Featured Venture/i.test(t)) html=ey()+g(18)+html;
+   BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
+   if(CAP){ CAP.style.setProperty('display','none','important');
+     CAP.setAttribute('aria-hidden','true'); CAP.__parked=CAP.__parked||CAP.parentElement;
+     if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }   /* the repeated line is retired outright */
+   note.innerHTML='Intro '+i+' — '+L[i-1][0]+'<br><span class="sf-m">headline: '+H[i-1]+'</span>';};
+  row.appendChild(b);})(i);}
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ note.innerHTML='Intro 0 — current. 1–20 replace the opening block.';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1800);});
+else setTimeout(build,1800);
+})();
+</script>
+<script id="sf-sw-js-simple">(function(){
+var CY='#4FA8C7', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
+    HAIR='rgba(10,10,10,0.09)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
+var BOX=null,ORIG='',OSTYLE='',CAP=null;
+var EYT='Featured Venture';
+var B=["We didn't acquire SWITCH because it made electric motorcycles.",
+       "We acquired a transferable industrial design language, engineering architecture and manufacturing system capable of extending into entirely new product categories.",
+       "The motorcycle is simply the first expression of that platform."];
+var H=['From Product To Platform.','A Platform Disguised As A Motorcycle.','The First Expression Of A Platform.',
+ 'Designed To Scale.','Transferable By Design.','Built To Extend.','The Platform Behind The Product.',
+ 'One Product. Many Futures.','The DNA, Not The Vehicle.','More Than A Motorcycle.','An Industrial Design Platform.',
+ 'Engineered For Expansion.','Design System First.','Hardware With Reusable DNA.','Platform Thinking.',
+ 'A Repeatable Product System.','Designed Beyond The Vehicle.','Scalable By Design.','Industrial DNA.',
+ 'The Foundation, Not The Finished Product.'];
+
+function ey(c,sz,ls){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.54rem')+
+ ';letter-spacing:'+(ls||'0.34em')+';text-transform:uppercase;color:'+(c||CY)+';margin:0;">'+EYT+'</p>';}
+function hd(i,sz,ls,lh,al){return '<h2 style="font-family:'+BEBAS+';font-size:'+(sz||'clamp(1.5rem,3vw,2.6rem)')+
+ ';letter-spacing:'+(ls||'0.1em')+';line-height:'+(lh||'1.04')+';text-transform:uppercase;color:'+INK+
+ ';margin:0;font-weight:400;'+(al?'text-align:'+al+';':'')+'">'+H[i]+'</h2>';}
+function p(t,sz,mw,c,lh){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(sz||'0.78rem')+
+ ';line-height:'+(lh||'1.9')+';color:'+(c||SUB)+';max-width:'+(mw||'62ch')+';margin:0;">'+t+'</p>';}
+function all(sz,mw,gap){return B.map(function(t,i){return p(t,sz,mw)+(i<2?g(gap||12):'');}).join('');}
+function one(sz,mw){return p(B.join(' '),sz,mw);}
+function g(n){return '<div style="height:'+n+'px"></div>';}
+function hr(w,c){return '<div style="height:1px;width:'+(w||'100%')+';background:'+(c||HAIR)+';"></div>';}
+function W(x,mw){return '<div style="max-width:'+(mw||'900px')+';text-align:left;">'+x+'</div>';}
+function two(a,b,cols,gap,al){return '<div style="display:grid;grid-template-columns:'+cols+';gap:'+(gap||'clamp(28px,4.5vw,72px)')+
+ ';align-items:'+(al||'start')+';"><div>'+a+'</div><div>'+b+'</div></div>';}
+
+var L=[
+ ['Eyebrow, headline, paragraph. Nothing else.',function(){return W(ey()+g(20)+hd(0)+g(24)+all());}],
+ ['A little more air throughout.',function(){return W(ey()+g(30)+hd(1)+g(34)+all('0.78rem','62ch',16));}],
+ ['Tighter, quieter.',function(){return W(ey()+g(14)+hd(2)+g(18)+all('0.74rem','60ch',10));}],
+ ['Headline larger.',function(){return W(ey()+g(22)+hd(3,'clamp(1.9rem,4vw,3.4rem)','0.06em','0.98')+g(26)+all());}],
+ ['Headline smaller, paragraph doing the work.',function(){return W(ey()+g(20)+hd(4,'clamp(1.2rem,2.2vw,1.8rem)','0.16em')+g(22)+all('0.82rem','58ch',14));}],
+ ['A hairline under the headline.',function(){return W(ey()+g(20)+hd(5)+g(22)+hr()+g(22)+all());}],
+ ['A short cyan rule above the eyebrow.',function(){return W('<div style="width:44px;height:1px;background:'+CY+';"></div>'+g(16)+ey()+g(20)+hd(6)+g(24)+all());}],
+ ['Headline left, paragraph right.',function(){return W(ey()+g(24)+two(hd(7),all('0.74rem','42ch'),'1fr 1fr'),'1020px');}],
+ ['Headline left, paragraph right, narrower headline column.',function(){return W(ey()+g(24)+two(hd(8),all('0.74rem','46ch'),'0.8fr 1.2fr'),'1020px');}],
+ ['Eyebrow beside the headline.',function(){return W(two(ey(),hd(9)+g(24)+all('0.76rem','56ch'),'150px 1fr','clamp(24px,3.5vw,56px)'));}],
+ ['One continuous paragraph rather than three.',function(){return W(ey()+g(20)+hd(10)+g(24)+one('0.78rem','66ch'));}],
+ ['Centred.',function(){return W('<div style="text-align:center;">'+ey()+g(20)+hd(11,null,null,null,'center')+g(24)+
+   '<div style="display:flex;justify-content:center;">'+one('0.76rem','56ch')+'</div></div>','940px');}],
+ ['Narrow measure throughout.',function(){return W(ey()+g(20)+hd(12,'clamp(1.4rem,2.6vw,2.2rem)')+g(22)+all('0.76rem','46ch',14),'640px');}],
+ ['Wide measure, single column.',function(){return W(ey()+g(22)+hd(13)+g(26)+all('0.78rem','78ch',14),'1060px');}],
+ ['Paragraph slightly indented from the headline.',function(){return W(ey()+g(20)+hd(14)+g(24)+
+   '<div style="padding-left:clamp(0px,5vw,72px);">'+all('0.76rem','54ch')+'</div>');}],
+ ['Rule above the whole block.',function(){return W(hr()+g(24)+ey()+g(20)+hd(15)+g(24)+all());}],
+ ['Eyebrow in the quiet grey rather than cyan.',function(){return W(ey(FAINT,'0.46rem','0.36em')+g(20)+hd(16)+g(24)+all());}],
+ ['Headline over two lines, paragraph beneath.',function(){return W(ey()+g(20)+
+   hd(17,'clamp(1.8rem,3.6vw,3rem)','0.08em','1.0')+g(28)+all('0.76rem','60ch',14),'880px');}],
+ ['Generous — the calmest of the twenty.',function(){return W(ey()+g(38)+hd(18,'clamp(1.4rem,2.6vw,2.2rem)','0.16em')+g(40)+all('0.76rem','56ch',18),'860px');}],
+ ['The considered one — cyan eyebrow, measured spacing, three short lines.',function(){return W(
+   ey(CY,'0.5rem','0.36em')+g(24)+hd(19,'clamp(1.5rem,2.9vw,2.4rem)','0.11em')+g(28)+all('0.76rem','58ch',15),'900px');}]
+];
+
+function build(){
+ if(document.getElementById('sf-sw-simple'))return;
+ var xh=document.querySelector('#fv-stage .x-h');
+ if(!xh){ build.t=(build.t||0)+1; if(build.t<40)setTimeout(build,300); return; }
+ BOX=xh.parentElement; ORIG=BOX.innerHTML; OSTYLE=BOX.getAttribute('style')||'';
+ CAP=document.getElementById('sf-cap');
+ var bar=document.createElement('div'); bar.id='sf-sw-simple';
+ var note=document.createElement('div'); note.className='sf-note';
+ var row=document.createElement('div'); row.className='sf-row';
+ var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Simple'; row.appendChild(l);
+ for(var i=0;i<=L.length;i++){(function(i){
+  var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
+  b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
+   b.classList.add('on');
+   if(i===0){BOX.innerHTML=ORIG; BOX.setAttribute('style',OSTYLE);
+     if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
+     note.innerHTML='Simple 0 — current.'; return;}
+   var html; try{html=L[i-1][1]();}catch(e){html=null;}
+   if(!html){note.innerHTML='Simple '+i+' — FAILED';return;}
+   /* guard: the eyebrow and all three lines, always */
+   var pr=document.createElement('div'); pr.innerHTML=html; var t=pr.textContent;
+   B.forEach(function(line){ if(t.indexOf(line.slice(0,26))<0) html=html+g(12)+p(line,'0.76rem','62ch'); });
+   if(!/Featured Venture/i.test(t)) html=ey()+g(18)+html;
+   BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
+   if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
+            if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
+   note.innerHTML='Simple '+i+' — '+L[i-1][0]+'<br><span class="sf-m">'+H[i-1]+'</span>';};
+  row.appendChild(b);})(i);}
+ bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
+ note.innerHTML='Simple 0 — current. No metadata, no reference numbers.';
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,1900);});
+else setTimeout(build,1900);
+})();
+</script>
 <script id="sf-sw-js-brand">(function(){
 var CY='#4FA8C7', INK='rgba(10,10,10,0.86)', SUB='rgba(10,10,10,0.55)', FAINT='rgba(10,10,10,0.32)',
     HAIR='rgba(10,10,10,0.09)', DM="'DM Sans',sans-serif", BEBAS="'Bebas Neue',sans-serif";
@@ -5744,28 +6240,4 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 else setTimeout(build,2000);
 })();
 </script>
-<script id="sf-card5">
-/* CARD TEXT 5 — baked: click a card to open its description, cyan bar marks it */
-(function(){
-var CY='#4FA8C7', A='#su';
-function go(){
- if(document.getElementById('sfcss-card5'))return;
- if(!document.querySelector('#su .u-c')){ go.t=(go.t||0)+1; if(go.t<40)setTimeout(go,300); return; }
- var st=document.createElement('style'); st.id='sfcss-card5'; document.head.appendChild(st);
- st.textContent=
-  A+' .u-tx{background:linear-gradient(to top,rgba(10,10,10,0.92) 0%,rgba(10,10,10,0.72) 45%,transparent 100%) !important;}'+
-  A+' .u-desc{max-height:0 !important;opacity:0 !important;overflow:hidden !important;margin:0 !important;'+
-  'transition:max-height .4s cubic-bezier(.22,.61,.36,1),opacity .3s !important;}'+
-  A+' .u-c.sf-open .u-desc{max-height:180px !important;opacity:1 !important;margin-top:10px !important;}'+
-  A+' .u-c{position:relative;cursor:pointer;}'+
-  A+' .u-c::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:transparent;'+
-  'z-index:3;transition:background .3s;}'+
-  A+' .u-c.sf-open::before{background:'+CY+';}';
- [].forEach.call(document.querySelectorAll('#su .u-c'),function(c){
-  if(c.__clk)return; c.__clk=1;
-  c.addEventListener('click',function(e){ if(e.target.closest('a'))return; c.classList.toggle('sf-open'); });});
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,1400);});
-else setTimeout(go,1400);
-})();
-</script>
+
