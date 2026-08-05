@@ -5863,8 +5863,6 @@ function FIFTYTWO(){
   '<div style="height:1px;width:100%;background:'+HAIR2+';"></div></div>';
 }
 
-var KEEP=[49,42,35,36,33,32,31,23,22,19,17,12,8,4,56,62,65,71,74,83,86,89,52];
-
 function build(){
  if(document.getElementById('sf-sw-fifty'))return;
  var xh=document.querySelector('#fv-stage .x-h');
@@ -5878,7 +5876,7 @@ function build(){
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Lock-up'; row.appendChild(l);
- for(var i=0;i<=KEEP.length;i++){(function(i){
+ for(var i=0;i<=C.length*2+1;i++){(function(i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
    b.classList.add('on');
@@ -5886,28 +5884,29 @@ function build(){
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
      note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   var o=KEEP[i-1];                       /* the option you kept, by its old number */
+   /* 1-51  the original executions, exactly as they were
+      52     off the leash
+      53-103 the same 51, with new colour pairings and a receded headline */
    var N51=C.length, cfg={}, base;
-   if(o<=N51) base=C[o-1][1];
-   else if(o>N51+1) base=C[o-N51-2][1];
+   if(i<=N51) base=C[i-1][1];
+   else if(i>N51+1) base=C[i-N51-2][1];
    else base={};
    for(var k in base)cfg[k]=base[k];
-   if(o>N51+1){ var j=o-N51-1, cp=COLp(j), hp=HDp(j);
+   if(i>N51+1){ var j=i-N51-1, cp=COLp(j), hp=HDp(j);
      cfg.sf=cp.sf; cfg.ef=cp.ef;
      cfg.hFam=hp.hFam; cfg.hSz=hp.hSz; cfg.hLs=hp.hLs; cfg.hW=hp.hW; }
-   var html; try{ html=(o===N51+1)?FIFTYTWO():V(cfg); }catch(e){html=null;}
+   var html; try{ html=(i===N51+1)?FIFTYTWO():V(cfg); }catch(e){html=null;}
    if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
    if(STAGE)STAGE.setAttribute('style','margin-top:28px;');
    if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
             if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
-   note.innerHTML='Lock-up '+i+' — '+(o===C.length+1?'off the leash':
-      (o>C.length+1?C[o-C.length-2][0]+'  ·  recoloured':C[o-1][0]))+
-    ' <span style="opacity:0.5">(was '+o+')</span>'+
+   note.innerHTML='Lock-up '+i+' — '+(i===C.length+1?'off the leash':
+      (i>C.length+1?C[i-C.length-2][0]+'  ·  new colour + headline':C[i-1][0]))+
     '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current.  1–'+KEEP.length+' are the ones you kept.';
+ note.innerHTML='Lock-up 0 — current.  1–51 the executions.  52 off the leash.  53–103 the same 51 recoloured with a receded headline.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
 else setTimeout(build,2200);
