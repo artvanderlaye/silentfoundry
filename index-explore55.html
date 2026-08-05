@@ -5755,16 +5755,7 @@ function HDp(i){
  [B,'1.04rem','0.21em',400],[D,'0.76rem','0.37em',300],[J,'0.86rem','0.31em',400]
  ][(i-1)%51];
  return {hFam:t[0],hSz:t[1],hLs:t[2],hW:t[3]};}
-/* Measured from the artwork itself (pixel-scanned in Chrome):
-     SWITCH     letterform baseline sits 13/118 = 11.02% above the image bottom,
-                because the bolt's tail descends past the letters.
-     eSCRAMBLER letterform baseline sits  1/58  =  1.72% above the bottom.
-   Flush boxes therefore leave eSCRAMBLER's type sitting lower. This nudges it up
-   by the difference so the two LETTER baselines agree at any size. */
-var SW_BASE=0.1102, ES_BASE=0.0172;
-function optical(h,eh){return +(SW_BASE*h - ES_BASE*eh).toFixed(2);}
 function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
- var nudge=(c.al===undefined||c.al==='flex-end')?optical(h,eh):0;
  /* removing max-width made both marks wider, so the pair could wrap onto a
     second line — the two must always stay side by side */
  /* line-height:0 and font-size:0 kill the inline descender space that was holding
@@ -5775,7 +5766,7 @@ function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62
  (c.uRule?'border-bottom:'+(c.uW||'1px')+' solid '+(c.uC||HAIR)+';padding-bottom:'+(c.uP||11)+'px;':'')+
  (c.vRule?'border-left:'+(c.vW||'2px')+' solid '+c.vRule+';padding-left:15px;':'')+'">'+
  mk(SWI,h,c.sf||'dark',c.so)+'<span style="display:flex;line-height:0;font-size:0;align-self:'+(c.al||'center')+';'+
- 'transform:translateY('+((c.dy||0)-nudge)+'px);">'+
+ 'transform:translateY('+(c.dy||0)+'px);">'+
  mk(ESI,eh,c.ef||'soft',c.eo||1)+'</span></span>';}
 function ey(c){var t=(c.eyNum?num(c.eyNum,c.eyNumC||CY,'0.6rem')+'<span style="padding:0 10px;color:'+HAIR+';">/</span>':'');
  return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(c.eySz||'0.5rem')+
