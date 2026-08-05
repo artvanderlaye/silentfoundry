@@ -5711,17 +5711,14 @@ function mk(html,h,f,op){
   .replace(/(^|[;"\s])width\s*:\s*[^;"]+;?/gi,'$1')
   .replace(/height\s*:\s*[^;"]+;?/gi,'')
   .replace(/opacity\s*:\s*[\d.]+;?/gi,'')
-  .replace(/style="/i,'style="mix-blend-mode:normal;flex:0 0 auto;max-width:none !important;width:auto !important;'+
+  .replace(/style="/i,'style="mix-blend-mode:normal;max-width:none !important;width:auto !important;'+
    'height:'+h+'px !important;filter:'+(F[f]||F.dark)+';opacity:'+(op||1)+';');}
 function g(n){return '<div style="height:'+n+'px"></div>';}
 function R(w,c,h){return '<div style="height:'+(h||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR2)+';"></div>';}
 function num(t,c,sz){return '<span style="font-family:'+BEBAS+';font-size:'+(sz||'0.68rem')+
  ';letter-spacing:0.18em;color:'+(c||FAINT)+';">'+t+'</span>';}
 function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
- /* removing max-width made both marks wider, so the pair could wrap onto a
-    second line — the two must always stay side by side */
- return '<span style="display:inline-flex;flex-wrap:nowrap;white-space:nowrap;max-width:none;'+
-  'align-items:'+(c.al||'flex-end')+';gap:'+(c.gap===undefined?11:c.gap)+'px;'+
+ return '<span style="display:inline-flex;align-items:'+(c.al||'flex-end')+';gap:'+(c.gap===undefined?11:c.gap)+'px;'+
  (c.uRule?'border-bottom:'+(c.uW||'1px')+' solid '+(c.uC||HAIR)+';padding-bottom:'+(c.uP||11)+'px;':'')+
  (c.vRule?'border-left:'+(c.vW||'2px')+' solid '+c.vRule+';padding-left:15px;':'')+'">'+
  mk(SWI,h,c.sf||'dark',c.so)+'<span style="display:inline-block;transform:translateY('+(c.dy||0)+'px);">'+
