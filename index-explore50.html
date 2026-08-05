@@ -5717,44 +5717,6 @@ function g(n){return '<div style="height:'+n+'px"></div>';}
 function R(w,c,h){return '<div style="height:'+(h||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR2)+';"></div>';}
 function num(t,c,sz){return '<span style="font-family:'+BEBAS+';font-size:'+(sz||'0.68rem')+
  ';letter-spacing:0.18em;color:'+(c||FAINT)+';">'+t+'</span>';}
-
-/* ── per-option colour pairs and headline styles ──
-   the 51 geometries are untouched; only the mark colours and the headline change. */
-var PAL=['dark','ink','mid','soft','pale','cyan','gold'];
-function COLp(i){var t=[
- ['dark','soft'],['dark','mid'],['dark','ink'],['dark','pale'],['dark','cyan'],['dark','gold'],
- ['ink','soft'],['ink','mid'],['ink','cyan'],['ink','gold'],['ink','pale'],
- ['mid','dark'],['mid','soft'],['mid','cyan'],['mid','gold'],['mid','pale'],
- ['soft','dark'],['soft','ink'],['soft','cyan'],['soft','gold'],
- ['cyan','dark'],['cyan','ink'],['cyan','mid'],['cyan','soft'],['cyan','cyan'],['cyan','gold'],
- ['gold','dark'],['gold','ink'],['gold','mid'],['gold','soft'],['gold','gold'],['gold','cyan'],
- ['dark','soft'],['ink','pale'],['mid','ink'],['dark','mid'],['cyan','pale'],['gold','pale'],
- ['pale','dark'],['pale','ink'],['pale','cyan'],['dark','ink'],['ink','dark'],['mid','mid'],
- ['soft','soft'],['dark','cyan'],['cyan','ink'],['gold','ink'],['ink','gold'],['dark','gold'],['ink','cyan']
- ][(i-1)%51]; return {sf:t[0],ef:t[1]};}
-/* the headline must recede behind the lock-up — smaller, and a different voice each time */
-function HDp(i){
- var B="'Bebas Neue',sans-serif", D="'DM Sans',sans-serif", J="'Josefin Sans',sans-serif";
- var t=[
- [B,'0.95rem','0.26em',400],[D,'0.8rem','0.34em',300],[J,'0.86rem','0.3em',300],
- [B,'1.05rem','0.2em',400],[D,'0.74rem','0.4em',400],[J,'0.95rem','0.24em',400],
- [B,'0.88rem','0.32em',400],[D,'0.86rem','0.26em',300],[J,'0.78rem','0.36em',300],
- [B,'1.15rem','0.16em',400],[D,'0.78rem','0.3em',500],[J,'1rem','0.2em',300],
- [B,'0.82rem','0.36em',400],[D,'0.9rem','0.22em',300],[J,'0.88rem','0.28em',400],
- [B,'1rem','0.24em',400],[D,'0.76rem','0.38em',300],[J,'0.92rem','0.26em',300],
- [B,'0.9rem','0.3em',400],[D,'0.84rem','0.28em',400],[J,'0.82rem','0.34em',300],
- [B,'1.1rem','0.18em',400],[D,'0.72rem','0.42em',300],[J,'0.98rem','0.22em',400],
- [B,'0.86rem','0.34em',400],[D,'0.88rem','0.24em',300],[J,'0.86rem','0.3em',300],
- [B,'1.02rem','0.22em',400],[D,'0.8rem','0.32em',400],[J,'0.9rem','0.26em',300],
- [B,'0.92rem','0.28em',400],[D,'0.82rem','0.3em',300],[J,'0.94rem','0.24em',400],
- [B,'1.08rem','0.19em',400],[D,'0.75rem','0.36em',300],[J,'0.84rem','0.32em',300],
- [B,'0.84rem','0.33em',400],[D,'0.92rem','0.21em',300],[J,'0.96rem','0.23em',400],
- [B,'0.98rem','0.25em',400],[D,'0.78rem','0.34em',400],[J,'0.88rem','0.29em',300],
- [B,'1.12rem','0.17em',400],[D,'0.86rem','0.27em',300],[J,'0.8rem','0.35em',300],
- [B,'0.88rem','0.31em',400],[D,'0.9rem','0.23em',400],[J,'0.92rem','0.27em',300],
- [B,'1.04rem','0.21em',400],[D,'0.76rem','0.37em',300],[J,'0.86rem','0.31em',400]
- ][(i-1)%51];
- return {hFam:t[0],hSz:t[1],hLs:t[2],hW:t[3]};}
 function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62:c.r)));
  /* removing max-width made both marks wider, so the pair could wrap onto a
     second line — the two must always stay side by side */
@@ -5767,9 +5729,9 @@ function lock(c){var h=c.h||32, eh=Math.max(7,Math.round(h*(c.r===undefined?0.62
 function ey(c){var t=(c.eyNum?num(c.eyNum,c.eyNumC||CY,'0.6rem')+'<span style="padding:0 10px;color:'+HAIR+';">/</span>':'');
  return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(c.eySz||'0.5rem')+
  ';letter-spacing:'+(c.eyLs||'0.36em')+';text-transform:uppercase;color:'+(c.eyC||CY)+';margin:0;">'+t+EYT+'</p>';}
-function hd(c){return '<h2 style="font-family:'+(c.hFam||BEBAS)+';font-size:'+(c.hSz||'clamp(1.2rem,2.2vw,1.85rem)')+
- ';letter-spacing:'+(c.hLs||'0.13em')+';line-height:'+(c.hLh||'1.15')+';text-transform:uppercase;color:'+(c.hC||INK)+
- ';margin:0;font-weight:'+(c.hW||400)+';'+(c.hMw?'max-width:'+c.hMw+';':'')+'">'+HEAD+'</h2>';}
+function hd(c){return '<h2 style="font-family:'+BEBAS+';font-size:'+(c.hSz||'clamp(1.2rem,2.2vw,1.85rem)')+
+ ';letter-spacing:'+(c.hLs||'0.13em')+';line-height:'+(c.hLh||'1.08')+';text-transform:uppercase;color:'+(c.hC||INK)+
+ ';margin:0;font-weight:400;'+(c.hMw?'max-width:'+c.hMw+';':'')+'">'+HEAD+'</h2>';}
 function bd(c){return '<p style="font-family:'+DM+';font-weight:300;font-size:'+(c.bSz||'0.74rem')+
  ';line-height:'+(c.bLh||'1.85')+';color:'+(c.bC||SUB)+';max-width:'+(c.bMw||'60ch')+';margin:0;">'+BODY+'</p>';}
 function V(c){c=c||{};
@@ -5838,31 +5800,6 @@ var C=[
  ['Model at a third, generous gap',{h:34,r:0.33,gap:20,ef:'mid',al:'baseline'}]
 ];
 
-
-/* 52 — off the leash: the marque set as a full-bleed rule, the model as a caption,
-   the headline reduced to a whisper beneath an oversized measure of white. */
-function FIFTYTWO(){
- return '<div style="max-width:1040px;text-align:left;">'+
-  '<div style="display:grid;grid-template-columns:1fr auto;gap:26px;align-items:end;'+
-  'border-bottom:2px solid '+CY+';padding-bottom:14px;">'+
-   '<span style="font-family:'+DM+';font-weight:300;font-size:0.44rem;letter-spacing:0.44em;'+
-   'text-transform:uppercase;color:'+CY+';">'+EYT+'</span>'+
-   '<span style="font-family:'+BEBAS+';font-size:0.62rem;letter-spacing:0.24em;color:'+FAINT+';">SW—01 / 2026</span>'+
-  '</div>'+g(26)+
-  '<div style="display:flex;align-items:center;gap:18px;flex-wrap:nowrap;white-space:nowrap;">'+
-   mk(SWI,44,'dark',1)+
-   '<span style="width:1px;height:30px;background:'+CY+';display:inline-block;"></span>'+
-   mk(ESI,17,'cyan',1)+
-  '</div>'+g(30)+
-  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,80px);align-items:start;">'+
-   '<h2 style="font-family:'+DM+';font-weight:300;font-size:0.66rem;letter-spacing:0.5em;'+
-   'line-height:2.1;text-transform:uppercase;color:'+FAINT+';margin:0;">'+HEAD+'</h2>'+
-   '<p style="font-family:'+DM+';font-weight:300;font-size:0.82rem;line-height:1.95;color:'+INK+
-   ';max-width:46ch;margin:0;">'+BODY+'</p>'+
-  '</div>'+g(24)+
-  '<div style="height:1px;width:100%;background:'+HAIR2+';"></div></div>';
-}
-
 function build(){
  if(document.getElementById('sf-sw-fifty'))return;
  var xh=document.querySelector('#fv-stage .x-h');
@@ -5876,7 +5813,7 @@ function build(){
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Lock-up'; row.appendChild(l);
- for(var i=0;i<=C.length*2+1;i++){(function(i){
+ for(var i=0;i<=C.length;i++){(function(i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
    b.classList.add('on');
@@ -5884,29 +5821,17 @@ function build(){
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
      note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   /* 1-51  the original executions, exactly as they were
-      52     off the leash
-      53-103 the same 51, with new colour pairings and a receded headline */
-   var N51=C.length, cfg={}, base;
-   if(i<=N51) base=C[i-1][1];
-   else if(i>N51+1) base=C[i-N51-2][1];
-   else base={};
-   for(var k in base)cfg[k]=base[k];
-   if(i>N51+1){ var j=i-N51-1, cp=COLp(j), hp=HDp(j);
-     cfg.sf=cp.sf; cfg.ef=cp.ef;
-     cfg.hFam=hp.hFam; cfg.hSz=hp.hSz; cfg.hLs=hp.hLs; cfg.hW=hp.hW; }
-   var html; try{ html=(i===N51+1)?FIFTYTWO():V(cfg); }catch(e){html=null;}
+   var html; try{html=V(C[i-1][1]);}catch(e){html=null;}
    if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
    if(STAGE)STAGE.setAttribute('style','margin-top:28px;');
    if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
             if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
-   note.innerHTML='Lock-up '+i+' — '+(i===C.length+1?'off the leash':
-      (i>C.length+1?C[i-C.length-2][0]+'  ·  new colour + headline':C[i-1][0]))+
+   note.innerHTML='Lock-up '+i+' — '+C[i-1][0]+
     '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current.  1–51 the executions.  52 off the leash.  53–103 the same 51 recoloured with a receded headline.';
+ note.innerHTML='Lock-up 0 — current. 1–50 are art-directed executions of 43.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
 else setTimeout(build,2200);
