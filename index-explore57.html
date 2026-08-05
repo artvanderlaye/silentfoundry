@@ -5881,8 +5881,7 @@ function FIFTYTWO(){
    Only the eSCRAMBLER's vertical position and the two colours change. */
 var BASEO=56;
 var VAR20=[
- ['the two you kept — A',                          {base:56, al:'flex-end',dy:0, sf:'dark',ef:'soft'}],
- ['the two you kept — B',                          {base:71, al:'flex-end',dy:0, sf:'dark',ef:'soft'}],
+ ['bottom, optically corrected · black / soft',   {al:'flex-end',dy:0,  sf:'dark',ef:'soft'}],
  ['up 3 · black / mid',                           {al:'flex-end',dy:-3, sf:'dark',ef:'mid'}],
  ['up 5 · black / ink',                           {al:'flex-end',dy:-5, sf:'dark',ef:'ink'}],
  ['up 7 · black / cyan',                          {al:'flex-end',dy:-7, sf:'dark',ef:'cyan'}],
@@ -5925,7 +5924,7 @@ function build(){
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
      note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   var o=(VAR20[i-1][1].base||BASEO);     /* 1 and 2 keep their own bases */
+   var o=BASEO;                           /* every option is the same base */
    var N51=C.length, cfg={}, base;
    if(o<=N51) base=C[o-1][1];
    else if(o>N51+1) base=C[o-N51-2][1];
@@ -5934,7 +5933,7 @@ function build(){
    if(o>N51+1){ var j=o-N51-1, cp=COLp(j), hp=HDp(j);
      cfg.sf=cp.sf; cfg.ef=cp.ef;
      cfg.hFam=hp.hFam; cfg.hSz=hp.hSz; cfg.hLs=hp.hLs; cfg.hW=hp.hW; }
-   var fx=VAR20[i-1][1]; for(var q in fx){ if(q!=='base')cfg[q]=fx[q]; }
+   var fx=VAR20[i-1][1]; for(var q in fx)cfg[q]=fx[q];
    var html; try{ html=(o===N51+1)?FIFTYTWO():V(cfg); }catch(e){html=null;}
    if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
@@ -5945,7 +5944,7 @@ function build(){
     '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current.  1–2: the two you kept.  3–22: position and colour variants.';
+ note.innerHTML='Lock-up 0 — current.  1–20: same lock-up, different vertical position and colour.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
 else setTimeout(build,2200);

@@ -5876,33 +5876,10 @@ function FIFTYTWO(){
   '<div style="height:1px;width:100%;background:'+HAIR2+';"></div></div>';
 }
 
-/* BASE = the old option 1 (execution 4 'Wallpaper feature', recoloured).
-   Size, gaps, headline and body are identical in all twenty.
-   Only the eSCRAMBLER's vertical position and the two colours change. */
-var BASEO=56;
-var VAR20=[
- ['the two you kept — A',                          {base:56, al:'flex-end',dy:0, sf:'dark',ef:'soft'}],
- ['the two you kept — B',                          {base:71, al:'flex-end',dy:0, sf:'dark',ef:'soft'}],
- ['up 3 · black / mid',                           {al:'flex-end',dy:-3, sf:'dark',ef:'mid'}],
- ['up 5 · black / ink',                           {al:'flex-end',dy:-5, sf:'dark',ef:'ink'}],
- ['up 7 · black / cyan',                          {al:'flex-end',dy:-7, sf:'dark',ef:'cyan'}],
- ['up 9 · black / gold',                          {al:'flex-end',dy:-9, sf:'dark',ef:'gold'}],
- ['up 11, cap height · black / pale',             {al:'flex-end',dy:-11,sf:'dark',ef:'pale'}],
- ['centred · ink / soft',                         {al:'center',  dy:0,  sf:'ink', ef:'soft'}],
- ['centred, up 2 · ink / cyan',                   {al:'center',  dy:-2, sf:'ink', ef:'cyan'}],
- ['centred, up 4 · ink / gold',                   {al:'center',  dy:-4, sf:'ink', ef:'gold'}],
- ['centred, down 2 · ink / mid',                  {al:'center',  dy:2,  sf:'ink', ef:'mid'}],
- ['top aligned, up 2 · mid / dark',               {al:'flex-start',dy:-2,sf:'mid', ef:'dark'}],
- ['top aligned, down 3 · mid / cyan',             {al:'flex-start',dy:3,sf:'mid', ef:'cyan'}],
- ['bottom, up 6 · cyan / mid',                    {al:'flex-end',dy:-6, sf:'cyan',ef:'mid'}],
- ['bottom, up 8 · cyan / dark',                   {al:'flex-end',dy:-8, sf:'cyan',ef:'dark'}],
- ['centred, up 8 · cyan / gold',                   {al:'center',  dy:-8, sf:'cyan',ef:'gold'}],
- ['bottom, up 4 · gold / ink',                    {al:'flex-end',dy:-4, sf:'gold',ef:'ink'}],
- ['bottom, up 10 · gold / cyan',                  {al:'flex-end',dy:-10,sf:'gold',ef:'cyan'}],
- ['centred, up 6 · gold / pale',                  {al:'center',  dy:-6, sf:'gold',ef:'pale'}],
- ['bottom, up 12 · pale / dark',                  {al:'flex-end',dy:-12,sf:'pale',ef:'dark'}],
- ['bottom, up 13 · soft / cyan',                  {al:'flex-end',dy:-13,sf:'soft',ef:'cyan'}]
-];
+/* the two you kept. both PNGs are tightly cropped — no transparent padding —
+   so true optical alignment is simply bottom alignment with no offset. */
+var KEEP=[56,71];
+var FIXAL={0:{al:'flex-end',dy:0},1:{al:'flex-end',dy:0}};
 
 function build(){
  if(document.getElementById('sf-sw-fifty'))return;
@@ -5917,7 +5894,7 @@ function build(){
  var note=document.createElement('div'); note.className='sf-note';
  var row=document.createElement('div'); row.className='sf-row';
  var l=document.createElement('span'); l.className='sf-lb'; l.textContent='Lock-up'; row.appendChild(l);
- for(var i=0;i<=VAR20.length;i++){(function(i){
+ for(var i=0;i<=KEEP.length;i++){(function(i){
   var b=document.createElement('b'); b.textContent=i; if(i===0)b.className='on';
   b.onclick=function(){row.querySelectorAll('b').forEach(function(x){x.classList.remove('on');});
    b.classList.add('on');
@@ -5925,7 +5902,7 @@ function build(){
      if(STAGE)STAGE.setAttribute('style',OSTAGE);
      if(CAP){ if(!CAP.parentElement&&CAP.__parked)CAP.__parked.appendChild(CAP); CAP.style.removeProperty('display'); }
      note.innerHTML='Lock-up 0 — current section, unchanged.'; return;}
-   var o=(VAR20[i-1][1].base||BASEO);     /* 1 and 2 keep their own bases */
+   var o=KEEP[i-1];                       /* the option you kept, by its old number */
    var N51=C.length, cfg={}, base;
    if(o<=N51) base=C[o-1][1];
    else if(o>N51+1) base=C[o-N51-2][1];
@@ -5934,18 +5911,20 @@ function build(){
    if(o>N51+1){ var j=o-N51-1, cp=COLp(j), hp=HDp(j);
      cfg.sf=cp.sf; cfg.ef=cp.ef;
      cfg.hFam=hp.hFam; cfg.hSz=hp.hSz; cfg.hLs=hp.hLs; cfg.hW=hp.hW; }
-   var fx=VAR20[i-1][1]; for(var q in fx){ if(q!=='base')cfg[q]=fx[q]; }
+   var fx=FIXAL[i-1]; if(fx){ for(var q in fx)cfg[q]=fx[q]; }
    var html; try{ html=(o===N51+1)?FIFTYTWO():V(cfg); }catch(e){html=null;}
    if(!html){note.innerHTML='Lock-up '+i+' — FAILED';return;}
    BOX.innerHTML=html; BOX.setAttribute('style','max-width:none;');
    if(STAGE)STAGE.setAttribute('style','margin-top:28px;');
    if(CAP){ CAP.__parked=CAP.__parked||CAP.parentElement;
             if(CAP.parentElement)CAP.parentElement.removeChild(CAP); }
-   note.innerHTML='Lock-up '+i+' — '+VAR20[i-1][0]+
+   note.innerHTML='Lock-up '+i+' — '+(o===C.length+1?'off the leash':
+      (o>C.length+1?C[o-C.length-2][0]+'  ·  recoloured':C[o-1][0]))+
+    ' <span style="opacity:0.5">(was '+o+')</span>'+
     '<br><span class="sf-m">intro block '+Math.round(BOX.getBoundingClientRect().height)+'px</span>';};
   row.appendChild(b);})(i);}
  bar.appendChild(row); bar.appendChild(note); SFSTACK().appendChild(bar);
- note.innerHTML='Lock-up 0 — current.  1–2: the two you kept.  3–22: position and colour variants.';
+ note.innerHTML='Lock-up 0 — current.  1–'+KEEP.length+' are the ones you kept.';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,2200);});
 else setTimeout(build,2200);
