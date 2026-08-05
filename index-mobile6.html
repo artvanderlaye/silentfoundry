@@ -6210,9 +6210,7 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 /* S7 · the last two from the previous pass. */
 @media(max-width:768px){
   html body #fv-stage{padding-top:24px !important;}
-  /* :first-of-type counts DIVS, and the first div is .footer-logo-wrap, so
-     the old selector matched nothing. Navigate is the second div. */
-  html body .footer-inner > div:nth-of-type(2){display:none !important;}
+  html body .footer-col:first-of-type{display:none !important;}
   /* portfolio: the grid went full-bleed but kept 24px of inner padding, and
      the cards kept their own, so the images were still inset. */
   html body #su .u-g{padding-left:0 !important;padding-right:0 !important;gap:0 !important;}
@@ -6235,24 +6233,10 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
         2560   page-wrap x480   marshall x528   featured x48   ventures x48
    Both now take the same measure as the rest of the page. */
 @media(min-width:1601px){
-  /* the video frame is 1600px centred and reads well, so at the largest sizes
-     every section takes that exact frame - same width, same left and right
-     edges. Measured at 2560 the video sits 480-2080; everything else now does
-     too, instead of the 1504 frame at 528-2032. */
-  html body #fv-stage,
-  html body #funds,
-  html body #sfsec-dna{padding-left:calc((100% - 1600px)/2) !important;
-    padding-right:calc((100% - 1600px)/2) !important;}
-  html body #sfsec-dna .cs-wrap{max-width:none !important;padding-left:0 !important;
-    padding-right:0 !important;margin-left:0 !important;margin-right:0 !important;}
-  /* the SWITCH hero uses margin-left:calc(50% - 50vw) to break out full width;
-     the padding above shifted its anchor, so it has to be re-centred. */
-  /* margin:auto cannot centre it because the hero (2200) is wider than the
-     new 1600 content box, so auto resolves to 0 and it sat left-aligned.
-     This offsets it from the content box back to the true viewport centre. */
-  html body #fv-stage [data-part="herolive"]#c16s-wrap{
-    width:min(2200px,100vw) !important;
-    margin-left:calc(50% - min(2200px,100vw)/2) !important;margin-right:0 !important;}
+  html body #fv-stage{padding-left:max(48px,calc((100% - 1504px)/2)) !important;
+    padding-right:max(48px,calc((100% - 1504px)/2)) !important;}
+  html body #funds{padding-left:max(48px,calc((100% - 1504px)/2)) !important;
+    padding-right:max(48px,calc((100% - 1504px)/2)) !important;}
 }
 </style>
 
@@ -6296,23 +6280,7 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
    'Authentic brands into premium products.</span></div>';
   MM.setAttribute('data-b','1');
  }
- /* B · the site's own nav code rewrites the menu when it is toggled, so the
-    design survived the first open and was lost on the second. Re-apply
-    whenever the markup is replaced or the panel is opened. */
- function watch(){
-  var MM=document.querySelector('.mobile-menu'); if(!MM)return;
-  new MutationObserver(function(){
-   if(!MM.getAttribute('data-b')||!/Authentic brands into premium products/.test(MM.textContent)){
-    MM.removeAttribute('data-b'); build();}
-  }).observe(MM,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
-  document.addEventListener('click',function(){
-   setTimeout(function(){
-    if(!MM.getAttribute('data-b')||!/Authentic brands into premium products/.test(MM.textContent)){
-     MM.removeAttribute('data-b'); build();}},60);
-  },true);
- }
- function start(){ build(); setTimeout(watch,300); }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(start,900);});
- else setTimeout(start,900);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(build,900);});
+ else setTimeout(build,900);
 })();
 </script>
