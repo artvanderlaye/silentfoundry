@@ -5701,18 +5701,9 @@ function harvest(){ if(SWI)return true;
  var t=document.createElement('div'); t.innerHTML=ov.__orig||ov.innerHTML;
  var im=[].slice.call(t.querySelectorAll('img')); if(im.length<2)return false;
  SWI=im[0].outerHTML; ESI=im[1].outerHTML; return true; }
-function mk(html,h,f,op){
- /* THE BUG, confirmed in Chrome: max-width clamped both marks (SWITCH rendered
-    132x26 in every option, eSCRAMBLER pinned at 120px wide), so every height
-    change was discarded. strip the clamps, then set height with priority. */
- return html.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
-  .replace(/max-width\s*:\s*[^;"]+;?/gi,'')
-  .replace(/margin-bottom\s*:\s*[^;"]+;?/gi,'')
-  .replace(/(^|[;"\s])width\s*:\s*[^;"]+;?/gi,'$1')
-  .replace(/height\s*:\s*[^;"]+;?/gi,'')
-  .replace(/opacity\s*:\s*[\d.]+;?/gi,'')
-  .replace(/style="/i,'style="mix-blend-mode:normal;max-width:none !important;width:auto !important;'+
-   'height:'+h+'px !important;filter:'+(F[f]||F.dark)+';opacity:'+(op||1)+';');}
+function mk(html,h,f,op){return html.replace(/mix-blend-mode\s*:\s*[^;"]+;?/gi,'')
+ .replace(/height:\s*\d+px/,'height:'+h+'px').replace(/opacity\s*:\s*[\d.]+;?/gi,'')
+ .replace(/style="/i,'style="mix-blend-mode:normal;filter:'+(F[f]||F.dark)+';opacity:'+(op||1)+';');}
 function g(n){return '<div style="height:'+n+'px"></div>';}
 function R(w,c,h){return '<div style="height:'+(h||'1px')+';width:'+(w||'100%')+';background:'+(c||HAIR2)+';"></div>';}
 function num(t,c,sz){return '<span style="font-family:'+BEBAS+';font-size:'+(sz||'0.68rem')+
@@ -5793,8 +5784,7 @@ var C=[
  ['Compact rhythm throughout',{h:27,r:0.55,gap:9,g1:12,g2:19,g3:19,hSz:'clamp(1.12rem,2vw,1.6rem)',bSz:'0.73rem',bMw:'57ch'}],
  ['The considered one',{h:31,r:0.52,gap:10,dy:-1,ef:'ink',uRule:1,uC:HAIR2,uP:12,
    eySz:'0.48rem',eyLs:'0.38em',g1:15,g2:22,hSz:'clamp(1.18rem,2.1vw,1.72rem)',hLs:'0.15em',
-   g3:21,bSz:'0.745rem',bMw:'59ch',mw:'920px'}],
- ['Model at a third, generous gap',{h:34,r:0.33,gap:20,ef:'mid',al:'baseline'}]
+   g3:21,bSz:'0.745rem',bMw:'59ch',mw:'920px'}]
 ];
 
 function build(){
