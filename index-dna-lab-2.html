@@ -6342,10 +6342,10 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 7. Preview only, index-dna-lab-2.html.
-     Marshall 50 · SWITCH 44. No Originals.
+     DNA LAB — ROUND 8. Preview only, index-dna-lab-2.html.
+     Marshall 60 · SWITCH 54. Pin-board set at M51-60 / S45-54.
+     Cork is generated in CSS — no new image assets.
      index.html, sf-styles.css and sf-scripts.js are untouched.
-     Keys: arrows step · 0 first · M / S section · C contact sheet
      ================================================================== -->
 <script id="sf-dna-lab">
 /* ============================================================
@@ -6579,6 +6579,49 @@ function FREE(x,y,inner,extra){
 function NAME(t,o){o=o||{};return K(t,{sz:o.sz||'0.9rem',mb:0,ls:o.ls||'0.06em',lh:1.25,c:o.c||INKH});}
 function TINY(t,c){return G(t,{sz:'0.9rem',ls:'0.16em',c:c||FAINT});}
 function BAR(w,h,col,extra){return '<div style="width:'+w+';height:'+h+';background:'+col+';'+(extra||'')+'"></div>';}
+/* ============================================================
+   PIN BOARD — cork generated in CSS, no new assets.
+   ============================================================ */
+var CORKBG=
+ "radial-gradient(circle at 12% 22%,rgba(120,74,32,0.20) 0 1.6px,transparent 2px),"+
+ "radial-gradient(circle at 38% 61%,rgba(120,74,32,0.16) 0 2.2px,transparent 2.6px),"+
+ "radial-gradient(circle at 71% 18%,rgba(140,92,44,0.18) 0 1.4px,transparent 2px),"+
+ "radial-gradient(circle at 86% 74%,rgba(110,68,28,0.20) 0 2px,transparent 2.6px),"+
+ "radial-gradient(circle at 55% 88%,rgba(140,92,44,0.14) 0 1.8px,transparent 2.4px),"+
+ "radial-gradient(circle at 26% 79%,rgba(120,74,32,0.14) 0 1.2px,transparent 1.8px),"+
+ "repeating-radial-gradient(circle at 50% 50%,rgba(90,56,22,0.05) 0 1px,transparent 1px 5px),"+
+ "linear-gradient(160deg,#cda877 0%,#c29c68 46%,#b98f5b 100%)";
+function CORK(inner,o){o=o||{};
+ return '<div style="background-image:'+CORKBG+';background-size:34px 34px,52px 52px,44px 44px,60px 60px,48px 48px,38px 38px,7px 7px,100% 100%;'+
+  'border:'+(o.frame||'10px solid #e9e7e2')+';box-shadow:inset 0 0 46px rgba(70,40,12,0.28),0 1px 0 rgba(255,255,255,0.5);'+
+  'padding:'+(o.pad||'clamp(20px,3vw,40px)')+';position:relative;'+(o.x||'')+'">'+inner+'</div>';}
+function PIN(col,size){var s=size||13;
+ return '<div style="position:absolute;left:50%;top:-'+Math.round(s*0.45)+'px;transform:translateX(-50%);'+
+  'width:'+s+'px;height:'+s+'px;border-radius:50%;'+
+  'background:radial-gradient(circle at 34% 30%,#fff 0 1px,'+(col||'#b8322f')+' 40%,rgba(0,0,0,0.55) 100%);'+
+  'box-shadow:0 2px 3px rgba(40,20,0,0.5);z-index:3;"></div>';}
+function CARD(inner,o){o=o||{};
+ return '<div style="position:relative;background:'+(o.bg||'#f5f2ea')+';padding:'+(o.pad||'14px 14px 13px')+';'+
+  'box-shadow:0 3px 7px rgba(50,28,6,0.32);transform:rotate('+(o.rot||0)+'deg);'+(o.x||'')+'">'+
+  (o.nopin?'':PIN(o.pin))+inner+'</div>';}
+function TAPE(rot,top,left){
+ return '<div style="position:absolute;top:'+(top||-9)+'px;left:'+(left||'50%')+';transform:translateX(-50%) rotate('+(rot||-4)+'deg);'+
+  'width:56px;height:19px;background:rgba(226,208,166,0.82);box-shadow:0 1px 2px rgba(40,20,0,0.25);z-index:3;"></div>';}
+function STRING(x1,y1,x2,y2,col){
+ var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy),ang=Math.atan2(dy,dx)*180/Math.PI;
+ return '<div style="position:absolute;left:'+x1+'%;top:'+y1+'%;width:'+len+'%;height:1.5px;'+
+  'background:'+(col||'rgba(150,40,36,0.75)')+';transform-origin:0 0;transform:rotate('+ang+'deg);z-index:1;"></div>';}
+function PHOTO(c,w,o){o=o||{};
+ return '<div style="background:#fbfaf6;padding:6px 6px '+(o.cap?'4px':'6px')+';box-shadow:0 3px 7px rgba(50,28,6,0.34);'+
+  'transform:rotate('+(o.rot||0)+'deg);position:relative;">'+(o.nopin?'':PIN(o.pin))+
+  '<div style="width:100%;aspect-ratio:1/1;overflow:hidden;position:relative;">'+
+  '<img src="'+c[0]+'" alt="" loading="lazy" style="position:absolute;width:'+Math.round(w*c[3])+'px;height:'+Math.round(w*c[3])+'px;'+
+  'object-fit:cover;left:'+Math.round(w/2-c[1]*w*c[3])+'px;top:'+Math.round(w/2-c[2]*w*c[3])+'px;max-width:none;'+
+  'filter:grayscale(0.12) contrast(1.05);"/></div>'+
+  (o.cap?'<div style="padding-top:7px;text-align:center;">'+K(o.cap,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.2,c:'rgba(10,10,10,0.82)'})+'</div>':'')+
+  '</div>';}
+function BLABEL(t,c){return '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;letter-spacing:0.2em;'+
+ 'text-transform:uppercase;color:'+(c||'rgba(255,255,255,0.85)')+';text-shadow:0 1px 2px rgba(40,20,0,0.5);">'+t+'</div>';}
 /* ============================================================
    MARSHALL — 20 radial arrangements. No Original.
    Dial never smaller than 75% or larger than 100% of the 470px base.
@@ -7056,6 +7099,137 @@ mreg('Signal','A',function(D){var f=flat(D);
  f.forEach(function(x,ix){var p=polar(ix,8,46,0);
   h+=FREE(p.x,p.y,NAME(x.k,{c:x.gi?INKH:'rgba(10,10,10,0.55)'}),'max-width:108px;');});
  return EY()+GT(D)+STAGE(480,h);});
+/* ===== MARSHALL 51–60 · PIN BOARD ===== */
+/* 51 · PINNED RADIAL — the dial, but every strand is a pinned print */
+mreg('Board — Pinned Radial','A',function(D){var f=flat(D);
+ var h=IMGDISC(MHUB,37,'border:5px solid #fbfaf6;box-shadow:0 4px 10px rgba(50,28,6,0.4);','Marshall');
+ f.forEach(function(x,ix){var p=polar(ix,8,40,0);
+  h+=STRING(50,50,p.x,p.y,'rgba(150,40,36,0.6)');});
+ f.forEach(function(x,ix){var p=polar(ix,8,42,0);
+  h+=FREE(p.x,p.y,'<div style="width:78px;">'+PHOTO(x.c,66,{rot:(ix%2?3:-3),cap:x.k,pin:x.gi?'#2f2f2f':'#b8322f'})+'</div>','max-width:88px;z-index:2;');});
+ return EY()+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>'+STAGE(520,h));});
+
+/* 52 · INDEX CARDS — ruled cards, a column per group */
+mreg('Board — Index Cards','C',function(D){
+ var rot=[-1.6,1.2,-0.8,2.0,1.4,-1.8,0.9,-1.2];
+ return EY()+CORK(
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px);">'+
+ D.map(function(d,gi){return '<div>'+
+  '<div style="margin-bottom:16px;">'+BLABEL(d.g,gi?'rgba(255,255,255,0.92)':'rgba(255,255,255,0.7)')+'</div>'+
+  d.it.map(function(i,ix){var n=gi*4+ix;
+   return '<div style="margin-bottom:20px;">'+CARD(
+    '<div style="border-bottom:1px solid rgba(180,60,50,0.45);padding-bottom:6px;margin-bottom:8px;">'+
+    K(i.k,{sz:'0.95rem',mb:0,c:'rgba(10,10,10,0.85)'})+'</div>'+
+    '<div style="background-image:repeating-linear-gradient(180deg,transparent 0 17px,rgba(90,120,160,0.22) 17px 18px);">'+
+    V(i.v,{sz:'0.9rem',lh:'18px',c:'rgba(10,10,10,0.62)'})+'</div>',
+    {rot:rot[n],pin:gi?'#2f2f2f':'#b8322f'})+'</div>';}).join('')+'</div>';}).join('')+'</div>');});
+
+/* 53 · POLAROIDS — white-bordered prints, scattered */
+mreg('Board — Polaroids','A',function(D){var f=flat(D);
+ var pos=[[2,2],[27,6],[52,1],[77,5],[3,52],[28,57],[53,51],[77,56]];
+ var rot=[-4,3,-2,4,2,-3,3.4,-2.6];
+ var h='';
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+pos[ix][0]+'%;top:'+pos[ix][1]+'%;width:21%;min-width:104px;">'+
+   PHOTO(x.c,104,{rot:rot[ix],cap:x.k,pin:x.gi?'#2f2f2f':'#b8322f'})+'</div>';});
+ return EY()+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:10px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>'+
+  '<div style="position:relative;height:660px;overflow:hidden;">'+h+'</div>');});
+
+/* 54 · RED STRING — the evidence web */
+mreg('Board — Red String','A',function(D){var f=flat(D);
+ var P=[[16,14],[50,7],[84,16],[92,50],[80,84],[48,92],[16,84],[8,50]];
+ var h='';
+ var links=[[0,3],[1,5],[2,6],[4,7],[0,1],[3,4],[5,6],[7,0],[2,4]];
+ links.forEach(function(l){h+=STRING(P[l[0]][0],P[l[0]][1],P[l[1]][0],P[l[1]][1]);});
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+P[ix][0]+'%;top:'+P[ix][1]+'%;transform:translate(-50%,-50%);width:132px;z-index:2;">'+
+   CARD(K(x.k,{sz:'0.9rem',mb:0,c:'rgba(10,10,10,0.85)',ls:'0.05em'}),
+    {rot:(ix%2?2.2:-2.2),pin:x.gi?'#2f2f2f':'#b8322f',pad:'11px 12px'})+'</div>';});
+ h+='<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:120px;z-index:2;">'+
+  PHOTO([MHUB,0.5,0.5,1.15],120,{nopin:true})+'</div>';
+ return EY()+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:10px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>'+
+  '<div style="position:relative;height:470px;overflow:hidden;">'+h+'</div>');});
+
+/* 55 · TORN SHEETS — torn-edge scraps */
+mreg('Board — Torn Sheets','C',function(D){
+ var rot=[-2,1.6,-1.2,2.4,1.1,-2.2,1.8,-1.5];
+ return EY()+CORK('<div class="dl-g4" style="'+grid(4,'20px 18px')+'">'+
+ D.map(function(d,gi){return d.it.map(function(i,ix){var n=gi*4+ix;
+  return CARD(K(i.k,{sz:'0.95rem',mb:6,c:'rgba(10,10,10,0.85)'})+
+   V(short(i.v,54),{sz:'0.9rem',lh:1.55,c:'rgba(10,10,10,0.6)'}),
+   {rot:rot[n],pin:gi?'#2f2f2f':'#b8322f',
+    x:'clip-path:polygon(0 3%,4% 0,22% 2%,44% 0,68% 3%,88% 0,100% 4%,99% 30%,100% 62%,98% 92%,100% 100%,74% 98%,50% 100%,26% 97%,6% 100%,0 96%,1% 60%,0 32%);padding:20px 18px;'});}).join('');}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:16px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>');});
+
+/* 56 · TAPED — masking tape instead of pins */
+mreg('Board — Taped','C',function(D){
+ return EY()+CORK('<div class="dl-g4" style="'+grid(4,'26px 18px')+'">'+
+ D.map(function(d,gi){return d.it.map(function(i,ix){
+  return '<div style="position:relative;background:#f7f4ec;padding:16px 14px;box-shadow:0 2px 6px rgba(50,28,6,0.3);'+
+   'transform:rotate('+((ix%2?1:-1)*1.4)+'deg);">'+TAPE((ix%2?5:-6))+
+   K(i.k,{sz:'0.95rem',mb:6,c:'rgba(10,10,10,0.85)'})+
+   V(short(i.v,52),{sz:'0.9rem',lh:1.55,c:'rgba(10,10,10,0.6)'})+'</div>';}).join('');}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:18px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>');});
+
+/* 57 · OVERLAP PILE — a loose stack, product on top */
+mreg('Board — Overlap Pile','A',function(D){var f=flat(D);
+ var pos=[[2,6],[20,2],[38,9],[56,3],[3,44],[22,52],[42,46],[60,55]];
+ var rot=[-6,4,-3,7,3,-5,6,-4];
+ var h='';
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+pos[ix][0]+'%;top:'+pos[ix][1]+'%;width:24%;min-width:112px;z-index:'+(ix+1)+';">'+
+   PHOTO(x.c,112,{rot:rot[ix],cap:x.k,pin:x.gi?'#2f2f2f':'#b8322f'})+'</div>';});
+ h+='<div style="position:absolute;right:4%;bottom:6%;width:34%;min-width:150px;z-index:20;">'+
+  PHOTO([MHUB,0.5,0.5,1.1],150,{rot:2,cap:'MARSHALL',pin:'#c8a96e'})+'</div>';
+ return EY()+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:10px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div>'+
+  '<div style="position:relative;height:560px;overflow:hidden;">'+h+'</div>');});
+
+/* 58 · ORDERED GRID — pinned but square */
+mreg('Board — Ordered Grid','A',function(D){
+ return EY()+CORK(
+ D.map(function(d,gi){return '<div style="'+(gi?'margin-top:22px;':'')+'">'+
+  '<div style="margin-bottom:12px;">'+BLABEL(d.g,gi?'rgba(255,255,255,0.92)':'rgba(255,255,255,0.7)')+'</div>'+
+  '<div class="dl-g4" style="'+grid(4,'18px 14px')+'">'+d.it.map(function(i,ix){
+   return CARD('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'1.05rem',c:gi?'rgba(10,10,10,0.7)':'#a8792f',x:'margin-bottom:8px;'})+
+    K(i.k,{sz:'0.95rem',mb:0,c:'rgba(10,10,10,0.85)'})+'</div>',
+    {rot:0,pin:gi?'#2f2f2f':'#b8322f',pad:'18px 12px 15px'});}).join('')+'</div></div>';}).join(''));});
+
+/* 59 · CLIPPED WIRE — bulldog clips on a line */
+mreg('Board — Clipped Wire','A',function(D){
+ return EY()+CORK(D.map(function(d,gi){
+  return '<div style="'+(gi?'margin-top:30px;':'')+'position:relative;">'+
+   '<div style="margin-bottom:14px;">'+BLABEL(d.g,gi?'rgba(255,255,255,0.92)':'rgba(255,255,255,0.7)')+'</div>'+
+   '<div style="position:absolute;left:0;right:0;top:44px;height:1.5px;background:rgba(30,20,10,0.55);"></div>'+
+   '<div class="dl-g4" style="'+grid(4,'16px')+'padding-top:10px;">'+d.it.map(function(i,ix){
+    return '<div style="position:relative;padding-top:10px;">'+
+     '<div style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:16px;height:20px;'+
+     'background:linear-gradient(180deg,#d8d4cc,#9a958c);box-shadow:0 1px 2px rgba(40,20,0,0.4);z-index:3;"></div>'+
+     '<div style="background:#f7f4ec;padding:16px 12px;box-shadow:0 3px 7px rgba(50,28,6,0.3);'+
+     'transform:rotate('+((ix%2?1:-1)*1.1)+'deg);">'+
+     K(i.k,{sz:'0.95rem',mb:5,c:'rgba(10,10,10,0.85)'})+
+     V(short(i.v,44),{sz:'0.9rem',lh:1.5,c:'rgba(10,10,10,0.6)'})+'</div></div>';}).join('')+'</div></div>';}).join(''));});
+
+/* 60 · TAGGED — luggage tags on string */
+mreg('Board — Tagged','A',function(D){var f=flat(D);
+ return EY()+CORK('<div style="position:relative;">'+
+ '<div style="position:absolute;left:0;right:0;top:0;height:1.5px;background:rgba(30,20,10,0.5);"></div>'+
+ '<div class="dl-g4" style="'+grid(4,'26px 16px')+'padding-top:24px;">'+
+ f.map(function(x,ix){
+  return '<div style="position:relative;">'+
+   '<div style="position:absolute;top:-24px;left:50%;width:1.5px;height:24px;background:rgba(30,20,10,0.5);"></div>'+
+   '<div style="background:#efe6d2;padding:16px 12px 14px;box-shadow:0 3px 7px rgba(50,28,6,0.32);'+
+   'transform:rotate('+((ix%2?1.6:-1.6))+'deg);clip-path:polygon(50% 0,100% 10%,100% 100%,0 100%,0 10%);text-align:center;">'+
+   '<div style="width:9px;height:9px;border-radius:50%;background:rgba(30,20,10,0.45);margin:2px auto 10px;"></div>'+
+   SYM(x.s,{sz:'1rem',c:x.gi?'rgba(10,10,10,0.7)':'#a8792f',x:'margin-bottom:7px;'})+
+   K(x.k,{sz:'0.9rem',mb:0,c:'rgba(10,10,10,0.85)',lh:1.25})+'</div></div>';}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:18px;">'+
+  BLABEL(D[0].g,'rgba(255,255,255,0.72)')+BLABEL(D[1].g)+'</div></div>');});
 /* ============================================================
    SWITCH — 13. No Original. Eyebrow refined down from 14.4px.
    ============================================================ */
@@ -7473,6 +7647,145 @@ sreg('Specimen Grid','A',function(S){var f=sf8(S);
  f.forEach(function(x,ix){var p=polar(ix,8,55,0);
   h+=FREE(p.x,p.y,NAME(x.k,{c:isT(ix)?INKH:'rgba(10,10,10,0.6)'}),'max-width:96px;');});
  return SEY(S.h1)+SGT()+STAGE(560,h);});
+/* ===== SWITCH 45–54 · WORKSHOP BOARD =====
+   Same pin-board idea, shop-floor register: steel, magnets,
+   clipboards, wired tags, routing lines rather than red string. */
+var STEEL="linear-gradient(160deg,#d7d9db 0%,#c6c9cc 40%,#b9bdc1 100%)";
+function SCORK(inner,o){o=o||{};return CORK(inner,o);}
+function STEELB(inner,o){o=o||{};
+ return '<div style="background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.16) 0 1px,transparent 1px 4px),'+STEEL+';'+
+  'border:10px solid #9aa0a6;box-shadow:inset 0 0 40px rgba(20,30,40,0.22);padding:'+(o.pad||'clamp(20px,3vw,40px)')+';'+
+  'position:relative;">'+inner+'</div>';}
+function MAGNET(col){return '<div style="position:absolute;left:50%;top:-9px;transform:translateX(-50%);'+
+ 'width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff 0 1px,'+(col||CY)+' 45%,rgba(0,0,0,0.5) 100%);'+
+ 'box-shadow:0 2px 3px rgba(20,30,40,0.5);z-index:3;"></div>';}
+function SLABEL(t,c){return '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;letter-spacing:0.2em;'+
+ 'text-transform:uppercase;color:'+(c||'rgba(255,255,255,0.85)')+';text-shadow:0 1px 2px rgba(40,20,0,0.5);">'+t+'</div>';}
+
+/* 45 · PINNED RADIAL */
+sreg('Board — Pinned Radial','A',function(S){var f=sf8(S);
+ var h=IMGDISC(SHUB,37,'border:5px solid #fbfaf6;box-shadow:0 4px 10px rgba(50,28,6,0.4);','SWITCH');
+ f.forEach(function(x,ix){var p=polar(ix,8,40,0);h+=STRING(50,50,p.x,p.y,'rgba(0,140,170,0.75)');});
+ f.forEach(function(x,ix){var p=polar(ix,8,42,0);
+  h+=FREE(p.x,p.y,'<div style="width:78px;">'+PHOTO(x.c,66,{rot:(ix%2?3:-3),cap:x.k,pin:isT(ix)?'#2f2f2f':'#0a7f99'})+'</div>','max-width:88px;z-index:2;');});
+ return SEY(S.h1)+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'+
+  SLABEL(SGRP[0].g,'rgba(255,255,255,0.72)')+SLABEL(SGRP[1].g)+'</div>'+STAGE(520,h));});
+
+/* 46 · SPEC CARDS */
+sreg('Board — Spec Cards','C',function(S){
+ var rot=[-1.5,1.3,-1,2,1.2,-1.7,0.8,-1.3];
+ return SEY(S.h1)+CORK('<div class="dl-g4" style="'+grid(4,'22px 16px')+'">'+
+ S.it.map(function(i,ix){
+  return CARD('<div style="display:flex;justify-content:space-between;align-items:baseline;'+
+   'border-bottom:1px solid rgba(0,140,170,0.4);padding-bottom:6px;margin-bottom:8px;">'+
+   G('SW-0'+(ix+1),{sz:'0.9rem',ls:'0.14em',c:'#0a7f99'})+G(isT(ix)?'T':'I',{sz:'0.9rem',c:'rgba(10,10,10,0.4)'})+'</div>'+
+   K(i.k,{sz:'0.95rem',mb:6,c:'rgba(10,10,10,0.85)'})+
+   V(i.v,{sz:'0.9rem',lh:1.5,c:'rgba(10,10,10,0.6)'}),
+   {rot:rot[ix],pin:isT(ix)?'#2f2f2f':'#0a7f99'});}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:18px;">'+
+  SLABEL(SGRP[0].g,'rgba(255,255,255,0.72)')+SLABEL(SGRP[1].g)+'</div>');});
+
+/* 47 · MAGNETS ON STEEL */
+sreg('Board — Magnets on Steel','A',function(S){var f=sf8(S);
+ return SEY(S.h1)+STEELB('<div class="dl-g4" style="'+grid(4,'26px 16px')+'">'+
+ f.map(function(x,ix){
+  return '<div style="position:relative;background:#fbfaf6;padding:20px 12px 16px;box-shadow:0 3px 8px rgba(20,30,40,0.4);'+
+   'transform:rotate('+((ix%2?1.2:-1.2))+'deg);text-align:center;">'+MAGNET(isT(ix)?'#4a4f55':CY)+
+   SYM(x.s,{sz:'1.05rem',c:isT(ix)?'rgba(10,10,10,0.7)':'#0a7f99',x:'margin-bottom:8px;'})+
+   K(x.k,{sz:'0.95rem',mb:0,c:'rgba(10,10,10,0.85)',lh:1.25})+'</div>';}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:20px;">'+
+  SLABEL(SGRP[0].g,'rgba(30,40,50,0.55)')+SLABEL(SGRP[1].g,'rgba(30,40,50,0.8)')+'</div>');});
+
+/* 48 · ROUTING WEB — cyan lines instead of red string */
+sreg('Board — Routing Web','A',function(S){var f=sf8(S);
+ var P=[[16,14],[50,7],[84,16],[92,50],[80,84],[48,92],[16,84],[8,50]];
+ var links=[[0,4],[1,5],[2,6],[3,7],[0,1],[2,3],[4,5],[6,7]];
+ var h='';
+ links.forEach(function(l){h+=STRING(P[l[0]][0],P[l[0]][1],P[l[1]][0],P[l[1]][1],'rgba(0,140,170,0.6)');});
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+P[ix][0]+'%;top:'+P[ix][1]+'%;transform:translate(-50%,-50%);width:134px;z-index:2;">'+
+   CARD(K(x.k,{sz:'0.9rem',mb:0,c:'rgba(10,10,10,0.85)',ls:'0.05em'}),
+    {rot:(ix%2?2:-2),pin:isT(ix)?'#2f2f2f':'#0a7f99',pad:'11px 12px'})+'</div>';});
+ h+='<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:124px;z-index:2;">'+
+  PHOTO([SHUB,0.5,0.5,1.1],124,{nopin:true})+'</div>';
+ return SEY(S.h1)+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:10px;">'+
+  SLABEL(SGRP[0].g,'rgba(255,255,255,0.72)')+SLABEL(SGRP[1].g)+'</div>'+
+  '<div style="position:relative;height:470px;overflow:hidden;">'+h+'</div>');});
+
+/* 49 · SHOP PRINTS — scattered photographs */
+sreg('Board — Shop Prints','A',function(S){var f=sf8(S);
+ var pos=[[2,2],[27,6],[52,1],[77,5],[3,52],[28,57],[53,51],[77,56]];
+ var rot=[-4,3,-2,4,2,-3,3.4,-2.6];
+ var h='';
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+pos[ix][0]+'%;top:'+pos[ix][1]+'%;width:21%;min-width:104px;">'+
+   PHOTO(x.c,104,{rot:rot[ix],cap:x.k,pin:isT(ix)?'#2f2f2f':'#0a7f99'})+'</div>';});
+ return SEY(S.h1)+CORK('<div style="display:flex;justify-content:space-between;margin-bottom:10px;">'+
+  SLABEL(SGRP[0].g,'rgba(255,255,255,0.72)')+SLABEL(SGRP[1].g)+'</div>'+
+  '<div style="position:relative;height:660px;overflow:hidden;">'+h+'</div>');});
+
+/* 50 · TAPED DRAWINGS */
+sreg('Board — Taped Drawings','C',function(S){
+ return SEY(S.h1)+CORK('<div class="dl-g4" style="'+grid(4,'28px 18px')+'">'+
+ S.it.map(function(i,ix){
+  return '<div style="position:relative;background:#f7f4ec;padding:16px 14px;box-shadow:0 2px 6px rgba(50,28,6,0.3);'+
+   'transform:rotate('+((ix%2?1.3:-1.3))+'deg);">'+TAPE((ix%2?5:-6))+
+   G('SW-0'+(ix+1),{sz:'0.9rem',ls:'0.14em',c:'#0a7f99'})+SP(6)+
+   K(i.k,{sz:'0.95rem',mb:6,c:'rgba(10,10,10,0.85)'})+
+   V(short(i.v,50),{sz:'0.9rem',lh:1.5,c:'rgba(10,10,10,0.6)'})+'</div>';}).join('')+'</div>');});
+
+/* 51 · BENCH PILE — overlapping, product on top */
+sreg('Board — Bench Pile','A',function(S){var f=sf8(S);
+ var pos=[[2,6],[20,2],[38,9],[56,3],[3,44],[22,52],[42,46],[60,55]];
+ var rot=[-6,4,-3,7,3,-5,6,-4];
+ var h='';
+ f.forEach(function(x,ix){
+  h+='<div style="position:absolute;left:'+pos[ix][0]+'%;top:'+pos[ix][1]+'%;width:24%;min-width:112px;z-index:'+(ix+1)+';">'+
+   PHOTO(x.c,112,{rot:rot[ix],cap:x.k,pin:isT(ix)?'#2f2f2f':'#0a7f99'})+'</div>';});
+ h+='<div style="position:absolute;right:4%;bottom:6%;width:34%;min-width:150px;z-index:20;">'+
+  PHOTO([SHUB,0.5,0.5,1.05],150,{rot:2,cap:'SWITCH',pin:CY})+'</div>';
+ return SEY(S.h1)+CORK('<div style="position:relative;height:560px;overflow:hidden;">'+h+'</div>');});
+
+/* 52 · ORDERED BOARD */
+sreg('Board — Ordered Grid','A',function(S){
+ return SEY(S.h1)+CORK(SGRP.map(function(gr,ci){
+  return '<div style="'+(ci?'margin-top:24px;':'')+'">'+
+   '<div style="margin-bottom:12px;">'+SLABEL(gr.g,ci?'rgba(255,255,255,0.92)':'rgba(255,255,255,0.7)')+'</div>'+
+   '<div class="dl-g4" style="'+grid(4,'18px 14px')+'">'+gr.ix.map(function(n){var i=S.it[n];
+    return CARD('<div style="text-align:center;">'+SYM(SYMB[n],{sz:'1.05rem',c:ci?'rgba(10,10,10,0.7)':'#0a7f99',x:'margin-bottom:8px;'})+
+     K(i.k,{sz:'0.95rem',mb:0,c:'rgba(10,10,10,0.85)'})+'</div>',
+     {rot:0,pin:ci?'#2f2f2f':'#0a7f99',pad:'18px 12px 15px'});}).join('')+'</div></div>';}).join(''));});
+
+/* 53 · CLIPBOARD ROW */
+sreg('Board — Clipboard Row','A',function(S){
+ return SEY(S.h1)+CORK(SGRP.map(function(gr,ci){
+  return '<div style="'+(ci?'margin-top:30px;':'')+'position:relative;">'+
+   '<div style="margin-bottom:14px;">'+SLABEL(gr.g,ci?'rgba(255,255,255,0.92)':'rgba(255,255,255,0.7)')+'</div>'+
+   '<div style="position:absolute;left:0;right:0;top:44px;height:1.5px;background:rgba(30,20,10,0.55);"></div>'+
+   '<div class="dl-g4" style="'+grid(4,'16px')+'padding-top:10px;">'+gr.ix.map(function(n,ix){var i=S.it[n];
+    return '<div style="position:relative;padding-top:10px;">'+
+     '<div style="position:absolute;top:-4px;left:50%;transform:translateX(-50%);width:18px;height:22px;'+
+     'background:linear-gradient(180deg,#dfe2e5,#9aa0a6);box-shadow:0 1px 2px rgba(20,30,40,0.45);z-index:3;"></div>'+
+     '<div style="background:#f7f4ec;padding:18px 12px 14px;box-shadow:0 3px 7px rgba(50,28,6,0.3);'+
+     'transform:rotate('+((ix%2?1:-1))+'deg);">'+
+     K(i.k,{sz:'0.95rem',mb:5,c:'rgba(10,10,10,0.85)'})+
+     V(short(i.v,42),{sz:'0.9rem',lh:1.5,c:'rgba(10,10,10,0.6)'})+'</div></div>';}).join('')+'</div></div>';}).join(''));});
+
+/* 54 · WIRED TAGS */
+sreg('Board — Wired Tags','A',function(S){var f=sf8(S);
+ return SEY(S.h1)+CORK('<div style="position:relative;">'+
+ '<div style="position:absolute;left:0;right:0;top:0;height:1.5px;background:rgba(30,20,10,0.5);"></div>'+
+ '<div class="dl-g4" style="'+grid(4,'26px 16px')+'padding-top:24px;">'+
+ f.map(function(x,ix){
+  return '<div style="position:relative;">'+
+   '<div style="position:absolute;top:-24px;left:50%;width:1.5px;height:24px;background:rgba(30,20,10,0.5);"></div>'+
+   '<div style="background:#e8eef0;padding:16px 12px 14px;box-shadow:0 3px 7px rgba(50,28,6,0.32);'+
+   'transform:rotate('+((ix%2?1.6:-1.6))+'deg);clip-path:polygon(50% 0,100% 10%,100% 100%,0 100%,0 10%);text-align:center;">'+
+   '<div style="width:9px;height:9px;border-radius:50%;background:rgba(30,20,10,0.45);margin:2px auto 10px;"></div>'+
+   G('SW-0'+(ix+1),{sz:'0.9rem',ls:'0.12em',c:'#0a7f99'})+SP(5)+
+   K(x.k,{sz:'0.9rem',mb:0,c:'rgba(10,10,10,0.85)',lh:1.25})+'</div></div>';}).join('')+'</div>'+
+ '<div style="display:flex;justify-content:space-between;margin-top:18px;">'+
+  SLABEL(SGRP[0].g,'rgba(255,255,255,0.72)')+SLABEL(SGRP[1].g)+'</div></div>');});
 /* ============================================================
    CONTROLLER — harvest, switch, contact sheet, URL state
    ============================================================ */
@@ -7528,7 +7841,7 @@ var CSS=
   "{grid-template-columns:repeat(4,1fr) !important;}"+
  "}"+
 "@media(max-width:900px){"+
- "#sfsec-dna .cs-dna-split [style*=\"repeat(4,1fr)\"],#dl-swrap [style*=\"repeat(4,1fr)\"]"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(4,1fr)\"],#dl-swrap [style*=\"repeat(4,1fr)\"],.dl-g4"+
   "{grid-template-columns:repeat(2,1fr) !important;}"+
  "}"+
 "@media(max-width:620px){"+
