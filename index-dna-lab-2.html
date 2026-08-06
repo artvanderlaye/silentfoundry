@@ -6342,8 +6342,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 2b. Preview only, index-dna-lab-2.html.
-     Type floor: nothing below 14.4px / 0.9rem anywhere in either block.
+     DNA LAB — ROUND 3. Preview only, index-dna-lab-2.html.
+     Marshall Original + 8 · SWITCH Original + 7. Type floor 14.4px.
      index.html, sf-styles.css and sf-scripts.js are untouched.
      Keys: arrows step · 0 original · M / S section · C contact sheet
      ================================================================== -->
@@ -6414,17 +6414,27 @@ function symOf(gi,ix){return SYMB[gi*4+ix];}
 function SYM(s,o){o=o||{};return '<span style="font-size:'+FS(o.sz||'1.15rem')+';color:'+(o.c||GOLDS)+
  ';line-height:1;display:inline-block;'+(o.x||'')+'">'+s+'</span>';}
 function dialSVG(items,opt){
- opt=opt||{};var R=opt.r||38, acc=opt.acc||GOLDS, lab=opt.lab||null;
- var h='<div class="dl-dial" style="position:relative;aspect-ratio:1/1;max-width:'+(opt.max||300)+'px;margin:0 auto;width:100%;">'+
-  '<div class="dl-dring" style="position:absolute;inset:0;border:1px solid '+INK+';border-radius:50%;"></div>'+
-  '<div class="dl-dring" style="position:absolute;inset:26%;border:0.5px solid '+acc+';border-radius:50%;"></div>';
- if(lab){h+='<div class="dl-dhub" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'+
-  G(lab,{sz:'0.9rem',ls:'0.3em',c:opt.labc||LAB})+'</div>';}
+ opt=opt||{};var R=opt.r||44, acc=opt.acc||GOLDS;
+ var max=opt.max||460, hub=opt.hub||null, hubAlt=opt.hubAlt||'';
+ var h='<div class="dl-dial" style="position:relative;aspect-ratio:1/1;max-width:'+max+'px;margin:0 auto;width:100%;">'+
+  /* spokes — the DNA leaving the object */
+  items.map(function(_,ix){
+    var deg=(ix/items.length)*360;
+    return '<div class="dl-dring" style="position:absolute;left:50%;top:50%;width:'+(R-17)+'%;height:0.5px;'+
+     'background:linear-gradient(90deg,'+acc+' 0%,rgba(10,10,10,0.06) 100%);transform-origin:0 0;'+
+     'transform:rotate('+(deg-90)+'deg) translateY(-0.25px);"></div>';}).join('')+
+  '<div class="dl-dring" style="position:absolute;inset:'+(50-R+4)+'%;border:0.5px solid '+acc+';border-radius:50%;"></div>';
+ if(hub){
+  h+='<div class="dl-dhub" style="position:absolute;inset:31%;border-radius:50%;overflow:hidden;'+
+   'border:1px solid '+INK+';background:#efece6;">'+
+   '<img src="'+hub+'" alt="'+hubAlt+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;'+
+   'filter:grayscale(0.15) contrast(1.04);"/></div>';
+ }
  items.forEach(function(it,ix){
   var a=(ix/items.length)*Math.PI*2-Math.PI/2;
   var x=50+Math.cos(a)*R, y=50+Math.sin(a)*R;
-  h+='<div class="dl-dpt" style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;transform:translate(-50%,-50%);'+
-   'text-align:center;white-space:nowrap;">'+it+'</div>';});
+  h+='<div class="dl-dpt" style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;'+
+   'transform:translate(-50%,-50%);text-align:center;max-width:'+(opt.lw||118)+'px;">'+it+'</div>';});
  return h+'</div>';
 }
 /* ============================================================
@@ -6456,16 +6466,6 @@ mreg('Filing Tabs','B',function(D){var uid=UID();return EY()+
  '</div></div>';});
 
 /* 03 — CONTACT PRINT — cream, no numbers, hover reveals */
-mreg('Contact Print','B',function(D){return EY()+D.map(function(d,gi){
- return '<div style="'+(gi?'margin-top:16px;':'')+'">'+
-  '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">'+
-   G(d.g,{sz:'0.44rem',ls:'0.3em',c:LAB})+'<div style="flex:1;height:0.5px;background:'+HAIR+';"></div></div>'+
-  '<div style="'+grid(4,'10px')+'">'+d.it.map(function(i){
-   return HOV('<div style="border:0.5px solid '+RULE+';background:rgba(255,255,255,0.4);padding:18px 14px;'+
-    'min-height:78px;display:flex;align-items:flex-end;">'+K(i.k,{sz:'0.8rem',mb:0})+'</div>',
-    V(i.v,{sz:'0.6rem',x:'padding:9px 14px 0;'}));}).join('')+'</div></div>';}).join('');});
-
-/* 04 — BLUEPRINT LEGEND — the symbol source, unchanged */
 mreg('Blueprint Legend','C',function(D){var n=0;
  return EY()+'<div class="dl-bp" style="border:0.5px solid '+RULE+';">'+
  '<div style="display:grid;grid-template-columns:84px 1fr;border-bottom:0.5px solid '+RULE+';">'+
@@ -6490,22 +6490,6 @@ mreg('Marquee Bands','A',function(D){return EY()+D.map(function(d,gi){
     K(i.k,{sz:'clamp(0.85rem,1.8vw,1.22rem)',ls:'0.11em',mb:0,lh:1})+'</div>';}).join('')+'</div>';}).join('');});
 
 /* 06 — DESCENT — dots replaced by the engineering symbols */
-mreg('Descent','C',function(D){return EY()+
- '<div style="display:grid;grid-template-columns:30px 1fr;gap:clamp(16px,2vw,30px);">'+
- '<div style="background:linear-gradient(180deg,'+GHOST+' 0%,'+INK+' 100%);width:0.5px;margin:0 auto;"></div>'+
- '<div>'+D.map(function(d,gi){
-  return '<div style="'+(gi?'margin-top:30px;':'')+'">'+
-   '<div style="display:flex;align-items:baseline;gap:12px;margin:0 0 14px -'+30+'px;">'+
-    G(d.g,{sz:'0.46rem',ls:'0.3em',c:LAB,x:'padding-left:30px;'})+
-    G(gi?'WHAT IT IS MADE OF':'WHAT IT IS',{sz:'0.36rem'})+'</div>'+
-   d.it.map(function(i,ix){
-    return '<div style="padding:0 0 18px;position:relative;">'+
-     '<div style="position:absolute;left:-'+46+'px;top:-1px;width:32px;text-align:center;">'+
-      SYM(symOf(gi,ix),{sz:'0.82rem'})+'</div>'+
-     K(i.k,{sz:'0.86rem',mb:5})+V(i.v,{sz:'0.62rem',mw:'46ch'})+'</div>';}).join('')+
-   '</div>';}).join('')+'</div></div>';});
-
-/* 07 — MATRIX — numbers replaced by the symbols */
 mreg('Matrix','A',function(D){return EY()+
  '<div style="border:0.5px solid '+RULE+';">'+
  D.map(function(d,gi){
@@ -6518,17 +6502,6 @@ mreg('Matrix','A',function(D){return EY()+
  '</div>';});
 
 /* 08 — MARGINALIA — unchanged */
-mreg('Marginalia','C',function(D){return EY()+
- D.map(function(d,gi){
-  return '<div style="'+(gi?'margin-top:26px;padding-top:22px;border-top:0.5px solid '+RULE+';':'')+'">'+
-   '<div style="margin-bottom:10px;">'+G(d.g,{sz:'0.46rem',ls:'0.3em',c:LAB})+'</div>'+
-   d.it.map(function(i){
-    return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(120px,160px) 1fr;gap:clamp(14px,2vw,28px);padding:9px 0;">'+
-     '<div style="text-align:right;">'+K(i.k,{sz:'0.68rem',mb:0,c:INKH})+'</div>'+
-     V(i.v,{sz:'0.62rem',lh:1.75,mw:'52ch',x:'border-left:0.5px solid '+HAIR+';padding-left:clamp(12px,2vw,22px);'})+
-     '</div>';}).join('')+'</div>';}).join('');});
-
-/* 09 — SYMBOL LADDER — flat type, structure carried by the symbols */
 mreg('Symbol Ladder','A',function(D){return EY()+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);">'+
  D.map(function(d,gi){
@@ -6541,28 +6514,6 @@ mreg('Symbol Ladder','A',function(D){return EY()+
      K(i.k,{sz:'0.92rem',mb:0,ls:'0.08em'})+'</div>';}).join('')+'</div>';}).join('')+'</div>';});
 
 /* 10 — COLOPHON — left aligned */
-mreg('Colophon — Left','C',function(D){return EY()+
- '<div style="max-width:62ch;">'+
- D.map(function(d,gi){
-  return '<div style="'+(gi?'margin-top:20px;':'')+'">'+
-   '<div style="margin-bottom:9px;">'+G(d.g,{sz:'0.44rem',ls:'0.34em',c:LAB})+'</div>'+
-   '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:2;color:'+SUB+';">'+
-   d.it.map(function(i){
-    return '<span style="font-family:'+BEBAS+';font-size:0.9rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
-     ' — '+esc(i.v);}).join('&nbsp;&nbsp;·&nbsp;&nbsp;')+'</div></div>';}).join('')+'</div>';});
-
-/* 11 — COLOPHON — hung, label in the margin */
-mreg('Colophon — Hung','C',function(D){return EY()+
- D.map(function(d,gi){
-  return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(120px,165px) 1fr;gap:clamp(16px,2.4vw,32px);'+
-   (gi?'margin-top:22px;padding-top:20px;border-top:0.5px solid '+RULE+';':'')+'">'+
-   '<div style="text-align:right;padding-top:4px;">'+G(d.g,{sz:'0.44rem',ls:'0.28em',c:LAB})+'</div>'+
-   '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:2.05;color:'+SUB+';max-width:56ch;">'+
-   d.it.map(function(i){
-    return '<span style="font-family:'+BEBAS+';font-size:0.9rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
-     ' — '+esc(i.v);}).join('&nbsp;&nbsp;·&nbsp;&nbsp;')+'</div></div>';}).join('');});
-
-/* 12 — OFFSET STACKS — unchanged */
 mreg('Offset Stacks','A',function(D){return EY()+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,40px);align-items:start;">'+
  D.map(function(d,gi){
@@ -6577,36 +6528,15 @@ mreg('Offset Stacks','A',function(D){return EY()+
 mreg('Radial Dial — Named','A',function(D){
  var items=[];
  D.forEach(function(d,gi){d.it.forEach(function(i,ix){
-  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.72rem',c:gi?INK:GOLDS,x:'margin-bottom:4px;'})+
-   K(i.k,{sz:'0.62rem',mb:0,ls:'0.1em'})+'</div>');});});
+  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:GOLDS,x:'margin-bottom:5px;'})+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25})+'</div>');});});
  return EY()+
- '<div style="position:relative;">'+
- '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'+
-  G('▲ '+D[0].g,{sz:'0.44rem',ls:'0.28em',c:LAB})+G(D[1].g+' ▼',{sz:'0.44rem',ls:'0.28em',c:LAB})+'</div>'+
- dialSVG(items,{r:43,max:560,acc:GOLD})+
- '<div style="display:flex;justify-content:center;margin-top:8px;">'+
-  G('EIGHT POSITIONS — ONE BRAND',{sz:'0.4rem'})+'</div></div>';});
-
-/* 14 — RADIAL DIAL, INDEXED — numbered dial keyed to an expandable list */
-mreg('Radial Dial — Indexed','B',function(D){
- var n=0, pts=[];
- D.forEach(function(d,gi){d.it.forEach(function(i,ix){n++;
-  pts.push('<div style="width:32px;height:32px;border-radius:50%;border:1px solid '+(gi?INK:GOLD)+';'+
-   'background:'+(gi?'rgba(10,10,10,0.05)':'rgba(200,169,110,0.12)')+';display:flex;align-items:center;'+
-   'justify-content:center;">'+K(n2(n-1),{sz:'0.56rem',mb:0,c:gi?INKH:LAB})+'</div>');});});
- var k=0;
- return EY()+
- '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);align-items:center;">'+
- dialSVG(pts,{r:40,max:340,acc:GOLD,lab:'MARSHALL'})+
- '<div>'+D.map(function(d,gi){
-  return '<div style="'+(gi?'margin-top:14px;':'')+'">'+
-   '<div style="margin-bottom:5px;">'+G(d.g,{sz:'0.42rem',ls:'0.28em',c:LAB})+'</div>'+
-   d.it.map(function(i,ix){k++;
-    return TOG('<div style="display:grid;grid-template-columns:40px 34px 1fr 22px;gap:10px;align-items:center;'+
-     'padding:9px 0;border-bottom:0.5px solid '+HAIR+';cursor:pointer;">'+
-     G(n2(k-1),{sz:'0.4rem',c:GOLDS})+'<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.72rem'})+'</div>'+
-     K(i.k,{sz:'0.74rem',mb:0})+'<div style="text-align:right;color:'+GOLDS+';font-size:0.9rem;">+</div></div>',
-     V(i.v,{sz:'0.58rem',x:'padding:10px 0 13px 84px;'}));}).join('')+'</div>';}).join('')+'</div></div>';});
+ '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">'+
+  G('▲ '+D[0].g,{sz:'0.9rem',ls:'0.14em',c:LAB})+G(D[1].g+' ▼',{sz:'0.9rem',ls:'0.14em',c:LAB})+'</div>'+
+ dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,
+   hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
+ '<div style="display:flex;justify-content:center;margin-top:2px;">'+
+  G('EIGHT STRANDS — ONE OBJECT',{sz:'0.9rem',ls:'0.14em'})+'</div>';});
 /* ============================================================
    SWITCH — round 2.  10 options, renumbered 01–10, cyan throughout.
    ============================================================ */
@@ -6651,28 +6581,6 @@ sreg('Spec Table','C',function(S){return SEY(S.h1)+
  SP(18)+SLEAD(S.p1,{sz:'0.66rem',lh:1.8,mw:'58ch'});});
 
 /* 05 — SYMBOL SPECIMEN — symbol as hero, name beneath, no enclosure */
-sreg('Symbol Specimen','A',function(S){return SEY(S.h1)+
- '<div style="'+grid(4,'0')+'border-top:1px solid '+INK+';border-bottom:1px solid '+INK+';">'+
- S.it.map(function(i,ix){
-  return '<div style="padding:26px 10px 22px;text-align:center;'+
-   ((ix%4)<3?'border-right:0.5px solid '+HAIR+';':'')+(ix<4?'border-bottom:0.5px solid '+HAIR+';':'')+'">'+
-   SYM(SYMB[ix],{sz:'clamp(1.5rem,3.4vw,2.3rem)',c:ix%2?INK:CY,x:'margin-bottom:14px;'})+
-   K(i.k,{sz:'0.66rem',mb:0,ls:'0.18em',c:SUB})+'</div>';}).join('')+'</div>';});
-
-/* 06 — CERTIFICATION MARKS — small symbol in a double ring, read as a list */
-sreg('Certification Marks','C',function(S){return SEY(S.h1)+
- '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(22px,4vw,52px);">'+
- S.it.map(function(i,ix){
-  return '<div style="display:grid;grid-template-columns:60px 1fr;gap:16px;align-items:center;padding:14px 0;'+
-   'border-bottom:0.5px solid '+HAIR+';">'+
-   '<div style="width:52px;height:52px;border:1px solid '+INK+';border-radius:50%;position:relative;'+
-    'display:flex;align-items:center;justify-content:center;">'+
-    '<div style="position:absolute;inset:4px;border:0.5px solid '+CYM+';border-radius:50%;"></div>'+
-    SYM(SYMB[ix],{sz:'0.86rem',c:CYT})+'</div>'+
-   '<div>'+K(i.k,{sz:'0.78rem',mb:4})+V(i.v,{sz:'0.57rem'})+'</div></div>';}).join('')+'</div>'+
- SP(14)+G('CONFORMS — SWITCH DESIGN LANGUAGE',{sz:'0.4rem',c:CYT});});
-
-/* 07 — FOLD PANELS — horizontal text throughout */
 sreg('Fold Panels','A',function(S){return SEY(S.h1)+
  '<div style="'+grid(4,'0')+'">'+S.it.map(function(i,ix){
   return '<div style="padding:26px 14px;text-align:center;min-height:96px;'+
@@ -6686,29 +6594,13 @@ sreg('Fold Panels','A',function(S){return SEY(S.h1)+
 /* 08 — RADIAL DIAL, NAMED */
 sreg('Radial Dial — Named','A',function(S){
  var items=S.it.map(function(i,ix){
-  return '<div style="text-align:center;">'+SYM(SYMB[ix],{sz:'0.74rem',c:CY,x:'margin-bottom:4px;'})+
-   K(i.k,{sz:'0.62rem',mb:0,ls:'0.1em'})+'</div>';});
- return SEY(S.h1)+dialSVG(items,{r:43,max:560,acc:CYM,lab:'SWITCH',labc:CYT})+
- '<div style="display:flex;justify-content:center;margin-top:10px;">'+
- G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.4rem',c:CYT})+'</div>';});
+  return '<div style="text-align:center;">'+SYM(SYMB[ix],{sz:'0.95rem',c:CY,x:'margin-bottom:5px;'})+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25})+'</div>';});
+ return SEY(S.h1)+dialSVG(items,{r:44,max:470,acc:CYM,lw:124,
+   hub:'images/SWITCH_eSCRAMBLER_bike-6.jpg',hubAlt:'SWITCH eSCRAMBLER'})+
+ '<div style="display:flex;justify-content:center;margin-top:2px;">'+
+  G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.9rem',ls:'0.14em',c:CYT})+'</div>';});
 
-/* 09 — RADIAL DIAL, INDEXED — numbered dial keyed to an expandable list */
-sreg('Radial Dial — Indexed','B',function(S){
- var pts=S.it.map(function(i,ix){
-  return '<div style="width:32px;height:32px;border-radius:50%;border:1px solid '+CYM+';'+
-   'background:rgba(0,180,216,0.10);display:flex;align-items:center;justify-content:center;">'+
-   K(n2(ix),{sz:'0.56rem',mb:0,c:CYT})+'</div>';});
- return SEY(S.h1)+
- '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);align-items:center;">'+
- dialSVG(pts,{r:40,max:340,acc:CYM,lab:'SWITCH',labc:CYT})+
- '<div>'+S.it.map(function(i,ix){
-  return TOG('<div style="display:grid;grid-template-columns:40px 34px 1fr 22px;gap:10px;align-items:center;'+
-   'padding:10px 0;border-bottom:0.5px solid '+HAIR+';cursor:pointer;">'+
-   G(n2(ix),{sz:'0.4rem',c:CYT})+'<div style="text-align:center;">'+SYM(SYMB[ix],{sz:'0.72rem',c:CY})+'</div>'+
-   K(i.k,{sz:'0.76rem',mb:0})+'<div style="text-align:right;color:'+CY+';font-size:0.9rem;">+</div></div>',
-   V(i.v,{sz:'0.6rem',x:'padding:10px 0 13px 84px;'}));}).join('')+'</div></div>';});
-
-/* 10 — INTERLOCK — even blocks, each opens */
 sreg('Interlock','B',function(S){return SEY(S.h1)+
  '<div style="'+grid(4,'2px')+'">'+S.it.map(function(i,ix){
   return TOG('<div style="background:rgba(0,180,216,'+(ix%2?'0.10':'0.045')+');border:0.5px solid '+CYF+';'+
