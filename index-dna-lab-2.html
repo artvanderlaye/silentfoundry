@@ -6342,9 +6342,10 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 9. Preview only, index-dna-lab-2.html.
-     Marshall 80 · SWITCH 74. Design-house boards at M61-80 / S55-74.
-     Board textures: images/sf-board-*.jpg, CSS-filtered per surface.
+     DNA LAB — ROUND 10. Preview only, index-dna-lab-2.html.
+     Marshall 100 · SWITCH 94.
+     M81-100: refinements of Marshall 02 (grouping hierarchy).
+     S75-94 : DNA x portfolio integration, baseline SWITCH 14.
      index.html, sf-styles.css and sf-scripts.js are untouched.
      ================================================================== -->
 <script id="sf-dna-lab">
@@ -7452,6 +7453,216 @@ mreg('Salon Hang','A',function(D){var f=flat(D);
    return '<div style="flex:'+sp[ix]+' 1 '+(sp[ix]===2?190:130)+'px;max-width:'+(sp[ix]===2?300:190)+'px;">'+
     PRINT(x.c,sp[ix]===2?260:170,{fix:'steel',cap:x.k,ar:sp[ix]===2?'4/3':'1/1'})+'</div>';}).join('')+'</div>';}).join(''));});
 /* ============================================================
+   MARSHALL 81–100 — refinements of variation 02 (Ring — Specimens).
+   Concept unchanged: circular extraction diagram, product at centre,
+   eight photographic specimens on the ring. Each variation tests a
+   different way of making INTANGIBLE / TANGIBLE structural.
+   ============================================================ */
+var PAPER='#efece6';
+function specBase(D,o){o=o||{};var f=flat(D);
+ var R=o.R||42, max=o.max||520, sz=o.size||62;
+ var h=(o.field||'');
+ if(o.spokes!==false) f.forEach(function(x,ix){
+  h+=SPOKE(ix*45,(o.spokeLen||26),(o.spokeCol||('linear-gradient(90deg,'+(x.gi?'rgba(10,10,10,0.22)':GOLD)+' 0%,rgba(10,10,10,0.04) 100%)')),0.5);});
+ if(o.rings) o.rings.forEach(function(r){h+=RING(r[0],r[1],r[2]);});
+ h+=HUBIMG(MHUB,o.hubInset||33,'Marshall');
+ if(o.overlay) h+=o.overlay;
+ f.forEach(function(x,ix){var p=polar(ix,8,R,o.rot||0);
+  var s=(o.sizeFor?o.sizeFor(x,ix):sz);
+  h+=FREE(p.x,p.y,CROP(x.c[0],x.c[1],x.c[2],x.c[3],s,o.ringFor?o.ringFor(x):(x.gi?INK:GOLD))+
+   NAME(x.k,{c:x.gi?INKH:'rgba(10,10,10,0.62)'}),'max-width:'+(o.lw||126)+'px;');});
+ return STAGE(max,h);
+}
+function GLAB(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+FS(o.sz||'0.9rem')+';'+
+ 'letter-spacing:'+(o.ls||'0.24em')+';text-transform:uppercase;color:'+(o.c||'rgba(10,10,10,0.55)')+';'+(o.x||'')+'">'+t+'</div>';}
+
+/* 81 · TONE SPLIT — the field itself is two papers */
+mreg('Tone Split','A',function(D){
+ return EY()+'<div style="position:relative;overflow:hidden;">'+
+ '<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f4f1eb 0%,#f4f1eb 50%,#e6e2da 50%,#e6e2da 100%);"></div>'+
+ '<div style="position:relative;padding:26px 0 22px;">'+
+ '<div style="text-align:center;">'+GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+'</div>'+
+ specBase(D,{max:520})+
+ '<div style="text-align:center;">'+GLAB(D[1].g,{c:'rgba(10,10,10,0.78)'})+'</div></div></div>';});
+
+/* 82 · GHOST ARCS — a soft filled half behind each group */
+mreg('Ghost Arcs','A',function(D){
+ var field=WEDGE(2,'rgba(200,169,110,0.10)',270,180)+WEDGE(2,'rgba(10,10,10,0.05)',90,180);
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:'rgba(10,10,10,0.78)'})+'</div>'+
+  specBase(D,{field:field,max:520});});
+
+/* 83 · CONCENTRIC BANDS — inner band, outer band */
+mreg('Concentric Bands','A',function(D){var f=flat(D);
+ var h=DISC(6,'rgba(10,10,10,0.028)')+DISC(24,PAPER)+RING(6,HAIR)+RING(24,HAIR)+HUBIMG(MHUB,42,'Marshall');
+ D[0].it.forEach(function(i,ix){var p=polar(ix,4,32,45);
+  h+=FREE(p.x,p.y,CROP(MCROP[ix][0],MCROP[ix][1],MCROP[ix][2],MCROP[ix][3],46,GOLD)+
+   NAME(i.k,{c:'rgba(10,10,10,0.6)'}),'max-width:98px;');});
+ D[1].it.forEach(function(i,ix){var p=polar(ix,4,47,0);
+  h+=FREE(p.x,p.y,CROP(MCROP[4+ix][0],MCROP[4+ix][1],MCROP[4+ix][2],MCROP[4+ix][3],58,INK)+
+   NAME(i.k,{c:INKH}),'max-width:116px;');});
+ return EY()+'<div style="display:flex;justify-content:center;gap:26px;">'+
+  GLAB('inner · '+D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB('outer · '+D[1].g,{c:INKH})+'</div>'+STAGE(560,h);});
+
+/* 84 · VERTICAL LABELS — set on the left and right edges, structural */
+mreg('Vertical Labels','A',function(D){
+ return EY()+'<div style="display:grid;grid-template-columns:34px 1fr 34px;gap:clamp(10px,2vw,26px);align-items:center;">'+
+ '<div style="writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);border-right:1px solid '+GOLD+';padding-right:8px;">'+
+  GLAB(D[0].g,{sz:'1.05rem',ls:'0.3em',c:'rgba(10,10,10,0.5)'})+'</div>'+
+ specBase(D,{max:520})+
+ '<div style="writing-mode:vertical-rl;text-orientation:mixed;border-left:1px solid '+INK+';padding-left:8px;">'+
+  GLAB(D[1].g,{sz:'1.05rem',ls:'0.3em',c:INKH})+'</div></div>';});
+
+/* 85 · ANCHORED LABELS — the words break the ring */
+mreg('Anchored Labels','A',function(D){
+ var ov='<div style="position:absolute;left:50%;top:-3%;transform:translate(-50%,-50%);background:'+PAPER+';padding:0 16px;">'+
+  GLAB(D[0].g,{sz:'1rem',ls:'0.28em',c:'rgba(10,10,10,0.5)'})+'</div>'+
+  '<div style="position:absolute;left:50%;top:103%;transform:translate(-50%,-50%);background:'+PAPER+';padding:0 16px;">'+
+  GLAB(D[1].g,{sz:'1rem',ls:'0.28em',c:INKH})+'</div>';
+ return EY()+'<div style="padding:26px 0;">'+specBase(D,{rings:[[6,RULE]],overlay:ov,max:520,R:38,lw:116})+'</div>';});
+
+/* 86 · NUMBERED GROUPS — two large numerals anchor the halves */
+mreg('Numbered Groups','A',function(D){
+ var ov='<div style="position:absolute;left:-2%;top:-4%;">'+K('I',{sz:'clamp(2rem,5vw,3.4rem)',mb:0,c:'rgba(10,10,10,0.12)'})+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+'</div>'+
+  '<div style="position:absolute;right:-2%;bottom:-4%;text-align:right;">'+K('II',{sz:'clamp(2rem,5vw,3.4rem)',mb:0,c:'rgba(10,10,10,0.24)'})+
+  GLAB(D[1].g,{c:INKH})+'</div>';
+ return EY()+'<div style="padding:22px 6%;">'+specBase(D,{overlay:ov,max:500,R:40,lw:114})+'</div>';});
+
+/* 87 · CONSTRUCTION CIRCLES — drafting guides define the zones */
+mreg('Construction Circles','A',function(D){
+ var field=DOTRING(1,'rgba(10,10,10,0.16)',1)+DOTRING(21,'rgba(200,169,110,0.5)',1)+
+  '<div style="position:absolute;left:50%;top:0;bottom:0;width:0.5px;background:rgba(10,10,10,0.08);"></div>'+
+  '<div style="position:absolute;top:50%;left:0;right:0;height:0.5px;background:rgba(10,10,10,0.14);"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:540});});
+
+/* 88 · BLUEPRINT FIELD — grid inside the diagram only, denser below */
+mreg('Blueprint Field','A',function(D){
+ var field='<div style="position:absolute;inset:0;background-image:'+
+  'repeating-linear-gradient(90deg,rgba(10,10,10,0.045) 0 1px,transparent 1px 26px),'+
+  'repeating-linear-gradient(180deg,rgba(10,10,10,0.045) 0 1px,transparent 1px 26px);"></div>'+
+  '<div style="position:absolute;left:0;right:0;top:50%;bottom:0;background-image:'+
+  'repeating-linear-gradient(90deg,rgba(10,10,10,0.05) 0 1px,transparent 1px 13px),'+
+  'repeating-linear-gradient(180deg,rgba(10,10,10,0.05) 0 1px,transparent 1px 13px);"></div>';
+ return EY()+'<div style="border:0.5px solid '+RULE+';padding:8px;">'+
+  '<div style="display:flex;justify-content:space-between;padding:0 6px 6px;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:540})+'</div>';});
+
+/* 89 · MUSEUM PLINTH — the diagram raised off the page */
+mreg('Museum Plinth','A',function(D){
+ return EY()+'<div style="background:#f2efe9;box-shadow:0 1px 0 rgba(255,255,255,0.9) inset,0 12px 28px -18px rgba(20,14,6,0.5);'+
+ 'border:0.5px solid rgba(20,14,6,0.09);padding:clamp(20px,3vw,40px);">'+
+ '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.42)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+ specBase(D,{max:520})+'</div>';});
+
+/* 90 · SPOTLIGHT — soft light on the upper half */
+mreg('Spotlight','A',function(D){
+ var field='<div style="position:absolute;inset:-10%;background:radial-gradient(ellipse at 50% 22%,rgba(255,252,244,0.95) 0%,rgba(255,252,244,0) 58%);"></div>';
+ return EY()+'<div style="position:relative;overflow:hidden;background:linear-gradient(180deg,#f1eee8,#e8e4dc);">'+
+ '<div style="position:relative;padding:22px 0 18px;">'+
+ '<div style="text-align:center;">'+GLAB(D[0].g,{c:'rgba(10,10,10,0.42)'})+'</div>'+
+ specBase(D,{field:field,max:520})+
+ '<div style="text-align:center;">'+GLAB(D[1].g,{c:INKH})+'</div></div></div>';});
+
+/* 91 · CURVED DIVIDER — one fine arc separates them */
+mreg('Curved Divider','A',function(D){
+ var field='<div class="dl-dring" style="position:absolute;left:-14%;right:-14%;top:34%;height:32%;border-radius:50%;'+
+  'border-top:1px solid rgba(10,10,10,0.22);"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:530});});
+
+/* 92 · HALO — a soft glow around each group */
+mreg('Halo','A',function(D){
+ var field='<div style="position:absolute;inset:0;background:'+
+  'radial-gradient(ellipse at 50% 12%,rgba(200,169,110,0.14) 0%,transparent 42%),'+
+  'radial-gradient(ellipse at 50% 88%,rgba(10,10,10,0.07) 0%,transparent 42%),'+
+  'radial-gradient(ellipse at 12% 50%,rgba(200,169,110,0.10) 0%,transparent 34%),'+
+  'radial-gradient(ellipse at 88% 50%,rgba(10,10,10,0.05) 0%,transparent 34%);"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:530});});
+
+/* 93 · RECESSED PANEL — engraved, halves at different depths */
+mreg('Recessed Panel','A',function(D){
+ return EY()+'<div style="background:#eeeae3;box-shadow:inset 0 2px 5px rgba(20,14,6,0.16),inset 0 -1px 0 rgba(255,255,255,0.8);'+
+ 'border:0.5px solid rgba(20,14,6,0.08);padding:clamp(18px,2.6vw,34px);">'+
+ '<div style="background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(20,14,6,0.035));padding:14px 0;">'+
+ '<div style="text-align:center;">'+GLAB(D[0].g,{c:'rgba(10,10,10,0.42)'})+'</div>'+
+ specBase(D,{max:500})+
+ '<div style="text-align:center;">'+GLAB(D[1].g,{c:INKH})+'</div></div></div>';});
+
+/* 94 · WEIGHT SPLIT — node size carries the group */
+mreg('Weight Split','A',function(D){
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{sz:'1.15rem',ls:'0.2em',c:'rgba(10,10,10,0.4)'})+
+  GLAB(D[1].g,{sz:'1.15rem',ls:'0.2em',c:INKH})+'</div>'+
+  specBase(D,{max:560,sizeFor:function(x){return x.gi?74:50;},R:43});});
+
+/* 95 · TRANSLUCENT PANELS — two very light blocks */
+mreg('Translucent Panels','A',function(D){
+ var field='<div style="position:absolute;left:6%;right:6%;top:-2%;height:44%;background:rgba(255,253,247,0.85);'+
+  'border:0.5px solid rgba(200,169,110,0.28);"></div>'+
+  '<div style="position:absolute;left:6%;right:6%;bottom:-2%;height:44%;background:rgba(20,18,14,0.045);'+
+  'border:0.5px solid rgba(10,10,10,0.1);"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:530});});
+
+/* 96 · AXIS RULE — the labels sit on a rule through the centre */
+mreg('Axis Rule','A',function(D){
+ var ov='<div style="position:absolute;left:-6%;right:-6%;top:50%;height:1px;background:rgba(10,10,10,0.2);"></div>'+
+  '<div style="position:absolute;left:-6%;top:50%;transform:translateY(-50%);background:'+PAPER+';padding:4px 10px 4px 0;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.5)'})+'</div>'+
+  '<div style="position:absolute;right:-6%;top:50%;transform:translateY(-50%);background:'+PAPER+';padding:4px 0 4px 10px;">'+
+  GLAB(D[1].g,{c:INKH})+'</div>';
+ return EY()+'<div style="padding:0 clamp(90px,16%,190px);">'+specBase(D,{overlay:ov,max:420,R:40,lw:104})+'</div>';});
+
+/* 97 · TINT DIFFERENCE — almost invisible warm / cool */
+mreg('Tint Difference','A',function(D){
+ var field='<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(214,182,132,0.13) 0%,rgba(214,182,132,0.02) 46%,rgba(150,160,172,0.03) 54%,rgba(150,160,172,0.13) 100%);"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(120,92,44,0.75)'})+GLAB(D[1].g,{c:'rgba(52,62,74,0.8)'})+'</div>'+
+  specBase(D,{field:field,max:530});});
+
+/* 98 · MATERIAL FIELD — paper texture behind one half only */
+mreg('Material Field','A',function(D){
+ var field='<div style="position:absolute;left:0;right:0;top:50%;bottom:0;background-image:url('+TEX_CORKW+');'+
+  'background-size:cover;filter:saturate(0.05) brightness(1.12) contrast(0.9);opacity:0.55;"></div>';
+ return EY()+'<div style="display:flex;justify-content:space-between;">'+
+  GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+GLAB(D[1].g,{c:INKH})+'</div>'+
+  specBase(D,{field:field,max:530});});
+
+/* 99 · EXHIBIT ZONES — a floor plan of two rooms */
+mreg('Exhibit Zones','A',function(D){
+ var field='<div style="position:absolute;left:2%;right:2%;top:0;height:48%;border:0.5px solid rgba(10,10,10,0.14);'+
+  'border-bottom:none;"></div>'+
+  '<div style="position:absolute;left:2%;right:2%;bottom:0;height:48%;border:0.5px solid rgba(10,10,10,0.14);'+
+  'border-top:none;background:rgba(10,10,10,0.022);"></div>'+
+  '<div style="position:absolute;left:2%;top:0;transform:translateY(-50%);background:'+PAPER+';padding:0 8px;">'+
+  GLAB('zone i — '+D[0].g,{c:'rgba(10,10,10,0.45)'})+'</div>'+
+  '<div style="position:absolute;left:2%;bottom:0;transform:translateY(50%);background:'+PAPER+';padding:0 8px;">'+
+  GLAB('zone ii — '+D[1].g,{c:INKH})+'</div>';
+ return EY()+'<div style="padding:14px 0 16px;">'+specBase(D,{field:field,max:520})+'</div>';});
+
+/* 100 · RING LABELS — the words set along the arc itself */
+mreg('Ring Labels','A',function(D){
+ var ov='';
+ var top=D[0].g.toUpperCase().split(''), bot=D[1].g.toUpperCase().split('');
+ top.forEach(function(ch,i){var a=(-52+i*(104/(top.length-1)));
+  var p=polar(0,1,47.5,a);
+  ov+='<div style="position:absolute;left:'+p.x+'%;top:'+p.y+'%;transform:translate(-50%,-50%) rotate('+a+'deg);">'+
+   K(ch,{sz:'0.95rem',mb:0,c:'rgba(10,10,10,0.45)',ls:'0'})+'</div>';});
+ bot.forEach(function(ch,i){var a=(232-i*(104/(bot.length-1)));
+  var p=polar(0,1,47.5,a);
+  ov+='<div style="position:absolute;left:'+p.x+'%;top:'+p.y+'%;transform:translate(-50%,-50%) rotate('+(a+180)+'deg);">'+
+   K(ch,{sz:'0.95rem',mb:0,c:INKH,ls:'0'})+'</div>';});
+ return EY()+specBase(D,{overlay:ov,rings:[[8,HAIR]],max:620,R:33,lw:104,sizeFor:function(){return 54;}});});
+/* ============================================================
    SWITCH — 13. No Original. Eyebrow refined down from 14.4px.
    ============================================================ */
 var SL=[], SN=[], ST=[];
@@ -8181,6 +8392,157 @@ sreg('Full-Bleed Panel','A',function(S){var f=sf8(S);
  '<div class="dl-g4" style="'+grid(4,'44px 30px')+'">'+f.map(function(x){
   return PRINT(x.c,170,{fix:'disc',fixc:'#8d9196',cap:x.k});}).join('')+'</div>',
  {pad:'clamp(40px,6vw,90px)',frame:false});});
+/* ============================================================
+   SWITCH 75–94 — DNA × portfolio integration.
+   Baseline is variation 14 (Statement). No new infographic.
+   Each tests a different editorial relationship to the portfolio
+   that follows. Portfolio grid, cards and copy are untouched.
+   ============================================================ */
+var P1S='Eight principles define the platform: form, structure, CMF, signature details, stance, '+
+ 'manufacturing, modularity and serviceability. Together they hold every product to one industrial '+
+ 'language, whatever the category it enters.';
+var DEV=[['images/cad-screen.jpg',0.5,0.5,1.2],['images/frame_factory-157.jpg',0.5,0.5,1.2],
+ ['images/cnc-cutting.jpg',0.5,0.5,1.3],['images/prototype_assembly.jpg',0.52,0.5,1.4],
+ ['images/battery_gold.png',0.5,0.5,1.15]];
+function names(S){return S.it.map(function(i){return i.k;});}
+function EV(t){return '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;letter-spacing:0.2em;'+
+ 'text-transform:uppercase;color:'+CYT+';">'+t+'</div>';}
+function HRULE(c,h){return '<div style="height:'+(h||1)+'px;background:'+(c||INK)+';"></div>';}
+
+/* 75 · PORTFOLIO HEADER MERGE */
+sreg('Header Merge','A',function(S){return SEY(S.h1)+
+ HRULE(INK,1)+'<div style="padding:22px 0 18px;">'+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px 22px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.95rem',mb:0,ls:'0.1em'});}).join('')+'</div></div>'+HRULE(CYM,1)+
+ '<div style="padding-top:14px;">'+SLEAD(sent1(P1S),{sz:'0.9rem',mw:'62ch'})+'</div>';});
+
+/* 76 · PRINCIPLE BAR */
+sreg('Principle Bar','A',function(S){return SEY(S.h1)+
+ '<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:0 clamp(14px,2.2vw,34px);'+
+ 'border-top:1px solid '+INK+';border-bottom:1px solid '+INK+';padding:16px 0;">'+
+ names(S).map(function(n,ix){return (ix?'<span style="color:'+CYM+';">·</span>':'')+
+  K(n,{sz:'0.95rem',mb:0,ls:'0.12em'});}).join('')+'</div>';});
+
+/* 77 · EDITORIAL OPENER */
+sreg('Editorial Opener','A',function(S){return SEY(S.h1)+
+ '<div style="max-width:22ch;">'+K('Eight principles. One language.',{sz:'clamp(1.4rem,3vw,2.1rem)',mb:14,ls:'0.04em',lh:1.15})+'</div>'+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px 22px;max-width:760px;">'+
+ names(S).map(function(n){return K(n,{sz:'0.9rem',mb:0,c:SUB});}).join('')+'</div>';});
+
+/* 78 · WALL CAPTION */
+sreg('Wall Caption','C',function(S){return '<div style="max-width:44ch;border-left:2px solid '+CY+';padding-left:20px;">'+
+ EV(S.h1)+SP(10)+SLEAD(P1S,{sz:'0.9rem',lh:1.85,mw:'44ch'})+SP(14)+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.9rem',mb:0,c:SUB});}).join('')+'</div></div>';});
+
+/* 79 · CLASSIFICATION */
+sreg('Classification','A',function(S){return SEY(S.h1)+
+ SGRP.map(function(gr,ci){return '<div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:22px;'+
+  'padding:14px 0;border-top:'+(ci?'0.5px solid '+RULE:'1px solid '+INK)+';">'+
+  '<div>'+EV(gr.g)+'</div>'+
+  '<div style="display:flex;flex-wrap:wrap;gap:8px 26px;">'+gr.ix.map(function(n){
+   return K(S.it[n].k,{sz:'0.95rem',mb:0,ls:'0.1em'});}).join('')+'</div></div>';}).join('')+
+ HRULE(RULE,1);});
+
+/* 80 · LEGEND */
+sreg('Legend','A',function(S){return SEY(S.h1)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 24px;border-top:0.5px solid '+RULE+';padding-top:16px;">'+
+ S.it.map(function(i,ix){return '<div style="display:flex;align-items:baseline;gap:10px;">'+
+  SYM(SYMB[ix],{sz:'0.95rem',c:CY})+K(i.k,{sz:'0.9rem',mb:0})+'</div>';}).join('')+'</div>';});
+
+/* 81 · NUMBERED PRINCIPLES */
+sreg('Numbered Principles','A',function(S){return SEY(S.h1)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px 24px;">'+
+ S.it.map(function(i,ix){return '<div style="border-top:1px solid '+INK+';padding-top:10px;">'+
+  '<div style="display:flex;align-items:baseline;gap:10px;">'+
+  K(n2(ix),{sz:'0.9rem',mb:0,c:CYT})+K(i.k,{sz:'0.95rem',mb:0,ls:'0.1em'})+'</div></div>';}).join('')+'</div>';});
+
+/* 82 · REDUCED INTRO — principles are the hero */
+sreg('Reduced Intro','A',function(S){return EV(S.h1)+SP(16)+
+ '<div style="font-family:'+BEBAS+';font-size:clamp(1.05rem,2.4vw,1.6rem);line-height:1.9;letter-spacing:0.12em;'+
+ 'text-transform:uppercase;color:'+INKH+';overflow-wrap:anywhere;">'+
+ names(S).join('<span style="color:'+CYM+';padding:0 0.4em;">/</span>')+'</div>';});
+
+/* 83 · CATALOGUE OPENING */
+sreg('Catalogue Opening','C',function(S){return '<div style="max-width:820px;margin:0 auto;text-align:center;">'+
+ EV(S.h1)+SP(18)+SLEAD(sent1(P1S),{sz:'0.9rem',lh:1.9,mw:'54ch',x:'margin:0 auto;'})+SP(24)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px 22px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.9rem',mb:0,ls:'0.14em',c:SUB});}).join('')+'</div>'+SP(20)+HRULE(RULE,1)+'</div>';});
+
+/* 84 · MARGINAL PRINCIPLES */
+sreg('Marginal','C',function(S){return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,190px) 1fr;gap:clamp(20px,3vw,48px);">'+
+ '<div>'+EV(S.h1)+SP(12)+names(S).map(function(n){
+  return '<div style="padding:5px 0;">'+K(n,{sz:'0.9rem',mb:0,c:SUB})+'</div>';}).join('')+'</div>'+
+ '<div>'+SLEAD(P1S,{sz:'0.95rem',lh:1.95,mw:'56ch'})+'</div></div>';});
+
+/* 85 · THESIS */
+sreg('Thesis','A',function(S){return SEY(S.h1)+
+ '<div style="max-width:30ch;">'+K('The portfolio below is the evidence.',{sz:'clamp(1.2rem,2.6vw,1.8rem)',mb:16,lh:1.2,ls:'0.03em'})+'</div>'+
+ '<div style="display:flex;flex-wrap:wrap;gap:8px 22px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.9rem',mb:0,c:SUB});}).join('')+'</div>';});
+
+/* 86 · ONE DEVELOPMENT IMAGE */
+sreg('One Development Image','C',function(S){return SEY(S.h1)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px);align-items:center;">'+
+ '<div>'+PRINT(DEV[0],420,{border:0,ar:'4/3',x:'box-shadow:0 10px 26px -16px rgba(0,0,0,0.5);'})+'</div>'+
+ '<div>'+SLEAD(sent1(P1S),{sz:'0.9rem',mw:'46ch'})+SP(16)+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.9rem',mb:0,c:SUB});}).join('')+'</div></div></div>';});
+
+/* 87 · DEVELOPMENT STRIP */
+sreg('Development Strip','A',function(S){return SEY(S.h1)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 22px;margin-bottom:18px;">'+
+ names(S).map(function(n){return K(n,{sz:'0.95rem',mb:0,ls:'0.1em'});}).join('')+'</div>'+
+ '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;">'+DEV.map(function(c){
+  return PRINT(c,180,{border:0,ar:'3/2',x:'box-shadow:none;'});}).join('')+'</div>';});
+
+/* 88 · TWO-COLUMN EDITORIAL */
+sreg('Two-Column Editorial','C',function(S){return '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3.5vw,56px);align-items:start;">'+
+ '<div>'+EV(S.h1)+SP(14)+
+ '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.95rem',mb:0,ls:'0.1em'});}).join('')+'</div></div>'+
+ '<div style="padding-top:26px;">'+SLEAD(P1S,{sz:'0.9rem',lh:1.95,mw:'50ch'})+'</div></div>';});
+
+/* 89 · RULE BOUND */
+sreg('Rule Bound','A',function(S){return SEY(S.h1)+
+ HRULE(INK,2)+'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">'+
+ S.it.map(function(i,ix){return '<div style="padding:18px 16px 18px 0;'+
+  ((ix%4)<3?'border-right:0.5px solid '+HAIR+';':'')+(ix<4?'border-bottom:0.5px solid '+HAIR+';':'')+
+  (ix%4?'padding-left:16px;':'')+'">'+K(i.k,{sz:'0.95rem',mb:0,ls:'0.1em'})+'</div>';}).join('')+'</div>'+HRULE(INK,2);});
+
+/* 90 · QUIET */
+sreg('Quiet','A',function(S){return '<div style="padding:6px 0 2px;">'+
+ '<div style="display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;">'+
+ EV(S.h1)+names(S).map(function(n){return K(n,{sz:'0.9rem',mb:0,c:SUB,ls:'0.12em'});}).join('')+'</div></div>';});
+
+/* 91 · INDEX COLUMN */
+sreg('Index Column','C',function(S){return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:clamp(22px,3.5vw,56px);">'+
+ '<div>'+EV(S.h1)+SP(12)+S.it.map(function(i,ix){
+  return '<div style="display:grid;grid-template-columns:34px 1fr;gap:10px;padding:8px 0;'+
+   'border-top:0.5px solid '+HAIR+';">'+K(n2(ix),{sz:'0.9rem',mb:0,c:CYT})+K(i.k,{sz:'0.9rem',mb:0})+'</div>';}).join('')+'</div>'+
+ '<div style="padding-top:30px;">'+SLEAD(P1S,{sz:'0.95rem',lh:1.95,mw:'52ch'})+'</div></div>';});
+
+/* 92 · RUNNING HEAD */
+sreg('Running Head','A',function(S){return '<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid '+INK+';padding-bottom:10px;">'+
+ EV(S.h1)+GLAB('one language',{c:SUB})+'</div>'+
+ '<div style="display:flex;flex-wrap:wrap;gap:8px 26px;padding:14px 0 2px;">'+names(S).map(function(n){
+  return K(n,{sz:'0.9rem',mb:0,ls:'0.12em',c:SUB});}).join('')+'</div>';});
+
+/* 93 · EVIDENCE LINE */
+sreg('Evidence Line','A',function(S){return SEY(S.h1)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 22px;margin-bottom:18px;">'+
+ names(S).map(function(n){return K(n,{sz:'0.95rem',mb:0,ls:'0.1em'});}).join('')+'</div>'+
+ '<div style="display:flex;align-items:center;gap:14px;">'+
+ '<div style="flex:1;height:0.5px;background:'+RULE+';"></div>'+
+ GLAB('the portfolio below',{c:CYT})+
+ '<div style="width:0;height:0;border-top:6px solid '+CY+';border-left:5px solid transparent;border-right:5px solid transparent;"></div></div>';});
+
+/* 94 · CONTINUOUS — reads as the portfolio's opening paragraph */
+sreg('Continuous','C',function(S){return '<div style="max-width:660px;">'+
+ '<span style="font-family:'+DM+';font-weight:300;font-size:0.9rem;letter-spacing:0.2em;text-transform:uppercase;color:'+CYT+';">'+
+ S.h1+' — </span>'+
+ '<span style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:1.95;color:'+SUB+';">'+P1S+'</span>'+
+ '</div>';});
 /* ============================================================
    CONTROLLER — harvest, switch, contact sheet, URL state
    ============================================================ */
