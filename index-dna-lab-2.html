@@ -6342,10 +6342,10 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 5. Preview only, index-dna-lab-2.html.
-     Marshall Original + 3 (all dials) · SWITCH Original + 6.
+     DNA LAB — ROUND 6. Preview only, index-dna-lab-2.html.
+     Marshall 20 radial arrangements · SWITCH 13. No Originals.
      index.html, sf-styles.css and sf-scripts.js are untouched.
-     Keys: arrows step · 0 original · M / S section · C contact sheet
+     Keys: arrows step · 0 first · M / S section · C contact sheet
      ================================================================== -->
 <script id="sf-dna-lab">
 /* ============================================================
@@ -6493,128 +6493,348 @@ var SCROP=[
  ['images/battery_gold.png',0.50,0.50,1.5]                /* Serviceability    — opened up      */
 ];
 /* ============================================================
-   MARSHALL — round 2.  14 options, renumbered 01–14.
+   RADIAL ENGINE — one core, many arrangements.
+   ============================================================ */
+function polar(i,n,R,rot){var a=((i/n)*360+(rot||0)-90)*Math.PI/180;
+ return {x:50+Math.cos(a)*R, y:50+Math.sin(a)*R, deg:(i/n)*360+(rot||0)};}
+function ABS(x,y,inner,extra){
+ return '<div class="dl-dpt" style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;'+
+  'transform:translate(-50%,-50%);text-align:center;'+(extra||'')+'">'+inner+'</div>';}
+function RING(inset,col,dash){
+ return '<div class="dl-dring" style="position:absolute;inset:'+inset+'%;border:0.5px '+(dash?'dashed':'solid')+' '+col+';border-radius:50%;"></div>';}
+function SPOKE(deg,len,col,thick){
+ return '<div class="dl-dring" style="position:absolute;left:50%;top:50%;width:'+len+'%;height:'+(thick||0.5)+'px;'+
+  'background:'+col+';transform-origin:0 0;transform:rotate('+(deg-90)+'deg) translateY(-0.25px);"></div>';}
+function HUBIMG(src,inset,alt,solid){
+ return '<div class="dl-dhub" style="position:absolute;inset:'+inset+'%;border-radius:50%;overflow:hidden;'+
+  'border:1px solid '+INK+';background:'+(solid?INK:'#efece6')+';">'+
+  '<img src="'+src+'" alt="'+(alt||'')+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;'+
+  'filter:grayscale('+(solid?'1':'0.12')+') contrast(1.05)'+(solid?' invert(0.02)':'')+';display:block;'+
+  (solid?'opacity:0.86;':'')+'"/></div>';}
+function STAGE(max,inner){
+ return '<div style="padding:18px 0;">'+
+  '<div class="dl-dial" style="position:relative;aspect-ratio:1/1;max-width:'+max+'px;margin:0 auto;width:100%;">'+
+  inner+'</div></div>';}
+/* generic builder */
+function RAD(o){
+ var n=o.items.length, h='';
+ if(o.spokes!==false) for(var i=0;i<n;i++){
+  var p=polar(i,n,o.R,o.rot);
+  h+=SPOKE(p.deg+(o.rot?0:0), (o.spokeLen!=null?o.spokeLen:(o.R-16)), o.spokeCol||('linear-gradient(90deg,'+(o.acc||GOLDS)+' 0%,rgba(10,10,10,0.05) 100%)'), o.spokeW);
+ }
+ if(o.rings) o.rings.forEach(function(r){h+=RING(r[0],r[1],r[2]);});
+ if(o.hub) h+=HUBIMG(o.hub,o.hubInset||33,o.hubAlt,o.hubSolid);
+ for(var j=0;j<n;j++){
+  var q=polar(j,n,(o.labelR!=null?o.labelR:o.R),o.rot);
+  var ex='max-width:'+(o.lw||124)+'px;';
+  if(o.rotateText){ex+='transform:translate(-50%,-50%) rotate('+(q.deg>90&&q.deg<270?q.deg+180:q.deg)+'deg);';}
+  h+=ABS(q.x,q.y,o.items[j],ex);
+ }
+ return STAGE(o.max||470,h);
+}
+/* label atoms */
+function LBL(sym,name,col,symCol){
+ return SYM(sym,{sz:'0.95rem',c:symCol||GOLDS,x:'margin-bottom:5px;'})+
+  K(name,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25,c:col||INKH});}
+function LBLp(crop,name,ring,col,size){
+ return CROP(crop[0],crop[1],crop[2],crop[3],size||62,ring)+
+  K(name,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25,c:col||INKH});}
+function DOT(txt,col,bg){
+ return '<div style="width:32px;height:32px;border-radius:50%;border:1px solid '+col+';background:'+(bg||'transparent')+
+  ';display:flex;align-items:center;justify-content:center;">'+K(txt,{sz:'0.9rem',mb:0,c:col})+'</div>';}
+/* two-column shell: graphic one side, list the other */
+function SPLIT2(graphic,list,flip,gap){
+ var a='<div>'+graphic+'</div>', b='<div>'+list+'</div>';
+ return '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:'+(gap||'clamp(18px,3vw,44px)')+
+  ';align-items:center;">'+(flip?b+a:a+b)+'</div>';}
+/* ============================================================
+   MARSHALL — 20 radial arrangements. No Original.
+   Dial never smaller than 75% or larger than 100% of the 470px base.
    ============================================================ */
 var ML=[], MN=[], MT=[];
 function mreg(name,tier,fn){MN.push(name);MT.push(tier);ML.push(fn);}
-function EY(t){return '<div style="margin-bottom:16px;">'+G(t||MLB,{sz:'0.46rem',ls:'0.26em',c:LAB})+'</div>';}
+function EY(t){return '<div style="margin-bottom:14px;font-family:'+DM+';font-weight:300;font-size:0.75rem;'+
+ 'letter-spacing:0.2em;text-transform:uppercase;color:'+LAB+';">'+(t||MLB)+'</div>';}
+var MHUB='images/614BCLPutVL-1__SL1000_.jpg';
+function flat(D){var a=[];D.forEach(function(d,gi){d.it.forEach(function(i,ix){
+ a.push({k:i.k,v:i.v,gi:gi,ix:ix,g:d.g,s:symOf(gi,ix),c:MCROP[gi*4+ix]});});});return a;}
+function GT(D,al){return '<div style="display:flex;justify-content:'+(al||'space-between')+';gap:16px;">'+
+ G(D[0].g,{sz:'0.9rem',ls:'0.2em',c:'rgba(10,10,10,0.42)'})+G(D[1].g,{sz:'0.9rem',ls:'0.2em',c:'rgba(10,10,10,0.72)'})+'</div>';}
+function GSTACK(D){return '<div style="text-align:center;">'+G(D[0].g,{sz:'0.9rem',ls:'0.22em',c:'rgba(10,10,10,0.42)'})+'</div>';}
+function GSTACKB(D){return '<div style="text-align:center;">'+G(D[1].g,{sz:'0.9rem',ls:'0.22em',c:'rgba(10,10,10,0.72)'})+'</div>';}
+function LIST(D,o){o=o||{};return D.map(function(d,gi){
+ return '<div style="'+(gi?'margin-top:18px;':'')+'">'+
+  '<div style="padding-bottom:7px;border-bottom:0.5px solid '+(gi?INK:GOLD)+';margin-bottom:8px;">'+
+   G(d.g,{sz:'0.9rem',ls:'0.2em',c:LAB})+'</div>'+
+  d.it.map(function(i,ix){
+   return '<div style="display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:baseline;padding:9px 0;'+
+    (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
+    '<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:GOLDS})+'</div>'+
+    '<div>'+K(i.k,{sz:'0.95rem',mb:o.desc?4:0})+(o.desc?V(i.v,{sz:'0.9rem',mw:'40ch'}):'')+'</div></div>';}).join('')+
+  '</div>';}).join('');}
 
-/* 01 — MONOLITH — group words at normal weight, list pulled in */
-mreg('Radial Dial — Subtle','A',function(D){
- var items=[];
- D.forEach(function(d,gi){d.it.forEach(function(i,ix){
-  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:'rgba(200,169,110,0.95)',x:'margin-bottom:5px;'})+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.62)'})+'</div>');});});
+/* 01 · RING — names on the ring */
+mreg('Ring — Names','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.62)',x.gi?INK:'rgba(200,169,110,0.95)');}),
+  R:44,max:470,acc:GOLD,hub:MHUB,hubAlt:'Marshall',rings:[[6,GOLD]]})+GSTACKB(D);});
+
+/* 02 · RING — photographic specimens */
+mreg('Ring — Specimens','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return LBLp(x.c,x.k,x.gi?INK:GOLD,x.gi?INKH:'rgba(10,10,10,0.66)');}),
+  R:42,max:470,acc:GOLD,hub:MHUB,hubAlt:'Marshall Acton',hubInset:33,lw:126})+GSTACKB(D);});
+
+/* 03 · SPLIT — dial left, list right */
+mreg('Split — Dial Left','C',function(D){var f=flat(D);
+ return EY()+SPLIT2(RAD({items:f.map(function(x){return SYM(x.s,{sz:'0.95rem',c:x.gi?INK:GOLDS});}),
+   R:42,max:360,acc:GOLD,hub:MHUB,lw:40,rings:[[7,GOLD]]}), LIST(D,{desc:true}),false);});
+
+/* 04 · SPLIT — list left, dial right */
+mreg('Split — Dial Right','C',function(D){var f=flat(D);
+ return EY()+SPLIT2(RAD({items:f.map(function(x){return SYM(x.s,{sz:'0.95rem',c:x.gi?INK:GOLDS});}),
+   R:42,max:360,acc:GOLD,hub:MHUB,lw:40,rings:[[7,GOLD]]}), LIST(D,{desc:true}),true);});
+
+/* 05 · GRAPHIC ONLY — no words on the ring */
+mreg('Graphic Only','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return SYM(x.s,{sz:'1.15rem',c:x.gi?INK:GOLDS});}),
+  R:44,max:420,acc:GOLD,hub:MHUB,lw:40,rings:[[5,GOLD],[19,HAIR]]})+GSTACKB(D);});
+
+/* 06 · GRAPHIC + LEGEND BENEATH */
+mreg('Graphic + Legend','C',function(D){var f=flat(D);
+ return EY()+RAD({items:f.map(function(x){return SYM(x.s,{sz:'1.1rem',c:x.gi?INK:GOLDS});}),
+  R:44,max:400,acc:GOLD,hub:MHUB,lw:40,rings:[[6,GOLD]]})+SP(16)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);">'+
+ D.map(function(d,gi){return '<div>'+
+  '<div style="padding-bottom:7px;border-bottom:0.5px solid '+(gi?INK:GOLD)+';margin-bottom:8px;">'+
+  G(d.g,{sz:'0.9rem',ls:'0.2em',c:LAB})+'</div>'+
+  d.it.map(function(i,ix){return '<div style="display:flex;gap:12px;align-items:baseline;padding:7px 0;">'+
+   SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:GOLDS})+K(i.k,{sz:'0.95rem',mb:0})+'</div>';}).join('')+'</div>';}).join('')+'</div>';});
+
+/* 07 · INNER LABELS — names between hub and ring */
+mreg('Inner Labels','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.62)');}),
+  R:47,labelR:33,max:470,acc:GOLD,hub:MHUB,hubInset:41,spokeLen:16,lw:104,rings:[[3,RULE]]})+GSTACKB(D);});
+
+/* 08 · TWO ARCS — a labelled half each */
+mreg('Two Arcs','A',function(D){var f=flat(D);
+ var inner=RING(4,RULE)+HUBIMG(MHUB,34,'Marshall')+
+  '<div class="dl-dring" style="position:absolute;inset:4%;border-radius:50%;border:1.5px solid '+GOLD+';'+
+  'clip-path:polygon(0 0,100% 0,100% 50%,0 50%);"></div>'+
+  '<div class="dl-dring" style="position:absolute;inset:4%;border-radius:50%;border:1.5px solid '+INK+';'+
+  'clip-path:polygon(0 50%,100% 50%,100% 100%,0 100%);"></div>';
+ var n=f.length;
+ for(var i=0;i<n;i++){var p=polar(i,n,45,0);
+  inner+=ABS(p.x,p.y,LBL(f[i].s,f[i].k,f[i].gi?INKH:'rgba(10,10,10,0.6)'),'max-width:122px;');}
  return EY()+
- '<div style="text-align:center;margin-bottom:2px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
- dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
- '<div style="text-align:center;margin-top:2px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';});
+ '<div style="text-align:center;margin-bottom:4px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.22em',c:LAB})+'</div>'+
+ STAGE(470,inner)+
+ '<div style="text-align:center;margin-top:4px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.22em',c:INKH})+'</div>';});
 
-mreg('Radial Dial — Specimens','A',function(D){
- var items=[],n=0;
- D.forEach(function(d,gi){d.it.forEach(function(i,ix){
-  var c=MCROP[n];n++;
-  items.push('<div style="text-align:center;">'+CROP(c[0],c[1],c[2],c[3],62,gi?INK:GOLD)+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.66)'})+'</div>');});});
+/* 09 · CONCENTRIC — intangible inside, tangible outside */
+mreg('Concentric','A',function(D){
+ var inner=RING(5,RULE)+RING(28,HAIR)+HUBIMG(MHUB,42,'Marshall');
+ D[0].it.forEach(function(i,ix){var p=polar(ix,4,29,45);
+  inner+=ABS(p.x,p.y,LBL(symOf(0,ix),i.k,'rgba(10,10,10,0.6)'),'max-width:96px;');});
+ D[1].it.forEach(function(i,ix){var p=polar(ix,4,45,0);
+  inner+=ABS(p.x,p.y,LBL(symOf(1,ix),i.k,INKH,INK),'max-width:118px;');});
  return EY()+
- '<div style="text-align:center;margin-bottom:4px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
- specimenDial(items,{r:42,max:560,acc:GOLD,lw:126,hubInset:33,
-   hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall Acton'})+
- '<div style="text-align:center;margin-top:4px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';});
+ '<div style="display:flex;justify-content:center;gap:22px;margin-bottom:6px;">'+
+  G('inner ring — '+D[0].g,{sz:'0.9rem',ls:'0.14em',c:'rgba(10,10,10,0.45)'})+
+  G('outer ring — '+D[1].g,{sz:'0.9rem',ls:'0.14em',c:INKH})+'</div>'+STAGE(470,inner);});
 
-mreg('Radial Dial — Half Scale','A',function(D){
- var items=[];
- D.forEach(function(d,gi){d.it.forEach(function(i,ix){
-  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:'rgba(200,169,110,0.95)',x:'margin-bottom:5px;'})+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.62)'})+'</div>');});});
- var inner='<div style="text-align:center;margin-bottom:2px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
-  dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
-  '<div style="text-align:center;margin-top:2px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';
- return EY()+'<div class="dl-half"><div class="dl-half-in" style="width:520px;">'+inner+'</div></div>';});
+/* 10 · RIM CONTACT — big hub, no spokes */
+mreg('Rim Contact','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)');}),
+  R:46,max:470,spokes:false,hub:MHUB,hubInset:24,lw:118,rings:[[13,HAIR]]})+GSTACKB(D);});
+
+/* 11 · TICKED DIAL + NUMBERED LIST */
+mreg('Ticked + List','C',function(D){var f=flat(D),n=0;
+ var dial=RAD({items:f.map(function(x,ix){return DOT(n2(ix),x.gi?INK:GOLD,x.gi?'rgba(10,10,10,0.05)':'rgba(200,169,110,0.12)');}),
+  R:41,max:360,acc:GOLD,hub:MHUB,lw:40,rings:[[6,GOLD]]});
+ var list=D.map(function(d,gi){return '<div style="'+(gi?'margin-top:16px;':'')+'">'+
+   '<div style="margin-bottom:6px;">'+G(d.g,{sz:'0.9rem',ls:'0.2em',c:LAB})+'</div>'+
+   d.it.map(function(i,ix){n++;
+    return '<div style="display:grid;grid-template-columns:38px 30px 1fr;gap:10px;align-items:baseline;padding:9px 0;'+
+     'border-bottom:0.5px solid '+HAIR+';">'+G(n2(n-1),{sz:'0.9rem',c:GOLDS})+
+     '<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem'})+'</div>'+K(i.k,{sz:'0.95rem',mb:0})+'</div>';}).join('')+'</div>';}).join('');
+ return EY()+SPLIT2(dial,list,false);});
+
+/* 12 · SPECIMENS + OUTER NAMES */
+mreg('Specimens + Outer Names','A',function(D){var f=flat(D);
+ var inner=RING(18,HAIR)+HUBIMG(MHUB,34,'Marshall');
+ f.forEach(function(x,ix){var p=polar(ix,8,31,0);
+  inner+=ABS(p.x,p.y,CROP(x.c[0],x.c[1],x.c[2],x.c[3],46,x.gi?INK:GOLD),'max-width:52px;');
+  var q=polar(ix,8,48,0);
+  inner+=ABS(q.x,q.y,K(x.k,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25,c:x.gi?INKH:'rgba(10,10,10,0.66)'}),'max-width:104px;');});
+ return EY()+GSTACK(D)+STAGE(520,inner)+GSTACKB(D);});
+
+/* 13 · OFFSET AXIS — rotated so nothing sits square */
+mreg('Offset Axis','A',function(D){var f=flat(D);
+ return EY()+GT(D)+SP(6)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)');}),
+  R:44,rot:22.5,max:470,acc:GOLD,hub:MHUB,lw:120,rings:[[6,GOLD,true]]});});
+
+/* 14 · WEIGHTED HALVES — one half hairline, one solid */
+mreg('Weighted Halves','A',function(D){var f=flat(D);
+ return EY()+GT(D,'center')+SP(6)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.5)',x.gi?INK:'rgba(200,169,110,0.8)');}),
+  R:44,max:470,hub:MHUB,lw:120,
+  spokeCol:'rgba(10,10,10,0.1)',rings:[[6,HAIR],[6.5,'transparent']]});});
+
+/* 15 · SWEEP — one gold arc from the first strand to the last */
+mreg('Sweep','A',function(D){var f=flat(D);
+ var inner=RING(4,HAIR)+
+  '<div class="dl-dring" style="position:absolute;inset:4%;border-radius:50%;border:2px solid '+GOLD+';'+
+  'clip-path:polygon(50% 50%,100% 0,100% 100%,50% 100%);"></div>'+HUBIMG(MHUB,35,'Marshall');
+ f.forEach(function(x,ix){var p=polar(ix,8,45,0);
+  inner+=ABS(p.x,p.y,LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)'),'max-width:120px;');});
+ return EY()+GT(D)+SP(6)+STAGE(470,inner);});
+
+/* 16 · SPECIMENS ONLY — photographs, names in a legend */
+mreg('Specimens Only','C',function(D){var f=flat(D);
+ var inner=HUBIMG(MHUB,34,'Marshall')+RING(4,HAIR);
+ f.forEach(function(x,ix){var p=polar(ix,8,44,0);
+  inner+=ABS(p.x,p.y,CROP(x.c[0],x.c[1],x.c[2],x.c[3],64,x.gi?INK:GOLD),'max-width:70px;');});
+ return EY()+STAGE(400,inner)+SP(16)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);">'+
+ D.map(function(d,gi){return '<div><div style="padding-bottom:7px;border-bottom:0.5px solid '+(gi?INK:GOLD)+
+  ';margin-bottom:8px;">'+G(d.g,{sz:'0.9rem',ls:'0.2em',c:LAB})+'</div>'+
+  d.it.map(function(i,ix){return '<div style="display:flex;gap:12px;padding:7px 0;">'+
+   G(n2(gi*4+ix),{sz:'0.9rem',c:GOLDS})+K(i.k,{sz:'0.95rem',mb:0})+'</div>';}).join('')+'</div>';}).join('')+'</div>';});
+
+/* 17 · RADIAL TEXT — names set on their own spoke */
+mreg('Radial Text','A',function(D){var f=flat(D);
+ return EY()+GT(D)+SP(6)+RAD({items:f.map(function(x){return K(x.k,{sz:'0.9rem',mb:0,ls:'0.1em',c:x.gi?INKH:'rgba(10,10,10,0.6)'});}),
+  R:43,max:470,acc:GOLD,hub:MHUB,rotateText:true,lw:150,rings:[[5,GOLD]]});});
+
+/* 18 · SOLID HUB — the object reversed out of ink */
+mreg('Solid Hub','A',function(D){var f=flat(D);
+ return EY()+GSTACK(D)+RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)');}),
+  R:44,max:470,acc:'rgba(10,10,10,0.35)',hub:MHUB,hubSolid:true,hubInset:32,lw:120,rings:[[5,INK]]})+GSTACKB(D);});
+
+/* 19 · COMPACT + COLUMN — dial at 75%, text beside it */
+mreg('Compact + Column','C',function(D){var f=flat(D);
+ return EY()+SPLIT2(RAD({items:f.map(function(x){return LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)');}),
+   R:43,max:353,acc:GOLD,hub:MHUB,lw:96,rings:[[6,GOLD]]}), LIST(D,{desc:true}),false,'clamp(16px,2.5vw,34px)');});
+
+/* 20 · STRAND LENGTHS — spokes of differing reach */
+mreg('Strand Lengths','A',function(D){var f=flat(D);
+ var L=[30,24,28,22,30,26,29,23];
+ var inner=HUBIMG(MHUB,33,'Marshall');
+ f.forEach(function(x,ix){var d=(ix/8)*360;
+  inner+=SPOKE(d,L[ix],x.gi?'rgba(10,10,10,0.28)':'rgba(200,169,110,0.75)',x.gi?1:0.5);});
+ f.forEach(function(x,ix){var p=polar(ix,8,L[ix]+15,0);
+  inner+=ABS(p.x,p.y,LBL(x.s,x.k,x.gi?INKH:'rgba(10,10,10,0.6)'),'max-width:118px;');});
+ return EY()+GT(D)+SP(6)+STAGE(470,inner);});
 /* ============================================================
-   SWITCH — round 2.  10 options, renumbered 01–10, cyan throughout.
+   SWITCH — 13. No Original. Eyebrow refined down from 14.4px.
    ============================================================ */
 var SL=[], SN=[], ST=[];
 function sreg(name,tier,fn){SN.push(name);ST.push(tier);SL.push(fn);}
 function sent1(p){var m=esc(p).match(/^[^.]*\./);return m?m[0]:esc(p);}
-function SEY(t){return '<div style="margin-bottom:14px;">'+G(t,{sz:'0.5rem',ls:'0.32em',c:CYT})+'</div>';}
+function SEY(t){return '<div style="margin-bottom:14px;font-family:'+DM+';font-weight:300;font-size:0.75rem;'+
+ 'letter-spacing:0.2em;text-transform:uppercase;color:'+CYT+';">'+t+'</div>';}
 function SLEAD(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+FS(o.sz||'0.9rem')+
  ';line-height:'+(o.lh||1.9)+';color:'+(o.c||SUB)+';max-width:'+(o.mw||'620px')+';'+(o.x||'')+'">'+t+'</div>';}
+var SHUB='images/SWITCH_eSCRAMBLER_bike-6.jpg';
+/* the split is mine, not yours — say the word and it moves */
+var SGRP=[{g:'Intangible',ix:[0,4,3,1]},{g:'Tangible',ix:[2,5,6,7]}];
+function sflat(S){return S.it.map(function(i,ix){return {k:i.k,v:i.v,ix:ix,s:SYMB[ix],c:SCROP[ix]};});}
 
-/* 01 — COMPONENT LIBRARY — part numbers removed */
+/* 01 · PRINCIPLE ROW */
 sreg('Principle Row','A',function(S){return SEY(S.h1)+
  '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+S.it.map(function(i){
   return '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:14px 16px;flex:1 1 auto;min-width:150px;">'+
-   K(i.k,{sz:'0.78rem',mb:0,lh:1.15})+'</div>';}).join('')+'</div>'+
- SP(18)+HR(HAIR)+SP(12)+G(sent1(S.p1),{sz:'0.42rem',ls:'0.14em',c:CYT});});
+   K(i.k,{sz:'0.9rem',mb:0,lh:1.15})+'</div>';}).join('')+'</div>'+
+ SP(18)+HR(HAIR)+SP(12)+G(sent1(S.p1),{sz:'0.9rem',ls:'0.12em',c:CYT});});
 
-/* 03 — TYPE MONOLITH — refined, quieter, single weight */
-sreg('Type Monolith','A',function(S){return '<div style="margin-bottom:12px;">'+G(S.h1,{sz:'0.9rem',ls:'0.2em',c:CYT})+'</div>'+
- '<div style="border-top:1px solid '+INK+';border-bottom:1px solid '+INK+';padding:20px 0;">'+
- '<div style="font-family:'+BEBAS+';font-size:1.15rem;line-height:2;letter-spacing:0.12em;'+
- 'text-transform:uppercase;color:'+INKH+';overflow-wrap:anywhere;">'+
- S.it.map(function(i){return i.k;}).join('<span style="color:'+CY+';padding:0 0.45em;">·</span>')+'</div></div>'+
- SP(12)+SLEAD(sent1(S.p1),{sz:'0.9rem',mw:'58ch'});});
-
-sreg('Radial Dial — Specimens','A',function(S){
- var items=S.it.map(function(i,ix){var c=SCROP[ix];
-  return '<div style="text-align:center;">'+CROP(c[0],c[1],c[2],c[3],62,CYM)+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25})+'</div>';});
- return SEY(S.h1)+specimenDial(items,{r:42,max:560,acc:CYM,lw:126,arrow:true,hubInset:33,
-   hub:'images/SWITCH_eSCRAMBLER_bike-6.jpg',hubAlt:'SWITCH eSCRAMBLER'})+
- '<div style="display:flex;justify-content:center;margin-top:4px;">'+
-  G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.9rem',ls:'0.14em',c:CYT})+'</div>';});
-
-
-/* 04 — FILING TABS (adapted from Marshall) — eight tabs, one panel.
-   Marshall tabbed the two groups; SWITCH has no groups, so each
-   principle becomes its own tab and the panel carries its rule. */
-sreg('Filing Tabs','B',function(S){var uid=UID();return SEY(S.h1)+
- '<div data-tabs="'+uid+'">'+
- '<div style="display:flex;flex-wrap:wrap;gap:2px;">'+S.it.map(function(i,ix){
-  return '<button class="dl-tab'+(ix?'':' on')+'" data-tab="'+uid+':'+ix+'">'+i.k+'</button>';}).join('')+'</div>'+
- '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:28px 24px;">'+
- S.it.map(function(i,ix){
-  return '<div class="dl-pane'+(ix?'':' on')+'" data-pane="'+uid+':'+ix+'">'+
-   '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,250px) 1fr;gap:clamp(18px,3vw,44px);align-items:baseline;">'+
-   '<div style="display:flex;align-items:baseline;gap:12px;">'+SYM(SYMB[ix],{sz:'1.2rem',c:CY})+
-    K(i.k,{sz:'1.15rem',mb:0,ls:'0.1em'})+'</div>'+
-   V(i.v,{sz:'0.9rem',lh:1.95,mw:'46ch'})+'</div></div>';}).join('')+
- '</div></div>'+SP(14)+SLEAD(sent1(S.p1),{sz:'0.9rem',mw:'58ch'});});
-
-/* 05 — MARQUEE BANDS (adapted from Marshall) — eight full-width type bands */
-sreg('Marquee Bands','A',function(S){return SEY(S.h1)+
- '<div style="display:flex;align-items:center;gap:12px;padding:6px 0 10px;">'+
-  G('EIGHT PRINCIPLES',{sz:'0.9rem',ls:'0.2em',c:CYT})+
-  '<div style="flex:1;height:1px;background:'+INK+';"></div>'+
-  G('01 — 08',{sz:'0.9rem',ls:'0.16em'})+'</div>'+
- S.it.map(function(i,ix){
-  return '<div style="display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:0.5px solid '+
-   (ix===S.it.length-1?RULE:HAIR)+';">'+
-   SYM(SYMB[ix],{sz:'1rem',c:CY})+
-   K(i.k,{sz:'clamp(0.95rem,1.9vw,1.32rem)',ls:'0.11em',mb:0,lh:1})+'</div>';}).join('')+
+/* 02 · TYPE MONOLITH — lighter, smaller */
+sreg('Type Monolith','A',function(S){return SEY(S.h1)+
+ '<div style="border-top:0.5px solid '+RULE+';border-bottom:0.5px solid '+RULE+';padding:22px 0;">'+
+ '<div style="font-family:'+DM+';font-weight:300;font-size:1rem;line-height:2.1;letter-spacing:0.16em;'+
+ 'text-transform:uppercase;color:'+SUB+';overflow-wrap:anywhere;">'+
+ S.it.map(function(i){return i.k;}).join('<span style="color:'+CYM+';padding:0 0.5em;">·</span>')+'</div></div>'+
  SP(14)+SLEAD(sent1(S.p1),{sz:'0.9rem',mw:'58ch'});});
 
-/* 06 — SYMBOL LADDER (adapted from Marshall) — flat type, symbols carry the structure */
+/* 03 · SYMBOL LADDER — grouped, refined */
 sreg('Symbol Ladder','A',function(S){
- var half=[S.it.slice(0,4),S.it.slice(4)];
  return SEY(S.h1)+
- '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);">'+
- half.map(function(col,ci){
-  return '<div>'+'<div style="padding-bottom:10px;border-bottom:1px solid '+INK+';margin-bottom:14px;">'+
-   G(ci?'05 — 08':'01 — 04',{sz:'0.9rem',ls:'0.2em',c:CYT})+'</div>'+
-   col.map(function(i,ix){var n=ci*4+ix;
-    return '<div style="display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;padding:13px 0;'+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,60px);">'+
+ SGRP.map(function(gr,ci){
+  return '<div>'+'<div style="padding-bottom:9px;border-bottom:0.5px solid '+(ci?INK:CYM)+';margin-bottom:12px;">'+
+   G(gr.g,{sz:'0.9rem',ls:'0.22em',c:ci?INKH:CYT})+'</div>'+
+   gr.ix.map(function(n,ix){var i=S.it[n];
+    return '<div style="display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:center;padding:12px 0;'+
      (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
-     '<div style="text-align:center;">'+SYM(SYMB[n],{sz:'1.05rem',c:CY})+'</div>'+
-     K(i.k,{sz:'1rem',mb:0,ls:'0.08em'})+'</div>';}).join('')+'</div>';}).join('')+'</div>'+
+     '<div style="text-align:center;">'+SYM(SYMB[n],{sz:'1rem',c:ci?INK:CY})+'</div>'+
+     K(i.k,{sz:'0.95rem',mb:0,ls:'0.08em'})+'</div>';}).join('')+'</div>';}).join('')+'</div>'+
  SP(16)+SLEAD(sent1(S.p1),{sz:'0.9rem',mw:'58ch'});});
+
+/* ---- 04–13 · ten radial arrangements ---- */
+function SLIST(S,o){o=o||{};return SGRP.map(function(gr,ci){
+ return '<div style="'+(ci?'margin-top:18px;':'')+'">'+
+  '<div style="padding-bottom:7px;border-bottom:0.5px solid '+(ci?INK:CYM)+';margin-bottom:8px;">'+
+   G(gr.g,{sz:'0.9rem',ls:'0.2em',c:ci?INKH:CYT})+'</div>'+
+  gr.ix.map(function(n,ix){var i=S.it[n];
+   return '<div style="display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:baseline;padding:9px 0;'+
+    (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
+    '<div style="text-align:center;">'+SYM(SYMB[n],{sz:'0.95rem',c:ci?INK:CY})+'</div>'+
+    '<div>'+K(i.k,{sz:'0.95rem',mb:o.desc?4:0})+(o.desc?V(i.v,{sz:'0.9rem',mw:'40ch'}):'')+'</div></div>';}).join('')+'</div>';}).join('');}
+
+sreg('Ring — Names','A',function(S){var f=sflat(S);
+ return SEY(S.h1)+RAD({items:f.map(function(x){return LBL(x.s,x.k,INKH,CY);}),
+  R:44,max:470,acc:CYM,hub:SHUB,hubAlt:'SWITCH',rings:[[6,CYM]]});});
+
+sreg('Ring — Specimens','A',function(S){var f=sflat(S);
+ return SEY(S.h1)+RAD({items:f.map(function(x){return LBLp(x.c,x.k,CYM,INKH);}),
+  R:42,max:470,acc:CYM,hub:SHUB,hubAlt:'SWITCH eSCRAMBLER',hubInset:33,lw:126});});
+
+sreg('Split — Dial Left','C',function(S){var f=sflat(S);
+ return SEY(S.h1)+SPLIT2(RAD({items:f.map(function(x){return SYM(x.s,{sz:'0.95rem',c:CY});}),
+   R:42,max:360,acc:CYM,hub:SHUB,lw:40,rings:[[7,CYM]]}), SLIST(S,{desc:true}),false);});
+
+sreg('Split — Dial Right','C',function(S){var f=sflat(S);
+ return SEY(S.h1)+SPLIT2(RAD({items:f.map(function(x){return SYM(x.s,{sz:'0.95rem',c:CY});}),
+   R:42,max:360,acc:CYM,hub:SHUB,lw:40,rings:[[7,CYM]]}), SLIST(S,{desc:true}),true);});
+
+sreg('Graphic Only','A',function(S){var f=sflat(S);
+ return SEY(S.h1)+RAD({items:f.map(function(x){return SYM(x.s,{sz:'1.15rem',c:CY});}),
+  R:44,max:420,acc:CYM,hub:SHUB,lw:40,rings:[[5,CYM],[19,HAIR]]});});
+
+sreg('Inner Labels','A',function(S){var f=sflat(S);
+ return SEY(S.h1)+RAD({items:f.map(function(x){return LBL(x.s,x.k,INKH,CY);}),
+  R:47,labelR:33,max:470,acc:CYM,hub:SHUB,hubInset:41,spokeLen:16,lw:104,rings:[[3,RULE]]});});
+
+sreg('Concentric','A',function(S){
+ var inner=RING(5,RULE)+RING(28,HAIR)+HUBIMG(SHUB,42,'SWITCH');
+ SGRP[0].ix.forEach(function(n,ix){var p=polar(ix,4,29,45);
+  inner+=ABS(p.x,p.y,LBL(SYMB[n],S.it[n].k,'rgba(10,10,10,0.6)',CYM),'max-width:96px;');});
+ SGRP[1].ix.forEach(function(n,ix){var p=polar(ix,4,45,0);
+  inner+=ABS(p.x,p.y,LBL(SYMB[n],S.it[n].k,INKH,INK),'max-width:118px;');});
+ return SEY(S.h1)+
+ '<div style="display:flex;justify-content:center;gap:22px;margin-bottom:6px;">'+
+  G('inner — '+SGRP[0].g,{sz:'0.9rem',ls:'0.14em',c:CYT})+
+  G('outer — '+SGRP[1].g,{sz:'0.9rem',ls:'0.14em',c:INKH})+'</div>'+STAGE(470,inner);});
+
+sreg('Ticked + List','C',function(S){var f=sflat(S);
+ var dial=RAD({items:f.map(function(x,ix){return DOT(n2(ix),CYM,'rgba(0,180,216,0.08)');}),
+  R:41,max:360,acc:CYM,hub:SHUB,lw:40,rings:[[6,CYM]]});
+ return SEY(S.h1)+SPLIT2(dial,SLIST(S),false);});
+
+sreg('Radial Text','A',function(S){var f=sflat(S);
+ return SEY(S.h1)+RAD({items:f.map(function(x){return K(x.k,{sz:'0.9rem',mb:0,ls:'0.1em'});}),
+  R:43,max:470,acc:CYM,hub:SHUB,rotateText:true,lw:150,rings:[[5,CYM]]});});
+
+sreg('Strand Lengths','A',function(S){var f=sflat(S);
+ var L=[30,24,28,22,30,26,29,23];
+ var inner=HUBIMG(SHUB,33,'SWITCH');
+ f.forEach(function(x,ix){inner+=SPOKE((ix/8)*360,L[ix],'rgba(0,180,216,0.6)',0.5);});
+ f.forEach(function(x,ix){var p=polar(ix,8,L[ix]+15,0);
+  inner+=ABS(p.x,p.y,LBL(x.s,x.k,INKH,CY),'max-width:118px;');});
+ return SEY(S.h1)+STAGE(470,inner);});
 /* ============================================================
    CONTROLLER — harvest, switch, contact sheet, URL state
    ============================================================ */
 var MLB='Extracted DNA';
-var M={host:null,base:null,data:null,idx:0,ready:false};
-var S={host:null,base:null,data:null,idx:0,ready:false};
+var M={host:null,base:null,data:null,idx:1,ready:false};
+var S={host:null,base:null,data:null,idx:1,ready:false};
 var sheet=false, active='M';
 
 /* ---------- preview-only CSS ---------- */
@@ -6736,19 +6956,17 @@ function captureSwitch(){
 
 /* ---------- render ---------- */
 function band(i,names,tot){
- return '<div class="dl-band"><b>'+(i===0?'ORIGINAL':n2(i-1))+'</b>'+
-  (i===0?'<i>as it stands today</i>':'<i>'+names[i-1]+'</i>')+'<u></u><s>'+
-  (i===0?'baseline':(i)+' / '+tot)+'</s></div>';
+ return '<div class="dl-band"><b>'+n2(i-1)+'</b><i>'+names[i-1]+'</i><u></u><s>'+i+' / '+tot+'</s></div>';
 }
-function renderOne(sec,list,i){ return i===0 ? sec.base : list[i-1](sec.data); }
+function renderOne(sec,list,i){ return list[i-1](sec.data); }
 function paint(){
  if(M.ready){
-  if(sheet){var h='';for(var i=0;i<=ML.length;i++){h+='<div class="dl-slot">'+band(i,MN,ML.length)+renderOne(M,ML,i)+'</div>';}M.host.innerHTML=h;}
+  if(sheet){var h='';for(var i=1;i<=ML.length;i++){h+='<div class="dl-slot">'+band(i,MN,ML.length)+renderOne(M,ML,i)+'</div>';}M.host.innerHTML=h;}
   else M.host.innerHTML=renderOne(M,ML,M.idx);
   M.host.setAttribute('style','display:block !important;');
  }
  if(S.ready){
-  if(sheet){var g='';for(var j=0;j<=SL.length;j++){g+='<div class="dl-slot">'+band(j,SN,SL.length)+renderOne(S,SL,j)+'</div>';}S.host.innerHTML=g;}
+  if(sheet){var g='';for(var j=1;j<=SL.length;j++){g+='<div class="dl-slot">'+band(j,SN,SL.length)+renderOne(S,SL,j)+'</div>';}S.host.innerHTML=g;}
   else S.host.innerHTML=renderOne(S,SL,S.idx);
  }
  ui(); saveURL();
@@ -6758,8 +6976,8 @@ function paint(){
 function readURL(){
  var q=location.search.replace(/^\?/,'').split('&'),o={};
  q.forEach(function(p){var a=p.split('=');if(a[0])o[a[0]]=decodeURIComponent(a[1]||'');});
- if(o.m!=null&&o.m!=='')M.idx=Math.max(0,Math.min(ML.length,parseInt(o.m,10)||0));
- if(o.s!=null&&o.s!=='')S.idx=Math.max(0,Math.min(SL.length,parseInt(o.s,10)||0));
+ if(o.m!=null&&o.m!=='')M.idx=Math.max(1,Math.min(ML.length,parseInt(o.m,10)||1));
+ if(o.s!=null&&o.s!=='')S.idx=Math.max(1,Math.min(SL.length,parseInt(o.s,10)||1));
  if(o.c==='1')sheet=true;
  if(o.a==='S')active='S';
 }
@@ -6770,8 +6988,8 @@ function saveURL(){
 
 /* ---------- ui ---------- */
 function row(tag,key,idx,names,tiers,isAct){
- var nm = idx===0 ? 'Original' : n2(idx-1)+' — '+names[idx-1];
- var tr = idx===0 ? 'baseline' : tiers[idx-1];
+ var nm = n2(idx-1)+' — '+names[idx-1];
+ var tr = tiers[idx-1]+'  ·  '+idx+'/'+names.length;
  return '<div class="r'+(isAct?' act':'')+'"><span class="tag" data-sel="'+key+'">'+tag+'</span>'+
   '<span class="nm">'+nm+' <em>'+tr+'</em></span>'+
   '<span class="ar"><button class="n" data-step="'+key+':-1">‹</button>'+
@@ -6790,8 +7008,8 @@ function ui(){
 /* ---------- events ---------- */
 function step(which,d){
  var t=which==='M'?M:S;
- var N=(which==='M'?ML.length:SL.length)+1;
- if(d===0)t.idx=0; else t.idx=(t.idx+d+N)%N;
+ var N=(which==='M'?ML.length:SL.length);
+ if(d===0)t.idx=1; else t.idx=((t.idx-1+d+N)%N)+1;
  active=which; paint();
 }
 function goto(which){
