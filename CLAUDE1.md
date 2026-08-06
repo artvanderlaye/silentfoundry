@@ -81,11 +81,11 @@ to the project's configured instructions.
 - Root homepage: `https://silentfoundry.pages.dev`
 - Any other page: `https://silentfoundry.pages.dev/<filename-without-.html>`
 - If several pages changed, list each one.
-- Current live pages:
-  - `https://silentfoundry.pages.dev`             the homepage (`index.html`)
-  - `https://silentfoundry.pages.dev/sf-team`     the team page
-  - `https://silentfoundry.pages.dev/sf-contact`  the contact page
-  - `https://silentfoundry.pages.dev/legal`       legal
+- Current working pages:
+  - `https://silentfoundry.pages.dev/index-explore`    homepage section explorer
+  - `https://silentfoundry.pages.dev/sf-contact`       the live contact page
+  - `https://silentfoundry.pages.dev/sf-contact-final` contact slider
+  - `https://silentfoundry.pages.dev/sf-team`          the live team page
 
 ## Response style (how to report back to Matthew)
 - Do the full detailed work as usual — backups, edits, triple-checks, live
@@ -110,99 +110,3 @@ to the project's configured instructions.
     not git: cache-buster the URL (`?cb=123`) to rule out cache, then it's a
     stale/failed/pending Cloudflare build — point Matthew to the Cloudflare
     Pages → Deployments tab (retry deploy / check build error), not to git.
-- KNOWN CAUSE, seen once already: the Pages build failed with
-  `RPC failed; curl 16 ... fatal: early EOF` after spending 6m40s cloning.
-  The repo is heavy (~99 MB `.git`, ~80 MB working tree, ~70 numbered backups).
-  Retrying the deployment fixed it, but it WILL recur as backups accumulate.
-
-
-====================================================================
-CURRENT STATE — as of August 2026
-====================================================================
-
-## Where the site is now
-All three main pages have been through a full mobile + responsive pass and are
-LIVE. Previous versions are kept as numbered backups (`index107.html`,
-`sf-team22.html`, etc). Working copies still exist and are identical to live:
-`index-mobile.html` (= `index.html`), `sf-team-m.html` (= `sf-team.html`).
-`sf-contact-m.html` exists but was NOT promoted — Matthew said the live contact
-page was fine as-is.
-
-## The layout system now in force (do not break these)
-- **Mobile side margin: 24px.** Every section, every page, from 360 to 768.
-  Venture Models was the reference. Sections that supply their own inset must
-  not stack another on top — that's how text ended up at 48 twice.
-- **Text measure: `max-width: min(100%, 680px)`** on all body copy. Before this
-  Marshall ran to 934px (109 characters) at 1440 while everything else sat
-  frozen at 666. They now break together.
-- **Above 1601px every section takes the video's frame** — 1600px wide,
-  centred: `padding-inline: calc((100% - 1600px)/2)`. Video, portfolio,
-  Venture Models and Marshall all share identical left/right edges.
-- **SWITCH hero**: `aspect-ratio:3/2` (never a fixed height — a `min-height`
-  in `vh` was what made it crop as the window narrowed). Capped at
-  `max-width:2200px` above 2300px and re-centred with
-  `margin-left:calc(50% - min(2200px,100vw)/2)`.
-- **Carousels on mobile are one card per screen** — homepage portfolio and the
-  team cards both use `flex:0 0 100vw`. Images break out of the card inset with
-  `width:calc(100% + 48px); margin-inline:-24px` so photos are edge to edge
-  while text keeps its 24px.
-- All of the above lives in `<style id="sf-mobile-fixes">` (homepage) and
-  `<style id="sf-consistency">` (team/contact), appended at the END of each
-  file. Position matters: body styles beat head styles on ties.
-
-## Menus
-- Homepage uses `.mobile-menu`; team and contact use `#mmenu`. Different
-  elements, same design, applied by `<script id="sf-menu-b">` on each page.
-- Design: `Screenshot_2026-03-29_at_00_05_04.png` behind a dark gradient,
-  three white caps links with hairline rules, then SILENT FOUNDRY over
-  "Authentic brands into premium products."
-- The script must NOT set `display` inline — open/close is
-  `.mobile-menu.open{display:flex}` in the shared stylesheet and an inline
-  display would beat it, so the menu would never open. Styling goes in an
-  injected `#mm-b-css` rule instead.
-- It watches `document.documentElement`, not the menu node. The nav code
-  REPLACES the menu element on toggle; a node-scoped observer dies with it,
-  which is why the design reverted after the first open.
-
-## Traps that cost the most time — check these first
-1. **Inline `!important` written by JS cannot be overridden by any stylesheet.**
-   The lock-up heights, the "Scroll →" hint and the artwork's own
-   `filter: invert(1) brightness(0.25) !important` all had to be fixed in the
-   JS, not the CSS. If a rule "isn't applying", check for an inline
-   `!important` before rewriting the selector.
-2. **Colour filters assume a BLACK source.** The logos are WHITE, so
-   `invert(1)` produced black and every "grey" collapsed to `#000`. Normalise
-   first: `brightness(0) saturate(100%) <recipe>`.
-3. **Painted padding.** The carousel dots were 44px because `padding:16px` plus
-   a background colour and `content-box` sizing paints the whole padded circle.
-   `padding:0` shrinks them; a transparent `::after` carries the tap area.
-4. **`:first-of-type` counts elements, not classes.** `.footer-col:first-of-type`
-   matched nothing because the first div is `.footer-logo-wrap`. Navigate is
-   `.footer-inner > div:nth-of-type(2)`.
-5. **Section padding stacks.** `#pc` supplies 24px and the section inside adds
-   another — zero the inner one rather than adding more.
-6. **Measure the RENDERED page, not the source.** Several sections are rebuilt
-   at runtime with different classes (`.a28`/`.s-*` never exist in the DOM;
-   `.x-lead` disappeared after the lock-up bake). Always verify selectors
-   against the live DOM before writing rules for them.
-7. **Verify in a real browser at real widths.** jsdom has no layout engine —
-   `getBoundingClientRect` returns 0. Use iframes at set widths in Chrome.
-
-## Open items
-- **`zh.html` and the `zh-*` pages** are now far behind the English pages.
-  Matthew handles translation sync himself — do not auto-edit them.
-- **The Foundry section caps at 1120px** while the rest of the page caps at
-  1600 — reads noticeably narrower on a wide screen. Flagged, not changed.
-- **Two things CSS can't reach**: the Foundry "Scroll →" hint (9px, inline
-  `!important` from JS) and the 中文 link (27px tap target). Both need a
-  one-line script change.
-- **Venture Models drifts 24px** off the page margin between 768 and 900.
-  An earlier attempt made it worse (x48 → x96) and was reverted.
-- **"Download The Deck"** still points at the partner PDF — never chosen.
-- **~70 numbered backups** should be cleared. Matthew deletes them manually.
-  They are what pushed the Cloudflare clone past its limit.
-- Replace `amandawang.jpg` (no face visible); re-export `anders.jpg` (a cursor
-  is baked into the image).
-- Team photo greyscale — Matthew said "leave it for now".
-- `sf-team.html` has ONE pre-existing unbalanced `<style>` block (77/76
-  braces). It predates this work; don't chase it as a new bug.
