@@ -6342,10 +6342,9 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 10. Preview only, index-dna-lab-2.html.
-     Marshall 100 · SWITCH 94.
-     M81-100: refinements of Marshall 02 (grouping hierarchy).
-     S75-94 : DNA x portfolio integration, baseline SWITCH 14.
+     DNA LAB — ROUND 11. Preview only, index-dna-lab-2.html.
+     Marshall 100 · SWITCH 114.
+     S95-114: editorial refinement on one type + alignment system.
      index.html, sf-styles.css and sf-scripts.js are untouched.
      ================================================================== -->
 <script id="sf-dna-lab">
@@ -8543,6 +8542,225 @@ sreg('Continuous','C',function(S){return '<div style="max-width:660px;">'+
  S.h1+' — </span>'+
  '<span style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:1.95;color:'+SUB+';">'+P1S+'</span>'+
  '</div>';});
+/* ============================================================
+   SWITCH 95–114 — editorial refinement.
+   Combines: 76 spec bar · 79 classification · 82 headline ·
+   85 narrative · 88 paragraph placement · 90 restraint · 92 running head.
+   One type scale and one alignment system underneath all twenty.
+   ============================================================ */
+var T={
+ eyebrow:{sz:'0.75rem', ls:'0.22em'},
+ principle:{sz:'0.95rem', ls:'0.13em'},
+ head:{sz:'clamp(1.5rem,3.1vw,2.35rem)', ls:'0.01em', lh:1.14},
+ headS:{sz:'clamp(1.15rem,2.2vw,1.6rem)', ls:'0.02em', lh:1.2},
+ body:{sz:'0.9rem', lh:1.95, mw:'58ch'},
+ note:{sz:'0.9rem', ls:'0.16em'}
+};
+var HAIR2='rgba(10,10,10,0.13)', RULE2='rgba(10,10,10,0.26)';
+function EYE(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+T.eyebrow.sz+';'+
+ 'letter-spacing:'+T.eyebrow.ls+';text-transform:uppercase;color:'+(o.c||CYT)+';'+(o.x||'')+'">'+t+'</div>';}
+function PR(t,o){o=o||{};return '<span style="font-family:'+BEBAS+';font-size:'+(o.sz||T.principle.sz)+';'+
+ 'letter-spacing:'+(o.ls||T.principle.ls)+';text-transform:uppercase;color:'+(o.c||INKH)+';'+
+ 'line-height:'+(o.lh||1.2)+';display:'+(o.d||'inline-block')+';'+(o.x||'')+'">'+t+'</span>';}
+function HEAD(t,o){o=o||{};return '<div style="font-family:'+BEBAS+';font-size:'+(o.sz||T.head.sz)+';'+
+ 'letter-spacing:'+(o.ls||T.head.ls)+';line-height:'+(o.lh||T.head.lh)+';text-transform:uppercase;'+
+ 'color:'+(o.c||INKH)+';max-width:'+(o.mw||'22ch')+';'+(o.x||'')+'">'+t+'</div>';}
+function BODY(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||T.body.sz)+';'+
+ 'line-height:'+(o.lh||T.body.lh)+';color:'+(o.c||SUB)+';max-width:'+(o.mw||T.body.mw)+';'+(o.x||'')+'">'+t+'</div>';}
+function NOTE(t,o){o=o||{};return '<span style="font-family:'+DM+';font-weight:300;font-size:'+T.note.sz+';'+
+ 'letter-spacing:'+T.note.ls+';text-transform:uppercase;color:'+(o.c||'rgba(10,10,10,0.34)')+';'+(o.x||'')+'">'+t+'</span>';}
+function R1(c){return '<div style="height:1px;background:'+(c||INK)+';"></div>';}
+function R05(c){return '<div style="height:0.5px;background:'+(c||HAIR2)+';"></div>';}
+function REG(){return '<span style="display:inline-block;width:7px;height:7px;position:relative;vertical-align:middle;">'+
+ '<span style="position:absolute;left:3px;top:0;width:1px;height:7px;background:'+CYM+';"></span>'+
+ '<span style="position:absolute;top:3px;left:0;height:1px;width:7px;background:'+CYM+';"></span></span>';}
+function DOT(){return '<span style="display:inline-block;width:4px;height:4px;border-radius:50%;background:'+CYM+';vertical-align:middle;"></span>';}
+/* portfolio heading treatments — the style tag lives inside the swapped block,
+   so it is removed automatically when the variation changes */
+function PF(mode){
+ var base='#dl-swrap ~ .u-ey', lead='#dl-swrap ~ .u-lead';
+ if(mode==='caption') return '<style>'+base+'{font-size:0.75rem !important;letter-spacing:0.22em !important;'+
+  'color:rgba(10,10,10,0.38) !important;margin:clamp(30px,4vw,52px) 0 8px 0 !important;}'+lead+'{font-size:0.9rem !important;'+
+  'max-width:52ch !important;margin-bottom:22px !important;}</style>';
+ if(mode==='quiet')   return '<style>'+base+'{font-size:0.75rem !important;letter-spacing:0.24em !important;'+
+  'color:rgba(10,10,10,0.32) !important;margin:clamp(30px,4vw,52px) 0 6px 0 !important;}'+lead+'{display:none !important;}</style>';
+ if(mode==='none')    return '<style>'+base+'{display:none !important;}'+lead+'{display:none !important;}'+'#dl-swrap{margin-bottom:clamp(30px,4vw,54px);}</style>';
+ if(mode==='tight')   return '<style>'+base+'{margin:clamp(28px,3.6vw,46px) 0 6px 0 !important;font-size:0.75rem !important;'+
+  'letter-spacing:0.22em !important;}'+lead+'{font-size:0.9rem !important;margin-bottom:18px !important;max-width:56ch !important;}</style>';
+ return '';
+}
+var PN=function(S){return S.it.map(function(i){return i.k;});};
+
+/* 95 · SPECIFICATION SHEET — 76 bar, 92 running head, hairline column grid */
+sreg('Specification Sheet','A',function(S){return PF('tight')+
+ '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EYE(S.h1)+NOTE('one language')+'</div>'+
+ SP(10)+R1(INK)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);">'+S.it.map(function(i,ix){
+  return '<div style="padding:16px 18px 16px 0;'+((ix%4)<3?'border-right:0.5px solid '+HAIR2+';':'')+
+   (ix<4?'border-bottom:0.5px solid '+HAIR2+';':'')+(ix%4?'padding-left:18px;':'')+'">'+PR(i.k)+'</div>';}).join('')+'</div>'+
+ R1(INK)+SP(18)+BODY(sent1(P1S));});
+
+/* 96 · EDITORIAL MASTHEAD — 82 headline, 88 paragraph right, 76 bar under */
+sreg('Editorial Masthead','C',function(S){return PF('caption')+
+ EYE(S.h1)+SP(18)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(24px,4vw,64px);align-items:end;">'+
+ HEAD('Eight principles.<br>One language.')+
+ BODY(P1S,{mw:'46ch'})+'</div>'+
+ SP(26)+R05()+'<div style="display:flex;flex-wrap:wrap;gap:10px 26px;padding:14px 0;">'+
+ PN(S).map(function(n){return PR(n,{c:SUB});}).join('')+'</div>'+R05();});
+
+/* 97 · QUIET MASTHEAD — 90 restraint plus 82 scale, nothing else */
+sreg('Quiet Masthead','A',function(S){return PF('quiet')+
+ EYE(S.h1)+SP(20)+HEAD('Eight principles.<br>One language.',{mw:'18ch'})+SP(22)+
+ '<div style="display:flex;flex-wrap:wrap;gap:8px 24px;">'+PN(S).map(function(n){
+  return PR(n,{c:'rgba(10,10,10,0.5)',sz:'0.9rem'});}).join('')+'</div>';});
+
+/* 98 · CLASSIFIED BAR — 79 grouping expressed as two ruled rows */
+sreg('Classified Bar','A',function(S){return PF('tight')+
+ EYE(S.h1)+SP(14)+R1(INK)+
+ SGRP.map(function(gr,ci){return '<div style="display:grid;grid-template-columns:minmax(0,132px) 1fr;gap:24px;'+
+  'align-items:baseline;padding:15px 0;'+(ci?'border-top:0.5px solid '+HAIR2+';':'')+'">'+
+  NOTE(gr.g,{c:ci?'rgba(10,10,10,0.5)':CYT})+
+  '<div style="display:flex;flex-wrap:wrap;gap:10px 28px;">'+gr.ix.map(function(n){
+   return PR(S.it[n].k);}).join('')+'</div></div>';}).join('')+R1(INK);});
+
+/* 99 · THESIS + BAR — 85 narrative over 76 rhythm */
+sreg('Thesis + Bar','A',function(S){return PF('none')+
+ EYE(S.h1)+SP(18)+
+ HEAD('The portfolio below is the evidence.',{sz:T.headS.sz,mw:'24ch'})+SP(22)+R05(RULE2)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px 24px;padding:16px 0;">'+
+ PN(S).map(function(n){return PR(n);}).join('')+'</div>'+R05(RULE2);});
+
+/* 100 · RUNNING SPECIFICATION — 92 head and 76 bar as one line */
+sreg('Running Specification','A',function(S){return PF('quiet')+
+ R1(INK)+'<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:0 clamp(12px,1.9vw,28px);padding:15px 0;">'+
+ EYE(S.h1,{x:'margin-right:8px;'})+
+ PN(S).map(function(n,ix){return (ix?'<span style="color:'+CYM+';">/</span>':'')+PR(n);}).join('')+'</div>'+
+ R05()+SP(14)+NOTE(sent1(P1S),{c:'rgba(10,10,10,0.4)'});});
+
+/* 101 · TWO-COLUMN SPEC — 88 balance with the bar inside the left column */
+sreg('Two-Column Spec','C',function(S){return PF('caption')+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,68px);align-items:start;">'+
+ '<div>'+EYE(S.h1)+SP(12)+R1(INK)+
+  S.it.map(function(i,ix){return '<div style="padding:11px 0;'+(ix?'border-top:0.5px solid '+HAIR2+';':'')+'">'+
+   PR(i.k)+'</div>';}).join('')+R1(INK)+'</div>'+
+ '<div style="padding-top:34px;">'+BODY(P1S,{mw:'44ch'})+'</div></div>';});
+
+/* 102 · CATALOGUE MASTHEAD — centred, tight, generous */
+sreg('Catalogue Masthead','C',function(S){return PF('caption')+
+ '<div style="max-width:860px;margin:0 auto;text-align:center;">'+
+ EYE(S.h1)+SP(22)+
+ '<div style="display:flex;justify-content:center;">'+HEAD('Eight principles. One language.',{mw:'26ch',sz:T.headS.sz})+'</div>'+
+ SP(20)+'<div style="display:flex;justify-content:center;">'+BODY(sent1(P1S),{mw:'50ch'})+'</div>'+
+ SP(26)+R05()+'<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;padding:15px 0;">'+
+ PN(S).map(function(n){return PR(n,{c:SUB});}).join('')+'</div>'+R05()+'</div>';});
+
+/* 103 · INDEX RULE — numbering from 79, tight leading */
+sreg('Index Rule','A',function(S){return PF('tight')+
+ EYE(S.h1)+SP(14)+
+ '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0 clamp(26px,4vw,68px);">'+
+ S.it.map(function(i,ix){return '<div style="display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:baseline;'+
+  'padding:10px 0;border-top:0.5px solid '+HAIR2+';">'+NOTE(n2(ix),{c:CYT})+PR(i.k)+'</div>';}).join('')+'</div>'+
+ SP(20)+BODY(sent1(P1S),{mw:'54ch'});});
+
+/* 104 · MARGINAL NOTATION — registration marks in the margin */
+sreg('Marginal Notation','C',function(S){return PF('caption')+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,30px) 1fr;gap:clamp(16px,2.4vw,34px);">'+
+ '<div style="padding-top:5px;">'+REG()+'</div>'+
+ '<div>'+EYE(S.h1)+SP(16)+HEAD('Eight principles.<br>One language.',{sz:T.headS.sz,mw:'20ch'})+SP(20)+
+  '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px 24px;">'+PN(S).map(function(n){
+   return PR(n,{c:SUB});}).join('')+'</div>'+SP(18)+BODY(sent1(P1S),{mw:'52ch'})+'</div></div>';});
+
+/* 105 · PLATE CAPTION — museum plate proportions */
+sreg('Plate Caption','C',function(S){return PF('quiet')+
+ '<div style="max-width:52ch;">'+
+ '<div style="display:flex;align-items:baseline;gap:10px;">'+DOT()+EYE(S.h1)+'</div>'+SP(12)+R05(RULE2)+SP(14)+
+ BODY(P1S,{sz:'0.9rem',lh:1.85,mw:'50ch'})+SP(16)+
+ '<div style="display:flex;flex-wrap:wrap;gap:6px 20px;">'+PN(S).map(function(n){
+  return PR(n,{sz:'0.9rem',c:'rgba(10,10,10,0.5)'});}).join('')+'</div></div>';});
+
+/* 106 · COLUMN RULE — a vertical hairline carries the split */
+sreg('Column Rule','C',function(S){return PF('caption')+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 0.5px 1fr;gap:clamp(24px,3.6vw,56px);align-items:start;">'+
+ '<div>'+EYE(S.h1)+SP(16)+HEAD('Eight principles.<br>One language.',{sz:T.headS.sz,mw:'18ch'})+'</div>'+
+ '<div style="background:'+HAIR2+';align-self:stretch;"></div>'+
+ '<div>'+BODY(P1S,{mw:'44ch'})+SP(18)+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 22px;">'+PN(S).map(function(n){
+   return PR(n,{c:SUB});}).join('')+'</div></div></div>';});
+
+/* 107 · DATUM LINE — everything hangs from one heavy rule */
+sreg('Datum Line','A',function(S){return PF('quiet')+
+ '<div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;">'+
+ EYE(S.h1)+NOTE('eight principles')+'</div>'+R1(INK)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0 24px;padding-top:16px;">'+
+ S.it.map(function(i,ix){return '<div style="position:relative;padding-top:12px;">'+
+  '<div style="position:absolute;left:0;top:0;width:1px;height:8px;background:'+CYM+';"></div>'+
+  PR(i.k)+'</div>';}).join('')+'</div>'+SP(22)+BODY(sent1(P1S));});
+
+/* 108 · REDUCED MASTHEAD — headline smaller, principles inline beneath */
+sreg('Reduced Masthead','A',function(S){return PF('none')+
+ EYE(S.h1)+SP(14)+
+ HEAD('Eight principles. One language.',{sz:'clamp(1.05rem,2vw,1.42rem)',mw:'30ch'})+SP(18)+R05()+
+ '<div style="display:flex;flex-wrap:wrap;gap:9px 26px;padding:14px 0;">'+PN(S).map(function(n){
+  return PR(n,{sz:'0.9rem',c:SUB});}).join('')+'</div>'+R05()+SP(16)+
+ NOTE('the portfolio below',{c:CYT});});
+
+/* 109 · MANUAL OPENING — numbered, tight, Leica-manual rhythm */
+sreg('Manual Opening','C',function(S){return PF('tight')+
+ '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EYE(S.h1)+NOTE('01 — 08')+'</div>'+
+ SP(12)+R1(INK)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">'+S.it.map(function(i,ix){
+  return '<div style="padding:14px 16px 14px 0;'+((ix%4)<3?'border-right:0.5px solid '+HAIR2+';':'')+
+   (ix<4?'border-bottom:0.5px solid '+HAIR2+';':'')+(ix%4?'padding-left:16px;':'')+'">'+
+   NOTE(n2(ix),{c:CYT,x:'display:block;margin-bottom:7px;'})+PR(i.k)+'</div>';}).join('')+'</div>'+
+ R05()+SP(16)+BODY(sent1(P1S),{mw:'56ch'});});
+
+/* 110 · GALLERY SPACING — maximum air, minimum ink */
+sreg('Gallery Spacing','A',function(S){return PF('quiet')+
+ '<div style="padding:clamp(16px,3vw,48px) 0;">'+
+ EYE(S.h1)+SP(38)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:34px 30px;">'+PN(S).map(function(n){
+  return PR(n,{d:'block'});}).join('')+'</div>'+SP(40)+
+ '<div style="max-width:120px;">'+R05(RULE2)+'</div></div>';});
+
+/* 111 · TABULAR — industrial table, ruled, values right */
+sreg('Tabular','C',function(S){return PF('tight')+
+ EYE(S.h1)+SP(14)+R1(INK)+
+ S.it.map(function(i,ix){return '<div class="dl-r2" style="display:grid;grid-template-columns:44px minmax(0,190px) 1fr;'+
+  'gap:18px;align-items:baseline;padding:11px 0;'+(ix?'border-top:0.5px solid '+HAIR2+';':'')+'">'+
+  NOTE(n2(ix),{c:CYT})+PR(i.k)+BODY(i.v,{sz:'0.9rem',lh:1.6,mw:'40ch'})+'</div>';}).join('')+R1(INK);});
+
+/* 112 · HANGING INDENT — principles hang left of the measure */
+sreg('Hanging Indent','C',function(S){return PF('caption')+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,168px) 1fr;gap:clamp(20px,3vw,44px);">'+
+ '<div style="text-align:right;">'+EYE(S.h1)+SP(14)+PN(S).map(function(n){
+  return '<div style="padding:6px 0;">'+PR(n,{sz:'0.9rem',c:SUB})+'</div>';}).join('')+'</div>'+
+ '<div style="border-left:0.5px solid '+HAIR2+';padding-left:clamp(20px,3vw,44px);">'+
+  HEAD('Eight principles.<br>One language.',{sz:T.headS.sz,mw:'18ch'})+SP(18)+BODY(P1S,{mw:'46ch'})+'</div></div>';});
+
+/* 113 · SPLIT DATUM — principles between two rules, paragraph below */
+sreg('Split Datum','A',function(S){return PF('none')+
+ EYE(S.h1)+SP(16)+R1(INK)+
+ '<div style="display:flex;flex-wrap:wrap;gap:12px 30px;padding:18px 0;">'+PN(S).map(function(n){
+  return PR(n,{sz:'1.05rem'});}).join('')+'</div>'+R1(INK)+SP(20)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3.4vw,52px);">'+
+ BODY(sent1(P1S),{mw:'42ch'})+
+ '<div style="display:flex;align-items:flex-end;justify-content:flex-end;">'+NOTE('the portfolio below',{c:CYT})+'</div></div>';});
+
+/* 114 · INEVITABLE — the synthesis */
+sreg('Inevitable','C',function(S){return PF('caption')+
+ '<div style="display:flex;justify-content:space-between;align-items:baseline;">'+EYE(S.h1)+
+  '<span style="display:flex;align-items:center;gap:8px;">'+REG()+NOTE('one language')+'</span></div>'+
+ SP(16)+
+ '<div class="dl-r2" style="display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(26px,4vw,68px);align-items:end;">'+
+ HEAD('Eight principles.<br>One language.',{mw:'16ch'})+
+ BODY(P1S,{mw:'44ch',x:'padding-bottom:3px;'})+'</div>'+
+ SP(30)+R1(INK)+
+ '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;">'+S.it.map(function(i,ix){
+  return '<div style="padding:15px 18px 15px 0;'+((ix%4)<3?'border-right:0.5px solid '+HAIR2+';':'')+
+   (ix<4?'border-bottom:0.5px solid '+HAIR2+';':'')+(ix%4?'padding-left:18px;':'')+'">'+
+   '<div style="display:flex;align-items:baseline;gap:9px;">'+NOTE(n2(ix),{c:CYT})+PR(i.k)+'</div></div>';}).join('')+'</div>'+
+ R1(INK);});
 /* ============================================================
    CONTROLLER — harvest, switch, contact sheet, URL state
    ============================================================ */
