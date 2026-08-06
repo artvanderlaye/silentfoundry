@@ -6342,8 +6342,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 3. Preview only, index-dna-lab-2.html.
-     Marshall Original + 8 · SWITCH Original + 7. Type floor 14.4px.
+     DNA LAB — ROUND 4. Preview only, index-dna-lab-2.html.
+     Marshall Original + 9 · SWITCH Original + 6.
      index.html, sf-styles.css and sf-scripts.js are untouched.
      Keys: arrows step · 0 original · M / S section · C contact sheet
      ================================================================== -->
@@ -6437,6 +6437,61 @@ function dialSVG(items,opt){
    'transform:translate(-50%,-50%);text-align:center;max-width:'+(opt.lw||118)+'px;">'+it+'</div>';});
  return h+'</div>';
 }
+/* ---------- specimen dial: centre object, DNA crops on the ring ---------- */
+function CROP(src,ox,oy,z,size,ring){
+ var w=Math.round(size*z);
+ return '<div style="width:'+size+'px;height:'+size+'px;border-radius:50%;overflow:hidden;position:relative;'+
+  'margin:0 auto 7px;border:0.5px solid '+ring+';background:#efece6;">'+
+  '<img src="'+src+'" alt="" loading="lazy" style="position:absolute;width:'+w+'px;height:'+w+'px;'+
+  'object-fit:cover;left:'+Math.round(size/2-ox*w)+'px;top:'+Math.round(size/2-oy*w)+'px;'+
+  'filter:grayscale(0.10) contrast(1.05);max-width:none;"/></div>';
+}
+function specimenDial(items,opt){
+ opt=opt||{};var R=opt.r||42, acc=opt.acc||GOLDS, max=opt.max||520;
+ var h='<div class="dl-dial" style="position:relative;aspect-ratio:1/1;max-width:'+max+'px;margin:0 auto;width:100%;">';
+ items.forEach(function(_,ix){
+  var deg=(ix/items.length)*360;
+  h+='<div class="dl-dring" style="position:absolute;left:50%;top:50%;width:'+(R-16)+'%;height:0.5px;'+
+   'background:linear-gradient(90deg,'+acc+' 0%,rgba(10,10,10,0.05) 100%);transform-origin:0 0;'+
+   'transform:rotate('+(deg-90)+'deg) translateY(-0.25px);"></div>';
+  if(opt.arrow){
+   h+='<div class="dl-dring" style="position:absolute;left:50%;top:50%;transform-origin:0 0;'+
+    'transform:rotate('+(deg-90)+'deg) translate('+(R-19)+'00%,-0.5px);width:0;height:0;'+
+    'border-left:5px solid '+acc+';border-top:3px solid transparent;border-bottom:3px solid transparent;"></div>';}
+ });
+ if(opt.hub){
+  h+='<div class="dl-dhub" style="position:absolute;inset:'+(opt.hubInset||34)+'%;border-radius:50%;overflow:hidden;'+
+   'border:1px solid '+INK+';background:#efece6;">'+
+   '<img src="'+opt.hub+'" alt="'+(opt.hubAlt||'')+'" loading="lazy" style="width:100%;height:100%;'+
+   'object-fit:cover;object-position:'+(opt.hubPos||'50% 50%')+';filter:grayscale(0.12) contrast(1.04);display:block;"/></div>';}
+ items.forEach(function(it,ix){
+  var a=(ix/items.length)*Math.PI*2-Math.PI/2;
+  var x=50+Math.cos(a)*R, y=50+Math.sin(a)*R;
+  h+='<div class="dl-dpt" style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;'+
+   'transform:translate(-50%,-50%);text-align:center;max-width:'+(opt.lw||120)+'px;">'+it+'</div>';});
+ return h+'</div>';
+}
+/* strand -> region of an existing asset. No new files, no base64. */
+var MCROP=[
+ ['images/marshall-hero.png',0.50,0.45,1.2],                                    /* Presence   — wall of stacks   */
+ ['images/614BCLPutVL-1__SL1000_.jpg',0.72,0.50,4.2],                           /* Acoustic   — the grille       */
+ ['images/marshall-hero.png',0.24,0.34,2.4],                                    /* Provenance — decades of amps  */
+ ['images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',0.86,0.36,3.6],         /* Attitude   — the power toggle */
+ ['images/614BCLPutVL-1__SL1000_.jpg',0.60,0.52,6.5],                           /* Tactile    — the weave        */
+ ['images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',0.56,0.42,3.0],         /* Mechanical — the knobs        */
+ ['images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',0.74,0.88,3.4],         /* Visual     — the script logo  */
+ ['images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',0.28,0.45,3.0]          /* CMF        — brass on black   */
+];
+var SCROP=[
+ ['images/SWITCH_eSCRAMBLER_bike-6.jpg',0.50,0.50,1.0],   /* Form              — the silhouette */
+ ['images/frame_factory-413.png',0.45,0.50,1.6],          /* Structure         — exposed loom   */
+ ['images/cnc_1-14.jpg',0.50,0.50,1.7],                   /* CMF               — machined alloy */
+ ['images/switch_battery.jpg',0.70,0.62,2.2],             /* Signature Details — the bolt       */
+ ['images/eSCRAMBLER_dirt-13.jpg',0.45,0.55,1.4],         /* Stance            — on the dirt    */
+ ['images/cnc-cutting.jpg',0.50,0.50,1.6],                /* Manufacturing     — the cut        */
+ ['images/prototype_assembly.jpg',0.52,0.52,1.6],         /* Modularity        — the bench      */
+ ['images/battery_gold.png',0.50,0.50,1.5]                /* Serviceability    — opened up      */
+];
 /* ============================================================
    MARSHALL — round 2.  14 options, renumbered 01–14.
    ============================================================ */
@@ -6445,14 +6500,26 @@ function mreg(name,tier,fn){MN.push(name);MT.push(tier);ML.push(fn);}
 function EY(t){return '<div style="margin-bottom:16px;">'+G(t||MLB,{sz:'0.46rem',ls:'0.26em',c:LAB})+'</div>';}
 
 /* 01 — MONOLITH — group words at normal weight, list pulled in */
-mreg('Monolith','A',function(D){return EY()+D.map(function(d,gi){
- return '<div style="display:grid;grid-template-columns:minmax(0,270px) 1fr;gap:clamp(18px,3vw,40px);align-items:start;'+
-  (gi?'border-top:0.5px solid '+RULE+';padding-top:20px;margin-top:20px;':'')+'">'+
-  '<div>'+K(d.g,{sz:'clamp(1.15rem,2.4vw,1.7rem)',ls:'0.1em',mb:0,c:gi?INKH:'rgba(10,10,10,0.5)'})+
-   '<div style="height:0.5px;background:'+(gi?INK:GOLD)+';margin-top:10px;width:60px;"></div></div>'+
-  '<div>'+d.it.map(function(i){return K(i.k,{sz:'0.86rem',mb:9,c:SUB});}).join('')+'</div></div>';}).join('');});
+mreg('Monolith — Expanding','B',function(D){return EY()+D.map(function(d,gi){
+ return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:clamp(18px,3vw,40px);align-items:start;'+
+  (gi?'border-top:0.5px solid '+RULE+';padding-top:22px;margin-top:22px;':'')+'">'+
+  '<div>'+K(d.g,{sz:'1.25rem',ls:'0.1em',mb:0,c:gi?INKH:'rgba(10,10,10,0.5)'})+
+   '<div style="height:0.5px;background:'+(gi?INK:GOLD)+';margin-top:10px;width:56px;"></div></div>'+
+  '<div>'+d.it.map(function(i,ix){
+    return TOG('<div style="display:grid;grid-template-columns:1fr 20px;align-items:center;padding:11px 0;'+
+     'border-bottom:0.5px solid '+HAIR+';cursor:pointer;">'+K(i.k,{sz:'0.95rem',mb:0})+
+     '<div style="text-align:right;color:'+GOLDS+';">+</div></div>',
+     V(i.v,{sz:'0.9rem',mw:'46ch',x:'padding:10px 0 12px;'}));}).join('')+'</div></div>';}).join('');});
 
-/* 02 — FILING TABS — no numbers, body at story size */
+mreg('Monolith — Plain','C',function(D){return EY()+D.map(function(d,gi){
+ return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:clamp(18px,3vw,40px);align-items:start;'+
+  (gi?'border-top:0.5px solid '+RULE+';padding-top:22px;margin-top:22px;':'')+'">'+
+  '<div>'+K(d.g,{sz:'1.25rem',ls:'0.1em',mb:0,c:gi?INKH:'rgba(10,10,10,0.5)'})+
+   '<div style="height:0.5px;background:'+(gi?INK:GOLD)+';margin-top:10px;width:56px;"></div></div>'+
+  '<div>'+d.it.map(function(i){
+    return '<div style="padding:0 0 16px;">'+K(i.k,{sz:'0.95rem',mb:6})+
+     V(i.v,{sz:'0.9rem',mw:'46ch'})+'</div>';}).join('')+'</div></div>';}).join('');});
+
 mreg('Filing Tabs','B',function(D){var uid=UID();return EY()+
  '<div data-tabs="'+uid+'">'+
  '<div style="display:flex;gap:2px;">'+D.map(function(d,gi){
@@ -6466,22 +6533,6 @@ mreg('Filing Tabs','B',function(D){var uid=UID();return EY()+
  '</div></div>';});
 
 /* 03 — CONTACT PRINT — cream, no numbers, hover reveals */
-mreg('Blueprint Legend','C',function(D){var n=0;
- return EY()+'<div class="dl-bp" style="border:0.5px solid '+RULE+';">'+
- '<div style="display:grid;grid-template-columns:84px 1fr;border-bottom:0.5px solid '+RULE+';">'+
-  '<div style="padding:8px;border-right:0.5px solid '+RULE+';">'+G('KEY',{sz:'0.36rem'})+'</div>'+
-  '<div style="padding:8px 12px;">'+G('MARSHALL — EXTRACTED DNA, SHEET 1 OF 1',{sz:'0.36rem'})+'</div></div>'+
- D.map(function(d,gi){
-  return '<div class="dl-bprow" style="display:grid;grid-template-columns:84px 1fr;'+(gi?'border-top:0.5px solid '+RULE+';':'')+'">'+
-   '<div class="dl-bprail" style="border-right:0.5px solid '+RULE+';padding:12px 8px;writing-mode:vertical-rl;text-orientation:mixed;">'+
-    G(d.g,{sz:'0.4rem',ls:'0.24em',c:LAB})+'</div><div>'+
-   d.it.map(function(i,ix){n++;
-    return '<div class="dl-bpitem" style="display:grid;grid-template-columns:52px minmax(150px,190px) 1fr;gap:10px;align-items:center;padding:13px 12px;'+
-     (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
-     '<div style="text-align:center;">'+SYM(symOf(gi,ix))+'</div>'+
-     K(i.k,{sz:'0.76rem',mb:0})+V(short(i.v,62),{sz:'0.58rem'})+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';});
-
-/* 05 — MARQUEE BANDS — smaller type */
 mreg('Marquee Bands','A',function(D){return EY()+D.map(function(d,gi){
  return '<div>'+'<div style="display:flex;align-items:center;gap:12px;padding:10px 0;">'+
    G(d.g,{sz:'0.46rem',ls:'0.32em',c:LAB})+'<div style="flex:1;height:1px;background:'+INK+';"></div></div>'+
@@ -6490,18 +6541,6 @@ mreg('Marquee Bands','A',function(D){return EY()+D.map(function(d,gi){
     K(i.k,{sz:'clamp(0.85rem,1.8vw,1.22rem)',ls:'0.11em',mb:0,lh:1})+'</div>';}).join('')+'</div>';}).join('');});
 
 /* 06 — DESCENT — dots replaced by the engineering symbols */
-mreg('Matrix','A',function(D){return EY()+
- '<div style="border:0.5px solid '+RULE+';">'+
- D.map(function(d,gi){
-  return '<div class="dl-mx" style="display:grid;grid-template-columns:minmax(120px,150px) repeat(4,1fr);'+
-   (gi?'border-top:0.5px solid '+RULE+';':'')+'">'+
-   '<div style="padding:20px 10px;border-right:0.5px solid '+RULE+';display:flex;align-items:center;">'+
-    G(d.g,{sz:'0.44rem',ls:'0.24em',c:LAB})+'</div>'+
-   d.it.map(function(i,ix){return '<div style="padding:18px 12px;border-right:0.5px solid '+HAIR+';">'+
-    SYM(symOf(gi,ix),{sz:'0.86rem',x:'margin-bottom:9px;'})+K(i.k,{sz:'0.78rem',mb:0})+'</div>';}).join('')+'</div>';}).join('')+
- '</div>';});
-
-/* 08 — MARGINALIA — unchanged */
 mreg('Symbol Ladder','A',function(D){return EY()+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);">'+
  D.map(function(d,gi){
@@ -6525,18 +6564,37 @@ mreg('Offset Stacks','A',function(D){return EY()+
      K(i.k,{sz:'1rem',mb:0,ls:'0.08em'})+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';});
 
 /* 13 — RADIAL DIAL, NAMED — two labelled arcs */
-mreg('Radial Dial — Named','A',function(D){
+mreg('Radial Dial — Subtle','A',function(D){
  var items=[];
  D.forEach(function(d,gi){d.it.forEach(function(i,ix){
-  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:GOLDS,x:'margin-bottom:5px;'})+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25})+'</div>');});});
+  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:'rgba(200,169,110,0.95)',x:'margin-bottom:5px;'})+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.62)'})+'</div>');});});
  return EY()+
- '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">'+
-  G('▲ '+D[0].g,{sz:'0.9rem',ls:'0.14em',c:LAB})+G(D[1].g+' ▼',{sz:'0.9rem',ls:'0.14em',c:LAB})+'</div>'+
- dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,
-   hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
- '<div style="display:flex;justify-content:center;margin-top:2px;">'+
-  G('EIGHT STRANDS — ONE OBJECT',{sz:'0.9rem',ls:'0.14em'})+'</div>';});
+ '<div style="text-align:center;margin-bottom:2px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
+ dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
+ '<div style="text-align:center;margin-top:2px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';});
+
+mreg('Radial Dial — Specimens','A',function(D){
+ var items=[],n=0;
+ D.forEach(function(d,gi){d.it.forEach(function(i,ix){
+  var c=MCROP[n];n++;
+  items.push('<div style="text-align:center;">'+CROP(c[0],c[1],c[2],c[3],62,gi?INK:GOLD)+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.66)'})+'</div>');});});
+ return EY()+
+ '<div style="text-align:center;margin-bottom:4px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
+ specimenDial(items,{r:42,max:560,acc:GOLD,lw:126,hubInset:33,
+   hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall Acton'})+
+ '<div style="text-align:center;margin-top:4px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';});
+
+mreg('Radial Dial — Half Scale','A',function(D){
+ var items=[];
+ D.forEach(function(d,gi){d.it.forEach(function(i,ix){
+  items.push('<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.95rem',c:gi?INK:'rgba(200,169,110,0.95)',x:'margin-bottom:5px;'})+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.06em',lh:1.25,c:gi?INKH:'rgba(10,10,10,0.62)'})+'</div>');});});
+ var inner='<div style="text-align:center;margin-bottom:2px;">'+G(D[0].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.4)'})+'</div>'+
+  dialSVG(items,{r:44,max:470,acc:GOLD,lw:124,hub:'images/614BCLPutVL-1__SL1000_.jpg',hubAlt:'Marshall'})+
+  '<div style="text-align:center;margin-top:2px;">'+G(D[1].g,{sz:'0.9rem',ls:'0.24em',c:'rgba(10,10,10,0.7)'})+'</div>';
+ return EY()+'<div class="dl-half"><div class="dl-half-in" style="width:520px;">'+inner+'</div></div>';});
 /* ============================================================
    SWITCH — round 2.  10 options, renumbered 01–10, cyan throughout.
    ============================================================ */
@@ -6548,15 +6606,6 @@ function SLEAD(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:3
  ';line-height:'+(o.lh||1.9)+';color:'+(o.c||SUB)+';max-width:'+(o.mw||'620px')+';'+(o.x||'')+'">'+t+'</div>';}
 
 /* 01 — COMPONENT LIBRARY — part numbers removed */
-sreg('Component Library','C',function(S){return SEY(S.h1)+
- '<div style="'+grid(4,'1px')+'background:'+RULE+';border:0.5px solid '+RULE+';margin-bottom:16px;">'+
- S.it.map(function(i){
-  return '<div style="background:#efece6;padding:18px 15px;min-height:104px;display:flex;flex-direction:column;">'+
-   '<div style="width:22px;height:2px;background:'+CY+';margin-bottom:13px;"></div>'+
-   K(i.k,{sz:'0.8rem',mb:8})+V(i.v,{sz:'0.58rem',lh:1.55})+'</div>';}).join('')+'</div>'+
- SLEAD(S.p1,{sz:'0.66rem',lh:1.8,mw:'58ch'});});
-
-/* 02 — PRINCIPLE ROW — the arrows are gone; these are not steps */
 sreg('Principle Row','A',function(S){return SEY(S.h1)+
  '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+S.it.map(function(i){
   return '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:14px 16px;flex:1 1 auto;min-width:150px;">'+
@@ -6564,23 +6613,13 @@ sreg('Principle Row','A',function(S){return SEY(S.h1)+
  SP(18)+HR(HAIR)+SP(12)+G(sent1(S.p1),{sz:'0.42rem',ls:'0.14em',c:CYT});});
 
 /* 03 — TYPE MONOLITH — refined, quieter, single weight */
-sreg('Type Monolith','A',function(S){return SEY(S.h1)+
- '<div style="border-top:1px solid '+INK+';border-bottom:1px solid '+INK+';padding:22px 0;">'+
- '<div style="font-family:'+BEBAS+';font-size:clamp(0.78rem,2.1vw,1.42rem);line-height:1.95;letter-spacing:0.14em;'+
+sreg('Type Monolith','A',function(S){return '<div style="margin-bottom:12px;">'+G(S.h1,{sz:'0.9rem',ls:'0.2em',c:CYT})+'</div>'+
+ '<div style="border-top:1px solid '+INK+';border-bottom:1px solid '+INK+';padding:20px 0;">'+
+ '<div style="font-family:'+BEBAS+';font-size:1.15rem;line-height:2;letter-spacing:0.12em;'+
  'text-transform:uppercase;color:'+INKH+';overflow-wrap:anywhere;">'+
- S.it.map(function(i){return i.k;}).join('<span style="color:'+CY+';padding:0 0.5em;">·</span>')+'</div></div>'+
- SP(14)+SLEAD(sent1(S.p1),{sz:'0.66rem',mw:'58ch'});});
+ S.it.map(function(i){return i.k;}).join('<span style="color:'+CY+';padding:0 0.45em;">·</span>')+'</div></div>'+
+ SP(12)+SLEAD(sent1(S.p1),{sz:'0.9rem',mw:'58ch'});});
 
-/* 04 — SPEC TABLE — parameter up to story scale, value to lead scale */
-sreg('Spec Table','C',function(S){return SEY(S.h1)+
- '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);">'+
- S.it.map(function(i){
-  return '<div style="display:grid;grid-template-columns:minmax(150px,190px) 1fr;gap:16px;align-items:baseline;padding:14px 0;'+
-   'border-bottom:0.5px solid '+HAIR+';">'+
-   K(i.k,{sz:'0.9rem',mb:0,ls:'0.14em'})+V(i.v,{sz:'0.78rem',lh:1.7})+'</div>';}).join('')+'</div>'+
- SP(18)+SLEAD(S.p1,{sz:'0.66rem',lh:1.8,mw:'58ch'});});
-
-/* 05 — SYMBOL SPECIMEN — symbol as hero, name beneath, no enclosure */
 sreg('Fold Panels','A',function(S){return SEY(S.h1)+
  '<div style="'+grid(4,'0')+'">'+S.it.map(function(i,ix){
   return '<div style="padding:26px 14px;text-align:center;min-height:96px;'+
@@ -6599,6 +6638,15 @@ sreg('Radial Dial — Named','A',function(S){
  return SEY(S.h1)+dialSVG(items,{r:44,max:470,acc:CYM,lw:124,
    hub:'images/SWITCH_eSCRAMBLER_bike-6.jpg',hubAlt:'SWITCH eSCRAMBLER'})+
  '<div style="display:flex;justify-content:center;margin-top:2px;">'+
+  G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.9rem',ls:'0.14em',c:CYT})+'</div>';});
+
+sreg('Radial Dial — Specimens','A',function(S){
+ var items=S.it.map(function(i,ix){var c=SCROP[ix];
+  return '<div style="text-align:center;">'+CROP(c[0],c[1],c[2],c[3],62,CYM)+
+   K(i.k,{sz:'0.9rem',mb:0,ls:'0.05em',lh:1.25})+'</div>';});
+ return SEY(S.h1)+specimenDial(items,{r:42,max:560,acc:CYM,lw:126,arrow:true,hubInset:33,
+   hub:'images/SWITCH_eSCRAMBLER_bike-6.jpg',hubAlt:'SWITCH eSCRAMBLER'})+
+ '<div style="display:flex;justify-content:center;margin-top:4px;">'+
   G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.9rem',ls:'0.14em',c:CYT})+'</div>';});
 
 sreg('Interlock','B',function(S){return SEY(S.h1)+
@@ -6657,6 +6705,8 @@ var CSS=
  "margin-top:9px;padding-top:8px;border-top:0.5px solid rgba(255,255,255,0.12);line-height:1.8;}"+
 "@media(max-width:700px){#dl-ui{left:12px;right:12px;bottom:12px;min-width:0;}}"+
 /* mobile collapse for the bespoke templates (preview only) */
+"#sfsec-dna .cs-dna-split .dl-half,#dl-swrap .dl-half{display:block;overflow:hidden;}"+
+"#sfsec-dna .cs-dna-split .dl-half .dl-half-in,#dl-swrap .dl-half .dl-half-in{width:520px;zoom:0.5;margin:0 auto;}"+
 "@media(max-width:1100px){"+
  "#sfsec-dna .cs-dna-split [style*=\"repeat(8,1fr)\"],#dl-swrap [style*=\"repeat(8,1fr)\"]"+
   "{grid-template-columns:repeat(4,1fr) !important;}"+
@@ -6672,7 +6722,7 @@ var CSS=
  "#sfsec-dna .cs-dna-split [style*=\"repeat(8,1fr)\"],#dl-swrap [style*=\"repeat(8,1fr)\"]"+
   "{grid-template-columns:repeat(2,1fr) !important;}"+
  "}"+
-"@media(max-width:760px){"+
+"@media(max-width:900px){"+
  ".dl-dial{aspect-ratio:auto !important;max-width:none !important;display:grid;"+
   "grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr));gap:16px;}"+
  ".dl-dring{display:none !important;}"+
