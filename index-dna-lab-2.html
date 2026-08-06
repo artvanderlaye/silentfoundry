@@ -6342,8 +6342,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 
 
 <!-- ==================================================================
-     DNA LAB — ROUND 2. Preview only, index-dna-lab-2.html.
-     Marshall Original + 14 · SWITCH Original + 10.
+     DNA LAB — ROUND 2b. Preview only, index-dna-lab-2.html.
+     Type floor: nothing below 14.4px / 0.9rem anywhere in either block.
      index.html, sf-styles.css and sf-scripts.js are untouched.
      Keys: arrows step · 0 original · M / S section · C contact sheet
      ================================================================== -->
@@ -6367,19 +6367,36 @@ var LAB='#8a6e3a',
     BEBAS="'Bebas Neue',sans-serif",
     DM="'DM Sans',sans-serif";
 
+/* ---------- type floor ----------
+   Nothing renders below 14.4px (0.9rem) — the Marshall story paragraph size.
+   Every size passed to K / V / G / SYM is raised to that floor. */
+var MINREM=0.9;
+function FS(s){
+ s=String(s==null?'':s)||(MINREM+'rem');
+ function fix(v){v=v.trim();var m=/^([0-9.]+)rem$/.exec(v);
+   if(m){var n=parseFloat(m[1]);return (n<MINREM?MINREM:n)+'rem';}
+   var p=/^([0-9.]+)px$/.exec(v);
+   if(p){var q=parseFloat(p[1])/16;return (q<MINREM?MINREM:q)+'rem';}
+   return v;}
+ var c=/^clamp\(([^,]+),([^,]+),([^)]+)\)$/.exec(s.trim());
+ if(c){var a=fix(c[1]),b=c[2],d=fix(c[3]);
+  if(parseFloat(d)<parseFloat(a))d=a;
+  return 'clamp('+a+','+b+','+d+')';}
+ return fix(s);
+}
+
 /* ---------- primitives ---------- */
-function K(t,o){o=o||{};return '<div style="font-family:'+BEBAS+';font-size:'+(o.sz||'0.86rem')+
+function K(t,o){o=o||{};return '<div style="font-family:'+BEBAS+';font-size:'+FS(o.sz||'0.95rem')+
   ';letter-spacing:'+(o.ls||'0.16em')+';text-transform:uppercase;color:'+(o.c||INK)+
   ';line-height:'+(o.lh||1.05)+';'+(o.mb!=null?'margin-bottom:'+o.mb+'px;':'')+(o.x||'')+'">'+t+'</div>';}
-function V(t,o){o=o||{};return '<div class="'+(o.cls||'')+'" style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.64rem')+
-  ';line-height:'+(o.lh||1.6)+';color:'+(o.c||SUB)+';'+(o.mw?'max-width:'+o.mw+';':'')+(o.x||'')+'">'+t+'</div>';}
-function G(t,o){o=o||{};return '<span style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.42rem')+
+function V(t,o){o=o||{};return '<div class="'+(o.cls||'')+'" style="font-family:'+DM+';font-weight:300;font-size:'+FS(o.sz||'0.9rem')+
+  ';line-height:'+(o.lh||1.75)+';color:'+(o.c||SUB)+';'+(o.mw?'max-width:'+o.mw+';':'')+(o.x||'')+'">'+t+'</div>';}
+function G(t,o){o=o||{};return '<span style="font-family:'+DM+';font-weight:300;font-size:'+FS(o.sz||'0.9rem')+
   ';letter-spacing:'+(o.ls||'0.24em')+';text-transform:uppercase;color:'+(o.c||FAINT)+';'+(o.x||'')+'">'+t+'</span>';}
 function HR(c,m,h){return '<div style="height:'+(h||'0.5px')+';background:'+(c||HAIR)+';'+(m?'margin:'+m+';':'')+'"></div>';}
 function VR(c,x){return '<div style="width:0.5px;background:'+(c||HAIR)+';'+(x||'')+'"></div>';}
 function SP(h){return '<div style="height:'+h+'px"></div>';}
-function grid(n,g){var mw=(n>=8?84:(n>=4?142:190));
- return 'display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,'+mw+'px),1fr));gap:'+g+';';}
+function grid(n,g){return 'display:grid;grid-template-columns:repeat('+n+',1fr);gap:'+g+';';}
 function n2(i){return (i<9?'0':'')+(i+1);}
 function esc(s){return String(s==null?'':s);}
 function short(s,n){s=esc(s);if(s.length<=n)return s;var c=s.slice(0,n);var p=c.lastIndexOf(' ');return (p>n*0.5?c.slice(0,p):c)+'…';}
@@ -6394,19 +6411,19 @@ var SYMB=['◎','∿','⌘','∠','⊞','⊥','◐','▨'];        /* the shared
 var CY='#00b4d8', CYT='#0a7f99', CYM='rgba(0,180,216,0.55)', CYF='rgba(0,180,216,0.22)';
 var BODY_FS='0.9rem', BODY_LH=1.98;                 /* = Marshall story paragraph, measured */
 function symOf(gi,ix){return SYMB[gi*4+ix];}
-function SYM(s,o){o=o||{};return '<span style="font-size:'+(o.sz||'0.9rem')+';color:'+(o.c||GOLDS)+
+function SYM(s,o){o=o||{};return '<span style="font-size:'+FS(o.sz||'1.15rem')+';color:'+(o.c||GOLDS)+
  ';line-height:1;display:inline-block;'+(o.x||'')+'">'+s+'</span>';}
 function dialSVG(items,opt){
  opt=opt||{};var R=opt.r||38, acc=opt.acc||GOLDS, lab=opt.lab||null;
- var h='<div style="position:relative;aspect-ratio:1/1;max-width:'+(opt.max||300)+'px;margin:0 auto;width:100%;">'+
-  '<div style="position:absolute;inset:0;border:1px solid '+INK+';border-radius:50%;"></div>'+
-  '<div style="position:absolute;inset:26%;border:0.5px solid '+acc+';border-radius:50%;"></div>';
- if(lab){h+='<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'+
-  G(lab,{sz:'0.4rem',ls:'0.3em',c:opt.labc||LAB})+'</div>';}
+ var h='<div class="dl-dial" style="position:relative;aspect-ratio:1/1;max-width:'+(opt.max||300)+'px;margin:0 auto;width:100%;">'+
+  '<div class="dl-dring" style="position:absolute;inset:0;border:1px solid '+INK+';border-radius:50%;"></div>'+
+  '<div class="dl-dring" style="position:absolute;inset:26%;border:0.5px solid '+acc+';border-radius:50%;"></div>';
+ if(lab){h+='<div class="dl-dhub" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">'+
+  G(lab,{sz:'0.9rem',ls:'0.3em',c:opt.labc||LAB})+'</div>';}
  items.forEach(function(it,ix){
   var a=(ix/items.length)*Math.PI*2-Math.PI/2;
   var x=50+Math.cos(a)*R, y=50+Math.sin(a)*R;
-  h+='<div style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;transform:translate(-50%,-50%);'+
+  h+='<div class="dl-dpt" style="position:absolute;left:'+x.toFixed(2)+'%;top:'+y.toFixed(2)+'%;transform:translate(-50%,-50%);'+
    'text-align:center;white-space:nowrap;">'+it+'</div>';});
  return h+'</div>';
 }
@@ -6419,7 +6436,7 @@ function EY(t){return '<div style="margin-bottom:16px;">'+G(t||MLB,{sz:'0.46rem'
 
 /* 01 — MONOLITH — group words at normal weight, list pulled in */
 mreg('Monolith','A',function(D){return EY()+D.map(function(d,gi){
- return '<div style="display:grid;grid-template-columns:minmax(0,240px) 1fr;gap:clamp(18px,3vw,40px);align-items:start;'+
+ return '<div style="display:grid;grid-template-columns:minmax(0,270px) 1fr;gap:clamp(18px,3vw,40px);align-items:start;'+
   (gi?'border-top:0.5px solid '+RULE+';padding-top:20px;margin-top:20px;':'')+'">'+
   '<div>'+K(d.g,{sz:'clamp(1.15rem,2.4vw,1.7rem)',ls:'0.1em',mb:0,c:gi?INKH:'rgba(10,10,10,0.5)'})+
    '<div style="height:0.5px;background:'+(gi?INK:GOLD)+';margin-top:10px;width:60px;"></div></div>'+
@@ -6450,16 +6467,16 @@ mreg('Contact Print','B',function(D){return EY()+D.map(function(d,gi){
 
 /* 04 — BLUEPRINT LEGEND — the symbol source, unchanged */
 mreg('Blueprint Legend','C',function(D){var n=0;
- return EY()+'<div style="border:0.5px solid '+RULE+';">'+
- '<div style="display:grid;grid-template-columns:54px 1fr;border-bottom:0.5px solid '+RULE+';">'+
+ return EY()+'<div class="dl-bp" style="border:0.5px solid '+RULE+';">'+
+ '<div style="display:grid;grid-template-columns:84px 1fr;border-bottom:0.5px solid '+RULE+';">'+
   '<div style="padding:8px;border-right:0.5px solid '+RULE+';">'+G('KEY',{sz:'0.36rem'})+'</div>'+
   '<div style="padding:8px 12px;">'+G('MARSHALL — EXTRACTED DNA, SHEET 1 OF 1',{sz:'0.36rem'})+'</div></div>'+
  D.map(function(d,gi){
-  return '<div style="display:grid;grid-template-columns:54px 1fr;'+(gi?'border-top:0.5px solid '+RULE+';':'')+'">'+
-   '<div style="border-right:0.5px solid '+RULE+';padding:12px 8px;writing-mode:vertical-rl;text-orientation:mixed;">'+
+  return '<div class="dl-bprow" style="display:grid;grid-template-columns:84px 1fr;'+(gi?'border-top:0.5px solid '+RULE+';':'')+'">'+
+   '<div class="dl-bprail" style="border-right:0.5px solid '+RULE+';padding:12px 8px;writing-mode:vertical-rl;text-orientation:mixed;">'+
     G(d.g,{sz:'0.4rem',ls:'0.24em',c:LAB})+'</div><div>'+
    d.it.map(function(i,ix){n++;
-    return '<div style="display:grid;grid-template-columns:40px 140px 1fr;gap:10px;align-items:center;padding:11px 12px;'+
+    return '<div class="dl-bpitem" style="display:grid;grid-template-columns:52px minmax(150px,190px) 1fr;gap:10px;align-items:center;padding:13px 12px;'+
      (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
      '<div style="text-align:center;">'+SYM(symOf(gi,ix))+'</div>'+
      K(i.k,{sz:'0.76rem',mb:0})+V(short(i.v,62),{sz:'0.58rem'})+'</div>';}).join('')+'</div></div>';}).join('')+'</div>';});
@@ -6474,7 +6491,7 @@ mreg('Marquee Bands','A',function(D){return EY()+D.map(function(d,gi){
 
 /* 06 — DESCENT — dots replaced by the engineering symbols */
 mreg('Descent','C',function(D){return EY()+
- '<div style="display:grid;grid-template-columns:22px 1fr;gap:clamp(14px,2vw,26px);">'+
+ '<div style="display:grid;grid-template-columns:30px 1fr;gap:clamp(16px,2vw,30px);">'+
  '<div style="background:linear-gradient(180deg,'+GHOST+' 0%,'+INK+' 100%);width:0.5px;margin:0 auto;"></div>'+
  '<div>'+D.map(function(d,gi){
   return '<div style="'+(gi?'margin-top:30px;':'')+'">'+
@@ -6483,7 +6500,7 @@ mreg('Descent','C',function(D){return EY()+
     G(gi?'WHAT IT IS MADE OF':'WHAT IT IS',{sz:'0.36rem'})+'</div>'+
    d.it.map(function(i,ix){
     return '<div style="padding:0 0 18px;position:relative;">'+
-     '<div style="position:absolute;left:-'+40+'px;top:-2px;width:26px;text-align:center;">'+
+     '<div style="position:absolute;left:-'+46+'px;top:-1px;width:32px;text-align:center;">'+
       SYM(symOf(gi,ix),{sz:'0.82rem'})+'</div>'+
      K(i.k,{sz:'0.86rem',mb:5})+V(i.v,{sz:'0.62rem',mw:'46ch'})+'</div>';}).join('')+
    '</div>';}).join('')+'</div></div>';});
@@ -6492,7 +6509,7 @@ mreg('Descent','C',function(D){return EY()+
 mreg('Matrix','A',function(D){return EY()+
  '<div style="border:0.5px solid '+RULE+';">'+
  D.map(function(d,gi){
-  return '<div class="dl-mx" style="display:grid;grid-template-columns:112px repeat(4,1fr);'+
+  return '<div class="dl-mx" style="display:grid;grid-template-columns:minmax(120px,150px) repeat(4,1fr);'+
    (gi?'border-top:0.5px solid '+RULE+';':'')+'">'+
    '<div style="padding:20px 10px;border-right:0.5px solid '+RULE+';display:flex;align-items:center;">'+
     G(d.g,{sz:'0.44rem',ls:'0.24em',c:LAB})+'</div>'+
@@ -6506,7 +6523,7 @@ mreg('Marginalia','C',function(D){return EY()+
   return '<div style="'+(gi?'margin-top:26px;padding-top:22px;border-top:0.5px solid '+RULE+';':'')+'">'+
    '<div style="margin-bottom:10px;">'+G(d.g,{sz:'0.46rem',ls:'0.3em',c:LAB})+'</div>'+
    d.it.map(function(i){
-    return '<div class="dl-r2" style="display:grid;grid-template-columns:132px 1fr;gap:clamp(12px,2vw,26px);padding:7px 0;">'+
+    return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(120px,160px) 1fr;gap:clamp(14px,2vw,28px);padding:9px 0;">'+
      '<div style="text-align:right;">'+K(i.k,{sz:'0.68rem',mb:0,c:INKH})+'</div>'+
      V(i.v,{sz:'0.62rem',lh:1.75,mw:'52ch',x:'border-left:0.5px solid '+HAIR+';padding-left:clamp(12px,2vw,22px);'})+
      '</div>';}).join('')+'</div>';}).join('');});
@@ -6518,7 +6535,7 @@ mreg('Symbol Ladder','A',function(D){return EY()+
   return '<div>'+'<div style="padding-bottom:10px;border-bottom:1px solid '+INK+';margin-bottom:14px;">'+
    G(d.g,{sz:'0.48rem',ls:'0.32em',c:LAB})+'</div>'+
    d.it.map(function(i,ix){
-    return '<div style="display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:center;padding:11px 0;'+
+    return '<div style="display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:center;padding:13px 0;'+
      (ix?'border-top:0.5px solid '+HAIR+';':'')+'">'+
      '<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.94rem'})+'</div>'+
      K(i.k,{sz:'0.92rem',mb:0,ls:'0.08em'})+'</div>';}).join('')+'</div>';}).join('')+'</div>';});
@@ -6529,27 +6546,27 @@ mreg('Colophon — Left','C',function(D){return EY()+
  D.map(function(d,gi){
   return '<div style="'+(gi?'margin-top:20px;':'')+'">'+
    '<div style="margin-bottom:9px;">'+G(d.g,{sz:'0.44rem',ls:'0.34em',c:LAB})+'</div>'+
-   '<div style="font-family:'+DM+';font-weight:300;font-size:0.66rem;line-height:2;color:'+SUB+';">'+
+   '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:2;color:'+SUB+';">'+
    d.it.map(function(i){
-    return '<span style="font-family:'+BEBAS+';font-size:0.8rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
+    return '<span style="font-family:'+BEBAS+';font-size:0.9rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
      ' — '+esc(i.v);}).join('&nbsp;&nbsp;·&nbsp;&nbsp;')+'</div></div>';}).join('')+'</div>';});
 
 /* 11 — COLOPHON — hung, label in the margin */
 mreg('Colophon — Hung','C',function(D){return EY()+
  D.map(function(d,gi){
-  return '<div class="dl-r2" style="display:grid;grid-template-columns:118px 1fr;gap:clamp(14px,2.4vw,30px);'+
+  return '<div class="dl-r2" style="display:grid;grid-template-columns:minmax(120px,165px) 1fr;gap:clamp(16px,2.4vw,32px);'+
    (gi?'margin-top:22px;padding-top:20px;border-top:0.5px solid '+RULE+';':'')+'">'+
    '<div style="text-align:right;padding-top:4px;">'+G(d.g,{sz:'0.44rem',ls:'0.28em',c:LAB})+'</div>'+
-   '<div style="font-family:'+DM+';font-weight:300;font-size:0.66rem;line-height:2.05;color:'+SUB+';max-width:56ch;">'+
+   '<div style="font-family:'+DM+';font-weight:300;font-size:0.9rem;line-height:2.05;color:'+SUB+';max-width:56ch;">'+
    d.it.map(function(i){
-    return '<span style="font-family:'+BEBAS+';font-size:0.8rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
+    return '<span style="font-family:'+BEBAS+';font-size:0.9rem;letter-spacing:0.14em;color:'+INKH+';">'+i.k+'</span>'+
      ' — '+esc(i.v);}).join('&nbsp;&nbsp;·&nbsp;&nbsp;')+'</div></div>';}).join('');});
 
 /* 12 — OFFSET STACKS — unchanged */
 mreg('Offset Stacks','A',function(D){return EY()+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,40px);align-items:start;">'+
  D.map(function(d,gi){
-  return '<div style="display:grid;grid-template-columns:26px 1fr;gap:14px;'+(gi?'margin-top:46px;':'')+'">'+
+  return '<div style="display:grid;grid-template-columns:34px 1fr;gap:16px;'+(gi?'margin-top:46px;':'')+'">'+
    '<div style="writing-mode:vertical-rl;text-orientation:mixed;border-left:1px solid '+(gi?INK:GOLD)+';padding-left:6px;">'+
     G(d.g,{sz:'0.46rem',ls:'0.34em',c:LAB})+'</div>'+
    '<div>'+d.it.map(function(i,ix){
@@ -6566,7 +6583,7 @@ mreg('Radial Dial — Named','A',function(D){
  '<div style="position:relative;">'+
  '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">'+
   G('▲ '+D[0].g,{sz:'0.44rem',ls:'0.28em',c:LAB})+G(D[1].g+' ▼',{sz:'0.44rem',ls:'0.28em',c:LAB})+'</div>'+
- dialSVG(items,{r:41,max:340,acc:GOLD})+
+ dialSVG(items,{r:43,max:560,acc:GOLD})+
  '<div style="display:flex;justify-content:center;margin-top:8px;">'+
   G('EIGHT POSITIONS — ONE BRAND',{sz:'0.4rem'})+'</div></div>';});
 
@@ -6574,22 +6591,22 @@ mreg('Radial Dial — Named','A',function(D){
 mreg('Radial Dial — Indexed','B',function(D){
  var n=0, pts=[];
  D.forEach(function(d,gi){d.it.forEach(function(i,ix){n++;
-  pts.push('<div style="width:22px;height:22px;border-radius:50%;border:1px solid '+(gi?INK:GOLD)+';'+
+  pts.push('<div style="width:32px;height:32px;border-radius:50%;border:1px solid '+(gi?INK:GOLD)+';'+
    'background:'+(gi?'rgba(10,10,10,0.05)':'rgba(200,169,110,0.12)')+';display:flex;align-items:center;'+
    'justify-content:center;">'+K(n2(n-1),{sz:'0.56rem',mb:0,c:gi?INKH:LAB})+'</div>');});});
  var k=0;
  return EY()+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);align-items:center;">'+
- dialSVG(pts,{r:39,max:270,acc:GOLD,lab:'MARSHALL'})+
+ dialSVG(pts,{r:40,max:340,acc:GOLD,lab:'MARSHALL'})+
  '<div>'+D.map(function(d,gi){
   return '<div style="'+(gi?'margin-top:14px;':'')+'">'+
    '<div style="margin-bottom:5px;">'+G(d.g,{sz:'0.42rem',ls:'0.28em',c:LAB})+'</div>'+
    d.it.map(function(i,ix){k++;
-    return TOG('<div style="display:grid;grid-template-columns:30px 26px 1fr 18px;gap:8px;align-items:center;'+
+    return TOG('<div style="display:grid;grid-template-columns:40px 34px 1fr 22px;gap:10px;align-items:center;'+
      'padding:9px 0;border-bottom:0.5px solid '+HAIR+';cursor:pointer;">'+
      G(n2(k-1),{sz:'0.4rem',c:GOLDS})+'<div style="text-align:center;">'+SYM(symOf(gi,ix),{sz:'0.72rem'})+'</div>'+
-     K(i.k,{sz:'0.74rem',mb:0})+'<div style="text-align:right;color:'+GOLDS+';font-size:0.62rem;">+</div></div>',
-     V(i.v,{sz:'0.58rem',x:'padding:9px 0 11px 64px;'}));}).join('')+'</div>';}).join('')+'</div></div>';});
+     K(i.k,{sz:'0.74rem',mb:0})+'<div style="text-align:right;color:'+GOLDS+';font-size:0.9rem;">+</div></div>',
+     V(i.v,{sz:'0.58rem',x:'padding:10px 0 13px 84px;'}));}).join('')+'</div>';}).join('')+'</div></div>';});
 /* ============================================================
    SWITCH — round 2.  10 options, renumbered 01–10, cyan throughout.
    ============================================================ */
@@ -6597,7 +6614,7 @@ var SL=[], SN=[], ST=[];
 function sreg(name,tier,fn){SN.push(name);ST.push(tier);SL.push(fn);}
 function sent1(p){var m=esc(p).match(/^[^.]*\./);return m?m[0]:esc(p);}
 function SEY(t){return '<div style="margin-bottom:14px;">'+G(t,{sz:'0.5rem',ls:'0.32em',c:CYT})+'</div>';}
-function SLEAD(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.sz||'0.78rem')+
+function SLEAD(t,o){o=o||{};return '<div style="font-family:'+DM+';font-weight:300;font-size:'+FS(o.sz||'0.9rem')+
  ';line-height:'+(o.lh||1.9)+';color:'+(o.c||SUB)+';max-width:'+(o.mw||'620px')+';'+(o.x||'')+'">'+t+'</div>';}
 
 /* 01 — COMPONENT LIBRARY — part numbers removed */
@@ -6612,7 +6629,7 @@ sreg('Component Library','C',function(S){return SEY(S.h1)+
 /* 02 — PRINCIPLE ROW — the arrows are gone; these are not steps */
 sreg('Principle Row','A',function(S){return SEY(S.h1)+
  '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+S.it.map(function(i){
-  return '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:14px 16px;flex:1 1 auto;min-width:112px;">'+
+  return '<div style="border:0.5px solid '+RULE+';border-top:2px solid '+CY+';padding:14px 16px;flex:1 1 auto;min-width:150px;">'+
    K(i.k,{sz:'0.78rem',mb:0,lh:1.15})+'</div>';}).join('')+'</div>'+
  SP(18)+HR(HAIR)+SP(12)+G(sent1(S.p1),{sz:'0.42rem',ls:'0.14em',c:CYT});});
 
@@ -6628,7 +6645,7 @@ sreg('Type Monolith','A',function(S){return SEY(S.h1)+
 sreg('Spec Table','C',function(S){return SEY(S.h1)+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(20px,4vw,48px);">'+
  S.it.map(function(i){
-  return '<div style="display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:baseline;padding:13px 0;'+
+  return '<div style="display:grid;grid-template-columns:minmax(150px,190px) 1fr;gap:16px;align-items:baseline;padding:14px 0;'+
    'border-bottom:0.5px solid '+HAIR+';">'+
    K(i.k,{sz:'0.9rem',mb:0,ls:'0.14em'})+V(i.v,{sz:'0.78rem',lh:1.7})+'</div>';}).join('')+'</div>'+
  SP(18)+SLEAD(S.p1,{sz:'0.66rem',lh:1.8,mw:'58ch'});});
@@ -6646,9 +6663,9 @@ sreg('Symbol Specimen','A',function(S){return SEY(S.h1)+
 sreg('Certification Marks','C',function(S){return SEY(S.h1)+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(22px,4vw,52px);">'+
  S.it.map(function(i,ix){
-  return '<div style="display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;padding:12px 0;'+
+  return '<div style="display:grid;grid-template-columns:60px 1fr;gap:16px;align-items:center;padding:14px 0;'+
    'border-bottom:0.5px solid '+HAIR+';">'+
-   '<div style="width:44px;height:44px;border:1px solid '+INK+';border-radius:50%;position:relative;'+
+   '<div style="width:52px;height:52px;border:1px solid '+INK+';border-radius:50%;position:relative;'+
     'display:flex;align-items:center;justify-content:center;">'+
     '<div style="position:absolute;inset:4px;border:0.5px solid '+CYM+';border-radius:50%;"></div>'+
     SYM(SYMB[ix],{sz:'0.86rem',c:CYT})+'</div>'+
@@ -6671,32 +6688,32 @@ sreg('Radial Dial — Named','A',function(S){
  var items=S.it.map(function(i,ix){
   return '<div style="text-align:center;">'+SYM(SYMB[ix],{sz:'0.74rem',c:CY,x:'margin-bottom:4px;'})+
    K(i.k,{sz:'0.62rem',mb:0,ls:'0.1em'})+'</div>';});
- return SEY(S.h1)+dialSVG(items,{r:41,max:340,acc:CYM,lab:'SWITCH',labc:CYT})+
+ return SEY(S.h1)+dialSVG(items,{r:43,max:560,acc:CYM,lab:'SWITCH',labc:CYT})+
  '<div style="display:flex;justify-content:center;margin-top:10px;">'+
  G('ONE LANGUAGE — EIGHT POSITIONS',{sz:'0.4rem',c:CYT})+'</div>';});
 
 /* 09 — RADIAL DIAL, INDEXED — numbered dial keyed to an expandable list */
 sreg('Radial Dial — Indexed','B',function(S){
  var pts=S.it.map(function(i,ix){
-  return '<div style="width:22px;height:22px;border-radius:50%;border:1px solid '+CYM+';'+
+  return '<div style="width:32px;height:32px;border-radius:50%;border:1px solid '+CYM+';'+
    'background:rgba(0,180,216,0.10);display:flex;align-items:center;justify-content:center;">'+
    K(n2(ix),{sz:'0.56rem',mb:0,c:CYT})+'</div>';});
  return SEY(S.h1)+
  '<div class="dl-r2" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,44px);align-items:center;">'+
- dialSVG(pts,{r:39,max:270,acc:CYM,lab:'SWITCH',labc:CYT})+
+ dialSVG(pts,{r:40,max:340,acc:CYM,lab:'SWITCH',labc:CYT})+
  '<div>'+S.it.map(function(i,ix){
-  return TOG('<div style="display:grid;grid-template-columns:30px 26px 1fr 18px;gap:8px;align-items:center;'+
+  return TOG('<div style="display:grid;grid-template-columns:40px 34px 1fr 22px;gap:10px;align-items:center;'+
    'padding:10px 0;border-bottom:0.5px solid '+HAIR+';cursor:pointer;">'+
    G(n2(ix),{sz:'0.4rem',c:CYT})+'<div style="text-align:center;">'+SYM(SYMB[ix],{sz:'0.72rem',c:CY})+'</div>'+
-   K(i.k,{sz:'0.76rem',mb:0})+'<div style="text-align:right;color:'+CY+';font-size:0.62rem;">+</div></div>',
-   V(i.v,{sz:'0.6rem',x:'padding:9px 0 11px 64px;'}));}).join('')+'</div></div>';});
+   K(i.k,{sz:'0.76rem',mb:0})+'<div style="text-align:right;color:'+CY+';font-size:0.9rem;">+</div></div>',
+   V(i.v,{sz:'0.6rem',x:'padding:10px 0 13px 84px;'}));}).join('')+'</div></div>';});
 
 /* 10 — INTERLOCK — even blocks, each opens */
 sreg('Interlock','B',function(S){return SEY(S.h1)+
  '<div style="'+grid(4,'2px')+'">'+S.it.map(function(i,ix){
   return TOG('<div style="background:rgba(0,180,216,'+(ix%2?'0.10':'0.045')+');border:0.5px solid '+CYF+';'+
    'padding:20px 14px;min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;">'+
-   K(i.k,{sz:'0.8rem',mb:0,lh:1.2})+'<span style="color:'+CY+';font-size:0.68rem;">+</span></div>',
+   K(i.k,{sz:'0.8rem',mb:0,lh:1.2})+'<span style="color:'+CY+';font-size:0.9rem;">+</span></div>',
    V(i.v,{sz:'0.6rem',x:'padding:11px 14px 14px;background:rgba(0,180,216,0.03);border:0.5px solid '+CYF+';border-top:none;'}));
   }).join('')+'</div>'+
  SP(14)+SLEAD(S.p1,{sz:'0.66rem',lh:1.8,mw:'58ch'});});
@@ -6713,21 +6730,21 @@ var CSS=
 "#sfsec-dna .cs-dna-split *{max-width:none;}"+
 ".dl-hov{position:relative;}"+
 ".dl-rev{max-height:0;opacity:0;overflow:hidden;transition:max-height .34s ease,opacity .24s ease;}"+
-".dl-hov:hover .dl-rev,.dl-hov:focus-within .dl-rev{max-height:170px;opacity:1;}"+
+".dl-hov:hover .dl-rev,.dl-hov:focus-within .dl-rev{max-height:260px;opacity:1;}"+
 ".dl-tog{cursor:pointer;}"+
 ".dl-trev{max-height:0;opacity:0;overflow:hidden;transition:max-height .34s ease,opacity .24s ease;}"+
-".dl-tog.open .dl-trev{max-height:220px;opacity:1;}"+
-".dl-tab{font-family:"+DM+";font-size:0.44rem;letter-spacing:0.26em;text-transform:uppercase;"+
- "background:transparent;border:0.5px solid "+RULE+";border-bottom:none;color:"+SUB+";padding:9px 18px;cursor:pointer;}"+
+".dl-tog.open .dl-trev{max-height:320px;opacity:1;}"+
+".dl-tab{font-family:"+DM+";font-size:0.9rem;letter-spacing:0.14em;text-transform:uppercase;"+
+ "background:transparent;border:0.5px solid "+RULE+";border-bottom:none;color:"+SUB+";padding:12px 22px;cursor:pointer;}"+
 ".dl-tab.on{background:"+INK+";color:#efece6;border-color:"+INK+";}"+
 ".dl-pane{display:none;}.dl-pane.on{display:block;}"+
 /* contact sheet */
 ".dl-band{display:flex;align-items:baseline;gap:14px;margin:0 0 18px;padding-top:6px;border-top:2px solid "+INK+";}"+
-".dl-band b{font-family:"+BEBAS+";font-size:1.05rem;letter-spacing:0.14em;color:"+INKH+";font-weight:400;padding-top:10px;}"+
-".dl-band i{font-family:"+DM+";font-style:normal;font-size:0.44rem;letter-spacing:0.26em;text-transform:uppercase;"+
+".dl-band b{font-family:"+BEBAS+";font-size:1.35rem;letter-spacing:0.14em;color:"+INKH+";font-weight:400;padding-top:10px;}"+
+".dl-band i{font-family:"+DM+";font-style:normal;font-size:0.9rem;letter-spacing:0.14em;text-transform:uppercase;"+
  "color:"+LAB+";padding-top:14px;}"+
 ".dl-band u{flex:1;text-decoration:none;height:0.5px;background:"+HAIR+";}"+
-".dl-band s{font-family:"+DM+";text-decoration:none;font-size:0.4rem;letter-spacing:0.2em;text-transform:uppercase;"+
+".dl-band s{font-family:"+DM+";text-decoration:none;font-size:0.9rem;letter-spacing:0.12em;text-transform:uppercase;"+
  "color:"+FAINT+";padding-top:14px;}"+
 ".dl-slot{margin:0 0 64px;}"+
 /* control panel */
@@ -6748,7 +6765,35 @@ var CSS=
  "margin-top:9px;padding-top:8px;border-top:0.5px solid rgba(255,255,255,0.12);line-height:1.8;}"+
 "@media(max-width:700px){#dl-ui{left:12px;right:12px;bottom:12px;min-width:0;}}"+
 /* mobile collapse for the bespoke templates (preview only) */
+"@media(max-width:1100px){"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(8,1fr)\"],#dl-swrap [style*=\"repeat(8,1fr)\"]"+
+  "{grid-template-columns:repeat(4,1fr) !important;}"+
+ "}"+
+"@media(max-width:900px){"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(4,1fr)\"],#dl-swrap [style*=\"repeat(4,1fr)\"]"+
+  "{grid-template-columns:repeat(2,1fr) !important;}"+
+ "}"+
 "@media(max-width:620px){"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(4,1fr)\"],#dl-swrap [style*=\"repeat(4,1fr)\"],"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(2,1fr)\"],#dl-swrap [style*=\"repeat(2,1fr)\"]"+
+  "{grid-template-columns:1fr !important;}"+
+ "#sfsec-dna .cs-dna-split [style*=\"repeat(8,1fr)\"],#dl-swrap [style*=\"repeat(8,1fr)\"]"+
+  "{grid-template-columns:repeat(2,1fr) !important;}"+
+ "}"+
+"@media(max-width:760px){"+
+ ".dl-dial{aspect-ratio:auto !important;max-width:none !important;display:grid;"+
+  "grid-template-columns:repeat(auto-fit,minmax(min(100%,168px),1fr));gap:16px;}"+
+ ".dl-dring{display:none !important;}"+
+ ".dl-dhub{position:static !important;grid-column:1/-1;justify-content:flex-start !important;padding-bottom:4px;}"+
+ ".dl-dpt{position:static !important;transform:none !important;white-space:normal !important;"+
+  "text-align:left !important;border-top:0.5px solid rgba(10,10,10,0.1);padding-top:10px;}"+
+ "}"+
+"@media(max-width:620px){"+
+ ".dl-bprow{grid-template-columns:1fr !important;}"+
+ ".dl-bprail{writing-mode:horizontal-tb !important;border-right:none !important;"+
+  "border-bottom:0.5px solid rgba(10,10,10,0.1);padding:10px 12px !important;}"+
+ ".dl-bpitem{grid-template-columns:44px 1fr !important;row-gap:6px;}"+
+ ".dl-bpitem > div:last-child{grid-column:2;}"+
  ".dl-r2{grid-template-columns:1fr !important;gap:22px !important;}"+
  ".dl-sp{grid-template-columns:1fr !important;gap:22px !important;}"+
  ".dl-sp > div:nth-child(2){height:0.5px;width:100%;}"+
