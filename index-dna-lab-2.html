@@ -9296,22 +9296,36 @@ function RHEAD(S,o){
 function R115(S,o){
  o=o||{};
  var k='dl-'+o.k;
+ /* o.master puts both columns on a shared 12-track grid, so the right column's
+    left edge is a real grid line rather than a percentage of whatever is left. */
  var css=XCSS('.'+k+'{display:grid;grid-template-columns:'+(o.cols||'1.05fr 0.95fr')+';'+
-   'gap:'+(o.gap||'clamp(28px,4.4vw,74px)')+';align-items:start;}'+
-  '@media(max-width:900px){.'+k+'{grid-template-columns:1fr !important;gap:26px !important;}}');
+   'gap:'+(o.gap||'clamp(28px,4.4vw,74px)')+';align-items:'+(o.split?'stretch':'start')+';}'+
+  (o.master?'.'+k+' > div:nth-child('+(o.fullRule?2:1)+'){grid-column:'+o.master[0]+';}'+
+            '.'+k+' > div:nth-child('+(o.fullRule?3:2)+'){grid-column:'+o.master[1]+';}'+
+            (o.fullRule?'.'+k+' > div:nth-child(1){grid-column:1/-1;}':''):'')+
+  '@media(max-width:900px){.'+k+'{grid-template-columns:1fr !important;gap:26px !important;}'+
+   (o.master?'.'+k+' > div{grid-column:auto !important;}':'')+'}');
 
- var left='<div>'+
-   '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.eySz||'0.75rem')+';letter-spacing:'+
-    (o.eyLs||'0.22em')+';text-transform:uppercase;color:'+(o.eyC||CYT)+';">'+S.h1+'</div>'+
+ var eyebrow='<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.eySz||'0.75rem')+
+   ';letter-spacing:'+(o.eyLs||'0.22em')+';text-transform:uppercase;color:'+(o.eyC||CYT)+';">'+S.h1+'</div>'+
    '<div style="height:'+(o.eyGap==null?12:o.eyGap)+'px"></div>'+
-   (o.headRule===false?'':RL(o.headRuleC||RP,o.headRuleH||'1px'))+
+   (o.headRule===false?'':RL(o.headRuleC||RP,o.headRuleH||'1px'));
+ /* o.fullRule lifts the eyebrow and its rule out of the left column so the rule
+    runs the whole measure and BOTH columns hang from the same datum. */
+ var header=o.fullRule?('<div>'+eyebrow+'</div>'):'';
+ var left='<div>'+(o.fullRule?'':eyebrow)+
    '<div style="padding-top:'+(o.taxTop||0)+'px;">'+RTAX(S,o)+'</div>'+
    (o.closeRule?RL(RS,'0.5px'):'')+'</div>';
 
- var right='<div style="padding-top:'+(o.rTop==null?38:o.rTop)+'px;">'+
+ /* o.split: the lead paragraph sits on the first principle's line and the
+    supporting paragraph on the last one, so both columns open and close
+    together at any width and in any font — no tuned offset to drift. */
+ var right='<div style="padding-top:'+(o.rTop==null?38:o.rTop)+'px;'+
+    (o.split?'display:flex;flex-direction:column;':'')+'">'+
    '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.pSz||'0.9rem')+';line-height:'+
     (o.pLh||1.95)+';color:'+(o.pC||SUB)+';max-width:'+(o.pW||'42ch')+';">'+S.p1+'</div>'+
-   (o.p2===false?'':'<div style="height:'+(o.pGap||20)+'px"></div>'+
+   (o.p2===false?'':(o.split?'<div style="flex:1 1 auto;min-height:'+(o.pGap||20)+'px;"></div>'
+                            :'<div style="height:'+(o.pGap||20)+'px"></div>')+
      '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.p2Sz||'0.9rem')+';line-height:'+
      (o.p2Lh||1.9)+';color:'+(o.p2C||'rgba(10,10,10,0.45)')+';max-width:'+(o.pW||'42ch')+';">'+P1S+'</div>')+
    (o.rTail?'<div style="height:'+o.rTail+'px"></div>'+RL(RR,'0.5px'):'')+'</div>';
@@ -9331,7 +9345,7 @@ function R115(S,o){
    '<div style="height:'+(o.gridGap==null?26:o.gridGap)+'px"></div></div>'+
    (S.grid||'');
 
- return {dna:css+'<div class="'+k+'">'+left+right+'</div>'+div, pf:pf};}
+ return {dna:css+'<div class="'+k+'">'+header+left+right+'</div>'+div, pf:pf};}
 
 /* ============================================================
    125 · COMPACT DNA — the table loses 26% of its height so the
@@ -9394,16 +9408,24 @@ rreg('Column Balance','130',{k:'r130',cols:'1fr 1fr',rPad:'8px 0',gGap:12,
  pfHead:'capsrule',pfSz:'1.3rem',pW:'30ch',rTop:4});
 
 /* ============================================================
-   131 · EDITORIAL REFINEMENT — museum caption register. Group
-   labels sit plain with no trailing rule, row rules appear only
-   between the two groups, and the chapter break is a single
-   hairline carried on a long silence.
+   131 · EDITORIAL REFINEMENT — the keeper, refined.
+   Both columns now sit on one shared 12-track grid: DNA on
+   tracks 1-7, copy on 8-12, so the right column's left edge is a
+   real grid line. The copy measure widens from 30ch to 480px
+   (~60 characters) and the portfolio introduction takes the
+   site's own min(100%,680px) body measure. INTANGIBLE and
+   TANGIBLE drop back to a single muted ink, and the row rhythm
+   tightens: padding 7->4, group gap 18->14, leading 1.78->1.68.
    ============================================================ */
-rreg('Editorial Refinement','131',{k:'r131',gl:'plain',row:'group',
- headRuleH:'0.5px',headRuleC:RS,rPad:'7px 0',gGap:18,
- kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.78,
+rreg('Editorial Refinement','131',{k:'r131',
+ cols:'repeat(12,1fr)',gap:'clamp(14px,1.7vw,26px)',master:['1/8','8/13'],
+ gl:'plain',row:'group',glPad:'0 0 7px',
+ glC1:'rgba(10,10,10,0.32)',glC2:'rgba(10,10,10,0.32)',glLs:'0.26em',
+ headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:2,rPad:'4px 0',gGap:14,cg:'26px',
+ kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.68,
+ pW:'min(100%,480px)',pLh:1.95,pGap:34,rTop:0,split:true,
  chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
- pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',pW:'30ch',rTop:35});
+ pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',piW:'min(100%,680px)'});
 
 /* ============================================================
    132 · SPACING SYSTEM — every gap is a multiple of 8. Eyebrow 8,
