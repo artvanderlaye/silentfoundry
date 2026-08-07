@@ -9376,7 +9376,7 @@ function R115(S,o){
    '<div style="height:'+(o.gridGap==null?26:o.gridGap)+'px"></div></div>'+
    (S.grid||'');
 
- return {dna:css+'<div class="'+k+'">'+header+left+right+'</div>'+div, pf:pf};}
+ return {dna:css+'<div class="'+k+' dl-cols">'+header+left+right+'</div>'+div, pf:pf};}
 
 /* ============================================================
    125 · COMPACT DNA — the table loses 26% of its height so the
@@ -10134,6 +10134,38 @@ var CSS=
 
 function injectCSS(){var st=document.createElement('style');st.id='dl-css';st.textContent=CSS;document.head.appendChild(st);}
 
+/* ---------- page-level preview CSS ----------
+   Appended to the END of body so it beats the page's own late styles on a tie.
+   The film frame is pinned at 1100px until 1700px, which leaves it 244px
+   narrower than the Product Portfolio grid on a 13" MacBook. This makes it
+   take the same content width the grid does. */
+var PAGECSS=
+ "@media(min-width:769px){html body .sf-video-frame{max-width:calc(100vw - 96px) !important;}}"+
+ "@media(min-width:1601px){html body .sf-video-frame{max-width:1600px !important;}}";
+function injectPageCSS(){var st=document.createElement('style');st.id='dl-page-css';
+ st.textContent=PAGECSS;document.body.appendChild(st);}
+
+/* ---------- align the DNA columns to the Foundry ----------
+   #hiw-stage div[data-pair] is the Foundry's two-column module. Rather than
+   hard-coding its geometry (it steps through four breakpoints and is not
+   symmetrical about the page), measure it and copy its left edge and width
+   onto the SWITCH columns. Re-measured on resize; a no-op if the Foundry
+   has not built yet or once both are stacked. */
+function alignToFoundry(){
+ var f=document.querySelector('#hiw-stage div[data-pair]');
+ var t=document.querySelector('#dl-swrap .dl-cols');
+ if(!t)return;
+ t.style.marginLeft=''; t.style.width='';
+ if(!f)return;
+ var fb=f.getBoundingClientRect();
+ if(fb.width<10)return;
+ var pb=t.parentNode.getBoundingClientRect();
+ var off=Math.round(fb.left-pb.left);
+ if(off<=1||fb.width>pb.width+1)return;          /* nothing to inset */
+ t.style.marginLeft=off+'px';
+ t.style.width=Math.round(fb.width)+'px';
+}
+
 /* ---------- harvest ---------- */
 function harvestMarshallData(){
  var split=document.querySelector('#sfsec-dna .cs-dna-split');
@@ -10228,6 +10260,7 @@ function paint(){
    else {S.host.innerHTML=fs(S.data); S.pf.innerHTML=S.pfbase;}
   }
  }
+ alignToFoundry();
  ui(); saveURL();
 }
 
@@ -10305,7 +10338,10 @@ function bind(){
 
 /* ---------- boot ---------- */
 function boot(){
- injectCSS(); readURL(); bind();
+ injectCSS(); injectPageCSS(); readURL(); bind();
+ var rt; window.addEventListener('resize',function(){
+  clearTimeout(rt); rt=setTimeout(alignToFoundry,120);},false);
+ setTimeout(alignToFoundry,1400); setTimeout(alignToFoundry,2600);
  var tries=0;
  (function pollData(){ if(harvestMarshallData())return; if(++tries<80)setTimeout(pollData,80); })();
  var t2=0;
