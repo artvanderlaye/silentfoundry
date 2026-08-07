@@ -6340,8 +6340,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 })();
 </script>
 
-<!-- DNA LAB — ROUND 15. Preview only, index-dna-lab-2.html.
-     Marshall 12 · SWITCH 1 (both selected).  SWITCH 115-124 own both the DNA
+<!-- DNA LAB — ROUND 16. Preview only, index-dna-lab-2.html.
+     Marshall 12 · SWITCH 5.  SWITCH 115-124 own both the DNA
      wrapper and the Product Portfolio wrapper. index.html itself
      is byte-identical to source; this file is prefix + one block. -->
 <script id="sf-dna-lab">
@@ -9329,13 +9329,14 @@ function R115(S,o){
  /* o.split: the lead paragraph sits on the first principle's line and the
     supporting paragraph on the last one, so both columns open and close
     together at any width and in any font — no tuned offset to drift. */
- /* o.merge runs the lead and supporting copy as a single paragraph. */
- var body=o.merge?(S.p1+' '+P1S):S.p1;
+ /* o.merge runs the lead and supporting copy as a single paragraph;
+    o.merge3 pulls the portfolio introduction up into it as well. */
+ var body=o.merge3?(S.p1+' '+P1S+' '+S.p2):(o.merge?(S.p1+' '+P1S):S.p1);
  var right='<div style="padding-top:'+(o.rTop==null?38:o.rTop)+'px;'+
     (o.split?'display:flex;flex-direction:column;':'')+'">'+
    '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.pSz||'0.9rem')+';line-height:'+
     (o.pLh||1.95)+';color:'+(o.pC||SUB)+';max-width:'+(o.pW||'42ch')+';">'+body+'</div>'+
-   ((o.p2===false||o.merge)?'':(o.split?'<div style="flex:1 1 auto;min-height:'+(o.pGap||20)+'px;"></div>'
+   ((o.p2===false||o.merge||o.merge3)?'':(o.split?'<div style="flex:1 1 auto;min-height:'+(o.pGap||20)+'px;"></div>'
                             :'<div style="height:'+(o.pGap||20)+'px"></div>')+
      '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.p2Sz||'0.9rem')+';line-height:'+
      (o.p2Lh||1.9)+';color:'+(o.p2C||'rgba(10,10,10,0.45)')+';max-width:'+(o.pW||'42ch')+';">'+P1S+'</div>')+
@@ -9350,9 +9351,12 @@ function R115(S,o){
    : '');
 
  var pf='<div style="padding-top:'+(o.pfTop||'clamp(34px,4.6vw,62px)')+';">'+
-   RHEAD(S,o)+'<div style="height:'+(o.pfGap==null?16:o.pfGap)+'px"></div>'+
+   RHEAD(S,o)+
+   /* o.pfIntro:false — the introduction has moved up into the statement, so
+      PRODUCT PORTFOLIO becomes a marker and the grid follows directly. */
+   (o.pfIntro===false?'':'<div style="height:'+(o.pfGap==null?16:o.pfGap)+'px"></div>'+
    '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.piSz||'0.9rem')+';line-height:'+
-    (o.piLh||1.95)+';color:'+(o.piC||SUB)+';max-width:'+(o.piW||'66ch')+';">'+S.p2+'</div>'+
+    (o.piLh||1.95)+';color:'+(o.piC||SUB)+';max-width:'+(o.piW||'680px')+';">'+S.p2+'</div>')+
    '<div style="height:'+(o.gridGap==null?26:o.gridGap)+'px"></div></div>'+
    (S.grid||'');
 
@@ -9508,6 +9512,55 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
  if(missing.length||!fns.length)return;          /* leave the lab intact if anything is off */
  SL.length=0; SN.length=0; ST.length=0;
  fns.forEach(function(f,i){SL.push(f);SN.push(names[i]);ST.push(tiers[i]);});
+})();
+
+/* ============================================================
+   SWITCH 02–05 — THE PORTFOLIO INTRODUCTION MOVES UP
+   ------------------------------------------------------------
+   The Product Portfolio paragraph joins the DESIGNED DNA
+   statement as one continuous paragraph, and is removed from
+   beneath the heading. PRODUCT PORTFOLIO becomes a marker
+   opening the grid rather than a heading with its own copy.
+   01 (the current design) is untouched — these sit alongside it.
+   Everything else — table, rules, grid, mobile behaviour —
+   is identical to 01.
+   ============================================================ */
+(function(){
+ var BASE={cols:'repeat(12,1fr)',gap:'clamp(14px,1.7vw,26px)',master:['1/8','8/13'],
+  gl:'plain',row:'group',glPad:'0 0 7px',
+  glC1:'rgba(10,10,10,0.32)',glC2:'rgba(10,10,10,0.32)',glLs:'0.26em',
+  headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:2,rPad:'4px 0',gGap:14,cg:'26px',
+  kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.68,
+  pW:'100%',pSz:'0.95rem',pLh:2,rTop:0,
+  merge3:true,pfIntro:false,
+  chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
+  pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em'};
+ function make(key,over){
+  var o={},n; for(n in BASE)o[n]=BASE[n]; for(n in over)o[n]=over[n]; o.k=key;
+  return o;}
+
+ /* 02 · ONE STATEMENT — the design as it stands, with the portfolio
+    introduction absorbed. PRODUCT PORTFOLIO keeps its caps heading and
+    the grid moves up to meet it. */
+ rreg('One Statement','202',make('s202',{gridGap:20}));
+
+ /* 03 · PLATE CAPTION — with no copy under it the heading no longer needs
+    display weight: an eyebrow over a 1px rule, the same treatment as
+    DESIGNED DNA, so the two chapters open identically. */
+ rreg('Plate Caption','203',make('s203',{pfHead:'match',pfSz:'0.75rem',pfLs:'0.24em',
+   pW:'min(100%,470px)',pLh:2.05,
+   pfTop:'clamp(34px,4.4vw,58px)',gridGap:26}));
+
+ /* 04 · RUNNING HEAD — the marker sits in a ruled band, so the grid reads
+    as a plate section opening beneath a running head. */
+ rreg('Running Head','204',make('s204',{pfHead:'rulebar',pfSz:'0.75rem',pfLs:'0.26em',
+   pLh:2.2,
+   chapter:'',chTop:60,pfTop:'0',gridGap:26}));
+
+ /* 05 · WIDE STATEMENT — the longer paragraph is given a wider measure on
+    six tracks instead of five, and the DNA table tightens to six. */
+ rreg('Wide Statement','205',make('s205',{master:['1/7','7/13'],
+   pW:'min(100%,600px)',pLh:1.98,cg:'22px',gridGap:20}));
 })();
 
 /* ============================================================
