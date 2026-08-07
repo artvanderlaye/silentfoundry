@@ -9987,13 +9987,16 @@ mreg('Peel — Named','A',function(D){return DRIFT(D,{mode:'both',links:'hub',hu
 (function(){
  var BASE={cols:'repeat(12,1fr)',gap:'clamp(14px,1.7vw,26px)',master:['1/8','8/13'],
   gl:'plain',row:'group',glPad:'0 0 7px',
-  glC1:'rgba(10,10,10,0.32)',glC2:'rgba(10,10,10,0.32)',glLs:'0.26em',
-  headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:2,rPad:'4px 0',gGap:14,cg:'26px',
-  kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.68,
-  pW:'100%',pSz:'0.95rem',pLh:2,rTop:0,
+  /* type matched to THE FOUNDRY: eyebrow 10.88px, body 13.6px / 2.0 */
+  eySz:'0.68rem',eyLs:'0.25em',
+  glSz:'0.68rem',glC1:'rgba(10,10,10,0.32)',glC2:'rgba(10,10,10,0.32)',glLs:'0.26em',
+  headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:14,rPad:'4px 0',gGap:12,cg:'26px',
+  kSz:'0.85rem',kLs:'0.16em',kC:'rgba(10,10,10,0.86)',
+  vSz:'0.85rem',vC:'rgba(10,10,10,0.48)',vLh:2,
+  pW:'100%',pSz:'0.85rem',pLh:2,rTop:14,
   merge3:true,pfIntro:false,
   chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
-  pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em'};
+  pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',pfSzEy:'0.68rem'};
  function make(key,over){
   var o={},n; for(n in BASE)o[n]=BASE[n]; for(n in over)o[n]=over[n]; o.k=key;
   return o;}
@@ -10012,11 +10015,11 @@ mreg('Peel — Named','A',function(D){return DRIFT(D,{mode:'both',links:'hub',hu
 
  /* 04 · RUNNING HEAD — the marker sits in a ruled band, so the grid reads
     as a plate section opening beneath a running head. */
- rreg('Running Head','204',make('s204',{pfHead:'quietbar',pfSz:'0.75rem',pfLs:'0.26em',
+ rreg('Running Head','204',make('s204',{pfHead:'quietbar',pfSz:'0.68rem',pfLs:'0.26em',
    /* columns now sit on the Foundry section's geometry: equal widths, the same
       stepped gap, collapsing at the same 980px breakpoint. */
    master:null,cols:'1fr 1fr',foundryGap:true,colBp:980,
-   pW:'min(100%,460px)',pLh:2.25,
+   pW:'min(100%,340px)',pLh:2,
    /* the group rules pull back to the key column and a lighter ink */
    rowSpan:'key',rowC:'rgba(10,10,10,0.09)',
    chapter:'',chTop:60,pfTop:'0',gridGap:26}));
@@ -10140,8 +10143,18 @@ function injectCSS(){var st=document.createElement('style');st.id='dl-css';st.te
    narrower than the Product Portfolio grid on a 13" MacBook. This makes it
    take the same content width the grid does. */
 var PAGECSS=
+ /* the film takes the Product Portfolio's content width */
  "@media(min-width:769px){html body .sf-video-frame{max-width:calc(100vw - 96px) !important;}}"+
- "@media(min-width:1601px){html body .sf-video-frame{max-width:1600px !important;}}";
+ "@media(min-width:1601px){html body .sf-video-frame{max-width:1600px !important;}}"+
+ /* FEATURED VENTURE set to the CASE STUDY scale:
+    eyebrow 10.88/0.25em · headline 23.04/0.92/0.22em · body 14.4/1.98 */
+ "html body .t-in.t-24 p:first-of-type{font-size:0.68rem !important;letter-spacing:0.25em !important;}"+
+ "html body .t-in.t-24 h2{font-size:1.44rem !important;line-height:0.92 !important;"+
+  "letter-spacing:0.22em !important;font-weight:300 !important;}"+
+ "html body .t-in.t-24 h2 ~ p{font-size:0.9rem !important;line-height:1.98 !important;}"+
+ /* MARSHALL AT A GLANCE was sitting 5px under the TRANSLATION paragraph */
+ "html body #sf-glance{margin-top:48px !important;}"+
+ "@media(max-width:900px){html body #sf-glance{margin-top:34px !important;}}";
 function injectPageCSS(){var st=document.createElement('style');st.id='dl-page-css';
  st.textContent=PAGECSS;document.body.appendChild(st);}
 
