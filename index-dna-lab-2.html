@@ -6340,8 +6340,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 })();
 </script>
 
-<!-- DNA LAB — ROUND 16. Preview only, index-dna-lab-2.html.
-     Marshall 12 · SWITCH 5.  SWITCH 115-124 own both the DNA
+<!-- DNA LAB — ROUND 18. Preview only, index-dna-lab-2.html.
+     Marshall 14 · SWITCH 1 (final).  SWITCH 115-124 own both the DNA
      wrapper and the Product Portfolio wrapper. index.html itself
      is byte-identical to source; this file is prefix + one block. -->
 <script id="sf-dna-lab">
@@ -9292,6 +9292,9 @@ function RHEAD(S,o){
  if(m==='match')    return ey+'<div style="height:10px"></div>'+RL(RP,'1px');
  if(m==='rulebar')  return RL(RP,'1px')+'<div style="padding:13px 0;">'+ey+'</div>'+RL(RR,'0.5px');
  if(m==='capsrule') return caps+'<div style="height:11px"></div>'+RL(RS,'0.5px');
+ /* quietbar: the marker with only the hairline beneath it — no rule above, so
+    the chapter turns on whitespace and the grid opens from a single line. */
+ if(m==='quietbar')  return '<div style="padding-bottom:13px;">'+ey+'</div>'+RL(RR,'0.5px');
  return ey;}
 
 /* ---------- the whole module ---------- */
@@ -9310,10 +9313,9 @@ function R115(S,o){
   (o.foundryGap?'.'+k+'{column-gap:144px;row-gap:0;}'+
     '@media(max-width:1440px){.'+k+'{column-gap:96px;}}'+
     '@media(max-width:1280px){.'+k+'{column-gap:64px;}}'+
-    '@media(max-width:1100px){.'+k+'{column-gap:48px;}}'+
-    '@media(max-width:960px){.'+k+'{row-gap:28px !important;}}':'')+
+    '@media(max-width:1100px){.'+k+'{column-gap:48px;}}':'')+
   '@media(max-width:'+(o.colBp||900)+'px){.'+k+'{grid-template-columns:1fr !important;'+
-   (o.foundryGap?'row-gap:28px;':'gap:26px !important;')+'}'+
+   (o.foundryGap?'row-gap:48px;':'gap:26px !important;')+'}'+
    '.'+k+' > div{grid-column:auto !important;}}'+
   /* index.html flattens every inline grid inside #sw28 below 860px. A doubled
      class wins that tie so the spec table keeps two columns on a tablet... */
@@ -9492,6 +9494,61 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
  pfTop:'40px',pfHead:'match',pfGap:16,piLh:2,gridGap:32,pW:'30ch',rTop:6});
 
 /* ============================================================
+   MARSHALL — THREE ADDITIONS
+   Two built on Gravity Well (the irregular ring — weight decides
+   both size and distance, so it is deliberately not a true
+   circle) and one on Tone Split.
+   ============================================================ */
+
+/* the same gravity table Gravity Well uses; radii pulled in so the
+   specimen discs and their captions stay inside the stage */
+var GW_W=[1.35,1.0,1.15,0.86,1.3,1.05,0.92,1.2];
+var GW_R=[46,38,43,34,47,40,36,44];
+function gwR(scale){return GW_R.map(function(r){return r*scale;});}
+
+/* 101 · GRAVITY WELL — SPECIMENS
+   the words are replaced by the photographic crops, each disc sized
+   by the same weight that sets its distance */
+mreg('Gravity Well — Specimens','A',function(D){var f=flat(D);
+ var R=gwR(0.86);
+ var h=IMGDISC(MHUB,37,'border:1px solid '+INK+';','Marshall')+RING(2,HAIR);
+ f.forEach(function(x,ix){var p=polar(ix,8,R[ix],10);
+  var s=Math.round(48*GW_W[ix]);
+  h+=FREE(p.x,p.y,CROP(x.c[0],x.c[1],x.c[2],x.c[3],s,x.gi?INK:GOLD),
+    'max-width:'+(s+8)+'px;');});
+ return EY()+GT(D)+STAGE(500,h);});
+
+/* 102 · GRAVITY WELL — SPECIMENS + NAMES
+   both together: disc over caption, still on the uneven ring */
+mreg('Gravity Well — Both','A',function(D){var f=flat(D);
+ var R=gwR(0.74);
+ var h=IMGDISC(MHUB,39,'border:1px solid '+INK+';','Marshall')+RING(2,HAIR);
+ f.forEach(function(x,ix){var p=polar(ix,8,R[ix],10);
+  var s=Math.round(40*GW_W[ix]);
+  h+=FREE(p.x,p.y,
+    CROP(x.c[0],x.c[1],x.c[2],x.c[3],s,x.gi?INK:GOLD)+
+    NAME(x.k,{sz:(0.9*(0.88+GW_W[ix]*0.12)).toFixed(2)+'rem',
+              c:x.gi?INKH:'rgba(10,10,10,0.55)'}),
+    'max-width:112px;');});
+ return EY()+GT(D)+STAGE(520,h);});
+
+/* 103 · TONE SPLIT — GRID
+   the two papers stay; a drawing grid is laid over them so the
+   field reads as a sheet rather than a flat tint */
+mreg('Tone Split — Grid','A',function(D){
+ var line='rgba(10,10,10,0.055)', step=44;
+ var grid='repeating-linear-gradient(0deg,'+line+' 0 1px,rgba(0,0,0,0) 1px '+step+'px),'+
+          'repeating-linear-gradient(90deg,'+line+' 0 1px,rgba(0,0,0,0) 1px '+step+'px)';
+ return EY()+'<div style="position:relative;overflow:hidden;">'+
+ '<div style="position:absolute;inset:0;background:linear-gradient(180deg,#f4f1eb 0%,#f4f1eb 50%,#e6e2da 50%,#e6e2da 100%);"></div>'+
+ '<div style="position:absolute;inset:0;background-image:'+grid+';background-position:center center;"></div>'+
+ '<div style="position:absolute;left:0;right:0;top:50%;height:0.5px;background:rgba(10,10,10,0.16);"></div>'+
+ '<div style="position:relative;padding:26px 0 22px;">'+
+ '<div style="text-align:center;">'+GLAB(D[0].g,{c:'rgba(10,10,10,0.45)'})+'</div>'+
+ specBase(D,{max:520})+
+ '<div style="text-align:center;">'+GLAB(D[1].g,{c:'rgba(10,10,10,0.78)'})+'</div></div></div>';});
+
+/* ============================================================
    MARSHALL — SELECTION
    Matthew's keep list from the 100-variation lab, renumbered
    from 1 in the order given. The unselected renderers are
@@ -9499,7 +9556,9 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
    changes and SWITCH is untouched.
    ============================================================ */
 (function(){
- var KEEP=[1,2,10,14,22,30,81,82,84,90,94,97];
+ /* 14 dropped (Weighted Halves); 101-103 are the new Gravity Well
+    and Tone Split versions, slotted next to the ones they came from. */
+ var KEEP=[1,2,10,22,30,101,102,81,103,82,84,90,94,97];
  var fns=[], names=[], tiers=[], missing=[];
  KEEP.forEach(function(n){
   var f=ML[n-1];
@@ -9567,7 +9626,7 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
 
  /* 04 · RUNNING HEAD — the marker sits in a ruled band, so the grid reads
     as a plate section opening beneath a running head. */
- rreg('Running Head','204',make('s204',{pfHead:'rulebar',pfSz:'0.75rem',pfLs:'0.26em',
+ rreg('Running Head','204',make('s204',{pfHead:'quietbar',pfSz:'0.75rem',pfLs:'0.26em',
    /* columns now sit on the Foundry section's geometry: equal widths, the same
       stepped gap, collapsing at the same 980px breakpoint. */
    master:null,cols:'1fr 1fr',foundryGap:true,colBp:980,
@@ -9580,6 +9639,23 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
     six tracks instead of five, and the DNA table tightens to six. */
  rreg('Wide Statement','205',make('s205',{master:['1/7','7/13'],
    pW:'min(100%,600px)',pLh:1.98,cg:'22px',gridGap:20}));
+})();
+
+/* ============================================================
+   SWITCH — FINAL
+   04 Running Head is the approved design and becomes the only
+   SWITCH variation, numbered 01. Nothing else changes.
+   ============================================================ */
+(function(){
+ var KEEP=[4];
+ var fns=[], names=[], tiers=[], missing=[];
+ KEEP.forEach(function(n){
+  var f=SL[n-1];
+  if(!f){missing.push(n);return;}
+  fns.push(f); names.push(SN[n-1]); tiers.push(ST[n-1]);});
+ if(missing.length||!fns.length)return;          /* leave the lab intact if anything is off */
+ SL.length=0; SN.length=0; ST.length=0;
+ fns.forEach(function(f,i){SL.push(f);SN.push(names[i]);ST.push(tiers[i]);});
 })();
 
 /* ============================================================
