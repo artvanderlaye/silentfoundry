@@ -9265,12 +9265,14 @@ function RTAX(S,o){
   }
   gr.ix.forEach(function(n,ix){var i=S.it[n];
    var ruled = o.row==='none' ? false : (o.row==='group' ? ix===0 : true);
-   if(ruled) out+='<div style="'+span+'height:0.5px;background:'+RR+';"></div>';
+   if(ruled) out+='<div class="dl-tr" style="'+(o.rowSpan==='key'?'grid-column:1;':span)+
+     'height:0.5px;background:'+(o.rowC||RR)+';"></div>';
+   var place=(o.rowSpan==='key'&&!three);      /* pin the cells so the short rule can't shift them */
    if(three) out+='<div class="dl-tl" style="padding:'+pad+';">'+(ix===0?label(gr,ci):'')+'</div>';
-   out+='<div class="dl-tk" style="padding:'+pad+';"><span style="font-family:'+BEBAS+';font-size:'+(o.kSz||'0.95rem')+
+   out+='<div class="dl-tk" style="'+(place?'grid-column:1;':'')+'padding:'+pad+';"><span style="font-family:'+BEBAS+';font-size:'+(o.kSz||'0.95rem')+
      ';letter-spacing:'+(o.kLs||'0.13em')+';text-transform:uppercase;color:'+(o.kC||INKH)+
      ';line-height:'+(o.kLh||1.2)+';white-space:nowrap;">'+i.k+'</span></div>'+
-    '<div class="dl-tv" style="padding:'+pad+';"><span style="font-family:'+DM+';font-weight:300;font-size:'+
+    '<div class="dl-tv" style="'+(place?'grid-column:2;':'')+'padding:'+pad+';"><span style="font-family:'+DM+';font-weight:300;font-size:'+
      (o.vSz||'0.9rem')+';line-height:'+(o.vLh||1.7)+';color:'+(o.vC||SUB)+';">'+i.v+'</span></div>';});
  });
  var cols=(three?(o.colW||'max-content')+' ':'')+(o.kW||'max-content')+' 1fr';
@@ -9301,10 +9303,18 @@ function R115(S,o){
  var css=XCSS('.'+k+'{display:grid;grid-template-columns:'+(o.cols||'1.05fr 0.95fr')+';'+
    'gap:'+(o.gap||'clamp(28px,4.4vw,74px)')+';align-items:'+(o.split?'stretch':'start')+';}'+
   (o.master?'.'+k+' > div:nth-child('+(o.fullRule?2:1)+'){grid-column:'+o.master[0]+';}'+
-            '.'+k+' > div:nth-child('+(o.fullRule?3:2)+'){grid-column:'+o.master[1]+';}'+
-            (o.fullRule?'.'+k+' > div:nth-child(1){grid-column:1/-1;}':''):'')+
-  '@media(max-width:900px){.'+k+'{grid-template-columns:1fr !important;gap:26px !important;}'+
-   (o.master?'.'+k+' > div{grid-column:auto !important;}':'')+'}'+
+            '.'+k+' > div:nth-child('+(o.fullRule?3:2)+'){grid-column:'+o.master[1]+';}':'')+
+  (o.fullRule?'.'+k+' > div:nth-child(1){grid-column:1/-1;}':'')+
+  /* o.foundryGap mirrors #hiw-stage div[data-pair] exactly: equal columns and
+     the same stepped gap, so the SWITCH columns sit on the Foundry's rhythm. */
+  (o.foundryGap?'.'+k+'{column-gap:144px;row-gap:0;}'+
+    '@media(max-width:1440px){.'+k+'{column-gap:96px;}}'+
+    '@media(max-width:1280px){.'+k+'{column-gap:64px;}}'+
+    '@media(max-width:1100px){.'+k+'{column-gap:48px;}}'+
+    '@media(max-width:960px){.'+k+'{row-gap:28px !important;}}':'')+
+  '@media(max-width:'+(o.colBp||900)+'px){.'+k+'{grid-template-columns:1fr !important;'+
+   (o.foundryGap?'row-gap:28px;':'gap:26px !important;')+'}'+
+   '.'+k+' > div{grid-column:auto !important;}}'+
   /* index.html flattens every inline grid inside #sw28 below 860px. A doubled
      class wins that tie so the spec table keeps two columns on a tablet... */
   '@media(max-width:900px) and (min-width:'+((o.stackAt||600)+1)+'px){'+
@@ -9313,7 +9323,11 @@ function R115(S,o){
      descriptor read as one unit instead of an even ladder. */
   '@media(max-width:'+(o.stackAt||600)+'px){'+
    '#su .dl-tbl-'+o.k+' .dl-tk{padding-top:'+(o.mKeyTop||16)+'px !important;padding-bottom:0 !important;}'+
-   '#su .dl-tbl-'+o.k+' .dl-tv{padding-top:3px !important;}}');
+   '#su .dl-tbl-'+o.k+' .dl-tv{padding-top:3px !important;}'+
+   /* explicit column placement must be released once the table stacks, or the
+      pinned cells force a second column back into a 342px screen. */
+   '#su .dl-tbl-'+o.k+' .dl-tk,#su .dl-tbl-'+o.k+' .dl-tv,#su .dl-tbl-'+o.k+' .dl-tr'+
+   '{grid-column:1/-1 !important;}}');
 
  var eyebrow='<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.eySz||'0.75rem')+
    ';letter-spacing:'+(o.eyLs||'0.22em')+';text-transform:uppercase;color:'+(o.eyC||CYT)+';">'+S.h1+'</div>'+
@@ -9342,7 +9356,7 @@ function R115(S,o){
      (o.p2Lh||1.9)+';color:'+(o.p2C||'rgba(10,10,10,0.45)')+';max-width:'+(o.pW||'42ch')+';">'+P1S+'</div>')+
    (o.rTail?'<div style="height:'+o.rTail+'px"></div>'+RL(RR,'0.5px'):'')+'</div>';
 
- var ch=o.chapter||'double';
+ var ch=(o.chapter==null?'double':o.chapter);   /* '' means no divider, not the default */
  var div='<div style="height:'+(o.chTop==null?54:o.chTop)+'px"></div>'+
    (ch==='double' ? RL(RP,'1px')+'<div style="height:4px"></div>'+RL(RR,'0.5px')
    : ch==='single' ? RL(RP,'1px')
@@ -9554,7 +9568,12 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
  /* 04 · RUNNING HEAD — the marker sits in a ruled band, so the grid reads
     as a plate section opening beneath a running head. */
  rreg('Running Head','204',make('s204',{pfHead:'rulebar',pfSz:'0.75rem',pfLs:'0.26em',
-   pLh:2.2,
+   /* columns now sit on the Foundry section's geometry: equal widths, the same
+      stepped gap, collapsing at the same 980px breakpoint. */
+   master:null,cols:'1fr 1fr',foundryGap:true,colBp:980,
+   pW:'min(100%,460px)',pLh:2.25,
+   /* the group rules pull back to the key column and a lighter ink */
+   rowSpan:'key',rowC:'rgba(10,10,10,0.09)',
    chapter:'',chTop:60,pfTop:'0',gridGap:26}));
 
  /* 05 · WIDE STATEMENT — the longer paragraph is given a wider measure on
