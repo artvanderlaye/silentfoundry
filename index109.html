@@ -2879,7 +2879,7 @@ body.v11-active nav * { cursor: none !important; }
       <a href="index.html" class="footer-logo" style="display:block;width:160px;height:50px;">
         <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg>
       </a>
-      <p class="footer-tagline" style="margin-top:19px;">Authentic brands premium products.</p>
+      <p class="footer-tagline" style="margin-top:19px;">Authentic brands into premium products.</p>
     </div>
     <div class="footer-col">
       <h5>Navigate</h5>
@@ -6310,7 +6310,7 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
    'letter-spacing:0.16em;color:rgba(255,255,255,0.88);">SILENT FOUNDRY</span>'+
    '<span style="display:block;margin-top:10px;font-family:\'DM Sans\',sans-serif;'+
    'font-size:0.66rem;line-height:1.7;color:rgba(255,255,255,0.5);">'+
-   'Authentic brands premium products.</span></div>';
+   'Authentic brands into premium products.</span></div>';
   MM.setAttribute('data-b','1');
  }
  /* B · the site's own nav code rewrites the menu when it is toggled, so the
@@ -6324,7 +6324,7 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
  function ensure(){
   if(busy)return; 
   var MM=document.querySelector('.mobile-menu'); if(!MM)return;
-  if(MM.getAttribute('data-b')&&/Authentic brands premium products/.test(MM.textContent))return;
+  if(MM.getAttribute('data-b')&&/Authentic brands into premium products/.test(MM.textContent))return;
   busy=true; MM.removeAttribute('data-b'); build(); busy=false;
  }
  function watch(){
@@ -6979,7 +6979,7 @@ function R115(S,o){
   headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:14,rPad:'4px 0',gGap:12,cg:'26px',
   kSz:'0.85rem',kLs:'0.16em',kC:'rgba(10,10,10,0.86)',
   vSz:'0.85rem',vC:'rgba(10,10,10,0.48)',vLh:2,
-  pW:'100%',pSz:'0.85rem',pLh:2,rTop:43.5,
+  pW:'100%',pSz:'0.85rem',pLh:2,rTop:14,
   merge3:true,pfIntro:false,
   chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
   pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',pfSzEy:'0.68rem'};
@@ -7025,14 +7025,7 @@ var PAGECSS=
  "html body #sf-glance{margin-top:48px !important;}"+
  "@media(max-width:900px){html body #sf-glance{margin-top:34px !important;}}"+
  /* the Marshall stage keeps its own responsive behaviour */
- "#sfsec-dna .cs-dna-split *{max-width:none;}"+
- /* item 5 — the carousel arrows. Width and height are reachable from CSS;
-    font-size and opacity are not, because the page writes those inline with
-    !important (see paintArrows below). */
- "html body .fcar-btn{width:44px !important;height:44px !important;line-height:1 !important;}"+
- /* item 6 — SCROLL is told text-align:right, but it is a <p> and the
-    site-wide 680px body measure was boxing it in at half the page. */
- "html body #hiw-stage p.u-swipe{max-width:none !important;}";
+ "#sfsec-dna .cs-dna-split *{max-width:none;}";
 
 function injectCSS(){
  if(document.getElementById('sf-dna-css'))return;
@@ -7105,74 +7098,16 @@ function mountSwitch(){
 function alignToFoundry(){
  var t=document.querySelector('#sf-dnawrap .dl-cols');
  if(!t)return;
- var head=t.children[0];
- t.style.paddingLeft=''; t.style.paddingRight='';
- if(head){head.style.marginLeft=''; head.style.marginRight='';}
+ t.style.marginLeft=''; t.style.width='';
  var f=document.querySelector('#hiw-stage div[data-pair]');
  if(!f)return;
  var fb=f.getBoundingClientRect();
  if(fb.width<10)return;
  var pb=t.parentNode.getBoundingClientRect();
- var l=Math.round(fb.left-pb.left), r=Math.round(pb.right-fb.right);
- if(l<=1||fb.width>pb.width+1)return;
- /* the two columns take the Foundry's exact box, while the DESIGNED DNA
-    marker and its rule pull back out to the section edge so they line up
-    with PRODUCT PORTFOLIO below. */
- t.style.paddingLeft=l+'px'; t.style.paddingRight=r+'px';
- if(head){head.style.marginLeft=(-l)+'px'; head.style.marginRight=(-r)+'px';}
-}
-
-/* ---------- item 5: the carousel arrows ----------
-   They sat at colour-alpha 0.75 x opacity 0.4 = 0.30 effective, invisible
-   until hovered. font-size and opacity are inline !important, which beats
-   every stylesheet, so they have to be written back the same way — and
-   that means owning the hover state here too. Mobile keeps the full
-   opacity the page already asks for. */
-function arrowOpacity(hover){
- if(window.innerWidth<=768)return 1;
- return hover?0.9:0.65;
-}
-function paintArrows(hover){
- var btns=document.querySelectorAll('#c16s-wrap .fcar-btn');
- if(!btns.length)return false;
- [].forEach.call(btns,function(b){
-  b.style.setProperty('opacity',String(arrowOpacity(hover)),'important');
-  b.style.setProperty('font-size','1.375rem','important');});
- return true;
-}
-function fitArrows(){
- if(!paintArrows(false))return;
- var wrap=document.getElementById('c16s-wrap');
- if(wrap&&!wrap.__sfArrow){
-  wrap.__sfArrow=1;
-  wrap.addEventListener('mouseenter',function(){paintArrows(true);},false);
-  wrap.addEventListener('mouseleave',function(){paintArrows(false);},false);
-  wrap.addEventListener('click',function(){setTimeout(function(){paintArrows(true);},60);},false);
- }
-}
-
-/* ---------- item 4: the SWITCH and eSCRAMBLER logos ----------
-   Both are sized by an inline `height:...!important` written by the page,
-   which beats every stylesheet — including the #switch-logo-img media
-   queries already in the CSS, which have never had any effect. So the
-   size has to be written back as an inline important too. They scale
-   together, capped at their drawn size, so they never overflow a phone. */
-function fitLogos(){
- var sw=document.getElementById('switch-logo-img');
- var es=document.querySelector('img[src*="logo-escrambler"]');
- if(!sw||!es)return;
- var row=sw.parentElement; if(!row)return;
- var host=row.parentElement; if(!host)return;
- var rs=sw.naturalHeight?sw.naturalWidth/sw.naturalHeight:5.08;
- var re=es.naturalHeight?es.naturalWidth/es.naturalHeight:10.39;
- var H1=34, H2=17, GAP=14;
- var base=H1*rs+GAP+H2*re;
- var avail=host.clientWidth-2;
- if(avail<40)return;
- var k=Math.min(1, avail/base);
- sw.style.setProperty('height',(H1*k).toFixed(1)+'px','important');
- es.style.setProperty('height',(H2*k).toFixed(1)+'px','important');
- row.style.setProperty('gap',(GAP*k).toFixed(1)+'px','important');
+ var off=Math.round(fb.left-pb.left);
+ if(off<=1||fb.width>pb.width+1)return;
+ t.style.marginLeft=off+'px';
+ t.style.width=Math.round(fb.width)+'px';
 }
 
 /* ---------- boot ---------- */
@@ -7185,11 +7120,9 @@ function boot(){
  (function pollData(){ if(harvestMarshall())return; if(++a<260)setTimeout(pollData,50); })();
  (function pollM(){ if(M.data&&mountMarshall())return; if(++b<260)setTimeout(pollM,110); })();
  (function pollS(){ if(mountSwitch()){alignToFoundry();return;} if(++c<260)setTimeout(pollS,110); })();
- function reflow(){alignToFoundry(); fitLogos(); fitArrows();}
  var rt; window.addEventListener('resize',function(){
-  clearTimeout(rt); rt=setTimeout(reflow,120);},false);
- window.addEventListener('load',reflow,false);
- [400,900,1600,3000].forEach(function(ms){setTimeout(reflow,ms);});
+  clearTimeout(rt); rt=setTimeout(alignToFoundry,120);},false);
+ setTimeout(alignToFoundry,1600); setTimeout(alignToFoundry,3000);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
 else boot();
