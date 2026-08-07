@@ -6340,8 +6340,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 })();
 </script>
 
-<!-- DNA LAB — ROUND 14. Preview only, index-dna-lab-2.html.
-     Marshall 12 (selected) · SWITCH 134.  SWITCH 115-124 own both the DNA
+<!-- DNA LAB — ROUND 15. Preview only, index-dna-lab-2.html.
+     Marshall 12 · SWITCH 1 (both selected).  SWITCH 115-124 own both the DNA
      wrapper and the Product Portfolio wrapper. index.html itself
      is byte-identical to source; this file is prefix + one block. -->
 <script id="sf-dna-lab">
@@ -9266,16 +9266,16 @@ function RTAX(S,o){
   gr.ix.forEach(function(n,ix){var i=S.it[n];
    var ruled = o.row==='none' ? false : (o.row==='group' ? ix===0 : true);
    if(ruled) out+='<div style="'+span+'height:0.5px;background:'+RR+';"></div>';
-   if(three) out+='<div style="padding:'+pad+';">'+(ix===0?label(gr,ci):'')+'</div>';
-   out+='<div style="padding:'+pad+';"><span style="font-family:'+BEBAS+';font-size:'+(o.kSz||'0.95rem')+
+   if(three) out+='<div class="dl-tl" style="padding:'+pad+';">'+(ix===0?label(gr,ci):'')+'</div>';
+   out+='<div class="dl-tk" style="padding:'+pad+';"><span style="font-family:'+BEBAS+';font-size:'+(o.kSz||'0.95rem')+
      ';letter-spacing:'+(o.kLs||'0.13em')+';text-transform:uppercase;color:'+(o.kC||INKH)+
      ';line-height:'+(o.kLh||1.2)+';white-space:nowrap;">'+i.k+'</span></div>'+
-    '<div style="padding:'+pad+';"><span style="font-family:'+DM+';font-weight:300;font-size:'+
+    '<div class="dl-tv" style="padding:'+pad+';"><span style="font-family:'+DM+';font-weight:300;font-size:'+
      (o.vSz||'0.9rem')+';line-height:'+(o.vLh||1.7)+';color:'+(o.vC||SUB)+';">'+i.v+'</span></div>';});
  });
  var cols=(three?(o.colW||'max-content')+' ':'')+(o.kW||'max-content')+' 1fr';
- return '<div style="display:grid;grid-template-columns:'+cols+';column-gap:'+(o.cg||'22px')+
-  ';align-items:baseline;">'+out+'</div>';}
+ return '<div class="dl-tbl-'+o.k+'" style="display:grid;grid-template-columns:'+cols+
+  ';column-gap:'+(o.cg||'22px')+';align-items:baseline;">'+out+'</div>';}
 
 /* ---------- the portfolio heading ---------- */
 function RHEAD(S,o){
@@ -9304,7 +9304,16 @@ function R115(S,o){
             '.'+k+' > div:nth-child('+(o.fullRule?3:2)+'){grid-column:'+o.master[1]+';}'+
             (o.fullRule?'.'+k+' > div:nth-child(1){grid-column:1/-1;}':''):'')+
   '@media(max-width:900px){.'+k+'{grid-template-columns:1fr !important;gap:26px !important;}'+
-   (o.master?'.'+k+' > div{grid-column:auto !important;}':'')+'}');
+   (o.master?'.'+k+' > div{grid-column:auto !important;}':'')+'}'+
+  /* index.html flattens every inline grid inside #sw28 below 860px. A doubled
+     class wins that tie so the spec table keeps two columns on a tablet... */
+  '@media(max-width:900px) and (min-width:'+((o.stackAt||600)+1)+'px){'+
+   '#su .dl-tbl-'+o.k+'.dl-tbl-'+o.k+'{grid-template-columns:max-content 1fr !important;}}'+
+  /* ...and below that it stacks, with the pairs grouped so a principle and its
+     descriptor read as one unit instead of an even ladder. */
+  '@media(max-width:'+(o.stackAt||600)+'px){'+
+   '#su .dl-tbl-'+o.k+' .dl-tk{padding-top:'+(o.mKeyTop||16)+'px !important;padding-bottom:0 !important;}'+
+   '#su .dl-tbl-'+o.k+' .dl-tv{padding-top:3px !important;}}');
 
  var eyebrow='<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.eySz||'0.75rem')+
    ';letter-spacing:'+(o.eyLs||'0.22em')+';text-transform:uppercase;color:'+(o.eyC||CYT)+';">'+S.h1+'</div>'+
@@ -9320,11 +9329,13 @@ function R115(S,o){
  /* o.split: the lead paragraph sits on the first principle's line and the
     supporting paragraph on the last one, so both columns open and close
     together at any width and in any font — no tuned offset to drift. */
+ /* o.merge runs the lead and supporting copy as a single paragraph. */
+ var body=o.merge?(S.p1+' '+P1S):S.p1;
  var right='<div style="padding-top:'+(o.rTop==null?38:o.rTop)+'px;'+
     (o.split?'display:flex;flex-direction:column;':'')+'">'+
    '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.pSz||'0.9rem')+';line-height:'+
-    (o.pLh||1.95)+';color:'+(o.pC||SUB)+';max-width:'+(o.pW||'42ch')+';">'+S.p1+'</div>'+
-   (o.p2===false?'':(o.split?'<div style="flex:1 1 auto;min-height:'+(o.pGap||20)+'px;"></div>'
+    (o.pLh||1.95)+';color:'+(o.pC||SUB)+';max-width:'+(o.pW||'42ch')+';">'+body+'</div>'+
+   ((o.p2===false||o.merge)?'':(o.split?'<div style="flex:1 1 auto;min-height:'+(o.pGap||20)+'px;"></div>'
                             :'<div style="height:'+(o.pGap||20)+'px"></div>')+
      '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.p2Sz||'0.9rem')+';line-height:'+
      (o.p2Lh||1.9)+';color:'+(o.p2C||'rgba(10,10,10,0.45)')+';max-width:'+(o.pW||'42ch')+';">'+P1S+'</div>')+
@@ -9423,7 +9434,7 @@ rreg('Editorial Refinement','131',{k:'r131',
  glC1:'rgba(10,10,10,0.32)',glC2:'rgba(10,10,10,0.32)',glLs:'0.26em',
  headRuleH:'0.5px',headRuleC:RS,fullRule:true,taxTop:2,rPad:'4px 0',gGap:14,cg:'26px',
  kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.68,
- pW:'min(100%,480px)',pLh:1.95,pGap:34,rTop:0,split:true,
+ pW:'min(100%,480px)',pSz:'0.95rem',pLh:2,rTop:0,merge:true,
  chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
  pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',piW:'min(100%,680px)'});
 
@@ -9479,6 +9490,24 @@ rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
  if(missing.length||!fns.length)return;          /* leave the lab intact if anything is off */
  ML.length=0; MN.length=0; MT.length=0;
  fns.forEach(function(f,i){ML.push(f);MN.push(names[i]);MT.push(tiers[i]);});
+})();
+
+/* ============================================================
+   SWITCH — SELECTION
+   131 Editorial Refinement is the chosen design and becomes the
+   only SWITCH variation, numbered 01. Every other renderer is
+   dropped from the switcher; nothing else in the payload changes.
+   ============================================================ */
+(function(){
+ var KEEP=[131];
+ var fns=[], names=[], tiers=[], missing=[];
+ KEEP.forEach(function(n){
+  var f=SL[n-1];
+  if(!f){missing.push(n);return;}
+  fns.push(f); names.push(SN[n-1]); tiers.push(ST[n-1]);});
+ if(missing.length||!fns.length)return;          /* leave the lab intact if anything is off */
+ SL.length=0; SN.length=0; ST.length=0;
+ fns.forEach(function(f,i){SL.push(f);SN.push(names[i]);ST.push(tiers[i]);});
 })();
 
 /* ============================================================
