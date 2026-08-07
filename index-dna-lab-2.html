@@ -6340,8 +6340,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 })();
 </script>
 
-<!-- DNA LAB — ROUND 20. Preview only, index-dna-lab-2.html.
-     Marshall 46 · SWITCH 1 (final).  SWITCH 115-124 own both the DNA
+<!-- DNA LAB — ROUND 21. Preview only, index-dna-lab-2.html.
+     Marshall 1 · SWITCH 1 (both final).  SWITCH 115-124 own both the DNA
      wrapper and the Product Portfolio wrapper. index.html itself
      is byte-identical to source; this file is prefix + one block. -->
 <script id="sf-dna-lab">
@@ -9675,7 +9675,8 @@ function DRIFT(D,o){
   else                     inner=disc+word;
   h+=MPT(p.x,p.y,inner,(o.mode==='disc'?px:(o.mode==='side'?px+10+lw:lw)));});
 
- return EY()+(o.head===false?'':GT(D))+STAGE(stage,h);}
+ var out=EY()+(o.head===false?'':GT(D))+STAGE(stage,h);
+ return o.cls?('<div class="'+o.cls+'">'+(o.css||'')+out+'</div>'):out;}
 
 /* ============================================================
    the twelve
@@ -9887,6 +9888,55 @@ mreg('Drift — Captions Right','A',function(D){return DRIFT(D,{mode:'side',link
  place:DRIFTP({x0:28,y0:66,x1:70,y1:18,d0:9.5,d1:7.5,seed:22,jx:5,jy:7})});});
 
 /* ============================================================
+   MARSHALL — FINAL, RESPONSIVE
+   27 Peel — Named is the approved design. The lab's generic
+   mobile fallback flattens every radial layout into an unstyled
+   grid below 900px, which throws the composition away. This
+   replaces it with a purpose-built behaviour:
+
+     > 900   the fan, as drawn
+     601-900 the fan survives intact — the stage is still 520px
+             wide at these widths, so nothing needs to shrink
+     <= 600  a built specification list: product, then the eight
+             specimens as disc + name on hairline rows, at full
+             reading size instead of a squeezed diagram
+   ============================================================ */
+var PLCSS='<style>'+
+ /* 601-900: undo the generic collapse and keep the fan */
+ '@media(max-width:900px) and (min-width:601px){'+
+  '#sfsec-dna .dl-pl .dl-dial{aspect-ratio:1/1 !important;max-width:520px !important;'+
+   'display:block !important;gap:0 !important;}'+
+  '#sfsec-dna .dl-pl .dl-dring{display:block !important;}'+
+  '#sfsec-dna .dl-pl .dl-dhub{position:absolute !important;padding-bottom:0 !important;}'+
+  '#sfsec-dna .dl-pl .dl-dpt{position:absolute !important;transform:translate(-50%,-50%) !important;'+
+   'text-align:center !important;border-top:0 !important;padding-top:0 !important;}'+
+ '}'+
+ /* <=600: the list */
+ '@media(max-width:600px){'+
+  '#sfsec-dna .dl-pl .dl-dial{position:static !important;aspect-ratio:auto !important;'+
+   'max-width:none !important;width:100% !important;display:block !important;}'+
+  '#sfsec-dna .dl-pl .dl-dring{display:none !important;}'+
+  '#sfsec-dna .dl-pl .dl-dhub{position:static !important;transform:none !important;inset:auto !important;'+
+   'width:clamp(104px,30vw,132px) !important;height:clamp(104px,30vw,132px) !important;'+
+   'margin:0 0 20px 0 !important;padding-bottom:0 !important;}'+
+  '#sfsec-dna .dl-pl .dl-dpt{position:static !important;transform:none !important;'+
+   'width:auto !important;max-width:none !important;text-align:left !important;'+
+   'display:grid !important;grid-template-columns:clamp(44px,13vw,56px) 1fr !important;'+
+   'gap:14px !important;align-items:center !important;padding:10px 0 !important;'+
+   'border-top:0.5px solid rgba(10,10,10,0.1) !important;}'+
+  '#sfsec-dna .dl-pl .dl-dpt > div:first-child{width:100% !important;height:auto !important;'+
+   'aspect-ratio:1/1 !important;margin:0 !important;}'+
+  '#sfsec-dna .dl-pl .dl-dpt > div:last-child{margin:0 !important;}'+
+ '}'+
+ /* 601-900 the two group labels can sit tight to the stage */
+ '@media(max-width:600px){#sfsec-dna .dl-pl .dl-dial{padding-top:4px;}}'+
+ '</style>';
+
+mreg('Peel — Named','A',function(D){return DRIFT(D,{mode:'both',links:'hub',hub:[28,52,25],
+ linkCol:'rgba(10,10,10,0.12)', cls:'dl-pl', css:PLCSS,
+ place:PEELP({cx:30,cy:50,a0:-70,a1:70,r0:26,r1:48,d0:11,d1:8})});});
+
+/* ============================================================
    MARSHALL — SELECTION
    Matthew's keep list from the 100-variation lab, renumbered
    from 1 in the order given. The unselected renderers are
@@ -9894,12 +9944,7 @@ mreg('Drift — Captions Right','A',function(D){return DRIFT(D,{mode:'side',link
    changes and SWITCH is untouched.
    ============================================================ */
 (function(){
- /* 14 dropped (Weighted Halves); 101-103 are the new Gravity Well
-    and Tone Split versions, slotted next to the ones they came from. */
- var KEEP=[1,2,10,22,30,101,102,81,103,82,84,90,94,97,
-           104,105,106,107,108,109,110,111,112,113,114,115,
-           116,117,118,119,120,121,122,123,124,125,
-           126,127,128,129,130,131,132,133,134,135];
+ var KEEP=[136];   /* 27 Peel — Named, re-registered responsive */
  var fns=[], names=[], tiers=[], missing=[];
  KEEP.forEach(function(n){
   var f=ML[n-1];
