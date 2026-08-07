@@ -6340,8 +6340,8 @@ html body #hiw-stage .tsw-injected{max-width:min(100%,680px) !important;}
 })();
 </script>
 
-<!-- DNA LAB — ROUND 12. Preview only, index-dna-lab-2.html.
-     Marshall 100 · SWITCH 124.  SWITCH 115-124 own both the DNA
+<!-- DNA LAB — ROUND 13. Preview only, index-dna-lab-2.html.
+     Marshall 100 · SWITCH 134.  SWITCH 115-124 own both the DNA
      wrapper and the Product Portfolio wrapper. index.html itself
      is byte-identical to source; this file is prefix + one block. -->
 <script id="sf-dna-lab">
@@ -9211,6 +9211,236 @@ xreg('Continuous','C','124',function(S){
  return {dna:dna,pf:pf};});
 
 /* ============================================================
+   SWITCH 125–134 — REFINEMENT PASS ON VARIATION 115
+   ------------------------------------------------------------
+   Structure is fixed and identical in all ten:
+     left  column   DESIGNED DNA
+     right column   explanatory copy
+     full-width chapter divider
+     PRODUCT PORTFOLIO heading + introduction
+     the ORIGINAL image grid, restored verbatim from S.grid
+   Nothing below the introduction is redesigned. Every variation
+   differs only in composition above it — density, type, rules,
+   alignment, balance, spacing.
+   ============================================================ */
+function rreg(name,key,o){
+ var fn=function(S){return R115(S,o);};
+ fn.full=true; fn.key=key; SN.push(name); ST.push('C'); SL.push(fn);}
+
+/* ---------- one rule vocabulary ----------
+   PRIMARY   1px ink        opens and closes a chapter
+   SECOND    0.5px ink-26   separates the two DNA groups
+   ROW       0.5px ink-13   separates principles
+   Variations may switch any of them off, never invent a fourth. */
+var RP='rgba(10,10,10,0.82)', RS='rgba(10,10,10,0.26)', RR='rgba(10,10,10,0.13)';
+function RL(c,h){return '<div style="height:'+(h||'1px')+';background:'+c+';"></div>';}
+
+/* ---------- the DNA table ----------
+   ONE grid for all eight principles, not one grid per row. The key track is
+   max-content, so it fits the longest name exactly and the descriptor column
+   lands on a single edge across both groups — no hard-capped track for
+   MANUFACTURING and SERVICEABILITY to overrun, and it re-fits itself
+   whichever way Bebas Neue happens to load. Rules and group labels span
+   the full width as their own cells, so every line stays continuous. */
+function RTAX(S,o){
+ var three=(o.gl==='col');
+ var span='grid-column:1/-1;';
+ var pad=o.rPad||'11px 0';
+ function label(gr,ci){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+
+   (o.glSz||'0.75rem')+';letter-spacing:'+(o.glLs||'0.24em')+';text-transform:uppercase;color:'+
+   (ci?(o.glC2||INKH):(o.glC1||CYT))+';">'+(o.glNum?('0'+(ci+1)+'  '):'')+gr.g+'</span>';}
+ var out='';
+ SGRP.forEach(function(gr,ci){
+  if(ci) out+='<div style="'+span+'height:'+(o.gGap==null?24:o.gGap)+'px;"></div>';
+  if(!three){
+   if(o.gl==='plain')
+     out+='<div style="'+span+'padding:'+(o.glPad||'0 0 8px')+';">'+label(gr,ci)+'</div>';
+   else if(o.gl==='under')
+     out+='<div style="'+span+'padding:'+(o.glPad||'0 0 7px')+';">'+label(gr,ci)+'</div>'+
+          '<div style="'+span+'height:0.5px;background:'+RS+';"></div>';
+   else
+     out+='<div style="'+span+'display:flex;align-items:center;gap:'+(o.glGap||14)+'px;padding:'+
+          (o.glPad||'0 0 9px')+';">'+label(gr,ci)+
+          '<div style="flex:1;height:0.5px;background:'+RS+';"></div></div>';
+  }
+  gr.ix.forEach(function(n,ix){var i=S.it[n];
+   var ruled = o.row==='none' ? false : (o.row==='group' ? ix===0 : true);
+   if(ruled) out+='<div style="'+span+'height:0.5px;background:'+RR+';"></div>';
+   if(three) out+='<div style="padding:'+pad+';">'+(ix===0?label(gr,ci):'')+'</div>';
+   out+='<div style="padding:'+pad+';"><span style="font-family:'+BEBAS+';font-size:'+(o.kSz||'0.95rem')+
+     ';letter-spacing:'+(o.kLs||'0.13em')+';text-transform:uppercase;color:'+(o.kC||INKH)+
+     ';line-height:'+(o.kLh||1.2)+';white-space:nowrap;">'+i.k+'</span></div>'+
+    '<div style="padding:'+pad+';"><span style="font-family:'+DM+';font-weight:300;font-size:'+
+     (o.vSz||'0.9rem')+';line-height:'+(o.vLh||1.7)+';color:'+(o.vC||SUB)+';">'+i.v+'</span></div>';});
+ });
+ var cols=(three?(o.colW||'max-content')+' ':'')+(o.kW||'max-content')+' 1fr';
+ return '<div style="display:grid;grid-template-columns:'+cols+';column-gap:'+(o.cg||'22px')+
+  ';align-items:baseline;">'+out+'</div>';}
+
+/* ---------- the portfolio heading ---------- */
+function RHEAD(S,o){
+ var m=o.pfHead||'display';
+ var ey='<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.pfSz||'0.75rem')+';'+
+  'letter-spacing:'+(o.pfLs||'0.24em')+';text-transform:uppercase;color:'+(o.pfC||CYT)+';">'+S.h2+'</div>';
+ var caps='<div style="font-family:'+BEBAS+';font-size:'+(o.pfSz||'1.35rem')+';letter-spacing:'+
+  (o.pfLs||'0.2em')+';text-transform:uppercase;color:'+(o.pfC||INKH)+';line-height:1.15;">'+S.h2+'</div>';
+ if(m==='display') return '<div style="font-family:'+BEBAS+';font-size:'+(o.pfSz||'clamp(1.5rem,3.1vw,2.35rem)')+
+   ';letter-spacing:0.01em;line-height:1.14;text-transform:uppercase;color:'+INKH+';">'+S.h2+'</div>';
+ if(m==='caps')     return caps;
+ if(m==='match')    return ey+'<div style="height:10px"></div>'+RL(RP,'1px');
+ if(m==='rulebar')  return RL(RP,'1px')+'<div style="padding:13px 0;">'+ey+'</div>'+RL(RR,'0.5px');
+ if(m==='capsrule') return caps+'<div style="height:11px"></div>'+RL(RS,'0.5px');
+ return ey;}
+
+/* ---------- the whole module ---------- */
+function R115(S,o){
+ o=o||{};
+ var k='dl-'+o.k;
+ var css=XCSS('.'+k+'{display:grid;grid-template-columns:'+(o.cols||'1.05fr 0.95fr')+';'+
+   'gap:'+(o.gap||'clamp(28px,4.4vw,74px)')+';align-items:start;}'+
+  '@media(max-width:900px){.'+k+'{grid-template-columns:1fr !important;gap:26px !important;}}');
+
+ var left='<div>'+
+   '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.eySz||'0.75rem')+';letter-spacing:'+
+    (o.eyLs||'0.22em')+';text-transform:uppercase;color:'+(o.eyC||CYT)+';">'+S.h1+'</div>'+
+   '<div style="height:'+(o.eyGap==null?12:o.eyGap)+'px"></div>'+
+   (o.headRule===false?'':RL(o.headRuleC||RP,o.headRuleH||'1px'))+
+   '<div style="padding-top:'+(o.taxTop||0)+'px;">'+RTAX(S,o)+'</div>'+
+   (o.closeRule?RL(RS,'0.5px'):'')+'</div>';
+
+ var right='<div style="padding-top:'+(o.rTop==null?38:o.rTop)+'px;">'+
+   '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.pSz||'0.9rem')+';line-height:'+
+    (o.pLh||1.95)+';color:'+(o.pC||SUB)+';max-width:'+(o.pW||'42ch')+';">'+S.p1+'</div>'+
+   (o.p2===false?'':'<div style="height:'+(o.pGap||20)+'px"></div>'+
+     '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.p2Sz||'0.9rem')+';line-height:'+
+     (o.p2Lh||1.9)+';color:'+(o.p2C||'rgba(10,10,10,0.45)')+';max-width:'+(o.pW||'42ch')+';">'+P1S+'</div>')+
+   (o.rTail?'<div style="height:'+o.rTail+'px"></div>'+RL(RR,'0.5px'):'')+'</div>';
+
+ var ch=o.chapter||'double';
+ var div='<div style="height:'+(o.chTop==null?54:o.chTop)+'px"></div>'+
+   (ch==='double' ? RL(RP,'1px')+'<div style="height:4px"></div>'+RL(RR,'0.5px')
+   : ch==='single' ? RL(RP,'1px')
+   : ch==='thick'  ? RL(RP,'2px')
+   : ch==='hair'   ? RL(RS,'0.5px')
+   : '');
+
+ var pf='<div style="padding-top:'+(o.pfTop||'clamp(34px,4.6vw,62px)')+';">'+
+   RHEAD(S,o)+'<div style="height:'+(o.pfGap==null?16:o.pfGap)+'px"></div>'+
+   '<div style="font-family:'+DM+';font-weight:300;font-size:'+(o.piSz||'0.9rem')+';line-height:'+
+    (o.piLh||1.95)+';color:'+(o.piC||SUB)+';max-width:'+(o.piW||'66ch')+';">'+S.p2+'</div>'+
+   '<div style="height:'+(o.gridGap==null?26:o.gridGap)+'px"></div></div>'+
+   (S.grid||'');
+
+ return {dna:css+'<div class="'+k+'">'+left+right+'</div>'+div, pf:pf};}
+
+/* ============================================================
+   125 · COMPACT DNA — the table loses 26% of its height so the
+   left column terminates level with the right. Row padding 11→7,
+   group gap 24→13, group header 9→6, descriptor line-height
+   1.7→1.62. Nothing else moves.
+   ============================================================ */
+rreg('Compact DNA','125',{k:'r125',rPad:'6px 0',gGap:8,glPad:'0 0 5px',vLh:1.5,
+ cg:'20px',pW:'34ch',rTop:21});
+
+/* ============================================================
+   126 · TYPOGRAPHY — layout untouched. Eyebrow drops to a quieter
+   tracking, principles lose a step of weight through colour rather
+   than size, descriptors gain leading and lose width, and the two
+   right-hand paragraphs separate by tone instead of by rule.
+   ============================================================ */
+rreg('Typography','126',{k:'r126',eyLs:'0.3em',eyC:'rgba(10,10,10,0.42)',
+ glSz:'0.75rem',glLs:'0.28em',glC1:CYT,glC2:'rgba(10,10,10,0.62)',
+ kSz:'0.95rem',kLs:'0.17em',kC:'rgba(10,10,10,0.84)',
+ vSz:'0.9rem',vLh:1.7,vC:'rgba(10,10,10,0.5)',
+ pLh:2.05,p2Lh:2.05,p2C:'rgba(10,10,10,0.4)',
+ pfHead:'caps',pfSz:'1.35rem',pfLs:'0.22em',piW:'62ch',piLh:2.02,rPad:'5px 0',gGap:10,pW:'32ch',rTop:18});
+
+/* ============================================================
+   127 · HAIRLINE AUDIT — three weights only, each with one job.
+   1px ink opens the DNA and opens the chapter. 0.5px ink-26 marks
+   the two groups. 0.5px ink-13 separates rows. The duplicated
+   closing hairline under the chapter rule is gone.
+   ============================================================ */
+rreg('Hairline Audit','127',{k:'r127',gl:'under',chapter:'single',chTop:52,
+ rPad:'6px 0',gGap:12,pfHead:'match',pW:'30ch',rTop:6});
+
+/* ============================================================
+   128 · ALIGNMENT — one invisible grid. Eyebrow, group labels,
+   principle names and the descriptor column all start on the same
+   two tracks, and the portfolio heading and paragraph inherit the
+   left column's exact left edge and measure.
+   ============================================================ */
+rreg('Alignment','128',{k:'r128',cols:'1fr 1fr',gap:'clamp(30px,4.6vw,78px)',
+ gl:'col',colW:'max-content',cg:'22px',rPad:'9px 0',gGap:10,
+ row:'all',glPad:'0',pfHead:'match',chapter:'single',chTop:48,pW:'30ch',rTop:0});
+
+/* ============================================================
+   129 · PORTFOLIO HEADING — the display scale is gone. The heading
+   now sits in the same family as DESIGNED DNA and EXTRACTED DNA:
+   an eyebrow over a 1px rule, strong enough to open a chapter
+   without becoming a headline.
+   ============================================================ */
+rreg('Portfolio Heading','129',{k:'r129',pfHead:'rulebar',chapter:'',chTop:64,
+ pfTop:'0',pfGap:20,rPad:'7px 0',gGap:14,pW:'30ch',rTop:19});
+
+/* ============================================================
+   130 · COLUMN BALANCE — the right column is given more work
+   instead of the left being crushed: the paragraph widens, the
+   supporting text is set off by a hairline, and the DNA table
+   tightens slightly. Both columns close within a line of each other.
+   ============================================================ */
+rreg('Column Balance','130',{k:'r130',cols:'1fr 1fr',rPad:'8px 0',gGap:12,
+ pGap:22,rTail:22,closeRule:true,
+ pfHead:'capsrule',pfSz:'1.3rem',pW:'30ch',rTop:4});
+
+/* ============================================================
+   131 · EDITORIAL REFINEMENT — museum caption register. Group
+   labels sit plain with no trailing rule, row rules appear only
+   between the two groups, and the chapter break is a single
+   hairline carried on a long silence.
+   ============================================================ */
+rreg('Editorial Refinement','131',{k:'r131',gl:'plain',row:'group',
+ headRuleH:'0.5px',headRuleC:RS,rPad:'7px 0',gGap:18,
+ kLs:'0.16em',kC:'rgba(10,10,10,0.86)',vC:'rgba(10,10,10,0.48)',vLh:1.78,
+ chapter:'hair',chTop:74,pfTop:'clamp(30px,4vw,54px)',
+ pfHead:'caps',pfSz:'1.25rem',pfLs:'0.24em',pW:'30ch',rTop:35});
+
+/* ============================================================
+   132 · SPACING SYSTEM — every gap is a multiple of 8. Eyebrow 8,
+   table top 8, rows 8, groups 24, chapter 64, heading 16,
+   grid 32. Nothing is a leftover number.
+   ============================================================ */
+rreg('Spacing System','132',{k:'r132',eyGap:8,taxTop:8,rPad:'8px 0',gGap:16,glPad:'0 0 8px',
+ chTop:64,chapter:'single',pfTop:'40px',pfGap:16,gridGap:32,pGap:24,
+ pfHead:'match',cg:'24px',pW:'30ch',rTop:40});
+
+/* ============================================================
+   133 · DNA TABLE — the table alone is re-engineered. Key column
+   narrows and the descriptor hangs off a fixed indent, rules drop
+   to the lightest weight that still reads, and the rhythm evens
+   out so every row occupies the same optical band.
+   ============================================================ */
+rreg('DNA Table','133',{k:'r133',cg:'18px',rPad:'7px 0',
+ kSz:'0.95rem',kLs:'0.15em',vSz:'0.9rem',vLh:1.6,vC:'rgba(10,10,10,0.52)',
+ gl:'under',gGap:14,glLs:'0.26em',headRule:false,taxTop:0,
+ pfHead:'match',pW:'30ch',rTop:11});
+
+/* ============================================================
+   134 · FINAL POLISH — the production candidate. Compact table,
+   quieter type, three rule weights, one 8px spacing spine, both
+   columns closing together, and a portfolio heading in the site's
+   own family. Nothing calls attention to itself.
+   ============================================================ */
+rreg('Final Polish','134',{k:'r134',cols:'1fr 1fr',gap:'clamp(30px,4.8vw,84px)',
+ eyLs:'0.28em',eyGap:8,taxTop:8,
+ gl:'under',glLs:'0.26em',glC2:'rgba(10,10,10,0.6)',glPad:'0 0 8px',
+ cg:'24px',rPad:'6px 0',gGap:12,
+ kLs:'0.16em',kC:'rgba(10,10,10,0.84)',vLh:1.72,vC:'rgba(10,10,10,0.5)',
+ pLh:2,pGap:24,p2C:'rgba(10,10,10,0.42)',
+ chapter:'single',chTop:64,
+ pfTop:'40px',pfHead:'match',pfGap:16,piLh:2,gridGap:32,pW:'30ch',rTop:6});
+
+/* ============================================================
    CONTROLLER — harvest, switch, contact sheet, URL state
    ============================================================ */
 var MLB='Extracted DNA';
@@ -9355,6 +9585,7 @@ function captureSwitch(){
  u1.insertBefore(pw,ey2); pw.appendChild(ey2); pw.appendChild(lead2); pw.appendChild(grid);
  S.host=wrap; S.base=wrap.innerHTML;
  S.pf=pw;     S.pfbase=pw.innerHTML;
+ S.data.grid=grid.outerHTML;     /* the untouched original image grid, handed to variations */
  S.ready=true; return true;
 }
 
