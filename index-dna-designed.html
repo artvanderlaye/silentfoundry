@@ -7464,31 +7464,34 @@ mreg('DNA Key — bottom left, eyebrow size','A',function(D){
 });
 
 /* ============================================================
-   DESIGNED DNA — BASELINE + 20 COMPOSITIONS
-   Benchmarked against the Foundry thesis directly above, measured:
-     content box   216 -> 1240   (1024 wide)
-     columns       464 + 96 + 464
-     eyebrow       8.64px / 0.34em / gold, weight 400
-     headline      34.56px Bebas / 0.92 / 0.24em
-     body          13.6px / 27.2px, measure 464 or 408
-     item name     13.12px / 0.14em / weight 500 / 0.86 ink
-     micro         6.72px
+   DESIGNED DNA — BASELINE + 20 REFINEMENTS
+   Not new layouts. The two columns stay, at the Foundry's own box:
+     content 216 -> 1240, columns 464 + 96 + 464.
 
-   The DNA section already sits on that exact column system. What it
-   lacks is mass inside it: the thesis is boxed to 340px inside a
-   464px column, and the taxonomy rows use two thirds of theirs.
-   These twenty go after mass, hierarchy and rhythm — not the grid.
+   What varies is what sits inside them. Measured off the Foundry
+   thesis directly above:
 
-   Variation 1 is the current design, untouched, as the baseline.
+     section eyebrow   8.64px / 0.34em / weight 400   (DNA now: 10.88 / 0.25em / 300)
+     item name        13.12px / 0.14em / weight 500, DM Sans, sentence case
+                                                     (DNA now: 13.6 Bebas, uppercase)
+     item body        13.6px / 27.2px, measure 408
+     column           464, gutter 96
+
+   So the Foundry's answer to "does it need heavy headings" is no —
+   it uses a medium-weight sans label, not display caps. Most of the
+   twenty follow that, and the rest test the alternatives: sentence
+   rows, one running sentence, and dropdowns.
+
+   Variation 1 is the current design, untouched.
    ============================================================ */
 (function(){
 
-/* the shipped design, captured before the list is cleared */
-var BASE = SL[0], BASEN = SN[0];
+var BASE = SL[0];
 SL.length=0; SN.length=0; ST.length=0;
 
-/* ---------- palette, taken from the rendered section ---------- */
-var CY='#0a7f99', CYQ='rgba(10,127,153,0.55)',
+/* ---------- the two palettes ---------- */
+var CY='#0a7f99',                       /* the section's current accent */
+    GOLD='#8a6e3a',                     /* the Foundry's accent, cream-side */
     I86='rgba(10,10,10,0.86)', I72='rgba(10,10,10,0.72)', I62='rgba(10,10,10,0.62)',
     I55='rgba(10,10,10,0.55)', I48='rgba(10,10,10,0.48)', I38='rgba(10,10,10,0.38)',
     I32='rgba(10,10,10,0.32)', I22='rgba(10,10,10,0.22)',
@@ -7496,365 +7499,291 @@ var CY='#0a7f99', CYQ='rgba(10,127,153,0.55)',
 var DMS="'DM Sans',sans-serif", BBS="'Bebas Neue',sans-serif";
 
 /* ---------- content ---------- */
-function GROUPS(S){
- var it=S.it||[];
- return [{g:'Intangible', it:it.slice(0,4)}, {g:'Tangible', it:it.slice(4,8)}];
-}
-/* thesis copy — the strategic meaning is fixed, the breaking is not */
-var T={
- A:['These principles define the SWITCH platform rather than any single product. Together they form a transferable industrial language capable of moving across entirely new categories.',
-    'Each application expresses the same system through a different function, market and commercial opportunity.'],
- B:['Eight principles hold every SWITCH product to one industrial language: form, structure, CMF, signature details, stance, manufacturing, modularity and serviceability.',
-    'The result is not a collection of unrelated products, but one transferable platform expressed across multiple categories.'],
- C:['The platform is defined by a consistent set of design and engineering principles rather than by one motorcycle.',
-    'Applied across new functions and markets, those principles create a recognisable product family with far greater commercial breadth.'],
- D:['Designed DNA is the system beneath the product.',
-    'It establishes the form, engineering logic, material language and manufacturing rules that let SWITCH expand into new categories without losing its identity.'],
- LEAD:'One industrial language, transferable across categories.',
- LEAD2:'The system beneath the product.',
- LEAD3:'Eight principles. One platform.'
+function GROUPS(S){var it=S.it||[];
+ return [{g:'Intangible',it:it.slice(0,4)},{g:'Tangible',it:it.slice(4,8)}];}
+function sentence(s){                    /* FORM -> Form, SIGNATURE DETAILS -> Signature details */
+ s=String(s||'').toLowerCase();
+ if(s==='cmf')return 'CMF';
+ return s.charAt(0).toUpperCase()+s.slice(1);}
+function strip(v){return String(v||'').replace(/\.\s*$/,'');}
+
+/* thesis, kept short — the baseline runs 585 characters in a 340px column */
+var TH={
+ two:['These principles define the SWITCH platform rather than any single product — a transferable industrial language that moves across categories.',
+      'Each application expresses the same system through a different function and market.'],
+ one:['Eight principles hold every SWITCH product to one industrial language. Each application expresses that system through a different function and market.'],
+ lead:'One industrial language, transferable across categories.',
+ lead2:'The system beneath the product.',
+ tail:'Each application expresses the same system through a different function and market.'
 };
 
 /* ---------- atoms ---------- */
 function sp(h){return '<div style="height:'+h+'px"></div>';}
-function eyb(t,c,ls,sz){return '<div style="font-family:'+DMS+';font-weight:300;font-size:'+(sz||'0.68rem')+
- ';letter-spacing:'+(ls||'0.25em')+';text-transform:uppercase;color:'+(c||CY)+';">'+esc(t)+'</div>';}
-function micro(t,c,sz){return '<span style="font-family:'+DMS+';font-weight:300;font-size:'+(sz||'0.68rem')+
- ';letter-spacing:0.26em;text-transform:uppercase;color:'+(c||I32)+';">'+esc(t)+'</span>';}
-function nm(t,sz,c,ls,lh){return '<span style="font-family:'+BBS+';font-size:'+(sz||'0.85rem')+
- ';letter-spacing:'+(ls||'0.16em')+';line-height:'+(lh||1.2)+';text-transform:uppercase;color:'+
- (c||I86)+';">'+esc(t)+'</span>';}
-function dsc(t,c,sz,lh,mw){return '<span style="font-family:'+DMS+';font-weight:300;font-size:'+(sz||'0.85rem')+
- ';line-height:'+(lh||2)+';color:'+(c||I48)+';'+(mw?'max-width:'+mw+';display:block;':'')+'">'+esc(t)+'</span>';}
-function para(t,o){o=o||{};return '<p style="font-family:'+DMS+';font-weight:300;font-size:'+(o.sz||'0.85rem')+
- ';line-height:'+(o.lh||2)+';color:'+(o.c||I55)+';margin:0;'+(o.mw?'max-width:'+o.mw+';':'')+
- (o.x||'')+'">'+t+'</p>';}
-function lead(t,o){o=o||{};return '<p style="font-family:'+DMS+';font-weight:300;font-size:'+(o.sz||'1.16rem')+
- ';line-height:'+(o.lh||1.55)+';color:'+(o.c||I72)+';margin:0;'+(o.mw?'max-width:'+o.mw+';':'')+
- (o.x||'')+'">'+t+'</p>';}
-function disp(t,o){o=o||{};return '<div style="font-family:'+BBS+';font-size:'+(o.sz||'2.16rem')+
- ';line-height:'+(o.lh||0.92)+';letter-spacing:'+(o.ls||'0.24em')+';text-transform:uppercase;color:'+
- (o.c||I86)+';">'+t+'</div>';}
-function rul(c,m,h){return '<div style="height:'+(h||'0.5px')+';background:'+(c||RUL)+';'+
- (m?'margin:'+m+';':'')+'"></div>';}
-function vrl(c){return '<div style="width:0.5px;background:'+(c||HR2)+';align-self:stretch;"></div>';}
-function grid(cols,gap,inner,al){return '<div class="dl-g2" style="display:grid;grid-template-columns:'+cols+
- ';gap:'+gap+';align-items:'+(al||'start')+';">'+inner+'</div>';}
-function col(inner,st){return '<div style="min-width:0;'+(st||'')+'">'+inner+'</div>';}
+/* the Foundry eyebrow, to the pixel. 8.64px is below the lab's 0.9rem floor —
+   it is not a new small size, it is the size the section above already uses. */
+function fey(t,c){return '<div style="font-family:'+DMS+';font-weight:400;font-size:8.64px;'+
+ 'letter-spacing:0.34em;text-transform:uppercase;color:'+(c||GOLD)+';">'+esc(t)+'</div>';}
+/* the section's current eyebrow, for the variations that keep it */
+function cey(t,c){return '<div style="font-family:'+DMS+';font-weight:300;font-size:0.68rem;'+
+ 'letter-spacing:0.25em;text-transform:uppercase;color:'+(c||CY)+';">'+esc(t)+'</div>';}
+/* the Foundry item label */
+function fname(t,o){o=o||{};return '<span style="font-family:'+DMS+';font-weight:'+(o.fw||500)+
+ ';font-size:'+(o.sz||'0.82rem')+';letter-spacing:'+(o.ls||'0.14em')+';line-height:1.25;'+
+ (o.up?'text-transform:uppercase;':'')+'color:'+(o.c||I86)+';">'+esc(t)+'</span>';}
+/* the current Bebas label, for the variations that keep it */
+function bname(t,o){o=o||{};return '<span style="font-family:'+BBS+';font-size:'+(o.sz||'0.85rem')+
+ ';letter-spacing:'+(o.ls||'0.16em')+';line-height:1.2;text-transform:uppercase;color:'+
+ (o.c||I86)+';">'+esc(t)+'</span>';}
+function body(t,o){o=o||{};return '<span style="font-family:'+DMS+';font-weight:300;font-size:'+
+ (o.sz||'0.85rem')+';line-height:'+(o.lh||2)+';color:'+(o.c||I48)+';">'+t+'</span>';}
+function para(t,o){o=o||{};return '<p style="font-family:'+DMS+';font-weight:300;font-size:'+
+ (o.sz||'0.85rem')+';line-height:'+(o.lh||2)+';color:'+(o.c||I55)+';margin:0;'+
+ (o.mw?'max-width:'+o.mw+';':'')+'">'+t+'</p>';}
+function lead(t,o){o=o||{};return '<p style="font-family:'+DMS+';font-weight:300;font-size:'+
+ (o.sz||'1.05rem')+';line-height:'+(o.lh||1.65)+';color:'+(o.c||I72)+';margin:0;'+
+ (o.mw?'max-width:'+o.mw+';':'')+'">'+t+'</p>';}
+function micro(t,c){return '<span style="font-family:'+DMS+';font-weight:400;font-size:8.64px;'+
+ 'letter-spacing:0.34em;text-transform:uppercase;color:'+(c||I32)+';">'+esc(t)+'</span>';}
+function rul(c,h){return '<div style="height:'+(h||'0.5px')+';background:'+(c||RUL)+';"></div>';}
+function two(inner,gap){return '<div class="dl-g2" style="display:grid;'+
+ 'grid-template-columns:1fr 1fr;gap:'+(gap||'96px')+';align-items:start;">'+inner+'</div>';}
+function col(i,st){return '<div style="min-width:0;'+(st||'')+'">'+i+'</div>';}
 function n2(i){return (i<9?'0':'')+(i+1);}
 
-/* the header row — this is children[0], which the page pulls out to the
-   section edge so it lines up with PRODUCT PORTFOLIO below */
+/* ---------- the header, children[0] ---------- */
 function HEAD(S,o){o=o||{};
- return '<div>'+eyb(S.h1,o.c,o.ls,o.sz)+(o.rule===false?'':sp(o.g||13)+rul(o.rc||RUL))+'</div>';}
+ var e=(o.eyebrow==='foundry')?fey(S.h1,o.ec):cey(S.h1,o.ec);
+ return '<div>'+e+(o.rule===false?'':sp(o.g||13)+rul(o.rc||RUL))+'</div>';}
 
-/* ---------- taxonomy treatments ---------- */
-function TAX(kind,G,o){o=o||{};
- var gg=o.gg==null?34:o.gg;
- function head(g,i){return o.noGroup?'':micro(g,o.gc,o.gsz)+sp(o.gh==null?14:o.gh);}
- function rows(g,gi){
-  return g.it.map(function(x,i){
-   switch(kind){
-   case 'ruled':
-     return '<div style="display:grid;grid-template-columns:'+(o.rc||'1fr 1fr')+';gap:'+(o.rg||'26px')+
-      ';align-items:baseline;padding:'+(o.rp||14)+'px 0;border-top:0.5px solid '+(o.dc||HR2)+';">'+
-      '<div>'+nm(x.k,o.nsz,o.nc,o.nls)+'</div><div>'+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div></div>';
-   case 'stack':
-     return '<div style="padding:'+(o.rp||13)+'px 0;">'+nm(x.k,o.nsz,o.nc,o.nls)+
-      '<div style="margin-top:6px;">'+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div></div>';
-   case 'index':
-     return '<div style="display:grid;grid-template-columns:34px 1fr;gap:'+(o.rg||'20px')+
-      ';align-items:baseline;padding:'+(o.rp||13)+'px 0;border-top:0.5px solid '+(o.dc||HR2)+';">'+
-      '<span style="font-family:'+BBS+';font-size:0.8rem;letter-spacing:0.14em;color:'+I22+';">'+
-      n2(gi*4+i)+'</span><div>'+nm(x.k,o.nsz,o.nc,o.nls)+
-      '<div style="margin-top:5px;">'+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div></div></div>';
-   case 'big':
-     return '<div style="padding:'+(o.rp||18)+'px 0;border-top:0.5px solid '+(o.dc||HR2)+';">'+
-      disp(esc(x.k),{sz:o.nsz||'1.44rem',ls:o.nls||'0.14em',lh:1.0,c:o.nc||I86})+
-      '<div style="margin-top:9px;">'+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div></div>';
-   case 'spread':
-     return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:24px;'+
-      'padding:'+(o.rp||13)+'px 0;border-bottom:0.5px solid '+(o.dc||HR2)+';">'+
-      nm(x.k,o.nsz,o.nc,o.nls)+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div>';
-   default:  /* 'plain' — name then description, no rules */
-     return '<div style="padding:'+(o.rp||11)+'px 0;">'+
-      '<div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">'+
-      nm(x.k,o.nsz,o.nc,o.nls)+dsc(x.v,o.dcol,o.dsz,o.dlh)+'</div></div>';}
-  }).join('');}
+/* ---------- the eight ----------
+   kind decides how each principle is set; everything else is constant. */
+function EIGHT(kind,G,o){o=o||{};
+ var NM=o.bebas?bname:fname;
+ var nmo={sz:o.nsz,ls:o.nls,c:o.nc,fw:o.fw,up:o.up};
+ var dc=o.dc||HR2;
+ function label(g){return o.noGroup?'':micro(g,o.gc)+sp(o.gh==null?14:o.gh);}
+ function row(x,i,gi){
+  switch(kind){
+  case 'beside':      /* the Foundry's own arrangement: label left, one line right */
+   return '<div style="display:grid;grid-template-columns:'+(o.rc||'150px 1fr')+';gap:'+(o.rg||'26px')+
+    ';align-items:baseline;padding:'+(o.rp||12)+'px 0;'+(o.rules===false?'':'border-top:0.5px solid '+dc+';')+
+    '">'+NM(x.k,nmo)+body(x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div>';
+  case 'sentence':    /* Form — rectilinear geometry. */
+   return '<div style="padding:'+(o.rp||10)+'px 0;'+(o.rules===false?'':'border-top:0.5px solid '+dc+';')+
+    '">'+NM(x.k,nmo)+body('&nbsp;&nbsp;— '+strip(x.v).toLowerCase()+'.',{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div>';
+  case 'stacked':
+   return '<div style="padding:'+(o.rp||11)+'px 0;'+(o.rules===false?'':'border-top:0.5px solid '+dc+';')+
+    '">'+NM(x.k,nmo)+'<div style="margin-top:4px;">'+
+    body(x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div></div>';
+  case 'spread':
+   return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:22px;'+
+    'padding:'+(o.rp||11)+'px 0;'+(o.rules===false?'':'border-bottom:0.5px solid '+dc+';')+'">'+
+    NM(x.k,nmo)+body(x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div>';
+  case 'numbered':
+   return '<div style="display:grid;grid-template-columns:30px '+(o.rc||'128px')+' 1fr;gap:'+(o.rg||'18px')+
+    ';align-items:baseline;padding:'+(o.rp||11)+'px 0;'+(o.rules===false?'':'border-top:0.5px solid '+dc+';')+
+    '"><span style="font-family:'+DMS+';font-weight:400;font-size:8.64px;letter-spacing:0.24em;color:'+I22+
+    ';">'+n2(gi*4+i)+'</span>'+NM(x.k,nmo)+body(x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div>';
+  case 'drop':        /* label only; the line appears on click */
+   return '<div class="dd-a" style="'+(o.rules===false?'':'border-top:0.5px solid '+dc+';')+'">'+
+    '<div onclick="ddT(this)" style="display:flex;justify-content:space-between;align-items:baseline;'+
+    'gap:20px;cursor:pointer;padding:'+(o.rp||12)+'px 0;">'+NM(x.k,nmo)+
+    '<span class="dd-i" style="font-family:'+DMS+';font-weight:300;font-size:0.7rem;color:'+
+    (o.ic||I32)+';transition:transform .3s,color .25s;">+</span></div>'+
+    '<div class="dd-p" style="overflow:hidden;max-height:'+(o.open&&i===0?'80px':'0')+
+    ';opacity:'+(o.open&&i===0?'1':'0')+';transition:max-height .38s ease,opacity .3s;">'+
+    body(x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+sp(14)+'</div></div>';
+  default:            /* 'plain' — inline, no rules */
+   return '<div style="padding:'+(o.rp||9)+'px 0;">'+NM(x.k,nmo)+
+    body('&nbsp;&nbsp;'+x.v,{sz:o.dsz,c:o.dcol,lh:o.dlh})+'</div>';}
+ }
+ if(kind==='running'){                 /* the four as one sentence */
+  return G.map(function(g,gi){
+   var s=g.it.map(function(x){return sentence(x.k).toLowerCase()+', '+strip(x.v).toLowerCase();}).join('; ');
+   return '<div style="'+(gi?'margin-top:26px;':'')+'">'+label(g.g)+
+    para(s.charAt(0).toUpperCase()+s.slice(1)+'.',{sz:o.dsz||'0.85rem',lh:o.dlh||2,c:o.dcol||I55})+
+    '</div>';}).join('');}
  return G.map(function(g,gi){
-  return '<div style="'+(gi?'margin-top:'+gg+'px;':'')+'">'+head(g.g,gi)+rows(g,gi)+'</div>';}).join('');
+  return '<div style="'+(gi?'margin-top:'+(o.gg==null?30:o.gg)+'px;':'')+'">'+
+   label(g.g)+g.it.map(function(x,i){return row(x,i,gi);}).join('')+'</div>';}).join('');
 }
-/* the two families side by side */
-function TAXPAIR(kind,G,o){o=o||{};
- return grid(o.cols||'1fr 1fr', o.gap||'clamp(24px,3.4vw,56px)',
-  G.map(function(g,gi){
-   return col(TAX(kind,[g],o));}).join(''));}
 
-/* ---------- thesis treatments ---------- */
+/* ---------- thesis ---------- */
 function THESIS(kind,o){o=o||{};
- var set=T[o.copy||'A'];
  switch(kind){
- case 'lead':   return lead(T[o.leadKey||'LEAD'],{sz:o.lsz,mw:o.mw||'21ch',c:o.lc})+
-                       sp(o.g||24)+para(set[1],{sz:o.sz,lh:o.lh,mw:o.mw2||o.mw,c:o.c});
- case 'leadbig':return disp(T[o.leadKey||'LEAD2'],{sz:o.lsz||'1.9rem',ls:'0.1em',lh:1.06,c:o.lc||I86})+
-                       sp(o.g||26)+para(set[0],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c})+
-                       sp(18)+para(set[1],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});
- case 'two':    return para(set[0],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c})+sp(o.g||20)+
-                       para(set[1],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});
- case 'one':    return para(set[0],{sz:o.sz||'0.95rem',lh:o.lh||1.95,mw:o.mw,c:o.c||I62});
- case 'stat':   return lead(set[0],{sz:o.lsz||'1.05rem',lh:1.7,mw:o.mw,c:o.lc||I72});
- default:       return para(set[0],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c})+sp(o.g||20)+
-                       para(set[1],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});}
+ case 'one':  return para(TH.one[0],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});
+ case 'lead': return lead(TH[o.k||'lead'],{sz:o.lsz,mw:o.mw})+sp(o.g||20)+
+                     para(TH.tail,{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});
+ default:     return para(TH.two[0],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c})+sp(o.g||18)+
+                     para(TH.two[1],{sz:o.sz,lh:o.lh,mw:o.mw,c:o.c});}
 }
 
-/* ---------- the portfolio side ---------- */
+/* ---------- portfolio ---------- */
 function PF(S,o){o=o||{};
- return '<div>'+eyb(S.h2,o.c||CY,o.ls,o.sz)+
-  (o.rule?sp(12)+rul(o.rc||RUL):'')+
-  (o.intro===false?'':sp(o.g||18)+para(S.p2,{sz:o.psz||'0.85rem',lh:2,mw:o.mw||'62ch',c:I55}))+
-  sp(o.g2||30)+'</div>'+S.grid;}
+ var e=(o.eyebrow==='foundry')?fey(S.h2,o.ec):cey(S.h2,o.ec);
+ return '<div>'+e+sp(o.g||18)+
+  para(S.p2,{sz:'0.85rem',lh:2,mw:o.mw||'62ch',c:I55})+sp(o.g2||30)+'</div>'+S.grid;}
 
-/* ---------- responsive ---------- */
-var SDCSS='<style>'+
- '@media(max-width:980px){'+
-  '#sf-dnawrap .dl-g2{grid-template-columns:1fr !important;gap:clamp(28px,5vw,44px) !important;}'+
-  '#sf-dnawrap .dl-vr{display:none !important;}'+
- '}'+
- '@media(max-width:620px){'+
-  '#sf-dnawrap .dl-g3{grid-template-columns:1fr !important;}'+
- '}'+
+/* ---------- dropdown behaviour + responsive ---------- */
+var DDCSS='<style>'+
+ '#sf-dnawrap .dd-a:hover .dd-i{color:'+GOLD+';}'+
+ '@media(max-width:980px){#sf-dnawrap .dl-g2{grid-template-columns:1fr !important;'+
+  'gap:clamp(28px,5vw,44px) !important;}}'+
  '</style>';
+if(!window.ddT) window.ddT=function(el){
+ var box=el.parentNode, p=el.nextElementSibling, i=el.querySelector('.dd-i');
+ var root=box.parentNode;
+ var open=p.style.maxHeight&&p.style.maxHeight!=='0px';
+ root.querySelectorAll('.dd-p').forEach(function(x){x.style.maxHeight='0px';x.style.opacity='0';});
+ root.querySelectorAll('.dd-i').forEach(function(x){x.style.transform='';});
+ if(!open){p.style.maxHeight=p.scrollHeight+'px';p.style.opacity='1';
+  if(i)i.style.transform='rotate(45deg)';}};
 
 /* ---------- registration ---------- */
-function reg(name,note,fn){
+function reg(name,note,fn,pfo){
  var f=function(S){var G=GROUPS(S);
-  return {dna:SDCSS+'<div class="dl-cols">'+fn(S,G)+'</div>', pf:PF(S,{})};};
- f.full=true; f.key='dna'; f.note=note;
+  return {dna:DDCSS+'<div class="dl-cols">'+fn(S,G)+'</div>', pf:PF(S,pfo||{})};};
+ f.full=true; f.note=note;
  SL.push(f); SN.push(name); ST.push('A');
 }
-/* a variation that also changes the portfolio transition */
-function reg2(name,note,fn,pfo){
- var f=function(S){var G=GROUPS(S);
-  return {dna:SDCSS+'<div class="dl-cols">'+fn(S,G)+'</div>', pf:PF(S,pfo||{})};};
- f.full=true; f.key='dna'; f.note=note;
- SL.push(f); SN.push(name); ST.push('A');
-}
+/* the shell every variation shares: header, then two 464 columns */
+function SHELL(S,G,o,leftFn,rightFn){o=o||{};
+ return HEAD(S,o)+sp(o.top||38)+
+  two(col(leftFn(S,G))+col(rightFn(S,G)), o.gap||'96px');}
 
 /* ============================================================
    01 — the current design, untouched
    ============================================================ */
 SL.push(BASE); SN.push('Current — baseline'); ST.push('A');
 
-/* 02 — DIRECT FOUNDRY MIRROR
-   The Foundry's own proportions: eyebrow, headline, body at 464.
-   Taxonomy left under a headline, thesis right at the full measure. */
-reg('Foundry Mirror','Two 464 halves, thesis at the Foundry\'s own measure.',function(S,G){
- return HEAD(S)+sp(40)+
-  grid('1fr 1fr','96px',
-   col(disp('Eight principles<br>one platform.',{sz:'2.16rem',ls:'0.2em'})+sp(34)+
-       TAX('ruled',G,{rc:'150px 1fr',rg:'26px'}))+
-   col(sp(6)+THESIS('two',{mw:'none',sz:'0.85rem',lh:2})));});
+/* 02 — the Foundry's own label: DM Sans 500, sentence case, line beside it */
+reg('Foundry Label','DM Sans 500 sentence case, exactly the Foundry\'s item metric.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{sub:true,rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 03 — FRAMEWORK AS HERO
-   The taxonomy takes the width and the scale; the thesis supports. */
-reg('Framework as Hero','The eight set large across the width; thesis a quiet column.',function(S,G){
- return HEAD(S)+sp(44)+
-  grid('1.55fr 0.85fr','clamp(40px,6vw,96px)',
-   col(TAX('big',G,{nsz:'1.44rem',dsz:'0.85rem',rp:16,gg:40}))+
-   col(sp(10)+THESIS('lead',{mw:'26ch',lsz:'1.05rem'})));});
+/* 03 — same, but the labels stay uppercase */
+reg('Foundry Label, caps','The same medium-weight label, left uppercase.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{up:true,ls:'0.16em',rc:'160px 1fr'});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 04 — THESIS AS HERO
-   One sentence carries the section; the framework becomes an index. */
-reg('Thesis as Hero','One large statement left, the eight as a tight index right.',function(S,G){
- return HEAD(S)+sp(44)+
-  grid('1.05fr 0.95fr','clamp(40px,6vw,96px)',
-   col(disp(T.LEAD2,{sz:'2.6rem',ls:'0.08em',lh:1.02})+sp(30)+
-       para(T.A[0],{mw:'34ch',sz:'0.9rem'}))+
-   col(TAX('spread',G,{nsz:'0.85rem',dsz:'0.8rem',rp:12,gg:30})));});
+/* 04 — the current Bebas kept, but quieter and smaller */
+reg('Bebas, quieted','The display caps kept, taken down in size and ink.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{bebas:true,nsz:'0.8rem',nc:I72,rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 05 — EQUAL WEIGHT 50/50 */
-reg('Equal Weight','Strict halves, matched top alignment, one wide gutter.',function(S,G){
- return HEAD(S)+sp(42)+
-  grid('1fr 1fr','96px',
-   col(micro('The framework',I32)+sp(18)+TAX('ruled',G,{rc:'1fr 1fr',rp:15}))+
-   col(micro('The thesis',I32)+sp(18)+THESIS('leadbig',{lsz:'1.62rem',mw:'none'})));});
+/* 05 — one line each: Form — rectilinear geometry. */
+reg('Sentence rows','Each principle as one readable line rather than a heading plus a caption.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('sentence',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 06 — WIDE FRAMEWORK / NARROW THESIS  (60/40) */
-reg('Wide Framework','60/40. The eight breathe; the thesis is compact and heavier.',function(S,G){
- return HEAD(S)+sp(42)+
-  grid('1.5fr 1fr','clamp(40px,5.5vw,88px)',
-   col(TAX('ruled',G,{rc:'190px 1fr',rg:'32px',rp:16,gg:38}))+
-   col(sp(4)+THESIS('lead',{lsz:'1.1rem',mw:'25ch',sz:'0.85rem'})));});
+/* 06 — sentence rows, no rules at all */
+reg('Sentence rows, no rules','The same lines with every rule removed — type and space only.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('sentence',g,{rules:false,rp:9});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 07 — NARROW FRAMEWORK / LARGE THESIS  (40/60) */
-reg('Large Thesis','40/60. A dominant sentence, the eight held narrow but firm.',function(S,G){
- return HEAD(S)+sp(42)+
-  grid('0.72fr 1.28fr','clamp(40px,6vw,96px)',
-   col(TAX('stack',G,{nsz:'0.85rem',dsz:'0.8rem',rp:11,gg:30}))+
-   col(disp(T.LEAD,{sz:'1.9rem',ls:'0.06em',lh:1.14,c:I86})+sp(28)+
-       para(T.A[1],{sz:'0.9rem',mw:'46ch'})));});
+/* 07 — the four as one running sentence per family */
+reg('Running sentence','Each family becomes one sentence. Four lines instead of sixteen.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('running',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 08 — THREE COLUMN SYSTEM */
-reg('Three Column','Intangible, Tangible and the thesis as three equal fields.',function(S,G){
- return HEAD(S)+sp(42)+
-  '<div class="dl-g2" style="display:grid;grid-template-columns:1fr 0.5px 1fr 0.5px 1.4fr;'+
-  'gap:clamp(22px,3vw,44px);align-items:start;">'+
-   col(TAX('stack',[G[0]],{nsz:'0.85rem',rp:12}))+vrl()+
-   col(TAX('stack',[G[1]],{nsz:'0.85rem',rp:12}))+vrl()+
-   col(THESIS('two',{mw:'34ch',sz:'0.85rem'}))+'</div>';});
+/* 08 — dropdowns: the eight as labels, the line on click */
+reg('Dropdowns','Eight labels only; the description opens on click.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('drop',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 09 — SPLIT TAXONOMY, THESIS BENEATH */
-reg('Split Taxonomy','All eight visible as one system; the thesis a full-width block beneath.',
- function(S,G){
- return HEAD(S)+sp(42)+
-  TAXPAIR('ruled',G,{cols:'1fr 1fr',gap:'96px',rc:'150px 1fr',rp:14})+
-  sp(46)+rul(RUL)+sp(34)+
-  grid('1fr 1fr','96px',
-   col(lead(T.LEAD,{sz:'1.24rem',mw:'24ch'}))+
-   col(para(T.A[0],{sz:'0.85rem'})));});
+/* 09 — dropdowns with the first already open */
+reg('Dropdowns, first open','The same, with the first line showing so the pattern is obvious.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('drop',g,{open:true});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 10 — LARGE TITLE FIELD */
-reg('Large Title','DESIGNED DNA as the focal point; everything beneath it restrained.',function(S,G){
- return HEAD(S,{rule:false})+sp(22)+
-  disp('Designed DNA',{sz:'clamp(2.6rem,5.6vw,5rem)',ls:'0.12em',lh:0.94})+
-  sp(30)+rul(RUL)+sp(38)+
-  grid('1.35fr 0.9fr','clamp(40px,6vw,96px)',
-   col(TAXPAIR('plain',G,{cols:'1fr 1fr',gap:'44px',nsz:'0.85rem',rp:10}))+
-   col(THESIS('two',{mw:'30ch',sz:'0.85rem'})));});
+/* 10 — dropdowns, no rules */
+reg('Dropdowns, unruled','Dropdowns with the rules removed — the quietest of the three.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('drop',g,{rules:false,rp:10});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 11 — LARGE CATEGORY LABELS */
-reg('Large Categories','Intangible and Tangible become the structural anchors.',function(S,G){
- return HEAD(S)+sp(44)+
-  grid('1.4fr 0.9fr','clamp(40px,6vw,88px)',
-   col(G.map(function(g,gi){
-    return '<div style="'+(gi?'margin-top:44px;':'')+'">'+
-     disp(esc(g.g),{sz:'1.9rem',ls:'0.16em',lh:1,c:gi?I86:I55})+sp(20)+
-     g.it.map(function(x){
-      return '<div style="display:grid;grid-template-columns:170px 1fr;gap:24px;align-items:baseline;'+
-       'padding:11px 0;border-top:0.5px solid '+HR2+';">'+
-       '<span style="font-family:'+DMS+';font-weight:300;font-size:0.68rem;letter-spacing:0.2em;'+
-       'text-transform:uppercase;color:'+I62+';">'+esc(x.k)+'</span>'+
-       dsc(x.v,I48,'0.8rem')+'</div>';}).join('')+'</div>';}).join(''))+
-   col(sp(8)+THESIS('two',{mw:'28ch',sz:'0.85rem'})));});
+/* 11 — label and line stacked, tighter */
+reg('Stacked','Label above its line, which shortens every row.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('stacked',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 12 — TECHNICAL SPECIFICATION */
-reg('Technical Specification','Indexed rows, one rule system, exact alignment.',function(S,G){
- return HEAD(S)+sp(38)+
-  grid('1.45fr 0.9fr','clamp(40px,5.5vw,88px)',
-   col(micro('Framework · 01–08',I32)+sp(18)+
-       TAX('index',G,{rp:13,gg:32,nsz:'0.85rem',dsz:'0.8rem'})+sp(14)+rul(RUL))+
-   col(micro('Thesis',I32)+sp(18)+THESIS('two',{mw:'30ch',sz:'0.85rem'})+
-       sp(26)+rul(HR2)+sp(14)+
-       '<div style="font-family:'+DMS+';font-weight:300;font-size:0.68rem;letter-spacing:0.2em;'+
-       'text-transform:uppercase;color:'+I22+';">SWITCH · Platform</div>'));});
+/* 12 — label left, line hard right */
+reg('Spread','Label left, line right, the column edge doing the alignment.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('spread',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 13 — LUXURY CATALOGUE */
-reg('Luxury Catalogue','Large margins, quiet type, everything deliberately placed.',function(S,G){
- return HEAD(S,{rule:false})+sp(64)+
-  '<div style="max-width:1024px;margin:0 auto;">'+
-  grid('1fr 1fr','clamp(48px,7vw,120px)',
-   col(TAX('plain',G,{nsz:'0.85rem',dsz:'0.8rem',rp:14,gg:42,gc:I22}))+
-   col(sp(4)+lead(T.LEAD2,{sz:'1.16rem',mw:'22ch'})+sp(26)+
-       para(T.C[1],{sz:'0.85rem',mw:'30ch'})))+
-  '</div>'+sp(52);});
+/* 13 — numbered 01–08 */
+reg('Numbered','01 to 08 down the left, so the eight read as one set.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('numbered',g,{});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 14 — SWISS EDITORIAL */
-reg('Swiss Editorial','Asymmetric placement, one decisive scale jump, one disruption.',function(S,G){
- return HEAD(S)+sp(40)+
-  grid('0.34fr 1.66fr','clamp(30px,4vw,64px)',
-   col(micro('Framework',I32)+sp(16)+
-       para(T.LEAD3,{sz:'0.85rem',mw:'14ch',c:I62}))+
-   col(disp(T.LEAD,{sz:'2.16rem',ls:'0.05em',lh:1.12})+sp(34)+
-       grid('1fr 1fr','clamp(30px,4vw,64px)',
-        col(TAX('stack',[G[0]],{rp:11,nsz:'0.85rem'}))+
-        col(TAX('stack',[G[1]],{rp:11,nsz:'0.85rem'}))) +
-       sp(30)+para(T.A[1],{sz:'0.85rem',mw:'52ch'})));});
+/* 14 — no rules anywhere */
+reg('No rules','Every rule gone. Spacing alone carries the structure.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{rules:false,rp:11,rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 15 — MUSEUM PANEL */
-reg('Museum Panel','One statement to read from across the room, taxonomy ordered beneath.',
- function(S,G){
- return HEAD(S,{rule:false})+sp(30)+
-  '<div style="max-width:760px;">'+disp(T.LEAD,{sz:'2.16rem',ls:'0.06em',lh:1.16})+'</div>'+
-  sp(30)+rul(RUL)+sp(34)+
-  grid('1fr 1fr 1.3fr','clamp(26px,3.4vw,56px)',
-   col(TAX('stack',[G[0]],{rp:11,nsz:'0.85rem'}))+
-   col(TAX('stack',[G[1]],{rp:11,nsz:'0.85rem'}))+
-   col(micro('Note',I32)+sp(16)+para(T.A[0],{sz:'0.8rem',lh:1.95})));});
+/* 15 — one rule per family, none between rows */
+reg('One rule per family','A single rule under each family label; nothing between rows.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return g.map(function(gr,gi){
+   return '<div style="'+(gi?'margin-top:34px;':'')+'">'+micro(gr.g)+sp(11)+rul(RUL)+sp(6)+
+    EIGHT('beside',[gr],{noGroup:true,rules:false,rp:10,rc:'150px 1fr'})+'</div>';}).join('');},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 16 — ARCHITECTURAL BOARD */
-reg('Architectural Board','A visible modular grid; strong horizontal and vertical relations.',
- function(S,G){
- return HEAD(S)+sp(36)+
-  '<div style="border-top:0.5px solid '+RUL+';">'+
-  grid('1fr 0.5px 1fr 0.5px 1.35fr','0px',
-   col(sp(24)+micro('Intangible',I32)+sp(16)+TAX('plain',[G[0]],{noGroup:true,rp:10,nsz:'0.85rem'})+sp(24),
-       'padding-right:clamp(18px,2.4vw,38px);')+vrl(RUL)+
-   col(sp(24)+micro('Tangible',I32)+sp(16)+TAX('plain',[G[1]],{noGroup:true,rp:10,nsz:'0.85rem'})+sp(24),
-       'padding:0 clamp(18px,2.4vw,38px);')+vrl(RUL)+
-   col(sp(24)+micro('Thesis',I32)+sp(16)+THESIS('two',{mw:'30ch',sz:'0.82rem'})+sp(24),
-       'padding-left:clamp(18px,2.4vw,38px);'),'stretch')+
-  '</div>'+rul(RUL);});
+/* 16 — the family labels dropped; eight in one run */
+reg('No family labels','Intangible and Tangible removed; the eight read as one list.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',[{g:'',it:g[0].it.concat(g[1].it)}],
+    {noGroup:true,rc:'150px 1fr',rp:11});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 17 — COMPACT DENSITY */
-reg('Compact Density','Shorter, tighter, stronger. Premium without the height.',function(S,G){
- return HEAD(S)+sp(28)+
-  grid('1.25fr 0.95fr','clamp(34px,4.6vw,72px)',
-   col(TAXPAIR('spread',G,{cols:'1fr 1fr',gap:'40px',rp:9,nsz:'0.85rem',dsz:'0.78rem'}))+
-   col(lead(T.LEAD,{sz:'1.05rem',mw:'24ch'})+sp(18)+
-       para(T.B[1],{sz:'0.82rem',lh:1.9,mw:'32ch'})))+sp(6);});
+/* 17 — thesis reduced to a single paragraph */
+reg('Thesis, one paragraph','One paragraph instead of two. Three lines at the Foundry measure.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('one',{});});});
 
-/* 18 — EXPANSIVE WHITESPACE */
-reg('Expansive','Two isolated masses, minimal rules, institutional calm.',function(S,G){
- return HEAD(S,{rule:false})+sp(80)+
-  grid('1fr 1fr','clamp(60px,9vw,150px)',
-   col(TAX('plain',G,{nsz:'0.9rem',rp:16,gg:52,gc:I22}))+
-   col(sp(10)+lead(T.LEAD2,{sz:'1.34rem',mw:'20ch'})+sp(34)+
-       para(T.D[1],{sz:'0.85rem',mw:'30ch'})))+sp(80);});
+/* 18 — thesis as a lead line plus one supporting line */
+reg('Thesis, lead line','A slightly larger opening sentence, then one line under it.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('lead',{lsz:'1.05rem',mw:'26ch'});});});
 
-/* 19 — NARRATIVE SEQUENCE */
-reg('Narrative Sequence','Title, thesis, then the two families in order, then the portfolio.',
- function(S,G){
- return HEAD(S)+sp(34)+
-  '<div style="max-width:640px;">'+lead(T.LEAD2,{sz:'1.44rem',mw:'22ch',c:I86})+sp(24)+
-   para(T.D[1],{sz:'0.88rem'})+'</div>'+
-  sp(50)+
-  grid('160px 1fr','clamp(26px,3.4vw,52px)',
-   col(micro('01 / Intangible',I32))+col(TAX('spread',[G[0]],{noGroup:true,rp:12,nsz:'0.85rem'})))+
-  sp(34)+
-  grid('160px 1fr','clamp(26px,3.4vw,52px)',
-   col(micro('02 / Tangible',I32))+col(TAX('spread',[G[1]],{noGroup:true,rp:12,nsz:'0.85rem'})))+
-  sp(20);});
+/* 19 — the eyebrow kept cyan, everything else on the Foundry setting */
+reg('Cyan eyebrow','Everything matched to the Foundry except the accent, which stays cyan.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry',ec:CY},
+  function(s,g){return EIGHT('beside',g,{rc:'150px 1fr'});},
+  function(){return sp(2)+THESIS('two',{});});},
+ {eyebrow:'foundry',ec:CY});
 
-/* 20 — PORTFOLIO INTEGRATION
-   The framework reads as the rules and the images as the proof:
-   shared grid, the portfolio label pulled onto the same alignment. */
-reg2('Portfolio Integration','A shared grid into the portfolio — the rules, then the proof.',
- function(S,G){
- return HEAD(S)+sp(38)+
-  grid('1.35fr 0.9fr','clamp(40px,5.5vw,88px)',
-   col(TAX('ruled',G,{rc:'160px 1fr',rp:14,gg:34}))+
-   col(sp(4)+THESIS('lead',{lsz:'1.1rem',mw:'25ch'})))+
-  sp(44)+
-  grid('1.35fr 0.9fr','clamp(40px,5.5vw,88px)',
-   col(rul(RUL))+col(micro('The proof follows',I22)));},
- {rule:true,intro:true,g:14,g2:34,mw:'54ch'});
+/* 20 — the Foundry's exact column proportion inside the block:
+        a 128 label track and a 408 line, the way Capabilities is set */
+reg('Foundry track','A 128 label track and a 408 line — the Capabilities column, exactly.',
+ function(S,G){return SHELL(S,G,{eyebrow:'foundry'},
+  function(s,g){return EIGHT('beside',g,{rc:'128px 1fr',rg:'22px',rp:13});},
+  function(){return sp(2)+THESIS('two',{});});});
 
-/* 21 — BEST RESOLVED FINAL
-   One focal sentence at Foundry scale, the eight given a real 464
-   column with a 160px key track, the thesis at a controlled 25ch
-   measure rather than a 340px ribbon, and a deliberate pause into
-   the portfolio. */
-reg2('Best Resolved','The synthesis: focal sentence, full-width framework, controlled thesis.',
- function(S,G){
- return HEAD(S)+sp(40)+
-  grid('1fr 1fr','96px',
-   col(disp(T.LEAD,{sz:'2.16rem',ls:'0.07em',lh:1.14,c:I86}))+
-   col(sp(8)+para(T.A[0],{sz:'0.9rem',lh:2,mw:'none'})))+
-  sp(46)+rul(RUL)+sp(36)+
-  TAXPAIR('ruled',G,{cols:'1fr 1fr',gap:'96px',rc:'156px 1fr',rg:'26px',rp:15,
-    nsz:'0.85rem',dsz:'0.85rem'})+
-  sp(52);},
- {rule:false,intro:true,g:16,g2:34,mw:'54ch'});
+/* 21 — the settled one: Foundry eyebrow, Foundry label, sentence rows,
+        one rule per family, and a two-line thesis at the full measure */
+reg('Best resolved','Foundry eyebrow and label, sentence rows, one rule per family, short thesis.',
+ function(S,G){return HEAD(S,{eyebrow:'foundry'})+sp(38)+
+  two(col(G.map(function(gr,gi){
+    return '<div style="'+(gi?'margin-top:32px;':'')+'">'+micro(gr.g)+sp(11)+rul(RUL)+sp(4)+
+     EIGHT('sentence',[gr],{noGroup:true,rules:false,rp:9})+'</div>';}).join(''))+
+   col(sp(2)+THESIS('two',{})),'96px');},
+ {eyebrow:'foundry'});
 
 })();
 
