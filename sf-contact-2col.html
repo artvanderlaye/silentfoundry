@@ -2858,13 +2858,12 @@ else setTimeout(mount,260);
 
 /* ---------- content, from the page ---------- */
 var P = window._sfPATHS || [];
-var O = window._sfOFFICES || [];
 var DECKF='/decks/silent-foundry-partner-deck.pdf';
 var X = {ey:'Get In Touch', tt:'Contact Silent Foundry',
  lead:'We partner with brand owners, manufacturers, operators and investors to build premium products and ventures.',
  ask:"Tell us which one you are and what you're building.",
  note:"We review every submission personally. If there's a fit, you'll hear from one of the founding team directly.",
- dl:'Downloads', deck:'Download The Deck', msg:'Send A Message', off:'Offices',
+ dl:'Downloads', deck:'Download The Deck', msg:'Send A Message',
  nlEy:'Stay Updated', nlT:'The SF Newsletter',
  nlB:"Occasional updates on what we're building, thinking, and making — straight from the studio."};
 
@@ -3027,22 +3026,6 @@ function FRM(kind,o){o=o||{};
  if(kind==='ruled') return lb+'<div style="border-top:0.5px solid '+R12+';padding-top:28px;">'+FORM(o)+'</div>';
  return lb+FORM(o);}
 
-/* ---------- offices ---------- */
-function OFF(kind,o){o=o||{}; if(kind==='none')return '';
- var lb=o.noLb?'':eb(X.off,o.lc)+g(o.lbGap||16);
- if(kind==='inline') return lb+'<div style="display:flex;gap:clamp(22px,3.4vw,54px);flex-wrap:wrap;">'+
-   O.map(function(x){return '<div>'+mi(x.country,o.cc||LAB)+
-    '<div style="font-family:'+BBF+';font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+
-    (o.nc||I75)+';margin:6px 0 5px;">'+x.city+'</div>'+
-    '<address style="font-style:normal;font-family:'+DMF+';font-size:0.65rem;line-height:1.85;font-weight:300;color:'+
-    (o.ac||I45)+';">'+x.addr+'</address></div>';}).join('')+'</div>';
- return lb+O.map(function(x){return '<div style="padding:13px 0;border-top:0.5px solid '+R08+';">'+
-   '<div style="display:flex;justify-content:space-between;gap:18px;align-items:baseline;">'+
-   '<span style="font-family:'+BBF+';font-size:'+T_XS+';letter-spacing:0.14em;text-transform:uppercase;color:'+
-   (o.nc||I75)+';">'+x.city+'</span>'+mi(x.country,o.cc||LAB)+'</div>'+
-   '<address style="font-style:normal;font-family:'+DMF+';font-size:0.65rem;line-height:1.85;font-weight:300;color:'+
-   (o.ac||I45)+';margin-top:6px;">'+x.addr+'</address></div>';}).join('');}
-
 /* ---------- newsletter ----------
    Same ids and the same sfNLSubmit the page already ships. */
 function NLBLOCK(o){o=o||{}; var d=o.dark;
@@ -3120,8 +3103,7 @@ reg('Classic Split','Intro and the four left, form right, deck and offices benea
  return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
    col(INTRO({mw:'42ch',note:true})+g(34)+NAMES('inline'))+col(FRM('plain'))),
    TOP+' '+PADX+' clamp(46px,7vh,74px)')+
-  sec(grid('1fr 1fr','clamp(30px,5vw,72px)',col(DECK('plain'))+col(OFF('inline'))),
-   'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+  sec(DECK('inline'),'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
 /* 02 — the form leads; the page introduces itself beside it. */
@@ -3136,7 +3118,7 @@ reg('Form First','The form takes the left column; the page introduces itself on 
 reg('Sticky Intro','The opening holds position while the form scrolls past.',function(){
  return sec(grid('0.9fr 1.1fr','clamp(30px,5vw,84px)',
    col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+NAMES('inline')+g(34)+
-     DECK('plain')+g(34)+OFF('stack')+'</div>')+
+     DECK('plain')+g(30)+bd(X.note,I45,'30ch','0.76rem')+'</div>')+
    col(FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
@@ -3150,8 +3132,7 @@ reg('Ledger Rail','A narrow index names each block; the wide column carries it.'
  return sec(row('01 / Who',INTRO({noEy:true,mw:'52ch'}))+g(40)+rule()+g(40)+
    row('02 / Doors',NAMES('inline'))+g(40)+rule()+g(40)+
    row('03 / The deck',DECK('plain'))+g(40)+rule()+g(40)+
-   row('04 / Message',FRM('plain',{noLb:true}))+g(40)+rule()+g(40)+
-   row('05 / Offices',OFF('inline',{noLb:true})),
+   row('04 / Message',FRM('plain',{noLb:true})),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
@@ -3192,7 +3173,7 @@ reg('Dark Form','The right column goes dark and the form is reversed out of it.'
 reg('Ruled Halves','Two equal halves divided by one full-height hairline.',function(){
  return sec(grid('1fr 0.5px 1fr','clamp(28px,4.4vw,60px)',
    col(INTRO({mw:'38ch'})+g(30)+NAMES('stack',{topRule:true})+g(32)+DECK('plain'))+vrule()+
-   col(FRM('ruled')+g(36)+OFF('stack')),'stretch'),
+   col(FRM('ruled')),'stretch'),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
@@ -3211,7 +3192,7 @@ reg('Boxed Deck','The deck gets a bordered block of its own beside the form.',fu
  return sec('<div style="max-width:660px;">'+INTRO({})+'</div>'+g(30)+NAMES('spread'),
    TOP+' '+PADX+' clamp(44px,6vh,70px)')+
   sec(grid('0.75fr 1.25fr','clamp(30px,5vw,76px)',
-    col(DECK('boxed')+g(30)+OFF('stack'))+col(FRM('plain'))),
+    col(DECK('boxed')+g(26)+bd(X.note,I45,'30ch','0.76rem'))+col(FRM('plain'))),
    'clamp(44px,6vh,70px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
@@ -3225,9 +3206,9 @@ reg('Numbered Index','The four numbered down the left; the form answers on the r
   NL('plain');});
 
 /* 13 — a quiet service column beside the page. */
-reg('Offices Rail','A quiet column of offices and newsletter; the page runs beside it.',function(){
+reg('Newsletter Rail','The newsletter held in a quiet narrow column; the page runs beside it.',function(){
  return sec(grid('0.6fr 1.4fr','clamp(30px,5vw,80px)',
-   col('<div class="c2-sticky">'+OFF('stack')+g(34)+rule()+g(34)+
+   col('<div class="c2-sticky">'+
        eb(X.nlEy)+g(14)+bd(X.nlB,I45,null,'0.74rem',1.85)+g(20)+
        '<div id="sf-nl-form" style="display:flex;gap:0;">'+
        '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="flex:1;min-width:0;'+
@@ -3250,7 +3231,7 @@ reg('Alternating Rows','Three two-column rows with the weight swapping side to s
     col(DECK('plain'))+col(bd(X.note,I45,'48ch','0.8rem'))),
    'clamp(42px,6vh,68px) '+PADX,{bt:1})+
   sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-    col(FRM('plain'))+col(OFF('stack'))),
+    col(FRM('plain'))+col(bd(X.note,I45,'30ch','0.78rem'))),
    'clamp(42px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
@@ -3259,7 +3240,7 @@ reg('Contact Card','The right column is one bordered card: form above, offices b
  return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
    col(INTRO({mw:'40ch'})+g(32)+NAMES('inline')+g(32)+DECK('plain'))+
    col('<div style="border:0.5px solid '+R12+';padding:clamp(26px,3.4vw,42px);">'+
-       FRM('plain')+g(30)+rule(R12)+g(24)+OFF('inline')+'</div>')),
+       FRM('plain')+g(28)+rule(R12)+g(22)+bd(X.note,I45,null,'0.76rem')+'</div>')),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
@@ -3278,7 +3259,7 @@ reg('Mirrored Pair','Intro spans the top; form left, deck and offices right.',fu
  return sec('<div style="max-width:700px;">'+INTRO({note:true})+'</div>'+g(30)+NAMES('spread'),
    TOP+' '+PADX+' clamp(44px,6vh,68px)')+
   sec(grid('1.15fr 0.85fr','clamp(30px,5vw,80px)',
-    col(FRM('soft'))+col(DECK('soft')+g(30)+OFF('stack'))),
+    col(FRM('soft'))+col(DECK('soft')+g(26)+bd(X.note,I45,'32ch','0.78rem'))),
    'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('centre');});
 
@@ -3302,7 +3283,7 @@ reg('Question Led','The title asks it; the four are the answer and the form foll
 reg('Production Candidate','A held opening, the four as one quiet line, one deck, form in its own panel.',function(){
  return sec(grid('0.88fr 1.12fr','clamp(32px,5.2vw,88px)',
    col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+NAMES('inline')+g(30)+
-     bd(X.note,I45,'32ch','0.76rem')+g(30)+OFF('inline',{noLb:true})+'</div>')+
+     bd(X.note,I45,'32ch','0.76rem')+'</div>')+
    col(DECK('ruled')+g(46)+FRM('panel',{btn:'outline',gap:18,ta:'140px'}))),
    TOP+' '+PADX+' clamp(60px,8.5vh,98px)')+
   NL('dark');});
