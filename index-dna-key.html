@@ -7931,74 +7931,66 @@ mreg('Production Candidate','A',function(D){return IX(D,30,
 })();
 
 /* ============================================================
-   MARSHALL — WHERE THE KEY GOES · 20 VARIATIONS
-   The graphic is frozen and identical in all twenty: same hub,
-   same eight discs, same hairlines, same positions, same stage.
-   The behaviour is frozen too — hover to compare, click to hold,
-   click again to release, with a hairline under the held word.
+   MARSHALL — THE KEY, SETTLED
+   Placement 12: bottom left, inside the frame, stacked, no
+   separator. The key is now set at the same size as the section
+   eyebrow — 0.75rem / 0.2em, 12px — so it reads as a label on the
+   drawing rather than a heading over it.
 
-   The only variables are WHERE the INTANGIBLE / TANGIBLE key sits
-   and HOW QUIET it is. The key is positioned absolutely, so moving
-   it cannot shift the drawing by a pixel.
+   Note this deliberately sits below the 0.9rem type floor the lab
+   enforces elsewhere. It is not a new small size: every eyebrow on
+   the site is 12px, and the point is to match them exactly.
+
+   Graphic frozen. Behaviour: hover to compare, click to hold,
+   click again to release, hairline under the held word.
    ============================================================ */
 
 ML.length=0; MN.length=0; MT.length=0;
 
-/* ---------- the key ----------
-   Three weights of quiet. Even the loudest here is lighter than the
-   pair we started from: rest was 0.42 / 0.78, this tops out at 0.34 / 0.5. */
-var KTONE={
- soft:  {a:'rgba(10,10,10,0.34)', b:'rgba(10,10,10,0.5)',  on:'rgba(10,10,10,0.78)', off:0.34},
- softer:{a:'rgba(10,10,10,0.26)', b:'rgba(10,10,10,0.38)', on:'rgba(10,10,10,0.7)',  off:0.3},
- ghost: {a:'rgba(10,10,10,0.2)',  b:'rgba(10,10,10,0.28)', on:'rgba(10,10,10,0.62)', off:0.26}
-};
-function KWORD(t,c,ls){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+FS('0.9rem')+
- ';letter-spacing:'+(ls||'0.24em')+';text-transform:uppercase;color:'+c+';">'+esc(t)+'</span>';}
+/* the eyebrow's own metrics, taken from EY() */
+var KSZ='0.75rem', KLS='0.2em';
+var KT={a:'rgba(10,10,10,0.26)', b:'rgba(10,10,10,0.38)',
+        on:'rgba(10,10,10,0.7)', off:0.3};
 
-/* pos: where the key sits, relative to the block that holds the drawing.
-   vertical: set the pair on its side.  sep: what divides the two words. */
-function KEY(D,o){o=o||{};
- var t=KTONE[o.tone||'soft'];
- var vert=!!o.vertical;
- var sep = o.sep===false ? '' :
-   '<span style="color:rgba(10,10,10,0.16);font-size:0.9rem;'+
-   (vert?'writing-mode:horizontal-tb;':'')+'">'+(o.sep||'/')+'</span>';
- var inner=
-  '<span class="dl-sw dl-sw0" data-g="0">'+KWORD(D[0].g,t.a,o.ls)+'</span>'+sep+
-  '<span class="dl-sw dl-sw1" data-g="1">'+KWORD(D[1].g,t.b,o.ls)+'</span>';
- var lay = o.stack
-  ? 'display:flex;flex-direction:column;align-items:'+(o.al||'flex-start')+';gap:'+(o.gap||7)+'px;'
-  : 'display:flex;align-items:'+(vert?'center':'baseline')+';gap:'+(o.gap||11)+'px;'+
-    (vert?'flex-direction:column;':'');
- var wm = vert
-  ? 'writing-mode:vertical-rl;text-orientation:mixed;'
-  : '';
- return '<div class="dl-key" style="position:absolute;'+(o.at||'')+lay+wm+
-  'white-space:nowrap;z-index:3;">'+inner+'</div>';}
+function KWORD(t,c){return '<span style="font-family:'+DM+';font-weight:300;font-size:'+KSZ+
+ ';letter-spacing:'+KLS+';text-transform:uppercase;color:'+c+';">'+esc(t)+'</span>';}
 
-/* the behaviour, identical everywhere. Only opacity and colour ever move. */
-function KCSS(id,tone,extra){
- var t=KTONE[tone||'soft'], S='#sfsec-dna .dl-k'+id;
- return '#sfsec-dna .dl-kx .dl-key .dl-sw{cursor:pointer;position:relative;}'+
-  '#sfsec-dna .dl-kx .dl-dpt,#sfsec-dna .dl-kx .dl-lk,#sfsec-dna .dl-kx .dl-sw span'+
-   '{transition:opacity .34s ease,color .34s ease;}'+
-  '#sfsec-dna .dl-kx .dl-key .dl-sw::after{content:"";position:absolute;left:0;right:0;'+
-   'bottom:-6px;height:0.5px;background:rgba(10,10,10,0.34);opacity:0;transition:opacity .3s ease;}'+
-  S+'.is-0 .dl-n1,'+S+'.is-1 .dl-n0{opacity:0.2;}'+
-  S+'.is-0 .dl-l1,'+S+'.is-1 .dl-l0{opacity:0.18;}'+
-  S+'.is-0 .dl-sw0::after,'+S+'.is-1 .dl-sw1::after{opacity:1;}'+
-  S+'.is-0 .dl-sw0 span,'+S+'.is-1 .dl-sw1 span{color:'+t.on+' !important;}'+
-  S+'.is-0 .dl-sw1 span,'+S+'.is-1 .dl-sw0 span{opacity:'+t.off+';}'+
-  '@media(max-width:600px){#sfsec-dna .dl-kx .dl-key{position:static !important;'+
-   'writing-mode:horizontal-tb !important;transform:none !important;'+
-   'flex-direction:row !important;margin:0 0 16px !important;}}'+
-  (extra||'');
-}
+function KEY(D){
+ return '<div class="dl-key" style="position:absolute;bottom:1%;left:0;'+
+  'display:flex;flex-direction:column;align-items:flex-start;gap:7px;'+
+  'white-space:nowrap;z-index:3;">'+
+  '<span class="dl-sw dl-sw0" data-g="0">'+KWORD(D[0].g,KT.a)+'</span>'+
+  '<span class="dl-sw dl-sw1" data-g="1">'+KWORD(D[1].g,KT.b)+'</span></div>';}
 
-/* one renderer for all twenty */
-function KX(D,id,keyOpt,extra){
+var KCSS=
+ '#sfsec-dna .dl-kx .dl-key .dl-sw{cursor:pointer;position:relative;}'+
+ '#sfsec-dna .dl-kx .dl-dpt,#sfsec-dna .dl-kx .dl-lk,#sfsec-dna .dl-kx .dl-sw span'+
+  '{transition:opacity .34s ease,color .34s ease;}'+
+ '#sfsec-dna .dl-kx .dl-key .dl-sw::after{content:"";position:absolute;left:0;right:0;'+
+  'bottom:-5px;height:0.5px;background:rgba(10,10,10,0.3);opacity:0;transition:opacity .3s ease;}'+
+ '#sfsec-dna .dl-kx.is-0 .dl-n1,#sfsec-dna .dl-kx.is-1 .dl-n0{opacity:0.2;}'+
+ '#sfsec-dna .dl-kx.is-0 .dl-l1,#sfsec-dna .dl-kx.is-1 .dl-l0{opacity:0.18;}'+
+ '#sfsec-dna .dl-kx.is-0 .dl-sw0::after,#sfsec-dna .dl-kx.is-1 .dl-sw1::after{opacity:1;}'+
+ '#sfsec-dna .dl-kx.is-0 .dl-sw0 span,#sfsec-dna .dl-kx.is-1 .dl-sw1 span'+
+  '{color:'+KT.on+' !important;}'+
+ '#sfsec-dna .dl-kx.is-0 .dl-sw1 span,#sfsec-dna .dl-kx.is-1 .dl-sw0 span{opacity:'+KT.off+';}'+
+ /* the phone has no hover — the list carries the split as headings and the
+    key drops out of the drawing to sit above them */
+ '@media(max-width:600px){'+
+  '#sfsec-dna .dl-kx .dl-key{position:static !important;flex-direction:row !important;'+
+   'gap:14px !important;margin:0 0 16px !important;}'+
+  /* the root scales down on a phone, which would drop 0.75rem to 10px — pin it
+     to the 12px the page's own labels hold there */
+  '#sfsec-dna .dl-kx .dl-key .dl-sw span{font-size:12px !important;letter-spacing:0.2em !important;}'+
+  '#sfsec-dna .dl-kx .dl-ghx{display:block !important;font-family:'+DM+';font-weight:300;'+
+   'font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(10,10,10,0.4);'+
+   'padding:0 0 9px;margin:0 0 4px;border-bottom:0.5px solid rgba(10,10,10,0.22);}'+
+  '#sfsec-dna .dl-kx .dl-ghx1{margin-top:30px !important;}'+
+ '}';
+
+mreg('DNA Key — bottom left, eyebrow size','A',function(D){
  return GD(D,{
-  cls:'dl-ix dl-kx dl-k'+id,
+  cls:'dl-ix dl-kx',
   head:false,
   disc:function(x,p){ return IXCROP(x,Math.round(p.dpx)); },
   word:function(x){ return IXNAME(x); },
@@ -8006,100 +7998,9 @@ function KX(D,id,keyOpt,extra){
   linkFn:function(c){ var out='';
    c.P.forEach(function(p){ out+=IXLINK(c.hub.x,c.hub.y,p.x,p.y,p.it.gi); });
    return out;},
-  wrap:function(st,D2){
-   return '<div class="dl-kwrap" style="position:relative;">'+
-     (keyOpt.inside?'':KEY(D2,keyOpt))+st+'</div>';},
-  over:keyOpt.inside?function(c){return KEY(c.D,keyOpt);}:null,
-  css:KCSS(id,keyOpt.tone,extra)});
-}
-function kreg(n,name,keyOpt,extra){
- mreg(name,'A',function(D){return KX(D,n,keyOpt,extra);});}
-
-/* ============================================================
-   THE TWENTY
-   ============================================================ */
-
-/*  1 */ kreg('01','Top Left — under the eyebrow',
-  {at:'top:4px;left:0;',tone:'soft'});
-
-/*  2 */ kreg('02','Top Right — level with the eyebrow',
-  {at:'top:-32px;right:0;',tone:'soft'});
-
-/*  3 */ kreg('03','Bottom Left',
-  {at:'bottom:0;left:0;',tone:'soft'});
-
-/*  4 */ kreg('04','Bottom Right',
-  {at:'bottom:0;right:0;',tone:'soft'});
-
-/*  5 */ kreg('05','Top Right — stacked',
-  {at:'top:-34px;right:0;',stack:true,al:'flex-end',sep:false,tone:'softer'});
-
-/*  6 */ kreg('06','Bottom Right — stacked',
-  {at:'bottom:0;right:0;',stack:true,al:'flex-end',sep:false,tone:'softer'});
-
-/*  7 */ kreg('07','Bottom Left — stacked',
-  {at:'bottom:0;left:0;',stack:true,sep:false,tone:'softer'});
-
-/*  8 */ kreg('08','Right Side — vertical',
-  {at:'top:50%;right:0;transform:translateY(-50%);',vertical:true,tone:'soft'});
-
-/*  9 */ kreg('09','Left Side — vertical',
-  {at:'top:50%;left:0;transform:translateY(-50%) rotate(180deg);',vertical:true,tone:'soft'});
-
-/* 10 */ kreg('10','Bottom Centre',
-  {at:'bottom:0;left:50%;transform:translateX(-50%);',tone:'softer'});
-
-/* 11 */ kreg('11','Top Right — inside the frame',
-  {at:'top:1%;right:0;',inside:true,stack:true,al:'flex-end',sep:false,tone:'softer'});
-
-/* 12 */ kreg('12','Bottom Left — inside the frame',
-  {at:'bottom:1%;left:0;',inside:true,stack:true,sep:false,tone:'softer'});
-
-/* 13 */ kreg('13','Bottom Right — inside the frame',
-  {at:'bottom:1%;right:0;',inside:true,stack:true,al:'flex-end',sep:false,tone:'softer'});
-
-/* 14 */ kreg('14','Bottom Right — with a rule above',
-  {at:'bottom:0;right:0;padding-top:11px;border-top:0.5px solid rgba(10,10,10,0.12);',tone:'soft'});
-
-/* 15 */ kreg('15','Top Right — ghosted',
-  {at:'top:-32px;right:0;',tone:'ghost',ls:'0.3em'});
-
-/* 16 */ kreg('16','Bottom Right — ghosted, wide tracking',
-  {at:'bottom:0;right:0;',tone:'ghost',ls:'0.34em',sep:false,gap:20});
-
-/* 17 */ kreg('17','Right Side — vertical, ghosted',
-  {at:'top:50%;right:0;transform:translateY(-50%);',vertical:true,tone:'ghost',ls:'0.3em'});
-
-/* 18 */ kreg('18','Bottom Right — no separator',
-  {at:'bottom:0;right:0;',sep:false,gap:22,tone:'softer'});
-
-/* 19 */ kreg('19','Bottom Right — dot separator',
-  {at:'bottom:0;right:0;',sep:'·',tone:'softer',gap:13});
-
-/* 20 */ kreg('20','Production Candidate — bottom right, ghosted, staggered',
-  {at:'bottom:0;right:0;',tone:'ghost',ls:'0.28em',sep:false,gap:20},
-  /* the four come up one at a time, which was the thing you liked in 08 */
-  (function(){var s='';
-   for(var i=0;i<4;i++){
-    s+='#sfsec-dna .dl-k20.is-0 .dl-i'+i+'{transition-delay:'+(i*95)+'ms;}'+
-       '#sfsec-dna .dl-k20.is-1 .dl-i'+(i+4)+'{transition-delay:'+(i*95)+'ms;}';}
-   return s;})());
-
-/* ---------- the phone ----------
-   No hover on a phone, so the list carries the split as headings and
-   the key becomes a plain line above it. */
-(function(){
- var css='@media(max-width:600px){'+
-  '#sfsec-dna .dl-kx .dl-ghx{display:block !important;grid-column:1/-1 !important;'+
-   'font-family:'+DM+';font-weight:300;font-size:0.9rem;letter-spacing:0.22em;'+
-   'text-transform:uppercase;color:rgba(10,10,10,0.4);padding:0 0 9px;margin:0 0 4px;'+
-   'border-bottom:0.5px solid rgba(10,10,10,0.22);}'+
-  '#sfsec-dna .dl-kx .dl-ghx1{margin-top:30px !important;}'+
- '}';
- if(!document.getElementById('dl-kx-phone')){
-  var st=document.createElement('style'); st.id='dl-kx-phone'; st.textContent=css;
-  if(document.head)document.head.appendChild(st);}
-})();
+  over:function(c){ return KEY(c.D); },
+  css:KCSS});
+});
 
 
 /* ============================================================
