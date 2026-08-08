@@ -2857,10 +2857,9 @@ else setTimeout(mount,260);
 'use strict';
 
 /* ---------- content, from the page ---------- */
-var P = window._sfPATHS || [];
 var DECKF='/decks/silent-foundry-partner-deck.pdf';
 var X = {ey:'Get In Touch', tt:'Contact Silent Foundry',
- lead:'We partner with brand owners, manufacturers, operators and investors to build premium products and ventures.',
+ lead:'We partner with brand owners, manufacturers, operators and investors to build premium products and ventures, and we are always open to people who want to join the team.',
  ask:"Tell us which one you are and what you're building.",
  note:"We review every submission personally. If there's a fit, you'll hear from one of the founding team directly.",
  dl:'Downloads', deck:'Download The Deck', msg:'Send A Message',
@@ -2912,48 +2911,6 @@ function INTRO(o){o=o||{};
   bd(X.lead,o.bc,o.mw||'50ch')+
   (o.ask===false?'':g(o.g2||16)+bd(X.ask,o.ac||o.bc,o.mw||'50ch'))+
   (o.note?g(o.g3||30)+bd(X.note,o.nc||I45,o.mw,'0.78rem'):'');}
-
-/* ---------- the four, as names only ----------
-   The descriptive paragraphs are gone: the intro's second sentence does that
-   work now. What survives is the doors themselves, set quietly. */
-function pname(p,sz,c){return '<span style="font-family:'+BBF+';font-size:'+(sz||T_XS)+
- ';letter-spacing:0.14em;text-transform:uppercase;color:'+(c||I82)+';">'+p.t+'</span>';}
-function psub(p,c){return '<span style="font-family:'+DMF+';font-size:0.58rem;letter-spacing:0.2em;'+
- 'text-transform:uppercase;font-weight:300;color:'+(c||LAB)+';">'+p.s+'</span>';}
-
-function NAMES(kind,o){o=o||{};
- if(kind==='none') return '';
- var lb=o.lb?eb(o.lb,o.lc)+g(o.lbGap||16):'';
- var dc=o.dc||R06;
- switch(kind){
- case 'inline': return lb+'<div style="display:flex;flex-wrap:wrap;align-items:baseline;'+
-   'gap:'+(o.gap||'10px 18px')+';">'+P.map(function(p,i){
-    return (i?'<span style="font-family:'+DMF+';font-size:0.7rem;color:'+I25+';">·</span>':'')+
-     pname(p,o.nsz,o.nc);}).join('')+'</div>';
- case 'spread': return lb+'<div style="display:flex;justify-content:space-between;flex-wrap:wrap;'+
-   'gap:14px 22px;border-top:0.5px solid '+dc+';border-bottom:0.5px solid '+dc+';padding:'+
-   (o.rp||16)+'px 0;">'+P.map(function(p){return pname(p,o.nsz,o.nc);}).join('')+'</div>';
- case 'stack': return lb+P.map(function(p,i){
-   return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+
-    'border-bottom:0.5px solid '+dc+';padding:'+(o.rp||13)+'px 0;">'+pname(p,o.nsz,o.nc)+'</div>';}).join('');
- case 'sub': return lb+P.map(function(p,i){
-   return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;'+
-    (i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+
-    'border-bottom:0.5px solid '+dc+';padding:'+(o.rp||14)+'px 0;">'+
-    pname(p,o.nsz,o.nc)+psub(p,o.sc)+'</div>';}).join('');
- case 'cols': return lb+'<div style="display:grid;grid-template-columns:1fr 1fr;'+
-   'gap:'+(o.gap||'12px 26px')+';">'+P.map(function(p){
-    return '<div>'+pname(p,o.nsz,o.nc)+'</div>';}).join('')+'</div>';
- case 'num': return lb+P.map(function(p,i){
-   return '<div style="display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:baseline;'+
-    (i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+
-    'border-bottom:0.5px solid '+dc+';padding:'+(o.rp||13)+'px 0;">'+num(i+1,o.numc)+
-    pname(p,o.nsz,o.nc)+'</div>';}).join('');
- case 'rail': return '<div class="c2-rail" style="writing-mode:vertical-rl;text-orientation:mixed;'+
-   'display:flex;flex-wrap:wrap;gap:22px;align-items:center;max-height:100%;">'+P.map(function(p){
-    return pname(p,o.nsz,o.nc||I45);}).join('<span style="color:'+I25+';">·</span>')+'</div>';
- default: return NAMES('inline',o);}
-}
 
 /* ---------- the deck ----------
    ONE download for the whole page, pointing at the same file the live
@@ -3090,35 +3047,35 @@ var CSS=
 
 /* ============================================================
    THE TWENTY
-   The page is now short: eyebrow, title, two sentences, the four
-   names, one deck, the form, the newsletter. With that much less
-   copy the differences are structural — which side the form takes,
-   how the four are set, and where the deck sits.
+   What's left on the page is deliberately little: eyebrow, title,
+   two sentences, one deck, the form, the newsletter. With this much
+   less copy the differences are entirely structural — which column
+   the form takes, how the deck is set and where it sits, and how the
+   page is banded.
    ============================================================ */
 var V=[];
 function reg(name,note,fn){V.push({t:name,note:note,f:fn});}
 
-/* 01 — the straight split. */
-reg('Classic Split','Intro and the four left, form right, deck and offices beneath.',function(){
+/* 01 — the straight split; the deck on its own band beneath. */
+reg('Classic Split','Intro left, form right, the deck on its own band beneath.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(INTRO({mw:'42ch',note:true})+g(34)+NAMES('inline'))+col(FRM('plain'))),
+   col(INTRO({mw:'42ch',note:true}))+col(FRM('plain'))),
    TOP+' '+PADX+' clamp(46px,7vh,74px)')+
   sec(DECK('inline'),'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
-/* 02 — the form leads; the page introduces itself beside it. */
+/* 02 — the form leads. */
 reg('Form First','The form takes the left column; the page introduces itself on the right.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(FRM('plain'))+col(INTRO({mw:'40ch',note:true})+g(34)+NAMES('stack',{topRule:true})+
-     g(34)+DECK('plain'))),
+   col(FRM('plain'))+col(INTRO({mw:'40ch',note:true})+g(38)+DECK('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('centre');});
 
-/* 03 — the opening pins; the form runs past it. */
+/* 03 — the opening pins while the form runs past it. */
 reg('Sticky Intro','The opening holds position while the form scrolls past.',function(){
  return sec(grid('0.9fr 1.1fr','clamp(30px,5vw,84px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+NAMES('inline')+g(34)+
-     DECK('plain')+g(30)+bd(X.note,I45,'30ch','0.76rem')+'</div>')+
+   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(32)+DECK('plain')+g(30)+
+     bd(X.note,I45,'30ch','0.76rem')+'</div>')+
    col(FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
@@ -3129,24 +3086,23 @@ reg('Ledger Rail','A narrow index names each block; the wide column carries it.'
   return grid('120px 1fr','clamp(20px,3.4vw,52px)',
     col('<div class="c2-rail" style="border-right:0.5px solid '+R08+';padding-right:18px;">'+
       eb(label,LAB,0)+'</div>')+col(inner));}
- return sec(row('01 / Who',INTRO({noEy:true,mw:'52ch'}))+g(40)+rule()+g(40)+
-   row('02 / Doors',NAMES('inline'))+g(40)+rule()+g(40)+
-   row('03 / The deck',DECK('plain'))+g(40)+rule()+g(40)+
-   row('04 / Message',FRM('plain',{noLb:true})),
+ return sec(row('01 / Who',INTRO({noEy:true,mw:'52ch'}))+g(42)+rule()+g(42)+
+   row('02 / The deck',DECK('plain'))+g(42)+rule()+g(42)+
+   row('03 / Message',FRM('plain',{noLb:true})),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 05 — a large title alone on the left. */
 reg('Asymmetric Editorial','A large title holds the left; the page runs down the right.',function(){
  return sec(grid('0.44fr 0.56fr','clamp(36px,6vw,120px)',
-   col(eb(X.ey)+ttl(X.tt,T_L,I82,'0.16em',0.95)+g(30)+NAMES('rail',{nc:I45}))+
+   col(eb(X.ey)+ttl(X.tt,T_L,I82,'0.16em',0.95))+
    col(bd(X.lead,null,'46ch')+g(16)+bd(X.ask,null,'46ch')+g(40)+DECK('plain')+g(46)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
-/* 06 — the deck and the form as an equal pair. */
-reg('Two Actions','Intro full width; then the deck and the form as an equal pair.',function(){
- return sec('<div style="max-width:660px;">'+INTRO({note:true})+'</div>'+g(32)+NAMES('spread'),
+/* 06 — the deck set large against the form. */
+reg('Two Actions','Intro full width; then the deck set large against the form.',function(){
+ return sec('<div style="max-width:660px;">'+INTRO({note:true})+'</div>',
    TOP+' '+PADX+' clamp(44px,6vh,68px)')+
   sec(grid('0.8fr 1.2fr','clamp(30px,5vw,80px)',
     col(DECK('big'))+col(FRM('plain'))),
@@ -3156,7 +3112,7 @@ reg('Two Actions','Intro full width; then the deck and the form as an equal pair
 /* 07 — the form in a tinted panel. */
 reg('Panel Right','The form lives in a tinted panel; the left column does the talking.',function(){
  return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'40ch'})+g(32)+NAMES('sub',{topRule:true})+g(32)+DECK('plain'))+
+   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
    col(FRM('panel'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
@@ -3164,7 +3120,7 @@ reg('Panel Right','The form lives in a tinted panel; the left column does the ta
 /* 08 — the form reversed out of the dark gradient. */
 reg('Dark Form','The right column goes dark and the form is reversed out of it.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,72px)',
-   col(INTRO({mw:'40ch',note:true})+g(32)+NAMES('inline')+g(32)+DECK('plain'))+
+   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
    col(FRM('dark',{btn:'outline'})),'stretch'),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('centre');});
@@ -3172,40 +3128,38 @@ reg('Dark Form','The right column goes dark and the form is reversed out of it.'
 /* 09 — two true halves with a full-height rule. */
 reg('Ruled Halves','Two equal halves divided by one full-height hairline.',function(){
  return sec(grid('1fr 0.5px 1fr','clamp(28px,4.4vw,60px)',
-   col(INTRO({mw:'38ch'})+g(30)+NAMES('stack',{topRule:true})+g(32)+DECK('plain'))+vrule()+
+   col(INTRO({mw:'38ch'})+g(34)+DECK('plain'))+vrule()+
    col(FRM('ruled')),'stretch'),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
-/* 10 — the four as a 2x2 block beside the intro. */
-reg('Four Up','The four set as a two-by-two block beside the opening; form beneath.',function(){
- return sec(grid('1.15fr 0.85fr','clamp(30px,5vw,84px)',
-   col(INTRO({mw:'42ch',note:true}))+
-   col(eb('Who gets in touch')+g(16)+NAMES('cols')+g(30)+DECK('plain'))),
-   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
-  sec('<div style="max-width:660px;">'+FRM('plain')+'</div>',
-   'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+/* 10 — the deck as a soft block, the form as the wide column. */
+reg('Soft Deck','The deck sits in a soft block; the form takes the wide column.',function(){
+ return sec('<div style="max-width:640px;">'+INTRO({})+'</div>',
+   TOP+' '+PADX+' clamp(40px,6vh,66px)')+
+  sec(grid('0.7fr 1.3fr','clamp(30px,5vw,76px)',
+    col(DECK('soft')+g(26)+bd(X.note,I45,'30ch','0.76rem'))+col(FRM('plain'))),
+   'clamp(40px,6vh,66px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('plain');});
 
-/* 11 — the deck given a boxed moment of its own. */
+/* 11 — the deck gets a bordered moment of its own. */
 reg('Boxed Deck','The deck gets a bordered block of its own beside the form.',function(){
- return sec('<div style="max-width:660px;">'+INTRO({})+'</div>'+g(30)+NAMES('spread'),
-   TOP+' '+PADX+' clamp(44px,6vh,70px)')+
-  sec(grid('0.75fr 1.25fr','clamp(30px,5vw,76px)',
-    col(DECK('boxed')+g(26)+bd(X.note,I45,'30ch','0.76rem'))+col(FRM('plain'))),
-   'clamp(44px,6vh,70px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+ return sec(grid('0.85fr 1.15fr','clamp(30px,5vw,80px)',
+   col(INTRO({mw:'36ch',note:true})+g(34)+DECK('boxed'))+
+   col(FRM('plain'))),
+   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
-/* 12 — the four numbered in the left column. */
-reg('Numbered Index','The four numbered down the left; the form answers on the right.',function(){
- return sec('<div style="max-width:640px;">'+INTRO({})+'</div>',
-   TOP+' '+PADX+' clamp(38px,6vh,62px)')+
-  sec(grid('0.85fr 1.15fr','clamp(30px,5vw,80px)',
-    col(NAMES('num',{topRule:true})+g(32)+DECK('plain'))+col(FRM('plain'))),
-   'clamp(38px,6vh,62px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('plain');});
+/* 12 — everything centred on one measure, the form beside it. */
+reg('Centred Opening','The opening centred on its own measure; the form squares up beside it.',function(){
+ return sec('<div style="max-width:560px;margin:0 auto;text-align:center;">'+
+   INTRO({mw:'100%'})+g(30)+DECK('plain',{})+'</div>',
+   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
+  sec('<div style="max-width:620px;margin:0 auto;">'+FRM('plain')+'</div>',
+   'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+  NL('centre');});
 
-/* 13 — a quiet service column beside the page. */
+/* 13 — the newsletter held in a quiet narrow column. */
 reg('Newsletter Rail','The newsletter held in a quiet narrow column; the page runs beside it.',function(){
  return sec(grid('0.6fr 1.4fr','clamp(30px,5vw,80px)',
    col('<div class="c2-sticky">'+
@@ -3219,28 +3173,28 @@ reg('Newsletter Rail','The newsletter held in a quiet narrow column; the page ru
        'letter-spacing:0.16em;text-transform:uppercase;padding:13px 16px;cursor:pointer;">⏙</button></div>'+
        '<div id="sf-nl-success" style="display:none;padding:12px 0;"><span style="font-size:0.8rem;color:'+
        LAB+';">⌀ Subscribed.</span></div></div>')+
-   col(INTRO({note:true})+g(34)+NAMES('inline')+g(36)+DECK('ruled')+g(46)+FRM('ruled'))),
+   col(INTRO({note:true})+g(38)+DECK('ruled')+g(46)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(64px,9vh,104px)');});
 
-/* 14 — three two-column rows, weight alternating. */
+/* 14 — three bands, the weight alternating side to side. */
 reg('Alternating Rows','Three two-column rows with the weight swapping side to side.',function(){
  return sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-   col(INTRO({mw:'44ch'}))+col(NAMES('stack',{lb:'Who gets in touch',topRule:true}))),
+   col(INTRO({mw:'44ch'}))+col(bd(X.note,I45,'28ch','0.78rem'))),
    TOP+' '+PADX+' clamp(42px,6vh,68px)')+
   sec(grid('0.8fr 1.2fr','clamp(28px,4.6vw,72px)',
-    col(DECK('plain'))+col(bd(X.note,I45,'48ch','0.8rem'))),
+    col(eb(X.dl,LAB,0))+col(DECK('plain',{lc:'transparent'}))),
    'clamp(42px,6vh,68px) '+PADX,{bt:1})+
   sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-    col(FRM('plain'))+col(bd(X.note,I45,'30ch','0.78rem'))),
+    col(FRM('plain'))+col('')),
    'clamp(42px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
 /* 15 — the right column as one bordered card. */
-reg('Contact Card','The right column is one bordered card: form above, offices below.',function(){
+reg('Contact Card','The right column is one bordered card holding the form.',function(){
  return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'40ch'})+g(32)+NAMES('inline')+g(32)+DECK('plain'))+
+   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
    col('<div style="border:0.5px solid '+R12+';padding:clamp(26px,3.4vw,42px);">'+
-       FRM('plain')+g(28)+rule(R12)+g(22)+bd(X.note,I45,null,'0.76rem')+'</div>')),
+       FRM('plain')+'</div>')),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
@@ -3249,40 +3203,39 @@ reg('Big Type Left','A very large title held for the full scroll; content runs r
  return sec(grid('0.48fr 0.52fr','clamp(34px,6vw,110px)',
    col('<div class="c2-sticky">'+eb(X.ey)+ttl(X.tt,'clamp(2.4rem,5.4vw,5.4rem)',I82,'0.12em',0.92)+
      g(26)+bd(X.note,I45,'26ch','0.76rem')+'</div>')+
-   col(bd(X.lead,null,'44ch')+g(16)+bd(X.ask,null,'44ch')+g(34)+NAMES('inline')+
-     g(34)+DECK('plain')+g(44)+FRM('ruled'))),
+   col(bd(X.lead,null,'44ch')+g(16)+bd(X.ask,null,'44ch')+g(38)+DECK('plain')+g(44)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
-/* 17 — the mirror: form left, deck and offices right. */
-reg('Mirrored Pair','Intro spans the top; form left, deck and offices right.',function(){
- return sec('<div style="max-width:700px;">'+INTRO({note:true})+'</div>'+g(30)+NAMES('spread'),
+/* 17 — the mirror: form left in a soft block, the deck right. */
+reg('Mirrored Pair','Intro spans the top; a soft form left, the deck right.',function(){
+ return sec('<div style="max-width:700px;">'+INTRO({note:true})+'</div>',
    TOP+' '+PADX+' clamp(44px,6vh,68px)')+
-  sec(grid('1.15fr 0.85fr','clamp(30px,5vw,80px)',
-    col(FRM('soft'))+col(DECK('soft')+g(26)+bd(X.note,I45,'32ch','0.78rem'))),
+  sec(grid('1.2fr 0.8fr','clamp(30px,5vw,80px)',
+    col(FRM('soft'))+col(DECK('soft'))),
    'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('centre');});
 
-/* 18 — the newsletter joins the right column. */
+/* 18 — the newsletter joins the right column under the form. */
 reg('Newsletter Column','The newsletter leaves the footer band and joins the right column.',function(){
  return sec(grid('1fr 0.9fr','clamp(30px,5vw,78px)',
-   col(INTRO({mw:'42ch',note:true})+g(34)+NAMES('sub',{topRule:true})+g(32)+DECK('plain'))+
+   col(INTRO({mw:'42ch',note:true})+g(38)+DECK('plain'))+
    col(FRM('plain')+g(42)+rule(R12)+g(34)+NL('column'))),
    TOP+' '+PADX+' clamp(64px,9vh,104px)');});
 
-/* 19 — the page asks the question outright. */
-reg('Question Led','The title asks it; the four are the answer and the form follows.',function(){
+/* 19 — the title asks the question outright. */
+reg('Question Led','The title asks it outright; the form is the answer.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,84px)',
-   col(eb(X.ey)+ttl('Which one<br>are you?',T_M,I82,'0.14em',1.02)+g(24)+
-     bd(X.lead,null,'38ch')+g(28)+NAMES('stack',{topRule:true})+g(30)+DECK('plain'))+
+   col(eb(X.ey)+ttl('What are you<br>building?',T_M,I82,'0.14em',1.02)+g(26)+
+     bd(X.lead,null,'40ch')+g(16)+bd(X.ask,null,'40ch')+g(34)+DECK('plain'))+
    col(FRM('plain'))),
-   TOP+' '+PADX+' clamp(52px,7vh,84px)')+
+   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 20 — the strongest parts, tuned. */
-reg('Production Candidate','A held opening, the four as one quiet line, one deck, form in its own panel.',function(){
+reg('Production Candidate','A held opening, one deck on a rule, the form in its own panel.',function(){
  return sec(grid('0.88fr 1.12fr','clamp(32px,5.2vw,88px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+NAMES('inline')+g(30)+
+   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+
      bd(X.note,I45,'32ch','0.76rem')+'</div>')+
    col(DECK('ruled')+g(46)+FRM('panel',{btn:'outline',gap:18,ta:'140px'}))),
    TOP+' '+PADX+' clamp(60px,8.5vh,98px)')+
