@@ -2859,12 +2859,11 @@ else setTimeout(mount,260);
 /* ---------- content, from the page ---------- */
 var P = window._sfPATHS || [];
 var O = window._sfOFFICES || [];
+var DECKF='/decks/silent-foundry-partner-deck.pdf';
 var X = {ey:'Get In Touch', tt:'Contact Silent Foundry',
- p1:'We work with brand owners, factories, operators, investors, and specialist partners across product development, manufacturing, capital, and China market entry.',
- p2:'Download the relevant deck, then send us a short note about your project, your company, or the kind of partnership you have in mind.',
- p3:'We read every message and will get back to you directly.',
+ lead:'We partner with brand owners, manufacturers, operators and investors to build premium products and ventures.',
  note:"We review every submission personally. If there's a fit, you'll hear from one of the founding team directly.",
- dl:'Downloads', msg:'Send A Message', off:'Offices',
+ dl:'Downloads', deck:'Download The Deck', msg:'Send A Message', off:'Offices',
  nlEy:'Stay Updated', nlT:'The SF Newsletter',
  nlB:"Occasional updates on what we're building, thinking, and making — straight from the studio."};
 
@@ -2905,80 +2904,94 @@ function col(inner,st){return '<div style="min-width:0;'+(st||'')+'">'+inner+'</
 function num(n,c){return '<span style="font-family:'+BBF+';font-size:0.78rem;letter-spacing:0.16em;color:'+
  (c||I25)+';">'+('0'+n).slice(-2)+'</span>';}
 
-/* ---------- the opening ---------- */
+/* ---------- the opening ----------
+   One sentence, exactly as the live page has it. */
 function INTRO(o){o=o||{};
- var body=(o.p===1?bd(X.p1,o.bc,o.mw):
-           o.p===2?bd(X.p1,o.bc,o.mw)+g(18)+bd(X.p2,o.bc,o.mw):
-           bd(X.p1,o.bc,o.mw)+g(18)+bd(X.p2,o.bc,o.mw)+g(18)+bd(X.p3,o.bc,o.mw));
- return (o.noEy?'':eb(X.ey,o.ec))+ttl(X.tt,o.tsz,o.tc,o.tls,o.tlh)+g(o.g1||26)+body+
-  (o.note===false?'':g(o.g3||30)+bd(X.note,o.nc||I45,o.mw,'0.78rem'));}
+ return (o.noEy?'':eb(X.ey,o.ec))+ttl(X.tt,o.tsz,o.tc,o.tls,o.tlh)+g(o.g1||26)+
+  bd(X.lead,o.bc,o.mw||'50ch')+
+  (o.note?g(o.g3||30)+bd(X.note,o.nc||I45,o.mw,'0.78rem'):'');}
 
-/* ---------- the four paths ----------
-   Every treatment carries the name, the audience line and the deck link,
-   so no direction quietly loses a download. */
-function dlink(p,c,label){return '<a href="'+p.f+'" download class="c2-dl" style="display:inline-block;'+
- 'font-family:'+DMF+';font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:'+(c||LAB)+
- ';text-decoration:none;white-space:nowrap;transition:color .25s;">'+(label||p.d)+'</a>';}
-function dbox(p,c){return '<a href="'+p.f+'" download class="c2-db" style="display:inline-block;font-family:'+DMF+
- ';font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:'+(c||GOLD)+';border:0.5px solid '+
- (c||GOLD)+';opacity:0.7;padding:7px 15px;text-decoration:none;transition:opacity .25s;">'+p.d+'</a>';}
+/* ---------- who gets in touch ----------
+   The four are an audience list, exactly as they are on the live page:
+   a name and one sentence. They do NOT each carry a deck — there is one
+   deck for the whole page. */
 function pname(p,sz,c){return '<span style="font-family:'+BBF+';font-size:'+(sz||T_XS)+
  ';letter-spacing:0.14em;text-transform:uppercase;color:'+(c||I82)+';">'+p.t+'</span>';}
 function psub(p,c){return '<span style="font-family:'+DMF+';font-size:0.58rem;letter-spacing:0.2em;'+
  'text-transform:uppercase;font-weight:300;color:'+(c||LAB)+';">'+p.s+'</span>';}
+function pline(p,c,mw,fs){return bd(p.b,c||I45,mw||'52ch',fs||'0.78rem',1.9);}
 
-function PATHS(kind,o){o=o||{};
- var lb=o.noLb?'':eb(o.lbT||X.dl,o.lc)+g(o.lbGap||18);
+function WHO(kind,o){o=o||{};
+ var lb=o.lb?eb(o.lb,o.lc)+g(o.lbGap||18):'';
+ var dc=o.dc||R06;
+ function wrap(inner,i,last){
+  return '<div style="'+(i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+
+   (last&&o.lastDiv===false?'':'border-bottom:0.5px solid '+dc+';')+
+   'padding:'+(o.rp||22)+'px 0;">'+inner+'</div>';}
  switch(kind){
- case 'rows': return lb+P.map(function(p,i){
-   return '<div style="display:grid;grid-template-columns:'+(o.rc||'1fr auto')+';gap:20px;align-items:baseline;'+
-    'padding:'+(o.rp||20)+'px 0;border-top:0.5px solid '+R08+';">'+
-    '<div>'+pname(p,o.nsz,o.nc)+'<div style="margin-top:5px;">'+psub(p,o.sc)+'</div></div>'+
-    dlink(p,o.dc)+'</div>';}).join('')+rule(o.dcline||R08);
- case 'full': return lb+P.map(function(p,i){
-   return '<div style="padding:'+(o.rp||24)+'px 0;border-top:0.5px solid '+R08+';">'+
-    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
-    '<div>'+pname(p,o.nsz,o.nc)+'<div style="margin-top:5px;">'+psub(p,o.sc)+'</div></div>'+
-    '<span style="font-family:'+DMF+';font-size:0.9rem;color:'+(o.ic||LAB)+';">'+p.i+'</span></div>'+
-    bd(p.b,o.bc||I45,o.bmw||'62ch','0.68rem',1.85)+g(14)+dlink(p,o.dc)+'</div>';}).join('')+rule();
+ case 'split': return lb+P.map(function(p,i){
+   return wrap('<div style="display:grid;grid-template-columns:'+(o.cols||'0.7fr 1.3fr')+
+    ';gap:clamp(18px,2.6vw,40px);align-items:baseline;"><div>'+pname(p,o.nsz,o.nc)+'</div>'+
+    '<div>'+pline(p,o.bc,o.bmw)+'</div></div>',i,i===P.length-1);}).join('');
  case 'num': return lb+P.map(function(p,i){
-   return '<div style="display:grid;grid-template-columns:40px 1fr auto;gap:18px;align-items:baseline;'+
-    'padding:'+(o.rp||18)+'px 0;border-top:0.5px solid '+R08+';">'+num(i+1,o.numc)+
-    '<div>'+pname(p,o.nsz,o.nc)+'<div style="margin-top:5px;">'+psub(p,o.sc)+'</div></div>'+
-    dlink(p,o.dc,'↓')+'</div>';}).join('')+rule();
+   return wrap('<div style="display:grid;grid-template-columns:40px 1fr;gap:18px;align-items:baseline;">'+
+    num(i+1,o.numc)+'<div>'+pname(p,o.nsz,o.nc)+g(9)+pline(p,o.bc,o.bmw)+'</div></div>',
+    i,i===P.length-1);}).join('');
+ case 'names': return lb+P.map(function(p,i){
+   return wrap('<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;">'+
+    pname(p,o.nsz,o.nc)+psub(p,o.sc)+'</div>',i,i===P.length-1);}).join('');
  case 'cards': return lb+'<div class="c2-cards" style="display:grid;grid-template-columns:repeat('+(o.cols||2)+
    ',1fr);gap:1px;background:'+R08+';border:0.5px solid '+R08+';">'+
-   P.map(function(p){return '<div style="background:'+(o.cbg||CRM2)+';padding:'+(o.cp||'26px 24px')+
-    ';display:flex;flex-direction:column;">'+
+   P.map(function(p){return '<div style="background:'+(o.cbg||CRM2)+';padding:'+(o.cp||'26px 24px')+';">'+
     '<div style="font-family:'+DMF+';font-size:1rem;color:'+GOLD+';margin-bottom:14px;">'+p.i+'</div>'+
-    pname(p,'0.95rem')+'<div style="margin-top:7px;">'+psub(p)+'</div>'+
-    bd(p.b,'rgba(10,10,10,0.48)',null,'0.62rem',1.85)+
-    '<div style="margin-top:auto;padding-top:18px;">'+dlink(p)+'</div></div>';}).join('')+'</div>';
+    pname(p,'0.95rem')+g(8)+psub(p)+g(12)+pline(p,'rgba(10,10,10,0.48)',null,'0.7rem')+
+    '</div>';}).join('')+'</div>';
  case 'drop': return lb+P.map(function(p,i){
-   return '<div class="c2-acc" style="border-top:0.5px solid '+R08+';">'+
-    '<div onclick="c2T(this)" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;'+
-    'cursor:pointer;padding:'+(o.rp||20)+'px 0;">'+
-    '<div>'+pname(p,o.nsz,o.nc)+'<div style="margin-top:5px;">'+psub(p,o.sc)+'</div></div>'+
+   return '<div class="c2-acc" style="border-bottom:0.5px solid '+dc+';'+
+    (i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+'">'+
+    '<div onclick="c2T(this)" style="display:flex;justify-content:space-between;align-items:baseline;'+
+    'gap:20px;cursor:pointer;padding:'+(o.rp||20)+'px 0;">'+pname(p,o.nsz,o.nc)+
     '<span class="c2-i" style="font-family:'+DMF+';font-size:0.7rem;color:'+(o.ic||LAB)+
     ';transition:transform .35s;">+</span></div>'+
     '<div class="c2-p" style="overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s;">'+
-    bd(p.b,o.bc||I45,'58ch','0.68rem',1.9)+g(14)+dbox(p)+g(22)+'</div></div>';}).join('')+rule();
- case 'big': return lb+P.map(function(p,i){
-   return '<div style="padding:'+(o.rp||30)+'px 0;border-top:0.5px solid '+R08+';">'+
-    ttl(p.t,o.bsz||T_S,o.nc||I82,'0.12em')+g(8)+psub(p,o.sc)+g(14)+dlink(p,o.dc)+'</div>';}).join('')+rule();
- case 'plain': return lb+P.map(function(p,i){
-   return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;'+
-    'padding:'+(o.rp||15)+'px 0;border-bottom:0.5px solid '+(o.dcline||R06)+';">'+
-    pname(p,o.nsz,o.nc)+dlink(p,o.dc)+'</div>';}).join('');
+    pline(p,o.bc,'56ch')+g(20)+'</div></div>';}).join('');
  case 'choice': return lb+P.map(function(p,i){
-   return '<label class="c2-ch" style="display:grid;grid-template-columns:16px 1fr auto;gap:14px;'+
-    'align-items:baseline;padding:16px 0;border-top:0.5px solid '+R08+';cursor:pointer;">'+
+   return '<label class="c2-ch" style="display:grid;grid-template-columns:16px 1fr;gap:14px;'+
+    'align-items:baseline;padding:'+(o.rp||16)+'px 0;border-bottom:0.5px solid '+dc+';'+
+    (i===0&&o.topRule?'border-top:0.5px solid '+dc+';':'')+'cursor:pointer;">'+
     '<span class="c2-mk" style="width:9px;height:9px;border:0.5px solid '+I3+';border-radius:50%;'+
     'display:inline-block;transition:background .25s,border-color .25s;"></span>'+
-    '<span>'+pname(p,o.nsz,o.nc)+'<span style="display:block;margin-top:4px;">'+psub(p,o.sc)+'</span></span>'+
-    dlink(p,o.dc)+'</label>';}).join('')+rule();
- default: return PATHS('rows',o);}
+    '<span>'+pname(p,o.nsz,o.nc)+'<span style="display:block;margin-top:6px;">'+
+    psub(p,o.sc)+'</span></span></label>';}).join('');
+ default: return lb+P.map(function(p,i){          /* 'rows' — the live treatment */
+   return wrap(pname(p,o.nsz,o.nc)+g(o.ng||9)+pline(p,o.bc,o.bmw),i,i===P.length-1);}).join('');}
 }
+
+/* ---------- the deck ----------
+   ONE download for the whole page, pointing at the same file the live
+   page uses. */
+function DECK(kind,o){o=o||{};
+ var lbl='<div style="display:flex;align-items:center;gap:12px;">'+
+  '<span style="font-family:'+DMF+';font-size:0.72rem;color:rgba(200,169,110,0.85);line-height:1;">◎</span>'+
+  '<span style="font-family:'+DMF+';font-weight:300;font-size:0.62rem;letter-spacing:0.28em;'+
+  'text-transform:uppercase;color:'+(o.lc||LAB)+';">'+X.dl+'</span></div>';
+ var link='<a href="'+DECKF+'" download class="c2-dl" style="font-family:'+BBF+';font-size:'+(o.sz||T_XS)+
+  ';letter-spacing:0.14em;text-transform:uppercase;color:'+(o.tc||I82)+';text-decoration:none;'+
+  'display:inline-flex;align-items:baseline;gap:14px;transition:color .25s;">'+X.deck+
+  '<span style="font-family:'+DMF+';font-size:0.7rem;color:'+(o.ac||LAB)+';">↓</span></a>';
+ if(kind==='boxed') return '<div style="border:0.5px solid '+R12+';padding:clamp(22px,2.8vw,34px);">'+
+   lbl+g(o.g||16)+link+'</div>';
+ if(kind==='ruled') return lbl+g(o.g||16)+'<div style="border-top:0.5px solid '+R12+
+   ';padding-top:'+(o.pt||20)+'px;">'+link+'</div>';
+ if(kind==='big') return lbl+g(o.g||18)+'<a href="'+DECKF+'" download class="c2-dl" style="font-family:'+BBF+
+   ';font-size:'+(o.sz||T_M)+';letter-spacing:0.1em;text-transform:uppercase;color:'+(o.tc||I82)+
+   ';text-decoration:none;display:inline-flex;align-items:baseline;gap:16px;transition:color .25s;">'+X.deck+
+   '<span style="font-family:'+DMF+';font-size:0.9rem;color:'+(o.ac||LAB)+';">↓</span></a>';
+ if(kind==='inline') return '<div style="display:flex;align-items:baseline;justify-content:space-between;'+
+   'gap:20px;flex-wrap:wrap;">'+lbl+link+'</div>';
+ if(kind==='soft') return '<div style="background:'+SOFT+';padding:clamp(22px,2.8vw,34px);">'+
+   lbl+g(o.g||16)+link+'</div>';
+ return lbl+g(o.g||16)+link;}
 
 /* ---------- the form ----------
    Exactly the fields and ids the live page uses, so the existing
@@ -3104,71 +3117,73 @@ var CSS=
 
 /* ============================================================
    THE TWENTY
+   Every direction carries the live content: the eyebrow, the title,
+   the one lead sentence, the four as an audience list, ONE deck
+   download, the form, and the newsletter. Only the arrangement moves.
    ============================================================ */
 var V=[];
 function reg(name,note,fn){V.push({t:name,note:note,f:fn});}
 
-/* 01 — the straight split: who we are on the left, the form on the right,
-        the four beneath at full width. */
-reg('Classic Split','Intro and offices left, form right, the four full width beneath.',function(){
+/* 01 — the straight split: who we are left, the form right, the four beneath. */
+reg('Classic Split','Intro left, form right; the four and the deck beneath.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(INTRO({mw:'44ch'})+g(44)+OFF('inline')) + col(FRM('plain'))),
+   col(INTRO({mw:'42ch',note:true})+g(40)+OFF('inline'))+col(FRM('plain'))),
    TOP+' '+PADX+' clamp(48px,7vh,78px)')+
-  sec(PATHS('rows'),'clamp(48px,7vh,78px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+  sec(grid('1.35fr 0.65fr','clamp(30px,5vw,72px)',
+    col(WHO('rows'))+col(DECK('boxed'))),
+   'clamp(48px,7vh,78px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
-/* 02 — the form leads. Unusual on purpose: the thing you came to do is
-        the first thing on the page. */
-reg('Form First','The form takes the left column; the intro and the four sit right.',function(){
+/* 02 — the form leads. The thing you came to do is the first thing here. */
+reg('Form First','The form takes the left column; who we work with sits right.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(FRM('plain')) + col(INTRO({mw:'42ch',p:2})+g(40)+PATHS('plain'))),
+   col(FRM('plain'))+col(INTRO({mw:'40ch'})+g(36)+WHO('names')+g(34)+DECK('plain'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('centre');});
 
-/* 03 — the intro pins while the right column runs past it. */
-reg('Sticky Intro','The opening holds position while downloads and form scroll past.',function(){
+/* 03 — the opening pins while the right column runs past it. */
+reg('Sticky Intro','The opening holds position while the four, the deck and the form scroll past.',function(){
  return sec(grid('0.85fr 1.15fr','clamp(30px,5vw,84px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'36ch'})+g(36)+OFF('stack')+'</div>')+
-   col(PATHS('drop')+g(56)+FRM('ruled'))),
+   col('<div class="c2-sticky">'+INTRO({mw:'34ch',note:true})+g(34)+OFF('stack')+'</div>')+
+   col(WHO('drop',{topRule:true})+g(44)+DECK('ruled')+g(52)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
 /* 04 — a running index down the left edge; the content answers it. */
-reg('Ledger Rail','A narrow index column names each block; the wide column carries it.',function(){
- function row(label,inner,first){
+reg('Ledger Rail','A narrow index names each block; the wide column carries it.',function(){
+ function row(label,inner){
   return grid('120px 1fr','clamp(20px,3.4vw,52px)',
     col('<div class="c2-rail" style="border-right:0.5px solid '+R08+';padding-right:18px;">'+
-      eb(label,LAB,0)+'</div>')+col(inner))+
-   (first?'':'');}
- return sec(row('01 / Who',INTRO({noEy:true,mw:'54ch'}))+g(46)+rule()+g(46)+
-   row('02 / Downloads',PATHS('num',{noLb:true}))+g(46)+rule()+g(46)+
-   row('03 / Message',FRM('plain',{noLb:true}))+g(46)+rule()+g(46)+
-   row('04 / Offices',OFF('inline',{noLb:true})),
+      eb(label,LAB,0)+'</div>')+col(inner));}
+ return sec(row('01 / Who',INTRO({noEy:true,mw:'52ch'}))+g(44)+rule()+g(44)+
+   row('02 / Partners',WHO('rows'))+g(44)+rule()+g(44)+
+   row('03 / The deck',DECK('plain'))+g(44)+rule()+g(44)+
+   row('04 / Message',FRM('plain',{noLb:true}))+g(44)+rule()+g(44)+
+   row('05 / Offices',OFF('inline',{noLb:true})),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 05 — a large title alone on the left, everything else stacked right. */
-reg('Asymmetric Editorial','A large title holds the left; the whole page runs down the right.',function(){
+reg('Asymmetric Editorial','A large title holds the left; the page runs down the right.',function(){
  return sec(grid('0.42fr 0.58fr','clamp(36px,6vw,120px)',
    col(eb(X.ey)+ttl(X.tt,T_L,I82,'0.16em',0.95))+
-   col(bd(X.p1,null,'50ch')+g(18)+bd(X.p2,null,'50ch')+g(18)+bd(X.p3,null,'50ch')+g(48)+
-       PATHS('big')+g(52)+FRM('ruled'))),
+   col(bd(X.lead,null,'48ch')+g(44)+WHO('rows')+g(40)+DECK('plain')+g(50)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
-/* 06 — the two things you can actually do, side by side. */
-reg('Two Actions','Intro full width; then downloads and the form as an equal pair.',function(){
- return sec('<div style="max-width:760px;">'+INTRO({})+'</div>',
+/* 06 — who we work with, and how to reach us, side by side. */
+reg('Two Actions','Intro full width; then the four and the form as an equal pair.',function(){
+ return sec('<div style="max-width:720px;">'+INTRO({note:true})+'</div>',
    TOP+' '+PADX+' clamp(44px,6vh,68px)')+
   sec(grid('1fr 1fr','clamp(30px,5vw,80px)',
-    col(PATHS('full'))+col(FRM('plain'))),
+    col(WHO('rows')+g(38)+DECK('ruled'))+col(FRM('plain'))),
    'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
 
 /* 07 — the form sits in a tinted panel so it reads as a destination. */
 reg('Panel Right','The form lives in a tinted panel; the left column does the talking.',function(){
  return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'44ch'})+g(40)+PATHS('plain'))+
+   col(INTRO({mw:'42ch'})+g(38)+WHO('split')+g(34)+DECK('plain'))+
    col(FRM('panel'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
@@ -3176,7 +3191,7 @@ reg('Panel Right','The form lives in a tinted panel; the left column does the ta
 /* 08 — the form reversed out of the dark gradient the site already uses. */
 reg('Dark Form','The right column goes dark and the form is reversed out of it.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,72px)',
-   col(INTRO({mw:'42ch'})+g(40)+PATHS('rows',{noLb:false}))+
+   col(INTRO({mw:'40ch'})+g(38)+WHO('rows')+g(34)+DECK('plain'))+
    col(FRM('dark',{btn:'outline'})),'stretch'),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('centre');});
@@ -3184,41 +3199,42 @@ reg('Dark Form','The right column goes dark and the form is reversed out of it.'
 /* 09 — two true halves with a full-height rule between them. */
 reg('Ruled Halves','Two equal halves divided by one full-height hairline.',function(){
  return sec(grid('1fr 0.5px 1fr','clamp(28px,4.4vw,60px)',
-   col(INTRO({mw:'40ch'})+g(40)+OFF('stack'))+vrule()+
-   col(PATHS('plain')+g(44)+FRM('ruled')),'stretch'),
+   col(INTRO({mw:'38ch'})+g(36)+WHO('names')+g(34)+DECK('plain'))+vrule()+
+   col(FRM('ruled')+g(40)+OFF('stack')),'stretch'),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 10 — the four become a card grid; intro and form share the row above. */
 reg('Cards Below','Intro and form share the top row; the four become a card grid.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,84px)',
-   col(INTRO({mw:'42ch'}))+col(FRM('plain'))),
+   col(INTRO({mw:'42ch',note:true}))+col(FRM('plain'))),
    TOP+' '+PADX+' clamp(48px,7vh,76px)')+
-  sec(PATHS('cards',{cols:4}),'clamp(48px,7vh,76px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+  sec(WHO('cards',{cols:4})+g(38)+DECK('inline'),
+   'clamp(48px,7vh,76px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('plain');});
 
-/* 11 — read on the left, choose on the right. */
+/* 11 — read on the left, open the four on the right. */
 reg('Accordion Right','Intro and form on the left; the four open in place on the right.',function(){
  return sec(grid('1fr 0.95fr','clamp(30px,5vw,80px)',
-   col(INTRO({mw:'40ch',p:2})+g(44)+FRM('ruled'))+
-   col(PATHS('drop'))),
+   col(INTRO({mw:'38ch'})+g(40)+FRM('ruled'))+
+   col(WHO('drop',{topRule:true})+g(40)+DECK('boxed'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 12 — the four as a numbered index in the left column. */
 reg('Numbered Index','The four become a numbered index; the form answers it.',function(){
- return sec('<div style="max-width:700px;">'+INTRO({p:2})+'</div>',
+ return sec('<div style="max-width:680px;">'+INTRO({})+'</div>',
    TOP+' '+PADX+' clamp(40px,6vh,64px)')+
   sec(grid('1.05fr 0.95fr','clamp(30px,5vw,80px)',
-    col(PATHS('num'))+col(FRM('plain'))),
+    col(WHO('num')+g(36)+DECK('plain'))+col(FRM('plain'))),
    'clamp(40px,6vh,64px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('plain');});
 
 /* 13 — a quiet service column on the left, the page proper on the right. */
 reg('Offices Rail','A quiet column of offices and newsletter; the page runs beside it.',function(){
  return sec(grid('0.62fr 1.38fr','clamp(30px,5vw,80px)',
-   col('<div class="c2-sticky">'+OFF('stack')+g(40)+rule()+g(40)+
-       eb(X.nlEy)+g(14)+bd(X.nlB,I45,null,'0.72rem',1.85)+g(20)+
+   col('<div class="c2-sticky">'+OFF('stack')+g(36)+rule()+g(36)+
+       eb(X.nlEy)+g(14)+bd(X.nlB,I45,null,'0.74rem',1.85)+g(20)+
        '<div id="sf-nl-form" style="display:flex;gap:0;">'+
        '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="flex:1;min-width:0;'+
        'background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.14);border-right:none;color:'+I85+
@@ -3228,17 +3244,18 @@ reg('Offices Rail','A quiet column of offices and newsletter; the page runs besi
        'letter-spacing:0.16em;text-transform:uppercase;padding:13px 16px;cursor:pointer;">⏙</button></div>'+
        '<div id="sf-nl-success" style="display:none;padding:12px 0;"><span style="font-size:0.8rem;color:'+
        LAB+';">⌀ Subscribed.</span></div></div>')+
-   col(INTRO({})+g(48)+PATHS('rows')+g(48)+FRM('ruled'))),
+   col(INTRO({note:true})+g(44)+WHO('rows')+g(40)+DECK('ruled')+g(48)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(64px,9vh,104px)');});
 
 /* 14 — three two-column rows, the weight alternating side to side. */
 reg('Alternating Rows','Three two-column rows with the weight swapping side to side.',function(){
  return sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-   col(INTRO({mw:'46ch'}))+col(OFF('stack'))),
+   col(INTRO({mw:'44ch'}))+col(OFF('stack'))),
    TOP+' '+PADX+' clamp(44px,6vh,70px)')+
   sec(grid('0.8fr 1.2fr','clamp(28px,4.6vw,72px)',
-    col(eb(X.dl)+g(14)+bd('Four routes in. Take the one that fits.',I45,'28ch','0.78rem'))+
-    col(PATHS('rows',{noLb:true}))),
+    col(eb('Who we work with')+g(14)+bd('Four routes in. One deck covers all of them.',I45,'26ch','0.78rem')+
+        g(26)+DECK('plain'))+
+    col(WHO('rows'))),
    'clamp(44px,6vh,70px) '+PADX,{bt:1})+
   sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
     col(FRM('plain'))+col(bd(X.note,I45,'30ch','0.78rem'))),
@@ -3248,9 +3265,9 @@ reg('Alternating Rows','Three two-column rows with the weight swapping side to s
 /* 15 — the right column becomes one bordered card holding form and offices. */
 reg('Contact Card','The right column is one bordered card: form above, offices below.',function(){
  return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'42ch'})+g(40)+PATHS('plain'))+
+   col(INTRO({mw:'40ch'})+g(38)+WHO('names')+g(34)+DECK('plain'))+
    col('<div style="border:0.5px solid '+R12+';padding:clamp(26px,3.4vw,42px);">'+
-       FRM('plain',{noLb:false})+g(34)+rule(R12)+g(28)+OFF('inline')+'</div>')),
+       FRM('plain')+g(32)+rule(R12)+g(26)+OFF('inline')+'</div>')),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('plain');});
 
@@ -3258,33 +3275,32 @@ reg('Contact Card','The right column is one bordered card: form above, offices b
 reg('Big Type Left','A very large title held for the full scroll; content runs right.',function(){
  return sec(grid('0.46fr 0.54fr','clamp(34px,6vw,110px)',
    col('<div class="c2-sticky">'+eb(X.ey)+ttl(X.tt,'clamp(2.4rem,5.4vw,5.4rem)',I82,'0.12em',0.92)+
-     g(30)+bd(X.p3,I45,'26ch','0.78rem')+'</div>')+
-   col(bd(X.p1,null,'48ch')+g(18)+bd(X.p2,null,'48ch')+g(46)+
-       PATHS('rows')+g(50)+FRM('ruled'))),
+     g(28)+bd(X.note,I45,'26ch','0.76rem')+'</div>')+
+   col(bd(X.lead,null,'46ch')+g(42)+WHO('rows')+g(38)+DECK('plain')+g(48)+FRM('ruled'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
 /* 17 — the mirror of 06: form on the left, the four on the right. */
 reg('Mirrored Pair','Intro spans the top; the form takes the left and the four the right.',function(){
- return sec('<div style="max-width:820px;">'+INTRO({})+'</div>',
+ return sec('<div style="max-width:800px;">'+INTRO({note:true})+'</div>',
    TOP+' '+PADX+' clamp(44px,6vh,68px)')+
   sec(grid('0.95fr 1.05fr','clamp(30px,5vw,80px)',
-    col(FRM('soft'))+col(PATHS('full',{noLb:false}))),
+    col(FRM('soft'))+col(WHO('split')+g(36)+DECK('boxed'))),
    'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('centre');});
 
 /* 18 — the newsletter stops being a band and becomes a column. */
 reg('Newsletter Column','The newsletter leaves the footer band and joins the right column.',function(){
  return sec(grid('1fr 0.9fr','clamp(30px,5vw,78px)',
-   col(INTRO({mw:'44ch'})+g(44)+PATHS('rows'))+
-   col(FRM('plain')+g(46)+rule(R12)+g(38)+NL('column'))),
+   col(INTRO({mw:'42ch'})+g(40)+WHO('rows')+g(36)+DECK('plain'))+
+   col(FRM('plain')+g(44)+rule(R12)+g(36)+NL('column'))),
    TOP+' '+PADX+' clamp(64px,9vh,104px)');});
 
 /* 19 — the page asks a question and the four are the answers. */
 reg('Question Led','The page asks which one you are; the four are the answer, the form follows.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,84px)',
-   col(eb(X.ey)+ttl('Which one<br>are you?',T_M,I82,'0.14em',1.02)+g(26)+
-     bd(X.p1,null,'40ch')+g(30)+PATHS('choice',{noLb:true}))+
+   col(eb(X.ey)+ttl('Which one<br>are you?',T_M,I82,'0.14em',1.02)+g(24)+
+     bd(X.lead,null,'40ch')+g(28)+WHO('choice',{topRule:true})+g(32)+DECK('plain'))+
    col(FRM('plain'))),
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   sec(grid('1fr 1fr','clamp(30px,5vw,84px)',
@@ -3292,13 +3308,13 @@ reg('Question Led','The page asks which one you are; the four are the answer, th
    'clamp(44px,6vh,70px) '+PADX+' clamp(52px,7vh,84px)',{bt:1})+
   NL('dark');});
 
-/* 20 — the strongest parts of the others, tuned: a held opening, the four
-        given real room, the form in its own quiet panel, offices small. */
-reg('Production Candidate','A held opening, the four given room, the form in its own panel.',function(){
+/* 20 — the strongest parts of the others, tuned. */
+reg('Production Candidate','A held opening, the four given room, one deck, the form in its own panel.',function(){
  return sec(grid('0.9fr 1.1fr','clamp(32px,5.2vw,88px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'38ch',p:2})+g(36)+
-     bd(X.note,I45,'34ch','0.76rem')+g(34)+OFF('inline',{noLb:true})+'</div>')+
-   col(PATHS('drop')+g(54)+FRM('panel',{btn:'outline',gap:18,ta:'140px'}))),
+   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+
+     bd(X.note,I45,'32ch','0.76rem')+g(32)+OFF('inline',{noLb:true})+'</div>')+
+   col(WHO('rows',{topRule:true})+g(40)+DECK('ruled')+g(52)+
+       FRM('panel',{btn:'outline',gap:18,ta:'140px'}))),
    TOP+' '+PADX+' clamp(60px,8.5vh,98px)')+
   NL('dark');});
 
