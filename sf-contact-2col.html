@@ -2924,8 +2924,12 @@ function DECK(kind,o){o=o||{};
   ';letter-spacing:0.14em;text-transform:uppercase;color:'+(o.tc||I82)+';text-decoration:none;'+
   'display:inline-flex;align-items:baseline;gap:14px;transition:color .25s;">'+X.deck+
   '<span style="font-family:'+DMF+';font-size:0.7rem;color:'+(o.ac||LAB)+';">↓</span></a>';
- if(kind==='boxed') return '<div style="border:0.5px solid '+R12+';padding:clamp(22px,2.8vw,34px);">'+
-   lbl+g(o.g||16)+link+'</div>';
+ if(kind==='boxed') return '<div style="background:'+(o.bg||SOFT)+';padding:clamp(24px,2.6vw,32px) clamp(26px,2.8vw,36px);'+
+   'max-width:'+(o.mw||'380px')+';text-align:left;">'+lbl+g(o.g||18)+
+   '<a href="'+DECKF+'" download class="c2-dl" style="font-family:'+BBF+';font-size:'+(o.sz||T_S)+
+   ';letter-spacing:0.12em;text-transform:uppercase;color:'+(o.tc||I82)+';text-decoration:none;'+
+   'display:inline-flex;align-items:baseline;gap:14px;transition:color .25s;">'+X.deck+
+   '<span style="font-family:'+DMF+';font-size:0.8rem;color:'+(o.ac||LAB)+';">↓</span></a></div>';
  if(kind==='ruled') return lbl+g(o.g||16)+'<div style="border-top:0.5px solid '+R12+
    ';padding-top:'+(o.pt||20)+'px;">'+link+'</div>';
  if(kind==='big') return lbl+g(o.g||18)+'<a href="'+DECKF+'" download class="c2-dl" style="font-family:'+BBF+
@@ -3046,184 +3050,19 @@ var CSS=
  '}';
 
 /* ============================================================
-   THE TWENTY
-   What's left on the page is deliberately little: eyebrow, title,
-   two sentences, one deck, the form, the newsletter. With this much
-   less copy the differences are entirely structural — which column
-   the form takes, how the deck is set and where it sits, and how the
-   page is banded.
+   THE KEEP LIST
+   Matthew's five, renumbered from 1 in the order he gave them.
+   Everything else from the twenty is gone.
+     1  was 19  Question Led
+     2  was 01  Classic Split
+     3  was 09  Ruled Halves
+     4  was 11  Boxed Deck      (grey ground, left aligned)
+     5  was 12  Centred Opening
    ============================================================ */
 var V=[];
 function reg(name,note,fn){V.push({t:name,note:note,f:fn});}
 
-/* 01 — the straight split; the deck on its own band beneath. */
-reg('Classic Split','Intro left, form right, the deck on its own band beneath.',function(){
- return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(INTRO({mw:'42ch',note:true}))+col(FRM('plain'))),
-   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
-  sec(DECK('inline'),'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('dark');});
-
-/* 02 — the form leads. */
-reg('Form First','The form takes the left column; the page introduces itself on the right.',function(){
- return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
-   col(FRM('plain'))+col(INTRO({mw:'40ch',note:true})+g(38)+DECK('ruled'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('centre');});
-
-/* 03 — the opening pins while the form runs past it. */
-reg('Sticky Intro','The opening holds position while the form scrolls past.',function(){
- return sec(grid('0.9fr 1.1fr','clamp(30px,5vw,84px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(32)+DECK('plain')+g(30)+
-     bd(X.note,I45,'30ch','0.76rem')+'</div>')+
-   col(FRM('ruled'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('plain');});
-
-/* 04 — a running index down the left edge. */
-reg('Ledger Rail','A narrow index names each block; the wide column carries it.',function(){
- function row(label,inner){
-  return grid('120px 1fr','clamp(20px,3.4vw,52px)',
-    col('<div class="c2-rail" style="border-right:0.5px solid '+R08+';padding-right:18px;">'+
-      eb(label,LAB,0)+'</div>')+col(inner));}
- return sec(row('01 / Who',INTRO({noEy:true,mw:'52ch'}))+g(42)+rule()+g(42)+
-   row('02 / The deck',DECK('plain'))+g(42)+rule()+g(42)+
-   row('03 / Message',FRM('plain',{noLb:true})),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('dark');});
-
-/* 05 — a large title alone on the left. */
-reg('Asymmetric Editorial','A large title holds the left; the page runs down the right.',function(){
- return sec(grid('0.44fr 0.56fr','clamp(36px,6vw,120px)',
-   col(eb(X.ey)+ttl(X.tt,T_L,I82,'0.16em',0.95))+
-   col(bd(X.lead,null,'46ch')+g(16)+bd(X.ask,null,'46ch')+g(40)+DECK('plain')+g(46)+FRM('ruled'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('plain');});
-
-/* 06 — the deck set large against the form. */
-reg('Two Actions','Intro full width; then the deck set large against the form.',function(){
- return sec('<div style="max-width:660px;">'+INTRO({note:true})+'</div>',
-   TOP+' '+PADX+' clamp(44px,6vh,68px)')+
-  sec(grid('0.8fr 1.2fr','clamp(30px,5vw,80px)',
-    col(DECK('big'))+col(FRM('plain'))),
-   'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('dark');});
-
-/* 07 — the form in a tinted panel. */
-reg('Panel Right','The form lives in a tinted panel; the left column does the talking.',function(){
- return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
-   col(FRM('panel'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('plain');});
-
-/* 08 — the form reversed out of the dark gradient. */
-reg('Dark Form','The right column goes dark and the form is reversed out of it.',function(){
- return sec(grid('1fr 1fr','clamp(30px,5vw,72px)',
-   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
-   col(FRM('dark',{btn:'outline'})),'stretch'),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('centre');});
-
-/* 09 — two true halves with a full-height rule. */
-reg('Ruled Halves','Two equal halves divided by one full-height hairline.',function(){
- return sec(grid('1fr 0.5px 1fr','clamp(28px,4.4vw,60px)',
-   col(INTRO({mw:'38ch'})+g(34)+DECK('plain'))+vrule()+
-   col(FRM('ruled')),'stretch'),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('dark');});
-
-/* 10 — the deck as a soft block, the form as the wide column. */
-reg('Soft Deck','The deck sits in a soft block; the form takes the wide column.',function(){
- return sec('<div style="max-width:640px;">'+INTRO({})+'</div>',
-   TOP+' '+PADX+' clamp(40px,6vh,66px)')+
-  sec(grid('0.7fr 1.3fr','clamp(30px,5vw,76px)',
-    col(DECK('soft')+g(26)+bd(X.note,I45,'30ch','0.76rem'))+col(FRM('plain'))),
-   'clamp(40px,6vh,66px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('plain');});
-
-/* 11 — the deck gets a bordered moment of its own. */
-reg('Boxed Deck','The deck gets a bordered block of its own beside the form.',function(){
- return sec(grid('0.85fr 1.15fr','clamp(30px,5vw,80px)',
-   col(INTRO({mw:'36ch',note:true})+g(34)+DECK('boxed'))+
-   col(FRM('plain'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('dark');});
-
-/* 12 — everything centred on one measure, the form beside it. */
-reg('Centred Opening','The opening centred on its own measure; the form squares up beside it.',function(){
- return sec('<div style="max-width:560px;margin:0 auto;text-align:center;">'+
-   INTRO({mw:'100%'})+g(30)+DECK('plain',{})+'</div>',
-   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
-  sec('<div style="max-width:620px;margin:0 auto;">'+FRM('plain')+'</div>',
-   'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('centre');});
-
-/* 13 — the newsletter held in a quiet narrow column. */
-reg('Newsletter Rail','The newsletter held in a quiet narrow column; the page runs beside it.',function(){
- return sec(grid('0.6fr 1.4fr','clamp(30px,5vw,80px)',
-   col('<div class="c2-sticky">'+
-       eb(X.nlEy)+g(14)+bd(X.nlB,I45,null,'0.74rem',1.85)+g(20)+
-       '<div id="sf-nl-form" style="display:flex;gap:0;">'+
-       '<input id="sf-nl-input" type="email" placeholder="your@email.com" style="flex:1;min-width:0;'+
-       'background:rgba(10,10,10,0.04);border:1px solid rgba(10,10,10,0.14);border-right:none;color:'+I85+
-       ';font-family:'+DMF+';font-size:16px;font-weight:300;padding:13px 15px;outline:none;"/>'+
-       '<button onclick="sfNLSubmit()" class="c2-nlb" style="background:transparent;border:1px solid '+
-       'rgba(138,110,58,0.42);border-left:none;color:'+LAB+';font-family:'+DMF+';font-size:0.58rem;'+
-       'letter-spacing:0.16em;text-transform:uppercase;padding:13px 16px;cursor:pointer;">⏙</button></div>'+
-       '<div id="sf-nl-success" style="display:none;padding:12px 0;"><span style="font-size:0.8rem;color:'+
-       LAB+';">⌀ Subscribed.</span></div></div>')+
-   col(INTRO({note:true})+g(38)+DECK('ruled')+g(46)+FRM('ruled'))),
-   TOP+' '+PADX+' clamp(64px,9vh,104px)');});
-
-/* 14 — three bands, the weight alternating side to side. */
-reg('Alternating Rows','Three two-column rows with the weight swapping side to side.',function(){
- return sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-   col(INTRO({mw:'44ch'}))+col(bd(X.note,I45,'28ch','0.78rem'))),
-   TOP+' '+PADX+' clamp(42px,6vh,68px)')+
-  sec(grid('0.8fr 1.2fr','clamp(28px,4.6vw,72px)',
-    col(eb(X.dl,LAB,0))+col(DECK('plain',{lc:'transparent'}))),
-   'clamp(42px,6vh,68px) '+PADX,{bt:1})+
-  sec(grid('1.2fr 0.8fr','clamp(28px,4.6vw,72px)',
-    col(FRM('plain'))+col('')),
-   'clamp(42px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('dark');});
-
-/* 15 — the right column as one bordered card. */
-reg('Contact Card','The right column is one bordered card holding the form.',function(){
- return sec(grid('1fr 0.92fr','clamp(30px,5vw,76px)',
-   col(INTRO({mw:'40ch',note:true})+g(36)+DECK('plain'))+
-   col('<div style="border:0.5px solid '+R12+';padding:clamp(26px,3.4vw,42px);">'+
-       FRM('plain')+'</div>')),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('plain');});
-
-/* 16 — the title very large, held for the scroll. */
-reg('Big Type Left','A very large title held for the full scroll; content runs right.',function(){
- return sec(grid('0.48fr 0.52fr','clamp(34px,6vw,110px)',
-   col('<div class="c2-sticky">'+eb(X.ey)+ttl(X.tt,'clamp(2.4rem,5.4vw,5.4rem)',I82,'0.12em',0.92)+
-     g(26)+bd(X.note,I45,'26ch','0.76rem')+'</div>')+
-   col(bd(X.lead,null,'44ch')+g(16)+bd(X.ask,null,'44ch')+g(38)+DECK('plain')+g(44)+FRM('ruled'))),
-   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
-  NL('dark');});
-
-/* 17 — the mirror: form left in a soft block, the deck right. */
-reg('Mirrored Pair','Intro spans the top; a soft form left, the deck right.',function(){
- return sec('<div style="max-width:700px;">'+INTRO({note:true})+'</div>',
-   TOP+' '+PADX+' clamp(44px,6vh,68px)')+
-  sec(grid('1.2fr 0.8fr','clamp(30px,5vw,80px)',
-    col(FRM('soft'))+col(DECK('soft'))),
-   'clamp(44px,6vh,68px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
-  NL('centre');});
-
-/* 18 — the newsletter joins the right column under the form. */
-reg('Newsletter Column','The newsletter leaves the footer band and joins the right column.',function(){
- return sec(grid('1fr 0.9fr','clamp(30px,5vw,78px)',
-   col(INTRO({mw:'42ch',note:true})+g(38)+DECK('plain'))+
-   col(FRM('plain')+g(42)+rule(R12)+g(34)+NL('column'))),
-   TOP+' '+PADX+' clamp(64px,9vh,104px)');});
-
-/* 19 — the title asks the question outright. */
+/* 1 · was 19 — the title asks the question outright; the form is the answer. */
 reg('Question Led','The title asks it outright; the form is the answer.',function(){
  return sec(grid('1fr 1fr','clamp(30px,5vw,84px)',
    col(eb(X.ey)+ttl('What are you<br>building?',T_M,I82,'0.14em',1.02)+g(26)+
@@ -3232,14 +3071,38 @@ reg('Question Led','The title asks it outright; the form is the answer.',functio
    TOP+' '+PADX+' clamp(56px,8vh,92px)')+
   NL('dark');});
 
-/* 20 — the strongest parts, tuned. */
-reg('Production Candidate','A held opening, one deck on a rule, the form in its own panel.',function(){
- return sec(grid('0.88fr 1.12fr','clamp(32px,5.2vw,88px)',
-   col('<div class="c2-sticky">'+INTRO({mw:'34ch'})+g(30)+
-     bd(X.note,I45,'32ch','0.76rem')+'</div>')+
-   col(DECK('ruled')+g(46)+FRM('panel',{btn:'outline',gap:18,ta:'140px'}))),
-   TOP+' '+PADX+' clamp(60px,8.5vh,98px)')+
+/* 2 · was 01 — intro left, form right, the deck on its own band beneath. */
+reg('Classic Split','Intro left, form right, the deck on its own band beneath.',function(){
+ return sec(grid('1fr 1fr','clamp(30px,5vw,88px)',
+   col(INTRO({mw:'42ch',note:true}))+col(FRM('plain'))),
+   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
+  sec(DECK('inline'),'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
   NL('dark');});
+
+/* 3 · was 09 — two true halves divided by one full-height hairline. */
+reg('Ruled Halves','Two equal halves divided by one full-height hairline.',function(){
+ return sec(grid('1fr 0.5px 1fr','clamp(28px,4.4vw,60px)',
+   col(INTRO({mw:'38ch'})+g(34)+DECK('plain'))+vrule()+
+   col(FRM('ruled')),'stretch'),
+   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
+  NL('dark');});
+
+/* 4 · was 11 — the deck as a grey block, left aligned and sized to itself. */
+reg('Boxed Deck','The deck as a light grey block, left aligned, beside the form.',function(){
+ return sec(grid('0.85fr 1.15fr','clamp(30px,5vw,80px)',
+   col(INTRO({mw:'36ch',note:true})+g(36)+DECK('boxed'))+
+   col(FRM('plain'))),
+   TOP+' '+PADX+' clamp(56px,8vh,92px)')+
+  NL('dark');});
+
+/* 5 · was 12 — the opening centred on its own measure, the form beneath. */
+reg('Centred Opening','The opening centred on its own measure; the form squares up beneath.',function(){
+ return sec('<div style="max-width:560px;margin:0 auto;text-align:center;">'+
+   INTRO({mw:'100%'})+g(30)+DECK('plain')+'</div>',
+   TOP+' '+PADX+' clamp(46px,7vh,74px)')+
+  sec('<div style="max-width:620px;margin:0 auto;">'+FRM('plain')+'</div>',
+   'clamp(46px,7vh,74px) '+PADX+' clamp(56px,8vh,92px)',{bt:1})+
+  NL('centre');});
 
 /* ============================================================
    MOUNT + SLIDER
@@ -3289,7 +3152,7 @@ function ui(){
    '<div class="rw"><button id="c2-p">&#8249;</button>'+
    '<input type="range" id="c2-r" min="1" max="'+V.length+'" step="1" value="1">'+
    '<button id="c2-n">&#8250;</button></div>'+
-   '<div class="hint">Drag or use &#8592; &#8594; &nbsp;·&nbsp; 20 two-column directions</div>';
+   '<div class="hint">Drag or use &#8592; &#8594; &nbsp;·&nbsp; the keep list</div>';
   el.querySelector('#c2-p').addEventListener('click',function(){step(-1);},false);
   el.querySelector('#c2-n').addEventListener('click',function(){step(1);},false);
   el.querySelector('#c2-r').addEventListener('input',function(e){
