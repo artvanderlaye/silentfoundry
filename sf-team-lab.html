@@ -4292,6 +4292,331 @@ html body .f-m6{display:none !important;}
  }
 
 
+
+ /* ============================================================
+    THIRD BATCH — 43 to 62.   Built on the homepage Foundry.
+
+    Measured off the live page, not guessed:
+      columns      464px + 96px gap + 464px, align:start
+      eyebrow      DM Sans 10.88px / 0.25em / w400 / #c8a96e / 34px under
+      headline     Bebas Neue 34.56px / 0.24em / line-height 31.8 / w300
+      body         DM Sans 13.6px / line-height 27.2  (exactly 2.0)
+      item label   DM Sans 13.12px / 0.14em / w500 / SENTENCE CASE
+      item row     51px, gold symbol at 15.2px
+
+    Two other things Matthew asked for run through all twenty:
+      · THE TEAM and OUR PEOPLE say the same thing. Each variation keeps
+        ONE of them and drops the other — never both.
+      · the board gets a real idea each time rather than a restyle.
+    ============================================================ */
+
+ var FCOL='464px', FGAP='96px';
+ function fEy(t,o){o=o||{};
+  return '<div style="font-family:'+DM+';font-size:10.88px;letter-spacing:0.25em;'+
+   'text-transform:uppercase;font-weight:400;color:'+(o.col||GOLD)+';'+
+   'margin-bottom:'+(o.mb||'34px')+';'+(o.extra||'')+'">'+t+'</div>';}
+ function fH(t,o){o=o||{};
+  return '<div style="font-family:'+BB+';font-size:'+(o.fs||'34.56px')+
+   ';letter-spacing:0.24em;line-height:0.92;text-transform:uppercase;font-weight:300;'+
+   'color:'+(o.col||ink(0.78))+';margin-bottom:'+(o.mb||'12px')+';">'+t+'</div>';}
+ function fBody(t,o){o=o||{};
+  return '<p style="font-family:'+DM+';font-size:'+(o.fs||'13.6px')+';line-height:2;'+
+   'font-weight:300;color:'+(o.col||ink(0.55))+';margin:'+(o.m||'0')+';max-width:'+
+   (o.mw||'100%')+';">'+t+'</p>';}
+ function fLabel(t,o){o=o||{};
+  /* the Foundry's own item label: sentence case, weight 500, NOT display caps */
+  return '<span style="font-family:'+DM+';font-size:13.12px;letter-spacing:0.14em;'+
+   'font-weight:500;color:'+(o.col||ink(0.8))+';">'+t+'</span>';}
+ function fRow(label,bodyTxt,sym,o){o=o||{};
+  return '<div style="border-top:0.5px solid '+(o.rule||ink(0.11))+';padding:14px 0;">'+
+   '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;">'+
+   fLabel(label,{col:o.lcol})+
+   (sym?'<span style="font-family:'+DM+';font-size:15.2px;font-weight:300;color:'+
+    (o.scol||GOLD)+';">'+sym+'</span>':'')+'</div>'+
+   (bodyTxt?'<div style="margin-top:7px;">'+fBody(bodyTxt,{fs:'13.6px',col:o.bcol})+
+    '</div>':'')+'</div>';}
+ function fPair(a,b,o){o=o||{};
+  return '<div class="tl-fpair" style="display:grid;grid-template-columns:'+
+   (o.cols||(FCOL+' '+FCOL))+';gap:'+(o.gap||FGAP)+';align-items:'+(o.al||'start')+';'+
+   (o.extra||'')+'">'+'<div>'+a+'</div><div>'+b+'</div></div>';}
+ function fCta(o){o=o||{};
+  if(!BK.cta)return '';
+  return '<a href="'+BK.cta.href+'" style="display:inline-block;font-family:'+DM+
+   ';font-size:10.88px;letter-spacing:0.25em;text-transform:uppercase;font-weight:400;'+
+   'color:'+(o.col||GOLD)+';text-decoration:none;margin-top:'+(o.mt||'26px')+';'+
+   (o.plain?'border-bottom:1px solid '+ink(0.16)+';padding-bottom:5px;'
+           :'border:1px solid '+(o.bcol||ink(0.16))+';padding:12px 22px;')+
+   '">'+BK.cta.txt+'</a>';}
+
+ var SYM=['⌀','±','∠','⊥','∥','⇕','⊕','∴','△','↗','▣','⊞'];
+
+ /* ---------- masthead: ONE word, not two ---------- */
+ function HEAD3(s){
+  var word = s.hdr==='people' ? H.people : H.title;
+  var m=s.head3||'plain';
+  var locs = meta(H.locs,{fs:'0.5rem',col:ink(0.25)});
+  var scrollHint='<div class="tl-right tl-tight">'+
+    meta('Scroll  →',{fs:'0.44rem',col:ink(0.3)})+'</div>';
+  if(m==='foundry'){
+   /* the Foundry's own masthead proportions */
+   return fEy(word,{mb:'20px'})+
+    '<div class="strip tl-strip2" style="align-items:baseline;">'+
+    '<div>'+fH(H.locs,{fs:'clamp(1.1rem,2.2vw,1.9rem)',mb:'0'})+'</div>'+scrollHint+
+    '</div>'+gap(20)+rule({bleed:true});
+  }
+  if(m==='big'){
+   return title(word,{fs:'clamp(2.2rem,5vw,4.4rem)',ls:'0.2em',extra:'line-height:0.94;'})+
+    gap(16)+'<div class="strip tl-strip2" style="align-items:baseline;">'+locs+
+    scrollHint+'</div>'+gap(18)+rule({bleed:true});
+  }
+  if(m==='ey'){
+   return fEy(word,{mb:'16px'})+rule({bleed:true})+gap(14)+
+    '<div class="strip tl-strip2" style="align-items:baseline;">'+locs+scrollHint+'</div>';
+  }
+  if(m==='rail'){
+   return fPair(fEy(word,{mb:'12px'})+locs,
+     '<div style="text-align:right;">'+meta('Scroll  →',{fs:'0.44rem',col:ink(0.3)})+
+     '</div>', {cols:'1fr auto',gap:'40px',al:'end'})+gap(16)+rule({bleed:true});
+  }
+  /* plain */
+  return '<div class="strip tl-strip" style="align-items:baseline;">'+
+   title(word)+locs+'</div>'+gap(18)+rule({bleed:true})+gap(14)+
+   '<div class="strip tl-strip2"><div></div>'+scrollHint+'</div>';
+ }
+
+ /* ---------- the board, twelve real ideas ---------- */
+ function BOARD3(s){
+  var m=s.brd, P=BD.people;
+  function nm(p,o){o=o||{};
+   return '<span style="font-family:'+DM+';font-size:'+(o.fs||'13.12px')+
+    ';letter-spacing:0.14em;font-weight:500;color:'+(o.col||ink(0.8))+';">'+p.name+'</span>';}
+  function rl(p,o){o=o||{};
+   return '<span style="font-family:'+DM+';font-size:'+(o.fs||'10.88px')+
+    ';letter-spacing:0.25em;text-transform:uppercase;font-weight:400;color:'+
+    (o.col||ink(0.3))+';">'+p.role+'</span>';}
+
+  if(m==='rows'){   /* the Foundry's accordion row, applied to people */
+   return fEy(BD.label,{mb:'18px'})+
+    '<div>'+P.map(function(p,i){
+     return '<div style="border-top:0.5px solid '+ink(0.11)+';padding:15px 0;'+
+      'display:flex;justify-content:space-between;align-items:baseline;gap:18px;">'+
+      nm(p)+'<span style="display:flex;gap:18px;align-items:baseline;">'+rl(p)+
+      '<span style="font-family:'+DM+';font-size:15.2px;font-weight:300;color:'+
+      GOLD+';">'+SYM[i]+'</span></span></div>';}).join('')+'</div>';}
+
+  if(m==='caption'){  /* a caption strip riding under the picture band */
+   return '<div style="border-top:0.5px solid '+ink(0.11)+';padding-top:12px;'+
+    'display:flex;gap:26px;flex-wrap:wrap;align-items:baseline;">'+
+    rl({role:BD.label},{col:GOLD})+
+    P.map(function(p){return '<span>'+nm(p,{fs:'11.5px'})+' '+
+     rl(p,{fs:'9.6px',col:ink(0.26)})+'</span>';}).join('')+'</div>';}
+
+  if(m==='marks'){  /* gold symbol against each name, no role line shouting */
+   return fEy(BD.label,{mb:'22px'})+
+    '<div class="tl-3up" style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;">'+
+    P.map(function(p,i){
+     return '<div><div style="font-family:'+DM+';font-size:22px;font-weight:300;color:'+
+      GOLD+';margin-bottom:14px;line-height:1;">'+SYM[i+6]+'</div>'+
+      '<div style="margin-bottom:5px;">'+nm(p)+'</div>'+rl(p)+'</div>';}).join('')+'</div>';}
+
+  if(m==='prose'){  /* one sentence, the way a colophon reads */
+   return '<div style="border-top:0.5px solid '+ink(0.11)+';padding-top:20px;">'+
+    fBody('<span style="color:'+GOLD+';letter-spacing:0.25em;text-transform:uppercase;'+
+     'font-size:10.88px;">'+BD.label+'</span>&nbsp;&nbsp;'+
+     P.map(function(p){return p.name+', '+p.role.toLowerCase();}).join('; ')+'.',
+     {mw:'760px'})+'</div>';}
+
+  if(m==='inset'){  /* a bordered inset panel, Foundry-dark */
+   return '<div style="border:0.5px solid '+ink(0.14)+';padding:clamp(22px,3vw,34px);'+
+    'max-width:'+FCOL+';">'+fEy(BD.label,{mb:'18px'})+
+    P.map(function(p,i){
+     return '<div style="padding:11px 0;'+(i?'border-top:0.5px solid '+ink(0.09)+';':'')+
+      '">'+nm(p)+'<div style="margin-top:4px;">'+rl(p)+'</div></div>';}).join('')+'</div>';}
+
+  if(m==='ledger'){  /* 01/02/03 in the Foundry's own row rhythm */
+   return fEy(BD.label,{mb:'18px'})+P.map(function(p,i){
+     return '<div style="border-top:0.5px solid '+ink(0.11)+';padding:15px 0;'+
+      'display:grid;grid-template-columns:44px 1fr auto;gap:18px;align-items:baseline;">'+
+      '<span style="font-family:'+DM+';font-size:10.88px;letter-spacing:0.25em;color:'+
+      ink(0.22)+';">'+num(i)+'</span>'+nm(p)+rl(p)+'</div>';}).join('');}
+
+  if(m==='dark'){
+   return '<div style="width:100vw;margin-left:calc(50% - 50vw);background:#141210;'+
+    'padding:clamp(30px,3.6vw,48px) clamp(24px,4.4vw,64px);">'+
+    fEy(BD.label,{mb:'20px',col:GOLD2})+
+    '<div class="tl-3up" style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;">'+
+    P.map(function(p){return '<div>'+nm(p,{col:'rgba(244,241,236,0.86)'})+
+     '<div style="margin-top:5px;">'+rl(p,{col:'rgba(244,241,236,0.34)'})+
+     '</div></div>';}).join('')+'</div></div>';}
+
+  if(m==='meta'){  /* the board demoted to a masthead-style meta line */
+   return '<div style="display:flex;justify-content:space-between;gap:20px;'+
+    'flex-wrap:wrap;align-items:baseline;border-bottom:0.5px solid '+ink(0.11)+';'+
+    'padding-bottom:13px;">'+rl({role:BD.label},{col:GOLD})+
+    '<span style="display:flex;gap:22px;flex-wrap:wrap;">'+
+    P.map(function(p){return '<span>'+nm(p,{fs:'11.5px'})+'</span>';}).join('')+
+    '</span></div>';}
+
+  if(m==='stack'){  /* a narrow left-column stack, Foundry measure */
+   return fEy(BD.label,{mb:'18px'})+'<div style="max-width:'+FCOL+';">'+
+    P.map(function(p,i){
+     return '<div style="padding:13px 0;'+(i?'border-top:0.5px solid '+ink(0.09)+';':'')+
+      'display:flex;justify-content:space-between;gap:16px;align-items:baseline;">'+
+      nm(p)+rl(p,{fs:'9.9px'})+'</div>';}).join('')+'</div>';}
+
+  if(m==='rulehead'){  /* a gold hairline over each column */
+   return fEy(BD.label,{mb:'20px'})+
+    '<div class="tl-3up" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;">'+
+    P.map(function(p){
+     return '<div style="border-top:1px solid rgba(138,110,58,0.4);padding-top:14px;">'+
+      nm(p)+'<div style="margin-top:5px;">'+rl(p)+'</div></div>';}).join('')+'</div>';}
+
+  if(m==='aside'){  /* folded into the right column of the closing pair */
+   return '';}
+
+  if(m==='initials'){ /* monogram lead-in, full name still set */
+   return fEy(BD.label,{mb:'20px'})+
+    '<div style="display:flex;gap:40px;flex-wrap:wrap;">'+P.map(function(p){
+     var ini=p.name.split(/\s+/).map(function(x){return x[0];}).join('');
+     return '<div style="display:flex;gap:14px;align-items:baseline;">'+
+      '<span style="font-family:'+BB+';font-size:26px;letter-spacing:0.08em;color:'+
+      ink(0.14)+';">'+ini+'</span><div>'+nm(p)+
+      '<div style="margin-top:4px;">'+rl(p)+'</div></div></div>';}).join('')+'</div>';}
+
+  return null;
+ }
+
+ /* the aside board, rendered inside the closing right column */
+ function boardAside(){
+  return '<div style="border-top:0.5px solid '+ink(0.11)+';margin-top:26px;padding-top:16px;">'+
+   fEy(BD.label,{mb:'13px'})+BD.people.map(function(p,i){
+    return '<div style="padding:9px 0;'+(i?'border-top:0.5px solid '+ink(0.07)+';':'')+
+     'display:flex;justify-content:space-between;gap:14px;align-items:baseline;">'+
+     '<span style="font-family:'+DM+';font-size:12px;letter-spacing:0.12em;font-weight:500;'+
+     'color:'+ink(0.75)+';">'+p.name+'</span>'+
+     '<span style="font-family:'+DM+';font-size:9.9px;letter-spacing:0.22em;'+
+     'text-transform:uppercase;color:'+ink(0.28)+';">'+p.role+'</span></div>';}).join('')+
+   '</div>';}
+
+ /* ---------- the closing region: twenty twin-column arrangements ---------- */
+ function BLOCKS3(s){
+  var m=s.close, lead=BK.items[0], rest=BK.items.slice(1);
+  var aside = (s.brd==='aside') ? boardAside() : '';
+
+  function rowsRight(o){o=o||{};
+   return rest.map(function(it,i){
+    return fRow(it.label,it.body,o.sym===false?null:SYM[i+5],
+                {lcol:o.lcol,bcol:o.bcol,rule:o.rule,scol:o.scol});}).join('');}
+  function leadLeft(o){o=o||{};
+   return fEy(lead.label,{mb:o.mb||'20px',col:o.ecol})+
+    (o.head?fH(o.head,{col:o.hcol}):'')+
+    fBody(lead.body,{mw:o.mw||FCOL,col:o.bcol});}
+
+  if(m==='f1')  return fPair(leadLeft()+fCta({}), rowsRight()+aside);
+  if(m==='f2')  return fPair(leadLeft({head:'Under one roof.'})+fCta({plain:true}),
+                             rowsRight()+aside);
+  if(m==='f3')  return fPair(rowsRight()+aside, leadLeft()+fCta({}));
+  if(m==='f4')  return fEy(lead.label,{mb:'20px'})+
+                       fPair(fBody(lead.body,{fs:'15px'}),
+                             rowsRight()+aside)+gap(6)+fCta({});
+  if(m==='f5')  return fPair(leadLeft(),
+                       rest.map(function(it,i){
+                        return '<div style="padding:'+(i?'22px':'0')+' 0 0;">'+
+                         fLabel(it.label)+'<div style="margin-top:8px;">'+
+                         fBody(it.body)+'</div></div>';}).join('')+aside+fCta({plain:true}));
+  if(m==='f6')  return fPair(fH(lead.label,{fs:'clamp(1.5rem,3vw,34.56px)'})+gap(10)+
+                             fBody(lead.body),
+                             rowsRight()+aside+fCta({plain:true}));
+  if(m==='f7')  return fPair(leadLeft()+aside,
+                       rest.map(function(it,i){
+                        return '<div style="border-left:1px solid '+ink(0.10)+';'+
+                         'padding:0 0 20px 18px;">'+fLabel(it.label)+
+                         '<div style="margin-top:8px;">'+fBody(it.body)+'</div></div>';
+                        }).join('')+fCta({}));
+  if(m==='f8')  return fPair(leadLeft(),
+                       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px;">'+
+                       rest.map(function(it){return '<div>'+fLabel(it.label)+
+                        '<div style="margin-top:8px;">'+fBody(it.body,{fs:'12.6px'})+
+                        '</div></div>';}).join('')+'</div>'+aside+fCta({}));
+  if(m==='f9')  return fPair(
+                  rest.slice(0,2).map(function(it,i){
+                   return fRow(it.label,it.body,SYM[i+5],{});}).join(''),
+                  fRow(rest[2].label,rest[2].body,SYM[7],{})+
+                  '<div style="border-top:0.5px solid '+ink(0.11)+';padding-top:16px;">'+
+                  fEy(lead.label,{mb:'12px'})+fBody(lead.body,{fs:'12.6px'})+'</div>'+
+                  aside+fCta({plain:true}));
+  if(m==='f10') return fPair(leadLeft({head:lead.label,mb:'12px',ecol:'transparent'}),
+                       rowsRight({sym:false})+aside+fCta({}));
+  if(m==='f11') return '<div style="width:100vw;margin-left:calc(50% - 50vw);'+
+                  'background:#141210;padding:clamp(48px,6vw,88px) clamp(24px,4.4vw,64px);">'+
+                  fPair(fEy(lead.label,{col:GOLD2,mb:'20px'})+
+                        fH('Under one roof.',{col:'rgba(244,241,236,0.9)'})+
+                        fBody(lead.body,{col:'rgba(244,241,236,0.55)'}),
+                        rest.map(function(it,i){
+                         return fRow(it.label,it.body,SYM[i+5],
+                          {lcol:'rgba(244,241,236,0.86)',bcol:'rgba(244,241,236,0.55)',
+                           rule:'rgba(244,241,236,0.14)',scol:GOLD2});}).join('')+
+                        fCta({col:GOLD2,bcol:'rgba(200,169,110,0.4)'}))+'</div>';
+  if(m==='f12') return fPair(leadLeft(),
+                       rest.map(function(it,i){
+                        return '<div style="display:grid;grid-template-columns:44px 1fr;'+
+                         'gap:16px;border-top:0.5px solid '+ink(0.11)+';padding:15px 0;">'+
+                         '<span style="font-family:'+DM+';font-size:10.88px;'+
+                         'letter-spacing:0.25em;color:'+ink(0.22)+';">'+num(i)+'</span>'+
+                         '<div>'+fLabel(it.label)+'<div style="margin-top:7px;">'+
+                         fBody(it.body)+'</div></div></div>';}).join('')+aside+fCta({}));
+  if(m==='f13') return fPair(leadLeft()+fCta({}),
+                       rest.map(function(it){
+                        return '<div style="margin-bottom:2px;background:rgba(255,255,255,0.4);'+
+                         'padding:20px 22px;">'+fLabel(it.label)+
+                         '<div style="margin-top:8px;">'+fBody(it.body)+'</div></div>';
+                        }).join('')+aside);
+  if(m==='f14') return fPair(
+                  fEy(lead.label,{mb:'20px'})+fBody(lead.body)+aside,
+                  rest.map(function(it,i){
+                   return '<div style="padding:'+(i?'20px':'0')+' 0 0;text-align:right;">'+
+                    fLabel(it.label)+'<div style="margin-top:8px;">'+
+                    fBody(it.body,{extra:'margin-left:auto;'})+'</div></div>';}).join('')+
+                  '<div style="text-align:right;">'+fCta({plain:true})+'</div>');
+  if(m==='f15') return fPair(leadLeft(),
+                       rowsRight()+aside, {cols:'1fr '+FCOL,gap:'clamp(32px,6vw,120px)'})+
+                       gap(10)+fCta({});
+  if(m==='f16') return fPair(rowsRight({sym:false})+aside,
+                       leadLeft({head:'Under one roof.'})+fCta({plain:true}),
+                       {cols:FCOL+' 1fr'});
+  if(m==='f17') return fEy(lead.label,{mb:'24px'})+
+                  fPair(fH(lead.body.split('.')[0]+'.',{fs:'clamp(1.2rem,2.4vw,28px)',
+                        col:ink(0.7)}),
+                        fBody(lead.body.slice(lead.body.indexOf('.')+1).trim()))+
+                  gap(34)+'<div class="tl-3up" style="display:grid;'+
+                  'grid-template-columns:repeat(3,1fr);gap:'+FGAP+';">'+
+                  rest.map(function(it,i){return '<div style="border-top:0.5px solid '+
+                   ink(0.11)+';padding-top:14px;">'+fLabel(it.label)+
+                   '<div style="margin-top:8px;">'+fBody(it.body)+'</div></div>';}).join('')+
+                  '</div>'+aside+fCta({});
+  if(m==='f18') return fPair(leadLeft()+aside,
+                       rest.map(function(it,i){
+                        return '<div style="border-top:0.5px solid '+ink(0.11)+';'+
+                         'padding:15px 0;display:flex;gap:16px;align-items:baseline;">'+
+                         '<span style="font-family:'+DM+';font-size:15.2px;font-weight:300;'+
+                         'color:'+GOLD+';min-width:20px;">'+SYM[i+5]+'</span>'+
+                         '<div>'+fLabel(it.label)+'<div style="margin-top:7px;">'+
+                         fBody(it.body)+'</div></div></div>';}).join('')+fCta({plain:true}));
+  if(m==='f19') return fPair(
+                  '<div style="position:sticky;top:96px;">'+leadLeft()+fCta({})+'</div>',
+                  rowsRight()+aside);
+  if(m==='f20') return fPair(leadLeft({mw:'100%'}),
+                       '<div>'+rest.map(function(it,i){
+                        return '<div style="padding:'+(i?'18px':'0')+' 0 0;">'+
+                         '<div style="display:flex;gap:12px;align-items:baseline;">'+
+                         '<span style="width:5px;height:5px;background:'+GOLD+
+                         ';display:inline-block;"></span>'+fLabel(it.label)+'</div>'+
+                         '<div style="margin-top:7px;padding-left:17px;">'+
+                         fBody(it.body)+'</div></div>';}).join('')+'</div>'+aside+
+                       fCta({plain:true}));
+  return null;
+ }
+
  /* ---------- the twenty ---------- */
  var V=[
   {n:'1 · Current design (untouched)', base:true},
@@ -4427,7 +4752,30 @@ html body .f-m6{display:none !important;}
    s:{head2:'stack', board2:'sentence', blocks2:'prose'}},
 
   {n:'42 · Dark board + editorial close',
-   s:{head2:'band', board2:'dark', blocks2:'editorial'}}
+   s:{head2:'band', board2:'dark', blocks2:'editorial'}},
+
+  /* ---- 43-62: built on the homepage Foundry. One header word, not two.
+         Every board is a different idea, not a different weight. ---- */
+  {n:'43 · Foundry pair — board as Foundry rows',        s:{hdr:'team',   head3:'ey',      close:'f1',  brd:'rows'}},
+  {n:'44 · Headline left — board as a caption strip',    s:{hdr:'people', head3:'foundry', close:'f2',  brd:'caption'}},
+  {n:'45 · Flipped pair — board with gold marks',        s:{hdr:'team',   head3:'big',     close:'f3',  brd:'marks'}},
+  {n:'46 · Lead full width — board as a colophon line',  s:{hdr:'people', head3:'ey',      close:'f4',  brd:'prose'}},
+  {n:'47 · Plain right column — board in an inset panel',s:{hdr:'team',   head3:'rail',    close:'f5',  brd:'inset'}},
+  {n:'48 · Display lead — board as an 01/02/03 ledger',  s:{hdr:'people', head3:'big',     close:'f6',  brd:'ledger'}},
+  {n:'49 · Ruled left edges — board folded in beside',   s:{hdr:'team',   head3:'foundry', close:'f7',  brd:'aside'}},
+  {n:'50 · Two-by-two right — board on a dark band',     s:{hdr:'people', head3:'ey',      close:'f8',  brd:'dark'}},
+  {n:'51 · Lead demoted — board as a masthead meta',     s:{hdr:'team',   head3:'rail',    close:'f9',  brd:'meta'}},
+  {n:'52 · No symbols — board as a narrow stack',        s:{hdr:'people', head3:'plain',   close:'f10', brd:'stack'}},
+  {n:'53 · Dark close — board carried into the dark',    s:{hdr:'team',   head3:'big',     close:'f11', brd:'caption'}},
+  {n:'54 · Numbered rows — board with gold rules',       s:{hdr:'people', head3:'ey',      close:'f12', brd:'rulehead'}},
+  {n:'55 · Panelled right — board as monograms',         s:{hdr:'team',   head3:'foundry', close:'f13', brd:'initials'}},
+  {n:'56 · Right-aligned close — board as rows',         s:{hdr:'people', head3:'rail',    close:'f14', brd:'rows'}},
+  {n:'57 · Wide lead, Foundry right — board inset',      s:{hdr:'team',   head3:'plain',   close:'f15', brd:'inset'}},
+  {n:'58 · Foundry left, lead right — board a ledger',   s:{hdr:'people', head3:'big',     close:'f16', brd:'ledger'}},
+  {n:'59 · Split lead sentence — board as marks',        s:{hdr:'team',   head3:'ey',      close:'f17', brd:'marks'}},
+  {n:'60 · Symbol-led rows — board beside the lead',     s:{hdr:'people', head3:'foundry', close:'f18', brd:'aside'}},
+  {n:'61 · Sticky lead — board as a colophon',           s:{hdr:'team',   head3:'rail',    close:'f19', brd:'prose'}},
+  {n:'62 · Marker bullets — board as a meta line',       s:{hdr:'people', head3:'plain',   close:'f20', brd:'meta'}}
  ];
 
  /* ---------- apply ---------- */
@@ -4449,6 +4797,7 @@ html body .f-m6{display:none !important;}
 
  var LABCSS =
   '#tl-head .strip{display:flex;}'+
+  '@media(max-width:1090px){.tl-fpair{grid-template-columns:1fr 1fr !important;gap:clamp(24px,4vw,56px) !important;}}'+
   '#tl-head .tl-tight{position:relative;top:10px;}'+
   '@media(max-width:768px){'+
    '#tl-head .tl-strip{flex-direction:column;align-items:flex-start !important;gap:8px;}'+
@@ -4457,6 +4806,7 @@ html body .f-m6{display:none !important;}
    '.tl-row{grid-template-columns:1fr !important;gap:8px !important;}'+
    '.tl-pair{grid-template-columns:1fr !important;gap:26px !important;}'+
    '.tl-quad{grid-template-columns:1fr !important;}'+
+   '.tl-fpair{grid-template-columns:1fr !important;gap:30px !important;}'+
    '.tl-rail{position:static !important;}'+
    '.tl-splitrule{flex-direction:column;gap:12px;}'+
    '.tl-band{padding:26px 24px !important;}'+
@@ -4474,10 +4824,12 @@ html body .f-m6{display:none !important;}
   }
   var s=v.s||{};
   var w=ensureWrap(); w.style.display='';
-  w.innerHTML = s.head2 ? HEAD2(s) : HEAD(s);
+  w.innerHTML = s.close ? HEAD3(s) : (s.head2 ? HEAD2(s) : HEAD(s));
   HOSTS.headNodes.forEach(function(n){n.style.display='none';});
-  HOSTS.board.innerHTML  = s.board2  ? (BOARD2(s)  || BOARD(s))  : BOARD(s);
-  HOSTS.blocks.innerHTML = s.blocks2 ? (BLOCKS2(s) || BLOCKS(s)) : BLOCKS(s);
+  HOSTS.board.innerHTML  = s.brd    ? (BOARD3(s)  || '')
+                         : s.board2 ? (BOARD2(s)  || BOARD(s)) : BOARD(s);
+  HOSTS.blocks.innerHTML = s.close  ? (BLOCKS3(s) || BLOCKS(s))
+                         : s.blocks2? (BLOCKS2(s) || BLOCKS(s)) : BLOCKS(s);
   if(s.blocks2==='accordion')wireAcc();
  }
 
@@ -4510,7 +4862,18 @@ html body .f-m6{display:none !important;}
    if(e.key==='ArrowRight')go(+r.value+1);});
   window.__gs={names:V.map(function(x){return x.n;}), set:go,
                get:function(){return +r.value;}};
-  go(1);
+  /* ?v=NN picks a variation, &embed=1 strips the chrome so the contact
+     sheet can render each one live in its own frame */
+  var q=location.search, mv=/[?&]v=(\d+)/.exec(q), emb=/[?&]embed=1/.test(q);
+  if(emb){
+   bar.style.display='none';
+   document.body.style.paddingBottom='0';
+   var hide=document.createElement('style');
+   hide.textContent='.mobile-menu,#mmenu,nav,header,footer,.footer-bottom{display:none !important;}'+
+    'html,body{overflow-x:hidden !important;}';
+   document.body.appendChild(hide);
+  }
+  go(mv?+mv[1]:1);
  }
 
  function boot(){

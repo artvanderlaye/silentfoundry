@@ -87,6 +87,19 @@ to the project's configured instructions.
   - `https://silentfoundry.pages.dev/sf-contact`  the contact page
   - `https://silentfoundry.pages.dev/legal`       legal
 
+## Variation studies: a CONTACT SHEET, never a slider
+- When Matthew asks for "20 variations" / "a slider" / a set of layout studies,
+  output them as a GRID OF SMALL NUMBERED BOXES on one page — every option
+  visible at once, each in its own panel with its number showing. He can then
+  scan the set and call out numbers.
+- Do NOT build a one-at-a-time slider with a range control at the bottom. He
+  said so explicitly after the 42-variation team lab: seeing one at a time
+  makes them all feel the same and he can't compare.
+- Keep the numbering identical to how they're described in the reply, so
+  "I like 9, 23 and 35" maps straight onto the boxes.
+- Boxes should be small but real renders, not screenshots — scaled-down live
+  layout so the type relationships are honest.
+
 ## Response style (how to report back to Matthew)
 - Do the full detailed work as usual — backups, edits, triple-checks, live
   verification. Matthew likes that the detail is there and visible.
