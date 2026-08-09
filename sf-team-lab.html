@@ -4837,31 +4837,40 @@ html body .f-m6{display:none !important;}
  function ui(){
   if(document.getElementById('gs-ui'))return;
   var css=document.createElement('style'); css.textContent=
-   '#gs-ui{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:rgba(12,12,12,0.94);'+
-   'backdrop-filter:blur(8px);color:#f4f1ec;font-family:'+DM+';padding:11px 18px;'+
-   'display:flex;align-items:center;gap:16px;box-shadow:0 -1px 0 rgba(255,255,255,0.09);}'+
-   '#gs-ui input{flex:1;accent-color:#c8a96e;}'+
-   '#gs-ui .lab{font-size:12px;letter-spacing:0.12em;min-width:330px;color:#c8a96e;}'+
-   '#gs-ui button{background:none;border:1px solid rgba(244,241,236,0.28);color:#f4f1ec;'+
-   'width:32px;height:30px;cursor:pointer;font-size:14px;line-height:1;}'+
-   'body{padding-bottom:60px !important;}'+LABCSS;
+   '#gs-ui{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:rgba(12,12,12,0.95);backdrop-filter:blur(8px);color:#f4f1ec;font-family:'+DM+';padding:9px 14px 10px;box-shadow:0 -1px 0 rgba(255,255,255,0.10);}'+'#gs-ui .top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}'+'#gs-ui .lab{font-size:11.5px;letter-spacing:0.1em;color:#c8a96e;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}'+'#gs-ui .nav{background:none;border:1px solid rgba(244,241,236,0.26);color:#f4f1ec;width:26px;height:24px;cursor:pointer;font-size:13px;line-height:1;padding:0;}'+'#gs-ui .boxes{display:flex;flex-wrap:wrap;gap:4px;max-height:74px;overflow-y:auto;}'+'#gs-ui .bx{width:26px;height:22px;flex:0 0 26px;background:none;padding:0;border:1px solid rgba(244,241,236,0.20);color:rgba(244,241,236,0.62);font-family:'+DM+';font-size:10.5px;letter-spacing:0.04em;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:none;}'+'#gs-ui .bx:hover{border-color:rgba(200,169,110,0.7);color:#f4f1ec;}'+'#gs-ui .bx.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}'+'body{padding-bottom:132px !important;}'+LABCSS;
   document.head.appendChild(css);
   var bar=document.createElement('div'); bar.id='gs-ui';
-  bar.innerHTML='<button id="gs-p">‹</button>'+
-   '<input id="gs-r" type="range" min="1" max="'+V.length+'" value="1">'+
-   '<button id="gs-n">›</button><span class="lab" id="gs-l"></span>';
+  var boxes='';
+  for(var bi=1;bi<=V.length;bi++)boxes+='<button class="bx" data-n="'+bi+'">'+bi+'</button>';
+  bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
+   '<button class="nav" id="gs-n">&rsaquo;</button>'+
+   '<span class="lab" id="gs-l"></span></div>'+
+   '<div class="boxes" id="gs-b">'+boxes+'</div>';
   document.body.appendChild(bar);
-  var r=document.getElementById('gs-r'), l=document.getElementById('gs-l');
-  function go(n){ n=Math.max(1,Math.min(V.length,n|0));
-   r.value=n; l.textContent=V[n-1].n; apply(n); }
-  r.addEventListener('input',function(){go(+r.value);});
-  document.getElementById('gs-p').onclick=function(){go(+r.value-1);};
-  document.getElementById('gs-n').onclick=function(){go(+r.value+1);};
+  var l=document.getElementById('gs-l'), bwrap=document.getElementById('gs-b');
+  var cur=1;
+  function go(n){
+   n=Math.max(1,Math.min(V.length,n|0)); cur=n;
+   l.textContent=V[n-1].n;
+   [].forEach.call(bwrap.children,function(b,i){
+    if(i===n-1)b.classList.add('on'); else b.classList.remove('on');});
+   var act=bwrap.children[n-1];
+   if(act&&act.offsetTop>bwrap.scrollTop+bwrap.clientHeight-24)
+    bwrap.scrollTop=act.offsetTop-bwrap.clientHeight+26;
+   if(act&&act.offsetTop<bwrap.scrollTop)bwrap.scrollTop=act.offsetTop;
+   apply(n);
+  }
+  bwrap.addEventListener('click',function(e){
+   var t=e.target.closest?e.target.closest('.bx'):null;
+   if(t)go(+t.getAttribute('data-n'));});
+  document.getElementById('gs-p').onclick=function(){go(cur-1);};
+  document.getElementById('gs-n').onclick=function(){go(cur+1);};
   document.addEventListener('keydown',function(e){
-   if(e.key==='ArrowLeft')go(+r.value-1);
-   if(e.key==='ArrowRight')go(+r.value+1);});
+   if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
+   if(e.key==='ArrowLeft')go(cur-1);
+   if(e.key==='ArrowRight')go(cur+1);});
   window.__gs={names:V.map(function(x){return x.n;}), set:go,
-               get:function(){return +r.value;}};
+               get:function(){return cur;}};
   /* ?v=NN picks a variation, &embed=1 strips the chrome so the contact
      sheet can render each one live in its own frame */
   var q=location.search, mv=/[?&]v=(\d+)/.exec(q), emb=/[?&]embed=1/.test(q);
