@@ -7855,6 +7855,29 @@ else boot();
     single image that carries the section.
     ============================================================ */
  var HERO='images/marshall-hero.png';
+ (function(){ var pre=new Image(); pre.src=HERO; })();   /* decode it up front */
+
+ /* The section used to paint three times: the radial fan, then this
+    stylesheet, then the hub swapping its picture. The sheet is created and
+    attached now — before the graphic has rendered — so the condensed layout
+    is in force the first time anything is drawn. */
+ var EARLY=document.createElement('style'); EARLY.id='mi-css';
+ (document.head||document.documentElement).appendChild(EARLY);
+ var FADE=document.createElement('style');
+ FADE.textContent='#sfsec-dna .dl-dial{transition:opacity .17s ease;}'+
+  '#sfsec-dna .dl-dial.mi-swap{opacity:0;}'+
+  /* the drawing is built by the page's own script, so its first render is
+     unavoidable — but it does not have to be SEEN. Held invisible until this
+     payload has finished, then faded in. */
+  'html.mi-hold #sfsec-dna .dl-dial{opacity:0 !important;}';
+ (document.head||document.documentElement).appendChild(FADE);
+ var ROOT=document.documentElement;
+ ROOT.classList.add('mi-hold');
+ /* never leave it hidden: if anything below fails, it comes back anyway */
+ var SAFETY=setTimeout(function(){ROOT.classList.remove('mi-hold');},3000);
+ function reveal(){ clearTimeout(SAFETY);
+  requestAnimationFrame(function(){
+   requestAnimationFrame(function(){ROOT.classList.remove('mi-hold');});});}
 
  var BASECSS =
   '@media(min-width:1601px){'+
@@ -8050,11 +8073,15 @@ else boot();
  var cur=1;
  function applyV(i){
   var v=V[i-1]; if(!v)return;
-  var st=document.getElementById('mi-css');
-  if(!st){st=document.createElement('style'); st.id='mi-css'; document.body.appendChild(st);}
+  var st=document.getElementById('mi-css')||EARLY;
   st.textContent=BASECSS+smallCSS(v);
-  applyHub(v);
-  layout();
+  var d=document.querySelector('#sfsec-dna .dl-dial');
+  if(d){
+   d.classList.add('mi-swap');
+   applyHub(v); layout();
+   requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ d.classList.remove('mi-swap'); reveal(); });});
+  } else { applyHub(v); layout(); reveal(); }
  }
 
  function ui(){
@@ -8095,8 +8122,16 @@ else boot();
   document.getElementById('gs-n').onclick=function(){go(cur+1);};
   document.addEventListener('keydown',function(e){
    if(e.key==='ArrowLeft')go(cur-1); if(e.key==='ArrowRight')go(cur+1);});
-  var rt=null;
-  addEventListener('resize',function(){clearTimeout(rt); rt=setTimeout(function(){applyV(cur);},120);});
+  /* only redo the work when the width actually moved enough to change
+     anything — resizing used to re-run the whole fit on every pixel */
+  var rt=null, lastW=innerWidth;
+  function band(w){ return w>1600?3:(w>1200?2:(w>900?1:0)); }
+  addEventListener('resize',function(){
+   clearTimeout(rt);
+   rt=setTimeout(function(){
+    if(band(innerWidth)===band(lastW) && Math.abs(innerWidth-lastW)<24)return;
+    lastW=innerWidth; applyV(cur);
+   },140);});
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
   var mv=/[?&]v=(\d+)/.exec(location.search);
   go(mv?+mv[1]:1);
