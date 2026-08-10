@@ -8123,12 +8123,10 @@ else boot();
         'font-size:'+(v.figLabel||10)+'px !important;letter-spacing:0.06em !important;'+
         'margin:6px 0 0 !important;text-align:center !important;}'+
        F+' .dl-ghx,'+F+' .dl-key{display:none !important;}'+
-       /* AND NO CONNECTOR LINES BELOW 900. They are eight rotated 0.5px
-          divs whose length and angle are computed for one exact
-          arrangement; at this size a line 8px too long is glaring, and
-          they are what bunches up. The drawing reads perfectly as a centre
-          product with eight circles around it. */
-       F+' .dl-lk{display:none !important;}'+
+       /* the connectors are back. They drifted before because the geometry
+          was never recomputed during a resize and applyV could leave itself
+          half-applied — both fixed — so figLines() can be trusted now. */
+       F+' .dl-lk{display:block !important;}'+
        F+' .dl-dpt{position:absolute !important;display:block !important;'+
         'max-width:none !important;padding:0 !important;'+
         'transform:translate(-50%,-50%) !important;}'+
@@ -8196,7 +8194,20 @@ else boot();
       'display:none !important;}'+
       F+' .dl-dhub{display:block !important;}';
   /* --- how many photo rows --- */
-  if(v.rows==='hero')      s+= R+'.cs-gap-bottom{display:none !important;}'+
+  /* TOP AND BOTTOM. The stacked-amps wall leads the section, above the
+     EXTRACTED DNA label; the Bluetooth speakers close it, under the drawing.
+     The 2-up in the middle stays out — that is the third layer of pictures
+     Matthew asked to lose. */
+  if(v.rows==='topBottom')
+   s+= R+'{display:none !important;}'+
+       R+'.cs-row-right-r1{display:block !important;}'+
+       R+'.cs-show-mobile{display:block !important;}'+
+       R+'.cs-row-right-r1,'+R+'.cs-show-mobile{'+
+        'height:auto !important;aspect-ratio:16/9 !important;'+
+        'width:100% !important;margin:0 0 26px !important;}'+
+       R+'.cs-show-mobile{margin:26px 0 0 !important;}'+
+       R+' img{width:100% !important;height:100% !important;object-fit:cover !important;}';
+  else if(v.rows==='hero')      s+= R+'.cs-gap-bottom{display:none !important;}'+
                               R+'.cs-show-mobile{display:none !important;}';
   else if(v.rows==='last') s+= R+'.cs-row-right-r1{display:none !important;}'+
                               R+'.cs-gap-bottom{display:none !important;}';
@@ -8327,6 +8338,28 @@ else boot();
     10.96% of the box — and then the whole figure is one uniform scale at any
     width, with the lines still landing exactly on the disc edges. Nothing is
     stretched, nothing is compressed. */
+ /* ORDER on the small layout. The photographs live in the right-hand column,
+    which on a phone falls below everything — so they are physically moved: the
+    amps wall to just above the EXTRACTED DNA label, the speakers to just after
+    the drawing. Both remember where they came from and go back on desktop. */
+ var ORD=null;
+ function order(v){
+  var sec=document.getElementById('sfsec-dna'); if(!sec)return;
+  var top=sec.querySelector('.cs-row-right.cs-row-right-r1');
+  var bot=sec.querySelector('.cs-row-right.cs-show-mobile');
+  var lab=sec.querySelector('.cs-dslabel.dna-label');
+  if(!ORD&&top&&bot)ORD={t:[top.parentNode,top.nextSibling],b:[bot.parentNode,bot.nextSibling]};
+  if(!ORD)return;
+  if(v.rows==='topBottom'&&innerWidth<=900){
+   if(lab&&top&&top.nextSibling!==lab)lab.parentNode.insertBefore(top,lab);
+   var anchor=FIG&&FIG.parentNode?FIG:document.querySelector('#sfsec-dna .dl-dial');
+   if(anchor&&bot&&anchor.nextSibling!==bot)
+    anchor.parentNode.insertBefore(bot,anchor.nextSibling);
+  } else {
+   if(top&&top.parentNode!==ORD.t[0])ORD.t[0].insertBefore(top,ORD.t[1]);
+   if(bot&&bot.parentNode!==ORD.b[0])ORD.b[0].insertBefore(bot,ORD.b[1]);
+  }
+ }
  var FIG=null;
  function figure(v){
   var dial=document.querySelector('#sfsec-dna .dl-dial');
@@ -8537,7 +8570,7 @@ else boot();
     rows none  and no photo rows either, so nothing is shown twice          */
  var V=[
   {n:'2 · Drawing leads, inside the page margin',
-   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:44}
+   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'topBottom', cols:2, disc:44}
  ];
  /* the old flags the CSS builder still reads, derived from the new ones */
  V.forEach(function(v){
@@ -8588,6 +8621,7 @@ else boot();
   var st=document.getElementById('mi-css')||EARLY;
   st.textContent=BASECSS+smallCSS(v);
   figure(v);
+  order(v);
   hubSrc(v);
   hubClear();
   layout();
