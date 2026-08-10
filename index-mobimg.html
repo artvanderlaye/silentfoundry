@@ -7880,7 +7880,16 @@ else boot();
   /* the drawing is built by the page's own script, so its first render is
      unavoidable — but it does not have to be SEEN. Held invisible until this
      payload has finished, then faded in. */
-  'html.mi-hold #sfsec-dna .dl-dial{opacity:0 !important;}';
+  'html.mi-hold #sfsec-dna .dl-dial{opacity:0 !important;}'+
+  /* THE HAIRLINES, WHILE THE WINDOW IS MOVING.
+     They are the one part that cannot follow a drag honestly — each is a
+     rotated div whose length and angle are recomputed after the fact, so
+     mid-drag there is always a frame where they point at where the discs
+     WERE. So they fade out the moment a drag starts and fade back in when it
+     stops, by which time they have been recomputed. The discs and the words
+     keep moving live — only the hairlines wait. */
+  '#sfsec-dna .dl-lk{transition:opacity .2s ease;}'+
+  'html.mi-drag #sfsec-dna .dl-lk{opacity:0 !important;transition:none !important;}';
  (document.head||document.documentElement).appendChild(FADE);
  var ROOT=document.documentElement;
  ROOT.classList.add('mi-hold');
@@ -8607,7 +8616,20 @@ else boot();
      that case is covered while it happens. */
   var hiding=false;
   addEventListener('resize',function(){
-   if(band(innerWidth)===band(lastW)){ bleedFix(); figFix(); return; }
+   /* WITHIN A BAND the layout is the same layout, just narrower — so it is
+      recomputed, not rebuilt. paint() is pure geometry: no picture is
+      swapped, nothing is hidden, so it cannot flash. Leaving it out was
+      the bug: the box shrank from 760 to 529 while the discs stayed frozen
+      at 48px and the connector lines drifted to 124px out of place. */
+   if(band(innerWidth)===band(lastW)){
+    ROOT.classList.add('mi-drag');
+    clearTimeout(rt);
+    rt=setTimeout(function(){
+     layout(); bleedFix(); figFix(); figFit(); figLines();
+     requestAnimationFrame(function(){ROOT.classList.remove('mi-drag');});
+    },90);
+    return;
+   }
    if(!hiding){
     var d=document.querySelector('#sfsec-dna .dl-dial');
     if(d){ d.classList.add('mi-swap'); hiding=true; }
