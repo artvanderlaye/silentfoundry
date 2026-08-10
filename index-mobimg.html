@@ -7812,14 +7812,22 @@ else boot();
      style cannot beat the !important rule that pins .dl-dial square under
      1000px. Scoped to 769+ so the phone grid is untouched. */
   var hub=dial.querySelector('.dl-dhub');
-  var hp=G.hub*k*dm; hub.style.width=hp+'px'; hub.style.height=hp+'px';
+  /* SCALE WITH THE BOX. The discs were a fixed pixel size while the stage
+     narrowed, so as the column shrank they became proportionally huge, the
+     fitter had to force the fan OPEN to keep them apart, and opening it is
+     what drove the arrangement tall and square. Sized against the box, the
+     whole drawing contracts as one piece and the shape never changes. At
+     the widest sizes the box IS 760, so this is exactly 1 and the layout
+     Matthew approved is untouched. */
+  var SC=Math.min(1,(dial.getBoundingClientRect().width||G.W)/G.W);
+  var hp=G.hub*k*dm*SC; hub.style.width=hp+'px'; hub.style.height=hp+'px';
   hub.style.left=G.hx+'%'; hub.style.top=HUB0.t+'%';
   [].forEach.call(dial.querySelectorAll('.dl-dpt'),function(e,i){
    var dl=(ORIG.num.l[i]-HUB0.l)*G.sx, dt=(ORIG.num.t[i]-HUB0.t);
    var r=Math.sqrt(dl*dl+dt*dt);
    if(r>0.001){dl*=k; dt*=k;}
    e.style.left=(G.hx+dl)+'%'; e.style.top=(HUB0.t+dt)+'%';
-   if(e.children[0]){var w=ORIG.num.w[i]*dm;
+   if(e.children[0]){var w=ORIG.num.w[i]*dm*SC;
     e.children[0].style.width=w+'px'; e.children[0].style.height=w+'px';}});
   relines();}
 
@@ -7931,6 +7939,15 @@ else boot();
       ACQUIRED IN 2025 at every rescaled width. It belongs in both. */
    'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
    'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
+   /* THE VERTICAL MIDDLE STATE.
+      Below 1201 there was no shape rule here at all, so the drawing fell
+      back to the page's own `aspect-ratio:1/1; max-width:520px` — a SQUARE.
+      That is the jump from the wide horizontal fan to the tall bunched one.
+      The flat 760/360 shape now holds all the way down to 900, so there is
+      no change of arrangement on the way: the fan simply contracts. */
+   'html body #sfsec-dna .dl-dial{aspect-ratio:760/360 !important;'+
+    'max-width:760px !important;min-height:0 !important;height:auto !important;'+
+    'width:100% !important;margin:0 auto 0 0 !important;}'+
   '}';
 
  /* rows   which photo ROWS survive: 'hero' | 'heroLast' | 'last' | 'heroPair'
@@ -8418,10 +8435,10 @@ else boot();
     disc  thumbnail size in that list                                    */
  var V=[
   {n:'1 · Drawing leads, full bleed square, two columns',
-   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'2 · Drawing leads, inside the page margin, two columns',
-   fig:1, figRatio:'1/1', figBleed:0, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'3/2', figBleed:0, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'3 · Amps photograph leads 16:9, two columns',
    fig:0, hdr:'hero', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
@@ -8433,21 +8450,21 @@ else boot();
    fig:0, hdr:null, rows:'none', cols:2, disc:56},
 
   {n:'6 · Drawing leads, one column, generous rows',
-   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'none', cols:1, disc:52},
+   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'none', cols:1, disc:52},
 
   {n:'7 · Amps photograph as a wide 21:9 band, two columns',
    fig:0, hdr:'hero', hdrRatio:'21/9', rows:'none', cols:2, disc:44},
 
   {n:'8 · List first, drawing closes the section',
-   fig:1, figRatio:'1/1', figBleed:1, figPos:'bottom', hdr:null, rows:'none',
+   fig:1, figRatio:'3/2', figBleed:1, figPos:'bottom', hdr:null, rows:'none',
    cols:2, disc:44},
 
   {n:'9 · Drawing leads, two columns, one photograph row below',
-   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'last', ratio:'16/9',
+   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'last', ratio:'16/9',
    cols:2, disc:44},
 
   {n:'10 · Drawing leads 4:3, two columns, small thumbnails',
-   fig:1, figRatio:'4/3', figBleed:1, hdr:null, rows:'none', cols:2, disc:36}
+   fig:1, figRatio:'16/9', figBleed:1, hdr:null, rows:'none', cols:2, disc:36}
  ];
  /* the old flags the CSS builder still reads, derived from the new ones */
  V.forEach(function(v){
