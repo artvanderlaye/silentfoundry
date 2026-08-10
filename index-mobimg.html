@@ -7865,7 +7865,10 @@ else boot();
  (document.head||document.documentElement).appendChild(EARLY);
  var FADE=document.createElement('style');
  FADE.textContent='#sfsec-dna .dl-dial{transition:opacity .17s ease;}'+
-  '#sfsec-dna .dl-dial.mi-swap{opacity:0;}'+
+  /* the hide has to be INSTANT. With a .17s transition on the way out the
+     drawing was still visible while the geometry was being rewritten — that
+     is the flick. Out with no transition, back in with the fade. */
+  '#sfsec-dna .dl-dial.mi-swap{opacity:0;transition:none !important;}'+
   /* the drawing is built by the page's own script, so its first render is
      unavoidable — but it does not have to be SEEN. Held invisible until this
      payload has finished, then faded in. */
@@ -7927,6 +7930,33 @@ else boot();
      overridden to get there, both scoped 601-900 and both written with an id
      and two classes, so they are matched selector-for-selector below. */
   var s='@media(max-width:900px){'+
+   /* THE COLUMN MUST NOT GROW PAST THE SCREEN.
+      .cs-dbody is a grid, and a grid track sizes itself to the widest item's
+      intrinsic contribution. The full-bleed hub is a 100vw item inside it, so
+      the single track measured 414px on a 390px screen — the row inherited
+      that width and the body copy, held 24px off each edge, was pushed past
+      the right edge and clipped: measured +3px at 375 and +14px at 360, both
+      clean on the untouched page. The track is pinned to the container so an
+      item can no longer inflate it; the hub is sized in pixels by the script,
+      so pinning the track does not touch the bleed. */
+   'html body #sfsec-dna .cs-dbody{grid-template-columns:100% !important;'+
+    'max-width:100vw !important;overflow-x:clip !important;}'+
+   'html body #sfsec-dna .cs-row-left{max-width:100vw !important;'+
+    'box-sizing:border-box !important;}'+
+   /* AND the drawing has to be allowed to shrink.
+      A grid / flex item's default minimum size is min-width:auto, i.e. its
+      MIN-CONTENT — not zero. The two-column list's min-content is 350px, so
+      the whole wrapper chain refused to go below 350 no matter how narrow the
+      screen got: at 360 it sat 24..374 and the group headers INTANGIBLE and
+      TANGIBLE plus the right-hand labels were cut off. min-width:0 releases
+      that floor. .dl-dhub is deliberately NOT in this list — the header
+      picture is meant to be wider than its container. */
+   'html body #sfsec-dna .cs-dna-split,html body #sfsec-dna .dl-gx,'+
+   'html body #sfsec-dna .dl-ix,html body #sfsec-dna .dl-kx,'+
+   'html body #sfsec-dna .dl-pl,html body #sfsec-dna .dl-dial,'+
+   'html body #sfsec-dna .dl-dpt,html body #sfsec-dna .dl-ghx,'+
+   'html body #sfsec-dna .dl-nm{min-width:0 !important;max-width:100% !important;}'+
+   'html body #sfsec-dna .dl-nm{overflow-wrap:break-word !important;}'+
    /* the payload pins the fan square between 601 and 900 — that IS the
       intermediate. Turned into the same two-column list the phone uses. */
    'html body #sfsec-dna .dl-pl .dl-dial,html body #sfsec-dna .dl-gx .dl-dial,'+
@@ -8013,20 +8043,91 @@ else boot();
   s+='}';
   return s;
  }
- function applyHub(v){
+ /* WHAT WAS WRONG — the whole cause of the flick.
+    applyV ran  applyHub(v)  and THEN  layout().
+      - layout() below 901 calls restore(), which assigns hub.style.width /
+        height / left / top back to the originals — wiping the square header
+        that applyHub had just built, one frame after building it.
+      - layout() above 900 calls paint(), which assigns hub.style.width via
+        the plain CSSOM setter. Per CSSOM that setter writes an EMPTY priority,
+        so it silently STRIPS the !important applyHub had set.
+    Either way the hub was drawn twice with two different shapes: build, wipe,
+    rebuild. That is exactly the "circle flashes up then changes then changes
+    again" reported.
+
+    The work is now split in three, and ordered so nothing runs after the
+    thing it would clobber:
+      hubSrc(v)      the picture only
+      hubClear()     drop every property the bleed owns  — runs FIRST
+      layout()       restore() or paint() take the geometry
+      hubBleed(v)    the square header — runs LAST, so it survives  */
+
+ function hubSrc(v){
   var im=document.querySelector('#sfsec-dna .dl-dhub img');
-  if(!im)return;
+  if(!im)return null;
   if(!im.__orig)im.__orig=im.getAttribute('src');
-  im.setAttribute('src', (v.hubHero&&innerWidth<=900) ? HERO : im.__orig);
+  var want=(v.hubHero&&innerWidth<=900) ? HERO : im.__orig;
+  if(im.getAttribute('src')!==want)im.setAttribute('src',want);
+  return want;
+ }
+ function wantSrc(v){
+  var im=document.querySelector('#sfsec-dna .dl-dhub img');
+  if(!im)return null;
+  if(!im.__orig)im.__orig=im.getAttribute('src');
+  return (v.hubHero&&innerWidth<=900) ? HERO : im.__orig;
+ }
+ /* cleared BEFORE layout so the fitter measures an honest box: a leftover
+    margin-left / max-width:none from the mobile bleed would otherwise skew
+    every clearance reading in the desktop fit loop. */
+ function hubClear(){
+  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  if(!hub)return;
+  hub.style.removeProperty('margin-left');
+  hub.style.removeProperty('max-width');
+  hub.style.removeProperty('aspect-ratio');
+  hub.style.removeProperty('width');
+  hub.style.removeProperty('height');
+ }
+
+ /* SQ holds the variation whose square header is currently in force, or null.
+    bleedFix() can then re-measure on its own later, without applyV. */
+ var SQ=null;
+
+ /* The bleed measured ONCE at boot lands 42px out at 390: the correction runs
+    before the page has finished settling (late images, the section's own
+    rebuild), and the grid area moves under it afterwards. So the measurement
+    is repeatable and gets re-run whenever the containing block actually
+    changes size — observed, not guessed on a timer. */
+ function bleedFix(){
+  if(!SQ)return;
+  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  if(!hub)return;
+  var vwpx=document.documentElement.clientWidth;
+  var rr=(SQ.sqRatio||'1/1').split('/');
+  var ratio=(parseFloat(rr[0])||1)/(parseFloat(rr[1])||1);
+  if(Math.round(parseFloat(hub.style.width)||0)!==vwpx){
+   hub.style.setProperty('width',vwpx+'px','important');
+   hub.style.setProperty('height',Math.round(vwpx/ratio)+'px','important');
+  }
+  for(var pass=0;pass<3;pass++){
+   var cur=parseFloat(hub.style.marginLeft)||0;
+   var off=hub.getBoundingClientRect().left;
+   if(Math.abs(off)<0.5)break;
+   hub.style.setProperty('margin-left',(cur-off)+'px','important');
+  }
+ }
+
+ function hubBleed(v){
   /* calc(50% - 50vw) resolves against the GRID AREA, not the page, so the
      bleed missed by 6px at 360. Measured and set in pixels instead — exact
      at every width. */
   var hub=document.querySelector('#sfsec-dna .dl-dhub');
   if(!hub)return;
-  if(v.hubSquare&&innerWidth<=900){
+  SQ=(v.hubSquare&&innerWidth<=900)?v:null;
+  if(SQ){
    /* width FIRST — changing it moves the box, so measuring before setting it
-      leaves the offset stale. Two passes because the first margin can itself
-      shift the grid. */
+      leaves the offset stale. Several passes because the first margin can
+      itself shift the grid. */
    /* the stylesheet sets margin and width with !important, and a plain inline
       style loses to that — so these have to be set as important too. */
    /* a grid row is NOT sized from aspect-ratio — the hub kept its ratio but the
@@ -8040,20 +8141,26 @@ else boot();
    hub.style.setProperty('height',Math.round(vwpx/ratio)+'px','important');
    hub.style.setProperty('aspect-ratio','auto','important');
    hub.style.setProperty('margin-left','0px','important');
-   for(var pass=0;pass<3;pass++){
-    var cur=parseFloat(hub.style.marginLeft)||0;
-    var off=hub.getBoundingClientRect().left;
-    if(Math.abs(off)<0.5)break;
-    hub.style.setProperty('margin-left',(cur-off)+'px','important');
-   }
-  } else {
-   hub.style.removeProperty('margin-left');
-   hub.style.removeProperty('width');
-   hub.style.removeProperty('height');
-   hub.style.removeProperty('aspect-ratio');
-   hub.style.removeProperty('max-width');
+   bleedFix();
+   watchBox(hub);
   }
+  /* NO else branch. Above 900 the hub's width and height belong to paint(),
+     which has already run by the time we get here — clearing them now would
+     delete the fitted geometry. hubClear() has already dropped the bleed. */
  }
+
+ /* watch the hub's CONTAINING BLOCK, not the hub. Changing the hub's own
+    margin does not resize its parent, so this cannot feed back on itself. */
+ var RO=null, ROel=null;
+ function watchBox(hub){
+  if(typeof ResizeObserver!=='function')return;
+  var box=hub.parentElement; if(!box||box===ROel)return;
+  if(RO)RO.disconnect();
+  ROel=box;
+  RO=new ResizeObserver(function(){ bleedFix(); });
+  RO.observe(box);
+ }
+ addEventListener('load',function(){ bleedFix(); });
 
  var V=[
   {n:'27 · Square header 16:9, amps, real thumbnails',
@@ -8071,17 +8178,40 @@ else boot();
   return out;};
 
  var cur=1;
+ /* decode the picture BEFORE anything is shown. The hub's <img> was having its
+    src swapped mid-transition, so the browser painted the old picture, then a
+    blank box, then the new one — three states, and no amount of rAF fixes it
+    because decode does not happen on a frame boundary. We wait for it. */
+ function ready(v,cb){
+  var want=wantSrc(v);
+  if(!want){cb();return;}
+  var done=false, go=function(){ if(done)return; done=true; cb(); };
+  var t=setTimeout(go,700);                  /* never hang on a dead image */
+  var pre=new Image();
+  pre.onload=function(){ clearTimeout(t);
+   if(pre.decode){ pre.decode().then(go,go); } else go(); };
+  pre.onerror=function(){ clearTimeout(t); go(); };
+  pre.src=want;
+  if(pre.complete){ clearTimeout(t);
+   if(pre.decode){ pre.decode().then(go,go); } else go(); }
+ }
+
  function applyV(i){
   var v=V[i-1]; if(!v)return;
   var st=document.getElementById('mi-css')||EARLY;
-  st.textContent=BASECSS+smallCSS(v);
   var d=document.querySelector('#sfsec-dna .dl-dial');
-  if(d){
-   d.classList.add('mi-swap');
-   applyHub(v); layout();
-   requestAnimationFrame(function(){
-    requestAnimationFrame(function(){ d.classList.remove('mi-swap'); reveal(); });});
-  } else { applyHub(v); layout(); reveal(); }
+  if(d)d.classList.add('mi-swap');          /* instant hide, no transition */
+  ready(v,function(){
+   st.textContent=BASECSS+smallCSS(v);
+   hubSrc(v);        /* picture — already decoded, so this cannot flash */
+   hubClear();       /* drop the bleed BEFORE the fitter measures anything */
+   layout();         /* restore() or paint() own the geometry */
+   hubBleed(v);      /* LAST — nothing runs after it, so it survives */
+   if(d){
+    requestAnimationFrame(function(){
+     requestAnimationFrame(function(){ d.classList.remove('mi-swap'); reveal(); });});
+   } else reveal();
+  });
  }
 
  function ui(){
@@ -8126,11 +8256,33 @@ else boot();
      anything — resizing used to re-run the whole fit on every pixel */
   var rt=null, lastW=innerWidth;
   function band(w){ return w>1600?3:(w>1200?2:(w>900?1:0)); }
+  /* THE REMAINING FLICK, and it was never in the swap window.
+     The browser re-lays the page out on the resize event itself — 140ms
+     BEFORE the debounce fires. In that gap it paints the hub at its new
+     CSS size while still carrying the OLD picture and the OLD bleed offset:
+     measured at 390x219 sitting 4px in, and at 800x450 sitting 24px out.
+     That is the extra frame being seen.
+     So the hide is now SYNCHRONOUS on the resize event, before any paint can
+     happen, and the debounce only decides when to come back. While a resize
+     is in progress the graphic is simply not shown — it fades in once, in the
+     right shape, when the drag stops. */
+  var hiding=false;
   addEventListener('resize',function(){
+   var w=innerWidth;
+   var willRedo=(band(w)!==band(lastW))||Math.abs(w-lastW)>=24;
+   if(willRedo&&!hiding){
+    var d=document.querySelector('#sfsec-dna .dl-dial');
+    if(d){ d.classList.add('mi-swap'); hiding=true; }
+   }
    clearTimeout(rt);
    rt=setTimeout(function(){
-    if(band(innerWidth)===band(lastW) && Math.abs(innerWidth-lastW)<24)return;
-    lastW=innerWidth; applyV(cur);
+    if(band(innerWidth)===band(lastW) && Math.abs(innerWidth-lastW)<24){
+     if(hiding){ hiding=false;
+      var d2=document.querySelector('#sfsec-dna .dl-dial');
+      if(d2)d2.classList.remove('mi-swap'); }
+     return;
+    }
+    hiding=false; lastW=innerWidth; applyV(cur);
    },140);});
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
   var mv=/[?&]v=(\d+)/.exec(location.search);
