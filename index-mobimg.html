@@ -8575,22 +8575,34 @@ else boot();
 
  function applyV(i){
   var v=V[i-1]; if(!v)return;
+  /* SYNCHRONOUS, START TO FINISH.
+     This used to wait on an off-screen image decode before writing the
+     stylesheet, so that a picture could not be seen changing. Study 2 never
+     changes a picture — there is no photographic header — so the wait bought
+     nothing and cost everything: caught live in Chrome, the callback did not
+     fire on load, which left `mi-swap` on the drawing (opacity 0) and #mi-css
+     EMPTY. The drawing was invisible and unstyled until something else
+     happened to trigger a repaint, and that repaint is the flash.
+     Nothing here is deferred now, so there is no callback to miss and no
+     state that can be left half-applied. */
   var st=document.getElementById('mi-css')||EARLY;
+  st.textContent=BASECSS+smallCSS(v);
+  figure(v);
+  hubSrc(v);
+  hubClear();
+  layout();
+  hubBleed(v);
   var d=document.querySelector('#sfsec-dna .dl-dial');
-  if(d)d.classList.add('mi-swap');          /* instant hide, no transition */
-  ready(v,function(){
-   st.textContent=BASECSS+smallCSS(v);
-   figure(v);        /* the cloned drawing in or out */
-   hubSrc(v);        /* picture — already decoded, so this cannot flash */
-   hubClear();       /* drop the bleed BEFORE the fitter measures anything */
-   layout();         /* restore() or paint() own the geometry */
-   hubBleed(v);      /* LAST — nothing runs after it, so it survives */
-   if(d){
-    requestAnimationFrame(function(){
-     requestAnimationFrame(function(){ d.classList.remove('mi-swap'); reveal(); });});
-   } else reveal();
-  });
+  if(d)d.classList.remove('mi-swap');
+  reveal();
  }
+ /* and a watchdog, because an invisible section is the worst failure there is:
+    whatever else happens, nothing stays hidden. */
+ setInterval(function(){
+  var d=document.querySelector('#sfsec-dna .dl-swap,#sfsec-dna .mi-swap');
+  if(d)d.classList.remove('mi-swap');
+  if(ROOT.classList.contains('mi-hold'))ROOT.classList.remove('mi-hold');
+ },1000);
 
  /* The study is over — 27 is the design. The numbered picker bar, its
     stylesheet, the prev/next buttons, the arrow-key handler and the 112px of
