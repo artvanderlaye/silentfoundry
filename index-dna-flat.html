@@ -7747,6 +7747,7 @@ else boot();
   if(!ORIG){
    ORIG={ ar:dial.style.aspectRatio||'1/1', mw:dial.style.maxWidth||'520px',
           h:dial.style.height||'', mh:dial.style.minHeight||'',
+          mg:dial.style.margin||'0 auto',
           pts:[].map.call(pts,function(e){
            return {l:parseFloat(e.style.left), t:parseFloat(e.style.top),
                    disc:e.children[0]?{w:e.children[0].style.width,
@@ -7764,6 +7765,7 @@ else boot();
  function restore(){
   dial.style.aspectRatio=ORIG.ar; dial.style.maxWidth=ORIG.mw;
   dial.style.height=ORIG.h; dial.style.minHeight=ORIG.mh;
+  dial.style.margin=ORIG.mg;
   var hub=dial.querySelector('.dl-dhub');
   hub.style.width=HUB0.w; hub.style.height=HUB0.h;
   hub.style.left=HUB0.l+'%'; hub.style.top=HUB0.t+'%';
@@ -7805,21 +7807,62 @@ else boot();
   dial.style.minHeight=v.H+'px';
   dial.style.height='auto';
   var hub=dial.querySelector('.dl-dhub');
-  var hpx=v.hub||130;
+  var hpx=(v.hub||130)*(v.k||1)*(v.__dm||1);
   hub.style.width=hpx+'px'; hub.style.height=hpx+'px';
   var hx=(v.hx!=null?v.hx:HUB0.l), hy=(v.hy!=null?v.hy:HUB0.t);
   hub.style.left=hx+'%'; hub.style.top=hy+'%';
-  var sx=v.sx||1, sy=v.sy||1;
+  var sx=v.sx||1, sy=v.sy||1, k=v.k||1, gam=v.gam||1;
+  if(v.align==='left') dial.style.margin='0 auto 0 0';
+  /* the longest reach from the hub, so gamma can redistribute against it */
+  var rmax=0;
+  ORIG.pts.forEach(function(o){
+   var a=(o.l-HUB0.l)*sx, b=(o.t-HUB0.t)*sy;
+   var r=Math.sqrt(a*a+b*b); if(r>rmax)rmax=r;});
   [].forEach.call(dial.querySelectorAll('.dl-dpt'),function(e,i){
    var o=ORIG.pts[i]; if(!o)return;
    /* the offset from the ORIGINAL hub, scaled, re-hung off the new hub */
    var dl=(o.l-HUB0.l)*sx, dt=(o.t-HUB0.t)*sy;
+   if(k!==1||gam!==1){
+    var r=Math.sqrt(dl*dl+dt*dt);
+    if(r>0.001&&rmax>0){
+     var nr=rmax*Math.pow(r/rmax,gam)*k;   /* gamma>1 pulls the outer ring in */
+     dl*=nr/r; dt*=nr/r;}}
    e.style.left=(hx+dl)+'%'; e.style.top=(hy+dt)+'%';
-   if(e.children[0]&&o.disc&&v.disc&&v.disc!==1){
-    var w=parseFloat(o.disc.w)*v.disc;
-    e.children[0].style.width=w+'px'; e.children[0].style.height=w+'px';}});
+   var disc=e.children[0];
+   if(disc&&o.disc){
+    var dm=(v.disc||1)*(v.__dm||1);
+    if(dm!==1){var w=parseFloat(o.disc.w)*dm;
+     disc.style.width=w+'px'; disc.style.height=w+'px';}
+    if(v.lgap!=null)disc.style.margin='0 auto '+v.lgap+'px';}});
   relines();
  }
+
+ /* the tightest gap between any two node boxes, hub included */
+ function tightest(){
+  var boxes=[].map.call(dial.querySelectorAll('.dl-dpt'),function(e){
+   return e.getBoundingClientRect();});
+  boxes.push(dial.querySelector('.dl-dhub').getBoundingClientRect());
+  var m=1e9;
+  for(var i=0;i<boxes.length;i++)for(var j=i+1;j<boxes.length;j++){
+   var a=boxes[i],b=boxes[j];
+   var g=Math.max(Math.max(a.left-b.right,b.left-a.right),
+                  Math.max(a.top-b.bottom,b.top-a.bottom));
+   if(g<m)m=g;}
+  return m;}
+
+ /* Tightening the positions while the discs stay a fixed pixel size makes
+    collisions certain. A tighter cluster has to be a SMALLER cluster, so the
+    discs come down with it: shrink in 4% steps until nothing is closer than
+    7px. Bottoms out at 70% and then eases the whole layout back out instead. */
+ function fit(v){
+  if(v.base){shape(v);return;}
+  var dm=1, k0=v.k||1;
+  v.__dm=1; shape(v);
+  for(var i=0;i<8&&tightest()<7&&dm>0.86;i++){
+   dm-=0.02; v.__dm=dm; shape(v);}
+  for(var j=0;j<10&&tightest()<7;j++){
+   v.k=(v.k||1)+0.02; shape(v);}
+  v.__fit=+dm.toFixed(2); v.__k=+(v.k||1).toFixed(2); v.k=k0;}
 
  var V=[
   {n:'1 · Current — 520 × 520 square', base:true},
@@ -7842,7 +7885,29 @@ else boot();
   {n:'18 · 880 × 440, spread + small discs',W:880,H:440,sx:1.12,disc:0.9},
   {n:'19 · 900 × 440, hub left, spread',    W:900,H:440,hx:17,sx:1.1},
   {n:'20 · 840 × 450, everything eased',    W:840,H:450,sx:1.06,sy:0.96,disc:0.95},
-  {n:'21 · 880 × 430, hub left and centred',W:880,H:430,hx:17,hy:50,sx:1.08,disc:0.94}
+  {n:'21 · 880 × 430, hub left and centred',W:880,H:430,hx:17,hy:50,sx:1.08,disc:0.94},
+
+  /* ---- 22-41 · tighter, and sitting to the left of the stage ---- */
+  {n:'22 · Left, tight — 760 × 400, k 0.88',       W:760,H:400,align:'left',k:0.88,hx:20},
+  {n:'23 · Left, tighter — 720 × 380, k 0.82',     W:720,H:380,align:'left',k:0.82,hx:20},
+  {n:'24 · Left, outer ring pulled in — gamma 1.2',W:780,H:400,align:'left',gam:1.2,hx:19},
+  {n:'25 · Left, outer ring pulled hard — 1.35',   W:800,H:400,align:'left',gam:1.35,hx:18},
+  {n:'26 · Left, tight + small discs',             W:760,H:390,align:'left',k:0.86,disc:0.88,hx:20},
+  {n:'27 · Left, tight + labels closer',           W:760,H:395,align:'left',k:0.88,lgap:4,hx:20},
+  {n:'28 · Left, squeezed vertically',             W:780,H:380,align:'left',sy:0.86,hx:19},
+  {n:'29 · Left, squeezed both ways',              W:740,H:380,align:'left',sx:0.94,sy:0.88,hx:20},
+  {n:'30 · Left, hub hard left, tight',            W:800,H:400,align:'left',k:0.86,hx:14},
+  {n:'31 · Left, hub hard left and centred',       W:800,H:400,align:'left',k:0.86,hx:14,hy:50},
+  {n:'32 · Left, compact — 700 × 370',             W:700,H:370,align:'left',k:0.84,hx:21},
+  {n:'33 · Left, compact + small hub',             W:720,H:380,align:'left',k:0.85,hub:112,hx:20},
+  {n:'34 · Left, compact + large hub',             W:740,H:390,align:'left',k:0.86,hub:146,hx:20},
+  {n:'35 · Left, gamma + small discs',             W:780,H:395,align:'left',gam:1.25,disc:0.9,hx:19},
+  {n:'36 · Left, gamma + tight labels',            W:780,H:390,align:'left',gam:1.22,lgap:4,hx:19},
+  {n:'37 · Left, wide but tight — 860 × 390',      W:860,H:390,align:'left',k:0.9,hx:17},
+  {n:'38 · Left, flat and tight — 880 × 370',      W:880,H:370,align:'left',k:0.88,hx:16},
+  {n:'39 · Left, everything eased in',             W:760,H:400,align:'left',k:0.9,sy:0.94,disc:0.94,lgap:5,hx:20},
+  {n:'40 · Left, tightest — 680 × 360',            W:680,H:360,align:'left',k:0.8,disc:0.9,lgap:4,hx:22},
+  {n:'41 · Left, tight, hub left and centred',     W:780,H:385,align:'left',k:0.85,gam:1.12,hx:16,hy:50,disc:0.92}
  ];
 
  var cur=1;
@@ -7876,7 +7941,7 @@ else boot();
    lab.textContent=V[n-1].n;
    [].forEach.call(wrap.children,function(x,i){
     if(i===n-1)x.classList.add('on'); else x.classList.remove('on');});
-   shape(V[n-1]); }
+   fit(V[n-1]); }
   wrap.addEventListener('click',function(e){
    var t=e.target.closest?e.target.closest('.bx'):null;
    if(t)go(+t.getAttribute('data-n'));});
@@ -7884,8 +7949,9 @@ else boot();
   document.getElementById('gs-n').onclick=function(){go(cur+1);};
   document.addEventListener('keydown',function(e){
    if(e.key==='ArrowLeft')go(cur-1); if(e.key==='ArrowRight')go(cur+1);});
-  addEventListener('resize',function(){ shape(V[cur-1]); });
+  addEventListener('resize',function(){ fit(V[cur-1]); });
   window.__gs={names:V.map(function(x){return x.n;}),set:go,
+               fitOf:function(n){return V[n-1].__fit+'/'+V[n-1].__k;},
                get:function(){return cur;}};
   var mv=/[?&]v=(\d+)/.exec(location.search);
   go(mv?+mv[1]:1);
