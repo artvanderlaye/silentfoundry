@@ -7760,6 +7760,8 @@ else boot();
    var hub=dial.querySelector('.dl-dhub');
    ORIG.hub={w:hub.style.width,h:hub.style.height,l:hub.style.left,t:hub.style.top};
    HUB0={l:parseFloat(hub.style.left),t:parseFloat(hub.style.top)};
+   var nm0=dial.querySelector('.dl-nm');
+   ORIG.fs=nm0?(parseFloat(getComputedStyle(nm0).fontSize)||13):13;
    ORIG.num={l:[].map.call(pts,function(e){return parseFloat(e.style.left);}),
              t:[].map.call(pts,function(e){return parseFloat(e.style.top);}),
              w:[].map.call(pts,function(e){return e.children[0]?parseFloat(e.children[0].style.width):0;})};
@@ -7820,6 +7822,16 @@ else boot();
      the widest sizes the box IS 760, so this is exactly 1 and the layout
      Matthew approved is untouched. */
   var SC=Math.min(1,(dial.getBoundingClientRect().width||G.W)/G.W);
+  /* THE WORDS SCALE TOO. They were the only part of the drawing that did
+     not: as the stage narrowed, the discs and the spacing came down while
+     PRESENCE and ACOUSTIC IDENTITY stayed full size, so the labels — not
+     the discs — collided, and no amount of fitting could clear them
+     (measured: 749 overlaps, -17.9px). Scaled with everything else the
+     drawing is one uniform reduction. Floored at 8px, which is the
+     smallest type anywhere on the site. */
+  var FS=Math.max(8,(ORIG.fs||13)*SC);
+  [].forEach.call(dial.querySelectorAll('.dl-nm'),function(e){
+   e.style.setProperty('font-size',FS.toFixed(2)+'px','important');});
   var hp=G.hub*k*dm*SC; hub.style.width=hp+'px'; hub.style.height=hp+'px';
   hub.style.left=G.hx+'%'; hub.style.top=HUB0.t+'%';
   [].forEach.call(dial.querySelectorAll('.dl-dpt'),function(e,i){
@@ -7842,11 +7854,24 @@ else boot();
  function layout(){
   if(innerWidth<901){ if(applied)restore(); return; }
   var dm=1,k=G.k; paint(dm,k);
-  /* labels are the usual binding pair and they do not shrink with the discs,
-     so open the fan first and only then reduce. Target 6 — 52's own clearance. */
-  for(var i=0;i<8&&tightest()<6&&dm>0.86;i++){dm-=0.02; paint(dm,k);}
-  for(var j=0;j<14&&tightest()<6;j++){k+=0.02; paint(dm,k);}
-  for(var q=0;q<10&&tightest()<6&&dm>0.62;q++){dm-=0.03; paint(dm,k);}
+  /* THE JUMP WAS THE FITTER, and the fix is to make its target scale-invariant.
+     These loops nudge dm and k in 2% steps until clearance reaches 6px. But
+     paint() scales the whole composition by the box width, so clearance scales
+     with it too — while the 6px target did NOT. As the window narrowed, real
+     clearance slid under a fixed 6 and the loops fired one extra time: measured
+     at 1141 -> 1140 every disc snapped 48.1 -> 45.1 in a single pixel.
+
+     Simply skipping the fitter below full size is wrong — the composition
+     Matthew approved IS the fitter's output; without it the raw arrangement
+     overlaps (measured: 866 overlaps, -19.9px). So the TARGET is scaled by the
+     same factor as everything else. The loops then converge on the same dm and
+     k at every width, the drawing is one continuous scaled copy, and there is
+     nothing left to step. */
+  var SCL=Math.min(1,(dial.getBoundingClientRect().width||G.W)/G.W);
+  var TGT=6*SCL;
+  for(var i=0;i<8&&tightest()<TGT&&dm>0.86;i++){dm-=0.02; paint(dm,k);}
+  for(var j=0;j<14&&tightest()<TGT;j++){k+=0.02; paint(dm,k);}
+  for(var q=0;q<10&&tightest()<TGT&&dm>0.62;q++){dm-=0.03; paint(dm,k);}
   applied=true;
  }
 
@@ -7880,16 +7905,7 @@ else boot();
   /* the drawing is built by the page's own script, so its first render is
      unavoidable — but it does not have to be SEEN. Held invisible until this
      payload has finished, then faded in. */
-  'html.mi-hold #sfsec-dna .dl-dial{opacity:0 !important;}'+
-  /* THE HAIRLINES, WHILE THE WINDOW IS MOVING.
-     They are the one part that cannot follow a drag honestly — each is a
-     rotated div whose length and angle are recomputed after the fact, so
-     mid-drag there is always a frame where they point at where the discs
-     WERE. So they fade out the moment a drag starts and fade back in when it
-     stops, by which time they have been recomputed. The discs and the words
-     keep moving live — only the hairlines wait. */
-  '#sfsec-dna .dl-lk{transition:opacity .2s ease;}'+
-  'html.mi-drag #sfsec-dna .dl-lk{opacity:0 !important;transition:none !important;}';
+  'html.mi-hold #sfsec-dna .dl-dial{opacity:0 !important;}';
  (document.head||document.documentElement).appendChild(FADE);
  var ROOT=document.documentElement;
  ROOT.classList.add('mi-hold');
@@ -8622,11 +8638,16 @@ else boot();
       the bug: the box shrank from 760 to 529 while the discs stayed frozen
       at 48px and the connector lines drifted to 124px out of place. */
    if(band(innerWidth)===band(lastW)){
-    ROOT.classList.add('mi-drag');
+    /* THE HAIRLINES TRACK LIVE. The discs are positioned in PERCENTAGES,
+       so they follow the box by themselves as it resizes — it is only
+       their pixel SIZE and the lines' pixel length that need recomputing.
+       relines() is eight measurements and eight style writes, cheap
+       enough to run on the resize event itself, so the lines never lag
+       behind the discs and there is nothing to hide or fade. */
+    relines();
     clearTimeout(rt);
     rt=setTimeout(function(){
      layout(); bleedFix(); figFix(); figFit(); figLines();
-     requestAnimationFrame(function(){ROOT.classList.remove('mi-drag');});
     },90);
     return;
    }
