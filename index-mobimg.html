@@ -8093,6 +8093,9 @@ else boot();
    figCSS+= F+'{display:block !important;position:relative !important;'+
         'aspect-ratio:'+fr+' !important;height:auto !important;'+
         'min-height:0 !important;overflow:visible !important;'+
+        /* the box is NEVER allowed to grow — Matthew's rule: no more height at
+           any width. Extra room for the circles comes only from the sideways
+           stretch and the scaled type, never from a bigger box. */
         'width:'+(v.figW||70)+'vw !important;max-width:'+(v.figW||70)+'vw !important;'+
         'margin:0 auto 26px !important;'+
         '}'+
@@ -8434,6 +8437,7 @@ else boot();
   FIGV=null;   /* the figure is centred now, not bled — no correction needed */
   figFix();
   figFit();
+  figGrow();
   figLines();
  }
 
@@ -8466,10 +8470,84 @@ else boot();
     negative: measured +51.5px of clearance at 900, +16.1 at 600, and -8.7 at
     390. So rather than trust the arithmetic, the discs are measured and eased
     down until nothing touches. Same rule as the desktop fan: 6px minimum. */
+ /* BIGGER CIRCLES, SAME HEIGHT.
+    Two moves, in this order. First the points are pushed apart HORIZONTALLY
+    only — their distance from the centre is stretched in x, never in y — which
+    opens room without adding a single pixel of height. Then the discs are grown
+    into that room, step by step, and the growth stops the moment either
+    (a) anything comes within 6px of anything else, or
+    (b) any disc would cross the top or bottom edge of the box.
+    Condition (b) is what guarantees the drawing can never get taller: the box
+    is a fixed ratio, so if nothing leaves it vertically, nothing pushes down
+    the page. */
+ function figGrow(){
+  if(!FIG||FIG.style.display==='none')return;
+  var hub=FIG.querySelector('.dl-dhub'); if(!hub)return;
+  var hx=parseFloat(hub.style.left)||28;
+  var pts=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
+  var discs=pts.map(function(e){return e.children[0];}).filter(Boolean);
+  if(!discs.length)return;
+
+  pts.forEach(function(e){ if(e.__ox===undefined)e.__ox=parseFloat(e.style.left)||0; });
+  function setSX(v){
+   pts.forEach(function(e){
+    e.style.setProperty('left',(hx+(e.__ox-hx)*v).toFixed(3)+'%','important');});
+  }
+
+  function fits(){
+   var fb=FIG.getBoundingClientRect();
+   var r=discs.map(function(e){return e.getBoundingClientRect();});
+   var boxes=pts.map(function(e){return e.getBoundingClientRect();});
+   for(var i=0;i<r.length;i++)
+    if(r[i].top<fb.top-0.5||r[i].bottom>fb.bottom+0.5||
+       r[i].left<fb.left-0.5||r[i].right>fb.right+0.5)return false;
+   var all=boxes.concat([hub.getBoundingClientRect()]);
+   for(var a=0;a<all.length;a++)for(var b=a+1;b<all.length;b++){
+    var x=all[a],y=all[b];
+    if(Math.max(Math.max(x.left-y.right,y.left-x.right),
+                Math.max(x.top-y.bottom,y.top-x.bottom))<6)return false;}
+   return true;
+  }
+
+  /* THE STRETCH IS ADAPTIVE. A single fixed stretch pushed the outer discs off
+     the edge on the narrowest screens, and the safety net then shrank them to
+     12px chasing a fit — the opposite of what was wanted. The widest stretch
+     that still fits is chosen first, and only then do the discs grow. */
+  var base=discs[0].getBoundingClientRect().width;
+  if(!base)return;
+  var SXS=[1.16,1.12,1.08,1.04,1.0], chosen=1.0;
+  for(var t=0;t<SXS.length;t++){ setSX(SXS[t]); if(fits()){chosen=SXS[t];break;} }
+  setSX(chosen);
+  if(!fits())return;                 /* leave it exactly as the fitter left it */
+  var last=base;
+  for(var g=0;g<16;g++){            /* grow while it still fits */
+   var next=base*1.04;
+   discs.forEach(function(e){
+    e.style.setProperty('width',next+'px','important');
+    e.style.setProperty('height',next+'px','important');});
+   if(!fits()){
+    discs.forEach(function(e){
+     e.style.setProperty('width',last+'px','important');
+     e.style.setProperty('height',last+'px','important');});
+    break;
+   }
+   last=next; base=next;
+  }
+ }
+
  function figFit(){
   if(!FIG||FIG.style.display==='none')return;
   var boxes=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
   var discs=[].slice.call(FIG.querySelectorAll('.dl-dpt > div:first-child'));
+  /* the words scale with the box FIRST. They were pinned at 10px, so on the
+     narrowest screens they dominated a 282px drawing, collided with each
+     other, and the fitter answered the only way it could — by grinding the
+     discs down to 15px. Sized against the box, the type stops being the
+     binding constraint and the circles keep their size. Floored at 8px. */
+  var FW=FIG.getBoundingClientRect().width||343;
+  var LF=Math.max(8,10*(FW/343));
+  [].forEach.call(FIG.querySelectorAll('.dl-nm'),function(e){
+   e.style.setProperty('font-size',LF.toFixed(2)+'px','important');});
   var hub=FIG.querySelector('.dl-dhub');
   if(!discs.length)return;
   /* measure the POINT boxes — disc plus its word — because with the labels
@@ -8586,7 +8664,7 @@ else boot();
     still settling underneath it — labels rewrapping, images decoding — so
     the lines were left pointing at where things WERE. Now every event that
     means 'the box just moved' triggers another pass. */
- function settle(){ bleedFix(); figFix(); figFit(); figLines(); rowsBleed(V[cur-1]||V[0]); }
+ function settle(){ bleedFix(); figFix(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]); }
  addEventListener('load',settle);
  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(settle);
  [400,1200,2500].forEach(function(t){setTimeout(settle,t);});
@@ -8733,7 +8811,7 @@ else boot();
     relines();
     clearTimeout(rt);
     rt=setTimeout(function(){
-     layout(); bleedFix(); figFix(); figFit(); figLines(); rowsBleed(V[cur-1]||V[0]);
+     layout(); bleedFix(); figFix(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]);
     },90);
     return;
    }
