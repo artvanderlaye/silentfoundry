@@ -7921,7 +7921,15 @@ else boot();
   '@media(min-width:1201px) and (max-width:1600px){'+
    'html body #sfsec-dna .cs-dbody{width:calc(100% - 48px) !important;'+
     'margin-left:48px !important;margin-right:0 !important;'+
-    'grid-template-columns:1fr 428px !important;}'+
+    /* THE JUMP. This band held the image column at a FIXED 428 while the
+       band below it sized the column proportionally — so at the handover
+       the column stepped 428 -> 360 and the drawing stepped 677 -> 744 in
+       a single pixel of window. Two bands, two different formulas, one
+       visible lurch. Both now use the same expression, so the column and
+       the drawing change smoothly straight through 1200. At 1600 it still
+       resolves to exactly 428, so it also meets the ultra-wide band
+       cleanly, and nothing above 1600 moves. */
+    'grid-template-columns:1fr calc(clamp(200px,26vw,380px) + 48px) !important;}'+
    'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
    'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
    'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
@@ -8497,38 +8505,14 @@ else boot();
     fig   show the drawing itself, cloned, at true proportion
     cols  1 or 2 columns in the labelled list
     disc  thumbnail size in that list                                    */
+ /* Study 2, and only study 2. The other nine are deleted.
+    fig        the drawing itself, cloned from the page's own diagram
+    figW 88    88% of the screen, inside the page margin — not bled
+    hdr null   no Marshall photograph on a small screen; the drawing leads
+    rows none  and no photo rows either, so nothing is shown twice          */
  var V=[
-  {n:'1 · Drawing leads, full bleed square, two columns',
-   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'none', cols:2, disc:44},
-
-  {n:'2 · Drawing leads, inside the page margin, two columns',
-   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:44},
-
-  {n:'3 · Amps photograph leads 16:9, two columns',
-   fig:0, hdr:'hero', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
-
-  {n:'4 · Product shot leads 16:9, two columns',
-   fig:0, hdr:'hub', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
-
-  {n:'5 · No lead picture at all, two columns, big thumbnails',
-   fig:0, hdr:null, rows:'none', cols:2, disc:56},
-
-  {n:'6 · Drawing leads, one column, generous rows',
-   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'none', cols:1, disc:52},
-
-  {n:'7 · Amps photograph as a wide 21:9 band, two columns',
-   fig:0, hdr:'hero', hdrRatio:'21/9', rows:'none', cols:2, disc:44},
-
-  {n:'8 · List first, drawing closes the section',
-   fig:1, figRatio:'1/1', figW:96, figPos:'bottom', hdr:null, rows:'none',
-   cols:2, disc:44},
-
-  {n:'9 · Drawing leads, two columns, one photograph row below',
-   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'last', ratio:'16/9',
-   cols:2, disc:44},
-
-  {n:'10 · Drawing leads 4:3, two columns, small thumbnails',
-   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:36}
+  {n:'2 · Drawing leads, inside the page margin',
+   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:44}
  ];
  /* the old flags the CSS builder still reads, derived from the new ones */
  V.forEach(function(v){
@@ -8591,40 +8575,11 @@ else boot();
     scripts drive the page through, and it renders nothing. */
  function start(){
   if(started)return; started=true;
-  var css=document.createElement('style'); css.textContent=
-   '#gs-ui{position:fixed;left:0;right:0;bottom:0;z-index:99999;'+
-   'background:rgba(12,12,12,0.95);color:#f4f1ec;font-family:'+DM+';padding:9px 14px 10px;}'+
-   '#gs-ui .top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}'+
-   '#gs-ui .lab{font-size:11.5px;letter-spacing:0.1em;color:#c8a96e;flex:1;}'+
-   '#gs-ui .nav{background:none;border:1px solid rgba(244,241,236,0.26);color:#f4f1ec;'+
-   'width:26px;height:24px;cursor:pointer;padding:0;}'+
-   '#gs-ui .boxes{display:flex;flex-wrap:wrap;gap:4px;}'+
-   '#gs-ui .bx{width:30px;height:23px;background:none;padding:0;'+
-   'border:1px solid rgba(244,241,236,0.20);color:rgba(244,241,236,0.62);'+
-   'font-family:'+DM+';font-size:10.5px;cursor:pointer;display:flex;'+
-   'align-items:center;justify-content:center;}'+
-   '#gs-ui .bx.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}'+
-   'body{padding-bottom:112px !important;}';
-  document.head.appendChild(css);
-  var bar=document.createElement('div'); bar.id='gs-ui';
-  var b='';
-  for(var i=1;i<=V.length;i++) b+='<button class="bx" data-n="'+i+'">'+i+'</button>';
-  bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
-   '<button class="nav" id="gs-n">&rsaquo;</button><span class="lab" id="gs-l"></span></div>'+
-   '<div class="boxes" id="gs-b">'+b+'</div>';
-  document.body.appendChild(bar);
-  var wrap=document.getElementById('gs-b'), lab=document.getElementById('gs-l');
-  function go(n){ n=Math.max(1,Math.min(V.length,n|0)); cur=n;
-   lab.textContent=V[n-1].n;
-   [].forEach.call(wrap.children,function(x,i){
-    if(i===n-1)x.classList.add('on'); else x.classList.remove('on');});
-   applyV(n);}
-  wrap.addEventListener('click',function(e){
-   var t=e.target.closest?e.target.closest('.bx'):null; if(t)go(+t.getAttribute('data-n'));});
-  document.getElementById('gs-p').onclick=function(){go(cur-1);};
-  document.getElementById('gs-n').onclick=function(){go(cur+1);};
-  document.addEventListener('keydown',function(e){
-   if(e.key==='ArrowLeft')go(cur-1); if(e.key==='ArrowRight')go(cur+1);});
+  /* the study is over — no picker bar, no stylesheet for it, no body
+     padding reserving room for it. window.__gs stays, with no DOM of its
+     own, because it is what the verification scripts drive the page
+     through; it renders nothing. */
+  function go(n){ cur=1; applyV(1); }
   /* only redo the work when the width actually moved enough to change
      anything — resizing used to re-run the whole fit on every pixel */
   var rt=null, lastW=innerWidth;
@@ -8668,8 +8623,7 @@ else boot();
     hiding=false; lastW=innerWidth; applyV(cur);
    },120);});
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
-  var mv=/[?&]v=(\d+)/.exec(location.search);
-  go(mv?+mv[1]:1);
+  go(1);
  }
  function boot(){
   var t=0;
