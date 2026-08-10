@@ -4617,6 +4617,136 @@ html body .f-m6{display:none !important;}
   return null;
  }
 
+
+ /* ============================================================
+    FOURTH BATCH — 63 to 102.
+
+    63-82   twenty mastheads. The twelve Matthew picked, rebuilt as
+            pure masthead studies over one constant lower half (49's),
+            plus eight more in the same family. Several take the
+            Foundry's balanced centred block: 464 + 96 + 464 = 1024,
+            centred in the page rather than stretched to the margins.
+    83-92   ten on 60   (symbol-led rows, board folded in beside)
+    93-102  ten on 49   (ruled left edges, board folded in beside)
+
+    What the picks had in common: the header word is either the page's
+    own 28.8px title or a 10.88px gold eyebrow — never one of the
+    oversized display treatments. Half of them also pull the locations
+    line out of the masthead entirely.
+    ============================================================ */
+
+ var CTRW='1024px';                       /* 464 + 96 + 464, the Foundry block */
+ function ctr(html,on){ return on
+   ? '<div class="tl-ctr" style="max-width:'+CTRW+';margin-left:auto;margin-right:auto;">'+
+     html+'</div>' : html; }
+
+ /* ---------- the masthead system ---------- */
+ /* w   team | people        which word survives
+    sc  ey | mid | title     10.88px gold · 18px Bebas · the page's own 28.8px
+    lc  right | under | none | centre | stack | scrollline   the locations line
+    rl  bleed | block | split | none                          the rule
+    sr  right | tight | none                                  the scroll hint
+    al  left | centre        alignment
+    C   true                 sit the whole masthead on the Foundry's 1024 block */
+ function HEAD4(s){
+  var word = (s.w==='people') ? H.people : H.title;
+  var WORD = s.sc==='ey'    ? fEy(word,{mb:'0'})
+           : s.sc==='mid'   ? title(word,{fs:'18px',ls:'0.24em'})
+           :                  title(word);
+  var LOC  = meta(H.locs,{fs:s.lfs||'0.5rem',col:ink(0.25)});
+  var SCR  = meta('Scroll  →',{fs:'0.44rem',col:ink(0.3)});
+  var mark = s.mk ? '<span style="font-family:'+BB+';font-size:0.72rem;color:'+ink(0.16)+
+                    ';margin-right:9px;">◎</span>' : '';
+  var RULE = s.rl==='none'  ? ''
+           : s.rl==='block' ? '<div style="height:0.5px;background:'+ink(0.14)+
+                              ';max-width:'+CTRW+';margin:0 auto;"></div>'
+           : s.rl==='split' ? ''
+           :                  rule({bleed:true});
+  var out='', C=(s.al==='centre');
+
+  if(s.rl==='split'){
+   out+='<div class="tl-splitrule" style="display:flex;align-items:center;gap:20px;">'+
+    '<div style="flex:1;height:0.5px;background:'+ink(0.14)+';"></div>'+
+    '<div style="white-space:nowrap;">'+WORD+'</div>'+
+    '<div style="flex:1;height:0.5px;background:'+ink(0.14)+';"></div></div>';
+   if(s.lc!=='none')out+=gap(13)+'<div style="text-align:center;">'+LOC+'</div>';
+   if(s.sr!=='none')out+=gap(12)+'<div style="text-align:center;">'+mark+SCR+'</div>';
+   return ctr(out,s.C);
+  }
+
+  /* the word row */
+  if(s.lc==='right'){
+   out+='<div class="strip tl-strip" style="align-items:baseline;justify-content:space-between;">'+
+        WORD+LOC+'</div>';
+  }else if(s.lc==='under'){
+   out+='<div style="text-align:'+(C?'center':'left')+'">'+WORD+
+        '<div style="margin-top:9px;">'+LOC+'</div></div>';
+  }else if(s.lc==='centre'){
+   out+='<div style="text-align:center;">'+WORD+'<div style="margin-top:10px;">'+
+        LOC+'</div></div>';
+  }else if(s.lc==='stack'){
+   out+='<div class="tl-pair" style="display:grid;grid-template-columns:1fr auto;'+
+        'gap:24px;align-items:end;"><div>'+WORD+'</div>'+
+        '<div style="text-align:right;line-height:2;">'+
+        H.locs.split('·').map(function(x){
+         return '<div>'+meta(x.trim(),{fs:'0.48rem'})+'</div>';}).join('')+'</div></div>';
+  }else{ /* none | scrollline — the locations leave the masthead */
+   out+='<div style="text-align:'+(C?'center':'left')+'">'+WORD+'</div>';
+  }
+
+  out+=gap(s.gt||18)+RULE+gap(s.gb||15);
+
+  /* the line under the rule */
+  var right = (s.sr==='none') ? '' :
+    '<div class="tl-right'+(s.sr==='tight'?' tl-tight':'')+'">'+mark+SCR+'</div>';
+  var left  = (s.lc==='scrollline') ? LOC : '';
+  if(C){
+   out+='<div style="text-align:center;">'+(left?left+'<span style="display:inline-block;'+
+        'width:20px"></span>':'')+(right?mark+SCR:'')+'</div>';
+  }else if(left||right){
+   out+='<div class="strip tl-strip2" style="justify-content:space-between;'+
+        'align-items:center;gap:16px;"><div>'+left+'</div>'+right+'</div>';
+  }
+  return ctr(out,s.C);
+ }
+
+ /* ---------- the two closings he settled on, parameterised ---------- */
+ /* v.cols  '1fr 1fr' | '464px 464px' | '1fr 1.15fr' | '1.3fr 1fr'
+    v.gap   the column gap
+    v.C     sit the pair on the centred 1024 block
+    v.asideAt  'right' | 'left' | 'under'
+    v.style 49 | 60                                              */
+ function CLOSEPICK(v){
+  var lead=BK.items[0], rest=BK.items.slice(1);
+  var aside=boardAside();
+  var right;
+  if(v.style===60){
+   right = rest.map(function(it,i){
+    return '<div style="border-top:0.5px solid '+ink(0.11)+';padding:15px 0;'+
+     'display:flex;gap:'+(v.symGap||'16px')+';align-items:baseline;">'+
+     (v.noSym?'':'<span style="font-family:'+DM+';font-size:'+(v.symFs||'15.2px')+
+      ';font-weight:300;color:'+GOLD+';min-width:20px;">'+SYM[i+5]+'</span>')+
+     '<div>'+fLabel(it.label)+'<div style="margin-top:7px;">'+
+     fBody(it.body,{mw:v.bmw})+'</div></div></div>';}).join('');
+  }else{
+   right = rest.map(function(it,i){
+    return '<div style="border-left:'+(v.edge||'1px')+' solid '+ink(v.edgeA||0.10)+';'+
+     'padding:0 0 '+(v.rowGap||'20px')+' '+(v.pad||'18px')+';">'+fLabel(it.label)+
+     '<div style="margin-top:8px;">'+fBody(it.body,{mw:v.bmw})+'</div></div>';}).join('');
+  }
+  var leadCol = fEy(lead.label,{mb:v.ebmb||'20px'})+
+   (v.head?fH(v.head,{fs:v.hfs}):'')+
+   fBody(lead.body,{mw:v.lmw||'100%',fs:v.lfs})+
+   (v.ctaLeft?fCta({plain:v.ctaPlain}):'');
+  var rightCol = right + (v.asideAt==='right'?aside:'') +
+   (v.ctaLeft?'':fCta({plain:v.ctaPlain}));
+  if(v.asideAt==='left') leadCol += aside;
+  var pair = fPair(leadCol,rightCol,
+    {cols:v.cols||(FCOL+' '+FCOL), gap:v.gap||FGAP, al:v.al||'start'});
+  if(v.asideAt==='under') pair += gap(28)+aside;
+  return ctr(pair, v.C);
+ }
+
  /* ---------- the twenty ---------- */
  var V=[
   {n:'1 · Current design (untouched)', base:true},
@@ -4775,7 +4905,49 @@ html body .f-m6{display:none !important;}
   {n:'59 · Split lead sentence — board as marks',        s:{hdr:'team',   head3:'ey',      close:'f17', brd:'marks'}},
   {n:'60 · Symbol-led rows — board beside the lead',     s:{hdr:'people', head3:'foundry', close:'f18', brd:'aside'}},
   {n:'61 · Sticky lead — board as a colophon',           s:{hdr:'team',   head3:'rail',    close:'f19', brd:'prose'}},
-  {n:'62 · Marker bullets — board as a meta line',       s:{hdr:'people', head3:'plain',   close:'f20', brd:'meta'}}
+  {n:'62 · Marker bullets — board as a meta line',       s:{hdr:'people', head3:'plain',   close:'f20', brd:'meta'}},
+
+  /* ---- 63-102 ---- */
+  {n:'63 · Masthead — from 6 — title, locations moved to the board', s:{mh:{w:'team',   sc:'title', lc:'none',       rl:'bleed', sr:'right'}}},
+  {n:'64 · Masthead — from 14 — title, locations out, Scroll tucked', s:{mh:{w:'team',   sc:'title', lc:'none',       rl:'bleed', sr:'tight'}}},
+  {n:'65 · Masthead — from 28 — rule split either side of the title', s:{mh:{w:'team',   sc:'title', lc:'centre',     rl:'split', sr:'right', al:'centre'}}},
+  {n:'66 · Masthead — from 43 — eyebrow, locations left, Scroll right', s:{mh:{w:'team',   sc:'ey',    lc:'scrollline', rl:'bleed', sr:'right'}}},
+  {n:'67 · Masthead — from 46 — eyebrow, OUR PEOPLE', s:{mh:{w:'people', sc:'ey',    lc:'scrollline', rl:'bleed', sr:'right'}}},
+  {n:'68 · Masthead — from 47 — eyebrow + locations left, Scroll right', s:{mh:{w:'team',   sc:'ey',    lc:'under',      rl:'bleed', sr:'right'}}},
+  {n:'69 · Masthead — from 50 — eyebrow, OUR PEOPLE, tucked Scroll', s:{mh:{w:'people', sc:'ey',    lc:'scrollline', rl:'bleed', sr:'tight'}}},
+  {n:'70 · Masthead — from 51 — eyebrow, locations under, tucked', s:{mh:{w:'team',   sc:'ey',    lc:'under',      rl:'bleed', sr:'tight'}}},
+  {n:'71 · Masthead — from 54 — eyebrow, OUR PEOPLE, locations under', s:{mh:{w:'people', sc:'ey',    lc:'under',      rl:'bleed', sr:'right'}}},
+  {n:'72 · Masthead — from 56 — eyebrow, OUR PEOPLE, locations stacked', s:{mh:{w:'people', sc:'ey',    lc:'stack',      rl:'bleed', sr:'right'}}},
+  {n:'73 · Masthead — from 59 — eyebrow, locations on the Scroll line', s:{mh:{w:'team',   sc:'ey',    lc:'scrollline', rl:'bleed', sr:'tight', mk:1}}},
+  {n:'74 · Masthead — from 61 — eyebrow, locations right of the word', s:{mh:{w:'team',   sc:'ey',    lc:'right',      rl:'bleed', sr:'tight'}}},
+  {n:'75 · Masthead — centred block — eyebrow, rule to 1024', s:{mh:{w:'team',   sc:'ey',    lc:'scrollline', rl:'block', sr:'right', C:1}}},
+  {n:'76 · Masthead — centred block — OUR PEOPLE, everything centred', s:{mh:{w:'people', sc:'ey',    lc:'centre',     rl:'block', sr:'right', al:'centre', C:1}}},
+  {n:'77 · Masthead — centred block — title on the 1024 rail', s:{mh:{w:'team',   sc:'title', lc:'centre',     rl:'block', sr:'right', al:'centre', C:1}}},
+  {n:'78 · Masthead — mid scale — 18px, between eyebrow and title', s:{mh:{w:'team',   sc:'mid',   lc:'right',      rl:'bleed', sr:'tight'}}},
+  {n:'79 · Masthead — mid scale — OUR PEOPLE, locations under', s:{mh:{w:'people', sc:'mid',   lc:'under',      rl:'bleed', sr:'tight'}}},
+  {n:'80 · Masthead — no rule — the image band\u2019s own hairline does it', s:{mh:{w:'team',   sc:'ey',    lc:'scrollline', rl:'none',  sr:'tight', gb:0}}},
+  {n:'81 · Masthead — eyebrow, locations gone entirely, mark + Scroll', s:{mh:{w:'people', sc:'ey',    lc:'none',       rl:'bleed', sr:'tight', mk:1}}},
+  {n:'82 · Masthead — centred block — mid scale, split rule', s:{mh:{w:'team',   sc:'mid',   lc:'centre',     rl:'split', sr:'right', al:'centre', C:1}}},
+  {n:'83 · On 60 — as picked', s:{pick:{style:60, asideAt:'right'}}},
+  {n:'84 · On 60 — balanced 464 + 96 + 464, centred', s:{pick:{style:60, C:1, asideAt:'right'}}},
+  {n:'85 · On 60 — equal columns, wider gap', s:{pick:{style:60, cols:'1fr 1fr', gap:'clamp(40px,7vw,120px)', asideAt:'right'}}},
+  {n:'86 · On 60 — board moved under the pair', s:{pick:{style:60, asideAt:'under', asideAt:'right'}}},
+  {n:'87 · On 60 — board under the lead, left column', s:{pick:{style:60, asideAt:'left', asideAt:'right'}}},
+  {n:'88 · On 60 — with a Bebas line over the lead', s:{pick:{style:60, head:'Under one roof.', asideAt:'right'}}},
+  {n:'89 · On 60 — symbols dropped, rows only', s:{pick:{style:60, noSym:1, asideAt:'right'}}},
+  {n:'90 · On 60 — lead wider, rows narrower', s:{pick:{style:60, cols:'1.3fr 1fr', asideAt:'right'}}},
+  {n:'91 · On 60 — centred block, CTA under the lead', s:{pick:{style:60, C:1, ctaLeft:1, ctaPlain:1, asideAt:'right'}}},
+  {n:'92 · On 60 — centred block, lead at 15px', s:{pick:{style:60, C:1, lfs:'15px', gap:'96px', asideAt:'right'}}},
+  {n:'93 · On 49 — as picked', s:{pick:{style:49, asideAt:'right'}}},
+  {n:'94 · On 49 — balanced 464 + 96 + 464, centred', s:{pick:{style:49, C:1, asideAt:'right'}}},
+  {n:'95 · On 49 — equal columns, wider gap', s:{pick:{style:49, cols:'1fr 1fr', gap:'clamp(40px,7vw,120px)', asideAt:'right'}}},
+  {n:'96 · On 49 — board moved under the pair', s:{pick:{style:49, asideAt:'under', asideAt:'right'}}},
+  {n:'97 · On 49 — board under the lead, left column', s:{pick:{style:49, asideAt:'left', asideAt:'right'}}},
+  {n:'98 · On 49 — with a Bebas line over the lead', s:{pick:{style:49, head:'Under one roof.', asideAt:'right'}}},
+  {n:'99 · On 49 — hairline edges instead of 1px', s:{pick:{style:49, edge:'0.5px', edgeA:0.14, asideAt:'right'}}},
+  {n:'100 · On 49 — deeper indent off the rule', s:{pick:{style:49, pad:'26px', rowGap:'24px', asideAt:'right'}}},
+  {n:'101 · On 49 — centred block, CTA under the lead', s:{pick:{style:49, C:1, ctaLeft:1, ctaPlain:1, asideAt:'right'}}},
+  {n:'102 · On 49 — centred block, lead at 15px', s:{pick:{style:49, C:1, lfs:'15px', gap:'96px', asideAt:'right'}}}
  ];
 
  /* ---------- apply ---------- */
@@ -4824,11 +4996,16 @@ html body .f-m6{display:none !important;}
   }
   var s=v.s||{};
   var w=ensureWrap(); w.style.display='';
-  w.innerHTML = s.close ? HEAD3(s) : (s.head2 ? HEAD2(s) : HEAD(s));
+  w.innerHTML = s.mh    ? HEAD4(s.mh)
+              : s.pick  ? HEAD3({hdr:'team',head3:'ey'})
+              : s.close ? HEAD3(s) : (s.head2 ? HEAD2(s) : HEAD(s));
   HOSTS.headNodes.forEach(function(n){n.style.display='none';});
-  HOSTS.board.innerHTML  = s.brd    ? (BOARD3(s)  || '')
+  HOSTS.board.innerHTML  = (s.mh||s.pick) ? ''
+                         : s.brd    ? (BOARD3(s)  || '')
                          : s.board2 ? (BOARD2(s)  || BOARD(s)) : BOARD(s);
-  HOSTS.blocks.innerHTML = s.close  ? (BLOCKS3(s) || BLOCKS(s))
+  HOSTS.blocks.innerHTML = s.mh   ? CLOSEPICK({style:49, asideAt:'right'})
+                         : s.pick ? CLOSEPICK(s.pick)
+                         : s.close  ? (BLOCKS3(s) || BLOCKS(s))
                          : s.blocks2? (BLOCKS2(s) || BLOCKS(s)) : BLOCKS(s);
   if(s.blocks2==='accordion')wireAcc();
  }
