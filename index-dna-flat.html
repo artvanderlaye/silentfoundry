@@ -7910,6 +7910,13 @@ else boot();
   {n:'41 · Left, tight, hub left and centred',     W:780,H:385,align:'left',k:0.85,gam:1.12,hx:16,hy:50,disc:0.92}
  ];
 
+ /* Narrowed to Matthew's shortlist. The ORIGINAL numbers are kept on the
+    boxes — 23, 32 and 40 are what he has been calling them, and renumbering
+    them 2/3/4 would break that. 1 stays as the current design to compare. */
+ var KEEP=[1,23,32,40];
+ V=V.filter(function(v){
+  var m=/^(\d+)/.exec(v.n); return m && KEEP.indexOf(+m[1])>=0;});
+
  var cur=1;
  function ui(){
   if(document.getElementById('gs-ui'))return;
@@ -7922,7 +7929,7 @@ else boot();
    '#gs-ui .nav{background:none;border:1px solid rgba(244,241,236,0.26);'+
    'color:#f4f1ec;width:26px;height:24px;cursor:pointer;padding:0;}'+
    '#gs-ui .boxes{display:flex;flex-wrap:wrap;gap:4px;}'+
-   '#gs-ui .bx{width:26px;height:22px;background:none;padding:0;'+
+   '#gs-ui .bx{width:32px;height:24px;background:none;padding:0;'+
    'border:1px solid rgba(244,241,236,0.20);color:rgba(244,241,236,0.62);'+
    'font-family:'+DM+';font-size:10.5px;cursor:pointer;display:flex;'+
    'align-items:center;justify-content:center;}'+
@@ -7931,7 +7938,9 @@ else boot();
   document.head.appendChild(css);
   var bar=document.createElement('div'); bar.id='gs-ui';
   var b='';
-  for(var i=1;i<=V.length;i++)b+='<button class="bx" data-n="'+i+'">'+i+'</button>';
+  for(var i=1;i<=V.length;i++){
+   var lbl=(/^(\d+)/.exec(V[i-1].n)||[,i])[1];
+   b+='<button class="bx" data-n="'+i+'">'+lbl+'</button>';}
   bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
    '<button class="nav" id="gs-n">&rsaquo;</button><span class="lab" id="gs-l"></span></div>'+
    '<div class="boxes" id="gs-b">'+b+'</div>';
@@ -7954,7 +7963,10 @@ else boot();
                fitOf:function(n){return V[n-1].__fit+'/'+V[n-1].__k;},
                get:function(){return cur;}};
   var mv=/[?&]v=(\d+)/.exec(location.search);
-  go(mv?+mv[1]:1);
+  var want=1;
+  if(mv){ V.forEach(function(v,i){
+   if((/^(\d+)/.exec(v.n)||[])[1]===mv[1])want=i+1;}); }
+  go(want);
  }
 
  function boot(){var t=0;
