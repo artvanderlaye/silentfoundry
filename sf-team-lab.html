@@ -4747,6 +4747,135 @@ html body .f-m6{display:none !important;}
   return ctr(pair, v.C);
  }
 
+
+ /* ============================================================
+    83 - 102 REBUILT.  Fixed reading order, two columns, twenty
+    genuinely different arrangements.
+
+    The order Matthew set is now law and never varies:
+      1  THE PEOPLE BEHIND IT + its paragraph
+      2  BOARD OF DIRECTORS + the three
+      3  ⇕ Mission      4  ⊕ Vision      5  ∴ Opportunities
+      6  GET IN TOUCH
+    In a two-column grid the DOM order IS the reading order, so the
+    variety has to come from how the six pieces are split across the
+    two columns, not from resequencing them. Four splits are legal:
+      A  left: lead + board          right: the three + CTA
+      B  left: lead                  right: board + the three + CTA
+      C  lead full width, then       left: board   right: three + CTA
+      D  left: lead + board + CTA    right: the three
+    Everything else — proportion, gap, rules, board treatment, symbol
+    placement, centring — moves on top of those.
+    ============================================================ */
+
+ var TRIO=['⇕','⊕','∴'];          /* Matthew's symbols, in his order */
+
+ function tcLead(v){
+  return fEy(BK.items[0].label,{mb:v.ebmb||'18px'})+
+   (v.bebas?fH(v.bebas,{fs:v.hfs||'28px'}):'')+
+   fBody(BK.items[0].body,{fs:v.leadFs||'13.6px',mw:v.leadMw||'100%'});}
+
+ function tcBoard(v){
+  var P=BD.people, m=v.board||'rows';
+  function nm(p,o){o=o||{};return '<span style="font-family:'+DM+';font-size:'+
+   (o.fs||'13.12px')+';letter-spacing:0.14em;font-weight:500;color:'+
+   (o.col||ink(0.8))+';">'+p.name+'</span>';}
+  function rl(p,o){o=o||{};return '<span style="font-family:'+DM+';font-size:'+
+   (o.fs||'10.88px')+';letter-spacing:0.25em;text-transform:uppercase;font-weight:400;'+
+   'color:'+(o.col||ink(0.3))+';">'+p.role+'</span>';}
+  var head=fEy(BD.label,{mb:v.bdmb||'14px'});
+  var b='';
+  if(m==='rows')      b=P.map(function(p,i){return '<div style="border-top:0.5px solid '+
+    ink(0.11)+';padding:13px 0;display:flex;justify-content:space-between;gap:16px;'+
+    'align-items:baseline;flex-wrap:wrap;">'+nm(p)+rl(p)+'</div>';}).join('');
+  else if(m==='stack')b=P.map(function(p,i){return '<div style="padding:'+(i?'12px':'0')+
+    ' 0 0;">'+nm(p)+'<div style="margin-top:4px;">'+rl(p)+'</div></div>';}).join('');
+  else if(m==='ledger')b=P.map(function(p,i){return '<div style="border-top:0.5px solid '+
+    ink(0.11)+';padding:13px 0;display:grid;grid-template-columns:38px 1fr;gap:14px;'+
+    'align-items:baseline;"><span style="font-family:'+DM+';font-size:10.88px;'+
+    'letter-spacing:0.25em;color:'+ink(0.22)+';">'+num(i)+'</span><div>'+nm(p)+
+    '<div style="margin-top:4px;">'+rl(p)+'</div></div></div>';}).join('');
+  else if(m==='inline')b='<div style="line-height:2.1;">'+P.map(function(p){
+    return '<div>'+nm(p,{fs:'12.4px'})+'<span style="color:'+ink(0.18)+
+    ';padding:0 9px;">/</span>'+rl(p,{fs:'9.9px'})+'</div>';}).join('')+'</div>';
+  else if(m==='inset')b='<div style="border:0.5px solid '+ink(0.13)+';padding:22px;">'+
+    P.map(function(p,i){return '<div style="padding:'+(i?'11px':'0')+' 0 0;'+
+    (i?'border-top:0.5px solid '+ink(0.08)+';margin-top:11px;':'')+'">'+nm(p)+
+    '<div style="margin-top:4px;">'+rl(p)+'</div></div>';}).join('')+'</div>';
+  else if(m==='gold')b='<div class="tl-3up" style="display:grid;'+
+    'grid-template-columns:repeat(3,1fr);gap:20px;">'+P.map(function(p){
+    return '<div style="border-top:1px solid rgba(138,110,58,0.42);padding-top:12px;">'+
+    nm(p,{fs:'12.2px'})+'<div style="margin-top:4px;">'+rl(p,{fs:'9.9px'})+
+    '</div></div>';}).join('')+'</div>';
+  else if(m==='dark')b='<div style="background:#141210;padding:22px 24px;">'+
+    P.map(function(p,i){return '<div style="padding:'+(i?'11px':'0')+' 0 0;">'+
+    nm(p,{col:'rgba(244,241,236,0.86)'})+'<div style="margin-top:4px;">'+
+    rl(p,{col:'rgba(244,241,236,0.34)'})+'</div></div>';}).join('')+'</div>';
+  else if(m==='prose')b=fBody(P.map(function(p){
+    return p.name+', '+p.role.toLowerCase();}).join('; ')+'.',{fs:'12.6px'});
+  else if(m==='caption')b='<div style="border-top:0.5px solid '+ink(0.11)+
+    ';border-bottom:0.5px solid '+ink(0.11)+';padding:12px 0;">'+P.map(function(p,i){
+    return (i?'<span style="color:'+ink(0.16)+';padding:0 10px;">·</span>':'')+
+    nm(p,{fs:'12px'});}).join('')+'</div>';
+  if(m==='dark'||m==='caption')head=fEy(BD.label,{mb:v.bdmb||'14px'});
+  return head+b;}
+
+ function tcTrio(v){
+  var rest=BK.items.slice(1), m=v.trio||'left';
+  return rest.map(function(it,i){
+   var sym='<span style="font-family:'+DM+';font-size:'+(v.symFs||'15.2px')+
+    ';font-weight:300;color:'+GOLD+';">'+TRIO[i]+'</span>';
+   var rule=(v.trioRule===false)?'':'border-top:0.5px solid '+ink(0.11)+';';
+   if(m==='above')
+    return '<div style="'+rule+'padding:'+(i?'16px':(v.trioRule===false?'0':'16px'))+
+     ' 0 18px;">'+sym+'<div style="margin:9px 0 7px;">'+fLabel(it.label)+'</div>'+
+     fBody(it.body,{mw:v.bodyMw})+'</div>';
+   if(m==='wide')
+    return '<div style="'+rule+'padding:16px 0;">'+
+     '<div style="display:flex;gap:14px;align-items:baseline;">'+sym+
+     fLabel(it.label)+'</div><div style="margin-top:9px;">'+
+     fBody(it.body,{fs:'14.4px',mw:v.bodyMw})+'</div></div>';
+   if(m==='underline')
+    return '<div style="padding:0 0 20px;">'+
+     '<div style="display:flex;gap:12px;align-items:baseline;'+
+     'border-bottom:1px solid rgba(138,110,58,0.34);padding-bottom:8px;">'+sym+
+     fLabel(it.label)+'</div><div style="margin-top:10px;">'+
+     fBody(it.body,{mw:v.bodyMw})+'</div></div>';
+   if(m==='boxed')
+    return '<div style="border:0.5px solid '+ink(0.12)+';padding:20px 22px;'+
+     'margin-bottom:10px;"><div style="display:flex;gap:12px;align-items:baseline;">'+
+     sym+fLabel(it.label)+'</div><div style="margin-top:8px;">'+
+     fBody(it.body,{mw:v.bodyMw})+'</div></div>';
+   if(m==='hang')
+    return '<div style="'+rule+'padding:15px 0;display:grid;'+
+     'grid-template-columns:30px 1fr;gap:14px;">'+sym+'<div>'+fLabel(it.label)+
+     '<div style="margin-top:7px;">'+fBody(it.body,{mw:v.bodyMw})+'</div></div></div>';
+   /* left — symbol on the label's baseline */
+   return '<div style="'+rule+'padding:15px 0;">'+
+    '<div style="display:flex;gap:12px;align-items:baseline;">'+sym+fLabel(it.label)+
+    '</div><div style="margin-top:7px;'+(v.indent?'padding-left:27px;':'')+'">'+
+    fBody(it.body,{mw:v.bodyMw})+'</div></div>';}).join('');}
+
+ function TWOCOL(v){
+  var cta=fCta({plain:v.ctaPlain, mt:v.ctaMt});
+  var L,R,pre='';
+  if(v.map==='B'){ L=tcLead(v); R=tcBoard(v)+gap(v.midGap||26)+tcTrio(v)+cta; }
+  else if(v.map==='C'){ pre=tcLead(v)+gap(v.preGap||38);
+                        L=tcBoard(v); R=tcTrio(v)+cta; }
+  else if(v.map==='D'){ L=tcLead(v)+gap(v.midGap||26)+tcBoard(v); R=tcTrio(v);
+                        v.ctaAfter=cta; }
+  else { L=tcLead(v)+gap(v.midGap||26)+tcBoard(v); R=tcTrio(v)+cta; }
+  var pair=fPair(L,R,{cols:v.cols||(FCOL+' '+FCOL), gap:v.gap||FGAP, al:v.al||'start',
+    extra:v.divider?'':''});
+  if(v.divider) pair='<div class="tl-div" style="--dv:'+(v.gap||FGAP)+'">'+pair+'</div>';
+  var out=pre+pair+(v.ctaAfter?gap(v.ctaGap||26)+v.ctaAfter:'');
+  if(v.topRule) out='<div style="height:0.5px;background:'+ink(0.14)+
+    ';margin-bottom:34px;"></div>'+out;
+  if(v.botRule) out=out+'<div style="height:0.5px;background:'+ink(0.14)+
+    ';margin-top:34px;"></div>';
+  return ctr(out, v.C);
+ }
+
  /* ---------- the twenty ---------- */
  var V=[
   {n:'1 · Current design (untouched)', base:true},
@@ -4928,26 +5057,26 @@ html body .f-m6{display:none !important;}
   {n:'80 · Masthead — no rule — the image band\u2019s own hairline does it', s:{mh:{w:'team',   sc:'ey',    lc:'scrollline', rl:'none',  sr:'tight', gb:0}}},
   {n:'81 · Masthead — eyebrow, locations gone entirely, mark + Scroll', s:{mh:{w:'people', sc:'ey',    lc:'none',       rl:'bleed', sr:'tight', mk:1}}},
   {n:'82 · Masthead — centred block — mid scale, split rule', s:{mh:{w:'team',   sc:'mid',   lc:'centre',     rl:'split', sr:'right', al:'centre', C:1}}},
-  {n:'83 · On 60 — as picked', s:{pick:{style:60, asideAt:'right'}}},
-  {n:'84 · On 60 — balanced 464 + 96 + 464, centred', s:{pick:{style:60, C:1, asideAt:'right'}}},
-  {n:'85 · On 60 — equal columns, wider gap', s:{pick:{style:60, cols:'1fr 1fr', gap:'clamp(40px,7vw,120px)', asideAt:'right'}}},
-  {n:'86 · On 60 — board moved under the pair', s:{pick:{style:60, asideAt:'under', asideAt:'right'}}},
-  {n:'87 · On 60 — board under the lead, left column', s:{pick:{style:60, asideAt:'left', asideAt:'right'}}},
-  {n:'88 · On 60 — with a Bebas line over the lead', s:{pick:{style:60, head:'Under one roof.', asideAt:'right'}}},
-  {n:'89 · On 60 — symbols dropped, rows only', s:{pick:{style:60, noSym:1, asideAt:'right'}}},
-  {n:'90 · On 60 — lead wider, rows narrower', s:{pick:{style:60, cols:'1.3fr 1fr', asideAt:'right'}}},
-  {n:'91 · On 60 — centred block, CTA under the lead', s:{pick:{style:60, C:1, ctaLeft:1, ctaPlain:1, asideAt:'right'}}},
-  {n:'92 · On 60 — centred block, lead at 15px', s:{pick:{style:60, C:1, lfs:'15px', gap:'96px', asideAt:'right'}}},
-  {n:'93 · On 49 — as picked', s:{pick:{style:49, asideAt:'right'}}},
-  {n:'94 · On 49 — balanced 464 + 96 + 464, centred', s:{pick:{style:49, C:1, asideAt:'right'}}},
-  {n:'95 · On 49 — equal columns, wider gap', s:{pick:{style:49, cols:'1fr 1fr', gap:'clamp(40px,7vw,120px)', asideAt:'right'}}},
-  {n:'96 · On 49 — board moved under the pair', s:{pick:{style:49, asideAt:'under', asideAt:'right'}}},
-  {n:'97 · On 49 — board under the lead, left column', s:{pick:{style:49, asideAt:'left', asideAt:'right'}}},
-  {n:'98 · On 49 — with a Bebas line over the lead', s:{pick:{style:49, head:'Under one roof.', asideAt:'right'}}},
-  {n:'99 · On 49 — hairline edges instead of 1px', s:{pick:{style:49, edge:'0.5px', edgeA:0.14, asideAt:'right'}}},
-  {n:'100 · On 49 — deeper indent off the rule', s:{pick:{style:49, pad:'26px', rowGap:'24px', asideAt:'right'}}},
-  {n:'101 · On 49 — centred block, CTA under the lead', s:{pick:{style:49, C:1, ctaLeft:1, ctaPlain:1, asideAt:'right'}}},
-  {n:'102 · On 49 — centred block, lead at 15px', s:{pick:{style:49, C:1, lfs:'15px', gap:'96px', asideAt:'right'}}}
+  {n:'83 · Two columns — A · Foundry pair, board under the lead', s:{two:{map:'A', trio:'left'}}},
+  {n:'84 · Two columns — A · balanced 1024 block, centred', s:{two:{map:'A', trio:'left', C:1}}},
+  {n:'85 · Two columns — B · board heads the right column', s:{two:{map:'B', trio:'left', board:'stack'}}},
+  {n:'86 · Two columns — C · lead full width, then two columns', s:{two:{map:'C', trio:'hang', board:'ledger'}}},
+  {n:'87 · Two columns — D · CTA under the board, three on the right', s:{two:{map:'D', trio:'wide', board:'rows'}}},
+  {n:'88 · Two columns — A · symbol above each label', s:{two:{map:'A', trio:'above', board:'inline'}}},
+  {n:'89 · Two columns — B · boxed trio, board as an inset panel', s:{two:{map:'B', trio:'boxed', board:'inset'}}},
+  {n:'90 · Two columns — C · gold rules over the board, hanging symbols', s:{two:{map:'C', trio:'hang', board:'gold', C:1}}},
+  {n:'91 · Two columns — A · board on a dark block', s:{two:{map:'A', trio:'left', board:'dark'}}},
+  {n:'92 · Two columns — B · board as a colophon sentence', s:{two:{map:'B', trio:'underline', board:'prose'}}},
+  {n:'93 · Two columns — C · board as a caption rule, wide gap', s:{two:{map:'C', trio:'above', board:'caption', gap:'clamp(48px,9vw,160px)'}}},
+  {n:'94 · Two columns — A · lead wider, trio narrower', s:{two:{map:'A', trio:'left', cols:'1.35fr 1fr', board:'stack'}}},
+  {n:'95 · Two columns — B · trio wider than the lead', s:{two:{map:'B', trio:'hang', cols:'1fr 1.35fr', board:'ledger'}}},
+  {n:'96 · Two columns — D · no rules on the trio, indented bodies', s:{two:{map:'D', trio:'left', trioRule:false, indent:1, board:'inline'}}},
+  {n:'97 · Two columns — A · a Bebas line over the lead', s:{two:{map:'A', trio:'wide', bebas:'Under one roof.', board:'rows'}}},
+  {n:'98 · Two columns — C · centred 1024, lead at 15px', s:{two:{map:'C', trio:'left', leadFs:'15px', board:'gold', C:1}}},
+  {n:'99 · Two columns — B · hairline above and below the whole block', s:{two:{map:'B', trio:'above', board:'caption', topRule:1, botRule:1}}},
+  {n:'100 · Two columns — A · vertical divider between the columns', s:{two:{map:'A', trio:'left', divider:1, board:'stack'}}},
+  {n:'101 · Two columns — D · board as a numbered ledger, CTA left', s:{two:{map:'D', trio:'hang', board:'ledger', ctaPlain:1}}},
+  {n:'102 · Two columns — C · centred, boxed trio, board inset', s:{two:{map:'C', trio:'boxed', board:'inset', C:1}}}
  ];
 
  /* ---------- apply ---------- */
@@ -4969,6 +5098,8 @@ html body .f-m6{display:none !important;}
 
  var LABCSS =
   '#tl-head .strip{display:flex;}'+
+  '.tl-div .tl-fpair > div:last-child{border-left:0.5px solid rgba(10,10,10,0.11);padding-left:var(--dv,96px);}'+
+  '@media(max-width:768px){.tl-div .tl-fpair > div:last-child{border-left:0;padding-left:0;}}'+
   '@media(max-width:1090px){.tl-fpair{grid-template-columns:1fr 1fr !important;gap:clamp(24px,4vw,56px) !important;}}'+
   '#tl-head .tl-tight{position:relative;top:10px;}'+
   '@media(max-width:768px){'+
@@ -4978,6 +5109,7 @@ html body .f-m6{display:none !important;}
    '.tl-row{grid-template-columns:1fr !important;gap:8px !important;}'+
    '.tl-pair{grid-template-columns:1fr !important;gap:26px !important;}'+
    '.tl-quad{grid-template-columns:1fr !important;}'+
+   '.tl-div .tl-fpair{border:0 !important;}'+
    '.tl-fpair{grid-template-columns:1fr !important;gap:30px !important;}'+
    '.tl-rail{position:static !important;}'+
    '.tl-splitrule{flex-direction:column;gap:12px;}'+
@@ -4997,13 +5129,14 @@ html body .f-m6{display:none !important;}
   var s=v.s||{};
   var w=ensureWrap(); w.style.display='';
   w.innerHTML = s.mh    ? HEAD4(s.mh)
-              : s.pick  ? HEAD3({hdr:'team',head3:'ey'})
+              : (s.pick||s.two) ? HEAD3({hdr:'team',head3:'ey'})
               : s.close ? HEAD3(s) : (s.head2 ? HEAD2(s) : HEAD(s));
   HOSTS.headNodes.forEach(function(n){n.style.display='none';});
-  HOSTS.board.innerHTML  = (s.mh||s.pick) ? ''
+  HOSTS.board.innerHTML  = (s.mh||s.pick||s.two) ? ''
                          : s.brd    ? (BOARD3(s)  || '')
                          : s.board2 ? (BOARD2(s)  || BOARD(s)) : BOARD(s);
-  HOSTS.blocks.innerHTML = s.mh   ? CLOSEPICK({style:49, asideAt:'right'})
+  HOSTS.blocks.innerHTML = s.two  ? TWOCOL(s.two)
+                         : s.mh   ? CLOSEPICK({style:49, asideAt:'right'})
                          : s.pick ? CLOSEPICK(s.pick)
                          : s.close  ? (BLOCKS3(s) || BLOCKS(s))
                          : s.blocks2? (BLOCKS2(s) || BLOCKS(s)) : BLOCKS(s);
