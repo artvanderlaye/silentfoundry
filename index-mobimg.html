@@ -8049,13 +8049,19 @@ else boot();
    var fr=(v.figRatio||'1/1');
    /* 57/520 of the box. Expressed against the SAME width the box uses, so
       discs, positions and connector lines all scale as one piece. */
-   var dw=v.figBleed?'10.96vw':'calc((100vw - 48px) * 0.1096)';
+   /* SIZE, not shape. Forced into the flat 760/360 box the fan's own square
+     geometry collapsed and the fitter ground the discs down to specks. The
+     box goes back to square — the one shape the geometry is clean in,
+     measured at 24.7px of clearance — and the SCALING is what comes down
+     instead. Each study takes a different share of the screen. */
+   var fw='('+(v.figW||70)+'vw)';
+   var dw='calc('+fw+' * 0.1096)';
+   var hubW='calc('+fw+' * 0.25)';
    figCSS+= F+'{display:block !important;position:relative !important;'+
         'aspect-ratio:'+fr+' !important;height:auto !important;'+
         'min-height:0 !important;overflow:visible !important;'+
-        (v.figBleed
-          ? 'width:100vw !important;max-width:100vw !important;margin:0 0 26px !important;'
-          : 'width:100% !important;max-width:100% !important;margin:0 auto 26px !important;')+
+        'width:'+(v.figW||70)+'vw !important;max-width:'+(v.figW||70)+'vw !important;'+
+        'margin:0 auto 26px !important;'+
         '}'+
        /* labels live in the list below — the figure is purely a drawing */
        /* visibility, NOT display. Each point is a disc WITH its label under it,
@@ -8084,13 +8090,26 @@ else boot();
        F+' .dl-dpt{position:absolute !important;display:block !important;'+
         'max-width:none !important;padding:0 !important;'+
         'transform:translate(-50%,-50%) !important;}'+
-       F+' .dl-dpt > div:first-child{width:'+dw+' !important;'+
-        'height:'+dw+' !important;flex:none !important;margin:0 auto !important;}'+
+       /* display:block is asserted here because the rule that strips the
+          repeated thumbnails out of the LIST is written against `.dl-kx
+          .dl-dpt`, and .dl-kx is an ancestor of the figure too — it hid the
+          drawing's own eight discs and left nothing but the medallion. */
+       F+' .dl-dpt > div:first-child{display:block !important;'+
+        'width:'+dw+' !important;height:'+dw+' !important;'+
+        'flex:none !important;margin:0 auto !important;}'+
+       /* A CIRCLE, not an ellipse. width:25% and height:25% only agree when
+          the box is square — in the flat box they gave a 25%-of-width by
+          25%-of-height OVAL. Every connector line starts at the medallion's
+          edge, computed from half its width, so an oval sent all eight of
+          them off from the wrong place: that is the lines not matching.
+          Sized off the width alone, with the ratio holding it round. */
        F+' .dl-dhub{position:absolute !important;display:block !important;'+
-        'width:25% !important;height:25% !important;'+
-        'aspect-ratio:auto !important;max-width:none !important;'+
-        'margin:0 !important;border-radius:50% !important;'+
-        'transform:translate(-50%,-50%) !important;grid-column:auto !important;}';
+        'width:'+hubW+' !important;height:auto !important;'+
+        'aspect-ratio:1/1 !important;max-width:none !important;'+
+        'margin:0 !important;border-radius:50% !important;overflow:hidden !important;'+
+        'transform:translate(-50%,-50%) !important;grid-column:auto !important;}'+
+       F+' .dl-dhub img{width:100% !important;height:100% !important;'+
+        'object-fit:cover !important;}';
   } else {
    figCSS+= F+'{display:none !important;}';
   }
@@ -8107,6 +8126,20 @@ else boot();
       'html body #sfsec-dna .dl-kx .dl-dpt,html body #sfsec-dna .dl-dpt{'+
       'grid-template-columns:'+v.disc+'px 1fr !important;}';
 
+  /* THE LIST MUST NOT REPEAT THE DRAWING.
+     When the drawing is on screen it already shows all eight photographs;
+     showing them again as thumbnails underneath is the same eight pictures
+     twice. The list keeps its words — they are the only place the eight
+     attributes can be READ — and gives up its pictures. */
+  if(v.fig)
+   s+='html body #sfsec-dna .dl-kx .dl-dpt > div:first-child,'+
+      'html body #sfsec-dna .dl-pl .dl-dpt > div:first-child,'+
+      'html body #sfsec-dna .dl-gx .dl-dpt > div:first-child,'+
+      'html body #sfsec-dna .dl-dial .dl-dpt > div:first-child{'+
+      'display:none !important;}'+
+      'html body #sfsec-dna .dl-pl .dl-dpt,html body #sfsec-dna .dl-gx .dl-dpt,'+
+      'html body #sfsec-dna .dl-kx .dl-dpt,html body #sfsec-dna .dl-dial .dl-dpt{'+
+      'grid-template-columns:1fr !important;padding:6px 0 !important;}';
   /* no photo header for this study? then the medallion has no job in the
      list — the figure above already carries it, or nothing does. */
   if(!v.hdr)
@@ -8278,7 +8311,7 @@ else boot();
    if(L)fh.style.setProperty('left',L,'important');
    if(T)fh.style.setProperty('top',T,'important');
   }
-  FIGV=v.figBleed?v:null;
+  FIGV=null;   /* the figure is centred now, not bled — no correction needed */
   figFix();
   figFit();
   figLines();
@@ -8435,10 +8468,10 @@ else boot();
     disc  thumbnail size in that list                                    */
  var V=[
   {n:'1 · Drawing leads, full bleed square, two columns',
-   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'2 · Drawing leads, inside the page margin, two columns',
-   fig:1, figRatio:'3/2', figBleed:0, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'1/1', figW:58, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'3 · Amps photograph leads 16:9, two columns',
    fig:0, hdr:'hero', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
@@ -8450,21 +8483,21 @@ else boot();
    fig:0, hdr:null, rows:'none', cols:2, disc:56},
 
   {n:'6 · Drawing leads, one column, generous rows',
-   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'none', cols:1, disc:52},
+   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'none', cols:1, disc:52},
 
   {n:'7 · Amps photograph as a wide 21:9 band, two columns',
    fig:0, hdr:'hero', hdrRatio:'21/9', rows:'none', cols:2, disc:44},
 
   {n:'8 · List first, drawing closes the section',
-   fig:1, figRatio:'3/2', figBleed:1, figPos:'bottom', hdr:null, rows:'none',
+   fig:1, figRatio:'1/1', figW:66, figPos:'bottom', hdr:null, rows:'none',
    cols:2, disc:44},
 
   {n:'9 · Drawing leads, two columns, one photograph row below',
-   fig:1, figRatio:'3/2', figBleed:1, hdr:null, rows:'last', ratio:'16/9',
+   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'last', ratio:'16/9',
    cols:2, disc:44},
 
   {n:'10 · Drawing leads 4:3, two columns, small thumbnails',
-   fig:1, figRatio:'16/9', figBleed:1, hdr:null, rows:'none', cols:2, disc:36}
+   fig:1, figRatio:'1/1', figW:54, hdr:null, rows:'none', cols:2, disc:36}
  ];
  /* the old flags the CSS builder still reads, derived from the new ones */
  V.forEach(function(v){
