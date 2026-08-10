@@ -8162,11 +8162,15 @@ else boot();
  }
  addEventListener('load',function(){ bleedFix(); });
 
+ /* 27, and only 27. 40 is deleted.
+    rows:'none'  no photo rows survive on a small screen — the square header
+                 IS the picture, so the old stacked rows are redundant
+    hubSquare    the circular medallion becomes a full-bleed square header
+    hubHero      that header shows the stacked-amps photograph
+    sqRatio      16:9 */
  var V=[
   {n:'27 · Square header 16:9, amps, real thumbnails',
-   rows:'none', hubSquare:1, hubHero:1, sqRatio:'16/9'},
-  {n:'40 · Square header 3:2 + closer 3:2, real thumbnails',
-   rows:'last', hubSquare:1, hubHero:1, sqRatio:'3/2', ratio:'3/2'}
+   rows:'none', hubSquare:1, hubHero:1, sqRatio:'16/9'}
  ];
  /* 'none' hides every photo row */
  var _s=smallCSS;
@@ -8177,7 +8181,7 @@ else boot();
     '@media(max-width:900px){html body #sfsec-dna .cs-row-right{display:none !important;}');
   return out;};
 
- var cur=1;
+ var cur=1, started=false;
  /* decode the picture BEFORE anything is shown. The hub's <img> was having its
     src swapped mid-transition, so the browser painted the old picture, then a
     blank box, then the new one — three states, and no amount of rAF fixes it
@@ -8214,44 +8218,15 @@ else boot();
   });
  }
 
- function ui(){
-  if(document.getElementById('gs-ui'))return;
-  var css=document.createElement('style'); css.textContent=
-   '#gs-ui{position:fixed;left:0;right:0;bottom:0;z-index:99999;'+
-   'background:rgba(12,12,12,0.95);color:#f4f1ec;font-family:'+DM+';padding:9px 14px 10px;}'+
-   '#gs-ui .top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}'+
-   '#gs-ui .lab{font-size:11.5px;letter-spacing:0.1em;color:#c8a96e;flex:1;}'+
-   '#gs-ui .nav{background:none;border:1px solid rgba(244,241,236,0.26);color:#f4f1ec;'+
-   'width:26px;height:24px;cursor:pointer;padding:0;}'+
-   '#gs-ui .boxes{display:flex;flex-wrap:wrap;gap:4px;}'+
-   '#gs-ui .bx{width:30px;height:23px;background:none;padding:0;'+
-   'border:1px solid rgba(244,241,236,0.20);color:rgba(244,241,236,0.62);'+
-   'font-family:'+DM+';font-size:10.5px;cursor:pointer;display:flex;'+
-   'align-items:center;justify-content:center;}'+
-   '#gs-ui .bx.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}'+
-   'body{padding-bottom:112px !important;}';
-  document.head.appendChild(css);
-  var bar=document.createElement('div'); bar.id='gs-ui';
-  var b='';
-  for(var i=1;i<=V.length;i++){
-   var lbl=(/^(\d+)/.exec(V[i-1].n)||[,i])[1];
-   b+='<button class="bx" data-n="'+i+'">'+lbl+'</button>';}
-  bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
-   '<button class="nav" id="gs-n">&rsaquo;</button><span class="lab" id="gs-l"></span></div>'+
-   '<div class="boxes" id="gs-b">'+b+'</div>';
-  document.body.appendChild(bar);
-  var wrap=document.getElementById('gs-b'), lab=document.getElementById('gs-l');
-  function go(n){n=Math.max(1,Math.min(V.length,n|0)); cur=n;
-   lab.textContent=V[n-1].n;
-   [].forEach.call(wrap.children,function(x,i){
-    if(i===n-1)x.classList.add('on'); else x.classList.remove('on');});
-   applyV(n);}
-  wrap.addEventListener('click',function(e){
-   var t=e.target.closest?e.target.closest('.bx'):null; if(t)go(+t.getAttribute('data-n'));});
-  document.getElementById('gs-p').onclick=function(){go(cur-1);};
-  document.getElementById('gs-n').onclick=function(){go(cur+1);};
-  document.addEventListener('keydown',function(e){
-   if(e.key==='ArrowLeft')go(cur-1); if(e.key==='ArrowRight')go(cur+1);});
+ /* The study is over — 27 is the design. The numbered picker bar, its
+    stylesheet, the prev/next buttons, the arrow-key handler and the 112px of
+    body padding that made room for it are all gone. What the bar used to do
+    on click is now done once, on boot.
+    window.__gs stays, with no DOM of its own: it is what the verification
+    scripts drive the page through, and it renders nothing. */
+ function start(){
+  if(started)return; started=true;
+  function go(n){ cur=1; applyV(1); }
   /* only redo the work when the width actually moved enough to change
      anything — resizing used to re-run the whole fit on every pixel */
   var rt=null, lastW=innerWidth;
@@ -8285,8 +8260,7 @@ else boot();
     hiding=false; lastW=innerWidth; applyV(cur);
    },140);});
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
-  var mv=/[?&]v=(\d+)/.exec(location.search);
-  go(mv?+mv[1]:1);
+  go(1);
  }
  function boot(){
   var t=0;
@@ -8295,7 +8269,7 @@ else boot();
    var gl=document.getElementById('sf-glance');
    if(gl){var row=gl; while(row&&!(row.className||'').toString().match(/cs-row-left/))row=row.parentElement;
     if(row)row.classList.add('m4-lastrow');}
-   ui();
+   start();
   })();
  }
  if(document.readyState==='loading')
