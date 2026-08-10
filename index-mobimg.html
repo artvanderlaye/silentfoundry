@@ -7713,7 +7713,7 @@ else boot();
 
 </script>
 
-<!-- SMALL-SCREEN IMAGE LOAD STUDIES - TEST PAGE ONLY. -->
+<!-- MARSHALL small-screen: 27 and 40 only. -->
 <script id="sf-mobimg">
 /* ============================================================
    MARSHALL — option 4, production candidate.
@@ -7857,7 +7857,17 @@ else boot();
  var HERO='images/marshall-hero.png';
 
  var BASECSS =
-  '@media(min-width:1201px){'+
+  '@media(min-width:1601px){'+
+   'html body #sfsec-dna .cs-dbody{width:100% !important;margin-left:0 !important;'+
+    'margin-right:0 !important;grid-template-columns:1fr 428px !important;}'+
+   'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
+   'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
+   'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
+   'html body #sfsec-dna .dl-dial{aspect-ratio:760/360 !important;max-width:760px !important;'+
+    'min-height:0 !important;height:auto !important;width:100% !important;'+
+    'margin:0 auto 0 0 !important;}'+
+  '}'+
+  '@media(min-width:1201px) and (max-width:1600px){'+
    'html body #sfsec-dna .cs-dbody{width:calc(100% - 96px) !important;'+
     'margin-left:48px !important;margin-right:48px !important;'+
     'grid-template-columns:1fr 380px !important;}'+
@@ -7922,7 +7932,12 @@ else boot();
       'border-radius:0 !important;border:0 !important;'+
       'grid-column:1/-1 !important;}'+
       'html body #sfsec-dna .dl-dhub img{width:100% !important;height:100% !important;'+
-      'object-fit:cover !important;}';
+      'object-fit:cover !important;}'+
+      /* every ancestor between the hub and the page has to let it through */
+      'html body #sfsec-dna .cs-dna-split,html body #sfsec-dna .dl-kx,'+
+      'html body #sfsec-dna .dl-gx,html body #sfsec-dna .dl-ix,'+
+      'html body #sfsec-dna .dl-dial,html body #sfsec-dna .cs-row-left{'+
+      'overflow:visible !important;}';
   else if(v.hub)
    /* the phone block pins the hub with #sfsec-dna .dl-kx .dl-dhub — one id and
       two classes — so a plainer selector loses even with !important. Matched. */
@@ -7939,53 +7954,38 @@ else boot();
   if(!im)return;
   if(!im.__orig)im.__orig=im.getAttribute('src');
   im.setAttribute('src', (v.hubHero&&innerWidth<=600) ? HERO : im.__orig);
+  /* calc(50% - 50vw) resolves against the GRID AREA, not the page, so the
+     bleed missed by 6px at 360. Measured and set in pixels instead — exact
+     at every width. */
+  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  if(!hub)return;
+  if(v.hubSquare&&innerWidth<=600){
+   /* width FIRST — changing it moves the box, so measuring before setting it
+      leaves the offset stale. Two passes because the first margin can itself
+      shift the grid. */
+   /* the stylesheet sets margin and width with !important, and a plain inline
+      style loses to that — so these have to be set as important too. */
+   hub.style.setProperty('max-width','none','important');
+   hub.style.setProperty('width',document.documentElement.clientWidth+'px','important');
+   hub.style.setProperty('margin-left','0px','important');
+   for(var pass=0;pass<3;pass++){
+    var cur=parseFloat(hub.style.marginLeft)||0;
+    var off=hub.getBoundingClientRect().left;
+    if(Math.abs(off)<0.5)break;
+    hub.style.setProperty('margin-left',(cur-off)+'px','important');
+   }
+  } else {
+   hub.style.removeProperty('margin-left');
+   hub.style.removeProperty('width');
+   hub.style.removeProperty('max-width');
+  }
  }
 
  var V=[
-  {n:'1 · As shipped — 3 photo rows + 8 disc photos'},
-  {n:'2 · Hero only',                         rows:'hero'},
-  {n:'3 · Hero + closer (2 rows)',            rows:'heroLast'},
-  {n:'4 · Closer only',                       rows:'last'},
-  {n:'5 · Hero + 2-up, closer dropped',       rows:'heroPair'},
-  {n:'6 · Hero only, discs become dots',      rows:'hero',     discs:'dot'},
-  {n:'7 · Hero + closer, discs become dots',  rows:'heroLast', discs:'dot'},
-  {n:'8 · Hero only, discs small',            rows:'hero',     discs:'small'},
-  {n:'9 · Hero + closer, discs small',        rows:'heroLast', discs:'small'},
-  {n:'10 · Hero only, hub 150',               rows:'hero',     hub:150},
-  {n:'11 · Hero only, hub 180',               rows:'hero',     hub:180},
-  {n:'12 · Hub becomes the amps, hero row dropped', rows:'last', hubHero:1, hub:160},
-  {n:'13 · Hub becomes the amps, closer only, dots', rows:'last', hubHero:1, hub:170, discs:'dot'},
-  {n:'14 · Hub the amps, hero + closer',      rows:'heroLast', hubHero:1, hub:150},
-  {n:'15 · Hub the amps at 200, closer only', rows:'last',     hubHero:1, hub:200, discs:'dot'},
-  {n:'16 · Hub the amps, no photo rows at all', rows:'none',   hubHero:1, hub:190, discs:'dot'},
-  {n:'17 · Hero only, dots, hub 170',         rows:'hero',     discs:'dot', hub:170},
-  {n:'18 · Hero + closer 3:2, discs small',   rows:'heroLast', discs:'small', ratio:'3/2'},
-  {n:'19 · Hero + closer 21:9, dots',         rows:'heroLast', discs:'dot',   ratio:'21/9'},
-  {n:'20 · Closer only 3:2, hub the amps 180', rows:'last',    hubHero:1, hub:180, discs:'small', ratio:'3/2'},
-  {n:'21 · Hero only 21:9, dots, hub the amps', rows:'hero',   hubHero:1, hub:170, discs:'dot', ratio:'21/9'},
-
-  /* ---- 22-42 · the circle becomes a full-width SQUARE header picture ---- */
-  {n:'22 · Square header 1:1, amps, no photo rows', rows:'none', hubSquare:1, hubHero:1},
-  {n:'23 · Square header 1:1, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot'},
-  {n:'24 · Square header 1:1, amps, small discs',   rows:'none', hubSquare:1, hubHero:1, discs:'small'},
-  {n:'25 · Square header 4:3, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'4/3'},
-  {n:'26 · Square header 3:2, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'3/2'},
-  {n:'27 · Square header 16:9, amps, dots',         rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'16/9'},
-  {n:'28 · Square header 1:1, speaker, dots',       rows:'none', hubSquare:1, discs:'dot'},
-  {n:'29 · Square header 3:2, speaker, dots',       rows:'none', hubSquare:1, discs:'dot', sqRatio:'3/2'},
-  {n:'30 · Square header + closer photo, dots',     rows:'last', hubSquare:1, hubHero:1, discs:'dot'},
-  {n:'31 · Square header + closer 21:9, dots',      rows:'last', hubSquare:1, hubHero:1, discs:'dot', ratio:'21/9'},
-  {n:'32 · Square header + closer, small discs',    rows:'last', hubSquare:1, hubHero:1, discs:'small'},
-  {n:'33 · Square header 4:3 + closer, dots',       rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'4/3'},
-  {n:'34 · Square header 16:9 + closer, dots',      rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'16/9'},
-  {n:'35 · Square header 1:1, keeps disc photos',   rows:'none', hubSquare:1, hubHero:1},
-  {n:'36 · Square header 3:2, keeps disc photos',   rows:'none', hubSquare:1, hubHero:1, sqRatio:'3/2'},
-  {n:'37 · Square header 21:9, amps, dots',         rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'21/9'},
-  {n:'38 · Square header 5:4, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'5/4'},
-  {n:'39 · Square header 1:1, speaker, small discs',rows:'none', hubSquare:1, discs:'small'},
-  {n:'40 · Square header 3:2 + closer 3:2, dots',   rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'3/2', ratio:'3/2'},
-  {n:'41 · Square header 16:9, speaker, dots',      rows:'none', hubSquare:1, discs:'dot', sqRatio:'16/9'},
-  {n:'42 · Square header 1:1 + hero row, dots',     rows:'hero', hubSquare:1, hubHero:1, discs:'dot'}
+  {n:'27 · Square header 16:9, amps, real thumbnails',
+   rows:'none', hubSquare:1, hubHero:1, sqRatio:'16/9'},
+  {n:'40 · Square header 3:2 + closer 3:2, real thumbnails',
+   rows:'last', hubSquare:1, hubHero:1, sqRatio:'3/2', ratio:'3/2'}
  ];
  /* 'none' hides every photo row */
  var _s=smallCSS;
@@ -8001,7 +8001,7 @@ else boot();
   var v=V[i-1]; if(!v)return;
   var st=document.getElementById('mi-css');
   if(!st){st=document.createElement('style'); st.id='mi-css'; document.body.appendChild(st);}
-  st.textContent=BASECSS+(v.n.indexOf('1 · As shipped')===0?'':smallCSS(v));
+  st.textContent=BASECSS+smallCSS(v);
   applyHub(v);
   layout();
  }
@@ -8025,7 +8025,9 @@ else boot();
   document.head.appendChild(css);
   var bar=document.createElement('div'); bar.id='gs-ui';
   var b='';
-  for(var i=1;i<=V.length;i++)b+='<button class="bx" data-n="'+i+'">'+i+'</button>';
+  for(var i=1;i<=V.length;i++){
+   var lbl=(/^(\d+)/.exec(V[i-1].n)||[,i])[1];
+   b+='<button class="bx" data-n="'+i+'">'+lbl+'</button>';}
   bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
    '<button class="nav" id="gs-n">&rsaquo;</button><span class="lab" id="gs-l"></span></div>'+
    '<div class="boxes" id="gs-b">'+b+'</div>';
