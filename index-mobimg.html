@@ -8202,10 +8202,16 @@ else boot();
    s+= R+'{display:none !important;}'+
        R+'.cs-row-right-r1{display:block !important;}'+
        R+'.cs-show-mobile{display:block !important;}'+
+       /* CONTAINED, not bled. Held to the same page margin as the copy —
+          Matthew's call: inset reads like a case study, edge-to-edge reads
+          like a campaign. */
        R+'.cs-row-right-r1,'+R+'.cs-show-mobile{'+
         'height:auto !important;aspect-ratio:16/9 !important;'+
-        'width:100% !important;margin:0 0 26px !important;}'+
+        'width:100% !important;max-width:100% !important;'+
+        'margin:0 0 26px !important;}'+
        R+'.cs-show-mobile{margin:26px 0 0 !important;}'+
+       'html body #sfsec-dna .cs-row-left,html body #sfsec-dna .cs-dbody{'+
+        'overflow:visible !important;}'+
        R+' img{width:100% !important;height:100% !important;object-fit:cover !important;}';
   else if(v.rows==='hero')      s+= R+'.cs-gap-bottom{display:none !important;}'+
                               R+'.cs-show-mobile{display:none !important;}';
@@ -8342,6 +8348,17 @@ else boot();
     which on a phone falls below everything — so they are physically moved: the
     amps wall to just above the EXTRACTED DNA label, the speakers to just after
     the drawing. Both remember where they came from and go back on desktop. */
+ /* the two photographs run off both edges on a phone. Same measured
+    correction the drawing's medallion uses: set the width, then pull the box
+    back by however far in it starts, in pixels, as !important. */
+ /* the photographs are contained now, so any bleed correction left on them
+    from an earlier pass has to come off. */
+ function rowsBleed(v){
+  var sec=document.getElementById('sfsec-dna'); if(!sec)return;
+  [sec.querySelector('.cs-row-right.cs-row-right-r1'),
+   sec.querySelector('.cs-row-right.cs-show-mobile')].forEach(function(r){
+   if(r)r.style.removeProperty('margin-left');});
+ }
  var ORD=null;
  function order(v){
   var sec=document.getElementById('sfsec-dna'); if(!sec)return;
@@ -8352,9 +8369,27 @@ else boot();
   if(!ORD)return;
   if(v.rows==='topBottom'&&innerWidth<=900){
    if(lab&&top&&top.nextSibling!==lab)lab.parentNode.insertBefore(top,lab);
-   var anchor=FIG&&FIG.parentNode?FIG:document.querySelector('#sfsec-dna .dl-dial');
-   if(anchor&&bot&&anchor.nextSibling!==bot)
-    anchor.parentNode.insertBefore(bot,anchor.nextSibling);
+   /* the closing photograph sits UNDER the Translation copy — so the section
+      reads picture, drawing, the argument, then the payoff. Anchored to the
+      block that FOLLOWS it (MARSHALL AT A GLANCE) and inserted before that,
+      which lands it at the end of Translation no matter how that copy is
+      structured. Walking forward from the Translation label instead put it
+      one block too far, after the glance copy. */
+   var next=null;
+   [].forEach.call(sec.querySelectorAll('*'),function(e){
+    if(next||e.children.length)return;
+    if(/^marshall at a glance$/i.test((e.textContent||'').trim()))next=e;});
+   /* inserted directly before the MARSHALL AT A GLANCE label, INSIDE the text
+      column — not before the column itself. Walking up to a row put it above
+      Translation entirely, and being a child of the grid instead of the text
+      column it also lost its inset and ran edge to edge. In here its 100%
+      width is the text measure, so it keeps the case-study margin. */
+   if(next&&bot&&next.parentNode&&next.previousSibling!==bot)
+    next.parentNode.insertBefore(bot,next);
+   if(!next&&bot){
+    var anchor=FIG&&FIG.parentNode?FIG:sec.querySelector('.dl-dial');
+    if(anchor&&anchor.nextSibling!==bot)anchor.parentNode.insertBefore(bot,anchor.nextSibling);
+   }
   } else {
    if(top&&top.parentNode!==ORD.t[0])ORD.t[0].insertBefore(top,ORD.t[1]);
    if(bot&&bot.parentNode!==ORD.b[0])ORD.b[0].insertBefore(bot,ORD.b[1]);
@@ -8547,7 +8582,7 @@ else boot();
     still settling underneath it — labels rewrapping, images decoding — so
     the lines were left pointing at where things WERE. Now every event that
     means 'the box just moved' triggers another pass. */
- function settle(){ bleedFix(); figFix(); figFit(); figLines(); }
+ function settle(){ bleedFix(); figFix(); figFit(); figLines(); rowsBleed(V[cur-1]||V[0]); }
  addEventListener('load',settle);
  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(settle);
  [400,1200,2500].forEach(function(t){setTimeout(settle,t);});
@@ -8622,6 +8657,7 @@ else boot();
   st.textContent=BASECSS+smallCSS(v);
   figure(v);
   order(v);
+  rowsBleed(v);
   hubSrc(v);
   hubClear();
   layout();
@@ -8693,7 +8729,7 @@ else boot();
     relines();
     clearTimeout(rt);
     rt=setTimeout(function(){
-     layout(); bleedFix(); figFix(); figFit(); figLines();
+     layout(); bleedFix(); figFix(); figFit(); figLines(); rowsBleed(V[cur-1]||V[0]);
     },90);
     return;
    }
