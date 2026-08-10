@@ -8083,10 +8083,19 @@ else boot();
           disc drags the disc off its anchor — by 9 percentage points at 390,
           which is what pulled two discs onto the centre. Absolute means it
           contributes nothing and the box shrink-wraps the disc. */
-       F+' .dl-nm{position:absolute !important;visibility:hidden !important;'+
-        'width:0 !important;height:0 !important;overflow:hidden !important;}'+
+       /* THE DRAWING NOW STANDS ALONE, so it carries its own words. */
+       F+' .dl-nm{position:static !important;visibility:visible !important;'+
+        'width:auto !important;height:auto !important;overflow:visible !important;'+
+        'display:block !important;white-space:nowrap !important;'+
+        'font-size:'+(v.figLabel||10)+'px !important;letter-spacing:0.06em !important;'+
+        'margin:6px 0 0 !important;text-align:center !important;}'+
        F+' .dl-ghx,'+F+' .dl-key{display:none !important;}'+
-       F+' .dl-lk{display:block !important;}'+
+       /* AND NO CONNECTOR LINES BELOW 900. They are eight rotated 0.5px
+          divs whose length and angle are computed for one exact
+          arrangement; at this size a line 8px too long is glaring, and
+          they are what bunches up. The drawing reads perfectly as a centre
+          product with eight circles around it. */
+       F+' .dl-lk{display:none !important;}'+
        F+' .dl-dpt{position:absolute !important;display:block !important;'+
         'max-width:none !important;padding:0 !important;'+
         'transform:translate(-50%,-50%) !important;}'+
@@ -8132,7 +8141,13 @@ else boot();
      twice. The list keeps its words — they are the only place the eight
      attributes can be READ — and gives up its pictures. */
   if(v.fig)
-   s+='html body #sfsec-dna .dl-kx .dl-dpt > div:first-child,'+
+   /* NOT the thumbnails only — the WHOLE list. With the drawing on screen
+      the eight pictures and the eight words are both already there;
+      repeating either underneath is the same thing twice. */
+   s+='html body #sfsec-dna .dl-pl .dl-dial,html body #sfsec-dna .dl-gx .dl-dial,'+
+      'html body #sfsec-dna .dl-kx .dl-dial,html body #sfsec-dna .dl-dial{'+
+      'display:none !important;}'+
+      'html body #sfsec-dna .dl-kx .dl-dpt > div:first-child,'+
       'html body #sfsec-dna .dl-pl .dl-dpt > div:first-child,'+
       'html body #sfsec-dna .dl-gx .dl-dpt > div:first-child,'+
       'html body #sfsec-dna .dl-dial .dl-dpt > div:first-child{'+
@@ -8348,11 +8363,14 @@ else boot();
     down until nothing touches. Same rule as the desktop fan: 6px minimum. */
  function figFit(){
   if(!FIG||FIG.style.display==='none')return;
+  var boxes=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
   var discs=[].slice.call(FIG.querySelectorAll('.dl-dpt > div:first-child'));
   var hub=FIG.querySelector('.dl-dhub');
   if(!discs.length)return;
+  /* measure the POINT boxes — disc plus its word — because with the labels
+     showing it is word-to-word that binds first, not disc-to-disc. */
   function gap(){
-   var r=discs.map(function(e){return e.getBoundingClientRect();});
+   var r=boxes.map(function(e){return e.getBoundingClientRect();});
    if(hub)r.push(hub.getBoundingClientRect());
    var m=1e9;
    for(var i=0;i<r.length;i++)for(var j=i+1;j<r.length;j++){var x=r[i],y=r[j];
@@ -8368,6 +8386,12 @@ else boot();
    discs.forEach(function(e){
     e.style.setProperty('width',base+'px','important');
     e.style.setProperty('height',base+'px','important');});
+   /* the words do not shrink with the discs, so they come down too —
+      otherwise the loop grinds the discs to nothing chasing a gap that
+      only the labels control. Floored at 8px, the site's own smallest. */
+   var fs=Math.max(8,(parseFloat(getComputedStyle(boxes[0].querySelector('.dl-nm')||boxes[0]).fontSize)||10)*0.94);
+   [].forEach.call(FIG.querySelectorAll('.dl-nm'),function(e){
+    e.style.setProperty('font-size',fs+'px','important');});
   }
  }
  /* the same measured correction the header uses: 100vw is the right WIDTH but
@@ -8453,7 +8477,14 @@ else boot();
   RO=new ResizeObserver(function(){ bleedFix(); figFix(); figFit(); figLines(); });
   RO.observe(box);
  }
- addEventListener('load',function(){ bleedFix(); figFix(); });
+ /* SETTLE. The recompute used to fire once, and at small sizes the page was
+    still settling underneath it — labels rewrapping, images decoding — so
+    the lines were left pointing at where things WERE. Now every event that
+    means 'the box just moved' triggers another pass. */
+ function settle(){ bleedFix(); figFix(); figFit(); figLines(); }
+ addEventListener('load',settle);
+ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(settle);
+ [400,1200,2500].forEach(function(t){setTimeout(settle,t);});
 
  /* TEN WAYS TO DO THE NARROW LAYOUT — every one obeying the same rules:
       · the wide design is identical in all ten (picture bleeds right)
@@ -8468,10 +8499,10 @@ else boot();
     disc  thumbnail size in that list                                    */
  var V=[
   {n:'1 · Drawing leads, full bleed square, two columns',
-   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'2 · Drawing leads, inside the page margin, two columns',
-   fig:1, figRatio:'1/1', figW:58, hdr:null, rows:'none', cols:2, disc:44},
+   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:44},
 
   {n:'3 · Amps photograph leads 16:9, two columns',
    fig:0, hdr:'hero', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
@@ -8483,21 +8514,21 @@ else boot();
    fig:0, hdr:null, rows:'none', cols:2, disc:56},
 
   {n:'6 · Drawing leads, one column, generous rows',
-   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'none', cols:1, disc:52},
+   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'none', cols:1, disc:52},
 
   {n:'7 · Amps photograph as a wide 21:9 band, two columns',
    fig:0, hdr:'hero', hdrRatio:'21/9', rows:'none', cols:2, disc:44},
 
   {n:'8 · List first, drawing closes the section',
-   fig:1, figRatio:'1/1', figW:66, figPos:'bottom', hdr:null, rows:'none',
+   fig:1, figRatio:'1/1', figW:96, figPos:'bottom', hdr:null, rows:'none',
    cols:2, disc:44},
 
   {n:'9 · Drawing leads, two columns, one photograph row below',
-   fig:1, figRatio:'1/1', figW:72, hdr:null, rows:'last', ratio:'16/9',
+   fig:1, figRatio:'1/1', figW:96, hdr:null, rows:'last', ratio:'16/9',
    cols:2, disc:44},
 
   {n:'10 · Drawing leads 4:3, two columns, small thumbnails',
-   fig:1, figRatio:'1/1', figW:54, hdr:null, rows:'none', cols:2, disc:36}
+   fig:1, figRatio:'1/1', figW:88, hdr:null, rows:'none', cols:2, disc:36}
  ];
  /* the old flags the CSS builder still reads, derived from the new ones */
  V.forEach(function(v){
