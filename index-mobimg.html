@@ -7861,8 +7861,8 @@ else boot();
    'html body #sfsec-dna .cs-dbody{width:calc(100% - 96px) !important;'+
     'margin-left:48px !important;margin-right:48px !important;'+
     'grid-template-columns:1fr 380px !important;}'+
-   'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:0 !important;}'+
-   'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:0 !important;}'+
+   'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
+   'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
    'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
    'html body #sfsec-dna .dl-dial{aspect-ratio:760/360 !important;max-width:760px !important;'+
     'min-height:0 !important;height:auto !important;width:100% !important;'+
@@ -7872,7 +7872,11 @@ else boot();
    'html body #sfsec-dna .cs-dbody{width:calc(100% - 96px) !important;'+
     'margin-left:48px !important;margin-right:48px !important;'+
     'grid-template-columns:1fr clamp(200px,26vw,380px) !important;}'+
-   'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:0 !important;}'+
+   'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
+   /* the alignment rule was only in the 1201+ block, so the picture ran past
+      ACQUIRED IN 2025 at every rescaled width. It belongs in both. */
+   'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
+   'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
   '}';
 
  /* rows   which photo ROWS survive: 'hero' | 'heroLast' | 'last' | 'heroPair'
@@ -7908,7 +7912,18 @@ else boot();
       'html body #sfsec-dna .dl-dpt > div:first-child{width:30px !important;'+
       'height:30px !important;flex:0 0 30px !important;margin:0 auto 7px !important;}';
   /* --- the hub --- */
-  if(v.hub)
+  if(v.hubSquare)
+   /* the circular hub becomes a full-width SQUARE picture at the head of the
+      section — one strong image instead of a small medallion plus eight discs */
+   s+='html body #sfsec-dna .dl-kx .dl-dhub,html body #sfsec-dna .dl-dhub{'+
+      'width:100vw !important;max-width:100vw !important;'+
+      'margin:0 0 22px calc(50% - 50vw) !important;'+
+      'height:auto !important;aspect-ratio:'+(v.sqRatio||'1/1')+' !important;'+
+      'border-radius:0 !important;border:0 !important;'+
+      'grid-column:1/-1 !important;}'+
+      'html body #sfsec-dna .dl-dhub img{width:100% !important;height:100% !important;'+
+      'object-fit:cover !important;}';
+  else if(v.hub)
    /* the phone block pins the hub with #sfsec-dna .dl-kx .dl-dhub — one id and
       two classes — so a plainer selector loses even with !important. Matched. */
    s+='html body #sfsec-dna .dl-kx .dl-dhub,'+
@@ -7947,7 +7962,30 @@ else boot();
   {n:'18 · Hero + closer 3:2, discs small',   rows:'heroLast', discs:'small', ratio:'3/2'},
   {n:'19 · Hero + closer 21:9, dots',         rows:'heroLast', discs:'dot',   ratio:'21/9'},
   {n:'20 · Closer only 3:2, hub the amps 180', rows:'last',    hubHero:1, hub:180, discs:'small', ratio:'3/2'},
-  {n:'21 · Hero only 21:9, dots, hub the amps', rows:'hero',   hubHero:1, hub:170, discs:'dot', ratio:'21/9'}
+  {n:'21 · Hero only 21:9, dots, hub the amps', rows:'hero',   hubHero:1, hub:170, discs:'dot', ratio:'21/9'},
+
+  /* ---- 22-42 · the circle becomes a full-width SQUARE header picture ---- */
+  {n:'22 · Square header 1:1, amps, no photo rows', rows:'none', hubSquare:1, hubHero:1},
+  {n:'23 · Square header 1:1, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot'},
+  {n:'24 · Square header 1:1, amps, small discs',   rows:'none', hubSquare:1, hubHero:1, discs:'small'},
+  {n:'25 · Square header 4:3, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'4/3'},
+  {n:'26 · Square header 3:2, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'3/2'},
+  {n:'27 · Square header 16:9, amps, dots',         rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'16/9'},
+  {n:'28 · Square header 1:1, speaker, dots',       rows:'none', hubSquare:1, discs:'dot'},
+  {n:'29 · Square header 3:2, speaker, dots',       rows:'none', hubSquare:1, discs:'dot', sqRatio:'3/2'},
+  {n:'30 · Square header + closer photo, dots',     rows:'last', hubSquare:1, hubHero:1, discs:'dot'},
+  {n:'31 · Square header + closer 21:9, dots',      rows:'last', hubSquare:1, hubHero:1, discs:'dot', ratio:'21/9'},
+  {n:'32 · Square header + closer, small discs',    rows:'last', hubSquare:1, hubHero:1, discs:'small'},
+  {n:'33 · Square header 4:3 + closer, dots',       rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'4/3'},
+  {n:'34 · Square header 16:9 + closer, dots',      rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'16/9'},
+  {n:'35 · Square header 1:1, keeps disc photos',   rows:'none', hubSquare:1, hubHero:1},
+  {n:'36 · Square header 3:2, keeps disc photos',   rows:'none', hubSquare:1, hubHero:1, sqRatio:'3/2'},
+  {n:'37 · Square header 21:9, amps, dots',         rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'21/9'},
+  {n:'38 · Square header 5:4, amps, dots',          rows:'none', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'5/4'},
+  {n:'39 · Square header 1:1, speaker, small discs',rows:'none', hubSquare:1, discs:'small'},
+  {n:'40 · Square header 3:2 + closer 3:2, dots',   rows:'last', hubSquare:1, hubHero:1, discs:'dot', sqRatio:'3/2', ratio:'3/2'},
+  {n:'41 · Square header 16:9, speaker, dots',      rows:'none', hubSquare:1, discs:'dot', sqRatio:'16/9'},
+  {n:'42 · Square header 1:1 + hero row, dots',     rows:'hero', hubSquare:1, hubHero:1, discs:'dot'}
  ];
  /* 'none' hides every photo row */
  var _s=smallCSS;
