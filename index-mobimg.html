@@ -7883,6 +7883,12 @@ else boot();
    requestAnimationFrame(function(){ROOT.classList.remove('mi-hold');});});}
 
  var BASECSS =
+  /* the cloned drawing exists in the DOM at every width, so it has to be
+     switched OFF everywhere by default - otherwise it renders as a second
+     520px fan on desktop, which is exactly what the audit caught (section
+     1692 tall instead of 1172). The narrow block turns it back on, and
+     being later in the same sheet it wins on a tie. */
+  'html body #sfsec-dna .mi-fig{display:none !important;}'+
   '@media(min-width:1601px){'+
    'html body #sfsec-dna .cs-dbody{width:100% !important;margin-left:0 !important;'+
     'margin-right:0 !important;grid-template-columns:1fr 428px !important;}'+
@@ -7893,10 +7899,21 @@ else boot();
     'min-height:0 !important;height:auto !important;width:100% !important;'+
     'margin:0 auto 0 0 !important;}'+
   '}'+
+  /* THE GAP ON THE RIGHT.
+     The picture stopped 48px short of the window so it lined up with the
+     video. Matthew wants it running off the right edge instead, everywhere
+     except ultra-large. The right margin is removed and the SAME 48px is
+     given to the image column, so:
+       before  body = W-96, left = W-96-col
+       after   body = W-48, left = W-48-(col+48) = W-96-col   <- identical
+     The text column does not move by a single pixel and the fan keeps exactly
+     the room it has today; only the picture grows, rightwards, to the edge.
+     NOTE this deliberately breaks the picture/video alignment built earlier —
+     the two cannot both be true. */
   '@media(min-width:1201px) and (max-width:1600px){'+
-   'html body #sfsec-dna .cs-dbody{width:calc(100% - 96px) !important;'+
-    'margin-left:48px !important;margin-right:48px !important;'+
-    'grid-template-columns:1fr 380px !important;}'+
+   'html body #sfsec-dna .cs-dbody{width:calc(100% - 48px) !important;'+
+    'margin-left:48px !important;margin-right:0 !important;'+
+    'grid-template-columns:1fr 428px !important;}'+
    'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
    'html body #sfsec-dna .cs-row-left.cs-has-divider::after{left:0 !important;right:48px !important;}'+
    'html body #sfsec-dna .cs-row-left.m4-lastrow{padding-bottom:0 !important;}'+
@@ -7904,10 +7921,11 @@ else boot();
     'min-height:0 !important;height:auto !important;width:100% !important;'+
     'margin:0 auto 0 0 !important;}'+
   '}'+
-  '@media(min-width:769px) and (max-width:1200px){'+
-   'html body #sfsec-dna .cs-dbody{width:calc(100% - 96px) !important;'+
-    'margin-left:48px !important;margin-right:48px !important;'+
-    'grid-template-columns:1fr clamp(200px,26vw,380px) !important;}'+
+  /* 901-1200. Same trick: the column takes the 48 the right margin gave up. */
+  '@media(min-width:901px) and (max-width:1200px){'+
+   'html body #sfsec-dna .cs-dbody{width:calc(100% - 48px) !important;'+
+    'margin-left:48px !important;margin-right:0 !important;'+
+    'grid-template-columns:1fr calc(clamp(200px,26vw,380px) + 48px) !important;}'+
    'html body #sfsec-dna .cs-row-left{padding-left:0 !important;padding-right:48px !important;}'+
    /* the alignment rule was only in the 1201+ block, so the picture ran past
       ACQUIRED IN 2025 at every rescaled width. It belongs in both. */
@@ -7956,7 +7974,10 @@ else boot();
    'html body #sfsec-dna .dl-pl,html body #sfsec-dna .dl-dial,'+
    'html body #sfsec-dna .dl-dpt,html body #sfsec-dna .dl-ghx,'+
    'html body #sfsec-dna .dl-nm{min-width:0 !important;max-width:100% !important;}'+
-   'html body #sfsec-dna .dl-nm{overflow-wrap:break-word !important;}'+
+   /* NOT break-word: it split PROVENANCE across two lines as PROVENANC / E.
+      min-width:0 above already stops the clipping this was guarding against. */
+   'html body #sfsec-dna .dl-nm{overflow-wrap:normal !important;'+
+    'hyphens:none !important;}'+
    /* the payload pins the fan square between 601 and 900 — that IS the
       intermediate. Turned into the same two-column list the phone uses. */
    'html body #sfsec-dna .dl-pl .dl-dial,html body #sfsec-dna .dl-gx .dl-dial,'+
@@ -7992,6 +8013,90 @@ else boot();
     'flex-direction:row !important;gap:18px !important;margin:14px 0 0 !important;}'+
    /* one column of pictures, not a sliver beside the text */
    'html body #sfsec-dna .cs-dbody{grid-template-columns:1fr !important;}';
+
+  /* ---- the cloned drawing ----
+     Built into its own string and appended at the very END of the sheet. The
+     list rules that follow use `.dl-kx .dl-dpt` — the same weight as
+     `.mi-fig .dl-dpt` — so on a tie the later rule wins, and the figure has
+     to be later or the list's thumbnail size would resize the drawing. */
+  var figCSS='';
+  /* TWO IDS, deliberately. The page's own phone rules pin the medallion with
+     `#sfsec-dna .dl-kx .dl-dhub` — one id and two classes — and they live in
+     a <style> at the END OF THE BODY, so on a specificity TIE they beat this
+     sheet in the head. `.mi-fig .dl-dhub` tied, lost, and the drawing's
+     centre snapped to 0,0 — measured at -49,-49, half of it off the corner,
+     with every connector line running to an empty point. Using the clone's
+     id makes it two ids and settles it outright. */
+  var F='html body #sfsec-dna #mi-fig';
+  if(v.fig){
+   var fr=(v.figRatio||'1/1');
+   /* 57/520 of the box. Expressed against the SAME width the box uses, so
+      discs, positions and connector lines all scale as one piece. */
+   var dw=v.figBleed?'10.96vw':'calc((100vw - 48px) * 0.1096)';
+   figCSS+= F+'{display:block !important;position:relative !important;'+
+        'aspect-ratio:'+fr+' !important;height:auto !important;'+
+        'min-height:0 !important;overflow:visible !important;'+
+        (v.figBleed
+          ? 'width:100vw !important;max-width:100vw !important;margin:0 0 26px !important;'
+          : 'width:100% !important;max-width:100% !important;margin:0 auto 26px !important;')+
+        '}'+
+       /* labels live in the list below — the figure is purely a drawing */
+       /* visibility, NOT display. Each point is a disc WITH its label under it,
+          and the pair is centred on the anchor — so the disc sits about a
+          label's half-height ABOVE the anchor by design. display:none took
+          the label out of the box, the disc dropped onto the anchor, and the
+          whole fan slid down far enough to clip the bottom two discs off the
+          edge. Hidden but still occupying its space, the composition is the
+          page's own, untouched. */
+       /* and a UNIFORM reserved height. Left to itself ACOUSTIC IDENTITY wraps
+          to two lines while PRESENCE takes one, so each point shifted by a
+          different amount and the discs moved RELATIVE to each other —
+          8.7px of overlap at 390, 16.9 at 320. One fixed height for every
+          label means one identical shift, so the fan stays proportional at
+          any size. */
+       /* the label is taken OUT OF FLOW, not merely hidden. Left in flow it
+          sets the width of the point box, and since the box is centred on
+          the anchor while the disc sits inside it, a label wider than the
+          disc drags the disc off its anchor — by 9 percentage points at 390,
+          which is what pulled two discs onto the centre. Absolute means it
+          contributes nothing and the box shrink-wraps the disc. */
+       F+' .dl-nm{position:absolute !important;visibility:hidden !important;'+
+        'width:0 !important;height:0 !important;overflow:hidden !important;}'+
+       F+' .dl-ghx,'+F+' .dl-key{display:none !important;}'+
+       F+' .dl-lk{display:block !important;}'+
+       F+' .dl-dpt{position:absolute !important;display:block !important;'+
+        'max-width:none !important;padding:0 !important;'+
+        'transform:translate(-50%,-50%) !important;}'+
+       F+' .dl-dpt > div:first-child{width:'+dw+' !important;'+
+        'height:'+dw+' !important;flex:none !important;margin:0 auto !important;}'+
+       F+' .dl-dhub{position:absolute !important;display:block !important;'+
+        'width:25% !important;height:25% !important;'+
+        'aspect-ratio:auto !important;max-width:none !important;'+
+        'margin:0 !important;border-radius:50% !important;'+
+        'transform:translate(-50%,-50%) !important;grid-column:auto !important;}';
+  } else {
+   figCSS+= F+'{display:none !important;}';
+  }
+
+  /* ---- the list: one column or two ---- */
+  if(v.cols===1)
+   s+='html body #sfsec-dna .dl-pl .dl-dial,html body #sfsec-dna .dl-gx .dl-dial,'+
+      'html body #sfsec-dna .dl-kx .dl-dial{grid-template-columns:1fr !important;}';
+  if(v.disc)
+   s+='html body #sfsec-dna .dl-kx .dl-dpt > div:first-child,'+
+      'html body #sfsec-dna .dl-dpt > div:first-child{width:'+v.disc+'px !important;'+
+      'height:'+v.disc+'px !important;flex:0 0 '+v.disc+'px !important;}'+
+      'html body #sfsec-dna .dl-pl .dl-dpt,html body #sfsec-dna .dl-gx .dl-dpt,'+
+      'html body #sfsec-dna .dl-kx .dl-dpt,html body #sfsec-dna .dl-dpt{'+
+      'grid-template-columns:'+v.disc+'px 1fr !important;}';
+
+  /* no photo header for this study? then the medallion has no job in the
+     list — the figure above already carries it, or nothing does. */
+  if(!v.hdr)
+   s+='html body #sfsec-dna .dl-pl .dl-dhub,html body #sfsec-dna .dl-gx .dl-dhub,'+
+      'html body #sfsec-dna .dl-kx .dl-dhub,html body #sfsec-dna .dl-dial > .dl-dhub{'+
+      'display:none !important;}'+
+      F+' .dl-dhub{display:block !important;}';
   /* --- how many photo rows --- */
   if(v.rows==='hero')      s+= R+'.cs-gap-bottom{display:none !important;}'+
                               R+'.cs-show-mobile{display:none !important;}';
@@ -8040,7 +8145,8 @@ else boot();
       'html body #sfsec-dna .dl-gx .dl-dhub,'+
       'html body #sfsec-dna .dl-dhub{width:'+v.hub+'px !important;'+
       'height:'+v.hub+'px !important;}';
-  s+='}';
+  /* the figure goes LAST inside the media block — see the note above */
+  s+=figCSS+'}';
   return s;
  }
  /* WHAT WAS WRONG — the whole cause of the flick.
@@ -8063,7 +8169,7 @@ else boot();
       hubBleed(v)    the square header — runs LAST, so it survives  */
 
  function hubSrc(v){
-  var im=document.querySelector('#sfsec-dna .dl-dhub img');
+  var im=listHub('img');
   if(!im)return null;
   if(!im.__orig)im.__orig=im.getAttribute('src');
   var want=(v.hubHero&&innerWidth<=900) ? HERO : im.__orig;
@@ -8071,7 +8177,7 @@ else boot();
   return want;
  }
  function wantSrc(v){
-  var im=document.querySelector('#sfsec-dna .dl-dhub img');
+  var im=listHub('img');
   if(!im)return null;
   if(!im.__orig)im.__orig=im.getAttribute('src');
   return (v.hubHero&&innerWidth<=900) ? HERO : im.__orig;
@@ -8080,7 +8186,7 @@ else boot();
     margin-left / max-width:none from the mobile bleed would otherwise skew
     every clearance reading in the desktop fit loop. */
  function hubClear(){
-  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  var hub=listHub('');
   if(!hub)return;
   hub.style.removeProperty('margin-left');
   hub.style.removeProperty('max-width');
@@ -8093,6 +8199,143 @@ else boot();
     bleedFix() can then re-measure on its own later, without applyV. */
  var SQ=null;
 
+ /* SCOPE. These four all used document.querySelector('#sfsec-dna .dl-dhub'),
+    which returns the FIRST medallion in the section — and once the cloned
+    drawing is inserted ABOVE the list, that is the CLONE's medallion, not
+    the list's. Study 7 therefore stamped a 390px full-bleed width, inline and
+    !important, onto the centre of the drawing; study 8 then showed the
+    drawing still wearing it, and its centre swallowed two discs. Every one of
+    these now asks the LIST for its own medallion. */
+ function listHub(sel){
+  var d=dial||document.querySelector('#sfsec-dna .dl-dial');
+  if(!d)return null;
+  return sel ? d.querySelector('.dl-dhub '+sel) : d.querySelector('.dl-dhub');
+ }
+
+ /* ---- THE FIGURE ----------------------------------------------------
+    Several of these studies want the DRAWING at the head of the narrow
+    layout rather than a photograph. The drawing and the list cannot be the
+    same element — the list IS the drawing, rearranged — so the drawing is
+    CLONED once and the original goes on to become the list.
+
+    The clone costs nothing to load: same nine image URLs, already in cache,
+    so nothing fetches and nothing can flash.
+
+    Why it does not squash. The page builds the fan with PERCENTAGE positions
+    inside a square box, but the discs are a fixed 57px and the connector
+    lines are percentage widths computed for 57px discs in a 520px box. Scale
+    the box alone and the discs stay big while the lines fall short. So the
+    discs are re-expressed in the same units as everything else — 57/520 =
+    10.96% of the box — and then the whole figure is one uniform scale at any
+    width, with the lines still landing exactly on the disc edges. Nothing is
+    stretched, nothing is compressed. */
+ var FIG=null;
+ function figure(v){
+  var dial=document.querySelector('#sfsec-dna .dl-dial');
+  if(!dial)return;
+  if(!v.fig){ if(FIG){FIG.style.display='none';} return; }
+  if(!FIG){
+   FIG=dial.cloneNode(true);
+   FIG.id='mi-fig';
+   /* strip dl-dial. Every small-screen rule that turns the drawing into a
+      list is written as `.dl-pl .dl-dial` — one id and two classes — and the
+      clone would be caught by all of them. Without that class it is invisible
+      to them, and only the figure rules below can reach it. */
+   FIG.className=(FIG.className||'').toString()
+     .split(/\s+/).filter(function(c){return c&&c!=='dl-dial';}).join(' ')+' mi-fig';
+  }
+  var before=(v.figPos==='bottom')?dial.nextSibling:dial;
+  if(FIG.parentNode!==dial.parentNode||FIG.nextSibling!==before)
+   dial.parentNode.insertBefore(FIG,before);
+  FIG.style.display='';
+  /* The medallion's own inline `left:28%; top:52%` kept computing to 0 — some
+     rule in the page's end-of-body block carries !important on them, and an
+     inline style without !important loses to that (CLAUDE.md trap 1, in
+     reverse). So the two numbers are re-applied here AS important, where
+     nothing in any stylesheet can reach them. Read off the real drawing, not
+     hard-coded, so the figure always matches whatever the page built. */
+  var src=dial.querySelector('.dl-dhub'), fh=FIG.querySelector('.dl-dhub');
+  if(src&&fh){
+   var L=ORIG&&ORIG.hub?ORIG.hub.l:src.style.left;
+   var T=ORIG&&ORIG.hub?ORIG.hub.t:src.style.top;
+   if(L)fh.style.setProperty('left',L,'important');
+   if(T)fh.style.setProperty('top',T,'important');
+  }
+  FIGV=v.figBleed?v:null;
+  figFix();
+  figFit();
+  figLines();
+ }
+
+ /* the connector lines were drawn by the page for ONE size and one arrangement.
+    Move or resize anything and they stop landing on the disc edges, so they are
+    recomputed here from what is actually on screen — the same method the
+    desktop fan uses, measured in pixels, not assumed. */
+ function figLines(){
+  if(!FIG||FIG.style.display==='none')return;
+  var hub=FIG.querySelector('.dl-dhub'); if(!hub)return;
+  var fb=FIG.getBoundingClientRect(), hb=hub.getBoundingClientRect();
+  var hx=hb.left+hb.width/2-fb.left, hy=hb.top+hb.height/2-fb.top;
+  var pts=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
+  [].slice.call(FIG.querySelectorAll('.dl-lk')).forEach(function(L,i){
+   var p=pts[i]; if(!p){L.style.setProperty('width','0px','important');return;}
+   var d=(p.children[0]||p).getBoundingClientRect();
+   var cx=d.left+d.width/2-fb.left, cy=d.top+d.height/2-fb.top;
+   var dx=cx-hx, dy=cy-hy, len=Math.sqrt(dx*dx+dy*dy), a=Math.atan2(dy,dx);
+   var r0=hb.width/2, r1=d.width/2;
+   L.style.setProperty('left',(hx+Math.cos(a)*r0)+'px','important');
+   L.style.setProperty('top',(hy+Math.sin(a)*r0)+'px','important');
+   L.style.setProperty('width',Math.max(0,len-r0-r1)+'px','important');
+   L.style.setProperty('transform','rotate('+(a*180/Math.PI).toFixed(3)+'deg)','important');
+  });
+ }
+
+ /* THE FIGURE GETS THE SAME TREATMENT THE DESKTOP FAN GETS.
+    The raw fan geometry is not collision-free on its own — that is precisely
+    why the desktop side runs a fitter. Scaled down it goes tight and then
+    negative: measured +51.5px of clearance at 900, +16.1 at 600, and -8.7 at
+    390. So rather than trust the arithmetic, the discs are measured and eased
+    down until nothing touches. Same rule as the desktop fan: 6px minimum. */
+ function figFit(){
+  if(!FIG||FIG.style.display==='none')return;
+  var discs=[].slice.call(FIG.querySelectorAll('.dl-dpt > div:first-child'));
+  var hub=FIG.querySelector('.dl-dhub');
+  if(!discs.length)return;
+  function gap(){
+   var r=discs.map(function(e){return e.getBoundingClientRect();});
+   if(hub)r.push(hub.getBoundingClientRect());
+   var m=1e9;
+   for(var i=0;i<r.length;i++)for(var j=i+1;j<r.length;j++){var x=r[i],y=r[j];
+    m=Math.min(m,Math.max(Math.max(x.left-y.right,y.left-x.right),
+                          Math.max(x.top-y.bottom,y.top-x.bottom)));}
+   return m;}
+  var base=discs[0].getBoundingClientRect().width;
+  if(!base)return;
+  for(var k=0;k<14;k++){
+   if(gap()>=6)break;
+   base=base*0.94;
+   if(base<14)break;                     /* a floor: never a speck */
+   discs.forEach(function(e){
+    e.style.setProperty('width',base+'px','important');
+    e.style.setProperty('height',base+'px','important');});
+  }
+ }
+ /* the same measured correction the header uses: 100vw is the right WIDTH but
+    it still starts wherever the grid area starts, so it has to be pulled back
+    by however far in that is — measured, in pixels, not calc(50% - 50vw),
+    which resolves against the grid area and misses. */
+ var FIGV=null;
+ function figFix(){
+  if(!FIGV||!FIG)return;
+  FIG.style.setProperty('margin-left','0px','important');
+  for(var i=0;i<3;i++){
+   var cur=parseFloat(FIG.style.marginLeft)||0;
+   var off=FIG.getBoundingClientRect().left;
+   if(Math.abs(off)<0.5)break;
+   FIG.style.setProperty('margin-left',(cur-off)+'px','important');
+  }
+ }
+
  /* The bleed measured ONCE at boot lands 42px out at 390: the correction runs
     before the page has finished settling (late images, the section's own
     rebuild), and the grid area moves under it afterwards. So the measurement
@@ -8100,7 +8343,7 @@ else boot();
     changes size — observed, not guessed on a timer. */
  function bleedFix(){
   if(!SQ)return;
-  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  var hub=listHub('');
   if(!hub)return;
   var vwpx=document.documentElement.clientWidth;
   var rr=(SQ.sqRatio||'1/1').split('/');
@@ -8121,7 +8364,7 @@ else boot();
   /* calc(50% - 50vw) resolves against the GRID AREA, not the page, so the
      bleed missed by 6px at 360. Measured and set in pixels instead — exact
      at every width. */
-  var hub=document.querySelector('#sfsec-dna .dl-dhub');
+  var hub=listHub('');
   if(!hub)return;
   SQ=(v.hubSquare&&innerWidth<=900)?v:null;
   if(SQ){
@@ -8157,21 +8400,61 @@ else boot();
   var box=hub.parentElement; if(!box||box===ROel)return;
   if(RO)RO.disconnect();
   ROel=box;
-  RO=new ResizeObserver(function(){ bleedFix(); });
+  RO=new ResizeObserver(function(){ bleedFix(); figFix(); figFit(); figLines(); });
   RO.observe(box);
  }
- addEventListener('load',function(){ bleedFix(); });
+ addEventListener('load',function(){ bleedFix(); figFix(); });
 
- /* 27, and only 27. 40 is deleted.
-    rows:'none'  no photo rows survive on a small screen — the square header
-                 IS the picture, so the old stacked rows are redundant
-    hubSquare    the circular medallion becomes a full-bleed square header
-    hubHero      that header shows the stacked-amps photograph
-    sqRatio      16:9 */
+ /* TEN WAYS TO DO THE NARROW LAYOUT — every one obeying the same rules:
+      · the wide design is identical in all ten (picture bleeds right)
+      · one switch at 900, no in-between layouts
+      · nothing squashed — every picture keeps its true proportions
+      · no picture ever changes after it is first drawn, so nothing can flash
+    They differ in WHAT leads the section and how the eight attributes read.
+
+    hdr   'hero' amps photograph | 'hub' the product shot | null none
+    fig   show the drawing itself, cloned, at true proportion
+    cols  1 or 2 columns in the labelled list
+    disc  thumbnail size in that list                                    */
  var V=[
-  {n:'27 · Square header 16:9, amps, real thumbnails',
-   rows:'none', hubSquare:1, hubHero:1, sqRatio:'16/9'}
+  {n:'1 · Drawing leads, full bleed square, two columns',
+   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'none', cols:2, disc:44},
+
+  {n:'2 · Drawing leads, inside the page margin, two columns',
+   fig:1, figRatio:'1/1', figBleed:0, hdr:null, rows:'none', cols:2, disc:44},
+
+  {n:'3 · Amps photograph leads 16:9, two columns',
+   fig:0, hdr:'hero', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
+
+  {n:'4 · Product shot leads 16:9, two columns',
+   fig:0, hdr:'hub', hdrRatio:'16/9', rows:'none', cols:2, disc:44},
+
+  {n:'5 · No lead picture at all, two columns, big thumbnails',
+   fig:0, hdr:null, rows:'none', cols:2, disc:56},
+
+  {n:'6 · Drawing leads, one column, generous rows',
+   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'none', cols:1, disc:52},
+
+  {n:'7 · Amps photograph as a wide 21:9 band, two columns',
+   fig:0, hdr:'hero', hdrRatio:'21/9', rows:'none', cols:2, disc:44},
+
+  {n:'8 · List first, drawing closes the section',
+   fig:1, figRatio:'1/1', figBleed:1, figPos:'bottom', hdr:null, rows:'none',
+   cols:2, disc:44},
+
+  {n:'9 · Drawing leads, two columns, one photograph row below',
+   fig:1, figRatio:'1/1', figBleed:1, hdr:null, rows:'last', ratio:'16/9',
+   cols:2, disc:44},
+
+  {n:'10 · Drawing leads 4:3, two columns, small thumbnails',
+   fig:1, figRatio:'4/3', figBleed:1, hdr:null, rows:'none', cols:2, disc:36}
  ];
+ /* the old flags the CSS builder still reads, derived from the new ones */
+ V.forEach(function(v){
+  v.hubSquare = v.hdr ? 1 : 0;
+  v.hubHero   = (v.hdr==='hero') ? 1 : 0;
+  v.sqRatio   = v.hdrRatio || '16/9';
+ });
  /* 'none' hides every photo row */
  var _s=smallCSS;
  smallCSS=function(v){
@@ -8207,6 +8490,7 @@ else boot();
   if(d)d.classList.add('mi-swap');          /* instant hide, no transition */
   ready(v,function(){
    st.textContent=BASECSS+smallCSS(v);
+   figure(v);        /* the cloned drawing in or out */
    hubSrc(v);        /* picture — already decoded, so this cannot flash */
    hubClear();       /* drop the bleed BEFORE the fitter measures anything */
    layout();         /* restore() or paint() own the geometry */
@@ -8226,7 +8510,40 @@ else boot();
     scripts drive the page through, and it renders nothing. */
  function start(){
   if(started)return; started=true;
-  function go(n){ cur=1; applyV(1); }
+  var css=document.createElement('style'); css.textContent=
+   '#gs-ui{position:fixed;left:0;right:0;bottom:0;z-index:99999;'+
+   'background:rgba(12,12,12,0.95);color:#f4f1ec;font-family:'+DM+';padding:9px 14px 10px;}'+
+   '#gs-ui .top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}'+
+   '#gs-ui .lab{font-size:11.5px;letter-spacing:0.1em;color:#c8a96e;flex:1;}'+
+   '#gs-ui .nav{background:none;border:1px solid rgba(244,241,236,0.26);color:#f4f1ec;'+
+   'width:26px;height:24px;cursor:pointer;padding:0;}'+
+   '#gs-ui .boxes{display:flex;flex-wrap:wrap;gap:4px;}'+
+   '#gs-ui .bx{width:30px;height:23px;background:none;padding:0;'+
+   'border:1px solid rgba(244,241,236,0.20);color:rgba(244,241,236,0.62);'+
+   'font-family:'+DM+';font-size:10.5px;cursor:pointer;display:flex;'+
+   'align-items:center;justify-content:center;}'+
+   '#gs-ui .bx.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}'+
+   'body{padding-bottom:112px !important;}';
+  document.head.appendChild(css);
+  var bar=document.createElement('div'); bar.id='gs-ui';
+  var b='';
+  for(var i=1;i<=V.length;i++) b+='<button class="bx" data-n="'+i+'">'+i+'</button>';
+  bar.innerHTML='<div class="top"><button class="nav" id="gs-p">&lsaquo;</button>'+
+   '<button class="nav" id="gs-n">&rsaquo;</button><span class="lab" id="gs-l"></span></div>'+
+   '<div class="boxes" id="gs-b">'+b+'</div>';
+  document.body.appendChild(bar);
+  var wrap=document.getElementById('gs-b'), lab=document.getElementById('gs-l');
+  function go(n){ n=Math.max(1,Math.min(V.length,n|0)); cur=n;
+   lab.textContent=V[n-1].n;
+   [].forEach.call(wrap.children,function(x,i){
+    if(i===n-1)x.classList.add('on'); else x.classList.remove('on');});
+   applyV(n);}
+  wrap.addEventListener('click',function(e){
+   var t=e.target.closest?e.target.closest('.bx'):null; if(t)go(+t.getAttribute('data-n'));});
+  document.getElementById('gs-p').onclick=function(){go(cur-1);};
+  document.getElementById('gs-n').onclick=function(){go(cur+1);};
+  document.addEventListener('keydown',function(e){
+   if(e.key==='ArrowLeft')go(cur-1); if(e.key==='ArrowRight')go(cur+1);});
   /* only redo the work when the width actually moved enough to change
      anything — resizing used to re-run the whole fit on every pixel */
   var rt=null, lastW=innerWidth;
@@ -8241,26 +8558,37 @@ else boot();
      happen, and the debounce only decides when to come back. While a resize
      is in progress the graphic is simply not shown — it fades in once, in the
      right shape, when the drag stops. */
+  /* DRAGGING THE WINDOW MUST NOT FLASH.
+     The old rule rebuilt on any 24px of movement AND hid the drawing while it
+     did — so dragging a window on the 13" produced a hide, a rebuild and a
+     fade back in, over and over. That hide-and-fade WAS the flashing.
+
+     Now: within a band nothing is rebuilt and nothing is hidden. The layout
+     is CSS at those widths, so it simply reflows, which is what a browser is
+     good at. The only work is bleedFix(), which nudges a margin and changes
+     nothing visible.
+     Only crossing 900 — the one real change of layout — rebuilds, and only
+     that case is covered while it happens. */
   var hiding=false;
   addEventListener('resize',function(){
-   var w=innerWidth;
-   var willRedo=(band(w)!==band(lastW))||Math.abs(w-lastW)>=24;
-   if(willRedo&&!hiding){
+   if(band(innerWidth)===band(lastW)){ bleedFix(); figFix(); return; }
+   if(!hiding){
     var d=document.querySelector('#sfsec-dna .dl-dial');
     if(d){ d.classList.add('mi-swap'); hiding=true; }
    }
    clearTimeout(rt);
    rt=setTimeout(function(){
-    if(band(innerWidth)===band(lastW) && Math.abs(innerWidth-lastW)<24){
+    if(band(innerWidth)===band(lastW)){
      if(hiding){ hiding=false;
       var d2=document.querySelector('#sfsec-dna .dl-dial');
       if(d2)d2.classList.remove('mi-swap'); }
-     return;
+     bleedFix(); figFix(); return;
     }
     hiding=false; lastW=innerWidth; applyV(cur);
-   },140);});
+   },120);});
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
-  go(1);
+  var mv=/[?&]v=(\d+)/.exec(location.search);
+  go(mv?+mv[1]:1);
  }
  function boot(){
   var t=0;
