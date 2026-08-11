@@ -9063,7 +9063,11 @@ else boot();
   if(!owns){ owns=true; pagePad=[g.style.paddingLeft,g.style.paddingRight]; }
   g.style.setProperty('padding-left','0px','important');
   g.style.setProperty('padding-right','0px','important');
-  g.style.setProperty('max-width','1024px','important');
+  /* Above the site's 1600 frame a 1024 block floats: every other section on
+     this page starts its content at the frame edge (480 at 2560) while
+     DESIGNED DNA started at 768 — 288px further in, which is what reads as
+     off-centre. Past the frame it takes the frame, like everything else. */
+  g.style.setProperty('max-width',(innerWidth>1601?'none':'1024px'),'important');
   g.style.setProperty('margin-left','auto','important');
   g.style.setProperty('margin-right','auto','important');
   /* the team page's own breakpoint, copied rather than approximated:
@@ -9072,7 +9076,10 @@ else boot();
      Hard-coding 464/96 all the way down pushed the right-hand column 48px
      off a 1024 screen, because that is exactly the width at which the team
      page stops using fixed tracks. */
-  if(innerWidth>1090){
+  if(innerWidth>1601){
+   g.style.setProperty('grid-template-columns','1fr 1fr','important');
+   g.style.setProperty('column-gap','96px','important');
+  }else if(innerWidth>1090){
    g.style.setProperty('grid-template-columns','464px 464px','important');
    g.style.setProperty('column-gap','96px','important');
   }else{
@@ -9080,6 +9087,87 @@ else boot();
    g.style.setProperty('column-gap','clamp(24px,4vw,56px)','important');
   }
   return true;
+ }
+
+ /* ---------- THE EYEBROW PAIR (study option 2) ------------------------
+    The Foundry puts one eyebrow over each column and no rule under either:
+    DM Sans 10.88px · 0.25em · weight 400 · uppercase · gold · 34px below.
+
+    DESIGNED DNA carried ONE eyebrow spanning both columns, in teal at weight
+    300, with a 0.5px rule across the whole block underneath. It becomes a
+    pair, the rule goes, and INTANGIBLE / TANGIBLE go with it — they were set
+    at the same 10.88px as the eyebrow and read as its equal. Their hairlines
+    stay, so the break between the two groups is still marked. */
+ var GOLD='rgb(200,169,110)';
+ var DM="'DM Sans',sans-serif";
+ var RIGHT='The Platform';
+
+ function ebStyle(e){
+  var set=function(x){
+   x.style.setProperty('font-family',DM,'important');
+   x.style.setProperty('font-size','10.88px','important');
+   x.style.setProperty('letter-spacing','0.25em','important');
+   x.style.setProperty('font-weight','400','important');
+   x.style.setProperty('text-transform','uppercase','important');
+   x.style.setProperty('color',GOLD,'important');};
+  set(e);
+  [].forEach.call(e.querySelectorAll('*'),set);
+  e.style.setProperty('margin-bottom','34px','important');
+ }
+
+ function eyebrows(){
+  var g=grid(); if(!g)return;
+  var row=g.children[0]; if(!row)return;
+  row.id='sf-ddna-row';
+
+  var text=null;
+  /* EVERY textless child of the row goes, not the first one found. The row
+     holds two: a 12px spacer and the 0.5px rule. Hiding "the first textless
+     child" hid the spacer and left the rule drawing. Neither is wanted here,
+     and hiding both is re-asserted every pass because the section rebuilds
+     itself and a fresh, unhidden rule reappears. */
+  [].forEach.call(row.children,function(c){
+   if(c.id==='sf-ddna-eb2')return;
+   if((c.textContent||'').trim()){ if(!text)text=c; return; }
+   c.style.setProperty('display','none','important');
+  });
+  if(!text)return;
+
+  var eb2=document.getElementById('sf-ddna-eb2');
+  if(!eb2){
+   eb2=text.cloneNode(true);
+   eb2.id='sf-ddna-eb2';
+   text.parentNode.insertBefore(eb2,text.nextSibling);
+  }
+  var leaf=eb2; while(leaf.children.length===1)leaf=leaf.children[0];
+  if((leaf.textContent||'').trim()!==RIGHT)leaf.textContent=RIGHT;
+
+  if(innerWidth<=900||!wide){
+   /* one column — the second eyebrow has nothing to sit over */
+   eb2.style.setProperty('display','none','important');
+   row.style.removeProperty('display');
+   row.style.removeProperty('grid-template-columns');
+   row.style.removeProperty('column-gap');
+  }else{
+   var gc=getComputedStyle(g);
+   eb2.style.removeProperty('display');
+   row.style.setProperty('display','grid','important');
+   row.style.setProperty('grid-template-columns',gc.gridTemplateColumns,'important');
+   row.style.setProperty('column-gap',gc.columnGap,'important');
+   row.style.setProperty('align-items','end','important');
+  }
+  /* the row's own negative margins used to cancel the block's padding; with the
+     padding gone they would throw the eyebrows off the left edge. */
+  row.style.setProperty('margin-left','0px','important');
+  row.style.setProperty('margin-right','0px','important');
+  ebStyle(text); ebStyle(eb2);
+
+  /* INTANGIBLE / TANGIBLE step aside */
+  [].forEach.call(g.querySelectorAll('*'),function(e){
+   if(e.children.length)return;
+   if(!/^(intangible|tangible)$/i.test((e.textContent||'').trim()))return;
+   e.parentElement.style.setProperty('display','none','important');
+  });
  }
 
  /* ---------- THE PARAGRAPH ---------------------------------------
@@ -9096,6 +9184,53 @@ else boot();
     The cap is lifted to the full column and the leading put on the team's
     27.2px. Applied to the copy AND its wrapper, since the cap sits on the
     inner element. */
+ function paraEl(){
+  var g=grid(); if(!g)return null;
+  var para=null;
+  [].forEach.call(g.querySelectorAll('*'),function(e){
+   if(para||e.children.length>2)return;
+   if(/^These principles define/.test((e.textContent||'').trim()))para=e;});
+  return para;
+ }
+
+ /* The paragraph started 19px ABOVE the first principle, because the list
+    carries a group hairline the paragraph column does not. Rather than guess a
+    number, the two tops are measured and the difference put on the paragraph's
+    wrapper — so it stays aligned whatever the type does. */
+ function topAlign(){
+  var g=grid(); if(!g)return;
+  var t=table(); if(!t)return;
+  var first=t.querySelector('.dl-tk');
+  var para=paraEl();
+  if(!first||!para)return;
+  /* the wrapper is the grid's DIRECT CHILD, not the paragraph's immediate
+     parent — which is the grid itself. Padding the grid moved both columns
+     down together, so the gap never closed and the block simply grew: the
+     value had crept to 129.5px while the paragraph was still 18px high. */
+  var wrap=para;
+  while(wrap.parentElement&&wrap.parentElement!==g)wrap=wrap.parentElement;
+  if(!wrap||wrap===g)return;
+  g.style.removeProperty('padding-top');
+  if(innerWidth<=900||!wide){ wrap.style.removeProperty('padding-top'); return; }
+  /* Compare where the TEXT sits, not where the boxes sit. The paragraph is the
+     grid's direct child, so padding it moves its text but leaves its box top
+     exactly where it was — the measured gap never closed and the padding ran
+     away to 173px while the paragraph still sat 18px high. A Range gives the
+     first line's real top on both sides, so this converges in one pass. */
+  function textTop(el){
+   var r=document.createRange(); r.selectNodeContents(el);
+   var rects=r.getClientRects();
+   return rects.length?rects[0].top:el.getBoundingClientRect().top;
+  }
+  var pad=parseFloat(getComputedStyle(wrap).paddingTop)||0;
+  var d=textTop(first)-textTop(para);
+  if(Math.abs(d)<0.5)return;
+  var want=Math.max(0,Math.round((pad+d)*100)/100);
+  wrap.style.setProperty('padding-top',want+'px','important');
+ }
+
+ function table(){ return document.querySelector('.dl-tbl-s204'); }
+
  function paraType(){
   var g=grid(); if(!g)return;
   var para=null;
@@ -9106,7 +9241,11 @@ else boot();
   });
   if(!para)return;
   var set=function(e){
-   e.style.setProperty('max-width','100%','important');
+   /* min(100%,680px) rather than a flat 100%: below 1601 the column is 464 so
+      the cap never bites and the paragraph fills it exactly as the team page
+      does, but once the block takes the 1600 frame the column is 752 and the
+      line ran to about 105 characters. 680 is the site's measure. */
+   e.style.setProperty('max-width','min(100%,680px)','important');
    e.style.setProperty('font-size','13.6px','important');
    e.style.setProperty('line-height','27.2px','important');
   };
@@ -9262,8 +9401,8 @@ else boot();
  }
 
  var n=0;
- (function poll(){ var ok=apply(); mobile(); twoCol(); paraType(); if(++n<80)setTimeout(poll,ok?500:120); })();
- addEventListener('resize',function(){ apply(); twoCol(); paraType(); });
+ (function poll(){ var ok=apply(); mobile(); twoCol(); paraType(); eyebrows(); topAlign(); if(++n<80)setTimeout(poll,ok?500:120); })();
+ addEventListener('resize',function(){ apply(); twoCol(); paraType(); eyebrows(); topAlign(); });
 })();
 
 </script>
