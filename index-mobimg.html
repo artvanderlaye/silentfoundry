@@ -7809,6 +7809,21 @@ else boot();
    m=Math.min(m,Math.max(Math.max(x.left-y.right,y.left-x.right),
                          Math.max(x.top-y.bottom,y.top-x.bottom)));}
   return m;}
+ /* PER-POINT NUDGES.
+    ATTITUDE sat too close to TACTILE below it, and VISUAL too close to
+    MECHANICAL above it. Both are moved by a small amount expressed as a
+    PERCENTAGE of the box, so the nudge scales with the drawing instead of
+    drifting as it resizes. Keyed by label text rather than index, so it still
+    points at the right circle if the order ever changes.
+    The connector lines need no separate treatment: relines() and figLines()
+    both measure where the discs actually ARE and redraw from that, so they
+    follow the nudge on their own. */
+ var NUDGE={ 'attitude':{x:-1.6,y:-2.2}, 'visual':{x:-2.2,y:0} };
+ function nudgeOf(el){
+  var n=el.querySelector('.dl-nm');
+  var t=((n?n.textContent:el.textContent)||'').trim().toLowerCase();
+  return NUDGE[t]||null;
+ }
  function paint(dm,k){
   /* the box itself is set in the stylesheet below, not inline: an inline
      style cannot beat the !important rule that pins .dl-dial square under
@@ -7838,7 +7853,8 @@ else boot();
    var dl=(ORIG.num.l[i]-HUB0.l)*G.sx, dt=(ORIG.num.t[i]-HUB0.t);
    var r=Math.sqrt(dl*dl+dt*dt);
    if(r>0.001){dl*=k; dt*=k;}
-   e.style.left=(G.hx+dl)+'%'; e.style.top=(HUB0.t+dt)+'%';
+   var nu=nudgeOf(e);
+   e.style.left=(G.hx+dl+(nu?nu.x:0))+'%'; e.style.top=(HUB0.t+dt+(nu?nu.y:0))+'%';
    if(e.children[0]){var w=ORIG.num.w[i]*dm*SC;
     e.children[0].style.width=w+'px'; e.children[0].style.height=w+'px';}});
   relines();}
@@ -8528,7 +8544,10 @@ else boot();
   pts.forEach(function(e){ if(e.__ox===undefined)e.__ox=parseFloat(e.style.left)||0; });
   function setSX(v){
    pts.forEach(function(e){
-    e.style.setProperty('left',(hx+(e.__ox-hx)*v).toFixed(3)+'%','important');});
+    if(e.__oy===undefined)e.__oy=parseFloat(e.style.top)||0;
+    var nu=nudgeOf(e);
+    e.style.setProperty('left',(hx+(e.__ox-hx)*v+(nu?nu.x:0)).toFixed(3)+'%','important');
+    e.style.setProperty('top',(e.__oy+(nu?nu.y:0)).toFixed(3)+'%','important');});
   }
 
   function fits(){
