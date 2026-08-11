@@ -8861,6 +8861,18 @@ else boot();
      that case is covered while it happens. */
   var hiding=false;
   addEventListener('resize',function(){
+   /* THE BROKEN FRAME.
+      Crossing 900 the CSS flips on the very pixel — the photographs become
+      full-width 16:9 blocks — but the DOM move that puts them in the right
+      PLACE was waiting on the 120ms debounce. For those 120ms the mobile
+      rules were being applied to rows still sitting in the desktop column:
+      giant pictures straight over the copy. That is the thing that pops up.
+      The move is done here instead, synchronously, inside the resize event
+      and therefore BEFORE the browser paints the new width. */
+   if(band(innerWidth)!==band(lastW)){
+    var vv=V[cur-1]||V[0];
+    try{ order(vv); rowsBleed(vv); }catch(e){}
+   }
    /* WITHIN A BAND the layout is the same layout, just narrower — so it is
       recomputed, not rebuilt. paint() is pure geometry: no picture is
       swapped, nothing is hidden, so it cannot flash. Leaving it out was
