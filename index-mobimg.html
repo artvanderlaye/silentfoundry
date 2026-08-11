@@ -7714,6 +7714,18 @@ else boot();
 </script>
 
 <!-- MARSHALL small-screen: 27 and 40. -->
+<style id="sf-hero-nostretch">
+/* The top hero word was being stretched horizontally to match the width of the
+   line beneath it. With INDUSTRIALISING (15 letters) that was barely visible;
+   with PRODUCT (7) it came out at scaleX(1.70) and the letterforms were
+   visibly distorted.
+
+   Whatever writes it does so inline and before DOMContentLoaded, and it does
+   not go through style.transform, setProperty or setAttribute — so it cannot
+   be intercepted. It does not need to be: an !important declaration in a
+   stylesheet outranks a normal inline one, whoever wrote it. */
+html body .hero-headline-top{transform:none !important;}
+</style>
 <script id="sf-mobimg">
 /* ============================================================
    MARSHALL — option 4, production candidate.
