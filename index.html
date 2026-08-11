@@ -7712,3 +7712,222 @@ else boot();
 })();
 
 </script>
+
+<script id="sf-ddna-width">
+/* ============================================================
+   DESIGNED DNA — the block was not narrow, it was PENNED IN.
+
+   Measured on the live page at 1440: the grid is the full 1344
+   wide and its gap is already 96px — the same gap the team page
+   uses. What holds it in is an inline
+
+        padding-left:168px; padding-right:152px
+
+   written onto the grid itself. That is where the dead space on
+   the right comes from, and why the two columns sit bunched in
+   the middle of a section they are supposed to fill.
+
+   The padding comes off and the columns are told to fill what is
+   left: the paragraph takes 560 — about 70 characters, inside the
+   site's 680 measure — and the label column takes the rest.
+
+     before   168 | 464 | 96 | 464 | 152      block 48 -> 1240
+     after      0 | 688 | 96 | 560 | 0        block 48 -> 1392
+
+   Only at 901 and up. Below that the grid is a single column and
+   is left exactly as it is.
+   ============================================================ */
+(function(){
+ var SEL='.dl-s204.dl-cols';
+
+ function grid(){ return document.querySelector(SEL); }
+
+ function apply(){
+  var g=grid();
+  if(!g)return false;
+  /* The DESIGNED DNA eyebrow row cancels the grid's padding with matching
+     NEGATIVE margins (-168 / -152) so it can sit at the section edge while
+     the two columns stay inset. Take the padding away and those margins have
+     nothing left to cancel: the eyebrow ran 120px off BOTH sides of a 1440
+     screen. They have to come off together. */
+  var eyebrow=null;
+  [].forEach.call(g.children,function(c){
+   if(eyebrow)return;
+   var cs=getComputedStyle(c);
+   if(parseFloat(cs.marginLeft)<-1||parseFloat(cs.marginRight)<-1)eyebrow=c;
+  });
+  if(eyebrow)remember(eyebrow);
+
+  if(innerWidth<901){
+   /* mobile is one column — hand everything back */
+   g.style.removeProperty('padding-left');
+   g.style.removeProperty('padding-right');
+   g.style.removeProperty('grid-template-columns');
+   if(eyebrow)restore(eyebrow);
+   return true;
+  }
+  if(eyebrow){
+   eyebrow.style.setProperty('margin-left','0px','important');
+   eyebrow.style.setProperty('margin-right','0px','important');
+  }
+  /* the inline padding is what pens it in, and being inline it beats any
+     stylesheet — it has to be cleared here, not overridden in CSS. */
+  g.style.setProperty('padding-left','0px','important');
+  g.style.setProperty('padding-right','0px','important');
+  g.style.setProperty('grid-template-columns','1fr min(560px,44%)','important');
+  return true;
+ }
+
+
+ /* ---------- MOBILE ----------------------------------------------
+    Measured on a 390 phone: the section ran 2,284px — 2.7 full screens.
+    Three causes, all addressed here.
+
+    1  Each principle took TWO lines. The list is a grid of alternating
+       .dl-tk (the name) and .dl-tv (the description); collapsed to one
+       column every one of them got its own row — sixteen rows, 625px,
+       and each pair looks identical so it reads as a wall. Two columns
+       puts each principle on ONE line. The group headings (Intangible /
+       Tangible) and their rules span both, so the structure still reads.
+
+    2  102px of dead air between "Built to be opened." and the paragraph
+       — the outer grid's 48px row gap plus the list's own spacing.
+
+    3  The paragraph arrived AFTER the list, so you scrolled a wall of
+       names before being told what they were for. It goes first now,
+       and the eight principles read as the summary.
+    ---------------------------------------------------------------- */
+ var MOB='sf-ddna-mob';
+ /* the page's own phone rules win the cascade against anything reasonable
+    here, so the two-column list is written INLINE with !important — the one
+    thing no stylesheet can outrank. Cleared again above 900. */
+ /* The width of the name column, measured rather than guessed.
+
+    Three CSS spellings were tried first and each failed for its own reason:
+      52% 1fr                    gave the names a 374px column at 768 — three
+                                 times the widest name — and squeezed the
+                                 descriptions into three lines at 320.
+      fit-content(46%) 1fr       Chrome let the track fall BELOW the longest
+                                 unbreakable word, so MANUFACTURING and
+                                 SERVICEABILITY drew straight over their
+                                 descriptions.
+      minmax(min-content,
+             fit-content(46%))   invalid — minmax() does not accept
+                                 fit-content(), so the whole declaration was
+                                 dropped and the list silently fell back to one
+                                 column below 768.
+
+    So it is measured: ask the browser for the two intrinsic widths, then take
+      max( longest unbreakable word , min( widest name , 46% of the row ) )
+    — never narrower than a word can be, never wider than the longest name,
+    and it yields to the descriptions on a small screen. */
+ function track(t){
+  var row=t.getBoundingClientRect().width||320;
+  function widest(kind){
+   t.style.setProperty('grid-template-columns',kind+' 1fr','important');
+   var w=0;
+   [].forEach.call(t.querySelectorAll('.dl-tk'),function(k){
+    var r=document.createRange(); r.selectNodeContents(k);
+    var b=r.getBoundingClientRect();
+    if(b.width>w)w=b.width;});
+   return w;
+  }
+  var mx=widest('max-content');      /* the longest name, unwrapped   */
+  var mn=widest('min-content');      /* the longest single WORD       */
+  return Math.round(Math.max(mn,Math.min(mx,row*0.46)));
+ }
+
+ /* Leaving mobile RESTORES, it does not delete.
+
+    The first version called removeProperty() to undo itself above 900. That
+    removed the page builder's OWN inline styles as well as mine — the list is
+    given its display:grid and its two tracks inline by the builder — so every
+    desktop width came back as a single column and the list grew from 345 to
+    427. Nothing on desktop was supposed to change at all.
+
+    So the original style attribute is photographed once, before anything is
+    touched, and put back verbatim. */
+ function remember(el){
+  if(el.__sfOrig===undefined)el.__sfOrig=el.getAttribute('style')||'';
+  return el;
+ }
+ function restore(el){
+  if(el.__sfOrig===undefined)return;
+  if(el.__sfOrig)el.setAttribute('style',el.__sfOrig);
+  else el.removeAttribute('style');
+ }
+
+ function twoCol(){
+  var t=document.querySelector('.dl-tbl-s204');
+  if(!t)return;
+  var on=innerWidth<=900;
+  remember(t);
+  [].forEach.call(t.children,function(c){
+   remember(c);
+   [].forEach.call(c.querySelectorAll('span'),remember);
+  });
+
+  if(!on){
+   restore(t);
+   [].forEach.call(t.children,function(c){
+    restore(c);
+    [].forEach.call(c.querySelectorAll('span'),restore);
+   });
+   return;
+  }
+
+  t.style.setProperty('display','grid','important');
+  t.style.setProperty('grid-template-columns',track(t)+'px 1fr','important');
+  t.style.setProperty('column-gap','12px','important');
+  t.style.setProperty('row-gap','0px','important');
+  t.style.setProperty('align-items','baseline','important');
+
+  [].forEach.call(t.children,function(c){
+   var isCell=/\bdl-tk\b|\bdl-tv\b/.test((c.className||'').toString());
+   if(!isCell){ c.style.setProperty('grid-column','1/-1','important'); return; }
+   /* the page's own phone rules span the cells across BOTH columns below 768 —
+      which is why the two-column list first appeared at 768 and not at 390.
+      Un-spanned explicitly, inline. */
+   c.style.setProperty('grid-column','auto','important');
+   c.style.setProperty('white-space','normal','important');
+   c.style.setProperty('min-width','0','important');
+   c.style.setProperty('height','auto','important');
+   c.style.setProperty('min-height','0','important');
+   c.style.setProperty('padding','7px 0','important');
+   /* the name is not the cell — it is a <span> inside it carrying an inline
+      white-space:nowrap. Setting the cell alone left SIGNATURE DETAILS
+      overflowing its column silently: the box measured 125px while the text
+      drew 175px, so a bounding-box check saw no collision while the eye did. */
+   [].forEach.call(c.querySelectorAll('span'),function(s){
+    s.style.setProperty('white-space','normal','important');});
+  });
+ }
+
+ function mobile(){
+  var st=document.getElementById(MOB);
+  if(!st){ st=document.createElement('style'); st.id=MOB; document.body.appendChild(st); }
+  var G='html body '+SEL;
+  st.textContent=
+   '@media(max-width:900px){'+
+    /* each principle on one line */
+    'html body .dl-tbl-s204{display:grid !important;'+
+     'grid-template-columns:46% 1fr !important;'+
+     'column-gap:12px !important;row-gap:0 !important;align-items:baseline !important;}'+
+    /* the headings and rules keep the full width */
+    'html body .dl-tbl-s204 > div:not(.dl-tk):not(.dl-tv){grid-column:1/-1 !important;}'+
+    'html body .dl-tbl-s204 .dl-tk,html body .dl-tbl-s204 .dl-tv{'+
+     'height:auto !important;min-height:0 !important;padding:7px 0 !important;}'+
+    /* the dead air */
+    G+'{row-gap:40px !important;}'+
+    /* the explanation first, the principles second */
+    G+' > *:nth-child(2){order:3 !important;}'+
+    G+' > *:nth-child(3){order:2 !important;}'+
+   '}';
+ }
+
+ var n=0;
+ (function poll(){ var ok=apply(); mobile(); twoCol(); if(++n<80)setTimeout(poll,ok?500:120); })();
+ addEventListener('resize',function(){ apply(); twoCol(); });
+})();
+
+</script>
