@@ -8859,7 +8859,6 @@ else boot();
      nothing visible.
      Only crossing 900 — the one real change of layout — rebuilds, and only
      that case is covered while it happens. */
-  var hiding=false;
   addEventListener('resize',function(){
    /* THE BROKEN FRAME.
       Crossing 900 the CSS flips on the very pixel — the photographs become
@@ -8892,20 +8891,19 @@ else boot();
     },90);
     return;
    }
-   if(!hiding){
-    var d=document.querySelector('#sfsec-dna .dl-dial');
-    if(d){ d.classList.add('mi-swap'); hiding=true; }
-   }
+   /* CROSSING THE BAND, SYNCHRONOUSLY.
+      This used to HIDE the drawing, wait 120ms, then rebuild — and that hide
+      is exactly what Matthew was seeing: the circles vanishing for a moment
+      mid-resize. The hide only existed to cover the broken frame, and the
+      broken frame is gone now that the photographs move in the same instant
+      the CSS flips. applyV is synchronous from end to end, so the whole
+      crossing can happen here, inside the resize event, before the browser
+      paints. Nothing is hidden, because there is no longer a moment worth
+      hiding. */
    clearTimeout(rt);
-   rt=setTimeout(function(){
-    if(band(innerWidth)===band(lastW)){
-     if(hiding){ hiding=false;
-      var d2=document.querySelector('#sfsec-dna .dl-dial');
-      if(d2)d2.classList.remove('mi-swap'); }
-     bleedFix(); figFix(); return;
-    }
-    hiding=false; lastW=innerWidth; applyV(cur);
-   },120);});
+   lastW=innerWidth;
+   applyV(cur);
+  });
   window.__gs={names:V.map(function(x){return x.n;}),set:go};
   go(1);
  }
