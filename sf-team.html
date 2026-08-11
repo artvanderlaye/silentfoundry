@@ -3929,3 +3929,118 @@ html body .f-m6{display:none !important;}
  else setTimeout(start,900);
 })();
 </script>
+
+<script id="sf-team-tune">
+/* ============================================================
+   TEAM PAGE — four adjustments, applied after the page's own
+   builder has finished (it runs at ~900ms, so this waits for the
+   elements rather than a clock).
+
+   1  THE TEAM comes DOWN. Measured: the masthead section carries
+      padding-top:171px and the gap from the bottom of SILENT
+      FOUNDRY to the top of THE TEAM is 47px. Option A — more air
+      under the logo, and the block closes up on the photographs.
+
+   2  The photographs come UP to meet it. The section's bottom
+      padding is 22px and the first picture starts 26px under the
+      SCROLL line; both come in.
+
+   3  The names read as names. Michel / Matthew / James were set in
+      Bebas Neue at 15.2px, UPPERCASE, letter-spacing 3.04 — the
+      display face, which made them read as headings. DM Sans,
+      sentence case, normal spacing.
+
+   4  Mission / Vision / Opportunities become eyebrows. They were
+      DM Sans 13.12px weight 500 in sentence case — item labels, not
+      eyebrows. Moved onto the page's eyebrow, which BOARD OF
+      DIRECTORS and GET IN TOUCH already use: 10.88px, 0.25em,
+      weight 400, uppercase. One eyebrow on the page, not two.
+   ============================================================ */
+(function(){
+ var DM="'DM Sans',sans-serif";
+
+ function leaf(re){
+  var hit=null;
+  [].forEach.call(document.querySelectorAll('#pc *, body *'),function(e){
+   if(hit||e.children.length)return;
+   if(re.test((e.textContent||'').trim()))hit=e;});
+  return hit;
+ }
+
+ function masthead(){
+  var t=leaf(/^the team$/i);
+  if(!t)return null;
+  var p=t;
+  for(var i=0;i<6&&p;i++){
+   p=p.parentElement;
+   if(p&&p.tagName==='SECTION')return p;
+  }
+  return null;
+ }
+
+ /* --- 1 + 2 : the masthead moves down, the pictures come up --- */
+ function space(){
+  var s=masthead();
+  if(!s)return false;
+  /* set as important: the builder writes this section's padding inline,
+     and a stylesheet rule would lose to it. */
+  s.style.setProperty('padding-top','199px','important');    /* was 171 */
+  s.style.setProperty('padding-bottom','12px','important');  /* was 22  */
+  return true;
+ }
+
+ /* --- 3 : the names --- */
+ function names(){
+  var n=document.querySelectorAll('.u-name');
+  if(!n.length)return false;
+  [].forEach.call(n,function(e){
+   e.style.setProperty('font-family',DM,'important');
+   e.style.setProperty('font-size','15.2px','important');
+   e.style.setProperty('font-weight','400','important');
+   e.style.setProperty('letter-spacing','0.02em','important');
+   e.style.setProperty('text-transform','none','important');
+   /* the markup carries the names already capitalised for the display
+      face; without this they would read MICHEL RIIS ERIKSEN in DM Sans,
+      which is worse than what we started with. */
+   var t=(e.textContent||'').trim();
+   if(t===t.toUpperCase()&&/[A-Z]/.test(t))
+    e.textContent=t.toLowerCase().replace(/(^|[\s\/-])([a-z])/g,function(m,a,b){
+     return a+b.toUpperCase();});
+  });
+  return true;
+ }
+
+ /* --- 4 : Mission / Vision / Opportunities as eyebrows --- */
+ var EB=/^(mission|vision|opportunities)$/i;
+ function eyebrows(){
+  var found=0;
+  [].forEach.call(document.querySelectorAll('body *'),function(e){
+   if(e.children.length)return;
+   var t=(e.textContent||'').trim();
+   if(!EB.test(t))return;
+   found++;
+   e.style.setProperty('font-family',DM,'important');
+   e.style.setProperty('font-size','10.88px','important');
+   e.style.setProperty('letter-spacing','0.25em','important');
+   e.style.setProperty('font-weight','400','important');
+   e.style.setProperty('text-transform','uppercase','important');
+  });
+  return found>=3;
+ }
+
+ function apply(){
+  var a=space(), b=names(), c=eyebrows();
+  return a&&b&&c;
+ }
+
+ /* the page builds itself at ~900ms and can rebuild on resize, so this
+    keeps checking rather than firing once and hoping. */
+ var tries=0;
+ (function poll(){
+  var ok=apply();
+  if(++tries<60)setTimeout(poll,ok?400:120);
+ })();
+ addEventListener('resize',function(){setTimeout(apply,160);});
+})();
+
+</script>
