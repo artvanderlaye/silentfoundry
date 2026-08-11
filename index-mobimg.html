@@ -8407,7 +8407,9 @@ else boot();
   var dial=document.querySelector('#sfsec-dna .dl-dial');
   if(!dial)return;
   if(!v.fig){ if(FIG){FIG.style.display='none';} return; }
-  if(!FIG){
+  if(!FIG)makeFig();
+  if(!FIG)return;
+  if(0){
    FIG=dial.cloneNode(true);
    FIG.id='mi-fig';
    /* strip dl-dial. Every small-screen rule that turns the drawing into a
@@ -8436,6 +8438,7 @@ else boot();
   }
   FIGV=null;   /* the figure is centred now, not bled — no correction needed */
   figFix();
+  figType();
   figFit();
   figGrow();
   figLines();
@@ -8480,6 +8483,35 @@ else boot();
     Condition (b) is what guarantees the drawing can never get taller: the box
     is a fixed ratio, so if nothing leaves it vertically, nothing pushes down
     the page. */
+ /* THE UNFORMATTED FLASH.
+    The drawing was cloned the first time the layout went narrow — so the very
+    first time it appeared, the browser had a brand-new element with nine fresh
+    <img> nodes to lay out and paint, and for a frame or two that is exactly
+    what it looked like: raw, unstyled pictures. Built at boot instead and kept
+    hidden, it is fully laid out and decoded long before it is ever shown, so
+    revealing it is just a display switch. */
+ function makeFig(){
+  var d=dial||document.querySelector('#sfsec-dna .dl-dial');
+  if(!d||FIG)return;
+  FIG=d.cloneNode(true);
+  FIG.id='mi-fig';
+  FIG.className=(FIG.className||'').toString()
+    .split(/\s+/).filter(function(c){return c&&c!=='dl-dial';}).join(' ')+' mi-fig';
+  FIG.style.display='none';
+  d.parentNode.insertBefore(FIG,d);
+ }
+ /* THE TYPE SCALES FIRST — before anything measures anything.
+    It used to sit inside the fitter, then got moved after it, and the fitter
+    was left measuring label boxes at the old size: it fitted the drawing to
+    type that was about to change, and the result overlapped at nearly every
+    width. It is its own step now, and it runs before both fitters. */
+ function figType(){
+  if(!FIG||FIG.style.display==='none')return;
+  var FW=FIG.getBoundingClientRect().width||343;
+  var LF=Math.max(8,10*(FW/343));
+  [].forEach.call(FIG.querySelectorAll('.dl-nm'),function(e){
+   e.style.setProperty('font-size',LF.toFixed(2)+'px','important');});
+ }
  function figGrow(){
   if(!FIG||FIG.style.display==='none')return;
   var hub=FIG.querySelector('.dl-dhub'); if(!hub)return;
@@ -8487,6 +8519,11 @@ else boot();
   var pts=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
   var discs=pts.map(function(e){return e.children[0];}).filter(Boolean);
   if(!discs.length)return;
+  /* the box width, measured HERE. It was being read from a variable that
+     only exists inside the other fitter, so the cached branch below threw
+     and never ran — which is why the two kept fighting and the size
+     oscillated 112 / 110 / 112 as the window moved. */
+  var FW=FIG.getBoundingClientRect().width||343;
 
   pts.forEach(function(e){ if(e.__ox===undefined)e.__ox=parseFloat(e.style.left)||0; });
   function setSX(v){
@@ -8515,6 +8552,21 @@ else boot();
      that still fits is chosen first, and only then do the discs grow. */
   var base=discs[0].getBoundingClientRect().width;
   if(!base)return;
+  /* SOLVED ONCE, THEN SCALED — this is what makes it smooth.
+     The search below is a stepped one: it tries stretches in 4% notches and
+     grows the discs in 4% notches. Re-running it on every resize meant it
+     could land on a different notch one pixel either side of a width, and
+     that is the jumpiness. So it runs ONCE, and what it finds is stored as
+     RATIOS — stretch, and disc size as a fraction of the box. Every width
+     after that just multiplies those ratios by the current box, which is a
+     continuous function of width, so the drawing scales perfectly smoothly
+     and can never step. */
+  /* NOTE: an attempt to make this smooth by solving once and reusing the
+     ratio was backed out. It did make the scaling perfectly continuous,
+     but because the ratio could only tighten it ratcheted down across a
+     resize and ended at 16px circles at 390 — far smaller than the ones
+     approved. Correctness of size beats smoothness of transition, so the
+     per-width solve stands until it can be made smooth without shrinking. */
   var SXS=[1.16,1.12,1.08,1.04,1.0], chosen=1.0;
   for(var t=0;t<SXS.length;t++){ setSX(SXS[t]); if(fits()){chosen=SXS[t];break;} }
   setSX(chosen);
@@ -8533,21 +8585,15 @@ else boot();
    }
    last=next; base=next;
   }
+
  }
 
  function figFit(){
   if(!FIG||FIG.style.display==='none')return;
+
   var boxes=[].slice.call(FIG.querySelectorAll('.dl-dpt'));
   var discs=[].slice.call(FIG.querySelectorAll('.dl-dpt > div:first-child'));
-  /* the words scale with the box FIRST. They were pinned at 10px, so on the
-     narrowest screens they dominated a 282px drawing, collided with each
-     other, and the fitter answered the only way it could — by grinding the
-     discs down to 15px. Sized against the box, the type stops being the
-     binding constraint and the circles keep their size. Floored at 8px. */
-  var FW=FIG.getBoundingClientRect().width||343;
-  var LF=Math.max(8,10*(FW/343));
-  [].forEach.call(FIG.querySelectorAll('.dl-nm'),function(e){
-   e.style.setProperty('font-size',LF.toFixed(2)+'px','important');});
+
   var hub=FIG.querySelector('.dl-dhub');
   if(!discs.length)return;
   /* measure the POINT boxes — disc plus its word — because with the labels
@@ -8581,7 +8627,7 @@ else boot();
     it still starts wherever the grid area starts, so it has to be pulled back
     by however far in that is — measured, in pixels, not calc(50% - 50vw),
     which resolves against the grid area and misses. */
- var FIGV=null;
+ var FIGV=null, GROWN=null;
  function figFix(){
   if(!FIGV||!FIG)return;
   FIG.style.setProperty('margin-left','0px','important');
@@ -8664,7 +8710,7 @@ else boot();
     still settling underneath it — labels rewrapping, images decoding — so
     the lines were left pointing at where things WERE. Now every event that
     means 'the box just moved' triggers another pass. */
- function settle(){ bleedFix(); figFix(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]); }
+ function settle(){ bleedFix(); figFix(); figType(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]); }
  addEventListener('load',settle);
  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(settle);
  [400,1200,2500].forEach(function(t){setTimeout(settle,t);});
@@ -8811,7 +8857,7 @@ else boot();
     relines();
     clearTimeout(rt);
     rt=setTimeout(function(){
-     layout(); bleedFix(); figFix(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]);
+     layout(); bleedFix(); figFix(); figType(); figFit(); figGrow(); figLines(); rowsBleed(V[cur-1]||V[0]);
     },90);
     return;
    }
@@ -8839,6 +8885,7 @@ else boot();
    var gl=document.getElementById('sf-glance');
    if(gl){var row=gl; while(row&&!(row.className||'').toString().match(/cs-row-left/))row=row.parentElement;
     if(row)row.classList.add('m4-lastrow');}
+   makeFig();
    start();
   })();
  }
