@@ -9099,6 +9099,64 @@ html body .hero-headline-top{transform:none !important;}
   return true;
  }
 
+ /* ---------- THE LEFT COLUMN IS PROSE NOW -----------------------------
+    The eight name/definition pairs are replaced by three paragraphs. The list
+    element is hidden rather than emptied, so whatever builds it can keep doing
+    so without fighting this, and the group hairlines go with it — there is no
+    longer a group to divide. */
+ var PROSE=[
+  'SWITCH DNA is an industrial design language built around honest engineering '+
+  'rather than decoration. Products use simple rectilinear forms, balanced '+
+  'proportions and exposed structure, with functional components becoming part '+
+  'of the visual identity rather than being hidden.',
+
+  'Materials are presented honestly: brushed metal looks like metal, polymers '+
+  'remain matte and functional, fasteners and welds stay visible, and details '+
+  'such as ribbing, fins, tubes, clamps and hardware come directly from '+
+  'engineering requirements. Products are designed around straightforward '+
+  'manufacturing and assembly, with modular components that can be replaced, '+
+  'serviced and recombined.',
+
+  'The result is a distinctive, engineered aesthetic that can be recognised '+
+  'across different product categories without relying on a logo.'
+ ];
+
+ function prose(){
+  var t=table(); if(!t)return;
+  t.style.setProperty('display','none','important');
+  /* the hairlines that divided Intangible from Tangible */
+  var g=grid(); if(g)[].forEach.call(g.querySelectorAll('.dl-tr'),function(r){
+   r.style.setProperty('display','none','important');});
+
+  var box=document.getElementById('sf-ddna-prose');
+  if(!box){
+   box=document.createElement('div');
+   box.id='sf-ddna-prose';
+   PROSE.forEach(function(txt,i){
+    var q=document.createElement('p');
+    q.textContent=txt;
+    q.style.cssText='margin:0 0 '+(i===PROSE.length-1?'0':'18px')+' 0;';
+    box.appendChild(q);
+   });
+   t.parentNode.insertBefore(box,t);
+  }
+  /* the same type as the right-hand column, and the site's measure */
+  [].forEach.call(box.querySelectorAll('p'),function(q){
+   q.style.setProperty('font-family',DM,'important');
+   q.style.setProperty('font-size','13.6px','important');
+   q.style.setProperty('line-height','27.2px','important');
+   q.style.setProperty('font-weight','300','important');
+   q.style.setProperty('color','rgba(10,10,10,0.55)','important');
+   q.style.setProperty('max-width','min(100%,680px)','important');
+   /* the FIRST paragraph came out wide-tracked: the section styles the first
+      child of this column as a label. Everything the label rule sets has to be
+      named explicitly, not just the font. */
+   q.style.setProperty('letter-spacing','normal','important');
+   q.style.setProperty('text-transform','none','important');
+   q.style.setProperty('font-style','normal','important');
+  });
+ }
+
  /* ---------- THE EYEBROW PAIR (study option 2) ------------------------
     The Foundry puts one eyebrow over each column and no rule under either:
     DM Sans 10.88px · 0.25em · weight 400 · uppercase · gold · 34px below.
@@ -9199,7 +9257,7 @@ html body .hero-headline-top{transform:none !important;}
   var para=null;
   [].forEach.call(g.querySelectorAll('*'),function(e){
    if(para||e.children.length>2)return;
-   if(/^These principles define/.test((e.textContent||'').trim()))para=e;});
+   if(/^These principles/.test((e.textContent||'').trim()))para=e;});
   return para;
  }
 
@@ -9210,7 +9268,8 @@ html body .hero-headline-top{transform:none !important;}
  function topAlign(){
   var g=grid(); if(!g)return;
   var t=table(); if(!t)return;
-  var first=t.querySelector('.dl-tk');
+  var box=document.getElementById('sf-ddna-prose');
+  var first=box?box.querySelector('p'):t.querySelector('.dl-tk');
   var para=paraEl();
   if(!first||!para)return;
   /* the wrapper is the grid's DIRECT CHILD, not the paragraph's immediate
@@ -9247,7 +9306,7 @@ html body .hero-headline-top{transform:none !important;}
   [].forEach.call(g.querySelectorAll('*'),function(e){
    if(para)return;
    if(e.children.length>2)return;
-   if(/^These principles define/.test((e.textContent||'').trim()))para=e;
+   if(/^These principles/.test((e.textContent||'').trim()))para=e;
   });
   if(!para)return;
   var set=function(e){
@@ -9411,8 +9470,8 @@ html body .hero-headline-top{transform:none !important;}
  }
 
  var n=0;
- (function poll(){ var ok=apply(); mobile(); twoCol(); paraType(); eyebrows(); topAlign(); if(++n<80)setTimeout(poll,ok?500:120); })();
- addEventListener('resize',function(){ apply(); twoCol(); paraType(); eyebrows(); topAlign(); });
+ (function poll(){ var ok=apply(); mobile(); paraType(); eyebrows(); prose(); topAlign(); if(++n<80)setTimeout(poll,ok?500:120); })();
+ addEventListener('resize',function(){ apply(); paraType(); eyebrows(); prose(); topAlign(); });
 })();
 
 </script>
