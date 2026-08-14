@@ -2482,10 +2482,10 @@ body.v11-active nav * { cursor: none !important; }
           <span class="cs-dslabel">Results</span>
           <p class="cs-bridge">Marshall expanded into entirely new product categories without weakening the identity that made the brand distinctive.</p>
           <div class="cs-dmets">
-            <div class="cs-dmet"><span class="cs-dmetv">New Categories</span><span class="cs-dmetl">Headphones &middot; Speakers &middot; Home Audio</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">60+</span><span class="cs-dmetl">Heritage</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">New</span><span class="cs-dmetl">Categories</span></div>
             <div class="cs-dmet"><span class="cs-dmetv">$4B+</span><span class="cs-dmetl">Expanded Market</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">Global</span><span class="cs-dmetl">Consumer Audio Brand</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$1.1B</span><span class="cs-dmetl">Acquired in 2025</span></div>
+            <div class="cs-dmet"><span class="cs-dmetv">$1.1B</span><span class="cs-dmetl">Exit in 2025</span></div>
           </div>
         </div>
       </div>
@@ -7730,13 +7730,22 @@ else boot();
 html body .hero-headline-top{transform:none !important;}
 </style>
 <style id="sf-results-cols">
-/* RESULTS metrics — 4-up needs ~176px per cell or "New Categories" wraps onto
-   a second line and drops out of line with the other three values. Two viewport
-   bands are too narrow for that, so they take the 2-up treatment the block
-   already uses on mobile. Scoped to #sf-glance so no other .cs-dmets moves. */
-@media (min-width:601px) and (max-width:1159px){
-  html body #sf-glance .cs-dmets{grid-template-columns:repeat(2,1fr) !important;
-    gap:22px 0 !important;}
+/* The gold hairline under the metrics row. It comes from
+   .cs-row-left.cs-has-divider::after, which draws a 1px rgba(138,110,58,0.15)
+   rule across the bottom of the cell. The FIRST cell's copy is already
+   suppressed further up the file; this is the surviving one, sitting directly
+   under the four metrics. The grey border-top on .cs-dmets is NOT touched —
+   that is the structural divider above the row. */
+html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
+  display:none !important;}
+
+/* The eyebrow under each metric was 0.34rem = 5.44px, which reads as a grey
+   dash rather than a word. 8px is the largest that still fits "EXPANDED MARKET"
+   on one line at EVERY width — the tightest point is ~940px, where the cell is
+   only 116px wide, narrower than it is at 1024. Mobile (<=600) already sets its
+   own 10px and is deliberately left alone. */
+@media (min-width:601px){
+  html body #sf-glance .cs-dmetl{font-size:8px !important;}
 }
 </style>
 <script id="sf-mobimg">
