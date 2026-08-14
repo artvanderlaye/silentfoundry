@@ -33,8 +33,9 @@ ROOT = HERE.parent
 PAGE = ROOT / 'index.html'
 MIRROR = ROOT / 'index-mobimg.html'          # kept byte-identical to index.html
 PAYLOADS = [
-    ('sf-mobimg',     HERE / 'payloads' / '210-mobimg.js'),
-    ('sf-ddna-width', HERE / 'payloads' / '230-ddna.js'),
+    ('sf-mobimg',         HERE / 'payloads' / '210-mobimg.js'),
+    ('sf-ddna-width',     HERE / 'payloads' / '230-ddna.js'),
+    ('sf-marshall-order', HERE / 'payloads' / '250-marshall.js'),
 ]
 
 FIRST = PAYLOADS[0][0]
