@@ -36,6 +36,7 @@ PAYLOADS = [
     ('sf-mobimg',         HERE / 'payloads' / '210-mobimg.js'),
     ('sf-ddna-width',     HERE / 'payloads' / '230-ddna.js'),
     ('sf-marshall-order', HERE / 'payloads' / '250-marshall.js'),
+    ('sf-page-order',     HERE / 'payloads' / '260-order.js'),
 ]
 
 FIRST = PAYLOADS[0][0]
