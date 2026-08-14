@@ -9571,10 +9571,13 @@ html body .hero-headline-top{transform:none !important;}
 </script>
 <script id="sf-page-order">
 /* ============================================================
-   PAGE ORDER — The Foundry moves above the film and Marshall.
+   PAGE ORDER — The Foundry moves above Marshall.
 
-     was    hero · what we do · FILM · MARSHALL · THE FOUNDRY · switch …
-     now    hero · what we do · THE FOUNDRY · FILM · MARSHALL · switch …
+     was    hero · what we do · film · MARSHALL · THE FOUNDRY · switch …
+     now    hero · what we do · film · THE FOUNDRY · MARSHALL · switch …
+
+   The film does not move. The Foundry lands between it and
+   Marshall, so the anchor is Marshall, not the film.
 
    These sections are direct children of <body>, which is a plain
    block box — CSS `order` does nothing there, so this is a real
@@ -9589,22 +9592,21 @@ html body .hero-headline-top{transform:none !important;}
    somewhere else on the page.
    ============================================================ */
 (function(){
- /* the film section carries sf-video as a CLASS, not an id — getElementById
-    returned null and the move silently never ran. */
- function film(){ return document.getElementById('sf-video')||
-                         document.querySelector('section.sf-video'); }
+ /* The Foundry is inserted BEFORE Marshall. An earlier version anchored on
+    the film section and pushed the film down the page — the film stays put. */
+ function anchor(){ return document.getElementById('sfsec-dna'); }
 
  function done(){
   var hiw=document.getElementById('hiw-stage');
-  var vid=film();
+  var vid=anchor();
   if(!hiw||!vid)return null;
-  /* DOCUMENT_POSITION_FOLLOWING = vid comes after hiw, i.e. already moved */
+  /* DOCUMENT_POSITION_FOLLOWING = Marshall comes after The Foundry = done */
   return !!(hiw.compareDocumentPosition(vid)&Node.DOCUMENT_POSITION_FOLLOWING);
  }
 
  function move(){
   var hiw=document.getElementById('hiw-stage');
-  var vid=film();
+  var vid=anchor();
   if(!hiw||!vid)return false;
   if(done())return true;
 
