@@ -9405,8 +9405,19 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
        — the outer grid's 48px row gap plus the list's own spacing.
 
     3  The paragraph arrived AFTER the list, so you scrolled a wall of
-       names before being told what they were for. It goes first now,
-       and the eight principles read as the summary.
+       names before being told what they were for. It went first, via
+       two `order` rules keyed to nth-child(2) and nth-child(3).
+
+       THOSE ORDER RULES ARE GONE. They were written when the grid held
+       exactly three children — header, list column, paragraph column.
+       single() now inserts the display headline as child 2, so
+       nth-child(2) was the HEADLINE and nth-child(3) the prose: below
+       900 the section rendered eyebrow -> body -> headline, with the
+       headline stranded under the paragraph it was meant to introduce.
+       The list is hidden and the old right column with it, so there is
+       nothing left to reorder — DOM order (eyebrow, headline, prose)
+       is already the order wanted, at every width. The list rules below
+       stay as a safety net in case prose() has not run yet.
     ---------------------------------------------------------------- */
  var MOB='sf-ddna-mob';
  /* the page's own phone rules win the cascade against anything reasonable
@@ -9528,12 +9539,18 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
     'html body .dl-tbl-s204 > div:not(.dl-tk):not(.dl-tv){grid-column:1/-1 !important;}'+
     'html body .dl-tbl-s204 .dl-tk,html body .dl-tbl-s204 .dl-tv{'+
      'height:auto !important;min-height:0 !important;padding:7px 0 !important;}'+
-    /* the dead air */
-    G+'{row-gap:40px !important;}'+
-    /* the explanation first, the principles second */
-    G+' > *:nth-child(2){order:3 !important;}'+
-    G+' > *:nth-child(3){order:2 !important;}'+
-   '}';
+    /* no reordering: DOM order IS eyebrow -> headline -> prose. See the
+       note above — the old nth-child order rules put the headline last. */
+   '}'+
+   /* ROW GAP. The 40px here (and the page's own 48px from 901 to 980) was
+      the gap between two COLUMNS once they stacked. The block is one column
+      of three stacked children now — eyebrow, headline, paragraph — so that
+      gap fell BETWEEN them: 40px under the eyebrow and another 40 under the
+      headline, against Marshall's 14 and 8. Marshall carries its rhythm on
+      the elements' own margins and so does this, at every width: above 980
+      apply() already collapses the grid and the page's row-gap is 0, and
+      below 980 it is zeroed here. Only .dl-s204 is touched. */
+   '@media(max-width:980px){'+G+'{row-gap:0 !important;}}';
  }
 
  var n=0;
