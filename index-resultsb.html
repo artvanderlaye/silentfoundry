@@ -9688,3 +9688,29 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
 })();
 
 </script>
+<style id="sf-dna-900">
+/* ============================================================
+   EXTRACTED DNA — the ~900 band only.
+
+   Between 821 and 900 the stacked diagram is at its largest: the
+   nodes span 952px inside an 897px window, so the graphic is
+   actually wider than the screen and reads as overbearing. At 901
+   the two-column layout returns and it drops back on its own, and
+   below 821 it is already fine. So this is deliberately ONE narrow
+   band — nothing else on the page is touched.
+
+   Scaled as a single object so nodes, labels, connector lines and
+   positions shrink together and nothing can drift out of alignment.
+
+   The margin sits on .cs-dna-split, NOT on the scaled element: a
+   transform leaves the layout box at full height, so the section
+   would keep ~270px of dead space underneath, but putting that
+   negative margin on the scaled element makes the diagram
+   re-measure and grow back into it. On the parent it does not.
+   ============================================================ */
+@media (min-width:821px) and (max-width:900px){
+  #sfsec-dna .dl-gx > div:last-of-type{transform:scale(0.80) !important;
+    transform-origin:top center !important;}
+  #sfsec-dna .cs-dna-split{margin-bottom:-260px !important;}
+}
+</style>
