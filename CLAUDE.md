@@ -100,6 +100,17 @@ to the project's configured instructions.
 - Keep the box numbers identical to the numbering used in the reply, so
   "I like 9, 23 and 35" maps straight onto the boxes.
 
+## ALWAYS include the push command — every single time
+- Every response that changes a file MUST end with the ready-to-paste push
+  command. Never make Matthew ask for it, and never assume he remembers it from
+  an earlier message. It goes in EVERY output that touches the repo, alongside
+  the URL — same rule, same reason.
+- Format, one line, self-contained:
+  `cd /Users/Home/Documents/GitHub/silentfoundry && rm -f .git/index.lock && git add . && git commit -m "..." && git push`
+- Include it even when the change is small, even when it is a re-output, and
+  even when the previous message already had one.
+- Still NEVER run git from the agent side — hand him the command, he runs it.
+
 ## Response style (how to report back to Matthew)
 - Do the full detailed work as usual — backups, edits, triple-checks, live
   verification. Matthew likes that the detail is there and visible.
