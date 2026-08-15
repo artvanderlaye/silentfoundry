@@ -78,6 +78,13 @@ to the project's configured instructions.
   A `file:///` path is an EXTRA, never a substitute. Put the pages.dev URL first.
 - This applies to EVERY output that touches a page — including small fixes,
   re-outputs and follow-ups. Never omit it because "it's the same link as before".
+- THE LINK MUST BE CLICKABLE. Write it as a markdown link, never wrapped in
+  backticks — backticks render as code and cannot be clicked:
+      GOOD  [https://silentfoundry.pages.dev](https://silentfoundry.pages.dev)
+      BAD   `https://silentfoundry.pages.dev`
+  This applies to the URL at the top AND the one at the bottom of every reply.
+  (The push command still goes in a code block — that one is for copying, not
+  clicking.)
 - Root homepage: `https://silentfoundry.pages.dev`
 - Any other page: `https://silentfoundry.pages.dev/<filename-without-.html>`
 - If several pages changed, list each one.
