@@ -7747,6 +7747,16 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
 @media (min-width:601px){
   html body #sf-glance .cs-dmetl{font-size:8px !important;}
 }
+
+/* MOBILE: the hole above RESULTS. It was 150px, where every other gap in the
+   stacked section is ~88px. It is made of three parts, not one:
+       92px  margin-bottom on the product photo's cell
+     + 18px  padding-bottom on the diagram wrapper it sits inside
+     + 40px  margin-top on #sf-glance (set inline by the Marshall payload)
+   The 92 is the arbitrary one, so that is the one that moves: 30+18+40 = 88. */
+@media (max-width:900px){
+  html body #sfsec-dna .cs-row-right.cs-show-mobile{margin-bottom:30px !important;}
+}
 </style>
 <script id="sf-mobimg">
 /* ============================================================
@@ -9587,9 +9597,35 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   return true;
  }
 
+ /* ---- MOBILE: the amp-wall photo belongs with the intro paragraph -------
+    On desktop that image cell (.cs-row-right-r1) is the SECOND child of
+    .cs-dbody, so it sits in the right-hand column level with "By 2010,
+    Marshall's core guitar amplifier market was declining...".
+
+    Below the two-column breakpoint the page's own code nests that cell
+    INSIDE the last text cell and orders it to the end, so the photo lands
+    under the RESULTS metrics at the very bottom of the section instead of
+    under its own paragraph. Put it back where desktop has it.
+
+    Runs only while stacked; on desktop the cell is already a direct child
+    in the right place and this does nothing. */
+ function heroWithIntro(){
+  var b=body(); if(!b)return;
+  var stacked=getComputedStyle(b).gridTemplateColumns.split(' ').length<2;
+  if(!stacked)return;
+  var intro=b.firstElementChild;                 /* the intro cell, order 1 */
+  var hero=b.querySelector('.cs-row-right-r1');  /* found even when nested */
+  if(!intro||!hero||hero===intro)return;
+  if(hero.parentNode!==b||hero.previousElementSibling!==intro)
+   b.insertBefore(hero,intro.nextSibling);
+  /* the grid is one column here; order 2 puts it between intro (1) and
+     TRANSLATION (3), which is the desktop sequence. */
+  hero.style.setProperty('order','2','important');
+ }
+
  var n=0;
- (function poll(){ var ok=apply(); if(++n<200)setTimeout(poll,ok?500:120); })();
- addEventListener('resize',function(){ setTimeout(apply,140); });
+ (function poll(){ var ok=apply(); heroWithIntro(); if(++n<200)setTimeout(poll,ok?500:120); })();
+ addEventListener('resize',function(){ setTimeout(function(){apply();heroWithIntro();},140); });
 })();
 
 </script>
