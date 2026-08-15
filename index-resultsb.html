@@ -9120,16 +9120,13 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
      Hard-coding 464/96 all the way down pushed the right-hand column 48px
      off a 1024 screen, because that is exactly the width at which the team
      page stops using fixed tracks. */
-  if(innerWidth>1601){
-   g.style.setProperty('grid-template-columns','1fr 1fr','important');
-   g.style.setProperty('column-gap','96px','important');
-  }else if(innerWidth>1090){
-   g.style.setProperty('grid-template-columns','464px 464px','important');
-   g.style.setProperty('column-gap','96px','important');
-  }else{
-   g.style.setProperty('grid-template-columns','1fr 1fr','important');
-   g.style.setProperty('column-gap','clamp(24px,4vw,56px)','important');
-  }
+  /* SINGLE COLUMN. This block used to run two columns - DESIGNED DNA copy on
+     the left, THE PLATFORM on the right - on the team page's breakpoints. It
+     now mirrors the Marshall introduction above it, which is one column with
+     the body copy capped at 680px, so the tracks collapse to one at every
+     width and the column gap stops meaning anything. */
+  g.style.setProperty('grid-template-columns','1fr','important');
+  g.style.setProperty('column-gap','0px','important');
   return true;
  }
 
@@ -9138,21 +9135,14 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
     element is hidden rather than emptied, so whatever builds it can keep doing
     so without fighting this, and the group hairlines go with it — there is no
     longer a group to divide. */
+ /* One paragraph now, matching the Marshall introduction directly above:
+    eyebrow, display headline, single column of body copy, then straight into
+    the portfolio. The portfolio images are the evidence, so nothing else. */
  var PROSE=[
-  'SWITCH DNA is an industrial design language built around honest engineering '+
-  'rather than decoration. Products use simple rectilinear forms, balanced '+
-  'proportions and exposed structure, with functional components becoming part '+
-  'of the visual identity rather than being hidden.',
-
-  'Materials are presented honestly: brushed metal looks like metal, polymers '+
-  'remain matte and functional, fasteners and welds stay visible, and details '+
-  'such as ribbing, fins, tubes, clamps and hardware come directly from '+
-  'engineering requirements. Products are designed around straightforward '+
-  'manufacturing and assembly, with modular components that can be replaced, '+
-  'serviced and recombined.',
-
-  'The result is a distinctive, engineered aesthetic that can be recognised '+
-  'across different product categories without relying on a logo.'
+  'SWITCH was designed as more than a motorcycle. Its industrial DNA combines '+
+  'form, engineering, materials and manufacturing into a design language that '+
+  'carries across entirely new product categories while remaining recognisably '+
+  'SWITCH.'
  ];
 
  function prose(){
@@ -9177,8 +9167,9 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   /* the same type as the right-hand column, and the site's measure */
   [].forEach.call(box.querySelectorAll('p'),function(q){
    q.style.setProperty('font-family',DM,'important');
-   q.style.setProperty('font-size','13.6px','important');
-   q.style.setProperty('line-height','27.2px','important');
+   /* Marshall's .cs-dp exactly: 14.4px / 28.512px (line-height 1.98) */
+   q.style.setProperty('font-size','14.4px','important');
+   q.style.setProperty('line-height','28.512px','important');
    q.style.setProperty('font-weight','300','important');
    q.style.setProperty('color','rgba(10,10,10,0.55)','important');
    q.style.setProperty('max-width','min(100%,680px)','important');
@@ -9202,19 +9193,72 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
     stay, so the break between the two groups is still marked. */
  var GOLD='rgb(200,169,110)';
  var DM="'DM Sans',sans-serif";
- var RIGHT='The Platform';
+ var RIGHT='The Platform';          /* retired - see single() below */
+ var EYEBROW='Designed DNA: Switch';
+ var HEAD1='From One Product To';
+ var HEAD2='An Entire System.';
 
  function ebStyle(e){
   var set=function(x){
    x.style.setProperty('font-family',DM,'important');
    x.style.setProperty('font-size','10.88px','important');
    x.style.setProperty('letter-spacing','0.25em','important');
-   x.style.setProperty('font-weight','400','important');
+   /* Marshall's .cs-dey is weight 300, not 400 */
+   x.style.setProperty('font-weight','300','important');
    x.style.setProperty('text-transform','uppercase','important');
    x.style.setProperty('color',GOLD,'important');};
   set(e);
   [].forEach.call(e.querySelectorAll('*'),set);
-  e.style.setProperty('margin-bottom','34px','important');
+  /* Marshall's .cs-dey sits 14px above its headline, not 34px */
+  e.style.setProperty('margin-bottom','14px','important');
+ }
+
+
+ /* ---------- HEADLINE + THE PLATFORM COLUMN --------------------------
+    Marshall's introduction is eyebrow -> display headline -> one paragraph.
+    This block had no headline at all and a second column of copy, so both
+    are handled here: the headline is created once and styled to Marshall's
+    .cs-dh exactly, and the old right-hand column is hidden.
+
+    Hidden, not deleted: the section rebuilds itself, and removing a node it
+    expects to find is how you get a silent failure two changes later. */
+ function single(){
+  var g=grid(); if(!g)return;
+  var row=document.getElementById('sf-ddna-row'); if(!row)return;
+
+  var h=document.getElementById('sf-ddna-h');
+  if(!h){
+   h=document.createElement('div');
+   h.id='sf-ddna-h';
+   h.appendChild(document.createTextNode(HEAD1));
+   h.appendChild(document.createElement('br'));
+   h.appendChild(document.createTextNode(HEAD2));
+   row.parentNode.insertBefore(h,row.nextSibling);
+  }
+  /* Marshall's .cs-dh, measured off the live page:
+     23.04px Bebas Neue - uppercase - 0.22em - line-height 0.92 - 8px below */
+  h.style.setProperty('font-family',"'Bebas Neue',sans-serif",'important');
+  h.style.setProperty('font-size','23.04px','important');
+  h.style.setProperty('line-height','0.92','important');
+  h.style.setProperty('letter-spacing','0.22em','important');
+  h.style.setProperty('text-transform','uppercase','important');
+  h.style.setProperty('font-weight','300','important');
+  h.style.setProperty('margin','0 0 8px 0','important');
+  h.style.setProperty('max-width','min(100%,680px)','important');
+  /* take the colour from Marshall itself rather than guessing at a hex */
+  var ref=document.querySelector('#sfsec-dna .cs-dh');
+  if(ref)h.style.setProperty('color',getComputedStyle(ref).color,'important');
+
+  /* the old THE PLATFORM column - every grid child after the prose box */
+  var keep={};
+  keep[row.id]=1;
+  [].forEach.call(g.children,function(c){
+   if(c===row||c===h)return;
+   if(c.id==='sf-ddna-prose')return;
+   if(c.contains(document.getElementById('sf-ddna-prose')))return;
+   if((c.textContent||'').indexOf('These principles')>=0)
+    c.style.setProperty('display','none','important');
+  });
  }
 
  function eyebrows(){
@@ -9235,34 +9279,23 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   });
   if(!text)return;
 
+  /* THE PLATFORM is gone. The block is one column now, so there is no second
+     column for a second eyebrow to sit over. Any previously-created one is
+     hidden rather than removed, so nothing that references it can break. */
   var eb2=document.getElementById('sf-ddna-eb2');
-  if(!eb2){
-   eb2=text.cloneNode(true);
-   eb2.id='sf-ddna-eb2';
-   text.parentNode.insertBefore(eb2,text.nextSibling);
-  }
-  var leaf=eb2; while(leaf.children.length===1)leaf=leaf.children[0];
-  if((leaf.textContent||'').trim()!==RIGHT)leaf.textContent=RIGHT;
+  if(eb2)eb2.style.setProperty('display','none','important');
 
-  if(innerWidth<=900||!wide){
-   /* one column — the second eyebrow has nothing to sit over */
-   eb2.style.setProperty('display','none','important');
-   row.style.removeProperty('display');
-   row.style.removeProperty('grid-template-columns');
-   row.style.removeProperty('column-gap');
-  }else{
-   var gc=getComputedStyle(g);
-   eb2.style.removeProperty('display');
-   row.style.setProperty('display','grid','important');
-   row.style.setProperty('grid-template-columns',gc.gridTemplateColumns,'important');
-   row.style.setProperty('column-gap',gc.columnGap,'important');
-   row.style.setProperty('align-items','end','important');
-  }
+  var leaf=text; while(leaf.children.length===1)leaf=leaf.children[0];
+  if((leaf.textContent||'').trim()!==EYEBROW)leaf.textContent=EYEBROW;
+
+  row.style.removeProperty('display');
+  row.style.removeProperty('grid-template-columns');
+  row.style.removeProperty('column-gap');
   /* the row's own negative margins used to cancel the block's padding; with the
      padding gone they would throw the eyebrows off the left edge. */
   row.style.setProperty('margin-left','0px','important');
   row.style.setProperty('margin-right','0px','important');
-  ebStyle(text); ebStyle(eb2);
+  ebStyle(text);
 
   /* INTANGIBLE / TANGIBLE step aside */
   [].forEach.call(g.querySelectorAll('*'),function(e){
@@ -9504,8 +9537,8 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
  }
 
  var n=0;
- (function poll(){ var ok=apply(); mobile(); paraType(); eyebrows(); prose(); topAlign(); if(++n<80)setTimeout(poll,ok?500:120); })();
- addEventListener('resize',function(){ apply(); paraType(); eyebrows(); prose(); topAlign(); });
+ (function poll(){ var ok=apply(); mobile(); paraType(); eyebrows(); prose(); single(); topAlign(); if(++n<80)setTimeout(poll,ok?500:120); })();
+ addEventListener('resize',function(){ apply(); paraType(); eyebrows(); prose(); single(); topAlign(); });
 })();
 
 </script>
