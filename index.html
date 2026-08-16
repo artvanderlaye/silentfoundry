@@ -9793,3 +9793,20 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   .factory-solo{ max-width:1920px; margin-inline:auto; }
 }
 </style>
+<style id="sf-foundry-anim">
+/* The glyph animation is already hidden below 769 — but the Foundry's two-column
+   grid does not collapse until 980, so between 769 and 980 the layout is a single
+   stacked column WITH the animation still in it. That pushes the gap between the
+   paragraph and CAPABILITIES from 78px to 174px, which is the hole on tablet.
+
+   The animation stays exactly as it is at 981 and above, where it has a column to
+   live in. This only extends the existing mobile behaviour up to the width where
+   the column actually turns to one.
+
+   Scoped to the animation. Every other .tsw-injected in this section — the thesis
+   quote, OUR THESIS, the triangle — is already hidden at these widths, verified
+   at 768 and 900, so nothing else can move. */
+@media (min-width:769px) and (max-width:980px){
+  html body #hiw-stage [data-part="quoteanim"] .tsw-injected{display:none !important;}
+}
+</style>
