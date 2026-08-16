@@ -9830,17 +9830,25 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
    Supersedes the "backgrounds stay full viewport width" half of
    sf-width-tiers; the media tiers are re-pointed at the canvas.
    ============================================================ */
+/* The canvas cap is UNGATED: a max-width is inert on any screen narrower than
+   it, so there is no threshold to miss. Only the above-cap corrections below
+   sit in a media query. */
+html body > section,
+html body > footer,
+html body > div:not(#v11-cursor):not(#v11-cursor-ring):not(#scrollIndicator):not(.mobile-menu):not([id^="v11-industrial"]){
+  box-sizing:border-box !important;
+  max-width:1920px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
 @media (min-width:1921px){
 
-  /* ---- the canvas ---------------------------------------- */
+  /* a fixed width above the cap, so percentage paddings inside cannot re-expand it */
   html body > section,
   html body > footer,
   html body > div:not(#v11-cursor):not(#v11-cursor-ring):not(#scrollIndicator):not(.mobile-menu):not([id^="v11-industrial"]){
-    box-sizing:border-box !important;
     width:1920px !important;
-    max-width:1920px !important;
-    margin-left:auto !important;
-    margin-right:auto !important;
   }
 
   /* fixed nav: both edges pinned, so max-width + auto margins centre it */
