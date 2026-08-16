@@ -112,8 +112,14 @@ to the project's configured instructions.
   command. Never make Matthew ask for it, and never assume he remembers it from
   an earlier message. It goes in EVERY output that touches the repo, alongside
   the URL — same rule, same reason.
-- Format, one line, self-contained:
-  `cd /Users/Home/Documents/GitHub/silentfoundry && rm -f .git/index.lock && git add . && git commit -m "..." && git push`
+- Format, one line, self-contained. Note the SEMICOLON before `git push` and
+  `add -A`, both of which matter:
+  `cd /Users/Home/Documents/GitHub/silentfoundry && rm -f .git/index.lock && git add -A && git commit -m "..." ; git push`
+- WHY THE SEMICOLON: with `&& git push`, if there is nothing new to commit
+  `git commit` exits non-zero, the chain stops, and the push never runs — the
+  command looks broken when in fact the repo was simply already up to date.
+  This has bitten Matthew. A `;` runs the push regardless.
+- `git add -A` not `git add .` so deletions and renames are picked up too.
 - Include it even when the change is small, even when it is a re-output, and
   even when the previous message already had one.
 - Still NEVER run git from the agent side — hand him the command, he runs it.
