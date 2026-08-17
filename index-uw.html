@@ -9251,6 +9251,28 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   h.style.setProperty('font-weight','300','important');
   h.style.setProperty('margin','0 0 8px 0','important');
   h.style.setProperty('max-width','min(100%,680px)','important');
+
+  /* ---- LAB 13A/13B ONLY : intro-block alignment ------------------------
+     Featured Venture gives its headline a 960 measure and sets it on a ~28px
+     rhythm. Designed DNA had a 680 headline and NO gap at all above it, which
+     is why the two blocks did not read as the same composition. The 82px in
+     Featured Venture is not the reference - 50 of it is the eSCRAMBLER logo
+     lockup, which Designed DNA does not have.
+
+     The gap is a clamp rather than a fixed 28px, so it does not add the same
+     vertical cost on a phone:  18px at 390, ~22 at 768, ~25 at 1024, 28 from
+     1320 up. Body copy is untouched and stays on its 680 measure. */
+  window.__ddnaAlign=function(on){
+   var hh=document.getElementById('sf-ddna-h');
+   var rr=document.getElementById('sf-ddna-row');
+   if(!hh||!rr)return;
+   hh.style.setProperty('max-width', on?'min(100%,960px)':'min(100%,680px)','important');
+   rr.style.setProperty('max-width', on?'min(100%,680px)':'none','important');
+   rr.style.setProperty('margin-bottom', on?'clamp(18px, 1.1vw + 13.5px, 28px)':'0px','important');
+  };
+  /* re-assert on every pass of single(), so a re-measure cannot undo it */
+  var uw=document.documentElement.getAttribute('data-uw');
+  window.__ddnaAlign(uw==='13'||uw==='14');
   /* take the colour from Marshall itself rather than guessing at a hex */
   var ref=document.querySelector('#sfsec-dna .cs-dh');
   if(ref)h.style.setProperty('color',getComputedStyle(ref).color,'important');
@@ -10334,6 +10356,7 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
       if(b.dataset.n===n) b.scrollIntoView({block:'nearest'});
     });
     var note=document.getElementById('uw-note'); if(note) note.textContent=D[n]||'';
+    if(window.__ddnaAlign) window.__ddnaAlign(n==='13'||n==='14');
     try{ history.replaceState(null,'','#uw='+n+(root.getAttribute('data-uw-panel')==='off'?'&hide=1':'')); }catch(e){}
   }
   function width(){var e=document.getElementById('uw-w'); if(e) e.textContent=window.innerWidth+'px';}
@@ -10357,6 +10380,16 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
                show:function(){root.setAttribute('data-uw-panel','on');}};
   if(/hide=1/.test(location.hash||'')) root.setAttribute('data-uw-panel','off');
   paint(fromHash()); width();
+  /* Deep-linking to #uw=NN lands before the page's own payloads have finished,
+     and an existing handler on this page throws on a hash that is not a valid
+     CSS selector, which can cut the run short. Re-assert once everything has
+     settled so a shared link arrives in the same state as a click. */
+  /* changing only the hash is a same-document navigation - the page does not
+     reload, so without this, editing #uw=NN in the address bar does nothing */
+  window.addEventListener('hashchange',function(){ paint(fromHash()); });
+  window.addEventListener('load',function(){
+    setTimeout(function(){ paint(root.getAttribute('data-uw')||fromHash()); },400);
+  });
 })();
 </script>
 
