@@ -10268,23 +10268,19 @@ html[data-uw="13"] body #hiw-stage .ec2-track{margin-left:-8.33% !important;}
    difference is the starting position of the drawing, so the two
    sections never open on the same crop. See sf-uw-cadfield. */
 html[data-uw="13"] body #fv-stage{
-  /* Factory's values, read off the live page and reused verbatim:
-       image   cad_texture.jpeg
-       colour  #ede8e0
-       size    cover        <- against the VIEWPORT, because attachment is fixed,
-       repeat  repeat          so the drawing is 3840x2050 and only a 1080px
-       attach  fixed           slice is ever on screen. That slice is what makes
-       veil    92% cream       it subtle. Never tile it down the section.
-     The ONLY difference from Factory is background-position, set by
-     sf-uw-cadfield so SWITCH does not open on Factory's crop. */
+  /* Factory's treatment - colour, veil, fixed attachment - on the new wide
+     sheet. cad_texture_wide.jpg is 2560x1120 (16:7), sized so the render is
+     always far larger than the viewport in BOTH axes: that is what finally
+     gives horizontal room, so SWITCH sits on the ribbed left of the drawing
+     while Factory keeps its own crop. no-repeat, so nothing can ever tile. */
   background-color:#ede8e0 !important;
   background-image:
     linear-gradient(rgba(237,232,224,0.92),rgba(237,232,224,0.92)),
-    url('images/cad_texture.jpeg') !important;
-  background-size:auto,cover !important;
-  background-repeat:no-repeat,repeat !important;
+    url('images/cad_texture_wide.jpg') !important;
+  background-size:auto,max(240vw,340vh) auto !important;
+  background-repeat:no-repeat,no-repeat !important;
   background-attachment:scroll,fixed !important;
-  background-position:0 0,50% 0% !important;
+  background-position:0 0,0% 0px !important;   /* y driven by sf-uw-cadfield */
 }
 
 /* ---- HERO ---------------------- */
@@ -10347,11 +10343,12 @@ html[data-uw="13"] body .hero-bg{
 
    SWITCH uses those same values and differs in ONE property: where the
    drawing starts. Because attachment is fixed and size is cover, the
-   image renders 3840x2050 against a 1080 viewport - 970px of vertical
-   slack. Factory sits at the middle of that range (-485). SWITCH opens
-   at the top (0) and drifts down through the slack as you scroll, at a
-   fraction of page speed, so it never opens on Factory's crop and keeps
-   the subtle depth of the approved effect.
+   image renders far wider and taller than the viewport, so there is room
+   in BOTH axes. SWITCH is pinned to the left of the sheet - the ribbed
+   linework, the least recognisable part - and drifts down through the
+   vertical slack as you scroll, at a fraction of page speed. Factory is
+   untouched and keeps its own image and crop, so the two can no longer
+   show the same drawing.
 
    Clamped inside the slack, so the image never wraps and no repeat is
    ever visible. One property written, foreground untouched, one rAF per
@@ -10359,7 +10356,7 @@ html[data-uw="13"] body .hero-bg{
    ===================================================================== */
 (function(){
   var RATE=0.20;                 /* share of page scroll speed */
-  var IMG_W=800, IMG_H=427;
+  var IMG_W=2560, IMG_H=1120;      /* cad_texture_wide.jpg, 16:7 */
   var on=false, raf=0, prev=null;
 
   function el(){ return document.getElementById('fv-stage'); }
@@ -10368,13 +10365,14 @@ html[data-uw="13"] body .hero-bg{
     raf=0; if(!on)return;
     var v=el(); if(!v)return;
     var vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight;
-    var scale=Math.max(vw/IMG_W, vh/IMG_H);          /* what `cover` resolves to */
+    var renderedW=Math.max(2.4*vw, 3.4*vh);           /* mirrors max(240vw,340vh) */
+    var scale=renderedW/IMG_W;
     var slack=Math.max(0, IMG_H*scale - vh);          /* how far the image can slide */
     var S=window.pageYOffset||document.documentElement.scrollTop||0;
     var top=v.getBoundingClientRect().top+S;
     var travelled=Math.max(0, S+vh-top);              /* how far into SWITCH we are */
     var y=Math.min(slack, travelled*RATE);            /* 0 -> slack, clamped */
-    var pos='0 0, 50% '+(-y).toFixed(1)+'px';
+    var pos='0 0, 0% '+(-y).toFixed(1)+'px';
     if(pos!==prev){ v.style.setProperty('background-position',pos,'important'); prev=pos; }
   }
   function tick(){ if(!raf) raf=requestAnimationFrame(place); }
