@@ -9810,3 +9810,89 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   html body #hiw-stage [data-part="quoteanim"] .tsw-injected{display:none !important;}
 }
 </style>
+<style id="sf-site-canvas">
+/* ============================================================
+   GLOBAL SITE CANVAS
+   --site-max: 1920px
+
+   THE CANVAS IS THE PAGE ITSELF. Rather than capping sections
+   one by one, <body> becomes the artboard: max-width 1920,
+   centred, with <html> carrying the neutral page colour behind
+   it. Every section is a child of body, so every section — and
+   every background, band and photograph inside it — is bounded
+   by the canvas automatically. Nothing is capped individually.
+
+   Why this keeps the 1600 content frame intact, for free:
+   the sections that take the inner frame do it with
+   padding:calc(50% - 800px), and a percentage resolves against
+   the containing block. That containing block is now body =
+   1920, so 50% = 960, minus 800 = 160px of padding, leaving
+   exactly the 1600 frame. Same for the hero's 1824. The inner
+   system is untouched and needs no new numbers.
+
+       viewport   3840
+       canvas     1920   (body)
+       frame      1600   (unchanged)
+       measure     680   (unchanged)
+
+   Below 1920 a max-width is inert, so ordinary desktop is
+   pixel-for-pixel what it was.
+   ============================================================ */
+:root{ --site-max:1920px; }
+
+html{ background:#0a0a0a; }
+
+body{
+  max-width:var(--site-max);
+  margin-left:auto !important;
+  margin-right:auto !important;
+  position:relative;
+  /* the safety net: any residual viewport breakout is cut at the canvas
+     edge. `clip` rather than `hidden` — it creates no scroll container,
+     so sticky and fixed positioning are unaffected. */
+  overflow-x:clip;
+}
+
+/* ---- fixed overlays are viewport-relative, so they need centring ---- */
+html body > nav{
+  max-width:var(--site-max) !important;
+  left:0 !important; right:0 !important;
+  margin-left:auto !important; margin-right:auto !important;
+}
+html body #scrollIndicator{
+  right:max(48px, calc(50vw - (var(--site-max) / 2) + 48px)) !important;
+}
+
+/* ---- FULL BLEED NOW MEANS FULL BLEED WITHIN THE CANVAS -------------
+   Every viewport-breakout on the page uses width:100vw with a
+   margin-left:calc(50% - 50vw) pull. Those are CORRECT at or below 1920,
+   where the viewport IS the canvas — so this only re-points them above it.
+   Gated, so ordinary desktop is untouched to the pixel. */
+@media (min-width:1921px){
+
+  html body #hiw-stage [data-picswrap="1"],
+  html body #fv-stage [data-part="herolive"],
+  html body #fv-stage .fv-cats-bleed6,
+  html body #fv-stage .fv-cats-bleed3,
+  html body #fv-stage .fv-cats-bleed2,
+  html body [data-part="herolive"]{
+    width:var(--site-max) !important;
+    max-width:var(--site-max) !important;
+    margin-left:calc(50% - (var(--site-max) / 2)) !important;
+    margin-right:0 !important;
+  }
+
+  /* the SWITCH hero carried its own 2200 exception and its own re-centring;
+     inside the canvas, the canvas is the cap */
+  html body #c16s-wrap,
+  html body #switch-electric-line{
+    max-width:100% !important;
+    margin-left:0 !important;
+  }
+
+  /* media tiers: the canvas already caps them, so they simply fill it */
+  html body .hero-bg{
+    left:0 !important; right:0 !important; width:100% !important; }
+  html body .factory-solo{ max-width:100% !important; }
+}
+</style>
