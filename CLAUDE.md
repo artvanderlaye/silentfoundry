@@ -95,6 +95,10 @@ to the project's configured instructions.
   - `https://silentfoundry.pages.dev/legal`       legal
 
 ## Variation studies: NUMBERED BOXES on the bar, not a drag slider
+- **This is a DEVELOPMENT technique only.** Once a variation is chosen it must be
+  baked into production — see `DESIGN-CHOICES.md` §22 (bake the selection) and §23
+  (first paint must be the approved state). Production must never ship the old
+  design plus JS that swaps in the chosen one after load.
 - The lab pages are right: one variation shown full size at a time. What was
   wrong was the CONTROL. Do not use an `<input type=range>` drag slider.
 - Use a row of small numbered BOXES along the bottom bar — one box per
@@ -166,6 +170,11 @@ LIVE. Previous versions are kept as numbered backups (`index107.html`,
 page was fine as-is.
 
 ## The layout system now in force (do not break these)
+- **Spacing, typography and rhythm live in `DESIGN-CHOICES.md`** — that file is the
+  production design system (section entry ~100px, eyebrow -> headline 34px, display
+  line-height 0.92, eyebrow DM Sans 10.88px/300/2.72px). Its source of truth is
+  `SILENT FOUNDRY site consitancy rules).pdf` in the repo root. The frame values
+  below are the width half of the same system.
 - **Mobile side margin: 24px.** Every section, every page, from 360 to 768.
   Venture Models was the reference. Sections that supply their own inset must
   not stack another on top — that's how text ended up at 48 twice.
