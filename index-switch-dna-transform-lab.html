@@ -11091,5 +11091,481 @@ x.on(window,'scroll',d);x.on(window,'resize',d);d();
 })();
 </script>
 
+<script>
+/* =========================================================================
+   PORTFOLIO LOGIC — one conceptual output per variation.
+   'keep'    the concept only transforms Designed DNA; production portfolio follows
+   'remove'  the concept already builds its own output; production portfolio hidden
+   'handoff' the concept hints at output and deliberately feeds the production one
+   ========================================================================= */
+window.PORT={
+ 0:'keep',
+ 1:'remove',  2:'keep',    3:'keep',    4:'handoff', 5:'handoff',
+ 6:'keep',    7:'keep',    8:'keep',    9:'remove', 10:'remove',
+11:'keep',   12:'keep',   13:'remove', 14:'remove', 15:'handoff',
+16:'handoff',17:'remove', 18:'handoff',19:'keep',   20:'remove',
+21:'remove', 22:'keep',   23:'handoff',24:'remove', 25:'remove',
+26:'handoff',27:'remove', 28:'remove', 29:'remove', 30:'remove',
+31:'keep',   32:'keep',   33:'keep',   34:'keep',   35:'keep',
+36:'keep',   37:'keep',   38:'keep',   39:'keep',   40:'keep',
+41:'keep',   42:'handoff',43:'handoff',44:'keep',   45:'handoff',
+46:'keep',   47:'keep',   48:'keep',   49:'remove', 50:'remove'
+};
+
+/* rename 01–30 to the agreed slider list — concepts themselves unchanged */
+window.RENAME={
+ 3:'EXPLODED INDUSTRIAL DRAWING', 4:'BLUEPRINT TRANSFORMATION', 6:'FORM GRAMMAR',
+ 7:'EIGHT PRINCIPLES AS LENSES', 9:'BIKE → MATRIX', 12:'DESIGN AUTOPSY',
+ 13:'SOURCE CODE OF A PRODUCT', 17:'MATERIAL TRANSFER', 19:'PRODUCT → PLATFORM',
+ 20:'ORBIT', 21:'BEFORE / AFTER SPLIT', 22:'X-RAY', 24:'PRINCIPLES FIRST',
+ 25:'PRODUCT FAMILY MORPH', 26:'CAD SPACE', 27:'8-CUT FILM', 28:'EDITORIAL MANIFESTO'
+};
+
+/* the eight principles, named exactly as production names them */
+window.P8=['FORM','STRUCTURE','CMF','SIGNATURE DETAILS','STANCE','MANUFACTURING','MODULARITY','SERVICEABILITY'];
+/* approved active framing (brief §38) */
+window.T2='SWITCH began as a motorcycle. Silent Foundry extracted the industrial language behind it — form, structure, materials and manufacturing — and developed that language into a system capable of moving across product categories.';
+
+/* -------------------------------------------------------------------------
+   EVO — clone the live production Designed DNA block into the mount so every
+   31–50 concept literally starts from the shipping design, then hand back its
+   pieces so a concept can act on them.
+   ------------------------------------------------------------------------- */
+window.EVO=function(root){
+  var src=document.getElementById('sf-dnawrap');
+  var c=src.cloneNode(true);
+  c.removeAttribute('id'); c.className='evo-wrap';
+  c.style.display='block';
+  [].forEach.call(c.querySelectorAll('[id]'),function(e){ e.setAttribute('data-was',e.id); e.removeAttribute('id'); });
+  root.appendChild(c);
+  var grid=c.querySelector('.dl-s204');
+  var kids=grid?[].slice.call(grid.children):[];
+  return { wrap:c, grid:grid,
+           row:c.querySelector('[data-was="sf-ddna-row"]')||kids[0],
+           head:c.querySelector('[data-was="sf-ddna-h"]')||kids[1],
+           prose:kids[2]||null };
+};
+/* a small stage the evolutions can put the motorcycle / analysis into,
+   inserted between headline and prose or after the block */
+window.EVOSTAGE=function(parts,where,html,cls){
+  var d=document.createElement('div');
+  d.className='evo-stage '+(cls||'');
+  d.innerHTML=html||'';
+  if(where==='before' && parts.prose) parts.prose.parentNode.insertBefore(d,parts.prose);
+  else parts.wrap.appendChild(d);
+  return d;
+};
+</script>
+
+<style id="sf-lab-evo-css">
+#sf-lab-mount .evo-wrap{display:block;}
+#sf-lab-mount .evo-stage{margin-top:34px;position:relative;}
+#sf-lab-mount .evo-fig{position:relative;aspect-ratio:3/2;overflow:hidden;background:#e2dcd2;}
+#sf-lab-mount .evo-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:grayscale(.35) contrast(1.06);}
+#sf-lab-mount .evo-fig svg{position:absolute;inset:0;width:100%;height:100%;}
+#sf-lab-mount .evo-p8{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(10,10,10,.1);margin-top:26px;}
+#sf-lab-mount .evo-p8 span{background:var(--lab-cream);padding:16px 14px;font-family:var(--lab-dm);
+  font-size:.64rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(10,10,10,.78);
+  transition:opacity .5s,color .5s,transform .5s;}
+#sf-lab-mount .evo-p8 span.off{opacity:.2;}
+#sf-lab-mount .evo-p8 span.hot{color:var(--lab-cy);}
+#sf-lab-mount .evo-lab{font-family:var(--lab-dm);font-size:.5rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--lab-cy);display:block;}
+#sf-lab-mount .evo-tall{position:relative;}
+#sf-lab-mount .evo-pin{position:sticky;top:0;padding:70px 0 40px;}
+@media(max-width:900px){#sf-lab-mount .evo-p8{grid-template-columns:1fr 1fr;}}
+</style>
+
+<script>
+/* ============================ 31 — SOURCE REVEAL ======================== */
+C(31,'SOURCE REVEAL','a source moment before the existing section resolves',function(r,x){
+var s=document.createElement('div');
+s.innerHTML='<div class="evo-fig" style="margin-bottom:40px"><img src="'+IMG.bike+'" alt="">'+
+ '<span class="evo-lab" style="position:absolute;left:16px;top:14px;color:#00b4d8">SOURCE</span></div>';
+r.appendChild(s);
+var p=EVO(r);
+p.wrap.style.opacity='0'; p.wrap.style.transform='translateY(14px)';
+p.wrap.style.transition='opacity .9s ease,transform .9s ease';
+x.delay(function(){p.wrap.style.opacity='1';p.wrap.style.transform='none';},520);
+});
+
+/* ============================ 32 — IMAGE DECONSTRUCTS ================== */
+C(32,'IMAGE DECONSTRUCTS','the existing image performs the extraction',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img id="e32i" src="'+IMG.bike+'" alt="">'+
+ '<div id="e32g" style="position:absolute;inset:0;opacity:0;transition:opacity .6s">'+
+ svgOf(GEO.bikePath,{stroke:'#00b4d8',sw:1.3})+'</div></div>'+
+ '<div class="evo-p8" id="e32p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var w=document.createElement('div'); w.className='evo-tall'; w.style.height='260vh';
+r.appendChild(w);
+var im=st.querySelector('#e32i'),g=st.querySelector('#e32g'),sp=[].slice.call(st.querySelectorAll('#e32p span'));
+function d(){var k=x.pinProg(w);
+ im.style.filter='grayscale('+(0.35+k*0.65)+') contrast(1.06) brightness('+(1-k*0.45)+')';
+ im.style.opacity=String(Math.max(0.12,1-k*1.1));
+ g.style.opacity=String(Math.min(1,Math.max(0,(k-0.2)*2)));
+ sp.forEach(function(s,i){s.classList.toggle('off',k<0.25+i*0.06);});}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+
+/* ============================ 33 — PRINCIPLES FROM BIKE ================ */
+C(33,'PRINCIPLES FROM BIKE','analytical lines pull each principle off the product',function(r,x){
+var p=EVO(r);
+var POS=[['12%','26%'],['30%','56%'],['46%','30%'],['58%','66%'],['70%','36%'],['80%','62%'],['36%','78%'],['64%','16%']];
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img src="'+IMG.bike+'" alt="">'+
+ '<svg id="e33s" viewBox="0 0 100 100" preserveAspectRatio="none">'+
+ POS.map(function(q,i){return '<line x1="'+parseFloat(q[0])+'" y1="'+parseFloat(q[1])+'" x2="'+parseFloat(q[0])+'" y2="102" stroke="#00b4d8" stroke-width=".3" opacity="0" data-i="'+i+'"/>';}).join('')+
+ '</svg>'+POS.map(function(q,i){return '<span class="evo-lab" data-i="'+i+'" style="position:absolute;left:'+q[0]+';top:'+q[1]+';opacity:0;transition:opacity .4s">'+P8[i]+'</span>';}).join('')+
+ '</div><div class="evo-p8" id="e33p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var ln=[].slice.call(st.querySelectorAll('#e33s line')),lb=[].slice.call(st.querySelectorAll('.evo-lab[data-i]')),
+    sp=[].slice.call(st.querySelectorAll('#e33p span')),i=0;
+x.timer(function(){if(!MOTION)return;
+ ln.forEach(function(l,k){l.setAttribute('opacity',k===i?'1':'0');});
+ lb.forEach(function(l,k){l.style.opacity=k===i?'1':'0';});
+ sp.forEach(function(s,k){s.classList.toggle('off',k>i);s.classList.toggle('hot',k===i);});
+ i=(i+1)%(P8.length+2);
+ if(i>=P8.length){ln.forEach(function(l){l.setAttribute('opacity','0');});lb.forEach(function(l){l.style.opacity='0';});
+  sp.forEach(function(s){s.classList.remove('off','hot');});}
+},760);
+});
+
+/* ============================ 34 — SEQUENTIAL PRINCIPLES =============== */
+C(34,'SEQUENTIAL PRINCIPLES','the eight arrive one at a time, then settle',function(r,x){
+var p=EVO(r);
+var F=['contrast(1.4)','contrast(1.9) brightness(.8)','saturate(1.6)','contrast(1.6) brightness(1.1)',
+       'brightness(.85)','contrast(1.25) sepia(.3)','contrast(1.1)','contrast(1.5) brightness(.9)'];
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img id="e34i" src="'+IMG.bike+'" alt=""></div>'+
+ '<div class="evo-p8" id="e34p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var im=st.querySelector('#e34i'),sp=[].slice.call(st.querySelectorAll('#e34p span')),i=0;
+x.timer(function(){if(!MOTION)return;
+ if(i<P8.length){ im.style.filter='grayscale(.5) '+F[i];
+   sp.forEach(function(s,k){s.classList.toggle('off',k>i);s.classList.toggle('hot',k===i);}); }
+ else { im.style.filter='grayscale(.35) contrast(1.06)';
+   sp.forEach(function(s){s.classList.remove('off','hot');}); }
+ i=(i+1)%(P8.length+3);},700);
+});
+
+/* ============================ 35 — CAD OVERLAY ========================= */
+C(35,'CAD OVERLAY','construction geometry examines the product',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img src="'+IMG.bike+'" alt="">'+
+ '<svg id="e35s" viewBox="0 0 200 100" preserveAspectRatio="none">'+
+ '<line x1="18" y1="44" x2="182" y2="44" stroke="#00b4d8" stroke-width=".35"/>'+
+ '<line x1="34" y1="14" x2="34" y2="92" stroke="#00b4d8" stroke-width=".22" stroke-dasharray="2 2"/>'+
+ '<line x1="166" y1="14" x2="166" y2="92" stroke="#00b4d8" stroke-width=".22" stroke-dasharray="2 2"/>'+
+ '<rect x="62" y="46" width="50" height="22" stroke="#00b4d8" stroke-width=".35" fill="none"/>'+
+ '<circle cx="34" cy="70" r="18" stroke="#00b4d8" stroke-width=".28" fill="none"/>'+
+ '<circle cx="166" cy="70" r="18" stroke="#00b4d8" stroke-width=".28" fill="none"/>'+
+ '<line x1="34" y1="95" x2="166" y2="95" stroke="#00b4d8" stroke-width=".22"/></svg></div>'+
+ '<div class="evo-p8" id="e35p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var el=[].slice.call(st.querySelectorAll('#e35s > *')),sp=[].slice.call(st.querySelectorAll('#e35p span')),i=0;
+el.forEach(function(e){e.style.opacity='0';e.style.transition='opacity .5s';});
+x.timer(function(){if(!MOTION)return;
+ el.forEach(function(e,k){e.style.opacity=k<=i?'1':'0';});
+ sp.forEach(function(s,k){s.classList.toggle('off',k>i);});
+ i=(i+1)%(el.length+3);},620);
+});
+
+/* ============================ 36 — FINISHED → CAD → SYSTEM ============ */
+C(36,'FINISHED → CAD → SYSTEM','one image-state transformation carries the story',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig">'+
+ '<img id="e36a" src="'+IMG.bike+'" alt="">'+
+ '<img id="e36b" src="'+IMG.cadScreen+'" alt="" style="opacity:0;transition:opacity .9s">'+
+ '<div id="e36c" style="position:absolute;inset:0;opacity:0;transition:opacity .9s;background:#e9e4db;display:flex;align-items:center;justify-content:center">'+
+ svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.4})+'</div>'+
+ '<span class="evo-lab" id="e36l" style="position:absolute;left:16px;bottom:14px">SOURCE</span></div>');
+var a=st.querySelector('#e36a'),b=st.querySelector('#e36b'),c=st.querySelector('#e36c'),l=st.querySelector('#e36l'),i=0;
+var W=['SOURCE','ANALYSIS','SYSTEM'];
+x.timer(function(){if(!MOTION)return;i=(i+1)%3;
+ a.style.opacity=i===0?'1':'0'; b.style.opacity=i===1?'1':'0'; c.style.opacity=i===2?'1':'0';
+ l.textContent=W[i];},2200);
+a.style.transition='opacity .9s';
+});
+
+/* ============================ 37 — SCROLL HIGHLIGHT ==================== */
+C(37,'SCROLL HIGHLIGHT','one principle and one characteristic active at a time',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img id="e37i" src="'+IMG.bike+'" alt="">'+
+ '<div id="e37m" style="position:absolute;inset:0;background:rgba(237,232,224,.72);clip-path:inset(0 0 0 0)"></div></div>'+
+ '<div class="evo-p8" id="e37p">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>');
+var w=document.createElement('div');w.className='evo-tall';w.style.height='300vh';r.appendChild(w);
+var m=st.querySelector('#e37m'),sp=[].slice.call(st.querySelectorAll('#e37p span'));
+function d(){var k=x.pinProg(w),n=Math.min(P8.length-1,Math.floor(k*P8.length));
+ var seg=1/P8.length,l=(n*seg)*100,rr=100-((n+1)*seg)*100;
+ m.style.clipPath='inset(0 '+rr+'% 0 '+l+'%)'; m.style.background='rgba(0,180,216,.12)';
+ sp.forEach(function(s,i){s.classList.toggle('off',i!==n && k<0.94);s.classList.toggle('hot',i===n&&k<0.94);});}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+
+/* ============================ 38 — TEXT AS ANALYSIS ==================== */
+C(38,'TEXT AS ANALYSIS','key ideas leave the paragraph and become the system',function(r,x){
+var p=EVO(r);
+var KEY=['more than a motorcycle','form','engineering','materials','manufacturing','entirely new product categories'];
+if(p.prose){
+  var html=p.prose.innerHTML;
+  KEY.forEach(function(k,i){ html=html.replace(k,'<mark class="e38k" data-i="'+i+'" style="background:none;color:inherit;transition:color .5s,background .5s">'+k+'</mark>'); });
+  p.prose.innerHTML=html;
+}
+var st=EVOSTAGE(p,'end','<div class="evo-p8" id="e38p" style="grid-template-columns:repeat(3,1fr)">'+
+ KEY.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var ks=[].slice.call(r.querySelectorAll('.e38k')),sp=[].slice.call(st.querySelectorAll('#e38p span')),i=0;
+x.timer(function(){if(!MOTION)return;
+ ks.forEach(function(m,k){m.style.color=k<=i?'#0a7f99':'';m.style.background=k===i?'rgba(0,180,216,.12)':'none';});
+ sp.forEach(function(s,k){s.classList.toggle('off',k>i);});
+ i=(i+1)%(KEY.length+2);},780);
+});
+
+/* ============================ 39 — HEADLINE TRANSFORMATION ============= */
+C(39,'HEADLINE TRANSFORMATION','the existing headline drives the change',function(r,x){
+var p=EVO(r);
+if(p.head){ p.head.style.transition='opacity .6s'; }
+var st=EVOSTAGE(p,'end','<div class="evo-fig"><img id="e39i" src="'+IMG.bike+'" alt=""></div>'+
+ '<div class="evo-p8" id="e39p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var w=document.createElement('div');w.className='evo-tall';w.style.height='300vh';r.appendChild(w);
+var im=st.querySelector('#e39i'),sp=[].slice.call(st.querySelectorAll('#e39p span'));
+var spans=p.head?[].slice.call(p.head.querySelectorAll('span')):[];
+function d(){var k=x.pinProg(w);
+ im.style.opacity=String(Math.max(.12,1-k*1.2));
+ im.style.filter='grayscale('+(0.35+k*0.6)+') contrast(1.06)';
+ sp.forEach(function(s,i){s.classList.toggle('off',k<0.3+i*0.06);});
+ if(spans.length){ spans.forEach(function(s,i){ s.style.opacity = (k<0.5? (i===0?'1':'0.28') : (i===0?'0.28':'1')); }); }
+}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+
+/* ============================ 40 — MOTORCYCLE GHOST ==================== */
+C(40,'MOTORCYCLE GHOST','the product nearly disappears, the system stays crisp',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig" style="background:var(--lab-cream)">'+
+ '<img id="e40i" src="'+IMG.bike+'" alt="">'+
+ '<div style="position:absolute;inset:0">'+svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.3})+'</div></div>'+
+ '<div class="evo-p8" id="e40p">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>');
+var w=document.createElement('div');w.className='evo-tall';w.style.height='280vh';r.appendChild(w);
+var im=st.querySelector('#e40i');
+function d(){var k=x.pinProg(w);
+ im.style.opacity=String(Math.max(.06,1-k*1.35));
+ im.style.filter='grayscale('+(0.35+k*0.65)+') contrast(1.06) brightness('+(1+k*0.25)+')';}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+
+/* ============================ 41 — DETAIL EXTRACTION =================== */
+C(41,'DETAIL EXTRACTION','real detail studies resolve into the principles',function(r,x){
+var D=[['frameA','STRUCTURE'],['cnc','MANUFACTURING'],['proto','SIGNATURE DETAILS'],
+       ['pcb','MODULARITY'],['dirt','STANCE'],['frameB','FORM']];
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:2px" id="e41g">'+
+ D.map(function(d,i){return '<figure style="margin:0;opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s">'+
+  '<img src="'+IMG[d[0]]+'" alt="" style="width:100%;aspect-ratio:1/1;object-fit:cover;filter:grayscale(.5) contrast(1.08)">'+
+  '<figcaption class="evo-lab" style="padding-top:7px">'+d[1]+'</figcaption></figure>';}).join('')+'</div>'+
+ '<div class="evo-p8" id="e41p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var fg=[].slice.call(st.querySelectorAll('#e41g figure')),sp=[].slice.call(st.querySelectorAll('#e41p span'));
+fg.forEach(function(f,i){x.delay(function(){f.style.opacity='1';f.style.transform='none';},240+i*160);});
+x.delay(function(){sp.forEach(function(s,i){x.delay(function(){s.classList.remove('off');},i*120);});},1300);
+if(window.matchMedia('(max-width:900px)').matches) st.querySelector('#e41g').style.gridTemplateColumns='repeat(3,1fr)';
+});
+
+/* ============================ 42 — TRANSLATION LINES =================== */
+C(42,'TRANSLATION LINES','the section feeds the portfolio below it',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-p8" id="e42p">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>'+
+ '<svg id="e42s" viewBox="0 0 100 20" preserveAspectRatio="none" style="width:100%;height:120px;display:block">'+
+ [10,26,42,58,74,90].map(function(v,i){
+  return '<path d="M'+v+' 0 C'+v+' 10 '+(50)+' 10 '+(50)+' 20" stroke="#00b4d8" stroke-width=".4" fill="none" data-i="'+i+'"/>';}).join('')+
+ '</svg>');
+var ps=[].slice.call(st.querySelectorAll('#e42s path'));
+ps.forEach(function(q){var L=q.getTotalLength();q.style.strokeDasharray=L;q.style.strokeDashoffset=L;
+ q.style.transition='stroke-dashoffset 1.2s ease';});
+var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting)
+ ps.forEach(function(q,i){x.delay(function(){q.style.strokeDashoffset='0';},i*140);});});},{threshold:.3}));
+io.observe(st.querySelector('#e42s'));
+});
+
+/* ============================ 43 — PORTFOLIO GHOSTS ==================== */
+C(43,'PORTFOLIO GHOSTS','restrained hints of what the system could make',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-p8">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>'+
+ '<div id="e43g" style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:24px">'+
+ OUT.map(function(k){return '<img src="'+IMG[k]+'" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;'+
+  'filter:grayscale(1) contrast(1.02);opacity:0;transition:opacity 1.1s">';}).join('')+'</div>');
+var gs=[].slice.call(st.querySelectorAll('#e43g img'));
+var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting)
+ gs.forEach(function(g,i){x.delay(function(){g.style.opacity='0.16';},i*180);});});},{threshold:.25}));
+io.observe(st.querySelector('#e43g'));
+});
+
+/* ============================ 44 — SOURCE / SYSTEM ===================== */
+C(44,'SOURCE / SYSTEM','two words and one connecting relationship',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div style="display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;gap:0" id="e44w">'+
+ '<div><div class="evo-fig"><img src="'+IMG.bike+'" alt=""></div><span class="evo-lab" style="padding-top:9px">SOURCE</span></div>'+
+ '<svg viewBox="0 0 60 10" preserveAspectRatio="none" style="height:10px;width:100%"><path id="e44p" d="M2 5 L58 5" stroke="#00b4d8" stroke-width=".6" fill="none"/></svg>'+
+ '<div><div class="evo-p8" style="grid-template-columns:1fr 1fr;margin-top:0">'+
+  P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>'+
+  '<span class="evo-lab" style="padding-top:9px">SYSTEM</span></div></div>');
+var q=st.querySelector('#e44p'),L=q.getTotalLength();
+q.style.strokeDasharray=L;q.style.strokeDashoffset=L;q.style.transition='stroke-dashoffset 1.1s ease';
+x.delay(function(){q.style.strokeDashoffset='0';},420);
+if(window.matchMedia('(max-width:900px)').matches) st.querySelector('#e44w').style.gridTemplateColumns='1fr';
+});
+
+/* ============================ 45 — EXTRACT / TRANSLATE ================= */
+C(45,'EXTRACT / TRANSLATE','two process marks, section left dominant',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px" id="e45w">'+
+ '<div><span class="evo-lab" style="padding-bottom:10px">01 EXTRACT</span>'+
+ '<div class="evo-fig"><img src="'+IMG.bike+'" alt="">'+
+ '<div id="e45a" style="position:absolute;inset:0;opacity:0;transition:opacity .8s">'+svgOf(GEO.bikePath,{stroke:'#00b4d8',sw:1.2})+'</div></div></div>'+
+ '<div><span class="evo-lab" style="padding-bottom:10px">02 TRANSLATE</span>'+
+ '<div class="evo-fig" style="background:#e9e4db;display:flex;align-items:center;justify-content:center">'+
+ '<div id="e45b" style="opacity:0;transition:opacity .8s;width:80%">'+svgOf(GEO.speakerPath,{stroke:'#0a7f99',sw:1.3})+'</div></div></div></div>'+
+ '<div class="evo-p8">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>');
+var a=st.querySelector('#e45a'),b=st.querySelector('#e45b'),i=0;
+x.timer(function(){if(!MOTION)return;i=(i+1)%3;a.style.opacity=i>=1?'1':'0';b.style.opacity=i>=2?'1':'0';},1500);
+if(window.matchMedia('(max-width:900px)').matches) st.querySelector('#e45w').style.gridTemplateColumns='1fr';
+});
+
+/* ============================ 46 — ACTIVE CAD BACKGROUND =============== */
+C(46,'ACTIVE CAD BACKGROUND','the drawing escapes the product',function(r,x){
+var p=EVO(r);
+p.wrap.style.position='relative';
+var bgw=document.createElement('div');
+bgw.style.cssText='position:absolute;inset:-40px -40px -40px -40px;pointer-events:none;z-index:0;'+
+ 'background-image:url('+IMG.cadWide+');background-size:60% auto;background-repeat:no-repeat;'+
+ 'background-position:22% 50%;opacity:.10;transition:background-size 1.6s ease,opacity 1.6s ease,background-position 1.6s ease;';
+p.wrap.insertBefore(bgw,p.wrap.firstChild);
+[].forEach.call(p.wrap.children,function(c,i){ if(i>0){ c.style.position='relative'; c.style.zIndex='1'; } });
+var st=EVOSTAGE(p,'end','<div class="evo-p8">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>');
+var on=false;
+x.timer(function(){if(!MOTION)return;on=!on;
+ bgw.style.backgroundSize=on?'150% auto':'60% auto';
+ bgw.style.backgroundPosition=on?'50% 50%':'22% 50%';
+ bgw.style.opacity=on?'0.2':'0.1';},2600);
+});
+
+/* ============================ 47 — MASK / WIPE ========================= */
+C(47,'MASK / WIPE','one analytical boundary crosses the product',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig" style="background:#e9e4db">'+
+ '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">'+
+ svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.4})+'</div>'+
+ '<img id="e47i" src="'+IMG.bike+'" alt="">'+
+ '<div id="e47b" style="position:absolute;top:0;bottom:0;width:1px;background:#00b4d8"></div></div>'+
+ '<div class="evo-p8" id="e47p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var im=st.querySelector('#e47i'),b=st.querySelector('#e47b'),sp=[].slice.call(st.querySelectorAll('#e47p span')),t=0;
+x.frame(function(){t+=.0035;if(t>1.2)t=-.05;var k=Math.max(0,Math.min(1,t));
+ im.style.clipPath='inset(0 0 0 '+(k*100)+'%)'; b.style.left=(k*100)+'%';
+ sp.forEach(function(s,i){s.classList.toggle('off',k<0.12+i*0.1);});});
+});
+
+/* ============================ 48 — SYSTEM EXPANSION ==================== */
+C(48,'SYSTEM EXPANSION','the composition opens from one product to a system',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div id="e48w" style="transition:max-width 1.4s cubic-bezier(.2,.7,.2,1);max-width:340px">'+
+ '<div class="evo-fig"><img src="'+IMG.bike+'" alt=""></div></div>'+
+ '<div class="evo-p8" id="e48p" style="transition:gap .9s">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>');
+var w=document.createElement('div');w.className='evo-tall';w.style.height='300vh';r.appendChild(w);
+var box=st.querySelector('#e48w'),sp=[].slice.call(st.querySelectorAll('#e48p span'));
+function d(){var k=x.pinProg(w);
+ box.style.maxWidth=(340+k*900)+'px';
+ sp.forEach(function(s,i){s.classList.toggle('off',k<0.15+i*0.08);});}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+
+/* ============================ 49 — PRODUCT ECHO ======================== */
+C(49,'PRODUCT ECHO','the object in the slot changes, the system holds',function(r,x){
+var p=EVO(r);
+var OB=['bike'].concat(OUT);
+var st=EVOSTAGE(p,'end','<div class="evo-fig" id="e49f">'+
+ OB.map(function(k,i){return '<img data-i="'+i+'" src="'+IMG[k]+'" alt="" style="opacity:'+(i===0?1:0)+';transition:opacity .8s">';}).join('')+
+ '<span class="evo-lab" id="e49l" style="position:absolute;left:16px;bottom:14px">SOURCE</span></div>'+
+ '<div class="evo-p8">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>');
+var im=[].slice.call(st.querySelectorAll('#e49f img')),l=st.querySelector('#e49l'),i=0;
+x.timer(function(){if(!MOTION)return;i=(i+1)%OB.length;
+ im.forEach(function(m,k){m.style.opacity=k===i?'1':'0';});
+ l.textContent=i===0?'SOURCE':'SYSTEM';},2100);
+});
+
+/* ============================ 50 — COMPLETE EVOLUTION ================== */
+C(50,'COMPLETE EVOLUTION','eight stages, production design as the foundation',function(r,x){
+var p=EVO(r);
+var st=EVOSTAGE(p,'end','<div class="evo-fig" style="background:#e9e4db">'+
+ '<img id="e50i" src="'+IMG.bike+'" alt="">'+
+ '<div id="e50c" style="position:absolute;inset:0;opacity:0;transition:opacity .6s">'+
+ '<svg viewBox="0 0 200 100" preserveAspectRatio="none">'+
+ '<line x1="18" y1="44" x2="182" y2="44" stroke="#00b4d8" stroke-width=".35"/>'+
+ '<rect x="62" y="46" width="50" height="22" stroke="#00b4d8" stroke-width=".35" fill="none"/>'+
+ '<line x1="34" y1="95" x2="166" y2="95" stroke="#00b4d8" stroke-width=".22"/></svg></div>'+
+ '<div id="e50g" style="position:absolute;inset:0;opacity:0;transition:opacity .6s">'+svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.4})+'</div>'+
+ '<span class="evo-lab" id="e50l" style="position:absolute;left:16px;bottom:14px"></span></div>'+
+ '<div class="evo-p8" id="e50p">'+P8.map(function(k){return '<span class="off">'+k+'</span>';}).join('')+'</div>'+
+ '<div id="e50o" style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:24px;max-height:0;overflow:hidden;transition:max-height 1s">'+
+ OUT.map(function(k){return '<img src="'+IMG[k]+'" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(.4) contrast(1.05)">';}).join('')+'</div>');
+var w=document.createElement('div');w.className='evo-tall';w.style.height='460vh';r.appendChild(w);
+var im=st.querySelector('#e50i'),cd=st.querySelector('#e50c'),gg=st.querySelector('#e50g'),
+    l=st.querySelector('#e50l'),sp=[].slice.call(st.querySelectorAll('#e50p span')),og=st.querySelector('#e50o');
+var STG=['SOURCE','ANALYSIS','EXTRACTION','','SYSTEM','','',''];
+function d(){var k=x.pinProg(w),s=Math.min(7,Math.floor(k*8));
+ cd.style.opacity=s>=1?'1':'0';
+ im.style.opacity=String(s>=3?Math.max(.1,1-(k-0.375)*3.4):1);
+ gg.style.opacity=s>=4?'1':'0';
+ sp.forEach(function(y,i){y.classList.toggle('off',k<0.25+i*0.045);});
+ og.style.maxHeight=s>=6?'320px':'0px';
+ l.textContent=STG[s]||'';}
+x.on(window,'scroll',d);x.on(window,'resize',d);d();
+});
+</script>
+
+<script>
+/* ---- extend the slider to 50 and wire the portfolio rule ---- */
+(function(){
+  /* apply renames */
+  for(var k in RENAME){ if(CONCEPTS[k]) CONCEPTS[k].name=RENAME[k]; }
+
+  /* wrap show() so the production portfolio obeys PORT[n] */
+  var _show=window.show;
+  window.show=function(n){
+    _show(n);
+    var pf=document.getElementById('sf-pfwrap');
+    if(pf){
+      var rule=PORT[n]||'keep';
+      if(rule==='remove') pf.style.setProperty('display','none','important');
+      else pf.style.removeProperty('display');
+      pf.setAttribute('data-lab-port',rule);
+    }
+  };
+
+  /* rebuild the box row for 0..50 */
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button');pv.className='nav';pv.textContent='‹';bx.appendChild(pv);
+  for(var i=0;i<=50;i++){
+    var b=document.createElement('button');b.dataset.n=i;b.textContent=(i<10?'0':'')+i;
+    b.title=(CONCEPTS[i]?CONCEPTS[i].name:'');
+    if(i===31){ b.style.marginLeft='14px'; b.style.borderColor='rgba(200,169,110,.55)'; }
+    b.addEventListener('click',(function(m){return function(){show(m);};})(i));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button');nx.className='nav';nx.textContent='›';bx.appendChild(nx);
+  pv.addEventListener('click',function(){show((CUR+50)%51);});
+  nx.addEventListener('click',function(){show((CUR+1)%51);});
+  document.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'){e.preventDefault();show((CUR+1)%51);}
+    else if(e.key==='ArrowLeft'){e.preventDefault();show((CUR+50)%51);}
+  },true);
+
+  /* family marker in the name line */
+  var nm=document.getElementById('labname');
+  var fam=document.createElement('em'); fam.id='labfam'; nm.insertBefore(fam, nm.querySelector('.jump'));
+  var _s2=window.show;
+  window.show=function(n){ _s2(n);
+    fam.textContent = n===0 ? '· control' : (n<=30 ? '· new architecture' : '· evolution of production');
+  };
+  /* re-run current state through the new wrapper */
+  setTimeout(function(){ var m=/[#&]c=(\d+)/.exec(location.hash);
+    show(m?Math.max(0,Math.min(50,+m[1])):(CUR<0?0:CUR)); }, 1200);
+})();
+</script>
 </body>
 </html>
