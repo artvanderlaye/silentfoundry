@@ -9251,6 +9251,56 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
   h.style.setProperty('font-weight','300','important');
   h.style.setProperty('margin','0 0 8px 0','important');
   h.style.setProperty('max-width','min(100%,680px)','important');
+
+  /* ---- SWITCH : Designed DNA takes Featured Venture's rhythm -----------
+     Featured Venture gives its headline a 960 measure and sets it on a ~28px
+     rhythm. Designed DNA had a 680 headline and NO gap at all above it, which
+     is why the two blocks did not read as the same composition. The 82px in
+     Featured Venture is not the reference - 50 of it is the eSCRAMBLER logo
+     lockup, which Designed DNA does not have.
+
+     The gap is a clamp rather than a fixed 28px, so it does not add the same
+     vertical cost on a phone:  18px at 390, ~22 at 768, ~25 at 1024, 28 from
+     1320 up. Body copy is untouched and stays on its 680 measure.
+     Applies at every width, unlike the width rules above it. */
+  window.__ddnaAlign=function(on){
+   var hh=document.getElementById('sf-ddna-h');
+   var rr=document.getElementById('sf-ddna-row');
+   if(!hh||!rr)return;
+   hh.style.setProperty('max-width', on?'min(100%,960px)':'min(100%,680px)','important');
+   rr.style.setProperty('max-width', on?'min(100%,680px)':'none','important');
+   rr.style.setProperty('margin-bottom', on?'clamp(18px, 1.1vw + 13.5px, 28px)':'0px','important');
+
+   /* SWITCH blue, not Silent Foundry gold. The value is rgb(10,127,153) and
+      not #00b4d8: PRODUCT PORTFOLIO four lines below already uses the darker
+      mix, because raw #00b4d8 does not hold on cream at 10.88px. Matching it
+      keeps the two eyebrows in this block on the same colour. */
+   var SW='rgb(10,127,153)', SF='rgb(200,169,110)';
+   var ey=null;
+   [].forEach.call(rr.querySelectorAll('*'),function(n){
+    if(!ey && n.children.length===0 && /DESIGNED DNA/i.test(n.textContent||'')) ey=n; });
+   if(ey) ey.style.setProperty('color', on?SW:SF,'important');
+   var sp=hh.querySelector('span');
+   if(sp) sp.style.setProperty('color', on?SW:SF,'important');
+
+   /* The block sat on a different left edge from Featured Venture because
+      .dl-s204 is written inline with margin-left:auto - it centres itself
+      inside a wider parent while every other block is flush left. Visible
+      below 1728 as a 160-240px indent. */
+   var box=document.querySelector('#sf-dnawrap .dl-s204');
+   if(box) box.style.setProperty('margin-left', on?'0px':'auto','important');
+
+   /* Featured Venture's second headline line is Silent Foundry gold (#8a6e3a),
+      written inline. In the SWITCH section it should carry SWITCH's blue like
+      the rest of the block. Matched by text so it survives a re-render. */
+   var ih=document.querySelector('#fv-stage .t-in h2');
+   if(ih){ var isp=ih.querySelector('span');
+     if(isp && /NEW VENTURE/i.test(isp.textContent||''))
+       isp.style.setProperty('color', on?SW:'#8a6e3a','important'); }
+  };
+  /* re-assert on every pass of single(), so a re-measure cannot undo it */
+  var uw=document.documentElement.getAttribute('data-uw');
+  window.__ddnaAlign(uw==='13');
   /* take the colour from Marshall itself rather than guessing at a hex */
   var ref=document.querySelector('#sfsec-dna .cs-dh');
   if(ref)h.style.setProperty('color',getComputedStyle(ref).color,'important');
@@ -9903,3 +9953,193 @@ html body #scrollIndicator{
    black so the dark bands, the footer and the surround are one colour. */
 html body .logos{ background:#0a0a0a !important; }
 </style>
+<style id="sf-uw-lab">
+/* =====================================================================
+   ULTRAWIDE SYSTEM  (Aug 2026)
+   Chosen from a 13-variation lab. Gated at min-width:1921px, so 1920
+   and below are untouched. The master knob is --site-max.
+   ===================================================================== */
+@layer uwlab{
+@media (min-width:1921px){
+
+/* =====================================================================
+   THE ULTRAWIDE SYSTEM
+   Built from the lab's findings, NOT from "variation 09 everywhere".
+
+   The architecture is canvas-free (09's): backgrounds are viewport-wide,
+   and width is controlled per LAYER rather than per section. Six reusable
+   behaviours, driven by four tokens, are applied to whichever sections
+   need them. Nothing here is a section-specific hack.
+
+       --sf-media       2200   photography and video
+       --sf-frame       1600   content: logo grid, CTA copy, footer columns
+       --sf-heroframe   2104   hero copy and nav content
+       --sf-subject      960   controlled decorative subjects
+
+   ===================================================================== */
+
+html[data-uw="13"]{
+  --site-max:100vw !important;      /* BEHAVIOUR 1 - full-bleed background */
+  --sf-media:2200px;
+  --sf-frame:1600px;
+  --sf-heroframe:2104px;
+  --sf-subject:960px;
+}
+
+/* ---- BEHAVIOUR 2 : MEDIA CAP - photography and video hold at 2200 ---- */
+html[data-uw="13"] body .sf-video-frame,
+html[data-uw="13"] body .factory-solo{
+  max-width:var(--sf-media) !important;
+  margin-left:auto !important;margin-right:auto !important;
+}
+/* The SWITCH carousel is wider than its 1600 parent, and auto margins do not
+   centre an over-constrained box - they collapse to zero and it sits right of
+   centre. It uses the site's own centring formula instead. */
+html[data-uw="13"] body #c16s-wrap,
+html[data-uw="13"] body #switch-electric-line{
+  width:min(var(--sf-media),100vw) !important;
+  max-width:var(--sf-media) !important;
+  margin-left:calc(50% - (0.5 * min(var(--sf-media),100vw))) !important;
+  margin-right:0 !important;
+}
+
+/* ---- BEHAVIOUR 3 : CONTENT FRAME - editorial content holds at 1600 ---- */
+html[data-uw="13"] body .logo-grid,
+html[data-uw="13"] body .logos .label,
+html[data-uw="13"] body section.cta .section-title,
+html[data-uw="13"] body .footer-inner{
+  max-width:var(--sf-frame) !important;
+  margin-left:auto !important;margin-right:auto !important;
+}
+html[data-uw="13"] body .footer-bottom{
+  padding-left:max(48px,calc(50% - (var(--sf-frame) / 2))) !important;
+  padding-right:max(48px,calc(50% - (var(--sf-frame) / 2))) !important;
+}
+
+/* ---- BEHAVIOUR 4 : HERO / NAV FRAME - the opening sits on 2104 ----
+   Percentage padding resolves against body, which is the viewport here,
+   so this lands on the same geometry 02 produced inside its 2200 canvas. */
+html[data-uw="13"] body .hero{
+  padding-left:max(48px,calc(50% - (var(--sf-heroframe) / 2))) !important;
+  padding-right:max(48px,calc(50% - (var(--sf-heroframe) / 2))) !important;
+}
+html[data-uw="13"] body>nav{
+  max-width:none !important;width:auto !important;
+  left:0 !important;right:0 !important;margin:0 !important;
+  padding-left:max(48px,calc(50vw - (var(--sf-heroframe) / 2))) !important;
+  padding-right:max(48px,calc(50vw - (var(--sf-heroframe) / 2))) !important;
+}
+
+/* ---- BEHAVIOUR 5 : CONTROLLED SUBJECT - decorative marks do not scale ---- */
+html[data-uw="13"] body #sf-mwave{
+  width:min(50%,var(--sf-subject)) !important;
+}
+
+/* ---- BEHAVIOUR 6 : CINEMATIC STRIP - the Foundry carousel runs viewport
+   wide and answers with MORE FRAMES rather than bigger ones (07) ---- */
+html[data-uw="13"] body #hiw-stage .ec2-slide{flex:0 0 calc(16.666% - 1.7px) !important;}
+html[data-uw="13"] body #hiw-stage .ec2-track{margin-left:-8.33% !important;}
+
+
+/* ---- BEHAVIOUR 7 : THE CAD BACKDROP --------------------------------
+   Factory's approved treatment, reused unchanged on SWITCH. The only
+   difference is the starting position of the drawing, so the two
+   sections never open on the same crop. See sf-uw-cadfield. */
+html[data-uw="13"] body #fv-stage{
+  /* Factory's treatment - colour, veil, fixed attachment - on the new wide
+     sheet. cad_texture_wide.jpg is 2560x1120 (16:7), sized so the render is
+     always far larger than the viewport in BOTH axes: that is what finally
+     gives horizontal room, so SWITCH sits on the ribbed left of the drawing
+     while Factory keeps its own crop. no-repeat, so nothing can ever tile. */
+  background-color:#ede8e0 !important;
+  background-image:
+    linear-gradient(rgba(237,232,224,0.94),rgba(237,232,224,0.94)),
+    url('images/cad_texture_wide.jpg') !important;
+  background-size:auto,max(240vw,340vh) auto !important;
+  background-repeat:no-repeat,no-repeat !important;
+  background-attachment:scroll,fixed !important;
+  background-position:0 0,0% 0px !important;   /* y driven by sf-uw-cadfield */
+}
+
+/* ---- HERO ---------------------- */
+/* hero photo fills the viewport; products scale up with it (your 02 pick) */
+html[data-uw="13"] body .hero-bg{
+  left:0 !important;right:0 !important;width:100% !important;
+  background-size:cover !important;background-repeat:no-repeat !important;
+}
+}
+}
+</style>
+
+<script id="sf-uw-cadfield">
+/* =====================================================================
+   SWITCH CAD OFFSET  (13A only)
+
+   Factory is NOT touched. It keeps its approved treatment exactly:
+   cad_texture.jpeg, cover, fixed, 50% 50%, 92% cream veil.
+
+   SWITCH uses those same values and differs in ONE property: where the
+   drawing starts. Because attachment is fixed and size is cover, the
+   image renders far wider and taller than the viewport, so there is room
+   in BOTH axes. SWITCH is pinned to the left of the sheet - the ribbed
+   linework, the least recognisable part - and drifts down through the
+   vertical slack as you scroll, at a fraction of page speed. Factory is
+   untouched and keeps its own image and crop, so the two can no longer
+   show the same drawing.
+
+   Clamped inside the slack, so the image never wraps and no repeat is
+   ever visible. One property written, foreground untouched, one rAF per
+   scroll burst.
+   ===================================================================== */
+(function(){
+  var RATE=0.20;                 /* share of page scroll speed */
+  var IMG_W=2560, IMG_H=1120;      /* cad_texture_wide.jpg, 16:7 */
+  var on=false, raf=0, prev=null;
+
+  function el(){ return document.getElementById('fv-stage'); }
+
+  function place(){
+    raf=0; if(!on)return;
+    var v=el(); if(!v)return;
+    var vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight;
+    var renderedW=Math.max(2.4*vw, 3.4*vh);           /* mirrors max(240vw,340vh) */
+    var scale=renderedW/IMG_W;
+    var slack=Math.max(0, IMG_H*scale - vh);          /* how far the image can slide */
+    var S=window.pageYOffset||document.documentElement.scrollTop||0;
+    var top=v.getBoundingClientRect().top+S;
+    var travelled=Math.max(0, S+vh-top);              /* how far into SWITCH we are */
+    var y=Math.min(slack, travelled*RATE);            /* 0 -> slack, clamped */
+    var pos='0 0, 0% '+(-y).toFixed(1)+'px';
+    if(pos!==prev){ v.style.setProperty('background-position',pos,'important'); prev=pos; }
+  }
+  function tick(){ if(!raf) raf=requestAnimationFrame(place); }
+
+  window.__cadField=function(state){
+    on=!!state; var v=el(); if(!v)return;
+    if(!on){ v.style.removeProperty('background-position'); prev=null; }
+    else place();
+  };
+  addEventListener('scroll',tick,{passive:true});
+  addEventListener('resize',function(){prev=null;tick();},{passive:true});
+})();
+</script>
+
+<script id="sf-uw-boot">
+/* The chosen system is simply on. data-uw stays as the switch the CSS and the
+   two payload hooks read - it is how the lab was wired and there was no reason
+   to rename it on the way in. */
+document.documentElement.setAttribute('data-uw','13');
+(function apply(){
+  var ok=0;
+  if(window.__ddnaAlign){ window.__ddnaAlign(true); ok++; }
+  if(window.__cadField){ window.__cadField(true); ok++; }
+  if(ok<2) setTimeout(apply,60);
+})();
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    if(window.__ddnaAlign) window.__ddnaAlign(true);
+    if(window.__cadField) window.__cadField(true);
+  },400);
+});
+</script>
+
