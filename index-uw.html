@@ -10263,26 +10263,28 @@ html[data-uw="13"] body #hiw-stage .ec2-slide{flex:0 0 calc(16.666% - 1.7px) !im
 html[data-uw="13"] body #hiw-stage .ec2-track{margin-left:-8.33% !important;}
 
 
-/* ---- BEHAVIOUR 7 : THE FACTORY BACKDROP ----------------------------
-   The factory band is cream, a cad-texture photograph at cover/center,
-   and a 92% cream veil over it, held with background-attachment:fixed.
-   SWITCH now carries the same field across the whole section. The veil
-   is a gradient layer rather than an overlay div, so #fv-stage needs no
-   position change and nothing inside it moves.
+/* ---- BEHAVIOUR 7 : THE CAD FIELD -----------------------------------
+   ONE continuous drawing plane shared by the Factory band and SWITCH.
 
-   Honest limitation: fixed attachment only reads as parallax when the
-   band is short enough to see content travel across it. This section is
-   ~3240px tall, so the movement is very slight, and iOS Safari ignores
-   fixed attachment altogether and paints it static. */
+   Both used background-attachment:fixed before, and a fixed background is
+   painted against the VIEWPORT - so two elements with the same image and
+   size necessarily show the same crop, and the drawing visibly restarted
+   when SWITCH arrived. The fix is a shared coordinate system, not a
+   different crop: sf-uw-cadfield below positions the texture from each
+   element's DOCUMENT offset minus a scroll term, so the plane is
+   continuous across the page and drifts slower than the content. */
 html[data-uw="13"] body #fv-stage{
   background-color:#ede8e0 !important;
   background-image:
     linear-gradient(rgba(237,232,224,0.92),rgba(237,232,224,0.92)),
-    url('images/cad_texture.jpeg') !important;
-  background-size:cover,cover !important;
-  background-position:center,center !important;
-  background-repeat:no-repeat,no-repeat !important;
-  background-attachment:fixed,fixed !important;
+    url('images/cad_texture_field.jpg') !important;
+  /* 100vw wide, not cover: cover on a 3270px section would enlarge the source
+     7.7x against the factory band's 4.8x and the linework would read as a
+     different material. This keeps the line weight identical to Factory. */
+  background-size:auto,100vw auto !important;
+  background-repeat:no-repeat,repeat-y !important;
+  background-attachment:scroll,scroll !important;
+  background-position:0 0,center 0 !important;   /* second value driven by JS */
 }
 
 /* ---- HERO ---------------------- */
@@ -10336,6 +10338,109 @@ html[data-uw="13"] body .hero-bg{
 }
 </style>
 
+<script id="sf-uw-cadfield">
+/* =====================================================================
+   THE CAD FIELD  —  one continuous drawing plane (13A only)
+
+   Factory and SWITCH both painted url(cad_texture.jpeg) with
+   background-attachment:fixed. A fixed background is positioned against
+   the viewport, so both showed the identical crop and the drawing
+   restarted the moment SWITCH filled the screen.
+
+   Here the texture is positioned from each element's own DOCUMENT offset
+   instead:
+
+       worldY = elementDocumentTop - K * scrollY
+       background-position-y = -(worldY mod tileHeight)
+
+   Because worldY is derived from where the element actually sits in the
+   document, two elements never show the same crop, and the plane reads as
+   one long sheet running behind the page.
+
+   K is the parallax constant. K=0 is a background that scrolls with the
+   content; K=1 is the old pinned wallpaper. K=0.65 puts the field on
+   screen at ~35% of content speed - a slow plane behind the page.
+
+   Tile height is 854 * (100vw / 800), i.e. the source at the Factory
+   band's own scale, so line weight matches. Vertical repeat is required
+   because the source is only 800x427, so cad_texture_field.jpg stacks it
+   against its own vertical mirror: the tile's last row IS its first row, the
+   wrap is seamless by construction (measured 0.000), and the repeat period
+   doubles from 2050px to 4099px.
+
+   Foreground content is never touched - this writes background-position
+   and nothing else. Reads are batched into one rAF per scroll burst.
+   ===================================================================== */
+(function(){
+  var K=0.65, IMG_W=800, IMG_H=854;   /* mirrored field tile - seamless, 4099px period */
+  var on=false, raf=0, saved=new WeakMap();
+
+  function targets(){
+    var out=[];
+    var f=document.querySelector('.factory-solo');
+    if(f&&f.parentElement) out.push(f.parentElement);
+    var v=document.getElementById('fv-stage');
+    if(v) out.push(v);
+    return out;
+  }
+  function layers(el){
+    var img=getComputedStyle(el).backgroundImage||'';
+    return img.split(/,(?![^(]*\))/).length;   /* commas inside url()/gradient() do not count */
+  }
+  function save(el){
+    if(saved.has(el))return;
+    var st=el.style, keep={};
+    ['background-attachment','background-size','background-repeat','background-position','background-image']
+      .forEach(function(p){ keep[p]=[st.getPropertyValue(p), st.getPropertyPriority(p)]; });
+    saved.set(el,keep);
+  }
+  function restore(el){
+    var keep=saved.get(el); if(!keep)return;
+    Object.keys(keep).forEach(function(p){
+      el.style.removeProperty(p);
+      if(keep[p][0]) el.style.setProperty(p, keep[p][0], keep[p][1]);
+    });
+  }
+  function place(){
+    raf=0; if(!on)return;
+    var S=window.pageYOffset||document.documentElement.scrollTop||0;
+    var H=IMG_H*(document.documentElement.clientWidth/IMG_W);
+    if(!(H>1))return;
+    targets().forEach(function(el){
+      var D=el.getBoundingClientRect().top+S;
+      var t=(D-K*S)%H; if(t<0)t+=H;
+      var y=(-t).toFixed(1)+'px';
+      var pos=(layers(el)>1) ? ('0 0, center '+y) : ('center '+y);
+      el.style.setProperty('background-position',pos,'important');
+    });
+  }
+  function tick(){ if(!raf) raf=requestAnimationFrame(place); }
+
+  window.__cadField=function(state){
+    var next=!!state;
+    targets().forEach(function(el){
+      save(el);
+      if(next){
+        /* the Factory band carries its texture inline in the markup, so it is
+           re-pointed at the mirrored field tile here - both surfaces must be
+           the same sheet or the plane is not continuous */
+        if(layers(el)===1) el.style.setProperty('background-image',
+          "url('images/cad_texture_field.jpg')",'important');
+        el.style.setProperty('background-attachment', layers(el)>1?'scroll, scroll':'scroll','important');
+        el.style.setProperty('background-size', layers(el)>1?'auto, 100vw auto':'100vw auto','important');
+        el.style.setProperty('background-repeat', layers(el)>1?'no-repeat, repeat-y':'repeat-y','important');
+      } else {
+        restore(el);
+      }
+    });
+    on=next;
+    place();
+  };
+  addEventListener('scroll',tick,{passive:true});
+  addEventListener('resize',tick,{passive:true});
+})();
+</script>
+
 <style id="sf-uw-panel-css">
 #uw-panel{position:fixed;left:18px;bottom:18px;z-index:2147483000;width:262px;
  font:11px/1.35 'DM Sans',system-ui,sans-serif;color:#f4f1ec;
@@ -10380,6 +10485,7 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
     });
     var note=document.getElementById('uw-note'); if(note) note.textContent=D[n]||'';
     if(window.__ddnaAlign) window.__ddnaAlign(n==='13');
+    if(window.__cadField) window.__cadField(n==='13');
     try{ history.replaceState(null,'','#uw='+n+(root.getAttribute('data-uw-panel')==='off'?'&hide=1':'')); }catch(e){}
   }
   function width(){var e=document.getElementById('uw-w'); if(e) e.textContent=window.innerWidth+'px';}
