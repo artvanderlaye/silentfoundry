@@ -6892,6 +6892,10 @@ function RHEAD(S,o){
  /* quietbar: the marker with only the hairline beneath it — no rule above, so
     the chapter turns on whitespace and the grid opens from a single line. */
  if(m==='quietbar')  return '<div style="padding-bottom:13px;">'+ey+'</div>'+RL(RR,'0.5px');
+ /* none: no marker at all. The chapter opens on whitespace - the eyebrow and
+    its hairline are gone and only the space they occupied remains, so the
+    grid still sits clear of the copy above it. */
+ if(m==='none')      return '<div style="height:26px"></div>';
  return ey;}
 
 /* ---------- the whole module ---------- */
@@ -6996,7 +7000,7 @@ function R115(S,o){
 
 /* 04 · RUNNING HEAD — the marker sits in a ruled band, so the grid reads
     as a plate section opening beneath a running head. */
- rreg('Running Head','204',make('s204',{pfHead:'quietbar',pfSz:'0.68rem',pfLs:'0.26em',
+ rreg('Running Head','204',make('s204',{pfHead:'none',pfSz:'0.68rem',pfLs:'0.26em',
    /* columns now sit on the Foundry section's geometry: equal widths, the same
       stepped gap, collapsing at the same 980px breakpoint. */
    master:null,cols:'1fr 1fr',foundryGap:true,colBp:980,
@@ -9115,7 +9119,15 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
      DESIGNED DNA started at 768 — 288px further in, which is what reads as
      off-centre. Past the frame it takes the frame, like everything else. */
   g.style.setProperty('max-width',(innerWidth>1601?'none':'1024px'),'important');
-  g.style.setProperty('margin-left','auto','important');
+  /* LEFT-ANCHORED, NOT CENTRED.  margin-left:auto centred this 1024 block
+     inside a wider #sf-dnawrap, so DESIGNED DNA started 160px (1440) to
+     288px (1600) right of FEATURED VENTURE, which is flush to the frame.
+     #sf-dnawrap already sits on exactly the same left edge as the intro
+     block - both descend from .t-in and inherit #fv-stage's padding - so
+     zeroing the left margin is enough to inherit that anchor. No new
+     margin, transform or independent offset is introduced: the block simply
+     stops opting out of the positioning system the section already has. */
+  g.style.setProperty('margin-left','0px','important');
   g.style.setProperty('margin-right','auto','important');
   /* the team page's own breakpoint, copied rather than approximated:
        above 1090   464px 464px, gap 96
@@ -9275,20 +9287,20 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
       not #00b4d8: PRODUCT PORTFOLIO four lines below already uses the darker
       mix, because raw #00b4d8 does not hold on cream at 10.88px. Matching it
       keeps the two eyebrows in this block on the same colour. */
-   var SW='rgb(10,127,153)', SF='rgb(200,169,110)';
+   var SW='rgb(10,127,153)',            /* dark SWITCH cyan - eyebrows */
+       SWB='rgb(0,180,216)',            /* bright SWITCH cyan - display line */
+       SF='rgb(200,169,110)';
    var ey=null;
    [].forEach.call(rr.querySelectorAll('*'),function(n){
     if(!ey && n.children.length===0 && /DESIGNED DNA/i.test(n.textContent||'')) ey=n; });
    if(ey) ey.style.setProperty('color', on?SW:SF,'important');
+   /* AN ENTIRE SYSTEM. carries the bright cyan; at 23px display size it holds
+      on cream, which is why the small eyebrows use the darker mix instead. */
    var sp=hh.querySelector('span');
-   if(sp) sp.style.setProperty('color', on?SW:SF,'important');
+   if(sp) sp.style.setProperty('color', on?SWB:SF,'important');
 
-   /* The block sat on a different left edge from Featured Venture because
-      .dl-s204 is written inline with margin-left:auto - it centres itself
-      inside a wider parent while every other block is flush left. Visible
-      below 1728 as a 160-240px indent. */
-   var box=document.querySelector('#sf-dnawrap .dl-s204');
-   if(box) box.style.setProperty('margin-left', on?'0px':'auto','important');
+   /* the left anchor is now set at source in the sf-ddna-width payload,
+      so there is nothing to override here. */
 
    /* Featured Venture's second headline line is Silent Foundry gold (#8a6e3a),
       written inline. In the SWITCH section it should carry SWITCH's blue like
@@ -9952,6 +9964,38 @@ html body #scrollIndicator{
    near-black gutter now that the canvas is in. Unified on the site's own
    black so the dark bands, the footer and the surround are one colour. */
 html body .logos{ background:#0a0a0a !important; }
+</style>
+<style id="sf-ddna-anchor">
+/* DESIGNED DNA — LEFT ANCHOR, ASSERTED IN CSS RATHER THAN AFTER RENDER
+   ------------------------------------------------------------------
+   The block re-renders itself on resize, and the markup it produces carries
+   the team page's inline padding (296px at 3840) and a 1024px track. The
+   sf-ddna-width payload clears both, but only on its next pass — so for
+   ~150ms after every resize the copy sat 296px right of FEATURED VENTURE
+   and then snapped back. Measured, not inferred.
+
+   Those inline values are written WITHOUT !important, so a stylesheet rule
+   with it outranks them and the freshly-rendered markup is already correct.
+   The JS pass still runs and now simply agrees with the CSS.
+
+   Scoped to #sf-dnawrap so Marshall's .dl-gx is untouched. */
+html body #sf-dnawrap .dl-s204{
+  padding-left:0 !important;
+  padding-right:0 !important;
+  margin-left:0 !important;
+  grid-template-columns:1fr !important;
+  column-gap:0 !important;
+}
+/* The eyebrow row carries NEGATIVE horizontal margins whose only job is to
+   cancel that padding, so it can reach the section edge while the columns stay
+   inset. Remove the padding without removing these and the eyebrow hangs 296px
+   off the left. They come off together — the payload already does this, but it
+   is keyed on #sf-ddna-row, an id the payload itself assigns, so it cannot
+   match freshly re-rendered markup. Structural selector, so it always does. */
+html body #sf-dnawrap .dl-s204 > *{
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
 </style>
 <style id="sf-uw-lab">
 /* =====================================================================
