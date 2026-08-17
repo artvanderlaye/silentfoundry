@@ -9269,10 +9269,22 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
    hh.style.setProperty('max-width', on?'min(100%,960px)':'min(100%,680px)','important');
    rr.style.setProperty('max-width', on?'min(100%,680px)':'none','important');
    rr.style.setProperty('margin-bottom', on?'clamp(18px, 1.1vw + 13.5px, 28px)':'0px','important');
+
+   /* SWITCH blue, not Silent Foundry gold. The value is rgb(10,127,153) and
+      not #00b4d8: PRODUCT PORTFOLIO four lines below already uses the darker
+      mix, because raw #00b4d8 does not hold on cream at 10.88px. Matching it
+      keeps the two eyebrows in this block on the same colour. */
+   var SW='rgb(10,127,153)', SF='rgb(200,169,110)';
+   var ey=null;
+   [].forEach.call(rr.querySelectorAll('*'),function(n){
+    if(!ey && n.children.length===0 && /DESIGNED DNA/i.test(n.textContent||'')) ey=n; });
+   if(ey) ey.style.setProperty('color', on?SW:SF,'important');
+   var sp=hh.querySelector('span');
+   if(sp) sp.style.setProperty('color', on?SW:SF,'important');
   };
   /* re-assert on every pass of single(), so a re-measure cannot undo it */
   var uw=document.documentElement.getAttribute('data-uw');
-  window.__ddnaAlign(uw==='13'||uw==='14');
+  window.__ddnaAlign(uw==='13');
   /* take the colour from Marshall itself rather than guessing at a hex */
   var ref=document.querySelector('#sfsec-dna .cs-dh');
   if(ref)h.style.setProperty('color',getComputedStyle(ref).color,'important');
@@ -10173,7 +10185,7 @@ html[data-uw="12"] body .footer-bottom{padding-left:max(48px,calc(50% - 800px)) 
 html[data-uw="12"] body #sf-mwave{width:min(50%,960px) !important;}
 
 /* =====================================================================
-   13A / 13B  —  THE COMPOSITE
+   13A  —  THE COMPOSITE
    Built from the lab's findings, NOT from "variation 09 everywhere".
 
    The architecture is canvas-free (09's): backgrounds are viewport-wide,
@@ -10186,10 +10198,9 @@ html[data-uw="12"] body #sf-mwave{width:min(50%,960px) !important;}
        --sf-heroframe   2104   hero copy and nav content
        --sf-subject      960   controlled decorative subjects
 
-   13A and 13B differ in exactly one declaration block: the hero photo.
    ===================================================================== */
 
-html[data-uw="13"],html[data-uw="14"]{
+html[data-uw="13"]{
   --site-max:100vw !important;      /* BEHAVIOUR 1 - full-bleed background */
   --sf-media:2200px;
   --sf-frame:1600px;
@@ -10198,17 +10209,16 @@ html[data-uw="13"],html[data-uw="14"]{
 }
 
 /* ---- BEHAVIOUR 2 : MEDIA CAP - photography and video hold at 2200 ---- */
-html[data-uw="13"] body .sf-video-frame,   html[data-uw="14"] body .sf-video-frame,
-html[data-uw="13"] body .factory-solo,     html[data-uw="14"] body .factory-solo{
+html[data-uw="13"] body .sf-video-frame,
+html[data-uw="13"] body .factory-solo{
   max-width:var(--sf-media) !important;
   margin-left:auto !important;margin-right:auto !important;
 }
 /* The SWITCH carousel is wider than its 1600 parent, and auto margins do not
    centre an over-constrained box - they collapse to zero and it sits right of
    centre. It uses the site's own centring formula instead. */
-html[data-uw="13"] body #c16s-wrap,        html[data-uw="14"] body #c16s-wrap,
-html[data-uw="13"] body #switch-electric-line,
-html[data-uw="14"] body #switch-electric-line{
+html[data-uw="13"] body #c16s-wrap,
+html[data-uw="13"] body #switch-electric-line{
   width:min(var(--sf-media),100vw) !important;
   max-width:var(--sf-media) !important;
   margin-left:calc(50% - (0.5 * min(var(--sf-media),100vw))) !important;
@@ -10216,15 +10226,14 @@ html[data-uw="14"] body #switch-electric-line{
 }
 
 /* ---- BEHAVIOUR 3 : CONTENT FRAME - editorial content holds at 1600 ---- */
-html[data-uw="13"] body .logo-grid,        html[data-uw="14"] body .logo-grid,
-html[data-uw="13"] body .logos .label,     html[data-uw="14"] body .logos .label,
+html[data-uw="13"] body .logo-grid,
+html[data-uw="13"] body .logos .label,
 html[data-uw="13"] body section.cta .section-title,
-html[data-uw="14"] body section.cta .section-title,
-html[data-uw="13"] body .footer-inner,     html[data-uw="14"] body .footer-inner{
+html[data-uw="13"] body .footer-inner{
   max-width:var(--sf-frame) !important;
   margin-left:auto !important;margin-right:auto !important;
 }
-html[data-uw="13"] body .footer-bottom,    html[data-uw="14"] body .footer-bottom{
+html[data-uw="13"] body .footer-bottom{
   padding-left:max(48px,calc(50% - (var(--sf-frame) / 2))) !important;
   padding-right:max(48px,calc(50% - (var(--sf-frame) / 2))) !important;
 }
@@ -10232,11 +10241,11 @@ html[data-uw="13"] body .footer-bottom,    html[data-uw="14"] body .footer-botto
 /* ---- BEHAVIOUR 4 : HERO / NAV FRAME - the opening sits on 2104 ----
    Percentage padding resolves against body, which is the viewport here,
    so this lands on the same geometry 02 produced inside its 2200 canvas. */
-html[data-uw="13"] body .hero,             html[data-uw="14"] body .hero{
+html[data-uw="13"] body .hero{
   padding-left:max(48px,calc(50% - (var(--sf-heroframe) / 2))) !important;
   padding-right:max(48px,calc(50% - (var(--sf-heroframe) / 2))) !important;
 }
-html[data-uw="13"] body>nav,               html[data-uw="14"] body>nav{
+html[data-uw="13"] body>nav{
   max-width:none !important;width:auto !important;
   left:0 !important;right:0 !important;margin:0 !important;
   padding-left:max(48px,calc(50vw - (var(--sf-heroframe) / 2))) !important;
@@ -10244,29 +10253,43 @@ html[data-uw="13"] body>nav,               html[data-uw="14"] body>nav{
 }
 
 /* ---- BEHAVIOUR 5 : CONTROLLED SUBJECT - decorative marks do not scale ---- */
-html[data-uw="13"] body #sf-mwave,         html[data-uw="14"] body #sf-mwave{
+html[data-uw="13"] body #sf-mwave{
   width:min(50%,var(--sf-subject)) !important;
 }
 
 /* ---- BEHAVIOUR 6 : CINEMATIC STRIP - the Foundry carousel runs viewport
    wide and answers with MORE FRAMES rather than bigger ones (07) ---- */
-html[data-uw="13"] body #hiw-stage .ec2-slide,
-html[data-uw="14"] body #hiw-stage .ec2-slide{flex:0 0 calc(16.666% - 1.7px) !important;}
-html[data-uw="13"] body #hiw-stage .ec2-track,
-html[data-uw="14"] body #hiw-stage .ec2-track{margin-left:-8.33% !important;}
+html[data-uw="13"] body #hiw-stage .ec2-slide{flex:0 0 calc(16.666% - 1.7px) !important;}
+html[data-uw="13"] body #hiw-stage .ec2-track{margin-left:-8.33% !important;}
 
-/* ---- THE ONLY DIFFERENCE BETWEEN 13A AND 13B ---------------------- */
-/* 13A - hero photo fills the viewport; products scale up with it */
+
+/* ---- BEHAVIOUR 7 : THE FACTORY BACKDROP ----------------------------
+   The factory band is cream, a cad-texture photograph at cover/center,
+   and a 92% cream veil over it, held with background-attachment:fixed.
+   SWITCH now carries the same field across the whole section. The veil
+   is a gradient layer rather than an overlay div, so #fv-stage needs no
+   position change and nothing inside it moves.
+
+   Honest limitation: fixed attachment only reads as parallax when the
+   band is short enough to see content travel across it. This section is
+   ~3240px tall, so the movement is very slight, and iOS Safari ignores
+   fixed attachment altogether and paints it static. */
+html[data-uw="13"] body #fv-stage{
+  background-color:#ede8e0 !important;
+  background-image:
+    linear-gradient(rgba(237,232,224,0.92),rgba(237,232,224,0.92)),
+    url('images/cad_texture.jpeg') !important;
+  background-size:cover,cover !important;
+  background-position:center,center !important;
+  background-repeat:no-repeat,no-repeat !important;
+  background-attachment:fixed,fixed !important;
+}
+
+/* ---- HERO ---------------------- */
+/* hero photo fills the viewport; products scale up with it (your 02 pick) */
 html[data-uw="13"] body .hero-bg{
   left:0 !important;right:0 !important;width:100% !important;
   background-size:cover !important;background-repeat:no-repeat !important;
-}
-/* 13B - hero photo fills the viewport at a fixed height; products keep
-   their size and the extra width reveals more of the grid */
-html[data-uw="14"] body .hero-bg{
-  left:0 !important;right:0 !important;width:100% !important;
-  background-size:auto 100% !important;background-repeat:repeat-x !important;
-  background-position:center !important;
 }
 }
 
@@ -10341,13 +10364,13 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
 </style>
 <div id="uw-panel" aria-label="Ultrawide lab">
   <h6>Ultrawide Lab <em id="uw-w"></em></h6>
-  <div id="uw-list"><button class="uwb" data-n="00"><i>00</i><b>CURRENT</b></button><button class="uwb" data-n="01"><i>01</i><b>CREAM 1920</b></button><button class="uwb" data-n="02"><i>02</i><b>CREAM 2200</b></button><button class="uwb" data-n="03"><i>03</i><b>CAPPED SUBJECTS</b></button><button class="uwb" data-n="04"><i>04</i><b>NEGATIVE SPACE</b></button><button class="uwb" data-n="05"><i>05</i><b>CINEMATIC</b></button><button class="uwb" data-n="06"><i>06</i><b>FLUID CLAMP</b></button><button class="uwb" data-n="07"><i>07</i><b>CONTAINER</b></button><button class="uwb" data-n="08"><i>08</i><b>FULL-BLEED MEDIA</b></button><button class="uwb" data-n="09"><i>09</i><b>2200 MEDIA</b></button><button class="uwb" data-n="10"><i>10</i><b>SELECTIVE BLEED</b></button><button class="uwb" data-n="11"><i>11</i><b>HYBRID</b></button><button class="uwb" data-n="12"><i>12</i><b>ULTRAWIDE AD</b></button><button class="uwb" data-n="13"><i>13</i><b>13A COMPOSITE / HERO MAGNIFIED</b></button><button class="uwb" data-n="14"><i>14</i><b>13B COMPOSITE / HERO WIDE</b></button></div>
+  <div id="uw-list"><button class="uwb" data-n="00"><i>00</i><b>CURRENT</b></button><button class="uwb" data-n="01"><i>01</i><b>CREAM 1920</b></button><button class="uwb" data-n="02"><i>02</i><b>CREAM 2200</b></button><button class="uwb" data-n="03"><i>03</i><b>CAPPED SUBJECTS</b></button><button class="uwb" data-n="04"><i>04</i><b>NEGATIVE SPACE</b></button><button class="uwb" data-n="05"><i>05</i><b>CINEMATIC</b></button><button class="uwb" data-n="06"><i>06</i><b>FLUID CLAMP</b></button><button class="uwb" data-n="07"><i>07</i><b>CONTAINER</b></button><button class="uwb" data-n="08"><i>08</i><b>FULL-BLEED MEDIA</b></button><button class="uwb" data-n="09"><i>09</i><b>2200 MEDIA</b></button><button class="uwb" data-n="10"><i>10</i><b>SELECTIVE BLEED</b></button><button class="uwb" data-n="11"><i>11</i><b>HYBRID</b></button><button class="uwb" data-n="12"><i>12</i><b>ULTRAWIDE AD</b></button><button class="uwb" data-n="13"><i>13</i><b>13A COMPOSITE</b></button></div>
   <div id="uw-note"></div>
   <button id="uw-hide">hide panel &nbsp;[h]</button>
 </div>
 <script id="sf-uw-panel-js">
 (function(){
-  var D={"00":"Production as deployed: 1920 canvas, near-black gutter.","01":"Cream gutter, 1920 canvas. Hero, nav band and footer break to true 100vw.","02":"Same philosophy, wider canvas at 2200.","03":"Genuinely full-screen. Every foreground subject stops growing.","04":"The 1920 composition, frozen and centred. Extra width becomes air.","05":"Ultrawide as a photographic format: letterboxed bands, art-directed crops.","06":"No hard canvas. Everything grows gently on clamp() and then stops.","07":"Backgrounds full width; components size against their container, and re-lay-out.","08":"Backgrounds and photography 100vw. All content locked to 1600.","09":"Colour bands 100vw, every photograph capped at 2200.","10":"100vw reserved for hero, nav, one SWITCH moment and the footer. Rest 2200.","11":"No global rule. Each section treated according to its job.","12":"Above 2560 a distinct composition mode: wider crops, asymmetry, restrained heights.","13":"Your build. Canvas-free, 2200 media tier, 1600 content, 2104 hero+nav frame. Hero photo full-bleed, products magnified.","14":"Identical to 13A in every respect except one: the hero photo tiles instead of magnifying."};
+  var D={"00":"Production as deployed: 1920 canvas, near-black gutter.","01":"Cream gutter, 1920 canvas. Hero, nav band and footer break to true 100vw.","02":"Same philosophy, wider canvas at 2200.","03":"Genuinely full-screen. Every foreground subject stops growing.","04":"The 1920 composition, frozen and centred. Extra width becomes air.","05":"Ultrawide as a photographic format: letterboxed bands, art-directed crops.","06":"No hard canvas. Everything grows gently on clamp() and then stops.","07":"Backgrounds full width; components size against their container, and re-lay-out.","08":"Backgrounds and photography 100vw. All content locked to 1600.","09":"Colour bands 100vw, every photograph capped at 2200.","10":"100vw reserved for hero, nav, one SWITCH moment and the footer. Rest 2200.","11":"No global rule. Each section treated according to its job.","12":"Above 2560 a distinct composition mode: wider crops, asymmetry, restrained heights.","13":"The build. Canvas-free, 2200 media tier, 1600 content, 2104 hero+nav frame, full-bleed hero, SWITCH on the factory backdrop."};
   var root=document.documentElement;
   function paint(n){
     root.setAttribute('data-uw',n);
@@ -10356,7 +10379,7 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
       if(b.dataset.n===n) b.scrollIntoView({block:'nearest'});
     });
     var note=document.getElementById('uw-note'); if(note) note.textContent=D[n]||'';
-    if(window.__ddnaAlign) window.__ddnaAlign(n==='13'||n==='14');
+    if(window.__ddnaAlign) window.__ddnaAlign(n==='13');
     try{ history.replaceState(null,'','#uw='+n+(root.getAttribute('data-uw-panel')==='off'?'&hide=1':'')); }catch(e){}
   }
   function width(){var e=document.getElementById('uw-w'); if(e) e.textContent=window.innerWidth+'px';}
@@ -10371,7 +10394,7 @@ html[data-uw-panel="off"] #uw-panel{display:none !important;}
     if(e.target && /input|textarea/i.test(e.target.tagName))return;
     if(e.key==='h'){root.setAttribute('data-uw-panel', root.getAttribute('data-uw-panel')==='off'?'on':'off');return;}
     var cur=parseInt(root.getAttribute('data-uw')||'0',10);
-    if(e.key==='ArrowDown'||e.key==='ArrowRight'){paint(String(Math.min(14,cur+1)).padStart(2,'0'));e.preventDefault();}
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'){paint(String(Math.min(13,cur+1)).padStart(2,'0'));e.preventDefault();}
     if(e.key==='ArrowUp'||e.key==='ArrowLeft'){paint(String(Math.max(0,cur-1)).padStart(2,'0'));e.preventDefault();}
   });
   window.addEventListener('resize',width);
