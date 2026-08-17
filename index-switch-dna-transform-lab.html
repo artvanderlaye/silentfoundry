@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>SWITCH DNA TRANSFORM LAB — Silent Foundry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   SWITCH DNA TRANSFORM LAB
+   Standalone exploration page. NOT production. index.html is untouched.
+
+   00      = faithful reproduction of the current production Designed DNA
+             section, captured from the live DOM. Control only — do not improve.
+   01–30   = independent concepts. Each authors its own markup, its own scoped
+             CSS and its own behaviour. Only the active concept is mounted;
+             switching unmounts it and cancels every rAF / observer / listener.
+
+   Design system per DESIGN-CHOICES.md:
+     section entry ~100px · eyebrow -> headline 34px
+     eyebrow  DM Sans 10.88px / 300 / 2.72px tracking / uppercase
+     display headline  Bebas Neue, line-height 0.92
+     cyan is an ACCENT, not a theme.
+   ========================================================================== */
+
+:root{
+  --cream:#ede8e0;
+  --paper:#f3efe8;
+  --ink:#0a0a0a;
+  --ink-78:rgba(10,10,10,0.78);
+  --ink-55:rgba(10,10,10,0.55);
+  --ink-38:rgba(10,10,10,0.38);
+  --ink-26:rgba(10,10,10,0.26);
+  --hair:rgba(10,10,10,0.10);
+  --hair-soft:rgba(10,10,10,0.07);
+  --gold:#8a6e3a;
+  --gold-l:#c8a96e;
+  --cy:#0a7f99;          /* SWITCH deep  — used for small type on cream   */
+  --cy-b:#00b4d8;        /* SWITCH bright— used on dark, or for one accent */
+  --dark:#0d0f12;
+  --dark-2:#15181d;
+  --pale:rgba(244,241,236,0.92);
+  --dm:'DM Sans',sans-serif;
+  --bb:'Bebas Neue',sans-serif;
+  --frame:1600px;
+  --pad:48px;
+  --entry:100px;
+  --eyegap:34px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--cream); color:var(--ink);
+  font-family:var(--dm); font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:96px;                 /* clearance for the fixed lab bar */
+}
+img{display:block;max-width:100%;}
+
+/* ---------- shared design-system atoms (available to every concept) ------ */
+.ey{ font-family:var(--dm); font-size:10.88px; font-weight:300;
+     letter-spacing:2.72px; text-transform:uppercase; display:block; margin:0; }
+.ey--gold{color:var(--gold);} .ey--cy{color:var(--cy);} .ey--pale{color:rgba(244,241,236,0.5);}
+.hl{ font-family:var(--bb); font-weight:400; line-height:0.92;
+     letter-spacing:0.22em; text-transform:uppercase; margin:0;
+     font-size:clamp(1.35rem,2.4vw,2.3rem); color:var(--ink-78); }
+.hl span.a{color:var(--cy-b);}
+.hl--big{font-size:clamp(2rem,5vw,4.6rem);letter-spacing:0.16em;}
+.hl--pale{color:var(--pale);}
+.bd{ font-size:0.9rem; line-height:1.85; color:var(--ink-55);
+     font-weight:300; max-width:min(100%,680px); margin:0; }
+.bd--pale{color:rgba(244,241,236,0.55);}
+.mono{ font-family:var(--dm); font-size:0.52rem; letter-spacing:0.22em;
+       text-transform:uppercase; color:var(--ink-38); }
+.mono--cy{color:var(--cy);} .mono--gold{color:var(--gold);}
+.rule{height:1px;background:var(--hair);border:0;margin:0;}
+
+/* entry rhythm helpers — the production numbers */
+.sec{ padding:var(--entry) var(--pad); }
+.sec > .ey{ margin-bottom:var(--eyegap); }
+.frame{ max-width:var(--frame); margin:0 auto; }
+
+/* ---------- stage ------------------------------------------------------- */
+#stage{ min-height:60vh; position:relative; }
+#stage > *{ animation:fadein .28s ease both; }
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+
+/* ---------- lab chrome (kept visually separate from the concepts) ------- */
+#labtop{
+  position:sticky; top:0; z-index:60;
+  background:#0a0a0a; color:#f4f1ec;
+  border-bottom:1px solid rgba(244,241,236,0.14);
+  display:flex; align-items:baseline; gap:18px; flex-wrap:wrap;
+  padding:10px 16px;
+  font-family:var(--dm); font-size:0.56rem; letter-spacing:0.22em; text-transform:uppercase;
+}
+#labtop b{font-weight:500;color:#c8a96e;letter-spacing:0.26em;}
+#labtop .sp{color:rgba(244,241,236,0.34);}
+#labtop .w{margin-left:auto;display:flex;gap:8px;}
+#labtop .w button{
+  font:inherit;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;
+  background:transparent;color:rgba(244,241,236,0.62);
+  border:1px solid rgba(244,241,236,0.22);padding:4px 9px;border-radius:2px;}
+#labtop .w button:hover{color:#00b4d8;border-color:#00b4d8;}
+#labtop .w button[aria-pressed="true"]{color:#0a0a0a;background:#c8a96e;border-color:#c8a96e;}
+
+#labbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:60;
+  background:#0a0a0a; border-top:1px solid rgba(244,241,236,0.14);
+  padding:10px 14px 12px;
+}
+#labname{
+  font-family:var(--dm); font-size:0.6rem; font-weight:400;
+  letter-spacing:0.3em; text-transform:uppercase; color:#c8a96e;
+  margin:0 0 8px 2px; display:flex; gap:14px; align-items:baseline;
+}
+#labname em{font-style:normal;color:rgba(244,241,236,0.42);letter-spacing:0.16em;
+  font-size:0.52rem;text-transform:none;}
+#labboxes{display:flex;flex-wrap:wrap;gap:4px;align-items:center;}
+#labboxes button{
+  font-family:var(--dm); font-size:0.58rem; font-weight:400; letter-spacing:0.06em;
+  width:30px;height:26px;line-height:1;cursor:pointer;border-radius:2px;
+  background:transparent; color:rgba(244,241,236,0.5);
+  border:1px solid rgba(244,241,236,0.2);
+  transition:background .16s,color .16s,border-color .16s;}
+#labboxes button:hover{color:#00b4d8;border-color:rgba(0,180,216,0.6);}
+#labboxes button.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}
+#labboxes .nav{width:34px;color:rgba(244,241,236,0.66);}
+@media(max-width:768px){
+  :root{--pad:24px;--entry:100px;}
+  #labboxes button{width:26px;height:24px;font-size:0.52rem;}
+  body{padding-bottom:118px;}
+}
+</style>
+</head>
+<body>
+
+<div id="labtop">
+  <b>SWITCH DNA TRANSFORM LAB</b>
+  <span class="sp">Silent Foundry · extraction &amp; translation study · not production</span>
+  <span class="w">
+    <button id="tgAnim" aria-pressed="true">motion on</button>
+    <button id="tgGrid" aria-pressed="false">frame guides</button>
+  </span>
+</div>
+
+<main id="stage"></main>
+
+<div id="labbar">
+  <div id="labname"><span id="labnum">00</span> / <span id="labtitle">BASE</span> <em id="labdesc"></em></div>
+  <div id="labboxes"></div>
+</div>
+
+<script>
+/* =========================================================================
+   LAB FRAMEWORK
+   Mount one concept at a time. Every concept gets a ctx with registration
+   helpers; unmounting cancels everything it registered, so no concept keeps
+   running in the background.
+   ========================================================================= */
+var IMG = {
+  bike      : 'images/SWITCH_eSCRAMBLER_bike-6.jpg',
+  dirt      : 'images/eSCRAMBLER_dirt-13.jpg',
+  frameA    : 'images/frame_factory-431.jpg',
+  frameB    : 'images/frame_factory-285.jpg',
+  frameC    : 'images/frame_factory-157.jpg',
+  frameD    : 'images/frame_factory-413.png',
+  cadScreen : 'images/cad-screen.jpg',
+  cadTex    : 'images/cad_texture.jpeg',
+  cadWide   : 'images/cad_texture_wide.jpg',
+  cnc       : 'images/cnc_1-14.jpg',
+  cnc2      : 'images/cnc-cutting.jpg',
+  proto     : 'images/prototype_assembly.jpg',
+  pcb       : 'images/pcb-board.jpg',
+  battery   : 'images/battery_gold.png',
+  batteryP  : 'images/switch_battery.jpg',
+  speaker   : 'images/switch_speaker.png',
+  snowboard : 'images/snowboard.jpg',
+  guitar    : 'images/guitar.jpg',
+  light     : 'images/switch-professional-task-light.jpg',
+  amp       : 'images/Upscaled_amp.png',
+  logoSW    : 'images/Switchlogowhite2.png',
+  logoES    : 'images/logo-escrambler.png'
+};
+
+/* the eight principles — fixed vocabulary, never renamed (DESIGN-CHOICES §25) */
+var P8 = ['FORM','STRUCTURE','CMF','SIGNATURE DETAILS','STANCE','MANUFACTURING','MODULARITY','SERVICEABILITY'];
+var P8_NOTE = {
+  'FORM':'Flat top line, dropped mass, nothing decorative.',
+  'STRUCTURE':'Visible trellis. The frame is the styling.',
+  'CMF':'Raw alloy, matte black, one cyan mark.',
+  'SIGNATURE DETAILS':'Exposed fasteners. Machined edges left machined.',
+  'STANCE':'Wide track, low centre, planted.',
+  'MANUFACTURING':'Tube, plate, fold, weld — small-batch tooling.',
+  'MODULARITY':'A slab that carries the energy, wherever it sits.',
+  'SERVICEABILITY':'Opened with the tools the owner already has.'
+};
+/* which principles survive a category change — used by several concepts */
+var CATS = [
+  {k:'SOUND',     img:'speaker',   note:'Slab body, exposed fixings, one cyan mark.'},
+  {k:'POWER',     img:'battery',   note:'The energy module leaves the frame intact.'},
+  {k:'WORKSPACE', img:'light',     note:'Machined arm, planted base, serviceable head.'},
+  {k:'MOBILITY',  img:'snowboard', note:'Stance and edge geometry, no engine.'},
+  {k:'INSTRUMENT',img:'guitar',    note:'Trellis logic as a bolted, repairable body.'}
+];
+
+/* ---------- shared SVG vocabulary --------------------------------------
+   Hand-authored reductions of the eSCRAMBLER's actual geometry: two equal
+   circles, a flat top line, a dropped slab, a triangulated centre. The same
+   radius / angle / cut vocabulary then generates the other categories, which
+   is the point being argued.
+   ---------------------------------------------------------------------- */
+var GEO = {
+  bike:
+    'M22 62 A16 16 0 1 0 22 62.01 Z' , /* placeholder, real paths below */
+  /* side elevation, 200x100 viewBox */
+  bikePath: [
+    'M34 70 m-18 0 a18 18 0 1 0 36 0 a18 18 0 1 0 -36 0',      /* rear wheel */
+    'M166 70 m-18 0 a18 18 0 1 0 36 0 a18 18 0 1 0 -36 0',     /* front wheel */
+    'M40 44 L150 44',                                          /* flat top line */
+    'M62 46 L62 66 L112 66 L112 46 Z',                         /* battery slab */
+    'M40 44 L62 66 M150 44 L112 66 M62 46 L112 46',            /* trellis */
+    'M150 44 L166 52 M166 52 L166 70'                          /* fork */
+  ],
+  speakerPath: [
+    'M52 30 L148 30 L148 78 L52 78 Z',
+    'M62 40 L138 40 L138 68 L62 68 Z',
+    'M52 78 L62 88 M148 78 L138 88',
+    'M70 34 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0',
+    'M130 34 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0'
+  ],
+  batteryPath: [
+    'M66 26 L134 26 L134 84 L66 84 Z',
+    'M76 26 L76 84 M124 26 L124 84',
+    'M66 40 L134 40 M66 70 L134 70',
+    'M92 18 L108 18 L108 26 L92 26 Z'
+  ],
+  lightPath: [
+    'M60 84 L140 84 L140 88 L60 88 Z',
+    'M100 84 L100 44',
+    'M100 44 L146 30',
+    'M146 30 m-10 0 a10 10 0 1 0 20 0 a10 10 0 1 0 -20 0',
+    'M92 84 L108 84 L108 78 L92 78 Z'
+  ],
+  boardPath: [
+    'M30 50 C30 34 62 28 100 28 C138 28 170 34 170 50 C170 66 138 72 100 72 C62 72 30 66 30 50 Z',
+    'M56 42 L84 42 L84 58 L56 58 Z',
+    'M116 42 L144 42 L144 58 L116 58 Z',
+    'M30 50 L170 50'
+  ],
+  guitarPath: [
+    'M56 44 L120 44 L120 66 L56 66 Z',
+    'M120 52 L176 52 L176 58 L120 58 Z',
+    'M176 46 L188 46 L188 64 L176 64 Z',
+    'M68 48 L68 62 M80 48 L80 62 M92 48 L92 62'
+  ]
+};
+function svgOf(paths, opt){
+  opt = opt||{};
+  var vb  = opt.vb || '0 0 200 100';
+  var sw  = opt.sw || 1.1;
+  var st  = opt.stroke || 'rgba(10,10,10,0.55)';
+  var cls = opt.cls || '';
+  var out = '<svg class="'+cls+'" viewBox="'+vb+'" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">';
+  paths.forEach(function(d,i){
+    out += '<path d="'+d+'" stroke="'+st+'" stroke-width="'+sw+'" vector-effect="non-scaling-stroke"'
+        +  ' stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"/>';
+  });
+  return out+'</svg>';
+}
+
+/* ---------- concept registry & lifecycle -------------------------------- */
+var CONCEPTS = [];
+function C(n,name,desc,build){ CONCEPTS[n]={n:n,name:name,desc:desc,build:build}; }
+
+var LIVE = { raf:[], obs:[], lis:[], tmr:[] };
+var MOTION = true;
+function ctxFactory(){
+  return {
+    frame:function(fn){                     /* rAF loop that auto-stops */
+      var id, run=function(t){ if(!MOTION){ id=requestAnimationFrame(run); LIVE.raf[LIVE.raf.length-1]=id; return; }
+        fn(t); id=requestAnimationFrame(run); LIVE.raf[LIVE.raf.indexOf(prev)]=id; prev=id; };
+      var prev=requestAnimationFrame(run); LIVE.raf.push(prev);
+    },
+    on:function(target,type,fn,opt){ target.addEventListener(type,fn,opt||{passive:true});
+      LIVE.lis.push([target,type,fn,opt]); },
+    obs:function(o){ LIVE.obs.push(o); return o; },
+    timer:function(fn,ms){ var t=setInterval(fn,ms); LIVE.tmr.push(t); return t; },
+    delay:function(fn,ms){ var t=setTimeout(fn,ms); LIVE.tmr.push(t); return t; },
+    /* scroll progress 0..1 across an element's travel through the viewport */
+    prog:function(el){
+      var r=el.getBoundingClientRect(), vh=innerHeight;
+      return Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+    },
+    /* progress while a sticky child is pinned inside a tall parent */
+    pinProg:function(el){
+      var r=el.getBoundingClientRect();
+      var total = el.offsetHeight - innerHeight;
+      if(total<=0) return 0;
+      return Math.max(0, Math.min(1, (-r.top)/total));
+    }
+  };
+}
+function teardown(){
+  LIVE.raf.forEach(function(id){cancelAnimationFrame(id);});
+  LIVE.obs.forEach(function(o){ try{o.disconnect();}catch(e){} });
+  LIVE.lis.forEach(function(l){ try{l[0].removeEventListener(l[1],l[2],l[3]);}catch(e){} });
+  LIVE.tmr.forEach(function(t){ clearInterval(t); clearTimeout(t); });
+  LIVE={raf:[],obs:[],lis:[],tmr:[]};
+}
+
+var stage=document.getElementById('stage'), CUR=-1;
+function show(n){
+  if(!CONCEPTS[n]) return;
+  teardown();
+  stage.innerHTML='';
+  window.scrollTo(0,0);
+  CUR=n;
+  var c=CONCEPTS[n];
+  document.getElementById('labnum').textContent=(n<10?'0':'')+n;
+  document.getElementById('labtitle').textContent=c.name;
+  document.getElementById('labdesc').textContent=c.desc||'';
+  [].forEach.call(document.querySelectorAll('#labboxes button[data-n]'),function(b){
+    b.classList.toggle('on', +b.dataset.n===n); });
+  try{ c.build(stage, ctxFactory()); }
+  catch(e){ stage.innerHTML='<div class="sec"><p class="mono">concept '+n+' failed: '+e.message+'</p></div>'; }
+  history.replaceState(null,'','#c='+((n<10?'0':'')+n));
+}
+</script>
+<template id="tpl-base"><div id="sf-dnawrap"><style>.dl-s204{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.7vw,26px);align-items:start;}.dl-s204 > div:nth-child(1){grid-column:1/-1;}.dl-s204{column-gap:144px;row-gap:0;}@media(max-width:1440px){.dl-s204{column-gap:96px;}}@media(max-width:1280px){.dl-s204{column-gap:64px;}}@media(max-width:1100px){.dl-s204{column-gap:48px;}}@media(max-width:980px){.dl-s204{grid-template-columns:1fr !important;row-gap:48px;}.dl-s204 > div{grid-column:auto !important;}}@media(max-width:900px) and (min-width:601px){#su .dl-tbl-s204.dl-tbl-s204{grid-template-columns:max-content 1fr !important;}}@media(max-width:600px){#su .dl-tbl-s204 .dl-tk{padding-top:16px !important;padding-bottom:0 !important;}#su .dl-tbl-s204 .dl-tv{padding-top:3px !important;}#su .dl-tbl-s204 .dl-tk,#su .dl-tbl-s204 .dl-tv,#su .dl-tbl-s204 .dl-tr{grid-column:1/-1 !important;}}</style><div class="dl-s204 dl-cols" style="padding-left: 168px; padding-right: 152px;"><div style="max-width: min(100%, 680px) !important; margin-bottom: 20px !important; margin-left: 0px !important; margin-right: 0px !important;" id="sf-ddna-row"><div style="font-family: &quot;DM Sans&quot;, sans-serif !important; font-weight: 300 !important; font-size: 10.88px !important; letter-spacing: 0.25em !important; text-transform: uppercase !important; color: rgb(10, 127, 153) !important; margin-bottom: 14px !important;">Designed DNA: Switch</div><div style="height: 12px; display: none !important;"></div><div style="height: 0.5px; background: rgba(10, 10, 10, 0.26); display: none !important;"></div></div><div id="sf-ddna-h" style="font-family: &quot;Bebas Neue&quot;, sans-serif !important; font-size: 23.04px !important; line-height: 0.92 !important; letter-spacing: 0.22em !important; text-transform: uppercase !important; font-weight: 300 !important; margin: 0px 0px 8px !important; max-width: min(100%, 960px) !important; color: rgba(10, 10, 10, 0.75) !important;">From One Product To<br><span style="color: rgb(0, 180, 216) !important;">An Entire System.</span></div><div><div style="padding-top:14px;"><div id="sf-ddna-prose"><p style="margin: 0px; font-family: &quot;DM Sans&quot;, sans-serif !important; font-size: 14.4px !important; line-height: 28.512px !important; font-weight: 300 !important; color: rgba(10, 10, 10, 0.55) !important; max-width: min(100%, 680px) !important; letter-spacing: normal !important; text-transform: none !important; font-style: normal !important;">SWITCH was designed as more than a motorcycle. Its industrial DNA combines form, engineering, materials and manufacturing into a design language that carries across entirely new product categories while remaining recognisably SWITCH.</p></div><div class="dl-tbl-s204" style="display: none !important; grid-template-columns: max-content 1fr; column-gap: 26px; align-items: baseline;"><div style="grid-column: 1 / -1; padding: 0px 0px 7px; display: none !important;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;color:rgba(10,10,10,0.32);">Intangible</span></div><div class="dl-tr" style="grid-column: 1; height: 0.5px; background: rgba(10, 10, 10, 0.09); display: none !important;"></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Form</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Rectilinear geometry.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Stance</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Balanced proportions.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Signature Details</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Functional hardware.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Structure</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Exposed engineering.</span></div><div style="grid-column:1/-1;height:12px;"></div><div style="grid-column: 1 / -1; padding: 0px 0px 7px; display: none !important;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;color:rgba(10,10,10,0.32);">Tangible</span></div><div class="dl-tr" style="grid-column: 1; height: 0.5px; background: rgba(10, 10, 10, 0.09); display: none !important;"></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">CMF</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Honest materials.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Manufacturing</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Assembly-first thinking.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Modularity</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Components that recombine.</span></div><div class="dl-tk" style="grid-column:1;padding:4px 0;"><span style="font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(10,10,10,0.86);line-height:1.2;white-space:nowrap;">Serviceability</span></div><div class="dl-tv" style="grid-column:2;padding:4px 0;"><span style="font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.85rem;line-height:2;color:rgba(10,10,10,0.48);">Built to be opened.</span></div></div></div></div><div style="max-width: min(100%, 680px) !important; font-size: 13.6px !important; line-height: 27.2px !important; display: none !important;"><div style="font-family: &quot;DM Sans&quot;, sans-serif; font-weight: 300; font-size: 13.6px !important; line-height: 27.2px !important; color: rgba(10, 10, 10, 0.55); max-width: min(100%, 680px) !important;">These principles form the foundation for a wider SWITCH product system. The same DNA can be translated across different categories — from mobility and sound to power, tools and other industrial products — while keeping each product recognisably SWITCH.  The opportunity is not simply to create individual products, but to build connected product families around a shared design language, manufacturing logic and component system. Each new category expands the commercial potential of the same underlying platform.</div></div></div><div style="height:60px"></div></div></template>
+
+<script>
+/* =========================================================================
+   00 — BASE  (CONTROL, DO NOT IMPROVE)
+   Faithful reproduction of the current production Designed DNA section,
+   captured from the live DOM at 1440. The two inline padding values written
+   by the production runtime aligner are neutralised because the aligner does
+   not run here; everything else is byte-for-byte what ships today.
+   ========================================================================= */
+C(0,'BASE','current production section, reproduced as the control',function(root){
+  var wrap=document.createElement('div');
+  wrap.className='sec frame';
+  wrap.style.background='var(--cream)';
+  var t=document.getElementById('tpl-base');
+  wrap.appendChild(t.content.cloneNode(true));
+  var row=wrap.querySelector('.dl-s204');
+  if(row){ row.style.paddingLeft='0px'; row.style.paddingRight='0px'; }
+  var note=document.createElement('p');
+  note.className='mono'; note.style.marginTop='56px'; note.style.opacity='.6';
+  note.textContent='control · production markup · not to be edited in this lab';
+  wrap.appendChild(note);
+  root.appendChild(wrap);
+});
+
+/* =========================================================================
+   01 — EXTRACTION
+   The whole product, then Silent Foundry's analytical pass laid over it, then
+   what that pass leaves behind. Four stages, click or auto-advance.
+   ========================================================================= */
+C(1,'EXTRACTION','whole product · analytical overlay · principles · system',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.x1{background:var(--cream);padding:var(--entry) var(--pad);}'+
+  '.x1 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x1 .top{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;margin-bottom:var(--eyegap);}'+
+  '.x1 .stagebox{position:relative;margin-top:52px;aspect-ratio:3/2;background:#111;overflow:hidden;}'+
+  '.x1 .stagebox img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) contrast(1.06) brightness(.86);transition:filter .8s,transform 1.2s;}'+
+  '.x1 .ov{position:absolute;inset:0;opacity:0;transition:opacity .7s;}'+
+  '.x1 .ov.on{opacity:1;}'+
+  '.x1 svg{position:absolute;inset:0;width:100%;height:100%;}'+
+  '.x1 .tag{position:absolute;font-family:var(--dm);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:#00b4d8;white-space:nowrap;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;}'+
+  '.x1 .ov.on .tag{opacity:1;transform:none;}'+
+  '.x1 .prin{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);margin-top:2px;}'+
+  '.x1 .prin > div{background:var(--cream);padding:18px 16px;opacity:.28;transition:opacity .5s,background .5s;}'+
+  '.x1 .prin.on > div{opacity:1;}'+
+  '.x1 .prin b{display:block;font-family:var(--dm);font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-78);margin-bottom:6px;}'+
+  '.x1 .prin i{font-style:normal;font-size:.64rem;line-height:1.5;color:var(--ink-38);}'+
+  '.x1 .outs{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:2px;max-height:0;overflow:hidden;transition:max-height .9s ease;}'+
+  '.x1 .outs.on{max-height:420px;}'+
+  '.x1 .outs figure{margin:0;background:#e6e0d6;}'+
+  '.x1 .outs img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(.3) brightness(.94);}'+
+  '.x1 .outs figcaption{padding:8px 10px 14px;}'+
+  '.x1 .steps{display:flex;gap:6px;margin-top:34px;}'+
+  '.x1 .steps button{flex:1;background:none;border:0;border-top:2px solid var(--hair);padding:12px 0 0;text-align:left;cursor:pointer;font-family:var(--dm);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-26);transition:color .3s,border-color .3s;}'+
+  '.x1 .steps button.on{color:var(--cy);border-top-color:var(--cy);}'+
+  '@media(max-width:900px){.x1 .prin{grid-template-columns:repeat(2,1fr);}.x1 .outs{grid-template-columns:repeat(2,1fr);}}'+
+  '</style>'+
+  '<section class="x1"><div class="in">'+
+    '<div class="top"><span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+      '<span class="mono">Silent Foundry · extraction pass 01</span></div>'+
+    '<h2 class="hl">From one product to <span class="a">an entire system.</span></h2>'+
+    '<div class="stagebox">'+
+      '<img src="'+IMG.bike+'" alt="SWITCH eSCRAMBLER">'+
+      '<div class="ov" id="x1ov">'+
+        '<svg viewBox="0 0 200 100" preserveAspectRatio="none">'+
+          '<line x1="22" y1="44" x2="178" y2="44" stroke="#00b4d8" stroke-width=".4"/>'+
+          '<line x1="34" y1="20" x2="34" y2="88" stroke="#00b4d8" stroke-width=".25" stroke-dasharray="2 2"/>'+
+          '<line x1="166" y1="20" x2="166" y2="88" stroke="#00b4d8" stroke-width=".25" stroke-dasharray="2 2"/>'+
+          '<rect x="62" y="46" width="50" height="22" stroke="#00b4d8" stroke-width=".4" fill="none"/>'+
+          '<line x1="34" y1="90" x2="166" y2="90" stroke="#00b4d8" stroke-width=".25"/>'+
+        '</svg>'+
+        '<span class="tag" style="left:4%;top:36%">TOP LINE — FLAT</span>'+
+        '<span class="tag" style="left:31%;top:72%">ENERGY SLAB — MODULAR</span>'+
+        '<span class="tag" style="left:70%;top:16%">WHEELBASE — STANCE</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="prin" id="x1p">'+P8.map(function(k){
+        return '<div><b>'+k+'</b><i>'+P8_NOTE[k]+'</i></div>';}).join('')+'</div>'+
+    '<div class="outs" id="x1o">'+CATS.map(function(c){
+        return '<figure><img src="'+IMG[c.img]+'" alt=""><figcaption><span class="mono mono--cy">'+c.k+'</span></figcaption></figure>';}).join('')+'</div>'+
+    '<div class="steps" id="x1s">'+
+      ['THE PRODUCT','THE ANALYSIS','WHAT TRANSFERS','THE SYSTEM'].map(function(t,i){
+        return '<button data-s="'+i+'">'+t+'</button>';}).join('')+'</div>'+
+    '<p class="bd" style="margin-top:40px">SWITCH began as a motorcycle. Silent Foundry extracted the industrial language behind it — form, structure, materials and manufacturing — and developed that language into a system capable of moving across product categories.</p>'+
+  '</div></section>';
+
+  var ov=root.querySelector('#x1ov'), pr=root.querySelector('#x1p'),
+      ou=root.querySelector('#x1o'), img=root.querySelector('.stagebox img'),
+      btns=[].slice.call(root.querySelectorAll('#x1s button'));
+  function set(s){
+    btns.forEach(function(b,i){ b.classList.toggle('on', i<=s); });
+    ov.classList.toggle('on', s>=1);
+    pr.classList.toggle('on', s>=2);
+    ou.classList.toggle('on', s>=3);
+    img.style.filter = s>=2 ? 'grayscale(1) contrast(1.1) brightness(.5)' : 'grayscale(.25) contrast(1.06) brightness(.86)';
+    img.style.transform = s>=3 ? 'scale(1.04)' : 'none';
+  }
+  btns.forEach(function(b,i){ ctx.on(b,'click',function(){ stop(); set(i); }); });
+  var s=0, auto=true; set(0);
+  function stop(){ auto=false; }
+  ctx.timer(function(){ if(!auto||!MOTION) return; s=(s+1)%4; set(s); }, 2100);
+});
+
+/* =========================================================================
+   02 — GHOST BIKE
+   The photograph fades under a wipe; the geometry Silent Foundry identified
+   stays behind. Scroll-linked so the viewer performs the removal.
+   ========================================================================= */
+C(2,'GHOST BIKE','the photograph leaves, the identified geometry stays',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.x2{background:#0d0f12;color:var(--pale);}'+
+  '.x2 .tall{height:320vh;position:relative;}'+
+  '.x2 .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);}'+
+  '.x2 .hd{max-width:var(--frame);margin:0 auto 40px;width:100%;}'+
+  '.x2 .art{position:relative;max-width:1100px;margin:0 auto;width:100%;aspect-ratio:2/1;}'+
+  '.x2 .ph{position:absolute;inset:0;background-size:cover;background-position:center;filter:grayscale(.5) contrast(1.1) brightness(.8);}'+
+  '.x2 svg{position:absolute;inset:0;width:100%;height:100%;}'+
+  '.x2 svg path{stroke:#00b4d8;stroke-width:1.2;fill:none;vector-effect:non-scaling-stroke;stroke-linecap:round;}'+
+  '.x2 .rd{position:absolute;left:0;right:0;bottom:-6px;text-align:center;}'+
+  '.x2 .q{font-family:var(--bb);letter-spacing:.16em;text-transform:uppercase;line-height:.92;'+
+    'font-size:clamp(1.4rem,3.4vw,3rem);color:rgba(244,241,236,.9);margin:0;}'+
+  '.x2 .q b{color:#00b4d8;font-weight:400;}'+
+  '</style>'+
+  '<section class="x2"><div class="tall"><div class="pin">'+
+    '<div class="hd"><span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+      '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">What is SWITCH<br>when you remove the motorcycle?</h2></div>'+
+    '<div class="art">'+
+      '<div class="ph" id="x2ph" style="background-image:url('+IMG.bike+')"></div>'+
+      svgOf(GEO.bikePath,{vb:'0 0 200 100'})+
+      '<div class="rd"><p class="q" id="x2q">THE PRODUCT</p></div>'+
+    '</div>'+
+  '</div></div></section>';
+  var tall=root.querySelector('.tall'), ph=root.querySelector('#x2ph'),
+      paths=[].slice.call(root.querySelectorAll('.x2 svg path')), q=root.querySelector('#x2q');
+  paths.forEach(function(p){ var L=p.getTotalLength();
+    p.style.strokeDasharray=L; p.style.strokeDashoffset=L; });
+  function draw(){
+    var t=ctx.pinProg(tall);
+    ph.style.opacity = String(Math.max(0, 1 - t*1.9));
+    ph.style.filter  = 'grayscale('+(0.5+t*0.5)+') contrast(1.1) brightness('+(0.8-t*0.25)+')';
+    paths.forEach(function(p,i){
+      var a=i/paths.length*0.4, local=Math.max(0,Math.min(1,(t-0.18-a)/0.42));
+      var L=p.getTotalLength(); p.style.strokeDashoffset=String(L*(1-local));
+    });
+    q.innerHTML = t<0.3 ? 'THE PRODUCT'
+                : t<0.62 ? 'THE PRODUCT IS <b>LEAVING</b>'
+                : 'WHAT REMAINS IS <b>SWITCH</b>';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+
+/* =========================================================================
+   03 — EXPLODED DESIGN LANGUAGE
+   Not an exploded parts diagram — the DECISIONS are pulled out of the object.
+   ========================================================================= */
+C(3,'EXPLODED DESIGN LANGUAGE','decisions pulled out of the object, not parts',function(root,ctx){
+  var picks=[
+    {k:'FORM',        x:-42,y:-30,img:'bike'},
+    {k:'STRUCTURE',   x: 40,y:-34,img:'frameA'},
+    {k:'CMF',         x:-48,y:  8,img:'cnc'},
+    {k:'SIGNATURE DETAILS',x: 46,y: 6,img:'proto'},
+    {k:'STANCE',      x:-34,y: 40,img:'dirt'},
+    {k:'MANUFACTURING',x: 36,y: 42,img:'cnc2'}
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.x3{background:var(--paper);padding:var(--entry) var(--pad) 120px;}'+
+  '.x3 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x3 .field{position:relative;height:min(78vh,760px);margin-top:64px;}'+
+  '.x3 .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(46%,440px);'+
+    'transition:transform .9s cubic-bezier(.2,.7,.2,1),filter .9s,opacity .9s;}'+
+  '.x3 .core img{width:100%;filter:grayscale(.35) contrast(1.05);}'+
+  '.x3 .dec{position:absolute;left:50%;top:50%;width:190px;transform:translate(-50%,-50%);'+
+    'transition:transform 1s cubic-bezier(.2,.7,.2,1),opacity .7s;opacity:0;}'+
+  '.x3 .dec img{width:100%;aspect-ratio:3/2;object-fit:cover;filter:grayscale(.5) contrast(1.08);}'+
+  '.x3 .dec b{display:block;font-family:var(--dm);font-size:.6rem;font-weight:500;letter-spacing:.18em;'+
+    'text-transform:uppercase;color:var(--ink-78);margin-top:9px;}'+
+  '.x3 .dec i{font-style:normal;display:block;font-size:.6rem;line-height:1.5;color:var(--ink-38);margin-top:3px;}'+
+  '.x3 .dec::before{content:"";position:absolute;left:50%;top:50%;width:1px;height:0;background:rgba(10,10,10,.16);z-index:-1;}'+
+  '.x3 .open .core{transform:translate(-50%,-50%) scale(.52);filter:grayscale(1) brightness(1.05) opacity(.28);}'+
+  '.x3 .open .dec{opacity:1;}'+
+  '.x3 .cap{margin-top:26px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline;}'+
+  '@media(max-width:900px){.x3 .field{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:22px;}'+
+    '.x3 .core,.x3 .dec{position:static;transform:none!important;width:auto;opacity:1;}'+
+    '.x3 .core{grid-column:1/-1;}}'+
+  '</style>'+
+  '<section class="x3"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Six decisions make it <span class="a">SWITCH.</span></h2>'+
+    '<p class="bd" style="margin-top:26px">Silent Foundry pulled the decisions out of the object, not the parts. What separates here is a language, and a language can be spoken about anything.</p>'+
+    '<div class="field" id="x3f">'+
+      '<div class="core"><img src="'+IMG.bike+'" alt="eSCRAMBLER"></div>'+
+      picks.map(function(p){
+        return '<div class="dec" data-x="'+p.x+'" data-y="'+p.y+'">'+
+          '<img src="'+IMG[p.img]+'" alt=""><b>'+p.k+'</b><i>'+(P8_NOTE[p.k]||'')+'</i></div>';}).join('')+
+    '</div>'+
+    '<div class="cap"><span class="mono">the object is the source, not the subject</span>'+
+      '<span class="mono mono--cy">hover / tap the field to reassemble</span></div>'+
+  '</div></section>';
+  var f=root.querySelector('#x3f');
+  [].forEach.call(f.querySelectorAll('.dec'),function(d){
+    d.style.transform='translate(calc(-50% + '+d.dataset.x+'%), calc(-50% + '+d.dataset.y+'%))';
+  });
+  ctx.delay(function(){ f.classList.add('open'); },420);
+  ctx.on(f,'mouseenter',function(){ f.classList.remove('open'); });
+  ctx.on(f,'mouseleave',function(){ f.classList.add('open'); });
+  ctx.on(f,'click',function(){ f.classList.toggle('open'); });
+});
+
+/* =========================================================================
+   04 — BLUEPRINT TRANSLATION
+   Photograph resolves into a drawing; the drawing keeps going past the bike.
+   ========================================================================= */
+C(4,'BLUEPRINT TRANSLATION','photograph → drawing → the drawing outgrows the bike',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.x4{background:#e9e4db;background-image:linear-gradient(rgba(233,228,219,.955),rgba(233,228,219,.955)),url('+IMG.cadWide+');'+
+    'background-size:auto,140% auto;background-position:0 0,center;padding:var(--entry) var(--pad) 110px;}'+
+  '.x4 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x4 .sheet{margin-top:60px;border:1px solid rgba(10,10,10,.16);background:rgba(255,255,255,.24);}'+
+  '.x4 .sh-h{display:flex;justify-content:space-between;gap:16px;padding:10px 16px;border-bottom:1px solid rgba(10,10,10,.14);flex-wrap:wrap;}'+
+  '.x4 .row{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:1px;background:rgba(10,10,10,.12);}'+
+  '.x4 .cell{background:rgba(255,255,255,.18);padding:22px;position:relative;min-height:230px;display:flex;flex-direction:column;justify-content:space-between;}'+
+  '.x4 .cell .fig{position:relative;flex:1;display:flex;align-items:center;justify-content:center;}'+
+  '.x4 .cell img{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;filter:grayscale(1) contrast(1.15) brightness(.95);transition:opacity 1s;}'+
+  '.x4 svg{width:100%;height:100%;max-height:190px;}'+
+  '.x4 svg path{stroke:rgba(10,10,10,.6);stroke-width:1;fill:none;vector-effect:non-scaling-stroke;}'+
+  '.x4 .cell.cy svg path{stroke:var(--cy);}'+
+  '.x4 .tt{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-top:14px;}'+
+  '@media(max-width:900px){.x4 .row{grid-template-columns:1fr;}}'+
+  '</style>'+
+  '<section class="x4"><div class="in">'+
+    '<span class="ey ey--gold">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">The drawing does not stop<br>at the motorcycle.</h2>'+
+    '<div class="sheet">'+
+      '<div class="sh-h"><span class="mono">SILENT FOUNDRY · SHEET 01 · SWITCH DESIGN LANGUAGE</span>'+
+        '<span class="mono mono--cy">SOURCE → RULE → APPLICATION</span></div>'+
+      '<div class="row">'+
+        '<div class="cell"><div class="fig"><img id="x4ph" src="'+IMG.bike+'" alt="">'+
+          '<div id="x4dr" style="position:absolute;inset:0;opacity:0;transition:opacity 1s">'+svgOf(GEO.bikePath,{})+'</div></div>'+
+          '<div class="tt"><span class="mono">01 · SOURCE</span><span class="mono">eSCRAMBLER</span></div></div>'+
+        '<div class="cell cy"><div class="fig">'+svgOf(GEO.speakerPath,{stroke:'#0a7f99'})+'</div>'+
+          '<div class="tt"><span class="mono mono--cy">02 · SAME RULES</span><span class="mono">SOUND</span></div></div>'+
+        '<div class="cell cy"><div class="fig">'+svgOf(GEO.lightPath,{stroke:'#0a7f99'})+'</div>'+
+          '<div class="tt"><span class="mono mono--cy">03 · SAME RULES</span><span class="mono">WORKSPACE</span></div></div>'+
+      '</div>'+
+    '</div>'+
+    '<p class="bd" style="margin-top:44px">Flat top line. Dropped mass. A slab that carries the energy. Exposed fixings. Those are drawing rules, not motorcycle parts — so the sheet keeps going.</p>'+
+  '</div></section>';
+  var ph=root.querySelector('#x4ph'), dr=root.querySelector('#x4dr'), on=false;
+  ctx.timer(function(){ if(!MOTION)return; on=!on;
+    ph.style.opacity=on?'0':'1'; dr.style.opacity=on?'1':'0'; },2600);
+});
+
+/* =========================================================================
+   05 — ONE LINE
+   A single gesture, traced off the bike, then continued through categories.
+   ========================================================================= */
+C(5,'ONE LINE','one gesture, continued through four categories',function(root,ctx){
+  var LINE='M6 62 C34 62 34 30 66 30 L134 30 C166 30 166 62 194 62';
+  root.innerHTML=
+  '<style>'+
+  '.x5{background:var(--cream);padding:var(--entry) var(--pad) 120px;}'+
+  '.x5 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x5 .band{margin-top:58px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);}'+
+  '.x5 .p{position:relative;padding:34px 20px 26px;border-right:1px solid var(--hair);}'+
+  '.x5 .p:last-child{border-right:0;}'+
+  '.x5 .p .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:#ded8ce;}'+
+  '.x5 .p .ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(.55) contrast(1.05) brightness(.98);opacity:.5;}'+
+  '.x5 .lineSvg{position:absolute;left:0;right:0;top:0;height:100%;width:100%;}'+
+  '.x5 .lineSvg path{fill:none;stroke:var(--cy-b);stroke-width:2.2;vector-effect:non-scaling-stroke;stroke-linecap:round;}'+
+  '.x5 .lab{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;gap:8px;}'+
+  '@media(max-width:900px){.x5 .band{grid-template-columns:1fr 1fr;}.x5 .p:nth-child(2){border-right:0;}}'+
+  '</style>'+
+  '<section class="x5"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">One line survives<br>the category change.</h2>'+
+    '<div class="band">'+
+      [['SOURCE','eSCRAMBLER','bike'],['SOUND','speaker','speaker'],['POWER','battery','battery'],['WORKSPACE','task light','light']]
+      .map(function(c,i){
+        return '<div class="p"><div class="ph"><img src="'+IMG[c[2]]+'" alt="">'+
+          '<svg class="lineSvg" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="'+LINE+'"/></svg></div>'+
+          '<div class="lab"><span class="mono mono--cy">'+c[0]+'</span><span class="mono">'+c[1]+'</span></div></div>';
+      }).join('')+
+    '</div>'+
+    '<p class="bd" style="margin-top:44px">Silent Foundry isolated one gesture — the flat run and the two dropped shoulders. Draw it over a speaker, a battery, a lamp: it still reads as the same designer.</p>'+
+  '</div></section>';
+  var ps=[].slice.call(root.querySelectorAll('.x5 .lineSvg path'));
+  ps.forEach(function(p){var L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;
+    p.style.transition='stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)';});
+  var i=0;
+  function run(){ if(!MOTION)return;
+    ps.forEach(function(p,k){ var L=p.getTotalLength();
+      p.style.strokeDashoffset = k<=i ? '0' : String(L); });
+    i=(i+1)%(ps.length+1);
+  }
+  ctx.delay(run,300); ctx.timer(run,1400);
+});
+
+/* =========================================================================
+   06 — FORM GRAMMAR
+   A compact vocabulary. Click a word, see it in the bike and in the outputs.
+   ========================================================================= */
+C(6,'FORM GRAMMAR','a vocabulary of seven words, recombined',function(root,ctx){
+  var G=[
+    {w:'RADIUS',   s:'6mm break on every visible edge',        img:'proto'},
+    {w:'ANGLE',    s:'the trellis repeats one angle',           img:'frameA'},
+    {w:'CUT',      s:'plate is cut, not moulded',               img:'cnc2'},
+    {w:'SURFACE',  s:'raw alloy against matte black',           img:'cnc'},
+    {w:'JOINT',    s:'fasteners shown, never hidden',           img:'frameB'},
+    {w:'MATERIAL', s:'aluminium, steel tube, one cyan mark',    img:'battery'},
+    {w:'PROPORTION',s:'long, low, nothing overhanging',         img:'bike'}
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.x6{background:#15181d;color:var(--pale);padding:var(--entry) var(--pad) 110px;}'+
+  '.x6 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x6 .split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(28px,5vw,90px);margin-top:58px;align-items:start;}'+
+  '.x6 .words{display:flex;flex-direction:column;}'+
+  '.x6 .words button{background:none;border:0;border-top:1px solid rgba(244,241,236,.13);padding:16px 0;text-align:left;cursor:pointer;'+
+    'font-family:var(--bb);font-size:clamp(1.1rem,2vw,1.7rem);letter-spacing:.2em;text-transform:uppercase;'+
+    'color:rgba(244,241,236,.4);transition:color .3s,padding-left .3s;line-height:.92;}'+
+  '.x6 .words button:hover{color:rgba(244,241,236,.75);}'+
+  '.x6 .words button.on{color:var(--cy-b);padding-left:14px;}'+
+  '.x6 .view{position:relative;aspect-ratio:4/3;overflow:hidden;background:#0d0f12;}'+
+  '.x6 .view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;'+
+    'filter:grayscale(.4) contrast(1.1) brightness(.82);transition:opacity .6s,transform 3s;transform:scale(1.02);}'+
+  '.x6 .view img.on{opacity:1;transform:scale(1.07);}'+
+  '.x6 .note{margin-top:16px;min-height:44px;}'+
+  '@media(max-width:900px){.x6 .split{grid-template-columns:1fr;}}'+
+  '</style>'+
+  '<section class="x6"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">Seven words describe<br>everything SWITCH makes.</h2>'+
+    '<div class="split">'+
+      '<div class="words">'+G.map(function(g,i){return '<button data-i="'+i+'">'+g.w+'</button>';}).join('')+'</div>'+
+      '<div><div class="view">'+G.map(function(g,i){return '<img data-i="'+i+'" src="'+IMG[g.img]+'" alt="">';}).join('')+'</div>'+
+        '<p class="bd bd--pale note" id="x6n"></p></div>'+
+    '</div>'+
+  '</div></section>';
+  var bs=[].slice.call(root.querySelectorAll('.x6 .words button')),
+      is=[].slice.call(root.querySelectorAll('.x6 .view img')), n=root.querySelector('#x6n');
+  function pick(i){ bs.forEach(function(b,k){b.classList.toggle('on',k===i);});
+    is.forEach(function(m,k){m.classList.toggle('on',k===i);}); n.textContent=G[i].s; }
+  bs.forEach(function(b,i){ ctx.on(b,'click',function(){ auto=false; pick(i); });
+                            ctx.on(b,'mouseenter',function(){ auto=false; pick(i); }); });
+  var i=0, auto=true; pick(0);
+  ctx.timer(function(){ if(!auto||!MOTION)return; i=(i+1)%G.length; pick(i); },1900);
+});
+
+/* =========================================================================
+   07 — EIGHT LENSES
+   The same photograph, eight times, each filtered to one principle.
+   ========================================================================= */
+C(7,'EIGHT LENSES','one photograph read eight different ways',function(root,ctx){
+  var F=['grayscale(1) contrast(1.5) brightness(.8)',
+         'grayscale(1) contrast(2.2) brightness(.6)',
+         'saturate(1.5) contrast(1.1)',
+         'grayscale(1) contrast(1.8) invert(1) brightness(.9)',
+         'grayscale(.7) contrast(1.05) brightness(1.05)',
+         'grayscale(1) contrast(1.3) sepia(.35)',
+         'grayscale(1) contrast(1.15) brightness(.95)',
+         'grayscale(1) contrast(1.6) brightness(1.1)'];
+  root.innerHTML=
+  '<style>'+
+  '.x7{background:var(--cream);padding:var(--entry) var(--pad) 110px;}'+
+  '.x7 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x7 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:58px;}'+
+  '.x7 .lens{position:relative;overflow:hidden;background:#111;aspect-ratio:1/1;cursor:crosshair;}'+
+  '.x7 .lens img{position:absolute;width:200%;height:200%;object-fit:cover;left:-50%;top:-50%;transition:transform .8s;}'+
+  '.x7 .lens:nth-child(2n) img{left:-30%;} .x7 .lens:nth-child(3n) img{top:-20%;}'+
+  '.x7 .lens b{position:absolute;left:12px;bottom:12px;z-index:2;font-family:var(--dm);font-size:.5rem;font-weight:400;'+
+    'letter-spacing:.22em;text-transform:uppercase;color:#f4f1ec;}'+
+  '.x7 .lens i{position:absolute;left:12px;right:12px;bottom:30px;z-index:2;font-style:normal;font-size:.58rem;line-height:1.45;'+
+    'color:rgba(244,241,236,.75);opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s;}'+
+  '.x7 .lens:hover i{opacity:1;transform:none;}'+
+  '.x7 .lens::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.8),transparent 55%);z-index:1;}'+
+  '.x7 .lens:hover img{transform:scale(1.06);}'+
+  '.x7 .foot{display:flex;justify-content:space-between;gap:20px;margin-top:24px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.x7 .grid{grid-template-columns:repeat(2,1fr);}}'+
+  '</style>'+
+  '<section class="x7"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Eight ways to read<br>the same object.</h2>'+
+    '<div class="grid">'+P8.map(function(k,i){
+      return '<div class="lens"><img src="'+IMG.bike+'" style="filter:'+F[i]+'" alt="">'+
+        '<i>'+P8_NOTE[k]+'</i><b>'+((i<9?'0':'')+(i+1))+' · '+k+'</b></div>';}).join('')+'</div>'+
+    '<div class="foot"><span class="mono">Silent Foundry · eight analytical passes over one product</span>'+
+      '<span class="mono mono--cy">none of these readings mentions "motorcycle"</span></div>'+
+  '</div></section>';
+});
+</script>
+<script>
+/* =========================================================================
+   08 — SCROLL DISASSEMBLY
+   Pinned. Scrolling removes what is only true of motorcycles, line by line,
+   until the remaining list is category-free.
+   ========================================================================= */
+C(8,'SCROLL DISASSEMBLY','scroll strips away everything that is only "motorcycle"',function(root,ctx){
+  var STRIP=[
+    ['WHEELS · 19" FRONT / 17" REAR','motorcycle'],
+    ['SWINGARM & SUSPENSION TRAVEL','motorcycle'],
+    ['HANDLEBAR & CONTROLS','motorcycle'],
+    ['DRIVE CHAIN & SPROCKET','motorcycle'],
+    ['SEAT HEIGHT 830mm','motorcycle'],
+    ['FLAT TOP LINE, DROPPED MASS','SWITCH'],
+    ['EXPOSED TRELLIS STRUCTURE','SWITCH'],
+    ['MACHINED ALLOY / MATTE BLACK / ONE CYAN','SWITCH'],
+    ['REMOVABLE ENERGY SLAB','SWITCH'],
+    ['FASTENERS LEFT VISIBLE','SWITCH'],
+    ['SERVICED WITH ORDINARY TOOLS','SWITCH']
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.x8{background:#0d0f12;color:var(--pale);}'+
+  '.x8 .tall{height:420vh;position:relative;}'+
+  '.x8 .pin{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:1.1fr .9fr;'+
+    'gap:clamp(20px,4vw,70px);align-items:center;padding:0 var(--pad);}'+
+  '.x8 .art{position:relative;aspect-ratio:3/2;overflow:hidden;}'+
+  '.x8 .art img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) contrast(1.12) brightness(.78);}'+
+  '.x8 .art .veil{position:absolute;inset:0;background:#0d0f12;opacity:0;}'+
+  '.x8 ul{list-style:none;margin:0;padding:0;}'+
+  '.x8 li{display:flex;gap:14px;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(244,241,236,.09);'+
+    'transition:opacity .4s,transform .4s,color .4s;}'+
+  '.x8 li span.t{font-family:var(--dm);font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;'+
+    'color:rgba(244,241,236,.72);}'+
+  '.x8 li span.g{font-family:var(--dm);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;'+
+    'color:rgba(244,241,236,.3);margin-left:auto;white-space:nowrap;}'+
+  '.x8 li.gone{opacity:.14;transform:translateX(-14px);text-decoration:line-through;}'+
+  '.x8 li.keep span.t{color:var(--cy-b);} .x8 li.keep span.g{color:var(--cy-b);}'+
+  '.x8 .cnt{margin-top:26px;}'+
+  '@media(max-width:900px){.x8 .pin{grid-template-columns:1fr;align-content:center;gap:22px;}'+
+    '.x8 .art{aspect-ratio:16/9;}.x8 li{padding:6px 0;}}'+
+  '</style>'+
+  '<section class="x8"><div class="tall"><div class="pin">'+
+    '<div><div class="art"><img src="'+IMG.bike+'" alt=""><div class="veil" id="x8v"></div></div>'+
+      '<p class="mono cnt" id="x8c" style="color:rgba(244,241,236,.45)">11 CHARACTERISTICS</p></div>'+
+    '<div><span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+      '<h2 class="hl hl--pale" style="margin:var(--eyegap) 0 26px">Remove the motorcycle.</h2>'+
+      '<ul id="x8l">'+STRIP.map(function(s,i){
+        return '<li data-i="'+i+'"><span class="t">'+s[0]+'</span><span class="g">'+s[1]+'</span></li>';}).join('')+'</ul>'+
+    '</div>'+
+  '</div></div></section>';
+  var tall=root.querySelector('.tall'), lis=[].slice.call(root.querySelectorAll('#x8l li')),
+      veil=root.querySelector('#x8v'), cnt=root.querySelector('#x8c');
+  function draw(){
+    var t=ctx.pinProg(tall), n=Math.floor(t*7.2), left=0;
+    lis.forEach(function(li,i){
+      var isMoto = STRIP[i][1]==='motorcycle';
+      var off = isMoto && i<n;
+      li.classList.toggle('gone', off);
+      li.classList.toggle('keep', !isMoto && t>0.55);
+      if(!off) left++;
+    });
+    veil.style.opacity=String(Math.min(.72, Math.max(0,(t-0.15)*1.1)));
+    cnt.textContent = left+' CHARACTERISTIC'+(left===1?'':'S')+(t>0.62?' — NONE OF THEM SAY MOTORCYCLE':'');
+    cnt.style.color = t>0.62 ? '#00b4d8' : 'rgba(244,241,236,.45)';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+
+/* =========================================================================
+   09 — TRANSLATION MATRIX
+   SOURCE / PRINCIPLE / OUTPUT read as one continuous table.
+   ========================================================================= */
+C(9,'TRANSLATION MATRIX','source → principle → output, as a working table',function(root,ctx){
+  var M=[
+    ['Flat top line','FORM','speaker','A slab you set down, not a shape you style.'],
+    ['Exposed trellis','STRUCTURE','guitar','Structure carries load and does the styling.'],
+    ['Alloy / black / cyan','CMF','light','The palette travels before the shape does.'],
+    ['Removable pack','MODULARITY','battery','Energy leaves the frame intact.'],
+    ['Wide, low, planted','STANCE','snowboard','Stance is a feeling, not a wheelbase.']
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.x9{background:var(--paper);padding:var(--entry) var(--pad) 110px;}'+
+  '.x9 .in{max-width:var(--frame);margin:0 auto;}'+
+  '.x9 table{width:100%;border-collapse:collapse;margin-top:56px;}'+
+  '.x9 th{font-family:var(--dm);font-size:.5rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;'+
+    'color:var(--ink-38);text-align:left;padding:0 0 12px;border-bottom:1px solid var(--hair);}'+
+  '.x9 th.c{color:var(--cy);}'+
+  '.x9 td{padding:18px 18px 18px 0;border-bottom:1px solid var(--hair-soft);vertical-align:middle;}'+
+  '.x9 td.src{font-family:var(--dm);font-size:.8rem;color:var(--ink-78);width:26%;}'+
+  '.x9 td.pr{width:20%;}'+
+  '.x9 td.pr b{font-family:var(--bb);font-size:1.05rem;letter-spacing:.18em;color:var(--cy);font-weight:400;}'+
+  '.x9 td.ar{width:6%;text-align:center;color:var(--ink-26);font-size:.9rem;}'+
+  '.x9 td.out{width:22%;}'+
+  '.x9 td.out img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:grayscale(.45) contrast(1.06);}'+
+  '.x9 td.nt{font-size:.68rem;line-height:1.55;color:var(--ink-38);}'+
+  '.x9 tr{transition:background .3s;}'+
+  '.x9 tbody tr:hover{background:rgba(255,255,255,.5);}'+
+  '.x9 tbody tr:hover td.pr b{color:var(--cy-b);}'+
+  '@media(max-width:900px){.x9 td.nt,.x9 th.nt{display:none;}.x9 td.src{width:34%;font-size:.7rem;}}'+
+  '</style>'+
+  '<section class="x9"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Every output is the same<br>rule, applied again.</h2>'+
+    '<table><thead><tr><th>Observed in the eSCRAMBLER</th><th class="c">Extracted principle</th><th></th>'+
+      '<th>Applied to</th><th class="nt">What carries over</th></tr></thead><tbody>'+
+      M.map(function(m){
+        return '<tr><td class="src">'+m[0]+'</td><td class="pr"><b>'+m[1]+'</b></td><td class="ar">→</td>'+
+          '<td class="out"><img src="'+IMG[m[2]]+'" alt=""></td><td class="nt">'+m[3]+'</td></tr>';}).join('')+
+    '</tbody></table>'+
+    '<p class="bd" style="margin-top:44px">The middle column is the asset. Silent Foundry owns it now, and the right-hand column is only the first five things it can make.</p>'+
+  '</div></section>';
+});
+
+/* =========================================================================
+   10 — TYPOGRAPHIC TRANSFORMATION
+   The headline performs the transformation. ONE PRODUCT holds the bike;
+   ENTIRE SYSTEM breaks into the categories.
+   ========================================================================= */
+C(10,'TYPOGRAPHIC TRANSFORMATION','the headline itself performs the change',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xa{background:var(--cream);}'+
+  '.xa .tall{height:360vh;position:relative;}'+
+  '.xa .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);}'+
+  '.xa .in{max-width:var(--frame);margin:0 auto;width:100%;}'+
+  '.xa .l1,.xa .l2{font-family:var(--bb);text-transform:uppercase;line-height:.92;letter-spacing:.1em;'+
+    'font-size:clamp(2.2rem,8vw,7rem);margin:0;color:var(--ink-78);}'+
+  '.xa .l2{color:var(--cy);}'+
+  '.xa .holder{position:relative;display:inline-block;}'+
+  '.xa .bike{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:70%;'+
+    'background-size:contain;background-repeat:no-repeat;background-position:center;'+
+    'mix-blend-mode:multiply;opacity:0;transition:opacity .5s;}'+
+  '.xa .sys{display:flex;gap:2px;margin-top:26px;overflow:hidden;}'+
+  '.xa .sys figure{margin:0;flex:1;transform:translateY(110%);transition:transform .8s cubic-bezier(.2,.7,.2,1);}'+
+  '.xa .sys img{width:100%;aspect-ratio:1/1;object-fit:cover;filter:grayscale(.4) contrast(1.05);}'+
+  '.xa .sys figcaption{padding-top:8px;}'+
+  '.xa .mid{margin:22px 0;min-height:2.4em;}'+
+  '@media(max-width:900px){.xa .sys{flex-wrap:wrap;}.xa .sys figure{flex:0 0 calc(33.33% - 2px);}}'+
+  '</style>'+
+  '<section class="xa"><div class="tall"><div class="pin"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<p class="l1" style="margin-top:var(--eyegap)">From <span class="holder">one product'+
+      '<span class="bike" id="xab" style="background-image:url('+IMG.bike+')"></span></span></p>'+
+    '<p class="l2">to an entire system.</p>'+
+    '<p class="bd mid" id="xam"></p>'+
+    '<div class="sys" id="xas">'+CATS.map(function(c){
+      return '<figure><img src="'+IMG[c.img]+'" alt=""><figcaption><span class="mono mono--cy">'+c.k+'</span></figcaption></figure>';}).join('')+
+    '</div>'+
+  '</div></div></div></section>';
+  var tall=root.querySelector('.tall'), bike=root.querySelector('#xab'),
+      figs=[].slice.call(root.querySelectorAll('#xas figure')), mid=root.querySelector('#xam');
+  function draw(){
+    var t=ctx.pinProg(tall);
+    bike.style.opacity = String(Math.max(0, Math.min(.75, (t-0.05)*4 - Math.max(0,(t-0.4)*5))));
+    figs.forEach(function(f,i){
+      var local=Math.max(0,Math.min(1,(t-0.45-i*0.06)/0.2));
+      f.style.transform='translateY('+(110-110*local)+'%)';
+    });
+    mid.textContent = t<0.36 ? 'One product. One category. One ceiling.'
+      : t<0.5 ? 'Silent Foundry extracted the language underneath it.'
+      : 'The same language, issued five more times.';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+
+/* =========================================================================
+   11 — CROSS SECTION
+   A cut through the product: surface, structure, energy, manufacture.
+   ========================================================================= */
+C(11,'CROSS SECTION','a cut through the product, layer by layer',function(root,ctx){
+  var L=[
+    {n:'SURFACE',      i:'bike',   d:'What the owner touches. Alloy, matte black, one cyan mark.'},
+    {n:'STRUCTURE',    i:'frameA', d:'Trellis tube. Visible on purpose — it is the styling.'},
+    {n:'ENERGY',       i:'battery',d:'A slab. It detaches, so it can belong to something else.'},
+    {n:'ELECTRONICS',  i:'pcb',    d:'Serviceable boards, ordinary fasteners, labelled connectors.'},
+    {n:'MANUFACTURE',  i:'cnc',    d:'Tube, plate, fold, weld. Tooling a small venture can afford.'}
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.xb{background:#101317;color:var(--pale);padding:var(--entry) var(--pad) 0;}'+
+  '.xb .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xb .stackwrap{margin-top:56px;position:relative;}'+
+  '.xb .lay{position:relative;height:150px;overflow:hidden;border-top:1px solid rgba(244,241,236,.14);cursor:pointer;'+
+    'transition:height .6s cubic-bezier(.2,.7,.2,1);}'+
+  '.xb .lay.on{height:340px;}'+
+  '.xb .lay img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;'+
+    'filter:grayscale(.65) contrast(1.15) brightness(.6);transition:filter .6s,transform .8s;transform:scale(1.02);}'+
+  '.xb .lay.on img{filter:grayscale(.2) contrast(1.1) brightness(.86);transform:scale(1.06);}'+
+  '.xb .lay .meta{position:absolute;left:0;right:0;bottom:0;padding:18px 22px;z-index:2;'+
+    'background:linear-gradient(to top,rgba(13,15,18,.92),transparent);display:flex;gap:20px;align-items:baseline;flex-wrap:wrap;}'+
+  '.xb .lay b{font-family:var(--bb);font-size:1.2rem;letter-spacing:.2em;font-weight:400;color:var(--pale);}'+
+  '.xb .lay.on b{color:var(--cy-b);}'+
+  '.xb .lay i{font-style:normal;font-size:.66rem;line-height:1.5;color:rgba(244,241,236,.55);max-width:52ch;'+
+    'opacity:0;transition:opacity .5s;}'+
+  '.xb .lay.on i{opacity:1;}'+
+  '.xb .lay .no{font-family:var(--dm);font-size:.46rem;letter-spacing:.24em;color:rgba(244,241,236,.35);}'+
+  '.xb .cutline{position:absolute;left:0;right:0;height:1px;background:var(--cy-b);z-index:3;pointer-events:none;'+
+    'box-shadow:0 0 12px rgba(0,180,216,.6);}'+
+  '.xb .foot{padding:34px 0 var(--entry);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}'+
+  '</style>'+
+  '<section class="xb"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">Cut it open. None of the<br>layers require two wheels.</h2>'+
+    '<div class="stackwrap" id="xbw">'+L.map(function(l,i){
+      return '<div class="lay'+(i===0?' on':'')+'" data-i="'+i+'"><img src="'+IMG[l.i]+'" alt="">'+
+        '<div class="meta"><span class="no">0'+(i+1)+'</span><b>'+l.n+'</b><i>'+l.d+'</i></div></div>';}).join('')+
+      '<div class="cutline" id="xbc" style="top:0"></div></div>'+
+    '<div class="foot"><span class="mono">Silent Foundry · section through the eSCRAMBLER</span>'+
+      '<span class="mono mono--cy">click a layer</span></div>'+
+  '</div></section>';
+  var lays=[].slice.call(root.querySelectorAll('.xb .lay')), cut=root.querySelector('#xbc'), cur=0;
+  function pick(i){ cur=i; lays.forEach(function(l,k){l.classList.toggle('on',k===i);});
+    ctx.delay(place,620); place(); }
+  function place(){ var l=lays[cur]; cut.style.top=(l.offsetTop+l.offsetHeight)+'px'; }
+  lays.forEach(function(l,i){ ctx.on(l,'click',function(){ auto=false; pick(i); }); });
+  var auto=true; pick(0);
+  ctx.timer(function(){ if(!auto||!MOTION)return; pick((cur+1)%lays.length); },2400);
+});
+
+/* =========================================================================
+   12 — DESIGN AUTOPSY
+   Premium editorial. Very few decisions, annotated with real care.
+   ========================================================================= */
+C(12,'DESIGN AUTOPSY','four annotated decisions, editorial register',function(root,ctx){
+  var A=[
+    {n:'01',t:'The top line never breaks',p:'Tank to tail is one uninterrupted run. Every SWITCH object since has been built to keep a line like this — which is why a speaker and a lamp can sit in the same family photograph.',x:'34%',y:'30%'},
+    {n:'02',t:'The frame is not hidden',p:'Most manufacturers cover structure. SWITCH triangulates it and leaves it in the light. Structure-as-styling is portable to almost any category.',x:'52%',y:'56%'},
+    {n:'03',t:'The energy is a slab',p:'A removable rectangular pack, mounted low. Once energy is a module rather than a fixed system, the product it sits inside becomes negotiable.',x:'42%',y:'70%'},
+    {n:'04',t:'One cyan mark, never two',p:'Colour is used as a signature, not a scheme. It survives translation into materials the motorcycle never used.',x:'70%',y:'42%'}
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.xc{background:var(--paper);padding:var(--entry) var(--pad) 110px;}'+
+  '.xc .in{max-width:1180px;margin:0 auto;}'+
+  '.xc .lede{max-width:min(100%,620px);margin-top:26px;}'+
+  '.xc .plate{position:relative;margin-top:64px;aspect-ratio:3/2;background:#ddd7cd;overflow:hidden;}'+
+  '.xc .plate img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(1.02);}'+
+  '.xc .pt{position:absolute;width:13px;height:13px;border-radius:50%;border:1px solid var(--ink);'+
+    'background:rgba(255,255,255,.7);transform:translate(-50%,-50%);cursor:pointer;transition:background .3s,border-color .3s,transform .3s;}'+
+  '.xc .pt.on{background:var(--cy-b);border-color:var(--cy-b);transform:translate(-50%,-50%) scale(1.35);}'+
+  '.xc .pt::after{content:attr(data-n);position:absolute;left:18px;top:-4px;font-family:var(--dm);font-size:.46rem;'+
+    'letter-spacing:.2em;color:var(--ink-38);}'+
+  '.xc .notes{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);margin-top:1px;}'+
+  '.xc .nt{background:var(--paper);padding:22px 20px 26px;cursor:pointer;transition:background .3s;}'+
+  '.xc .nt.on{background:#fff;}'+
+  '.xc .nt .no{font-family:var(--dm);font-size:.46rem;letter-spacing:.26em;color:var(--ink-26);}'+
+  '.xc .nt h4{font-family:var(--dm);font-size:.78rem;font-weight:500;letter-spacing:.02em;color:var(--ink-78);margin:10px 0 8px;line-height:1.35;}'+
+  '.xc .nt.on h4{color:var(--cy);}'+
+  '.xc .nt p{font-size:.66rem;line-height:1.65;color:var(--ink-38);margin:0;}'+
+  '@media(max-width:900px){.xc .notes{grid-template-columns:1fr 1fr;}}'+
+  '</style>'+
+  '<section class="xc"><div class="in">'+
+    '<span class="ey ey--gold">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Four decisions,<br>examined properly.</h2>'+
+    '<p class="bd lede">Silent Foundry went through the eSCRAMBLER looking for the smallest number of decisions that would still read as SWITCH if everything else changed. It came to four.</p>'+
+    '<div class="plate"><img src="'+IMG.bike+'" alt="">'+
+      A.map(function(a,i){return '<span class="pt" data-i="'+i+'" data-n="'+a.n+'" style="left:'+a.x+';top:'+a.y+'"></span>';}).join('')+
+    '</div>'+
+    '<div class="notes">'+A.map(function(a,i){
+      return '<div class="nt" data-i="'+i+'"><span class="no">'+a.n+'</span><h4>'+a.t+'</h4><p>'+a.p+'</p></div>';}).join('')+'</div>'+
+  '</div></section>';
+  var pts=[].slice.call(root.querySelectorAll('.xc .pt')), nts=[].slice.call(root.querySelectorAll('.xc .nt'));
+  function pick(i){ pts.forEach(function(p,k){p.classList.toggle('on',k===i);});
+                    nts.forEach(function(n,k){n.classList.toggle('on',k===i);}); }
+  pts.forEach(function(p,i){ ctx.on(p,'mouseenter',function(){auto=false;pick(i);}); });
+  nts.forEach(function(n,i){ ctx.on(n,'mouseenter',function(){auto=false;pick(i);}); });
+  var c=0,auto=true; pick(0);
+  ctx.timer(function(){ if(!auto||!MOTION)return; c=(c+1)%A.length; pick(c); },2600);
+});
+
+/* =========================================================================
+   13 — PRODUCT INSTANCE / SYSTEM ASSET
+   The bike is demoted to one card in a set the moment the system is named.
+   ========================================================================= */
+C(13,'PRODUCT INSTANCE / SYSTEM ASSET','the bike becomes one card among six',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xd{background:var(--cream);padding:var(--entry) var(--pad) 110px;overflow:hidden;}'+
+  '.xd .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xd .claim{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);margin-top:56px;align-items:end;}'+
+  '.xd .claim p{font-family:var(--bb);text-transform:uppercase;line-height:.92;letter-spacing:.14em;margin:0;'+
+    'font-size:clamp(1.4rem,3.2vw,2.8rem);}'+
+  '.xd .claim .a{color:var(--ink-26);} .xd .claim .b{color:var(--cy);}'+
+  '.xd .set{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-top:52px;}'+
+  '.xd .card{position:relative;background:#e2dcd2;transition:flex .6s;}'+
+  '.xd .card img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:grayscale(.45) contrast(1.05);transition:filter .6s;}'+
+  '.xd .card .cap{padding:10px 10px 16px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;}'+
+  '.xd .card.src{outline:1px solid var(--cy-b);outline-offset:-1px;}'+
+  '.xd .card.src .badge{position:absolute;left:0;top:0;background:var(--cy-b);color:#04202a;'+
+    'font-family:var(--dm);font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;padding:4px 8px;}'+
+  '.xd .card.dim img{filter:grayscale(1) contrast(1.02) opacity(.55);}'+
+  '.xd .rowlab{display:flex;justify-content:space-between;margin-top:20px;gap:16px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.xd .claim{grid-template-columns:1fr;}.xd .set{grid-template-columns:repeat(3,1fr);}}'+
+  '</style>'+
+  '<section class="xd"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<div class="claim"><p class="a">The product<br>is an instance.</p><p class="b">The system<br>is the asset.</p></div>'+
+    '<div class="set" id="xds">'+
+      '<div class="card src"><span class="badge">source</span><img src="'+IMG.bike+'" alt="">'+
+        '<div class="cap"><span class="mono mono--cy">eSCRAMBLER</span><span class="mono">2019</span></div></div>'+
+      CATS.map(function(c,i){
+        return '<div class="card"><img src="'+IMG[c.img]+'" alt=""><div class="cap"><span class="mono">'+c.k+'</span>'+
+          '<span class="mono">'+(i<2?'in build':'study')+'</span></div></div>';}).join('')+
+    '</div>'+
+    '<div class="rowlab"><span class="mono">one design language · six manifestations</span>'+
+      '<span class="mono mono--cy">the motorcycle no longer has special status</span></div>'+
+    '<p class="bd" style="margin-top:36px">Once the language is written down, the object that produced it is simply the first thing that used it.</p>'+
+  '</div></section>';
+  var cards=[].slice.call(root.querySelectorAll('.xd .card'));
+  ctx.on(root.querySelector('#xds'),'mouseover',function(e){
+    var c=e.target.closest('.card'); if(!c)return;
+    cards.forEach(function(k){ k.classList.toggle('dim', k!==c); });
+  });
+  ctx.on(root.querySelector('#xds'),'mouseleave',function(){ cards.forEach(function(k){k.classList.remove('dim');}); });
+});
+
+/* =========================================================================
+   14 — CONTACT SHEET
+   A studio analysis sheet: the frames drift from motorcycle to category.
+   ========================================================================= */
+C(14,'CONTACT SHEET','a studio analysis sheet, drifting away from the bike',function(root,ctx){
+  var SH=[
+    ['bike','SOURCE 01'],['dirt','SOURCE 02'],['frameA','STRUCT 01'],['frameB','STRUCT 02'],
+    ['cnc','MFG 01'],['cnc2','MFG 02'],['proto','DETAIL 01'],['pcb','SYS 01'],
+    ['battery','MODULE 01'],['cadScreen','RULE 01'],['speaker','APPLY 01'],['light','APPLY 02'],
+    ['snowboard','APPLY 03'],['guitar','APPLY 04'],['amp','APPLY 05'],['batteryP','APPLY 06']
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.xe{background:#14171b;color:var(--pale);padding:var(--entry) var(--pad) 110px;}'+
+  '.xe .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xe .sheet{margin-top:54px;display:grid;grid-template-columns:repeat(8,1fr);gap:3px;background:rgba(244,241,236,.08);padding:3px;}'+
+  '.xe .fr{position:relative;background:#0d0f12;overflow:hidden;}'+
+  '.xe .fr img{width:100%;aspect-ratio:3/2;object-fit:cover;filter:grayscale(1) contrast(1.2) brightness(.7);transition:filter .5s,transform .6s;}'+
+  '.xe .fr:hover img{filter:grayscale(0) contrast(1.05) brightness(.95);transform:scale(1.05);}'+
+  '.xe .fr span{position:absolute;left:5px;bottom:4px;font-family:var(--dm);font-size:.38rem;letter-spacing:.16em;'+
+    'color:rgba(244,241,236,.55);z-index:2;}'+
+  '.xe .fr.mark{outline:1px solid var(--cy-b);outline-offset:-1px;}'+
+  '.xe .fr.mark img{filter:grayscale(0) contrast(1.05) brightness(.95);}'+
+  '.xe .fr.mark span{color:var(--cy-b);}'+
+  '.xe .legend{display:flex;justify-content:space-between;gap:20px;margin-top:22px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.xe .sheet{grid-template-columns:repeat(4,1fr);}}'+
+  '</style>'+
+  '<section class="xe"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">Sixteen frames.<br>The last six are not motorcycles.</h2>'+
+    '<div class="sheet" id="xes">'+SH.map(function(s,i){
+      return '<div class="fr" data-i="'+i+'"><img src="'+IMG[s[0]]+'" alt=""><span>'+s[1]+'</span></div>';}).join('')+'</div>'+
+    '<div class="legend"><span class="mono" style="color:rgba(244,241,236,.45)">Silent Foundry · analysis sheet · eSCRAMBLER → SWITCH system</span>'+
+      '<span class="mono mono--cy">the sheet never announces the change</span></div>'+
+  '</div></section>';
+  var frs=[].slice.call(root.querySelectorAll('.xe .fr')), i=0;
+  ctx.timer(function(){ if(!MOTION)return;
+    frs.forEach(function(f,k){ f.classList.toggle('mark', k===i); }); i=(i+1)%frs.length; },420);
+});
+
+/* =========================================================================
+   15 — DESIGN WALL
+   A studio wall: origin pinned left, analysis spreading right into categories.
+   ========================================================================= */
+C(15,'DESIGN WALL','origin pinned left, the wall fills to the right',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xf{background:#dfd9cf;background-image:linear-gradient(rgba(223,217,207,.93),rgba(223,217,207,.93)),url('+IMG.cadTex+');'+
+    'background-size:auto,120% auto;padding:var(--entry) 0 110px;overflow:hidden;}'+
+  '.xf .hd{max-width:var(--frame);margin:0 auto;padding:0 var(--pad);}'+
+  '.xf .wall{position:relative;height:min(70vh,640px);margin-top:56px;}'+
+  '.xf .pinned{position:absolute;background:#fff;padding:8px 8px 26px;box-shadow:0 6px 18px rgba(10,10,10,.12);'+
+    'transition:transform .8s cubic-bezier(.2,.7,.2,1),opacity .8s;opacity:0;}'+
+  '.xf .pinned img{width:100%;display:block;filter:grayscale(.4) contrast(1.05);}'+
+  '.xf .pinned span{position:absolute;left:8px;bottom:8px;font-family:var(--dm);font-size:.42rem;'+
+    'letter-spacing:.18em;text-transform:uppercase;color:var(--ink-38);}'+
+  '.xf .pinned::before{content:"";position:absolute;left:50%;top:-5px;width:7px;height:7px;border-radius:50%;'+
+    'background:var(--ink-26);transform:translateX(-50%);}'+
+  '.xf .pinned.cy span{color:var(--cy);} .xf .pinned.cy::before{background:var(--cy-b);}'+
+  '.xf .thread{position:absolute;height:1px;background:rgba(10,10,10,.18);transform-origin:0 0;opacity:0;transition:opacity .8s;}'+
+  '.xf .foot{max-width:var(--frame);margin:26px auto 0;padding:0 var(--pad);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.xf .wall{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 var(--pad);}'+
+    '.xf .pinned{position:static;opacity:1!important;transform:none!important;}.xf .thread{display:none;}}'+
+  '</style>'+
+  '<section class="xf">'+
+    '<div class="hd"><span class="ey ey--gold">Designed DNA: SWITCH</span>'+
+      '<h2 class="hl" style="margin-top:var(--eyegap)">The wall fills up<br>and the bike moves left.</h2></div>'+
+    '<div class="wall" id="xfw">'+
+      [['bike','SOURCE',2,14,26,0],['frameA','STRUCTURE',22,8,15,1],['cnc','MANUFACTURE',22,52,15,2],
+       ['proto','DETAIL',40,28,13,3],['cadScreen','RULE SET',54,6,16,4],['battery','MODULE',54,62,13,5],
+       ['speaker','SOUND',72,18,13,6],['light','WORKSPACE',72,58,13,7],['snowboard','MOBILITY',87,34,12,8]]
+      .map(function(p,i){
+        return '<div class="pinned'+(i>5?' cy':'')+'" data-d="'+p[5]+'" style="left:'+p[2]+'%;top:'+p[3]+'%;width:'+p[4]+'%">'+
+          '<img src="'+IMG[p[0]]+'" alt=""><span>'+p[1]+'</span></div>';}).join('')+
+    '</div>'+
+    '<div class="foot"><span class="mono">Silent Foundry · working wall</span>'+
+      '<span class="mono mono--cy">left to right: one product becomes a catalogue</span></div>'+
+  '</section>';
+  var ps=[].slice.call(root.querySelectorAll('.xf .pinned'));
+  ps.forEach(function(p){ p.style.transform='translateY(24px) rotate('+((Math.round(p.offsetLeft)%5)-2)+'deg)'; });
+  ps.forEach(function(p,i){ ctx.delay(function(){
+    p.style.opacity='1'; p.style.transform='translateY(0) rotate('+((Math.round(p.offsetLeft)%5)-2)+'deg)';
+  }, 180+i*140); });
+});
+</script>
+<script>
+/* =========================================================================
+   16 — SILHOUETTE FAMILY
+   Strip to outline. The proportions rhyme even when the function does not.
+   ========================================================================= */
+C(16,'SILHOUETTE FAMILY','outlines only — the proportions rhyme',function(root,ctx){
+  var S=[['bikePath','eSCRAMBLER','SOURCE'],['speakerPath','MONITOR','SOUND'],
+         ['batteryPath','PACK','POWER'],['lightPath','TASK LIGHT','WORKSPACE'],
+         ['boardPath','DECK','MOBILITY'],['guitarPath','SOLIDBODY','INSTRUMENT']];
+  root.innerHTML=
+  '<style>'+
+  '.xg{background:var(--cream);padding:var(--entry) var(--pad) 110px;}'+
+  '.xg .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xg .row{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:60px;'+
+    'border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);}'+
+  '.xg .cell{padding:30px 12px 22px;border-right:1px solid var(--hair);text-align:center;position:relative;}'+
+  '.xg .cell:last-child{border-right:0;}'+
+  '.xg .cell svg{width:100%;height:104px;overflow:visible;}'+
+  '.xg .cell svg path{stroke:rgba(10,10,10,.5);stroke-width:1.2;}'+
+  '.xg .cell.src svg path{stroke:var(--cy-b);stroke-width:1.5;}'+
+  '.xg .guide{position:absolute;left:0;right:0;height:1px;background:rgba(0,180,216,.42);pointer-events:none;}'+
+  '.xg .cell b{display:block;font-family:var(--dm);font-size:.56rem;font-weight:500;letter-spacing:.16em;'+
+    'text-transform:uppercase;color:var(--ink-78);margin-top:18px;}'+
+  '.xg .cell i{font-style:normal;display:block;font-size:.44rem;letter-spacing:.22em;text-transform:uppercase;'+
+    'color:var(--ink-26);margin-top:5px;}'+
+  '.xg .cell.src i{color:var(--cy);}'+
+  '@media(max-width:900px){.xg .row{grid-template-columns:repeat(3,1fr);}.xg .cell:nth-child(3n){border-right:0;}}'+
+  '</style>'+
+  '<section class="xg"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Take the photographs away.<br>The family is still obvious.</h2>'+
+    '<div class="row" style="position:relative">'+
+      '<div class="guide" style="top:44%"></div><div class="guide" style="top:72%"></div>'+
+      S.map(function(s,i){
+        return '<div class="cell'+(i===0?' src':'')+'">'+svgOf(GEO[s[0]],{cls:'sil'})+'<b>'+s[1]+'</b><i>'+s[2]+'</i></div>';
+      }).join('')+
+    '</div>'+
+    '<p class="bd" style="margin-top:44px">Two horizontals hold across all six: the shoulder the mass hangs from, and the ground the object plants on. Those two lines are SWITCH. The wheels were never the point.</p>'+
+  '</div></section>';
+  var all=[].slice.call(root.querySelectorAll('.xg .cell svg path'));
+  all.forEach(function(p){var L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;
+    p.style.transition='stroke-dashoffset .9s ease';});
+  all.forEach(function(p,i){ ctx.delay(function(){ p.style.strokeDashoffset='0'; }, 120+i*40); });
+});
+
+/* =========================================================================
+   17 — MATERIAL TRANSFER
+   Physical identity migrating: the swatch strip stays, the object changes.
+   ========================================================================= */
+C(17,'MATERIAL TRANSFER','the swatches stay put while the object changes',function(root,ctx){
+  var SW=[['#b9b6b0','MACHINED ALLOY'],['#26282b','MATTE BLACK'],['#00b4d8','SWITCH CYAN'],
+          ['#8d8f92','RAW STEEL TUBE'],['#141516','TEXTURED POLYMER']];
+  var OB=[['bike','eSCRAMBLER','SOURCE'],['speaker','MONITOR','SOUND'],['light','TASK LIGHT','WORKSPACE'],
+          ['battery','PACK','POWER'],['guitar','SOLIDBODY','INSTRUMENT']];
+  root.innerHTML=
+  '<style>'+
+  '.xh{background:#101317;color:var(--pale);padding:var(--entry) var(--pad) 110px;}'+
+  '.xh .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xh .work{display:grid;grid-template-columns:210px 1fr;gap:clamp(24px,4vw,64px);margin-top:58px;align-items:start;}'+
+  '.xh .sw{display:flex;flex-direction:column;gap:2px;}'+
+  '.xh .sw div{display:flex;align-items:center;gap:12px;padding:10px 12px;background:rgba(244,241,236,.04);}'+
+  '.xh .sw i{width:26px;height:26px;display:block;flex:0 0 auto;}'+
+  '.xh .sw span{font-family:var(--dm);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,236,.6);}'+
+  '.xh .obj{position:relative;aspect-ratio:3/2;background:#0a0c0f;overflow:hidden;}'+
+  '.xh .obj img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;'+
+    'filter:grayscale(.35) contrast(1.12) brightness(.85);transition:opacity .9s;}'+
+  '.xh .obj img.on{opacity:1;}'+
+  '.xh .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;gap:16px;}'+
+  '.xh .cap b{font-family:var(--bb);font-size:1.4rem;letter-spacing:.2em;font-weight:400;color:var(--cy-b);}'+
+  '@media(max-width:900px){.xh .work{grid-template-columns:1fr;}.xh .sw{flex-direction:row;flex-wrap:wrap;}}'+
+  '</style>'+
+  '<section class="xh"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">The material palette<br>moves first.</h2>'+
+    '<div class="work">'+
+      '<div class="sw">'+SW.map(function(s){
+        return '<div><i style="background:'+s[0]+'"></i><span>'+s[1]+'</span></div>';}).join('')+'</div>'+
+      '<div><div class="obj">'+OB.map(function(o,i){
+        return '<img data-i="'+i+'" class="'+(i===0?'on':'')+'" src="'+IMG[o[0]]+'" alt="">';}).join('')+'</div>'+
+        '<div class="cap"><b id="xhb">eSCRAMBLER</b><span class="mono" id="xhc" style="color:rgba(244,241,236,.45)">SOURCE</span></div>'+
+        '<p class="bd bd--pale" style="margin-top:20px">Nothing in the left-hand column belongs to motorcycles. Alloy, black, one cyan mark and an honest fastener will read as SWITCH on anything you can hold.</p>'+
+      '</div>'+
+    '</div>'+
+  '</div></section>';
+  var im=[].slice.call(root.querySelectorAll('.xh .obj img')),
+      nb=root.querySelector('#xhb'), nc=root.querySelector('#xhc'), i=0;
+  ctx.timer(function(){ if(!MOTION)return; i=(i+1)%OB.length;
+    im.forEach(function(m,k){m.classList.toggle('on',k===i);});
+    nb.textContent=OB[i][1]; nc.textContent=OB[i][2];
+    nc.style.color = i===0 ? 'rgba(244,241,236,.45)' : '#00b4d8';
+  },2200);
+});
+
+/* =========================================================================
+   18 — DESIGN EQUATION
+   Two lines of arithmetic, done with objects instead of numbers.
+   ========================================================================= */
+C(18,'DESIGN EQUATION','arithmetic performed with objects, not numbers',function(root,ctx){
+  function term(img,lab,sub){
+    return '<div class="t"><div class="im"><img src="'+IMG[img]+'" alt=""></div>'+
+      '<b>'+lab+'</b><i>'+(sub||'')+'</i></div>';
+  }
+  function op(o){ return '<div class="o">'+o+'</div>'; }
+  root.innerHTML=
+  '<style>'+
+  '.xi{background:var(--paper);padding:var(--entry) var(--pad) 110px;}'+
+  '.xi .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xi .eq{display:flex;align-items:center;gap:clamp(8px,1.6vw,22px);margin-top:56px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;}'+
+  '.xi .eq + .eq{margin-top:34px;padding-top:34px;border-top:1px solid var(--hair);}'+
+  '.xi .t{flex:1 1 0;min-width:118px;text-align:center;}'+
+  '.xi .t .im{aspect-ratio:4/3;background:#e2dcd2;overflow:hidden;}'+
+  '.xi .t img{width:100%;height:100%;object-fit:cover;filter:grayscale(.45) contrast(1.06);}'+
+  '.xi .t.ghost .im{background:transparent;border:1px dashed var(--ink-26);}'+
+  '.xi .t.ghost img{filter:grayscale(1) opacity(.16);}'+
+  '.xi .t b{display:block;font-family:var(--dm);font-size:.56rem;font-weight:500;letter-spacing:.14em;'+
+    'text-transform:uppercase;color:var(--ink-78);margin-top:10px;}'+
+  '.xi .t i{font-style:normal;display:block;font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-26);margin-top:4px;}'+
+  '.xi .t.res b{color:var(--cy);}'+
+  '.xi .o{flex:0 0 auto;font-family:var(--bb);font-size:clamp(1.3rem,2.6vw,2.2rem);color:var(--ink-26);'+
+    'letter-spacing:.06em;padding-bottom:26px;}'+
+  '.xi .o.eqs{color:var(--cy-b);}'+
+  '</style>'+
+  '<section class="xi"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Subtract the motorcycle.<br>Keep the remainder.</h2>'+
+    '<div class="eq">'+
+      term('bike','SWITCH PRODUCT','the asset acquired')+op('−')+
+      '<div class="t ghost"><div class="im"><img src="'+IMG.dirt+'" alt=""></div><b>MOTORCYCLE FUNCTION</b><i>category-specific</i></div>'+
+      op('<span class="eqs">=</span>')+
+      '<div class="t res"><div class="im" style="display:flex;align-items:center;justify-content:center;background:#e9e4db">'+
+        svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.4})+'</div><b>TRANSFERABLE DNA</b><i>what silent foundry keeps</i></div>'+
+    '</div>'+
+    '<div class="eq">'+
+      '<div class="t"><div class="im" style="display:flex;align-items:center;justify-content:center;background:#e9e4db">'+
+        svgOf(GEO.bikePath,{stroke:'#0a7f99',sw:1.4})+'</div><b>TRANSFERABLE DNA</b><i>the system</i></div>'+
+      op('+')+ term('pcb','NEW FUNCTION','sound · power · light')+
+      op('<span class="eqs">=</span>')+
+      '<div class="t res"><div class="im"><img src="'+IMG.speaker+'" alt=""></div><b>NEW SWITCH PRODUCT</b><i>recognisably the same brand</i></div>'+
+    '</div>'+
+    '<p class="bd" style="margin-top:44px">Both lines balance. That is the entire commercial argument — the remainder is worth more than the product it came out of, because it can be spent more than once.</p>'+
+  '</div></section>';
+});
+
+/* =========================================================================
+   19 — PRODUCT → PLATFORM
+   The bike is the lid. Lift it and the platform underneath was the real thing.
+   ========================================================================= */
+C(19,'PRODUCT → PLATFORM','lift the product off; the platform was underneath',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xj{background:#0d0f12;color:var(--pale);}'+
+  '.xj .tall{height:340vh;position:relative;}'+
+  '.xj .pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;}'+
+  '.xj .in{max-width:var(--frame);margin:0 auto;padding:0 var(--pad);width:100%;}'+
+  '.xj .deck{position:relative;margin-top:34px;aspect-ratio:24/9;max-height:46vh;width:100%;overflow:hidden;}'+
+  '.xj .lidwrap{position:absolute;inset:0;z-index:3;will-change:transform;}'+
+  '.xj .lidwrap img{width:100%;height:100%;object-fit:contain;background:#0d0f12;filter:grayscale(.4) contrast(1.1) brightness(.82);}'+
+  '.xj .plat{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}'+
+  '.xj .plat div{background:#181c21;display:flex;flex-direction:column;justify-content:center;padding:16px;'+
+    'border:1px solid rgba(0,180,216,.16);}'+
+  '.xj .plat b{font-family:var(--dm);font-size:.54rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--cy-b);}'+
+  '.xj .plat i{font-style:normal;font-size:.56rem;line-height:1.5;color:rgba(244,241,236,.5);margin-top:6px;}'+
+  '.xj .lab{position:absolute;left:0;right:0;top:-30px;display:flex;justify-content:space-between;gap:16px;}'+
+  '@media(max-width:900px){.xj .plat{grid-template-columns:1fr 1fr;}}'+
+  '</style>'+
+  '<section class="xj"><div class="tall"><div class="pin"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin:var(--eyegap) 0 0">We did not buy a motorcycle.<br>We bought what was under it.</h2>'+
+    '<div class="deck">'+
+      '<div class="lab"><span class="mono" style="color:rgba(244,241,236,.4)" id="xjl1">THE PRODUCT</span>'+
+        '<span class="mono mono--cy" id="xjl2"></span></div>'+
+      '<div class="plat">'+
+        [['DESIGN LANGUAGE','form, stance, palette, detail'],
+         ['ENGINEERING','pack, drive, thermal, control'],
+         ['SUPPLY CHAIN','tube, plate, weld, small batch'],
+         ['BRAND EQUITY','press, owners, a name people know']]
+        .map(function(p){return '<div><b>'+p[0]+'</b><i>'+p[1]+'</i></div>';}).join('')+
+      '</div>'+
+      '<div class="lidwrap" id="xjlid"><img src="'+IMG.bike+'" alt=""></div>'+
+    '</div>'+
+  '</div></div></div></section>';
+  var tall=root.querySelector('.tall'), lid=root.querySelector('#xjlid'),
+      l1=root.querySelector('#xjl1'), l2=root.querySelector('#xjl2');
+  function draw(){
+    var t=ctx.pinProg(tall), k=Math.max(0,Math.min(1,(t-0.12)/0.6));
+    lid.style.transform='translateY('+(-108*k)+'%)';
+    lid.style.opacity=String(1-k*0.35);
+    l1.textContent = k<0.5 ? 'THE PRODUCT' : 'ONE APPLICATION OF THE PLATFORM';
+    l2.textContent = k>0.35 ? 'THE PLATFORM' : '';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+
+/* =========================================================================
+   20 — CONTROLLED ORBIT
+   NOT the Marshall constellation: a single horizontal track. The principles
+   stay on the rail; the object in the slot is replaced.
+   ========================================================================= */
+C(20,'CONTROLLED ORBIT','principles hold the rail, the object in the slot changes',function(root,ctx){
+  var OBJ=[['bike','eSCRAMBLER','SOURCE'],['speaker','MONITOR','SOUND'],['battery','PACK','POWER'],
+           ['light','TASK LIGHT','WORKSPACE'],['snowboard','DECK','MOBILITY']];
+  root.innerHTML=
+  '<style>'+
+  '.xk{background:var(--cream);padding:var(--entry) var(--pad) 110px;}'+
+  '.xk .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xk .rail{position:relative;margin-top:64px;padding:44px 0 54px;}'+
+  '.xk .track{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--hair);}'+
+  '.xk .pr{position:relative;display:grid;grid-template-columns:repeat(8,1fr);gap:0;}'+
+  '.xk .pr span{font-family:var(--dm);font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;'+
+    'color:var(--ink-38);text-align:center;position:relative;padding-top:16px;}'+
+  '.xk .pr span::before{content:"";position:absolute;left:50%;top:0;width:5px;height:5px;border-radius:50%;'+
+    'background:var(--ink-26);transform:translateX(-50%);transition:background .4s,transform .4s;}'+
+  '.xk .pr span.hot{color:var(--cy);} .xk .pr span.hot::before{background:var(--cy-b);transform:translateX(-50%) scale(1.7);}'+'@media(max-width:900px){.xk .pr{grid-template-columns:repeat(4,1fr);row-gap:18px;}.xk .slot{width:min(80%,420px);}}'+
+  '.xk .slot{position:relative;width:min(46%,420px);margin:0 auto 40px;aspect-ratio:3/2;background:#e2dcd2;overflow:hidden;}'+
+  '.xk .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;'+
+    'transform:scale(1.04);filter:grayscale(.4) contrast(1.06);transition:opacity .7s,transform 2.4s;}'+
+  '.xk .slot img.on{opacity:1;transform:scale(1);}'+
+  '.xk .slotlab{text-align:center;margin-top:14px;}'+
+  '.xk .slotlab b{font-family:var(--bb);font-size:1.3rem;letter-spacing:.2em;font-weight:400;color:var(--ink-78);}'+
+  '</style>'+
+  '<section class="xk"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">The principles do not move.<br>The product does.</h2>'+
+    '<div class="rail">'+
+      '<div class="slot">'+OBJ.map(function(o,i){
+        return '<img data-i="'+i+'" class="'+(i===0?'on':'')+'" src="'+IMG[o[0]]+'" alt="">';}).join('')+'</div>'+
+      '<div class="slotlab"><b id="xkb">eSCRAMBLER</b> &nbsp;<span class="mono" id="xkc">SOURCE</span></div>'+
+      '<div class="track" style="margin-top:34px;position:relative"></div>'+
+      '<div class="pr" style="margin-top:0">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>'+
+    '</div>'+
+    '<p class="bd" style="margin-top:24px">Eight fixed points and one slot. Silent Foundry keeps the rail; what sits in the slot is a commercial decision, not a design one.</p>'+
+  '</div></section>';
+  var im=[].slice.call(root.querySelectorAll('.xk .slot img')),
+      sp=[].slice.call(root.querySelectorAll('.xk .pr span')),
+      b=root.querySelector('#xkb'), c=root.querySelector('#xkc'), i=0, h=0;
+  ctx.timer(function(){ if(!MOTION)return; i=(i+1)%OBJ.length;
+    im.forEach(function(m,k){m.classList.toggle('on',k===i);});
+    b.textContent=OBJ[i][1]; c.textContent=OBJ[i][2]; },2500);
+  ctx.timer(function(){ if(!MOTION)return; h=(h+1)%sp.length;
+    sp.forEach(function(s,k){s.classList.toggle('hot',k===h);}); },520);
+});
+
+/* =========================================================================
+   21 — BEFORE / AFTER SPLIT
+   A draggable boundary. Left: the product. Right: what it became.
+   ========================================================================= */
+C(21,'BEFORE / AFTER SPLIT','drag the boundary between product and system',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xl{background:#0d0f12;color:var(--pale);padding:var(--entry) var(--pad) 110px;}'+
+  '.xl .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xl .cmp{position:relative;margin-top:58px;aspect-ratio:16/9;overflow:hidden;cursor:ew-resize;user-select:none;background:#000;}'+
+  '.xl .side{position:absolute;inset:0;}'+
+  '.xl .side img{width:100%;height:100%;object-fit:cover;}'+
+  '.xl .a img{filter:grayscale(.35) contrast(1.1) brightness(.85);}'+
+  '.xl .b{background:#0f1418;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:2px;}'+
+  '.xl .b figure{margin:0;position:relative;overflow:hidden;}'+
+  '.xl .b img{filter:grayscale(.2) contrast(1.05) brightness(.9);}'+
+  '.xl .b figcaption{position:absolute;left:8px;bottom:8px;font-family:var(--dm);font-size:.42rem;'+
+    'letter-spacing:.2em;text-transform:uppercase;color:var(--cy-b);}'+
+  '.xl .bar{position:absolute;top:0;bottom:0;width:1px;background:var(--cy-b);z-index:5;box-shadow:0 0 14px rgba(0,180,216,.7);}'+
+  '.xl .bar::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;border:1px solid var(--cy-b);'+
+    'border-radius:50%;transform:translate(-50%,-50%);background:rgba(13,15,18,.7);}'+
+  '.xl .tagA,.xl .tagB{position:absolute;top:14px;font-family:var(--dm);font-size:.46rem;letter-spacing:.24em;'+
+    'text-transform:uppercase;z-index:6;}'+
+  '.xl .tagA{left:16px;color:rgba(244,241,236,.6);} .xl .tagB{right:16px;color:var(--cy-b);}'+
+  '</style>'+
+  '<section class="xl"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">Same brand.<br>Both sides of the line.</h2>'+
+    '<div class="cmp" id="xlc">'+
+      '<div class="side b">'+CATS.slice(0,4).map(function(c){
+        return '<figure><img src="'+IMG[c.img]+'" alt=""><figcaption>'+c.k+'</figcaption></figure>';}).join('')+'</div>'+
+      '<div class="side a" id="xla"><img src="'+IMG.bike+'" alt=""></div>'+
+      '<div class="bar" id="xlb"></div>'+
+      '<span class="tagA">ACQUIRED — ONE PRODUCT</span><span class="tagB">EXTRACTED — A SYSTEM</span>'+
+    '</div>'+
+    '<p class="bd bd--pale" style="margin-top:34px">Silent Foundry did not replace the motorcycle. It moved the boundary of what the brand is allowed to make.</p>'+
+  '</div></section>';
+  var cmp=root.querySelector('#xlc'), a=root.querySelector('#xla'), bar=root.querySelector('#xlb'), x=0.55, drag=false;
+  function put(){ a.style.clipPath='inset(0 '+((1-x)*100)+'% 0 0)'; bar.style.left=(x*100)+'%'; }
+  function from(e){ var r=cmp.getBoundingClientRect(), cx=(e.touches?e.touches[0].clientX:e.clientX);
+    x=Math.max(0.04,Math.min(0.96,(cx-r.left)/r.width)); put(); }
+  ctx.on(cmp,'mousedown',function(e){drag=true;auto=false;from(e);});
+  ctx.on(window,'mousemove',function(e){ if(drag) from(e); });
+  ctx.on(window,'mouseup',function(){drag=false;});
+  ctx.on(cmp,'touchstart',function(e){auto=false;from(e);});
+  ctx.on(cmp,'touchmove',function(e){from(e);});
+  var auto=true, dir=-1; put();
+  ctx.frame(function(){ if(!auto)return; x+=dir*0.0016; if(x<0.3){x=0.3;dir=1;} if(x>0.78){x=0.78;dir=-1;} put(); });
+});
+
+/* =========================================================================
+   22 — X-RAY / SCAN
+   A single controlled plane. Finished product one side, extracted the other.
+   ========================================================================= */
+C(22,'X-RAY / SCAN','one analytical plane crossing the object',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xm{background:#0a0c0f;color:var(--pale);padding:var(--entry) var(--pad) 110px;}'+
+  '.xm .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xm .scan{position:relative;margin-top:58px;aspect-ratio:16/9;overflow:hidden;background:#000;}'+
+  '.xm .ph,.xm .wire{position:absolute;inset:0;}'+
+  '.xm .ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(.5) contrast(1.1) brightness(.8);}'+
+  '.xm .wire{background:#06181f;display:flex;align-items:center;justify-content:center;}'+
+  '.xm .wire svg{width:78%;height:78%;}'+
+  '.xm .wire svg path{stroke:#00b4d8;stroke-width:1.3;}'+
+  '.xm .plane{position:absolute;top:-6%;bottom:-6%;width:2px;background:#00b4d8;z-index:4;'+
+    'box-shadow:0 0 26px 4px rgba(0,180,216,.55);}'+
+  '.xm .read{position:absolute;left:0;right:0;bottom:0;padding:16px 18px;z-index:5;display:flex;'+
+    'justify-content:space-between;gap:16px;background:linear-gradient(to top,rgba(10,12,15,.9),transparent);flex-wrap:wrap;}'+
+  '.xm .read span{font-family:var(--dm);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;}'+
+  '</style>'+
+  '<section class="xm"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">One pass, and the object<br>reads as a rule set.</h2>'+
+    '<div class="scan">'+
+      '<div class="wire">'+svgOf(GEO.bikePath,{stroke:'#00b4d8',sw:1.3})+'</div>'+
+      '<div class="ph" id="xmp"><img src="'+IMG.bike+'" alt=""></div>'+
+      '<div class="plane" id="xmn"></div>'+
+      '<div class="read"><span style="color:rgba(244,241,236,.55)">SILENT FOUNDRY · EXTRACTION PASS</span>'+
+        '<span style="color:#00b4d8" id="xmr">0%</span></div>'+
+    '</div>'+
+    '<p class="bd bd--pale" style="margin-top:34px">Behind the plane the product is gone and only the transferable geometry is recorded. That record is what gets applied to the next category.</p>'+
+  '</div></section>';
+  var ph=root.querySelector('#xmp'), pl=root.querySelector('#xmn'), rd=root.querySelector('#xmr'), t=0;
+  ctx.frame(function(){ t+=0.0042; if(t>1.25) t=-0.05;
+    var k=Math.max(0,Math.min(1,t));
+    ph.style.clipPath='inset(0 0 0 '+(k*100)+'%)';
+    pl.style.left=(k*100)+'%';
+    rd.textContent=Math.round(k*100)+'% EXTRACTED';
+  });
+});
+
+/* =========================================================================
+   23 — SCALE SHIFT
+   One machined edge, pulled outward until it is an entire product ecosystem.
+   ========================================================================= */
+C(23,'SCALE SHIFT','one edge → assembly → product → system → catalogue',function(root,ctx){
+  var STEP=[
+    {i:'proto', k:'A 6mm EDGE BREAK', d:'One radius, specified once.'},
+    {i:'frameB',k:'AN ASSEMBLY',      d:'The same radius on every visible edge.'},
+    {i:'bike',  k:'A PRODUCT',        d:'Consistency reads as intent, and intent reads as a brand.'},
+    {i:'cadScreen',k:'A DESIGN SYSTEM',d:'Written down, it stops belonging to the motorcycle.'},
+    {i:'speaker',k:'A CATALOGUE',     d:'Anything Silent Foundry issues can carry it.'}
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.xn{background:var(--cream);}'+
+  '.xn .tall{height:400vh;position:relative;}'+
+  '.xn .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);overflow:hidden;}'+
+  '.xn .in{max-width:var(--frame);margin:0 auto;width:100%;}'+
+  '.xn .view{position:relative;aspect-ratio:16/9;overflow:hidden;background:#ddd7cd;margin-top:34px;}'+
+  '.xn .view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;'+
+    'filter:grayscale(.4) contrast(1.06);transition:opacity .55s;will-change:transform;}'+
+  '.xn .meta{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-top:18px;flex-wrap:wrap;}'+
+  '.xn .meta b{font-family:var(--bb);font-size:clamp(1.1rem,2.2vw,1.9rem);letter-spacing:.2em;font-weight:400;color:var(--cy);}'+
+  '.xn .ticks{display:flex;gap:4px;margin-top:22px;}'+
+  '.xn .ticks i{flex:1;height:2px;background:var(--hair);transition:background .3s;}'+
+  '.xn .ticks i.on{background:var(--cy-b);}'+
+  '</style>'+
+  '<section class="xn"><div class="tall"><div class="pin"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">Start at one edge.<br>Keep pulling back.</h2>'+
+    '<div class="view">'+STEP.map(function(s,i){
+      return '<img data-i="'+i+'" src="'+IMG[s.i]+'" alt="">';}).join('')+'</div>'+
+    '<div class="meta"><b id="xnb">'+STEP[0].k+'</b><span class="bd" id="xnd" style="max-width:46ch">'+STEP[0].d+'</span></div>'+
+    '<div class="ticks" id="xnt">'+STEP.map(function(){return '<i></i>';}).join('')+'</div>'+
+  '</div></div></div></section>';
+  var tall=root.querySelector('.tall'), im=[].slice.call(root.querySelectorAll('.xn .view img')),
+      b=root.querySelector('#xnb'), d=root.querySelector('#xnd'),
+      tk=[].slice.call(root.querySelectorAll('#xnt i'));
+  function draw(){
+    var t=ctx.pinProg(tall), f=t*(STEP.length-0.001), i=Math.floor(f), local=f-i;
+    im.forEach(function(m,k){ m.style.opacity = k===i?'1':'0';
+      if(k===i) m.style.transform='scale('+(1.22-local*0.22)+')'; });
+    b.textContent=STEP[i].k; d.textContent=STEP[i].d;
+    tk.forEach(function(x,k){ x.classList.toggle('on',k<=i); });
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+</script>
+<script>
+/* =========================================================================
+   24 — PRINCIPLES FIRST
+   The list arrives with no object. Only afterwards is it revealed to be a
+   description of a motorcycle — and then of everything else.
+   ========================================================================= */
+C(24,'PRINCIPLES FIRST','the rules arrive before you are told what they describe',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xo{background:var(--paper);}'+
+  '.xo .tall{height:380vh;position:relative;}'+
+  '.xo .pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);}'+
+  '.xo .in{max-width:var(--frame);margin:0 auto;width:100%;}'+
+  '.xo .q{font-family:var(--bb);text-transform:uppercase;letter-spacing:.16em;line-height:.92;'+
+    'font-size:clamp(1.4rem,3.4vw,2.9rem);color:var(--ink-78);margin:var(--eyegap) 0 34px;min-height:2.2em;}'+
+  '.xo .q b{color:var(--cy);font-weight:400;}'+
+  '.xo .list{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--hair);}'+
+  '.xo .list div{background:var(--paper);padding:20px 16px;opacity:0;transform:translateY(10px);'+
+    'transition:opacity .5s,transform .5s;}'+
+  '.xo .list div.on{opacity:1;transform:none;}'+
+  '.xo .list b{display:block;font-family:var(--dm);font-size:.68rem;font-weight:500;letter-spacing:.16em;'+
+    'text-transform:uppercase;color:var(--ink-78);}'+
+  '.xo .list i{font-style:normal;display:block;font-size:.6rem;line-height:1.5;color:var(--ink-38);margin-top:6px;}'+
+  '.xo .rev{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-top:2px;max-height:0;overflow:hidden;'+
+    'transition:max-height .8s ease;}'+
+  '.xo .rev img{width:100%;aspect-ratio:1/1;object-fit:cover;filter:grayscale(.45) contrast(1.05);}'+
+  '.xo .rev.on{max-height:220px;}'+
+  '@media(max-width:900px){.xo .list{grid-template-columns:1fr 1fr;}.xo .rev{grid-template-columns:repeat(3,1fr);}}'+
+  '</style>'+
+  '<section class="xo"><div class="tall"><div class="pin"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<p class="q" id="xoq">Eight rules.<br>You have not been told what they describe.</p>'+
+    '<div class="list" id="xol">'+P8.map(function(k){
+      return '<div><b>'+k+'</b><i>'+P8_NOTE[k]+'</i></div>';}).join('')+'</div>'+
+    '<div class="rev" id="xor">'+
+      '<img src="'+IMG.bike+'" alt="">'+CATS.map(function(c){return '<img src="'+IMG[c.img]+'" alt="">';}).join('')+
+    '</div>'+
+  '</div></div></div></section>';
+  var tall=root.querySelector('.tall'), ds=[].slice.call(root.querySelectorAll('#xol div')),
+      q=root.querySelector('#xoq'), rev=root.querySelector('#xor');
+  function draw(){
+    var t=ctx.pinProg(tall);
+    ds.forEach(function(d,i){ d.classList.toggle('on', t > 0.06+i*0.045); });
+    rev.classList.toggle('on', t>0.74);
+    q.innerHTML = t<0.46 ? 'Eight rules.<br>You have not been told what they describe.'
+      : t<0.72 ? 'They describe <b>a motorcycle.</b>'
+      : 'They also describe <b>everything below.</b>';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+
+/* =========================================================================
+   25 — PRODUCT FAMILY MORPH
+   Stepped, not liquid: the outline is redrawn category to category, and the
+   last state hands straight over to the portfolio.
+   ========================================================================= */
+C(25,'PRODUCT FAMILY MORPH','the outline is redrawn, category to category',function(root,ctx){
+  var SEQ=['bikePath','speakerPath','batteryPath','lightPath','boardPath','guitarPath'];
+  var NAME=['eSCRAMBLER · SOURCE','MONITOR · SOUND','PACK · POWER','TASK LIGHT · WORKSPACE','DECK · MOBILITY','SOLIDBODY · INSTRUMENT'];
+  root.innerHTML=
+  '<style>'+
+  '.xp{background:#101317;color:var(--pale);padding:var(--entry) var(--pad) 0;}'+
+  '.xp .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xp .stage{position:relative;margin-top:58px;aspect-ratio:2/1;display:flex;align-items:center;justify-content:center;}'+
+  '.xp .stage svg{width:min(76%,760px);height:auto;position:absolute;opacity:0;transition:opacity .45s;}'+
+  '.xp .stage svg.on{opacity:1;}'+
+  '.xp .stage svg path{stroke:#00b4d8;stroke-width:1.4;}'+
+  '.xp .nm{text-align:center;margin-top:10px;}'+
+  '.xp .dots{display:flex;gap:6px;justify-content:center;margin-top:26px;}'+
+  '.xp .dots i{width:22px;height:2px;background:rgba(244,241,236,.2);cursor:pointer;transition:background .3s;}'+
+  '.xp .dots i.on{background:#00b4d8;}'+
+  '.xp .handoff{margin-top:64px;border-top:1px solid rgba(244,241,236,.14);padding:30px 0 var(--entry);'+
+    'display:grid;grid-template-columns:repeat(5,1fr);gap:2px;}'+
+  '.xp .handoff img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(.5) contrast(1.05) brightness(.85);'+
+    'opacity:0;transform:translateY(16px);transition:opacity .7s,transform .7s;}'+
+  '.xp .handoff img.on{opacity:1;transform:none;}'+
+  '.xp .ho{display:flex;justify-content:space-between;gap:16px;padding-top:18px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.xp .handoff{grid-template-columns:repeat(3,1fr);}}'+
+  '</style>'+
+  '<section class="xp"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">Same hand.<br>Six different objects.</h2>'+
+    '<div class="stage">'+SEQ.map(function(s,i){
+      return '<div class="'+(i===0?'on':'')+'" data-i="'+i+'" style="position:absolute;width:min(76%,760px);opacity:'+(i===0?1:0)+';transition:opacity .45s">'+
+        svgOf(GEO[s],{stroke:'#00b4d8',sw:1.4})+'</div>';}).join('')+'</div>'+
+    '<p class="nm"><span class="mono mono--cy" id="xpn">'+NAME[0]+'</span></p>'+
+    '<div class="dots" id="xpd">'+SEQ.map(function(_,i){return '<i data-i="'+i+'" class="'+(i===0?'on':'')+'"></i>';}).join('')+'</div>'+
+    '<div class="ho"><span class="mono" style="color:rgba(244,241,236,.4)">and the catalogue follows without an argument</span>'+
+      '<span class="mono mono--cy">↓ product portfolio</span></div>'+
+    '<div class="handoff" id="xph">'+CATS.map(function(c){
+      return '<img src="'+IMG[c.img]+'" alt="">';}).join('')+'</div>'+
+  '</div></section>';
+  var wraps=[].slice.call(root.querySelectorAll('.xp .stage > div')),
+      dots=[].slice.call(root.querySelectorAll('#xpd i')), nm=root.querySelector('#xpn'),
+      hs=[].slice.call(root.querySelectorAll('#xph img')), i=0, auto=true;
+  function pick(k){ i=k; wraps.forEach(function(w,n){w.style.opacity=n===k?'1':'0';});
+    dots.forEach(function(d,n){d.classList.toggle('on',n===k);}); nm.textContent=NAME[k]; }
+  dots.forEach(function(d,k){ ctx.on(d,'click',function(){auto=false;pick(k);}); });
+  ctx.timer(function(){ if(!auto||!MOTION)return; pick((i+1)%SEQ.length); },1500);
+  var io=ctx.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+    if(e.isIntersecting) hs.forEach(function(h,n){ ctx.delay(function(){h.classList.add('on');}, n*110); });
+  }); },{threshold:.2}));
+  io.observe(root.querySelector('#xph'));
+});
+
+/* =========================================================================
+   26 — CAD SPACE
+   The whole section becomes Silent Foundry's drawing field.
+   ========================================================================= */
+C(26,'CAD SPACE','the section becomes the drawing field',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xq{background:#0e1418;color:var(--pale);padding:var(--entry) var(--pad) 110px;position:relative;overflow:hidden;}'+
+  '.xq::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;'+
+    'background-image:repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(0,180,216,.09) 31px,rgba(0,180,216,.09) 32px),'+
+    'repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(0,180,216,.09) 31px,rgba(0,180,216,.09) 32px);}'+
+  '.xq .in{max-width:var(--frame);margin:0 auto;position:relative;}'+
+  '.xq .field{position:relative;margin-top:58px;height:min(66vh,620px);border:1px solid rgba(0,180,216,.28);}'+
+  '.xq .obj{position:absolute;transition:opacity .8s,transform .8s;}'+
+  '.xq .obj svg path{stroke:#00b4d8;stroke-width:1.2;}'+
+  '.xq .obj .cap{font-family:var(--dm);font-size:.42rem;letter-spacing:.2em;text-transform:uppercase;'+
+    'color:rgba(0,180,216,.75);margin-top:6px;display:block;text-align:center;}'+
+  '.xq .dim{position:absolute;border-top:1px dashed rgba(0,180,216,.4);}'+
+  '.xq .dim span{position:absolute;left:50%;top:-16px;transform:translateX(-50%);font-family:var(--dm);'+
+    'font-size:.4rem;letter-spacing:.18em;color:rgba(0,180,216,.7);white-space:nowrap;}'+
+  '.xq .tb{position:absolute;right:0;bottom:0;border-left:1px solid rgba(0,180,216,.28);'+
+    'border-top:1px solid rgba(0,180,216,.28);padding:10px 14px;background:rgba(14,20,24,.9);}'+
+  '.xq .tb p{margin:0 0 4px;font-family:var(--dm);font-size:.42rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,241,236,.55);}'+
+  '.xq .tb p b{color:#00b4d8;font-weight:400;}'+
+  '@media(max-width:900px){.xq .field{height:auto;padding:20px 0 90px;}'+
+    '.xq .obj{position:static!important;width:auto!important;margin:0 auto 26px;}.xq .dim{display:none;}}'+
+  '</style>'+
+  '<section class="xq"><div class="in">'+
+    '<span class="ey ey--pale">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl hl--pale" style="margin-top:var(--eyegap)">The sheet does not care<br>what the object is for.</h2>'+
+    '<div class="field" id="xqf">'+
+      '<div class="obj" data-s="0" style="left:4%;top:16%;width:34%">'+svgOf(GEO.bikePath,{stroke:'#00b4d8'})+'<span class="cap">SRC-01 eSCRAMBLER</span></div>'+
+      '<div class="obj" data-s="1" style="left:46%;top:10%;width:22%;opacity:0">'+svgOf(GEO.speakerPath,{stroke:'#00b4d8'})+'<span class="cap">APP-01 SOUND</span></div>'+
+      '<div class="obj" data-s="2" style="left:72%;top:14%;width:20%;opacity:0">'+svgOf(GEO.batteryPath,{stroke:'#00b4d8'})+'<span class="cap">APP-02 POWER</span></div>'+
+      '<div class="obj" data-s="3" style="left:46%;top:56%;width:22%;opacity:0">'+svgOf(GEO.lightPath,{stroke:'#00b4d8'})+'<span class="cap">APP-03 WORKSPACE</span></div>'+
+      '<div class="obj" data-s="4" style="left:72%;top:58%;width:22%;opacity:0">'+svgOf(GEO.boardPath,{stroke:'#00b4d8'})+'<span class="cap">APP-04 MOBILITY</span></div>'+
+      '<div class="dim" style="left:4%;right:8%;top:8%"><span>ONE RULE SET · ALL SHEETS</span></div>'+
+      '<div class="tb"><p>SILENT FOUNDRY · <b>SWITCH DESIGN LANGUAGE</b></p><p>SHEET 01 · REV <b>C</b> · SCALE NTS</p>'+
+        '<p>STATUS <b id="xqs">EXTRACTING</b></p></div>'+
+    '</div>'+
+  '</div></section>';
+  var objs=[].slice.call(root.querySelectorAll('.xq .obj')), st=root.querySelector('#xqs'), i=0;
+  ctx.timer(function(){ if(!MOTION)return; i=(i+1)%(objs.length+2);
+    objs.forEach(function(o,k){ o.style.opacity = k<=i ? '1':'0';
+      o.style.transform = k<=i ? 'none' : 'translateY(10px)'; });
+    st.textContent = i<1?'EXTRACTING' : i<objs.length?'TRANSLATING' : 'SYSTEM ISSUED';
+  },900);
+});
+
+/* =========================================================================
+   27 — EIGHT-CUT FILM
+   Eight held frames, one per principle, cut like a title sequence.
+   ========================================================================= */
+C(27,'EIGHT-CUT FILM','eight held frames, cut like a title sequence',function(root,ctx){
+  var SRC=['bike','frameA','cnc','proto','dirt','cnc2','battery','frameC'];
+  root.innerHTML=
+  '<style>'+
+  '.xr{background:#08090b;color:var(--pale);}'+
+  '.xr .film{position:relative;height:100vh;min-height:520px;overflow:hidden;}'+
+  '.xr .cut{position:absolute;inset:0;opacity:0;transition:opacity .35s;}'+
+  '.xr .cut.on{opacity:1;}'+
+  '.xr .cut img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.25) brightness(.62);'+
+    'transform:scale(1.06);transition:transform 2.6s linear;}'+
+  '.xr .cut.on img{transform:scale(1.12);}'+
+  '.xr .word{position:absolute;left:var(--pad);bottom:14%;z-index:3;}'+
+  '.xr .word b{display:block;font-family:var(--bb);font-size:clamp(2rem,7vw,5.4rem);letter-spacing:.14em;'+
+    'line-height:.92;text-transform:uppercase;color:#f4f1ec;font-weight:400;}'+
+  '.xr .word i{font-style:normal;display:block;font-size:.72rem;line-height:1.6;color:rgba(244,241,236,.6);'+
+    'margin-top:14px;max-width:44ch;}'+
+  '.xr .no{position:absolute;right:var(--pad);top:12%;z-index:3;font-family:var(--dm);font-size:.5rem;'+
+    'letter-spacing:.28em;color:#00b4d8;}'+
+  '.xr .bar{position:absolute;left:var(--pad);right:var(--pad);bottom:6%;height:1px;background:rgba(244,241,236,.18);z-index:3;}'+
+  '.xr .bar i{display:block;height:100%;background:#00b4d8;width:0;}'+
+  '.xr .end{position:absolute;inset:0;background:#08090b;display:flex;align-items:center;justify-content:center;'+
+    'z-index:4;opacity:0;pointer-events:none;transition:opacity .6s;}'+
+  '.xr .end.on{opacity:1;}'+
+  '.xr .end .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;width:min(86%,1000px);}'+
+  '.xr .end img{width:100%;aspect-ratio:1/1;object-fit:cover;filter:grayscale(.35) contrast(1.05) brightness(.9);}'+
+  '</style>'+
+  '<section class="xr"><div class="film" id="xrf">'+
+    P8.map(function(k,i){
+      return '<div class="cut'+(i===0?' on':'')+'" data-i="'+i+'"><img src="'+IMG[SRC[i]]+'" alt="">'+
+        '<div class="word"><b>'+k+'</b><i>'+P8_NOTE[k]+'</i></div>'+
+        '<div class="no">'+((i+1)<10?'0':'')+(i+1)+' / 08</div></div>';}).join('')+
+    '<div class="end" id="xre"><div><p class="mono mono--cy" style="text-align:center;margin-bottom:14px">EIGHT PRINCIPLES · ONE SYSTEM · FIVE CATEGORIES</p>'+
+      '<div class="grid">'+CATS.map(function(c){return '<img src="'+IMG[c.img]+'" alt="">';}).join('')+'</div></div></div>'+
+    '<div class="bar"><i id="xrb"></i></div>'+
+  '</div></section>';
+  var cuts=[].slice.call(root.querySelectorAll('.xr .cut')), bar=root.querySelector('#xrb'),
+      end=root.querySelector('#xre'), i=0, t0=null, DUR=1900;
+  ctx.frame(function(ts){
+    if(t0===null) t0=ts;
+    var el=ts-t0, k=Math.min(1,el/DUR);
+    bar.style.width=((i+k)/cuts.length*100)+'%';
+    if(el>=DUR){ t0=ts; i++;
+      if(i>=cuts.length){ end.classList.add('on');
+        if(i>cuts.length+1){ i=0; end.classList.remove('on'); } }
+      cuts.forEach(function(c,n){ c.classList.toggle('on', n===Math.min(i,cuts.length-1)); });
+    }
+  });
+});
+
+/* =========================================================================
+   28 — EDITORIAL MANIFESTO
+   Almost no imagery. The argument, set as type, one line at a time.
+   ========================================================================= */
+C(28,'EDITORIAL MANIFESTO','the argument set as type, almost no imagery',function(root,ctx){
+  var L=[
+    ['A motorcycle is a product.',0],
+    ['A brand is more than its product.',0],
+    ['So we took the motorcycle apart on paper.',0],
+    ['Form. Structure. Material. Manufacture.',1],
+    ['None of those four words needs two wheels.',0],
+    ['The product can change.',0],
+    ['The identity does not.',1]
+  ];
+  root.innerHTML=
+  '<style>'+
+  '.xs{background:var(--cream);padding:var(--entry) var(--pad) 110px;}'+
+  '.xs .in{max-width:1100px;margin:0 auto;}'+
+  '.xs .lines{margin-top:66px;}'+
+  '.xs .lines p{font-family:var(--bb);text-transform:uppercase;line-height:1.06;letter-spacing:.12em;'+
+    'font-size:clamp(1.3rem,3.5vw,2.9rem);color:var(--ink-26);margin:0 0 6px;'+
+    'transition:color .6s;}'+
+  '.xs .lines p.hi{color:var(--ink-78);} .xs .lines p.cy{color:var(--cy);}'+
+  '.xs .close{margin-top:64px;border-top:1px solid var(--hair);padding-top:34px;'+
+    'display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;}'+
+  '.xs .close p{font-family:var(--bb);text-transform:uppercase;letter-spacing:.14em;line-height:.92;'+
+    'font-size:clamp(1.6rem,4.4vw,3.6rem);margin:0;color:var(--ink-78);}'+
+  '.xs .close p b{color:var(--cy);font-weight:400;}'+
+  '.xs .strip{display:flex;gap:2px;margin-top:44px;}'+
+  '.xs .strip img{flex:1 1 0;min-width:0;width:100%;aspect-ratio:1/1;object-fit:cover;filter:grayscale(.55) contrast(1.05);opacity:.9;}'+
+  '</style>'+
+  '<section class="xs"><div class="in">'+
+    '<span class="ey ey--gold">Designed DNA: SWITCH</span>'+
+    '<div class="lines" id="xsl">'+L.map(function(l,i){
+      return '<p data-i="'+i+'" class="'+(l[1]?'cy':'')+'">'+l[0]+'</p>';}).join('')+'</div>'+
+    '<div class="close"><p>From one product<br><b>to an entire system.</b></p>'+
+      '<span class="mono">Silent Foundry · extraction &amp; translation</span></div>'+
+    '<div class="strip">'+['bike'].concat(CATS.map(function(c){return c.img;})).map(function(k){
+      return '<img src="'+IMG[k]+'" alt="">';}).join('')+'</div>'+
+  '</div></section>';
+  var ps=[].slice.call(root.querySelectorAll('#xsl p')), i=0;
+  ctx.timer(function(){ if(!MOTION)return;
+    ps.forEach(function(p,k){ p.classList.toggle('hi', k<=i && !p.classList.contains('cy')); });
+    i=(i+1)%(ps.length+2);
+  },700);
+});
+
+/* =========================================================================
+   29 — TRANSFER MAP
+   The methodology graphic: SOURCE → EXTRACTION → TRANSLATION → OUTPUT,
+   drawn once, and reusable for any future venture.
+   ========================================================================= */
+C(29,'TRANSFER MAP','the methodology drawn once — reusable for any venture',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xt{background:var(--paper);padding:var(--entry) var(--pad) 0;}'+
+  '.xt .in{max-width:var(--frame);margin:0 auto;}'+
+  '.xt .map{position:relative;margin-top:60px;display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr;gap:0;}'+
+  '.xt .st{position:relative;padding:0 clamp(12px,2vw,30px);}'+
+  '.xt .st:first-child{padding-left:0;} .xt .st:last-child{padding-right:0;}'+
+  '.xt .hdr{display:flex;align-items:baseline;gap:10px;padding-bottom:14px;border-bottom:1px solid var(--hair);}'+
+  '.xt .hdr b{font-family:var(--dm);font-size:.5rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--cy);}'+
+  '.xt .hdr i{font-style:normal;font-family:var(--dm);font-size:.42rem;letter-spacing:.2em;color:var(--ink-26);}'+
+  '.xt .body{padding-top:20px;}'+
+  '.xt .body img{width:100%;aspect-ratio:4/3;object-fit:cover;filter:grayscale(.45) contrast(1.06);}'+
+  '.xt .pl{display:flex;flex-wrap:wrap;gap:5px;}'+
+  '.xt .pl span{font-family:var(--dm);font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;'+
+    'color:var(--ink-38);border:1px solid var(--hair);padding:5px 7px;}'+
+  '.xt .pl span.on{color:var(--cy);border-color:rgba(10,127,153,.5);}'+
+  '.xt .og{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}'+
+  '.xt .og img{aspect-ratio:1/1;}'+
+  '.xt .flow{position:absolute;left:0;right:0;top:-26px;height:1px;background:var(--hair);}'+
+  '.xt .flow i{position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--cy-b);}'+
+  '.xt .note{margin-top:20px;font-size:.62rem;line-height:1.6;color:var(--ink-38);}'+
+  '.xt .foot{margin-top:56px;border-top:1px solid var(--hair);padding:26px 0 var(--entry);'+
+    'display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}'+
+  '@media(max-width:900px){.xt .map{grid-template-columns:1fr 1fr;gap:26px;}.xt .flow{display:none;}}'+
+  '</style>'+
+  '<section class="xt"><div class="in">'+
+    '<span class="ey ey--cy">Designed DNA: SWITCH</span>'+
+    '<h2 class="hl" style="margin-top:var(--eyegap)">How Silent Foundry<br>moves a brand.</h2>'+
+    '<div class="map">'+
+      '<div class="flow"><i id="xtd"></i></div>'+
+      '<div class="st"><div class="hdr"><b>SOURCE</b><i>01</i></div><div class="body">'+
+        '<img src="'+IMG.bike+'" alt=""><p class="note">An award-winning electric motorcycle, its IP and its tooling.</p></div></div>'+
+      '<div class="st"><div class="hdr"><b>EXTRACT</b><i>02</i></div><div class="body">'+
+        '<div class="pl" id="xtp">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div>'+
+        '<p class="note">Eight principles, written down until they stop describing a motorcycle.</p></div></div>'+
+      '<div class="st"><div class="hdr"><b>TRANSLATE</b><i>03</i></div><div class="body">'+
+        '<div style="background:#e9e4db;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center">'+
+        svgOf(GEO.speakerPath,{stroke:'#0a7f99',sw:1.3})+'</div>'+
+        '<p class="note">The rules are re-issued against a new function.</p></div></div>'+
+      '<div class="st"><div class="hdr"><b>OUTPUT</b><i>04</i></div><div class="body">'+
+        '<div class="og">'+CATS.map(function(c){return '<img src="'+IMG[c.img]+'" alt="">';}).join('')+
+        '<img src="'+IMG.amp+'" alt=""></div>'+
+        '<p class="note">A venture with more than one thing to sell.</p></div></div>'+
+    '</div>'+
+    '<div class="foot"><span class="mono">this map is not about SWITCH · SWITCH is the first time we ran it</span>'+
+      '<span class="mono mono--cy">↓ product portfolio</span></div>'+
+  '</div></section>';
+  var dot=root.querySelector('#xtd'), tags=[].slice.call(root.querySelectorAll('#xtp span')), t=0, h=0;
+  ctx.frame(function(){ t+=0.0022; if(t>1) t=0; dot.style.left=(t*100)+'%'; });
+  ctx.timer(function(){ if(!MOTION)return; h=(h+1)%tags.length;
+    tags.forEach(function(s,k){s.classList.toggle('on',k===h);}); },420);
+});
+
+/* =========================================================================
+   30 — NO EXPLANATION
+   Radical test: five states, almost no prose, ending inside the portfolio.
+   ========================================================================= */
+C(30,'NO EXPLANATION','five states, almost no prose, ends inside the portfolio',function(root,ctx){
+  root.innerHTML=
+  '<style>'+
+  '.xu{background:#0a0c0f;color:var(--pale);}'+
+  '.xu .tall{height:500vh;position:relative;}'+
+  '.xu .pin{position:sticky;top:0;height:100vh;overflow:hidden;}'+
+  '.xu .st{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .5s;}'+
+  '.xu .st.on{opacity:1;}'+
+  '.xu .st img{max-width:74%;max-height:70%;object-fit:contain;filter:grayscale(.4) contrast(1.1) brightness(.86);}'+
+  '.xu .st svg{width:min(70%,780px);}'+
+  '.xu .st svg path{stroke:#00b4d8;stroke-width:1.4;}'+
+  '.xu .p8{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;width:min(80%,900px);background:rgba(244,241,236,.12);}'+
+  '.xu .p8 span{background:#0a0c0f;padding:16px 12px;font-family:var(--dm);font-size:.56rem;font-weight:400;'+
+    'letter-spacing:.18em;text-transform:uppercase;color:#00b4d8;text-align:center;}'+
+  '.xu .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:94%;}'+
+  '.xu .grid img{width:100%;aspect-ratio:3/4;object-fit:cover;max-width:none;max-height:none;}'+
+  '.xu .cap{position:absolute;left:var(--pad);bottom:9%;z-index:4;}'+
+  '.xu .cap b{font-family:var(--bb);font-size:clamp(1.1rem,2.6vw,2.1rem);letter-spacing:.16em;text-transform:uppercase;'+
+    'color:#f4f1ec;font-weight:400;display:block;}'+
+  '.xu .prog{position:absolute;left:var(--pad);right:var(--pad);bottom:5%;height:1px;background:rgba(244,241,236,.16);z-index:4;}'+
+  '.xu .prog i{display:block;height:100%;background:#00b4d8;width:0;}'+
+  '@media(max-width:900px){.xu .p8{grid-template-columns:1fr 1fr;}.xu .grid{grid-template-columns:repeat(3,1fr);}}'+
+  '</style>'+
+  '<section class="xu"><div class="tall"><div class="pin">'+
+    '<div class="st on" data-i="0"><img src="'+IMG.bike+'" alt=""></div>'+
+    '<div class="st" data-i="1">'+svgOf(GEO.bikePath,{stroke:'#00b4d8',sw:1.4})+'</div>'+
+    '<div class="st" data-i="2"><div class="p8">'+P8.map(function(k){return '<span>'+k+'</span>';}).join('')+'</div></div>'+
+    '<div class="st" data-i="3">'+svgOf(GEO.speakerPath,{stroke:'#00b4d8',sw:1.4})+'</div>'+
+    '<div class="st" data-i="4"><div class="grid">'+
+      ['bike'].concat(CATS.map(function(c){return c.img;})).slice(0,5).map(function(k){
+        return '<img src="'+IMG[k]+'" alt="">';}).join('')+'</div></div>'+
+    '<div class="cap"><b id="xuc">SWITCH</b></div>'+
+    '<div class="prog"><i id="xup"></i></div>'+
+  '</div></div></section>';
+  var tall=root.querySelector('.tall'), sts=[].slice.call(root.querySelectorAll('.xu .st')),
+      cap=root.querySelector('#xuc'), pg=root.querySelector('#xup');
+  var WORD=['SWITCH','','EIGHT','AGAIN','SWITCH'];
+  function draw(){
+    var t=ctx.pinProg(tall), i=Math.min(sts.length-1, Math.floor(t*sts.length));
+    sts.forEach(function(s,k){ s.classList.toggle('on',k===i); });
+    cap.textContent=WORD[i]; pg.style.width=(t*100)+'%';
+  }
+  ctx.on(window,'scroll',draw); ctx.on(window,'resize',draw); draw();
+});
+</script>
+
+<script>
+/* =========================================================================
+   BOOTSTRAP — numbered boxes on the bar (CLAUDE.md house rule: boxes, not a
+   drag slider), arrow keys, deep link, motion + frame-guide toggles.
+   ========================================================================= */
+(function(){
+  var boxes=document.getElementById('labboxes');
+  var prev=document.createElement('button'); prev.className='nav'; prev.textContent='‹'; prev.title='previous';
+  boxes.appendChild(prev);
+  for(var i=0;i<=30;i++){
+    var b=document.createElement('button');
+    b.dataset.n=i; b.textContent=(i<10?'0':'')+i;
+    b.title=(CONCEPTS[i]?CONCEPTS[i].name:'');
+    b.addEventListener('click',(function(n){return function(){show(n);};})(i));
+    boxes.appendChild(b);
+  }
+  var next=document.createElement('button'); next.className='nav'; next.textContent='›'; next.title='next';
+  boxes.appendChild(next);
+  prev.addEventListener('click',function(){ show((CUR+30)%31); });
+  next.addEventListener('click',function(){ show((CUR+1)%31); });
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'){ show((CUR+1)%31); }
+    else if(e.key==='ArrowLeft'){ show((CUR+30)%31); }
+  });
+
+  document.getElementById('tgAnim').addEventListener('click',function(){
+    MOTION=!MOTION; this.setAttribute('aria-pressed',String(MOTION));
+    this.textContent = MOTION?'motion on':'motion off';
+  });
+  document.getElementById('tgGrid').addEventListener('click',function(){
+    var on=document.body.classList.toggle('guides');
+    this.setAttribute('aria-pressed',String(on));
+  });
+  var g=document.createElement('style');
+  g.textContent='body.guides #stage{position:relative;}'+
+    'body.guides #stage::before{content:"";position:fixed;left:50%;top:0;bottom:0;width:min(1600px,100vw);'+
+    'transform:translateX(-50%);border-left:1px solid rgba(0,180,216,.35);border-right:1px solid rgba(0,180,216,.35);'+
+    'pointer-events:none;z-index:50;}'+
+    'body.guides #stage::after{content:"1600 FRAME";position:fixed;left:50%;top:52px;transform:translateX(-50%);'+
+    'font:400 9px/1 \'DM Sans\',sans-serif;letter-spacing:.24em;color:rgba(0,180,216,.8);z-index:50;pointer-events:none;}';
+  document.head.appendChild(g);
+
+  var m=/[#&]c=(\d+)/.exec(location.hash);
+  show(m ? Math.max(0,Math.min(30,+m[1])) : 0);
+})();
+</script>
+</body>
+</html>
