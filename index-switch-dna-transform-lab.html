@@ -15647,6 +15647,972 @@ MC(30,'SYNTHESIS','the recommendation: the control’s structure, one gold-to-cy
   setTimeout(function(){ mshow(m?Math.max(0,Math.min(MMAX,+m[1])):0); }, 1900);
 })();
 </script>
+<style id="sf-xfer-css">
+/* =========================================================================
+   THE TRANSFER ENGINE — shared by every refined SWITCH and Marshall concept.
+   One mechanic, stated once:
+     a characteristic is FOUND on the real object in gold,
+     the SAME object detaches and turns cyan while it travels,
+     and it lands in the language, where it becomes the permanent record.
+   Nothing is left floating behind.
+   ========================================================================= */
+#sf-lab-mount .din,#sf-mlab-mount .min{position:relative;}
+#sf-lab-mount .xsrclayer,#sf-mlab-mount .xsrclayer{position:absolute;inset:0;pointer-events:none;}
+#sf-lab-mount .xsrc,#sf-mlab-mount .xsrc{overflow:visible;}
+#sf-lab-mount .xfly,#sf-mlab-mount .xfly{overflow:visible;will-change:transform,opacity;}
+#sf-lab-mount .xtar,#sf-mlab-mount .xtar{opacity:.10;transition:opacity .9s ease;}
+#sf-lab-mount .xtar.on,#sf-mlab-mount .xtar.on{opacity:1;}
+#sf-lab-mount .xch .vcap,#sf-mlab-mount .xch .vcap{transition:opacity .8s ease;}
+#sf-lab-mount .xch.dim .vcap{opacity:.34;}
+/* the editorial band used by SWITCH 33 */
+#sf-lab-mount .xband{display:grid;grid-template-columns:132px 1fr;gap:20px;align-items:center;
+  border-top:1px solid rgba(10,10,10,.12);padding:16px 0;}
+#sf-lab-mount .xband:last-child{border-bottom:1px solid rgba(10,10,10,.12);}
+#sf-lab-mount .xband .xbl{font-family:var(--lab-dm);font-size:.46rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.5);line-height:1.5;}
+#sf-lab-mount .xband .xbl i{font-style:normal;display:block;color:var(--lab-cyb);
+  font-size:.42rem;letter-spacing:.24em;margin-bottom:5px;}
+#sf-lab-mount .xband svg{width:100%;height:auto;display:block;overflow:visible;max-height:96px;}
+/* the vertical genome strip used by SWITCH 03 */
+#sf-lab-mount .xstrip{border-top:1px solid rgba(10,10,10,.12);}
+#sf-lab-mount .xrow{display:grid;grid-template-columns:34px 1fr 150px;gap:16px;align-items:center;
+  border-bottom:1px solid rgba(10,10,10,.10);padding:11px 0;}
+#sf-lab-mount .xrow .xn{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.22em;color:var(--lab-cyb);}
+#sf-lab-mount .xrow .xl{font-family:var(--lab-dm);font-size:.52rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.55);font-weight:300;}
+#sf-lab-mount .xrow svg{width:100%;height:auto;display:block;overflow:visible;max-height:58px;}
+/* the five written rules used by SWITCH 22 */
+#sf-lab-mount .xrule{display:grid;grid-template-columns:118px 1fr;gap:22px;align-items:center;
+  border-top:1px solid rgba(10,10,10,.12);padding:20px 0;}
+#sf-lab-mount .xrule:last-child{border-bottom:1px solid rgba(10,10,10,.12);}
+#sf-lab-mount .xrule svg{width:100%;height:auto;display:block;overflow:visible;max-height:74px;}
+#sf-lab-mount .xrule p{font-family:var(--lab-bb);font-weight:300;letter-spacing:.14em;
+  text-transform:uppercase;font-size:clamp(.82rem,1.25vw,1.05rem);line-height:1.15;
+  color:rgba(10,10,10,.72);margin:0;}
+#sf-lab-mount .xrule span{display:block;font-family:var(--lab-dm);font-size:.42rem;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--lab-cyb);margin-top:8px;}
+/* specimen slots used by SWITCH 01 */
+#sf-lab-mount .xslot{position:absolute;pointer-events:none;}
+#sf-lab-mount .xslot svg{width:100%;height:auto;display:block;overflow:visible;}
+#sf-lab-mount .xslot .sn{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.46);display:block;margin-top:7px;white-space:nowrap;}
+#sf-lab-mount .xslot .sn i{font-style:normal;color:var(--lab-cyb);margin-right:6px;}
+@media(max-width:900px){
+  #sf-lab-mount .xband{grid-template-columns:1fr;gap:10px;}
+  #sf-lab-mount .xrow{grid-template-columns:28px 1fr;}
+  #sf-lab-mount .xrow svg{grid-column:1 / -1;max-height:38px;}
+  #sf-lab-mount .xrule{grid-template-columns:1fr;gap:12px;}
+  #sf-lab-mount .xslot{position:static !important;width:auto !important;margin-top:14px;}
+}
+</style>
+
+<script id="sf-xfer-js">
+/* ---------- geometry: one frame shared by the source overlay and its target,
+     so the piece that lands registers exactly with the piece that was waiting.
+     Without this the flyer would arrive near the chip instead of into it. ---- */
+function BB43R(b,pad){ pad=(pad==null?0.16:pad);
+  var w=b.w*(1+pad*2), h=b.h*(1+pad*2), cx=b.x+b.w/2, cy=b.y+b.h/2, TA=4/3;
+  if(w/h<TA) w=h*TA; else h=w/TA;
+  return {x:cx-w/2, y:cy-h/2, w:w, h:h}; }
+function VBOF(r){ return r.x.toFixed(1)+' '+r.y.toFixed(1)+' '+r.w.toFixed(1)+' '+r.h.toFixed(1); }
+/* twenty ribs at their real pitch need a finer pen than a silhouette, or they
+   read as a filled rectangle once the chip is small. Source and target use the
+   same value so the piece that lands still registers with the piece waiting. */
+function XSW(k,base){ return k==='ribs' ? (base||2.3)*0.5 : (base||2.3); }
+
+/* the gold reading of one characteristic, laid exactly over the drawing.
+   preserveAspectRatio="none" matches the stage, so it sits on the real part. */
+function goldSrc(k,cls,sw){
+  var r=BB43R(V[k].bb);
+  return '<svg class="xsrc g_'+k+' '+(cls||'')+'" viewBox="'+VBOF(r)+'" preserveAspectRatio="none" fill="none" '+
+    'style="position:absolute;right:auto;bottom:auto;left:'+((r.x+170)/1540*100).toFixed(3)+'%;top:'+
+    ((r.y+100)/869*100).toFixed(3)+'%;width:'+(r.w/1540*100).toFixed(3)+'%;height:'+(r.h/869*100).toFixed(3)+
+    '%;opacity:0">'+
+    V[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+AU+'" stroke-width="'+XSW(k,sw)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg>';
+}
+function srcLayer(keys,cls,sw){
+  return '<div class="xsrclayer">'+keys.map(function(k){return goldSrc(k,cls,sw);}).join('')+'</div>';
+}
+/* the waiting record. Same frame as the source, so the merge is exact. */
+function xsvg(k,sw,extra){
+  var r=BB43R(V[k].bb);
+  return '<svg class="xtar t_'+k+'" viewBox="'+VBOF(r)+'" fill="none"'+(extra||'')+'>'+
+    V[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+CY+'" stroke-width="'+XSW(k,sw)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg>';
+}
+function xchip(k,cls,sw){
+  var d=V[k];
+  return '<div class="vcell xch '+(cls||'')+'" data-key="'+k+'">'+xsvg(k,sw)+
+    '<span class="vcap"><i>'+d.id+'</i>'+d.lab+'</span></div>';
+}
+
+/* ---------- dash bookkeeping ---------- */
+function xdash(el){ if(!el) return;
+  [].forEach.call(el.querySelectorAll('path'),function(p){
+    var L=500; try{L=p.getTotalLength()||500;}catch(e){}
+    p.style.strokeDasharray=L; p.style.strokeDashoffset=L; }); }
+function xundash(el,dur,step){ if(!el) return;
+  [].forEach.call(el.querySelectorAll('path'),function(p,i){
+    p.style.transition='stroke-dashoffset '+(dur||900)+'ms cubic-bezier(.2,.7,.26,1) '+(i*(step||0))+'ms';
+    p.style.strokeDashoffset='0'; }); }
+function xreveal(el,dur,step){ if(!el) return; el.classList.add('on'); xundash(el,dur,step); }
+
+/* ---------- the flight ---------- */
+function xflyer(host,srcEl){
+  var h=host.getBoundingClientRect(), a=srcEl.getBoundingClientRect();
+  var f=srcEl.cloneNode(true);
+  f.setAttribute('class','xfly');
+  f.style.cssText='position:absolute;left:'+(a.left-h.left)+'px;top:'+(a.top-h.top)+'px;'+
+    'width:'+a.width+'px;height:'+a.height+'px;pointer-events:none;opacity:1;z-index:7;';
+  [].forEach.call(f.querySelectorAll('path'),function(p){
+    p.style.strokeDasharray=''; p.style.strokeDashoffset='0';
+    p.style.stroke=AU; p.style.transition='stroke 700ms ease'; });
+  host.appendChild(f);
+  return f;
+}
+function xflyTo(f,host,dstEl,dur,toCyan){
+  var a=f.getBoundingClientRect(), b=dstEl.getBoundingClientRect();
+  if(!a.width||!b.width) return;
+  var s=b.width/a.width;
+  var dx=(b.left+b.width/2)-(a.left+a.width/2);
+  var dy=(b.top+b.height/2)-(a.top+a.height/2);
+  f.style.transformOrigin='50% 50%';
+  f.style.transition='transform '+dur+'ms cubic-bezier(.34,.68,.22,1), opacity .55s ease';
+  /* force a frame so the transition actually runs */
+  void f.offsetWidth;
+  f.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+s.toFixed(4)+')';
+  if(toCyan) setTimeout(function(){
+    [].forEach.call(f.querySelectorAll('path'),function(p){ p.style.stroke=CY; }); }, Math.round(dur*0.34));
+}
+
+/* ---------- the orchestrator ----------
+   items: [{k:'encl', src:'.g_encl', dst:'.t_encl'}]
+   Each characteristic: gold draws on the object, holds, detaches, turns cyan
+   in flight, lands, and the record completes. The gold trace leaves with it,
+   so the object is clean again afterwards. ---------- */
+function xtransfer(root,x,host,items,o){
+  o=o||{};
+  var ran=false;                     /* the observer AND the safety net both
+                                        call fire(); without this every flight
+                                        happens twice and leaves a stray flyer */
+  var t0=(o.t0==null?260:o.t0), gap=(o.gap==null?1500:o.gap),
+      draw=(o.draw==null?750:o.draw), hold=(o.hold==null?420:o.hold),
+      fly=(o.fly==null?1250:o.fly), ghost=(o.ghost==null?0:o.ghost);
+  items.forEach(function(it){ xdash(root.querySelector(it.src)); xdash(root.querySelector(it.dst)); });
+  if(!window.MOTION){
+    items.forEach(function(it){
+      var s=root.querySelector(it.src); if(s) s.style.opacity=String(ghost);
+      var d=root.querySelector(it.dst); if(d){ d.classList.add('on');
+        [].forEach.call(d.querySelectorAll('path'),function(p){ p.style.strokeDashoffset='0'; }); } });
+    if(o.onDone) o.onDone();
+    return;
+  }
+  var fire=function(){
+    if(ran) return; ran=true;
+    items.forEach(function(it,i){
+      var t=t0+i*gap+(it.dt||0);
+      var s=root.querySelector(it.src), d=root.querySelector(it.dst);
+      if(!s||!d) return;
+      x.delay(function(){ s.style.transition='opacity .35s ease'; s.style.opacity='1'; xundash(s,draw,0); },t);
+      x.delay(function(){
+        var f=xflyer(host,s);
+        s.style.opacity=String(ghost);
+        x.delay(function(){ xflyTo(f,host,d,fly,true); },40);
+        x.delay(function(){ f.style.opacity='0'; xreveal(d,900,0); },40+fly);
+        x.delay(function(){ if(f.parentNode) f.parentNode.removeChild(f); },40+fly+700);
+      }, t+draw+hold);
+    });
+    if(o.onDone) x.delay(o.onDone, t0+items.length*gap+draw+hold+fly);
+  };
+  var anchor=root.querySelector(items[0].src);
+  if(!anchor){ fire(); return; }
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+    if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+  io.observe(host);
+  x.delay(fire,3000);
+}
+/* the same device, but with a pause in a middle zone — Marshall 09 needs the
+   transitional state to be visible as a state, not just as travel. */
+function xtransfer2(root,x,host,items,o){
+  o=o||{}; var ran=false;
+  var t0=(o.t0==null?300:o.t0), gap=(o.gap==null?2100:o.gap),
+      draw=(o.draw==null?800:o.draw), hold=(o.hold==null?420:o.hold),
+      fly1=(o.fly1==null?1100:o.fly1), pause=(o.pause==null?620:o.pause),
+      fly2=(o.fly2==null?1100:o.fly2);
+  items.forEach(function(it){ xdash(root.querySelector(it.src)); xdash(root.querySelector(it.dst)); });
+  if(!window.MOTION){
+    items.forEach(function(it){
+      var s=root.querySelector(it.src); if(s) s.style.opacity='0';
+      var m=root.querySelector(it.mid); if(m){ m.classList.add('on');
+        [].forEach.call(m.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); m.style.opacity='.18'; }
+      var d=root.querySelector(it.dst); if(d){ d.classList.add('on');
+        [].forEach.call(d.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); } });
+    return;
+  }
+  var fire=function(){
+    if(ran) return; ran=true;
+    items.forEach(function(it,i){
+      var t=t0+i*gap+(it.dt||0);
+      var s=root.querySelector(it.src), m=root.querySelector(it.mid), d=root.querySelector(it.dst);
+      if(!s||!m||!d) return;
+      x.delay(function(){ s.style.transition='opacity .35s ease'; s.style.opacity='1'; xundash(s,draw,0); },t);
+      x.delay(function(){
+        var f=xflyer(host,s);
+        s.style.opacity='0';
+        x.delay(function(){ xflyTo(f,host,m,fly1,true); },40);
+        /* the middle is the TRANSITIONAL state, so it is briefly the only thing lit */
+        x.delay(function(){ m.classList.add('on'); },40+fly1);
+        x.delay(function(){ xflyTo(f,host,d,fly2,false); },40+fly1+pause);
+        x.delay(function(){ m.style.transition='opacity 1s ease'; m.style.opacity='.16'; },40+fly1+pause+260);
+        x.delay(function(){ f.style.opacity='0'; xreveal(d,900,0); },40+fly1+pause+fly2);
+        x.delay(function(){ if(f.parentNode) f.parentNode.removeChild(f); },40+fly1+pause+fly2+700);
+      }, t+draw+hold);
+    });
+  };
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+    if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+  io.observe(host);
+  x.delay(fire,3200);
+}
+/* gold reads the object, and the record simply completes where it stands —
+   no travel. Used where a flight across the page would be too busy. */
+function xpopulate(root,x,host,items,o){
+  o=o||{}; var ran=false;
+  var t0=(o.t0==null?300:o.t0), gap=(o.gap==null?900:o.gap),
+      draw=(o.draw==null?700:o.draw), hold=(o.hold==null?380:o.hold);
+  items.forEach(function(it){ xdash(root.querySelector(it.src)); xdash(root.querySelector(it.dst)); });
+  if(!window.MOTION){
+    /* with animation disabled the reading still has to READ: the gold marks
+       stay lightly on the machine and every record is simply complete. */
+    items.forEach(function(it){
+      var s=root.querySelector(it.src);
+      if(s){ s.style.opacity=String(o.staticSrc==null?0.34:o.staticSrc);
+        [].forEach.call(s.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); }
+      var d=root.querySelector(it.dst); if(d){ d.classList.add('on');
+        [].forEach.call(d.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); } });
+    if(o.onDone) o.onDone();
+    return;
+  }
+  var fire=function(){
+    if(ran) return; ran=true;
+    items.forEach(function(it,i){
+      var t=t0+i*gap+(it.dt||0);
+      var s=root.querySelector(it.src), d=root.querySelector(it.dst);
+      if(!s||!d) return;
+      x.delay(function(){ s.style.transition='opacity .35s ease'; s.style.opacity='1'; xundash(s,draw,0); },t);
+      x.delay(function(){ xreveal(d,850,0); },t+draw);
+      x.delay(function(){ s.style.opacity=String(o.ghost==null?0:o.ghost); },t+draw+hold+500);
+    });
+    if(o.onDone) x.delay(o.onDone, t0+items.length*gap+draw+600);
+  };
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+    if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+  io.observe(host);
+  x.delay(fire,3000);
+}
+</script>
+<style id="sf-x-switch-css">
+#sf-lab-mount .x01wrap{position:relative;padding:9% 16%;}
+#sf-lab-mount .x01wrap .vw{width:100%;}
+#sf-lab-mount .xframe{position:relative;width:100%;aspect-ratio:1540/869;}
+#sf-lab-mount .xfade img{transition:opacity 2.2s ease;}
+#sf-lab-mount .vlib.gc3{grid-template-columns:repeat(3,1fr);}
+#sf-lab-mount .vlib.gc5{grid-template-columns:repeat(5,1fr);}
+#sf-lab-mount .xnote{font-family:var(--lab-dm);font-size:.46rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.34);display:block;margin-top:14px;}
+@media(max-width:900px){
+  #sf-lab-mount .x01wrap{padding:0;}
+  #sf-lab-mount .vlib.gc3,#sf-lab-mount .vlib.gc5{grid-template-columns:repeat(2,1fr) !important;}
+}
+</style>
+
+<script>
+/* =========================================================================
+   SWITCH — SHORTLIST REFINEMENT
+   Seven survivors, re-registered in place (C(n) overwrites), so nothing is
+   renumbered and no earlier layer is edited.
+
+   Every one now obeys the same rule:
+     GOLD  = found and identified on the real machine
+     CYAN  = extracted and codified as language
+   and the motion exists only to show one becoming the other.
+   No legends, no invented dimensions, no part codes.
+   ========================================================================= */
+
+/* a cyan record placed at a characteristic's TRUE position inside a frame that
+   shares the drawing's own coordinates — used where the language reassembles
+   into the shape of the machine it came from. */
+function spotSvg(k,col,cls,sw){
+  var r=BB43R(V[k].bb);
+  return '<svg class="'+(cls||'')+' t_'+k+'" viewBox="'+VBOF(r)+'" preserveAspectRatio="none" fill="none" '+
+    'style="position:absolute;right:auto;bottom:auto;left:'+((r.x+170)/1540*100).toFixed(3)+'%;top:'+
+    ((r.y+100)/869*100).toFixed(3)+'%;width:'+(r.w/1540*100).toFixed(3)+'%;height:'+(r.h/869*100).toFixed(3)+'%">'+
+    V[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+(col||CY)+'" stroke-width="'+XSW(k,sw)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg>';
+}
+/* the same chip, without the catalogue number */
+function xchipN(k,cls,sw){
+  return '<div class="vcell xch '+(cls||'')+'" data-key="'+k+'">'+xsvg(k,sw)+
+    '<span class="vcap">'+V[k].lab+'</span></div>';
+}
+function xitems(keys){ return keys.map(function(k){ return {k:k,src:'.g_'+k,dst:'.t_'+k}; }); }
+
+/* ==================== 01 — DETAIL LIBRARY (spatial) ==================== */
+C(1,'DETAIL LIBRARY','nine characteristics are read off the machine and settle around it as a constellation',function(r,x){
+  var SLOT=[
+    ['sil'  ,  1,  2, 15],  ['neg'  , 21,  0, 12],  ['encl' , 84,  3, 15],
+    ['axis' , 85, 33, 12],  ['ribs' , 85, 63, 12],  ['fast' , 70, 86, 13],
+    ['shk'  , 45, 88, 12],  ['whl'  , 15, 86, 14],  ['strc' ,  1, 44, 12]
+  ];
+  var KS=SLOT.map(function(s){return s[0];});
+  r.innerHTML=vsec('v01',hd()+
+    '<div class="vstage"><div class="x01wrap">'+
+      bike2({src:.30, svg:srcLayer(KS)})+
+      SLOT.map(function(s){
+        return '<div class="xslot" style="left:'+s[1]+'%;top:'+s[2]+'%;width:'+s[3]+'%">'+
+          xsvg(s[0],2.3)+'<span class="sn"><i>'+V[s[0]].id+'</i>'+V[s[0]].lab+'</span></div>'; }).join('')+
+    '</div></div>'+
+    para()+'<div class="vbtm"></div>');
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1100,draw:640,hold:320,fly:1150});
+});
+
+/* ==================== 03 — DESIGN GENOME (machine | genome) ==================== */
+C(3,'DESIGN GENOME','the machine on the left is read line by line, and the genome fills in on the right',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','fast'];
+  r.innerHTML=vsec('v03',hd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.24, svg:srcLayer(KS)})+'</div>'+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The genome</span>'+
+        '<div class="xstrip">'+KS.map(function(k,i){
+          return '<div class="xrow"><span class="xn">'+V[k].id+'</span>'+
+            '<span class="xl">'+V[k].lab+'</span>'+
+            '<div>'+xsvg(k,2.6)+'</div></div>'; }).join('')+'</div>'+
+        '<span class="xnote">Six readings, in the order they were taken</span></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1250,draw:680,hold:340,fly:1150});
+});
+
+/* ==================== 15 — MACHINE | LANGUAGE ==================== */
+C(15,'MACHINE | LANGUAGE','one characteristic at a time leaves the machine and completes the library beside it',function(r,x){
+  var KS=['sil','encl','ribs','axis','fast','whl'];
+  r.innerHTML=vsec('v15',hd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.18, svg:srcLayer(KS)})+'</div></div>'+
+      '<div><span class="vhead">The language</span>'+
+        '<div class="vlib gc3">'+KS.map(function(k){ return xchip(k); }).join('')+'</div>'+
+        '<p class="vpara" style="margin-top:32px">'+T.p+'</p></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  /* the machine ends clean: every gold trace leaves with the piece it belongs to */
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1500,draw:780,hold:460,fly:1300,ghost:0});
+});
+
+/* ==================== 18 — DESIGN GENOME, CURATED ==================== */
+C(18,'THE CURATED SET','fifteen characteristics, chosen because each one says something different',function(r,x){
+  /* curated, not exhaustive: fifteen readings that describe different aspects
+     of the machine rather than variations of the same one */
+  var FIELD=['sil','whl','encl','ribs','axis','strc','fast','datum','stnc',
+             'neg','edge','mech','seat','swng','shk'];
+  var READ=['encl','sil','whl','axis','ribs'];       /* the five that are shown being read */
+  r.innerHTML=vsec('v18',hd()+
+    '<div class="vcol gcS21">'+
+      '<div><div class="vstage" style="margin-top:0">'+bike2({src:.34, svg:srcLayer(READ)})+'</div>'+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The set</span>'+
+        '<div class="vlib gc5">'+FIELD.map(function(k){ return xchipN(k); }).join('')+'</div></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  var rest=FIELD.filter(function(k){ return READ.indexOf(k)<0; });
+  /* hide the remaining ten BEFORE the sequence runs — with animation disabled
+     xpopulate calls onDone synchronously, so dashing them afterwards would
+     re-hide the very records it had just resolved */
+  rest.forEach(function(k){ xdash(r.querySelector('.t_'+k)); });
+  xpopulate(r,x,r.querySelector('.din'),xitems(READ),{gap:900,draw:680,hold:360,ghost:0,
+    onDone:function(){
+      rest.forEach(function(k,i){
+        /* with animation disabled the remaining ten simply exist */
+        if(!window.MOTION){ xreveal(r.querySelector('.t_'+k),0,0); return; }
+        x.delay(function(){ xreveal(r.querySelector('.t_'+k),800,0); }, i*130);
+      });
+    }});
+});
+
+/* ==================== 20 — THE DRAWING IS USED UP ==================== */
+C(20,'THE DRAWING IS USED UP','everything taken off the machine reassembles on the right — and the photograph is gone',function(r,x){
+  var KS=['sil','encl','ribs','swng','axis','whl','fast','strc','seat','datum'];
+  r.innerHTML=vsec('v20',hd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">What is there</span>'+
+        '<div class="vstage" style="margin-top:0">'+
+          '<div class="xfade">'+bike2({src:.62, svg:srcLayer(KS,'',2)})+'</div>'+
+        '</div></div>'+
+      '<div><span class="vhead">What was taken</span>'+
+        '<div class="xframe" style="margin-top:34px">'+
+          KS.map(function(k){ return spotSvg(k,CY,'xtar',2.1); }).join('')+
+        '</div>'+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:780,draw:520,hold:220,fly:1050,ghost:0,
+    onDone:function(){
+      var im=r.querySelector('.vsrc');
+      if(im) im.style.opacity='.04';
+    }});
+  var im=r.querySelector('.vsrc');
+  if(im&&window.MOTION){ im.style.transition='opacity 5.5s ease'; x.delay(function(){ im.style.opacity='.16'; },2600); }
+});
+
+/* ==================== 22 — FIVE STRONG RULES ==================== */
+C(22,'FIVE STRONG RULES','five things the machine does, each with the piece of it that proves the point',function(r,x){
+  var RULES=[
+    {k:'stnc', t:'It sits low and level.'},
+    {k:'encl', t:'The largest volume is a made object, not a cover.'},
+    {k:'ribs', t:'Surface earns its texture from function.'},
+    {k:'fast', t:'Fixings are shown, not hidden.'},
+    {k:'axis', t:'One axis governs the front of the machine.'}
+  ];
+  var KS=RULES.map(function(o){return o.k;});
+  r.innerHTML=vsec('v22',hd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.22, svg:srcLayer(KS)})+'</div>'+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The rules it keeps</span>'+
+        '<div style="margin-top:6px">'+RULES.map(function(o){
+          return '<div class="xrule"><div>'+xsvg(o.k,2.6)+'</div>'+
+            '<div><p>'+o.t+'</p><span>'+V[o.k].lab+'</span></div></div>'; }).join('')+'</div></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1450,draw:760,hold:420,fly:1250,ghost:0});
+});
+
+/* ==================== 33 — SOURCE FEATURE / EXTRACTED EXPRESSION ============ */
+C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece you end up reading',function(r,x){
+  var KS=['sil','encl','whl','ribs','axis','strc'];
+  r.innerHTML=vsec('v33',hd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.34, svg:srcLayer(KS)})+'</div>'+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The expressions</span>'+
+        '<div style="margin-top:6px">'+KS.map(function(k){
+          return '<div class="xband"><div class="xbl"><i>'+V[k].id+'</i>'+V[k].lab+'</div>'+
+            '<div>'+xsvg(k,2.4)+'</div></div>'; }).join('')+'</div></div>'+
+    '</div>'+'<div class="vbtm"></div>');
+  /* deliberately uneven timing so the reading feels like reading, not a loop */
+  /* uneven offsets so the reading feels like reading rather than a loop,
+     and each piece starts before the one ahead of it has settled */
+  var DT=[0,-120,180,-160,120,-80];
+  var IT=xitems(KS).map(function(it,i){ it.dt=DT[i]; return it; });
+  xtransfer(r,x,r.querySelector('.din'),IT,{t0:300,gap:1320,draw:720,hold:380,fly:1300,ghost:0});
+});
+
+/* ==================== prune and rebuild the SWITCH bar ==================== */
+(function(){
+  var KEEP=[0,1,3,15,18,20,22,33];
+  var keep={}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+  window.NMAX=33;
+
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  KEEP.forEach(function(n,i){
+    if(i===0||i===1){ var g=document.createElement('span'); g.className='gp';
+      g.textContent = i===0?'control':'shortlist';
+      if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=n; b.textContent=(n<10?'0':'')+n;
+    b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(n));
+    bx.appendChild(b);
+  });
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+    i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+  pv.addEventListener('click',function(){step(-1);});
+  nx.addEventListener('click',function(){step(1);});
+
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent=KEEP.length+' options · shortlist';
+
+  /* the earlier layer's deep-link may land on a concept that is now gone */
+  setTimeout(function(){
+    if(!CONCEPTS[CUR]) show(0);
+  },2300);
+})();
+</script>
+<style id="sf-x-marshall-css">
+#sf-mlab-mount .mchar{overflow:visible;pointer-events:none;}
+#sf-mlab-mount .mfrag{position:absolute;overflow:hidden;pointer-events:none;}
+#sf-mlab-mount .mfrag .mcrop{width:100%;height:100%;}
+#sf-mlab-mount .mtar{opacity:.12;transition:opacity .9s ease;}
+#sf-mlab-mount .mtar.on{opacity:1;}
+#sf-mlab-mount .mmid{opacity:0;transition:opacity .7s ease;}
+#sf-mlab-mount .mmid.on{opacity:1;}
+#sf-mlab-mount .mgut{position:absolute;top:0;bottom:0;width:1px;background:rgba(200,169,110,.4);
+  transform-origin:50% 0;}
+#sf-mlab-mount .mswatch{position:relative;overflow:hidden;background:#1a1a1a;aspect-ratio:3/2;}
+#sf-mlab-mount .mswatch .mcrop{width:100%;height:100%;}
+#sf-mlab-mount .mslotcap{font-family:'DM Sans',sans-serif;font-size:.4rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(244,241,236,.42);display:block;margin-top:8px;}
+#sf-mlab-mount .mzoneB .mslotcap{color:rgba(10,10,10,.42);}
+#sf-mlab-mount .mwipe{position:absolute;inset:0;background:var(--m-cream);
+  transform-origin:100% 50%;transition:transform 1.9s cubic-bezier(.3,.7,.24,1);}
+#sf-mlab-mount .mwipe.off{transform:scaleX(0);}
+</style>
+
+<script>
+/* =========================================================================
+   MARSHALL — SHORTLIST REFINEMENT
+   Marshall proves the same thesis as SWITCH but from the cultural side, so
+   the mechanics stay softer: no field sets, no catalogues, no pseudo-CAD.
+   A characteristic is identified on the historic object, it crosses, and it
+   turns up in a product Marshall had never made.
+   ========================================================================= */
+
+/* ---- where each characteristic sits inside the module, so a source on the
+     old cabinet and a target on a new speaker can be the SAME object ---- */
+var MGB={
+  module:{x:0,y:0,w:MU,h:MV},
+  frame :{x:7,y:7,w:MU-14,h:MV-14},
+  corner:{x:0,y:0,w:MU,h:MV},
+  script:{x:26,y:MV*0.53-8,w:48,h:16},
+  piping:{x:2,y:MV-12,w:MU-4,h:16},
+  grille:{x:8,y:5,w:MU-16,h:MV-10},
+  stack :{x:0,y:0,w:MU,h:MV}
+};
+function mBoxIn(c,natW,natH,px,py,pw,ph){
+  return {l:(px/natW-c[0])/c[2]*100, t:(py/natH-c[1])/c[3]*100,
+          w:pw/natW/c[2]*100,        h:ph/natH/c[3]*100}; }
+/* the characteristic, on the real cabinet, inside a crop of the heritage photo */
+function mSrcBox(c,ci,ri,k){
+  var b=MGB[k], x0=MGX[ci], y0=MGY[ri],
+      sx=(MGX[ci+1]-x0)/MU, sy=(MGY[ri+1]-y0)/MV;
+  return mBoxIn(c,1536,1005, x0+b.x*sx, y0+b.y*sy, b.w*sx, b.h*sy); }
+/* the same characteristic, on a contemporary product, at the cabinet's own
+   proportion — the mapping already used everywhere else in this section */
+function mDstBox(i,frac,k){
+  var c=MFAM[i], W=1432, H=806, f=frac||0.60;
+  var x0=c[0]*W, y0=c[1]*H, w=c[2]*W, h=c[3]*H;
+  var rh=h*f, rw=rh*MODR; if(rw>w*0.84){ rw=w*0.84; rh=rw/MODR; }
+  var rx=x0+(w-rw)/2, ry=y0+(h-rh)/2;
+  var b=MGB[k], sx=rw/MU, sy=rh/MV;
+  return mBoxIn(c,W,H, rx+b.x*sx, ry+b.y*sy, b.w*sx, b.h*sy); }
+function mchar(k,box,col,cls,sw,op){
+  var b=MGB[k];
+  return '<svg class="mchar '+cls+'" viewBox="'+b.x.toFixed(1)+' '+b.y.toFixed(1)+' '+
+    b.w.toFixed(1)+' '+b.h.toFixed(1)+'" preserveAspectRatio="none" fill="none" '+
+    'style="position:absolute;right:auto;bottom:auto;left:'+box.l.toFixed(3)+'%;top:'+box.t.toFixed(3)+
+    '%;width:'+box.w.toFixed(3)+'%;height:'+box.h.toFixed(3)+'%'+(op!=null?';opacity:'+op:'')+'">'+
+    MG[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(sw||1.7)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg>'; }
+/* a free-standing abstraction, for the transitional middle of 09 */
+function mmid(k,col,cls,sw){
+  var b=MGB[k];
+  return '<svg class="mchar '+cls+'" viewBox="'+b.x.toFixed(1)+' '+b.y.toFixed(1)+' '+
+    b.w.toFixed(1)+' '+b.h.toFixed(1)+'" fill="none" style="width:100%;height:auto;display:block;overflow:visible">'+
+    MG[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(sw||1.7)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg>'; }
+/* a piece of the photograph itself, sitting exactly over the part it shows,
+   so that when it moves it reads as material being lifted out of history */
+function mfragOver(parentCrop,sub,cls,extra){
+  var b={l:(sub[0]-parentCrop[0])/parentCrop[2]*100, t:(sub[1]-parentCrop[1])/parentCrop[3]*100,
+         w:sub[2]/parentCrop[2]*100, h:sub[3]/parentCrop[3]*100};
+  return '<div class="mfrag '+(cls||'')+'" style="left:'+b.l.toFixed(3)+'%;top:'+b.t.toFixed(3)+
+    '%;width:'+b.w.toFixed(3)+'%;height:'+b.h.toFixed(3)+'%;'+(extra||'')+'">'+
+    mcropIn('stack',sub,'arch','width:100%;height:100%')+'</div>'; }
+function mitems(keys,pfx){ return keys.map(function(k){
+  return {k:k, src:'.mg_'+k, dst:'.md_'+k}; }); }
+
+/* ==================== 01 — THE REFINED CONTROL ==================== */
+MC(1,'THE REFINED CONTROL','the shipping layout, executed properly — the result reads as one argument, the numbers stand alone',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gA gap48 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:44px;display:flex;gap:26px;align-items:flex-start">'+
+          '<div style="flex:0 0 74px">'+mglyph(['module','frame','script'],'#8a6e3a',1.6,'mg1')+'</div>'+
+          '<div style="flex:1 1 auto">'+mlabel(MT.lT)+mp2()+
+            '<div style="margin-top:30px">'+mlabel(MT.lR,'au')+mbr()+'</div></div></div>'+
+      '</div>'+
+      '<div class="mtower mfirst-m">'+
+        mcropIn('stack',MWALL,'arch','aspect-ratio:1.55')+
+        '<div class="g g2 gap3">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1')+
+          mcropIn('fam',MFAM[0],'now','aspect-ratio:1')+'</div>'+
+        mcropIn('fam',MFAM[3],'now','aspect-ratio:1.7')+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:64px">'+
+      '<div class="mdiv mrl" style="background:rgba(138,110,58,.34)"></div>'+
+      mmets('l','mmx')+
+    '</div>'+'<div class="mbtm"></div>');
+  mruleIn(r,'.mrl',x,1200,0);
+  mrise(r,'.mmx .mmet',x,180,420,14);
+  mdraw(r,'.mg1 path',x,150,1000,600);
+  mrise(r,'.mtower > *',x,150,120,20);
+});
+
+/* ==================== 02 — COMMERCIAL PROOF ==================== */
+MC(2,'COMMERCIAL PROOF','the whole story is told above; the numbers get the bottom of the page to themselves',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:40px">'+mlabel(MT.lT)+mp2()+'</div>'+
+        '<div style="margin-top:30px">'+mlabel(MT.lR,'au')+mbr()+'</div></div>'+
+      '<div class="mtower mfirst-m">'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.5')+
+        '<div class="g g2 gap3">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1.1')+
+          mcropIn('fam',MFAM[4],'now','aspect-ratio:1.1')+'</div></div>'+
+    '</div>'+
+    '<div style="margin-top:120px">'+
+      '<div class="mdiv mrl" style="background:rgba(138,110,58,.4)"></div>'+
+      mmets('xl','mmx bare')+
+    '</div>'+
+    '<div class="mbtm" style="height:120px"></div>');
+  mruleIn(r,'.mrl',x,1400,200);
+  mrise(r,'.mmx .mmet',x,260,700,26);
+  mrise(r,'.mtower > *',x,160,120,20);
+});
+
+/* ==================== 03 — FROM AMPLIFIER TO MARKET ==================== */
+MC(3,'FROM AMPLIFIER TO MARKET','a chronology down the page, with more air around it than before',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap80 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:40px">'+mlabel(MT.lT)+mp2()+'</div>'+
+        '<div style="margin-top:30px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+      '</div>'+
+      '<div class="mstage mfirst-m">'+
+        '<div class="mvline mvl" style="position:absolute;left:-30px;top:6px;bottom:40px;"></div>'+
+        '<div class="mtower" style="gap:52px">'+
+          mcell(mcropIn('stack',MWALL,'arch','aspect-ratio:1.9'),'<i>01</i>Heritage','mst')+
+          mcell(mcropIn('stan',MSTAN,'now knock','aspect-ratio:2.1'),'<i>02</i>The first translated object','mst')+
+          mcell('<div class="g g2 gap3">'+[2,3].map(function(i){
+              return mcropIn('fam',MFAM[i],'now','aspect-ratio:1.15');}).join('')+'</div>',
+            '<i>03</i>An expanded range','mst')+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:80px">'+
+      '<div class="mdiv mrl" style="background:rgba(138,110,58,.34)"></div>'+
+      mmets('l','mmx')+'</div>'+'<div class="mbtm"></div>');
+  var v=r.querySelector('.mvl');
+  if(v&&window.MOTION){ v.style.transform='scaleY(0)'; v.style.transition='transform 2.2s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ v.style.transform='scaleY(1)'; },300); }
+  mrise(r,'.mst',x,700,300,22);
+  mruleIn(r,'.mrl',x,1200,300);
+  mrise(r,'.mmx .mmet',x,220,500,20);
+});
+
+/* ==================== 09 — THE BRIDGE ==================== */
+MC(9,'THE BRIDGE','the middle of the page is not the answer — it is the state a characteristic passes through',function(r,x){
+  var KS=['module','frame','piping','script'];
+  var CAB=MCAB, DSTI=2;   /* named CAB, not SRC: SRC is the shared detail-crop table */
+  r.innerHTML=msec('',
+    mhd('big')+mp1('margin-top:26px;max-width:620px')+
+    '<div class="g gD gap32 ai-c" style="margin-top:64px">'+
+      '<div class="mstage">'+
+        mcropIn('stack',CAB,'arch','aspect-ratio:'+(CAB[2]*1536/(CAB[3]*1005)).toFixed(3))+
+        KS.map(function(k){ return mchar(k,mSrcBox(CAB,1,0,k),'#c8a96e','mg_'+k,1.8,0); }).join('')+
+        '<span class="mcap"><i>01</i>What already existed</span>'+
+      '</div>'+
+      '<div class="mhide-m" style="padding:0 8px">'+
+        KS.map(function(k,i){
+          return '<div class="mmid mm_'+k+'" style="margin:'+(i?26:0)+'px auto 0;max-width:104px">'+
+            mmid(k,'#00b4d8','mmg_'+k,1.8)+'</div>'; }).join('')+
+      '</div>'+
+      '<div class="mstage">'+
+        mcropIn('fam',MFAM[DSTI],'now','aspect-ratio:'+(MFAM[DSTI][2]*1432/(MFAM[DSTI][3]*806)).toFixed(3))+
+        KS.map(function(k){ return mchar(k,mDstBox(DSTI,0.62,k),'#00b4d8','mtar md_'+k,1.8); }).join('')+
+        '<span class="mcap"><i>02</i>Where it went</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:74px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    '</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  xtransfer2(r,x,r.querySelector('.min'),
+    KS.map(function(k){ return {src:'.mg_'+k, mid:'.mm_'+k, dst:'.md_'+k}; }),
+    {t0:400,gap:2000,draw:820,hold:380,fly1:1000,pause:640,fly2:1000});
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== 11A — THE PAGE CROSSES THE GUTTER ==================== */
+MC(31,'THE PAGE CROSSES THE GUTTER','three things leave the old page, cross the fold and turn up on the new one',function(r,x){
+  var KS=['script','grille','module'];
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:92px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div class="mstage" style="margin-top:34px">'+
+            mcropIn('stack',MWALL,'arch','aspect-ratio:1.6')+
+            KS.map(function(k){ return mchar(k,mSrcBox(MWALL,1,0,k),'#c8a96e','mg_'+k,1.8,0); }).join('')+
+          '</div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:92px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<span class="mlab">'+MT.lT+'</span>'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="mstage" style="margin-top:34px">'+
+            mcropIn('fam',MFAM[2],'now','aspect-ratio:1.25')+
+            KS.map(function(k){ return mchar(k,mDstBox(2,0.62,k),'#00b4d8','mtar md_'+k,1.8); }).join('')+
+          '</div>'+
+          '<div style="margin-top:40px">'+mlabel(MT.lR,'au')+mbr()+mmets('m','mmx')+'</div>'+
+        '</div></div>'+
+      '<div class="mgut mspl" style="left:50%"></div>'+
+    '</div></div></div>';
+  var sp=r.querySelector('.mspl');
+  if(sp&&window.MOTION){ sp.style.transform='scaleY(0)'; sp.style.transition='transform 1.8s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ sp.style.transform='scaleY(1)'; },240); }
+  xtransfer(r,x,r.querySelector('.min'),mitems(KS),
+    {t0:900,gap:2000,draw:900,hold:520,fly:1700,ghost:0});
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== 11B — MATERIAL MEMORY ==================== */
+MC(32,'MATERIAL MEMORY','pieces of the material itself are lifted out of the old page and the new products are built from them',function(r,x){
+  var FRAG=[['script','The name'],['grille','The weave'],['corner','The corner'],['pipe','The brass']];
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:92px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div class="mstage" style="margin-top:34px">'+
+            mcropIn('stack',MWALL,'arch','aspect-ratio:1.6')+
+            FRAG.map(function(f){ return mfragOver(MWALL,SRC[f[0]],'mf_'+f[0],'opacity:0'); }).join('')+
+          '</div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:92px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<span class="mlab">'+MT.lT+'</span>'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="g g4 gap12" style="margin-top:30px">'+FRAG.map(function(f){
+            return '<div><div class="mswatch ms_'+f[0]+' mtar" style="background:#e0dad1"></div>'+
+              '<span class="mslotcap">'+f[1]+'</span></div>'; }).join('')+'</div>'+
+          '<div class="g g2 gap12" style="margin-top:26px">'+[2,3].map(function(i){
+            return mcropIn('fam',MFAM[i],'now mmask','aspect-ratio:1.15');}).join('')+'</div>'+
+          '<div style="margin-top:34px">'+mlabel(MT.lR,'au')+mbr()+mmets('m','mmx')+'</div>'+
+        '</div></div>'+
+      '<div class="mgut" style="left:50%"></div>'+
+    '</div></div></div>';
+  var host=r.querySelector('.min');
+  var imgs=[].slice.call(r.querySelectorAll('.mmask'));
+  if(!window.MOTION){
+    FRAG.forEach(function(f){ var s=r.querySelector('.mf_'+f[0]); if(s) s.style.opacity='1';
+      var d=r.querySelector('.ms_'+f[0]); if(d){ d.classList.add('on');
+        d.innerHTML=mcropIn('stack',SRC[f[0]],'arch','width:100%;height:100%'); } });
+    imgs.forEach(function(n){ n.classList.add('on'); });
+  }else{
+    var ran=false;
+    var fire=function(){
+      if(ran) return; ran=true;
+      FRAG.forEach(function(f,i){
+        var t=600+i*1500;
+        var s=r.querySelector('.mf_'+f[0]), d=r.querySelector('.ms_'+f[0]);
+        if(!s||!d) return;
+        x.delay(function(){ s.style.transition='opacity .5s ease'; s.style.opacity='1'; },t);
+        x.delay(function(){
+          var fl=xflyer(host,s); s.style.opacity='0';
+          x.delay(function(){ xflyTo(fl,host,d,1500,false); },40);
+          x.delay(function(){ fl.style.opacity='0'; d.classList.add('on');
+            d.innerHTML=mcropIn('stack',SRC[f[0]],'arch','width:100%;height:100%');
+            if(imgs[Math.floor(i/2)]) imgs[Math.floor(i/2)].classList.add('on'); },40+1500);
+          x.delay(function(){ if(fl.parentNode) fl.parentNode.removeChild(fl); },40+1500+700);
+        }, t+700);
+      });
+    };
+    var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+    io.observe(host); x.delay(fire,3200);
+  }
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== 11C — ONE CONTINUOUS DETAIL ==================== */
+MC(33,'ONE CONTINUOUS DETAIL','one thing crosses. Then one more. That is the whole argument.',function(r,x){
+  var KS=['script','piping'];
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:110px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div class="mstage" style="margin-top:40px">'+
+            mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+            KS.map(function(k){ return mchar(k,mSrcBox(MCAB,1,0,k),'#c8a96e','mg_'+k,2,0); }).join('')+
+          '</div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:110px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="mstage" style="margin-top:44px">'+
+            mcropIn('fam',MFAM[2],'now','aspect-ratio:1.2')+
+            KS.map(function(k){ return mchar(k,mDstBox(2,0.62,k),'#00b4d8','mtar md_'+k,2); }).join('')+
+          '</div>'+
+          '<div style="margin-top:44px">'+mmets('m','mmx bare')+'</div>'+
+        '</div></div>'+
+      '<div class="mgut" style="left:50%"></div>'+
+    '</div></div></div>';
+  xtransfer(r,x,r.querySelector('.min'),mitems(KS),
+    {t0:1000,gap:3000,draw:1100,hold:700,fly:2000,ghost:0});
+  mrise(r,'.mmx .mmet',x,200,900,16);
+});
+
+/* ==================== 11D — THE BOOK TURN ==================== */
+MC(34,'THE BOOK TURN','the same spread, read twice: once as history, once as what history produced',function(r,x){
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:92px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div class="mstage" style="margin-top:34px">'+
+            mcropIn('stack',MWALL,'arch','aspect-ratio:1.6')+
+            '<div class="mwipe w1" style="background:#141414"></div></div>'+
+          '<div class="mstage" style="margin-top:3px">'+
+            mcropIn('stack',MCAB,'arch','aspect-ratio:2.6')+
+            '<div class="mwipe w2" style="background:#141414"></div></div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:92px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<span class="mlab">'+MT.lT+'</span>'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="mstage" style="margin-top:34px">'+
+            mcropIn('fam',MFAM[2],'now','aspect-ratio:1.6')+
+            '<div class="mwipe w3"></div></div>'+
+          '<div class="g g2 gap3" style="margin-top:3px">'+
+            '<div class="mstage">'+mcropIn('fam',MFAM[3],'now','aspect-ratio:1')+
+              '<div class="mwipe w4"></div></div>'+
+            '<div class="mstage">'+mcropIn('fam',MFAM[4],'now','aspect-ratio:1')+
+              '<div class="mwipe w5"></div></div>'+
+          '</div>'+
+          '<div style="margin-top:40px">'+mlabel(MT.lR,'au')+mbr()+mmets('m','mmx')+'</div>'+
+        '</div></div>'+
+      '<div class="mgut mspl" style="left:50%"></div>'+
+    '</div></div></div>';
+  var W=['.w1','.w2','.w3','.w4','.w5'];
+  if(!window.MOTION){ W.forEach(function(s){ var n=r.querySelector(s); if(n) n.classList.add('off'); }); }
+  else{
+    var ran=false, host=r.querySelector('.min');
+    var fire=function(){ if(ran) return; ran=true;
+      W.forEach(function(s,i){ x.delay(function(){
+        var n=r.querySelector(s); if(n) n.classList.add('off'); }, 400+i*680); }); };
+    var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+    io.observe(host); x.delay(fire,3200);
+  }
+  var sp=r.querySelector('.mspl');
+  if(sp&&window.MOTION){ sp.style.transform='scaleY(0)'; sp.style.transition='transform 2.4s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ sp.style.transform='scaleY(1)'; },300); }
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== 11E — THE STRONGEST EXPERIMENT ==================== */
+MC(35,'WHAT SURVIVED THE CROSSING','the old page is read, two things cross, and the new page only appears once they arrive',function(r,x){
+  var KS=['script','module'];
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:100px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div class="mstage" style="margin-top:38px">'+
+            mcropIn('stack',MWALL,'arch','aspect-ratio:1.6')+
+            KS.map(function(k){ return mchar(k,mSrcBox(MWALL,1,0,k),'#c8a96e','mg_'+k,1.9,0); }).join('')+
+          '</div>'+
+          '<div class="mstage" style="margin-top:3px">'+
+            mcropIn('stack',SRC.script,'arch','aspect-ratio:1.5')+'</div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:100px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<span class="mlab">'+MT.lT+'</span>'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="mstage" style="margin-top:38px">'+
+            mcropIn('fam',MFAM[2],'now mmask','aspect-ratio:1.35')+
+            KS.map(function(k){ return mchar(k,mDstBox(2,0.62,k),'#00b4d8','mtar md_'+k,1.9); }).join('')+
+          '</div>'+
+          '<div class="g g2 gap3" style="margin-top:3px">'+[3,4].map(function(i){
+            return mcropIn('fam',MFAM[i],'now mmask','aspect-ratio:1');}).join('')+'</div>'+
+          '<div style="margin-top:40px">'+mlabel(MT.lR,'au')+mbr()+mmets('m','mmx')+'</div>'+
+        '</div></div>'+
+      '<div class="mgut mspl" style="left:50%"></div>'+
+    '</div></div></div>';
+  /* the contemporary page is held back until something has actually arrived */
+  var masks=[].slice.call(r.querySelectorAll('.mmask'));
+  var sp=r.querySelector('.mspl');
+  if(sp&&window.MOTION){ sp.style.transform='scaleY(0)'; sp.style.transition='transform 2s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ sp.style.transform='scaleY(1)'; },300); }
+  if(!window.MOTION){ masks.forEach(function(n){ n.classList.add('on'); }); }
+  xtransfer(r,x,r.querySelector('.min'),mitems(KS),
+    {t0:1100,gap:3200,draw:1100,hold:640,fly:1900,ghost:0,
+     onDone:function(){ masks.forEach(function(n,i){ x.delay(function(){ n.classList.add('on'); }, i*260); }); }});
+  if(window.MOTION){ x.delay(function(){ if(masks[0]) masks[0].classList.add('on'); },4400); }
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== prune and rebuild the MARSHALL bar ==================== */
+(function(){
+  var KEEP=[0,1,2,3,9,11,31,32,33,34,35];
+  var LBL={0:'00',1:'01',2:'02',3:'03',9:'09',11:'11',
+           31:'11A',32:'11B',33:'11C',34:'11D',35:'11E'};
+  var keep={}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<MCON.length;i++) if(!keep[i]) MCON[i]=undefined;
+  window.MLBL=LBL;
+
+  var bx=document.getElementById('mlabboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  KEEP.forEach(function(n,i){
+    if(i===0||i===1||n===31){ var g=document.createElement('span'); g.className='gp';
+      g.textContent = (i===0?'control':(n===31?'from 11':'concepts'));
+      if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=n; b.textContent=LBL[n];
+    if(LBL[n].length>2) b.style.width='31px';
+    b.title=(MCON[n]?MCON[n].name:'');
+    b.addEventListener('click',(function(m){return function(){mshow(m);};})(n));
+    bx.appendChild(b);
+  });
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  function step(d){ var i=KEEP.indexOf(MCUR); if(i<0) i=0;
+    i=(i+d+KEEP.length)%KEEP.length; mshow(KEEP[i]); }
+  pv.addEventListener('click',function(){step(-1);});
+  nx.addEventListener('click',function(){step(1);});
+
+  var cn=document.getElementById('mlabcount');
+  if(cn) cn.textContent=KEEP.length+' options · shortlist + five from 11';
+
+  /* the hash carries the label, so a link reads m=11C rather than m=33 */
+  var mshowBase=window.mshow;
+  window.mshow=function(n){
+    mshowBase(n);
+    var num=document.getElementById('mlabnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    var c=/[#&]c=(\d+)/.exec(location.hash);
+    location.hash='c='+(c?c[1]:'00')+'&m='+(LBL[n]||n);
+  };
+  setTimeout(function(){
+    var m=/[#&]m=([0-9A-Ea-e]+)/.exec(location.hash);
+    var want=0;
+    if(m){ var s=m[1].toUpperCase();
+      for(var q in LBL) if(LBL[q]===s){ want=+q; break; } }
+    if(!MCON[MCUR]||m) mshow(want);
+  },2400);
+})();
+</script>
 
 </body>
 </html>
