@@ -15707,6 +15707,44 @@ MC(30,'SYNTHESIS','the recommendation: the control’s structure, one gold-to-cy
 </style>
 
 <script id="sf-xfer-js">
+/* ---------- the restored originals predate the motion toggle ----------
+   trace() and drawIn() hide their paths and then wait for an observer, and
+   runExtraction() drives everything off timers. With animation disabled the
+   originals would simply never appear. These wrappers give them a correct
+   static state and leave the animated behaviour completely untouched. */
+(function(){
+  ['trace','drawIn'].forEach(function(name){
+    var base=window[name];
+    if(typeof base!=='function') return;
+    window[name]=function(root,sel){
+      if(!window.MOTION){
+        var ps=[].slice.call(root.querySelectorAll(sel));
+        ps.forEach(function(p){ p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+        return ps;
+      }
+      return base.apply(this,arguments);
+    };
+  });
+  var baseRun=window.runExtraction;
+  if(typeof baseRun==='function'){
+    window.runExtraction=function(r,x,keys,place,opts){
+      if(!window.MOTION){
+        opts=opts||{};
+        keys.forEach(function(k,i){
+          var g=r.querySelector('.g_'+k), c=r.querySelector('.c_'+k);
+          if(g) g.style.opacity=String(opts.ghost==null?0.32:opts.ghost);
+          if(c){ var p=(place&&place[i])||[0,0,1];
+            c.style.opacity='1'; c.style.transform=MOVE_(p[0],p[1],p[2]); }
+        });
+        [].forEach.call(r.querySelectorAll('.vg path,.vc path'),function(p){
+          p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+        return;
+      }
+      return baseRun.apply(this,arguments);
+    };
+  }
+})();
+
 /* ---------- geometry: one frame shared by the source overlay and its target,
      so the piece that lands registers exactly with the piece that was waiting.
      Without this the flyer would arrive near the chip instead of into it. ---- */
@@ -15942,6 +15980,32 @@ function xpopulate(root,x,host,items,o){
    No legends, no invented dimensions, no part codes.
    ========================================================================= */
 
+/* ---------------------------------------------------------------
+   KEEP THE ORIGINALS REACHABLE.
+   C(n) overwrites the concept in place, so re-registering 01/03/15/18/20/22/33
+   would destroy the versions being compared against. Snapshot them first and
+   re-register each at its own index, labelled 01o … 33o on the bar.
+   This block must run BEFORE any C() call below it.
+
+   TRAP, found the hard way: the extraction layer wraps show() with a modulo
+   against its OWN hard-coded maximum of 44, so ANY index above 44 silently
+   wraps to a low number no matter what window.NMAX says. The originals are
+   therefore parked in free slots below that ceiling — the bar shows 01o…33o,
+   so the raw index is never seen anyway.
+   --------------------------------------------------------------- */
+/* The earlier layers each run their own deep-link timer at ~1.7s and rewrite
+   location.hash as they go, so by the time the final resolver runs the link
+   the user actually arrived on is gone. Capture it now, during parse. */
+window.__labHash0=location.hash;
+
+var XORIG=[1,3,15,18,20,22,33], XODST=[2,4,5,6,7,8,9];
+XORIG.forEach(function(n,i){
+  var c=CONCEPTS[n]; if(!c) return;
+  CONCEPTS[XODST[i]]={n:XODST[i], name:c.name,
+    desc:(c.desc||'')+'   · the original '+(n<10?'0':'')+n, build:c.build};
+  if(window.PORT) PORT[XODST[i]]=PORT[n];
+});
+
 /* a cyan record placed at a characteristic's TRUE position inside a frame that
    shares the drawing's own coordinates — used where the language reassembles
    into the shape of the machine it came from. */
@@ -16112,7 +16176,10 @@ C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece
 
 /* ==================== prune and rebuild the SWITCH bar ==================== */
 (function(){
-  var KEEP=[0,1,3,15,18,20,22,33];
+  var KEEP=[0, 1,3,15,18,20,22,33, 2,4,5,6,7,8,9];
+  var SLBL={0:'00', 1:'01',3:'03',15:'15',18:'18',20:'20',22:'22',33:'33',
+            2:'01o',4:'03o',5:'15o',6:'18o',7:'20o',8:'22o',9:'33o'};
+  window.SLBL=SLBL;
   var keep={}; KEEP.forEach(function(n){ keep[n]=1; });
   for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
   window.NMAX=33;
@@ -16121,11 +16188,12 @@ C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece
   bx.innerHTML='';
   var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
   KEEP.forEach(function(n,i){
-    if(i===0||i===1){ var g=document.createElement('span'); g.className='gp';
-      g.textContent = i===0?'control':'shortlist';
+    if(i===0||i===1||n===2){ var g=document.createElement('span'); g.className='gp';
+      g.textContent = (i===0?'control':(n===2?'originals':'refined'));
       if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
     var b=document.createElement('button');
-    b.dataset.n=n; b.textContent=(n<10?'0':'')+n;
+    b.dataset.n=n; b.textContent=SLBL[n];
+    if(SLBL[n].length>2) b.style.width='31px';
     b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
     b.addEventListener('click',(function(m){return function(){show(m);};})(n));
     bx.appendChild(b);
@@ -16137,12 +16205,21 @@ C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece
   nx.addEventListener('click',function(){step(1);});
 
   var cn=document.getElementById('labcount');
-  if(cn) cn.textContent=KEEP.length+' options · shortlist';
+  if(cn) cn.textContent='7 refined + 7 originals';
 
-  /* the earlier layer's deep-link may land on a concept that is now gone */
-  setTimeout(function(){
-    if(!CONCEPTS[CUR]) show(0);
-  },2300);
+  /* one place writes the hash, so a link always restores BOTH sliders */
+  window.labHash=function(){
+    var c=(window.SLBL&&SLBL[CUR])||((CUR<10?'0':'')+CUR);
+    var m=(window.MLBL&&MLBL[MCUR])||'00';
+    location.hash='c='+c+'&m='+m;
+  };
+  var swShow=window.show;
+  window.show=function(n){
+    swShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&SLBL[n]) num.textContent=SLBL[n];
+    labHash();
+  };
 })();
 </script>
 <style id="sf-x-marshall-css">
@@ -16595,22 +16672,30 @@ MC(35,'WHAT SURVIVED THE CROSSING','the old page is read, two things cross, and 
   var cn=document.getElementById('mlabcount');
   if(cn) cn.textContent=KEEP.length+' options · shortlist + five from 11';
 
-  /* the hash carries the label, so a link reads m=11C rather than m=33 */
+  /* the hash carries labels on both sides — c=15o&m=11C rather than c=45&m=33 */
   var mshowBase=window.mshow;
   window.mshow=function(n){
     mshowBase(n);
     var num=document.getElementById('mlabnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    var c=/[#&]c=(\d+)/.exec(location.hash);
-    location.hash='c='+(c?c[1]:'00')+'&m='+(LBL[n]||n);
+    if(window.labHash) labHash();
   };
+  function fromLabel(map,txt,dflt){
+    if(!txt) return dflt;
+    var t=String(txt).toLowerCase();
+    for(var q in map) if(String(map[q]).toLowerCase()===t) return +q;
+    return dflt;
+  }
+  /* both sliders restore from one link, after every earlier deep-link has run */
   setTimeout(function(){
-    var m=/[#&]m=([0-9A-Ea-e]+)/.exec(location.hash);
-    var want=0;
-    if(m){ var s=m[1].toUpperCase();
-      for(var q in LBL) if(LBL[q]===s){ want=+q; break; } }
-    if(!MCON[MCUR]||m) mshow(want);
-  },2400);
+    var h=window.__labHash0||location.hash;
+    var cm=/[#&]c=([0-9]+o?)/i.exec(h), mm=/[#&]m=([0-9a-e]+)/i.exec(h);
+    var wantC=fromLabel(window.SLBL||{},cm&&cm[1],null);
+    var wantM=fromLabel(LBL,mm&&mm[1],null);
+    if(wantC!==null&&CONCEPTS[wantC]) show(wantC);
+    else if(!CONCEPTS[CUR]) show(0);
+    mshow(wantM!==null&&MCON[wantM]?wantM:0);
+  },2500);
 })();
 </script>
 
