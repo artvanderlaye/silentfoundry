@@ -14039,6 +14039,1614 @@ C(35,'SYNTHESIS','the whole method in one section: found · extracted · filed �
   if(m) setTimeout(function(){ show(Math.max(0,Math.min(NEW_MAX,+m[1]))); },1750);
 })();
 </script>
+<!-- =========================================================================
+     MARSHALL DNA TRANSLATION LAB  —  core
+     A SECOND, fully independent slider on the same page. It touches only
+     #sfsec-dna (the Marshall case study) and the shared bottom dock.
+     The SWITCH lab (#sf-dnawrap / #sf-lab-mount / #labbar) is untouched.
+
+     00      = the production Marshall section, left exactly as it ships.
+     01–30   = the production section is hidden and a concept is mounted in
+               its place, inside the live page.
+
+     COPY RULE: every word rendered here comes from MT below, which is the
+     production Marshall copy verbatim. Nothing is invented — no dimensions,
+     no revision codes, no part numbers, no fake technical labels.
+
+     GEOMETRY RULE: the Marshall module used throughout was MEASURED off
+     images/marshall-hero.png, not drawn by eye. See MG.
+     ========================================================================= -->
+<style id="sf-mlab-css">
+:root{ --m-cream:#e8e2d9; --m-paper:#efeae2; --m-ink:#0a0a0a; --m-dark:#121212;
+       --m-gold:#8a6e3a; --m-goldl:#c8a96e; --m-cy:#0a7f99; --m-cyb:#00b4d8; }
+
+/* ---------- the shared dock: SWITCH bar on top, MARSHALL bar below ---------- */
+#labdock{position:fixed;left:0;right:0;bottom:0;z-index:9999;}
+#labdock #labbar{position:static;}
+#mlabbar{background:#0a0a0a;border-top:1px solid rgba(200,169,110,.28);padding:8px 14px 9px;}
+#mlabname{font-family:'DM Sans',sans-serif;font-size:.6rem;font-weight:400;letter-spacing:.3em;
+  text-transform:uppercase;color:#c8a96e;margin:0 0 7px 2px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;}
+#mlabname em{font-style:normal;color:rgba(244,241,236,.42);letter-spacing:.14em;font-size:.5rem;text-transform:none;}
+#mlabname b{font-weight:400;color:rgba(244,241,236,.5);letter-spacing:.14em;font-size:.5rem;text-transform:none;}
+#mlabname .mj{margin-left:auto;display:flex;gap:6px;}
+#mlabname .mj button{font:inherit;font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+  background:transparent;color:rgba(244,241,236,.6);border:1px solid rgba(244,241,236,.22);padding:3px 8px;border-radius:2px;}
+#mlabname .mj button[aria-pressed="true"]{color:#0a0a0a;background:#c8a96e;border-color:#c8a96e;}
+#mlabboxes{display:flex;flex-wrap:wrap;gap:3px;row-gap:3px;align-items:center;}
+#mlabboxes button{font-family:'DM Sans',sans-serif;font-size:.5rem;font-weight:400;letter-spacing:0;
+  flex:0 0 auto;width:25px;height:22px;line-height:1;cursor:pointer;border-radius:2px;background:transparent;
+  color:rgba(244,241,236,.5);border:1px solid rgba(244,241,236,.2);
+  transition:background .16s,color .16s,border-color .16s;}
+#mlabboxes button:hover{color:#00b4d8;border-color:rgba(0,180,216,.6);}
+#mlabboxes button.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;font-weight:500;}
+#mlabboxes .nav{width:25px;color:rgba(244,241,236,.66);}
+#mlabboxes .gp{flex:0 0 auto;display:flex;align-items:center;padding:0 8px 0 5px;
+  font-family:'DM Sans',sans-serif;font-size:.4rem;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,241,236,.34);white-space:nowrap;border-left:1px solid rgba(244,241,236,.18);
+  margin-left:4px;height:22px;}
+@media(max-width:900px){ #mlabboxes .gp{display:none;} #mlabboxes button{width:23px;height:21px;} }
+@media(max-width:600px){ #mlabbar{padding:7px 10px 8px;}
+  #mlabboxes{gap:2px;row-gap:2px;} #mlabboxes button,#mlabboxes .nav{width:20px;height:19px;font-size:.44rem;} }
+
+/* ---------- the mount ---------- */
+#sfsec-dna.mlab-on .cs-wrap{display:none !important;}
+#sfsec-dna.mlab-on .sf-marshall-wave{display:none !important;}
+#sf-mlab-mount{display:none;}
+#sf-mlab-mount *{box-sizing:border-box;}
+#sf-mlab-mount .mp{background:var(--m-cream);padding:92px 48px 0;position:relative;overflow:hidden;}
+#sf-mlab-mount .mp.mk{background:var(--m-dark);}
+#sf-mlab-mount .mp.mpaper{background:var(--m-paper);}
+#sf-mlab-mount .min{max-width:1440px;margin:0 auto;position:relative;}
+#sf-mlab-mount .mbtm{height:92px;}
+
+/* type atoms — production values, then a lab-scale set for the bigger ideas */
+#sf-mlab-mount .mey{font-family:'DM Sans',sans-serif;font-size:.68rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--m-gold);font-weight:300;display:block;margin:0 0 24px;}
+#sf-mlab-mount .mk .mey{color:var(--m-goldl);}
+#sf-mlab-mount .mh{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.75);line-height:.92;margin:0 0 10px;}
+#sf-mlab-mount .mh.big{font-size:clamp(1.9rem,4.6vw,3.6rem);letter-spacing:.16em;}
+#sf-mlab-mount .mh.huge{font-size:clamp(2.4rem,7vw,5.4rem);letter-spacing:.13em;}
+#sf-mlab-mount .mk .mh{color:rgba(244,241,236,.9);}
+#sf-mlab-mount .mtx{font-family:'DM Sans',sans-serif;font-size:.9rem;line-height:1.85;
+  color:rgba(10,10,10,.55);font-weight:300;max-width:min(100%,680px);margin:0;}
+#sf-mlab-mount .mk .mtx{color:rgba(244,241,236,.55);}
+#sf-mlab-mount .mlab{font-family:'DM Sans',sans-serif;font-size:.48rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(10,10,10,.38);font-weight:300;display:block;margin:0 0 10px;}
+#sf-mlab-mount .mk .mlab{color:rgba(244,241,236,.4);}
+#sf-mlab-mount .mlab.au{color:var(--m-gold);} #sf-mlab-mount .mk .mlab.au{color:var(--m-goldl);}
+#sf-mlab-mount .mlab.cy{color:var(--m-cy);}    #sf-mlab-mount .mk .mlab.cy{color:var(--m-cyb);}
+
+/* results — the commercial proof, at four scales */
+#sf-mlab-mount .mmets{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:30px;}
+#sf-mlab-mount .mmet{padding-right:20px;margin-right:20px;border-right:1px solid rgba(10,10,10,.1);}
+#sf-mlab-mount .mmet:last-child{border-right:none;padding-right:0;margin-right:0;}
+#sf-mlab-mount .mk .mmet{border-right-color:rgba(244,241,236,.14);}
+#sf-mlab-mount .mmetv{font-family:'Bebas Neue',sans-serif;letter-spacing:.04em;
+  color:rgba(10,10,10,.78);display:block;line-height:.9;font-size:1.3rem;}
+#sf-mlab-mount .mk .mmetv{color:rgba(244,241,236,.92);}
+#sf-mlab-mount .mmetl{font-family:'DM Sans',sans-serif;font-size:.4rem;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(10,10,10,.34);display:block;margin-top:8px;font-weight:300;}
+#sf-mlab-mount .mk .mmetl{color:rgba(244,241,236,.4);}
+#sf-mlab-mount .mmets.m .mmetv{font-size:clamp(1.5rem,3vw,2.3rem);}
+#sf-mlab-mount .mmets.l .mmetv{font-size:clamp(2rem,5vw,4.2rem);}
+#sf-mlab-mount .mmets.l .mmetl{font-size:.46rem;letter-spacing:.2em;margin-top:12px;}
+#sf-mlab-mount .mmets.xl .mmetv{font-size:clamp(2.4rem,7.4vw,6.2rem);}
+#sf-mlab-mount .mmets.xl .mmetl{font-size:.5rem;letter-spacing:.22em;margin-top:16px;}
+#sf-mlab-mount .mmets.bare .mmet{border-right:none;padding-right:0;margin-right:0;}
+#sf-mlab-mount .mrule{height:1px;background:rgba(138,110,58,.3);margin:0;width:100%;
+  transform-origin:0 50%;}
+#sf-mlab-mount .mk .mrule{background:rgba(200,169,110,.34);}
+
+/* images: two crop primitives. mcrop keeps the crop's own aspect ratio,
+   mfil pours a crop into a box the layout decides. */
+#sf-mlab-mount .mcrop{position:relative;overflow:hidden;background:#ddd7ce;}
+#sf-mlab-mount .mcrop img{position:absolute;object-fit:fill;display:block;}
+#sf-mlab-mount .mfil{position:relative;overflow:hidden;background:#ddd7ce;}
+#sf-mlab-mount .mfil img{width:100%;height:100%;object-fit:cover;display:block;}
+#sf-mlab-mount .mk .mcrop,#sf-mlab-mount .mk .mfil{background:#1a1a1a;}
+#sf-mlab-mount .arch img{filter:grayscale(1) contrast(1.12) brightness(.86);}
+#sf-mlab-mount .doc img{filter:grayscale(.85) contrast(1.06) brightness(.9);}
+#sf-mlab-mount .now img{filter:saturate(1.02) brightness(1.02);}
+
+/* svg overlays */
+#sf-mlab-mount .mov{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+#sf-mlab-mount .msvg{width:100%;height:auto;display:block;overflow:visible;}
+#sf-mlab-mount .mcap{font-family:'DM Sans',sans-serif;font-size:.42rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(10,10,10,.42);display:block;margin-top:10px;}
+#sf-mlab-mount .mcap i{font-style:normal;color:var(--m-cy);margin-right:8px;}
+#sf-mlab-mount .mk .mcap{color:rgba(244,241,236,.42);}
+#sf-mlab-mount .mk .mcap i{color:var(--m-cyb);}
+#sf-mlab-mount .mkey{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px;}
+#sf-mlab-mount .mkey span{font-family:'DM Sans',sans-serif;font-size:.44rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.36);display:flex;align-items:center;gap:8px;}
+#sf-mlab-mount .mkey span::before{content:"";width:18px;height:1px;background:currentColor;}
+#sf-mlab-mount .mkey .au{color:var(--m-gold);} #sf-mlab-mount .mkey .cy{color:var(--m-cy);}
+#sf-mlab-mount .mk .mkey span{color:rgba(244,241,236,.36);}
+#sf-mlab-mount .mk .mkey .au{color:var(--m-goldl);} #sf-mlab-mount .mk .mkey .cy{color:var(--m-cyb);}
+
+/* grid utilities as CLASSES — production carries
+   #fv-stage [style*="grid-template-columns"]{...1fr !important} below 900,
+   and inline grid values elsewhere on the page get collapsed the same way. */
+#sf-mlab-mount .g{display:grid;}
+#sf-mlab-mount .g2{grid-template-columns:repeat(2,1fr);}
+#sf-mlab-mount .g3{grid-template-columns:repeat(3,1fr);}
+#sf-mlab-mount .g4{grid-template-columns:repeat(4,1fr);}
+#sf-mlab-mount .g5{grid-template-columns:repeat(5,1fr);}
+#sf-mlab-mount .g6{grid-template-columns:repeat(6,1fr);}
+#sf-mlab-mount .g7{grid-template-columns:repeat(7,1fr);}
+#sf-mlab-mount .gA{grid-template-columns:1fr 380px;}
+#sf-mlab-mount .gB{grid-template-columns:1.25fr 1fr;}
+#sf-mlab-mount .gC{grid-template-columns:1fr 1.35fr;}
+#sf-mlab-mount .gD{grid-template-columns:1fr 1fr 1fr;}
+#sf-mlab-mount .gE{grid-template-columns:1.6fr 1fr;}
+#sf-mlab-mount .gF{grid-template-columns:1fr 2fr;}
+#sf-mlab-mount .gap0{gap:0;} #sf-mlab-mount .gap3{gap:3px;} #sf-mlab-mount .gap12{gap:12px;}
+#sf-mlab-mount .gap20{gap:20px;} #sf-mlab-mount .gap32{gap:32px;} #sf-mlab-mount .gap48{gap:48px;}
+#sf-mlab-mount .gap64{gap:64px;} #sf-mlab-mount .gap80{gap:80px;}
+#sf-mlab-mount .ai-c{align-items:center;} #sf-mlab-mount .ai-e{align-items:end;}
+#sf-mlab-mount .ai-s{align-items:start;}
+
+/* mobile: every concept keeps HERITAGE -> TRANSLATION -> NEW -> RESULT */
+@media(max-width:900px){
+  #sf-mlab-mount .mp{padding:72px 24px 0;}
+  /* text/layout splits stack; picture rows go two-up rather than one-up, so a
+     concept keeps its rhythm instead of becoming one very long column */
+  #sf-mlab-mount .g2,#sf-mlab-mount .gA,#sf-mlab-mount .gB,
+  #sf-mlab-mount .gC,#sf-mlab-mount .gD,#sf-mlab-mount .gE,
+  #sf-mlab-mount .gF{grid-template-columns:1fr !important;}
+  #sf-mlab-mount .g3,#sf-mlab-mount .g4,#sf-mlab-mount .g5,
+  #sf-mlab-mount .g6,#sf-mlab-mount .g7{grid-template-columns:repeat(2,1fr) !important;}
+  #sf-mlab-mount .m-2up{grid-template-columns:repeat(2,1fr) !important;}
+  #sf-mlab-mount .mmets{grid-template-columns:repeat(2,1fr) !important;gap:22px 0;}
+  #sf-mlab-mount .mmet{border-right:none !important;padding-right:0 !important;margin-right:0 !important;}
+  #sf-mlab-mount .mmets.xl .mmetv{font-size:clamp(2.1rem,13vw,3.4rem);}
+  #sf-mlab-mount .mmets.l .mmetv{font-size:clamp(1.9rem,11vw,3rem);}
+  #sf-mlab-mount .mhide-m{display:none !important;}
+  /* on a phone a two-column [copy | picture] split would deliver the
+     translation paragraph before the heritage photograph. This pulls the
+     picture column up so the sequence survives the stack. */
+  #sf-mlab-mount .mfirst-m{order:-1;}
+  #sf-mlab-mount .gap48,#sf-mlab-mount .gap64,#sf-mlab-mount .gap80{gap:32px;}
+}
+/* phone: secondary illustration is dropped, the transformation story is not.
+   Every concept still runs heritage -> translation -> new categories -> result. */
+@media(max-width:700px){
+  #sf-mlab-mount .mp{padding:64px 24px 0;}
+  #sf-mlab-mount .mbtm{height:64px;}
+  #sf-mlab-mount .g5 > *:nth-child(n+5),
+  #sf-mlab-mount .g6 > *:nth-child(n+5),
+  #sf-mlab-mount .mspread > *:nth-child(n+5){display:none;}
+  #sf-mlab-mount .mh.huge{font-size:clamp(2rem,11vw,3rem);}
+  #sf-mlab-mount .mmets.xl .mmetl,#sf-mlab-mount .mmets.l .mmetl{margin-top:8px;}
+}
+</style>
+
+<script id="sf-mlab-core">
+/* ---------------------------------------------------------------
+   APPROVED MARSHALL COPY — verbatim from the production section.
+   --------------------------------------------------------------- */
+window.MT={
+  ey:'Case Study — Marshall DNA Translation',
+  hA:'Rock &amp; Roll', hB:'Never Dies',
+  p1:'By 2010, Marshall’s core amplifier market had matured. Rather than simply licensing its logo, the company extracted the DNA that made the brand distinctive and translated it into entirely new product categories.',
+  lT:'Translation', lR:'Results',
+  p2:'Marshall did not extend a logo. It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. Not merchandise. Not licensing. Product-level DNA translation — the brand arrived intact in a category it had never made before.',
+  br:'Marshall transformed a declining heritage brand into a global consumer electronics business, dramatically expanded its addressable market and ultimately achieved a $1.1B acquisition.',
+  met:[['60+','Heritage'],['New','Categories'],['$4B+','Expanded Market'],['$1.1B','Exit in 2025']],
+  /* verbatim fragments, used where a concept needs a short pull-line */
+  f:{mature:'Marshall’s core amplifier market had matured',
+     notlogo:'Rather than simply licensing its logo',
+     extract:'extracted the DNA that made the brand distinctive',
+     cats:'entirely new product categories',
+     rebuilt:'rebuilt that identity inside headphones, speakers and home audio',
+     intact:'the brand arrived intact in a category it had never made before',
+     notmerch:'Not merchandise. Not licensing.',
+     global:'a global consumer electronics business'}
+};
+
+window.MI={
+  stack:'images/marshall-hero.png',
+  stan :'images/614BCLPutVL-1__SL1000_.jpg',
+  panel:'images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',
+  fam  :'images/marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif'
+};
+var MNAT={stack:[1536,1005],stan:[1000,1000],panel:[602,602],fam:[1432,806]};
+
+/* =========================================================================
+   MEASURED MARSHALL GEOMETRY
+   Read off images/marshall-hero.png by column/row edge analysis, not by eye:
+     cabinet grid, vertical edges   x = 35 251 484 721 957 1216 1457
+     cabinet grid, horizontal edges y = 178 426 696 945
+   -> one cabinet is 236 x 255, and the wall is six of them across, three down.
+   The script sits centred at 53% of the module height. The frame is inset
+   about 7% of the module width, with metal protectors at the corners and a
+   light piping line along the bottom edge. All of that is visible in the
+   photograph; nothing below is invented.
+   ========================================================================= */
+var MGX=[35,251,484,721,957,1216,1457], MGY=[178,426,696,945];
+var MODW=236, MODH=255;                       /* one cabinet, measured        */
+var MODR=MODW/MODH;                           /* 0.925                        */
+/* the module drawn in its own 0..100 x 0..108 space (108 = 100/MODR) */
+var MU=100, MV=+(100/MODR).toFixed(2);        /* 108.05 */
+/* coerce: callers sometimes arrive with strings from toFixed(), and '120.8'+'44'
+   would concatenate into a path Chrome rejects outright. */
+function MRECT(x,y,w,h){ x=+x; y=+y; w=+w; h=+h;
+  return 'M'+x+' '+y+' L'+(x+w)+' '+y+' L'+(x+w)+' '+(y+h)+' L'+x+' '+(y+h)+' Z'; }
+var MG={
+  module:{id:'01',lab:'THE CABINET',      p:[MRECT(0,0,MU,MV)]},
+  frame :{id:'02',lab:'THE INSET FRAME',  p:[MRECT(7,7,MU-14,MV-14)]},
+  corner:{id:'03',lab:'CORNER PROTECTION',p:['M0 14 L0 0 L14 0','M'+(MU-14)+' 0 L'+MU+' 0 L'+MU+' 14',
+                                             'M'+MU+' '+(MV-14)+' L'+MU+' '+MV+' L'+(MU-14)+' '+MV,
+                                             'M14 '+MV+' L0 '+MV+' L0 '+(MV-14)]},
+  script:{id:'04',lab:'SCRIPT PLACEMENT', p:['M28 '+(MV*0.53).toFixed(1)+' L72 '+(MV*0.53).toFixed(1)]},
+  piping:{id:'05',lab:'THE PIPING LINE',  p:['M4 '+(MV-4).toFixed(1)+' L'+(MU-4)+' '+(MV-4).toFixed(1)]},
+  grille:{id:'06',lab:'THE GRILLE FIELD', p:(function(){var a=[];for(var i=1;i<12;i++){var y=(7+(MV-14)*i/12).toFixed(1);a.push('M10 '+y+' L'+(MU-10)+' '+y);}return a;})()},
+  stack :{id:'07',lab:'THE STACK',        p:(function(){var a=[];
+            for(var r=0;r<3;r++)for(var c=0;c<3;c++){var x=c*(MU/3), y=r*(MV/3);
+              a.push(MRECT(x+1,y+1,MU/3-2,MV/3-2));} return a;})()}
+};
+var MGK=['module','frame','corner','script','piping','grille','stack'];
+/* the intangible each characteristic carries — used only where a concept
+   explicitly contrasts tangible with intangible */
+var MQ={module:'PRESENCE',frame:'BUILD',corner:'ROAD-READY',script:'AUTHORSHIP',
+        piping:'CRAFT',grille:'VOICE',stack:'SCALE'};
+
+/* the eight translated products that exist in the family photograph.
+   They are NOT named or specified — the approved copy only says headphones,
+   speakers and home audio, so nothing here claims more than that. */
+var MFAM=[
+  [0.005,0.028,0.274,0.369],
+  [0.358,0.009,0.179,0.379],
+  [0.629,0.005,0.350,0.397],
+  [0.004,0.411,0.296,0.411],
+  [0.318,0.467,0.198,0.449],
+  [0.558,0.589,0.260,0.187],
+  [0.784,0.813,0.216,0.187]
+];
+/* the control-panel macro carries a stock caption in its top-left corner —
+   every crop of it starts below and right of that, so it never appears. */
+var MPANEL=[0.30,0.28,0.62,0.46];
+
+/* ---------- image primitives ---------- */
+function mcrop(key,c,cls,extra){
+  var n=MNAT[key], ar=(n[0]*c[2])/(n[1]*c[3]);
+  return '<div class="mcrop '+(cls||'')+'" style="aspect-ratio:'+ar.toFixed(4)+';'+(extra||'')+'">'+
+    '<img loading="lazy" decoding="async" alt="" src="'+MI[key]+'" style="width:'+(100/c[2]).toFixed(3)+'%;height:'+
+    (100/c[3]).toFixed(3)+'%;left:'+(-c[0]/c[2]*100).toFixed(3)+'%;top:'+(-c[1]/c[3]*100).toFixed(3)+'%;">'+
+  '</div>';
+}
+/* the same crop, poured into whatever box the layout gives it */
+function mcropIn(key,c,cls,extra){
+  return '<div class="mcrop '+(cls||'')+'" style="'+(extra||'')+'">'+
+    '<img loading="lazy" decoding="async" alt="" src="'+MI[key]+'" style="width:'+(100/c[2]).toFixed(3)+'%;height:'+
+    (100/c[3]).toFixed(3)+'%;left:'+(-c[0]/c[2]*100).toFixed(3)+'%;top:'+(-c[1]/c[3]*100).toFixed(3)+'%;">'+
+  '</div>';
+}
+function mfil(key,ox,oy,zoom,cls,extra){
+  return '<div class="mfil '+(cls||'')+'" style="'+(extra||'')+'">'+
+    '<img loading="lazy" decoding="async" alt="" src="'+MI[key]+'" style="object-position:'+ox+'% '+oy+'%;'+
+    (zoom?'transform:scale('+zoom+');transform-origin:'+ox+'% '+oy+'%;':'')+'"></div>';
+}
+/* the family, as N crops. i is an index into MFAM. */
+function mfamCells(idxs,cls,capFn){
+  return idxs.map(function(i,k){
+    return '<div class="mfc'+(cls?' '+cls:'')+'" data-i="'+k+'">'+
+      mcrop('fam',MFAM[i],'now')+(capFn?capFn(k,i):'')+'</div>'; }).join('');
+}
+
+/* ---------- svg primitives, drawn in the module's own space ---------- */
+function msvg(paths,col,w,cls,vb,op){
+  return '<svg class="msvg '+(cls||'')+'" viewBox="'+(vb||('0 0 '+MU+' '+MV))+'" fill="none"'+
+    (op!=null?' style="opacity:'+op+'"':'')+'>'+
+    paths.map(function(d,i){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(w||1.6)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"/>'; }).join('')+
+    '</svg>';
+}
+/* the measured cabinet grid, drawn over the heritage photograph in the
+   photograph's own pixel space so it lands on the real cabinets */
+function mstackGrid(col,w,cls,op){
+  var p=[];
+  MGX.forEach(function(x){ p.push('M'+x+' '+MGY[0]+' L'+x+' '+MGY[3]); });
+  MGY.forEach(function(y){ p.push('M'+MGX[0]+' '+y+' L'+MGX[6]+' '+y); });
+  return msvg(p,col,w||1,cls,'0 0 1536 1005',op);
+}
+function mstackScript(col,w,cls,op){
+  var p=[];
+  for(var r=0;r<3;r++){ var y=MGY[r]+ (MGY[r+1]-MGY[r])*0.53;
+    for(var c=0;c<6;c++){ var x0=MGX[c], x1=MGX[c+1], m=(x0+x1)/2, hw=(x1-x0)*0.22;
+      p.push('M'+(m-hw).toFixed(0)+' '+y.toFixed(0)+' L'+(m+hw).toFixed(0)+' '+y.toFixed(0)); } }
+  return msvg(p,col,w||1.4,cls,'0 0 1536 1005',op);
+}
+
+/* ---------- copy blocks ---------- */
+function mhd(cls){ return '<span class="mey">'+MT.ey+'</span>'+
+  '<h3 class="mh '+(cls||'')+'">'+MT.hA+'<br>'+MT.hB+'</h3>'; }
+function mhdOne(cls){ return '<span class="mey">'+MT.ey+'</span>'+
+  '<h3 class="mh '+(cls||'')+'">'+MT.hA+' '+MT.hB+'</h3>'; }
+function mp1(extra){ return '<p class="mtx" style="'+(extra||'')+'">'+MT.p1+'</p>'; }
+function mp2(extra){ return '<p class="mtx" style="'+(extra||'')+'">'+MT.p2+'</p>'; }
+function mbr(extra){ return '<p class="mtx" style="'+(extra||'')+'">'+MT.br+'</p>'; }
+function mlabel(t,cls){ return '<span class="mlab '+(cls||'')+'">'+t+'</span>'; }
+/* the commercial result. size: '' | m | l | xl */
+function mmets(size,cls){
+  return '<div class="mmets '+(size||'')+' '+(cls||'')+'">'+MT.met.map(function(m,i){
+    return '<div class="mmet" data-i="'+i+'"><span class="mmetv">'+m[0]+'</span>'+
+      '<span class="mmetl">'+m[1]+'</span></div>'; }).join('')+'</div>';
+}
+function mkey(dark){
+  return '<div class="mkey"><span class="au">SOURCE · WHAT MARSHALL ALREADY HAD</span>'+
+    '<span class="cy">EXTRACTED · THE TRANSFERABLE PART</span>'+
+    '<span>APPLIED · NEW CATEGORIES</span></div>';
+}
+function msec(cls,inner){
+  return '<div class="mp '+(cls||'')+'"><div class="min">'+inner+'</div></div>';
+}
+
+/* ---------- motion primitives. Everything below resolves to a clean final
+     state, so the concept still reads with motion disabled. ---------- */
+/* NOTE ON TIMING: every helper below installs its OWN IntersectionObserver, so
+   `delay` expresses order within one screenful, not a position on a global
+   timeline. Left unclamped, a late group (the results, say) would wait several
+   seconds after the reader had already arrived at it. Each is capped. */
+function mdraw(root,sel,x,step,dur,delay){
+  var ps=[].slice.call(root.querySelectorAll(sel));
+  if(!ps.length) return ps;
+  delay=Math.min(delay||0,2200);
+  ps.forEach(function(q){ var L=400; try{L=q.getTotalLength()||400;}catch(e){}
+    q.style.strokeDasharray=L; q.style.strokeDashoffset=L;
+    q.style.transition='stroke-dashoffset '+(dur||1100)+'ms cubic-bezier(.2,.7,.26,1)'; });
+  var fire=function(){ ps.forEach(function(q,k){ x.delay(function(){ q.style.strokeDashoffset='0'; },(delay||0)+k*(step||70)); }); };
+  if(!window.MOTION){ ps.forEach(function(q){ q.style.strokeDashoffset='0'; }); return ps; }
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:.1}));
+  io.observe(ps[0].ownerSVGElement||ps[0]);
+  x.delay(fire,3500);                       /* safety: never leave it hidden */
+  return ps;
+}
+function mrise(root,sel,x,step,delay,dy){
+  var ns=[].slice.call(root.querySelectorAll(sel));
+  if(!ns.length) return ns;
+  delay=Math.min(delay||0,900);
+  if(!window.MOTION) return ns;
+  ns.forEach(function(n){ n.style.opacity='0'; n.style.transform='translateY('+(dy==null?16:dy)+'px)';
+    n.style.transition='opacity .8s ease, transform .9s cubic-bezier(.2,.7,.26,1)'; });
+  var fire=function(){ ns.forEach(function(n,k){ x.delay(function(){ n.style.opacity='1'; n.style.transform='none'; },(delay||0)+k*(step||140)); }); };
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:.06}));
+  io.observe(ns[0]);
+  x.delay(fire,3500);
+  return ns;
+}
+/* a rule that draws itself left to right */
+function mruleIn(root,sel,x,dur,delay){
+  var ns=[].slice.call(root.querySelectorAll(sel));
+  delay=Math.min(delay||0,900);
+  if(!window.MOTION){ return ns; }
+  ns.forEach(function(n){ n.style.transform='scaleX(0)'; n.style.transition='transform '+(dur||1100)+'ms cubic-bezier(.2,.7,.26,1)'; });
+  var fire=function(){ ns.forEach(function(n,k){ x.delay(function(){ n.style.transform='scaleX(1)'; },(delay||0)+k*160); }); };
+  /* NOTE: observe the PARENT. A node this function has already scaled to
+     zero width reports isIntersecting:false in Chrome, so an observer on the
+     node itself would never fire and the rule would stay invisible. */
+  if(ns[0]){ var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+    io.observe(ns[0].parentElement||ns[0]); x.delay(fire,3500); }
+  return ns;
+}
+/* the extraction move: a gold trace is found, a cyan duplicate of the SAME
+   path appears on it, then the cyan copy travels away. */
+function mextract(root,x,goldSel,cyanSel,dx,dy,sc,t){
+  t=t||{};
+  var g=root.querySelector(goldSel), c=root.querySelector(cyanSel);
+  if(!g||!c) return;
+  if(!window.MOTION){ c.style.transform='translate('+dx+','+dy+')'+(sc?' scale('+sc+')':''); g.style.opacity=(t.ghost==null?.3:t.ghost); return; }
+  g.style.opacity='0'; c.style.opacity='0';
+  g.style.transition='opacity .6s ease';
+  c.style.transition='opacity .6s ease, transform '+(t.travel||1600)+'ms cubic-bezier(.2,.7,.24,1)';
+  var fire=function(){
+    x.delay(function(){ g.style.opacity='1'; }, t.a||300);
+    x.delay(function(){ c.style.opacity='1'; }, (t.a||300)+(t.b||900));
+    x.delay(function(){ c.style.transform='translate('+dx+','+dy+')'+(sc?' scale('+sc+')':'');
+      g.style.opacity=(t.ghost==null?.3:t.ghost); }, (t.a||300)+(t.b||900)+(t.c||500));
+  };
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:.1}));
+  io.observe(g.ownerSVGElement||g);
+  x.delay(fire,4200);
+}
+</script>
+<script id="sf-mlab-boot">
+/* =========================================================================
+   MARSHALL LAB — lifecycle. Deliberately separate from the SWITCH lab's:
+   its own registry, its own teardown pool, its own mount, its own hash key,
+   so switching a Marshall concept can never disturb a SWITCH one.
+   ========================================================================= */
+window.MCON=[]; window.MJUMP=true;
+window.MC=function(n,name,desc,build){ MCON[n]={n:n,name:name,desc:desc,build:build}; };
+var MLIVE={raf:[],obs:[],lis:[],tmr:[]};
+window.mctx=function(){
+  return {
+    frame:function(fn){ var id; (function run(t){ if(window.MOTION) fn(t); id=requestAnimationFrame(run); MLIVE.raf.push(id); })(0); },
+    on:function(t,ty,fn,o){ t.addEventListener(ty,fn,o||{passive:true}); MLIVE.lis.push([t,ty,fn,o]); },
+    obs:function(o){ MLIVE.obs.push(o); return o; },
+    timer:function(fn,ms){ var t=setInterval(fn,ms); MLIVE.tmr.push(t); return t; },
+    delay:function(fn,ms){ var t=setTimeout(fn,ms); MLIVE.tmr.push(t); return t; },
+    prog:function(el){ var r=el.getBoundingClientRect(), total=el.offsetHeight-innerHeight;
+      if(total<=0) return 0; return Math.max(0,Math.min(1,(-r.top)/total)); }
+  };
+};
+function mteardown(){
+  MLIVE.raf.forEach(function(i){cancelAnimationFrame(i);});
+  MLIVE.obs.forEach(function(o){try{o.disconnect();}catch(e){}});
+  MLIVE.lis.forEach(function(l){try{l[0].removeEventListener(l[1],l[2],l[3]);}catch(e){}});
+  MLIVE.tmr.forEach(function(t){clearInterval(t);clearTimeout(t);});
+  MLIVE={raf:[],obs:[],lis:[],tmr:[]};
+}
+window.MCUR=-1;
+function msec_(){ return document.getElementById('sfsec-dna'); }
+function mmount(){
+  var m=document.getElementById('sf-mlab-mount');
+  if(m) return m;
+  var s=msec_(); if(!s) return null;
+  var w=s.querySelector('.cs-wrap'); if(!w) return null;
+  m=document.createElement('div'); m.id='sf-mlab-mount';
+  w.parentNode.insertBefore(m, w.nextSibling);
+  return m;
+}
+window.mshow=function(n){
+  if(!MCON[n]) return;
+  mteardown();
+  var s=msec_(); if(!s) return;
+  var m=document.getElementById('sf-mlab-mount');
+  if(m){ m.innerHTML=''; }
+  MCUR=n;
+  var c=MCON[n];
+  var num=document.getElementById('mlabnum'), ti=document.getElementById('mlabtitle'),
+      de=document.getElementById('mlabdesc');
+  if(num) num.textContent=(n<10?'0':'')+n;
+  if(ti) ti.textContent=c.name;
+  if(de) de.textContent=(c.desc||'')+(n===0?'   · production, untouched':'   · concept '+n+' of 30');
+  [].forEach.call(document.querySelectorAll('#mlabboxes button[data-n]'),function(b){
+    b.classList.toggle('on',+b.dataset.n===n); });
+
+  if(n===0){
+    s.classList.remove('mlab-on');
+    if(m) m.style.display='none';
+  }else{
+    s.classList.add('mlab-on');
+    m=mmount(); if(!m) return;
+    m.style.display='block';
+    try{ c.build(m, mctx()); }
+    catch(e){ m.innerHTML='<div class="mp"><div class="min"><p class="mtx" style="padding:40px 0">marshall concept '+n+' failed: '+e.message+'</p></div></div>'; }
+  }
+  /* keep the SWITCH hash key intact and carry our own alongside it */
+  var h=location.hash.replace(/[#&]?m=\d+/,'').replace(/^#?&?/,'');
+  location.hash = (h?h+'&':'')+'m='+((n<10?'0':'')+n);
+  if(MJUMP){
+    var anchor = (n===0? s.querySelector('.cs-wrap') : document.getElementById('sf-mlab-mount'));
+    if(anchor){ var y=anchor.getBoundingClientRect().top+window.pageYOffset-120;
+      window.scrollTo({top:Math.max(0,y),behavior:'auto'}); }
+  }
+};
+</script>
+<style id="sf-mlab-css2">
+#sf-mlab-mount .mvr{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;}
+#sf-mlab-mount .mov svg{width:100%;height:100%;}
+#sf-mlab-mount .knock{background:transparent;}
+#sf-mlab-mount .knock img{mix-blend-mode:multiply;}
+#sf-mlab-mount .mstage{position:relative;}
+#sf-mlab-mount .mfc{position:relative;}
+#sf-mlab-mount .mtower{display:flex;flex-direction:column;gap:3px;}
+#sf-mlab-mount .mthr{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+#sf-mlab-mount .mquote{font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:.14em;
+  text-transform:uppercase;line-height:1.02;color:rgba(10,10,10,.78);margin:0;
+  font-size:clamp(1.2rem,2.9vw,2.4rem);}
+#sf-mlab-mount .mk .mquote{color:rgba(244,241,236,.9);}
+#sf-mlab-mount .mnote{font-family:'DM Sans',sans-serif;font-size:.62rem;line-height:1.7;
+  color:rgba(10,10,10,.45);font-weight:300;max-width:520px;margin:0;}
+#sf-mlab-mount .mk .mnote{color:rgba(244,241,236,.45);}
+#sf-mlab-mount .mdiv{height:1px;background:rgba(10,10,10,.12);width:100%;transform-origin:0 50%;}
+#sf-mlab-mount .mk .mdiv{background:rgba(244,241,236,.14);}
+#sf-mlab-mount .mband{width:100vw;margin-left:calc(50% - 50vw);}
+#sf-mlab-mount .mtag{font-family:'DM Sans',sans-serif;font-size:.42rem;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.4);display:block;}
+#sf-mlab-mount .mk .mtag{color:rgba(244,241,236,.42);}
+#sf-mlab-mount .mtag.au{color:var(--m-gold);} #sf-mlab-mount .mk .mtag.au{color:var(--m-goldl);}
+#sf-mlab-mount .mtag.cy{color:var(--m-cy);}   #sf-mlab-mount .mk .mtag.cy{color:var(--m-cyb);}
+#sf-mlab-mount .mvline{width:1px;background:rgba(138,110,58,.4);transform-origin:50% 0;}
+#sf-mlab-mount .mgl{position:relative;}
+#sf-mlab-mount .mgl svg{width:100%;height:auto;display:block;overflow:visible;}
+@media(max-width:900px){
+  #sf-mlab-mount .mtower{gap:3px;}
+  #sf-mlab-mount .mquote{font-size:clamp(1.05rem,5.6vw,1.7rem);}
+}
+</style>
+
+<script>
+/* =========================================================================
+   MARSHALL LAB — concepts 01–10
+   Heritage -> identifiable DNA -> translation -> new categories -> value.
+   Colour carries meaning: GOLD is what Marshall already had and what the
+   Foundry marks on it; CYAN is the part that turned out to be transferable;
+   grey/black is documentary material.
+   ========================================================================= */
+
+/* crops, all verified against the source files */
+var MCAB   =[0.1634,0.1771,0.1517,0.2468];   /* one cabinet, from the grid   */
+var MWALL  =[0.0228,0.1771,0.9258,0.7632];   /* the whole 6x3 wall           */
+var MHERO  =[0,0,1,1];
+/* every detail crop below is normalised to 3:2 in the SOURCE image's own
+   pixels, so a row of them lines up instead of going ragged. */
+var SRC={ script:[0.196,0.249,0.115,0.117], grille:[0.320,0.202,0.075,0.076],
+          corner:[0.152,0.170,0.070,0.071],  pipe:[0.170,0.336,0.150,0.153] };
+var NEW={ script:[0.045,0.022,0.140,0.166],  grille:[0.690,0.130,0.110,0.130],
+          tex   :[0.395,0.062,0.090,0.107],  brass:[0.600,0.604,0.120,0.142],
+          knobs :[0.115,0.448,0.105,0.124],
+          /* the same weave, cropped above the wordmark — concept 17 claims in
+             writing that none of its crops contains the name, so this one
+             cannot be allowed to clip the top of the script. */
+          weave :[0.690,0.055,0.110,0.130] };
+/* THE derived mark: the cabinet's measured proportion and the measured
+   position of its script, fitted onto a translated product. This is the only
+   cyan mark used on new products anywhere in the lab — it is the DNA itself,
+   not a bounding box. */
+function mderive(i,frac,withScript){
+  var c=MFAM[i], W=1432, H=806, f=(frac||0.60);
+  var x0=c[0]*W, y0=c[1]*H, w=c[2]*W, h=c[3]*H;
+  var rh=h*f, rw=rh*MODR;
+  if(rw>w*0.84){ rw=w*0.84; rh=rw/MODR; }
+  var rx=x0+(w-rw)/2, ry=y0+(h-rh)/2;
+  var out=[MRECT(rx.toFixed(1),ry.toFixed(1),rw.toFixed(1),rh.toFixed(1))];
+  if(withScript!==false) out.push('M'+(rx+rw*0.28).toFixed(1)+' '+(ry+rh*0.53).toFixed(1)+
+    ' L'+(rx+rw*0.72).toFixed(1)+' '+(ry+rh*0.53).toFixed(1));
+  return out;
+}
+var MSTAN  =[0.06,0.28,0.82,0.44];           /* the single translated object */
+
+/* map a module-space path into any rectangle of the source photograph */
+function mapPath(d,ox,oy,sx,sy){ var i=0;
+  return d.replace(/-?\d+(\.\d+)?/g,function(m){ var v=parseFloat(m);
+    var out=(i%2===0)?(ox+v*sx):(oy+v*sy); i++; return out.toFixed(1); }); }
+function cabPaths(ci,ri,keys){
+  var x0=MGX[ci], y0=MGY[ri], sx=(MGX[ci+1]-x0)/MU, sy=(MGY[ri+1]-y0)/MV;
+  return keys.reduce(function(a,k){ return a.concat(MG[k].p.map(function(d){
+    return mapPath(d,x0,y0,sx,sy); })); },[]);
+}
+/* an overlay locked to a crop of a source image, in that image's own pixels */
+function movr(key,c,paths,col,w,cls,op){
+  var n=MNAT[key];
+  var vb=(c[0]*n[0]).toFixed(1)+' '+(c[1]*n[1]).toFixed(1)+' '+
+         (c[2]*n[0]).toFixed(1)+' '+(c[3]*n[1]).toFixed(1);
+  return '<svg class="mvr '+(cls||'')+'" viewBox="'+vb+'" preserveAspectRatio="none" fill="none"'+
+    (op!=null?' style="opacity:'+op+'"':'')+'>'+
+    paths.map(function(d,i){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(w||1.4)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"/>'; }).join('')+
+    '</svg>';
+}
+/* the module glyph set, at whatever size the layout gives it */
+function mglyph(keys,col,w,cls,op,ghost){
+  var p=keys.reduce(function(a,k){ return a.concat(MG[k].p); },[]);
+  var gh=(ghost&&keys.indexOf('module')<0)
+    ? '<path class="gh" d="'+MG.module.p[0]+'" stroke="rgba(10,10,10,.16)" stroke-width="1" '+
+      'vector-effect="non-scaling-stroke" fill="none"/>' : '';
+  return '<div class="mgl"><svg class="msvg '+(cls||'')+'" viewBox="0 0 '+MU+' '+MV+'" fill="none"'+
+    (op!=null?' style="opacity:'+op+'"':'')+'>'+gh+
+    p.map(function(d,i){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(w||1.8)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"/>'; }).join('')+
+    '</svg></div>';
+}
+/* an image tower cell with a small caption underneath */
+function mcell(inner,cap,cls){
+  return '<div class="'+(cls||'')+'">'+inner+(cap?'<span class="mcap">'+cap+'</span>':'')+'</div>';
+}
+var MPROD=[0,2,3,4,5];      /* the five clearest translated objects          */
+
+/* ==================== 01 — THE REFINED CONTROL ==================== */
+MC(1,'THE REFINED CONTROL','the shipping layout, executed properly — bigger result, better crops, one restrained entrance',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gA gap48 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:44px;display:flex;gap:26px;align-items:flex-start">'+
+          '<div style="flex:0 0 74px">'+mglyph(['module','frame','script'],'#8a6e3a',1.6,'mg1')+'</div>'+
+          '<div style="flex:1 1 auto">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+      '</div>'+
+      '<div class="mtower mfirst-m">'+
+        mcropIn('stack',MWALL,'arch','aspect-ratio:1.55')+
+        '<div class="g g2 gap3">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1')+
+          mcropIn('fam',MFAM[0],'now','aspect-ratio:1')+'</div>'+
+        mcropIn('fam',MFAM[3],'now','aspect-ratio:1.7')+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:60px">'+
+      '<div class="mdiv mrl" style="background:rgba(138,110,58,.34)"></div>'+
+      '<div style="margin-top:26px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+      mmets('l','mmx')+
+    '</div>'+'<div class="mbtm"></div>');
+  mruleIn(r,'.mrl',x,1200,0);
+  mrise(r,'.mmx .mmet',x,180,420,14);
+  mdraw(r,'.mg1 path',x,150,1000,600);
+  mrise(r,'.mtower > *',x,150,120,20);
+});
+
+/* ==================== 02 — COMMERCIAL PROOF ==================== */
+MC(2,'COMMERCIAL PROOF','the story stays quiet, then the commercial outcome arrives at full page scale',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:40px">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+      '<div class="mtower mfirst-m">'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.5')+
+        '<div class="g g2 gap3">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1.1')+
+          mcropIn('fam',MFAM[4],'now','aspect-ratio:1.1')+'</div></div>'+
+    '</div>'+
+    '<div style="margin-top:110px">'+
+      '<div class="mdiv mrl" style="background:rgba(138,110,58,.4)"></div>'+
+      '<div style="margin-top:34px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+      mmets('xl','mmx bare')+
+    '</div>'+
+    '<div class="mbtm" style="height:120px"></div>');
+  mruleIn(r,'.mrl',x,1400,200);
+  mrise(r,'.mmx .mmet',x,260,900,26);
+  mrise(r,'.mtower > *',x,160,120,20);
+});
+
+/* ==================== 03 — FROM AMPLIFIER TO MARKET ==================== */
+MC(3,'FROM AMPLIFIER TO MARKET','the image column becomes a chronology: heritage, first translation, expanded range',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:40px">'+mlabel(MT.lT)+mp2()+'</div>'+
+      '</div>'+
+      '<div class="mstage mfirst-m">'+
+        '<div class="mvline mvl" style="position:absolute;left:-26px;top:6px;bottom:40px;"></div>'+
+        '<div class="mtower" style="gap:36px">'+
+          mcell(mcropIn('stack',MWALL,'arch','aspect-ratio:1.6'),'<i>01</i>Heritage','mst')+
+          mcell(mcropIn('stan',MSTAN,'now knock','aspect-ratio:1.7'),'<i>02</i>The first translated object','mst')+
+          mcell('<div class="g g3 gap3">'+MPROD.slice(0,3).map(function(i){
+              return mcropIn('fam',MFAM[i],'now','aspect-ratio:1');}).join('')+'</div>',
+            '<i>03</i>An expanded range','mst')+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:60px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  var v=r.querySelector('.mvl');
+  if(v&&window.MOTION){ v.style.transform='scaleY(0)'; v.style.transition='transform 2.2s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ v.style.transform='scaleY(1)'; },300); }
+  mrise(r,'.mst',x,700,300,22);
+  mrise(r,'.mmx .mmet',x,220,2400,20);
+});
+
+/* ==================== 04 — DNA TRACE ==================== */
+MC(4,'DNA TRACE','characteristics are marked on the real cabinet in gold, then the same lines reappear in cyan on the new products',function(r,x){
+  var KEYS=['module','frame','corner','script','piping'];
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div class="mstage" style="margin-top:40px">'+
+          mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+          movr('stack',MCAB,cabPaths(1,0,KEYS),'#c8a96e',1.6,'tr-g')+
+          movr('stack',MCAB,cabPaths(1,0,KEYS),'#00b4d8',1.6,'tr-c')+
+        '</div>'+
+        '<div class="mkey" style="margin-top:22px"><span class="au">FOUND ON THE CABINET</span>'+
+        '<span class="cy">THE PART THAT TRAVELLED</span></div>'+
+      '</div>'+
+      '<div>'+
+        '<div style="margin-bottom:30px">'+mlabel(MT.lT)+mp2()+'</div>'+
+        '<div class="g g2 gap12">'+MPROD.slice(0,4).map(function(i,k){
+          return '<div class="mstage mpx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1.25')+
+            movr('fam',MFAM[i],mderive(i,0.62),'#00b4d8',1.5,'px'+k)+'</div>'; }).join('')+'</div>'+
+        '<div style="margin-top:44px">'+mlabel(MT.lR,'au')+mmets('l','mmx')+'</div>'+
+      '</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  var gc=r.querySelector('.tr-c');
+  if(gc) gc.style.opacity='0';
+  mdraw(r,'.tr-g path',x,220,1100,300);
+  if(gc&&window.MOTION){ gc.style.transition='opacity 1.1s ease';
+    x.delay(function(){ gc.style.opacity='1'; },2200);
+    var gg=r.querySelector('.tr-g'); if(gg){ gg.style.transition='opacity 1.2s ease';
+      x.delay(function(){ gg.style.opacity='.28'; },2600); } }
+  mrise(r,'.mpx',x,180,2600,18);
+  MPROD.slice(0,4).forEach(function(_,k){ mdraw(r,'.px'+k+' path',x,0,900,2900+k*180); });
+  mrise(r,'.mmx .mmet',x,200,4200,18);
+});
+
+/* ==================== 05 — MATERIAL DNA ==================== */
+MC(5,'MATERIAL DNA','the identity is in the materials — grille, covering, brass, script — before it is in any silhouette',function(r,x){
+  var PAIRS=[['script','script','THE SCRIPT'],['grille','grille','THE COVERING'],
+             ['corner','tex','THE SURFACE'],['pipe','brass','THE BRASS LINE']];
+  r.innerHTML=msec('',
+    mhd('big')+
+    '<div class="g gB gap64 ai-s" style="margin-top:34px">'+
+      '<div>'+mp1()+'<div style="margin-top:34px">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+      '<div class="mfirst-m">'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.7')+
+        '<span class="mcap"><i>01</i>The source object</span></div>'+
+    '</div>'+
+    '<div style="margin-top:74px">'+
+      '<div class="g g4 gap20">'+
+        PAIRS.map(function(p,k){
+          return '<div class="mpr">'+
+            '<span class="mtag au">SOURCE</span>'+
+            '<div style="margin-top:10px">'+mcrop('stack',SRC[p[0]],'arch')+'</div>'+
+            '<div class="mdiv mrl" style="margin:16px 0 14px"></div>'+
+            '<span class="mtag cy">CARRIED</span>'+
+            '<div style="margin-top:10px">'+mcrop('fam',NEW[p[1]],'now')+'</div>'+
+            '<span class="mcap"><i>'+(k<9?'0':'')+(k+1)+'</i>'+p[2]+'</span></div>'; }).join('')+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:74px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  mrise(r,'.mpr',x,220,200,20);
+  mruleIn(r,'.mrl',x,900,600);
+  mrise(r,'.mmx .mmet',x,180,1600,18);
+});
+
+/* ==================== 06 — THE GOLD THREAD ==================== */
+MC(6,'THE GOLD THREAD','one gold line runs the whole length of the argument and touches every stage of it',function(r,x){
+  r.innerHTML=msec('mthreaded',
+    '<svg class="mthr" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">'+
+      '<path class="thr" d="M6 4 L6 26 L44 26 L44 52 L14 52 L14 74 L88 74 L88 96" '+
+      'stroke="#8a6e3a" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity=".75"/></svg>'+
+    '<div style="position:relative;padding-left:44px">'+
+      mhd('big')+mp1('margin-top:26px')+
+      '<div class="g gB gap48 ai-s" style="margin-top:52px">'+
+        '<div>'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.62')+
+          '<span class="mcap"><i>01</i>Where it starts</span></div>'+
+        '<div>'+mlabel(MT.lT)+mp2()+
+          '<div style="margin-top:26px;max-width:120px">'+mglyph(['module','script'],'#8a6e3a',1.6,'mg1')+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="g g5 gap12" style="margin-top:64px">'+MPROD.map(function(i,k){
+        return '<div class="mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1')+'</div>'; }).join('')+'</div>'+
+      '<div style="margin-top:70px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+      mmets('l','mmx')+
+    '</div>'+'<div class="mbtm"></div>');
+  var t=r.querySelector('.thr');
+  if(t){ var L=520; try{L=t.getTotalLength();}catch(e){}
+    t.style.strokeDasharray=L;
+    if(window.MOTION){ t.style.strokeDashoffset=L;
+      var wrap=r.querySelector('.mthreaded');
+      x.on(window,'scroll',function(){
+        var p=Math.max(0,Math.min(1,x.prog(wrap)*1.35));
+        t.style.strokeDashoffset=String(L*(1-Math.max(p,0.08)));
+      });
+      t.style.strokeDashoffset=String(L*0.92);
+    } }
+  mdraw(r,'.mg1 path',x,180,1000,500);
+  mrise(r,'.mfx',x,150,300,18);
+  mrise(r,'.mmx .mmet',x,180,500,18);
+});
+
+/* ==================== 07 — GOLD BECOMES CYAN ==================== */
+MC(7,'GOLD BECOMES CYAN','one characteristic, one colour change — the whole extraction said with almost nothing',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap80 ai-c">'+
+      '<div class="mstage">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,['script','piping']),'#c8a96e',2,'g7g')+
+        movr('stack',MCAB,cabPaths(1,0,['script','piping']),'#00b4d8',2,'g7c')+
+        '<span class="mcap"><i>'+MG.script.id+'</i>'+MG.script.lab+' · '+MG.piping.lab+'</span>'+
+      '</div>'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:38px">'+mlabel(MT.lT)+mp2()+'</div>'+
+        '<div class="mkey" style="margin-top:26px">'+
+          '<span class="au">ON THE ORIGINAL</span><span class="cy">ONCE IT COULD TRAVEL</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="g g5 gap12" style="margin-top:70px">'+MPROD.map(function(i,k){
+      return '<div class="mstage mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1.05')+
+        movr('fam',MFAM[i],mderive(i,0.60).slice(1),'#00b4d8',2.2,'fc'+k)+'</div>'; }).join('')+'</div>'+
+    '<div style="margin-top:70px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  var c=r.querySelector('.g7c'); if(c) c.style.opacity='0';
+  mdraw(r,'.g7g path',x,300,1200,300);
+  if(c&&window.MOTION){ c.style.transition='opacity 1.4s ease';
+    x.delay(function(){ c.style.opacity='1'; },2100);
+    var g=r.querySelector('.g7g'); if(g){ g.style.transition='opacity 1.4s ease';
+      x.delay(function(){ g.style.opacity='0'; },2500); } }
+  mrise(r,'.mfx',x,170,2600,16);
+  MPROD.forEach(function(_,k){ mdraw(r,'.fc'+k+' path',x,0,800,3200+k*170); });
+  mrise(r,'.mmx .mmet',x,180,4200,18);
+});
+
+/* ==================== 08 — DESIGN GENOME ==================== */
+MC(8,'DESIGN GENOME','seven things a Marshall cabinet actually does, filed as a set',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+      '<div>'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.62')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:64px">'+mlabel('Identifiable brand DNA','cy')+
+      '<div class="g g7 gap20 m-2up" style="margin-top:20px">'+MGK.map(function(k){
+        return '<div class="mgn">'+mglyph([k],'#0a7f99',1.8,'gn_'+k,null,true)+
+          '<span class="mcap"><i>'+MG[k].id+'</i>'+MG[k].lab+'</span></div>'; }).join('')+'</div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:70px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div class="g g2 gap3">'+MPROD.slice(0,4).map(function(i){
+        return mcropIn('fam',MFAM[i],'now','aspect-ratio:1.15');}).join('')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:60px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  mrise(r,'.mgn',x,150,200,16);
+  mdraw(r,'.mgn svg path',x,26,800,500);
+  mrise(r,'.mmx .mmet',x,180,900,18);
+});
+
+/* ==================== 09 — THE EXTRACTION FIELD ==================== */
+MC(9,'THE EXTRACTION FIELD','the space between old and new is the subject; a few fragments hang in it',function(r,x){
+  var FRAG=[['module',12,16],['script',44,34],['piping',20,58],['frame',56,72]];
+  r.innerHTML=msec('',
+    mhd('big')+mp1('margin-top:26px;max-width:620px')+
+    '<div class="g gD gap0 ai-c" style="margin-top:64px">'+
+      '<div>'+mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        '<span class="mcap"><i>01</i>What already existed</span></div>'+
+      '<div class="mstage mhide-m" style="min-height:340px">'+
+        FRAG.map(function(f,k){
+          return '<div class="mfr" style="position:absolute;left:'+f[1]+'%;top:'+f[2]+'%;width:26%">'+
+            mglyph([f[0]],'#0a7f99',1.8,'fr'+k)+
+            '<span class="mcap" style="font-size:.38rem"><i>'+MG[f[0]].id+'</i>'+MG[f[0]].lab+'</span></div>'; }).join('')+
+      '</div>'+
+      '<div>'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1.1')+
+        '<span class="mcap"><i>02</i>Where it went</span></div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:70px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+mmets('l','mmx')+'</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  mrise(r,'.mfr',x,320,500,14);
+  FRAG.forEach(function(f,k){ mdraw(r,'.fr'+k+' path',x,60,900,700+k*320); });
+  mrise(r,'.mmx .mmet',x,180,1800,18);
+});
+
+/* ==================== 10 — ONE OBJECT, MANY CATEGORIES ==================== */
+MC(10,'ONE OBJECT, MANY CATEGORIES','one source held large, and the categories it produced entering along a shared line',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gE gap64 ai-e">'+
+      '<div>'+mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        '<span class="mcap"><i>01</i>One object</span></div>'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:34px">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+    '</div>'+
+    '<div style="margin-top:56px"><div class="mdiv mrl" style="background:rgba(138,110,58,.4)"></div></div>'+
+    '<div class="g g5 gap12 ai-e" style="margin-top:26px">'+MPROD.map(function(i,k){
+      var ar=[1.35,1.1,1.5,0.95,1.2][k];
+      return '<div class="mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:'+ar)+'</div>'; }).join('')+'</div>'+
+    '<div style="margin-top:70px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm"></div>');
+  mruleIn(r,'.mrl',x,1300,200);
+  mrise(r,'.mfx',x,200,700,26);
+  mrise(r,'.mmx .mmet',x,220,1900,22);
+});
+</script>
+<style id="sf-mlab-css3">
+#sf-mlab-mount .mzoneA{background:#141414;}
+#sf-mlab-mount .mzoneB{background:#f3efe9;}
+#sf-mlab-mount .mgrille{position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity 1.4s ease;
+  background-image:repeating-linear-gradient(90deg,rgba(10,10,10,.10) 0 1px,transparent 1px 7px),
+                   repeating-linear-gradient(0deg,rgba(10,10,10,.10) 0 1px,transparent 1px 7px);}
+#sf-mlab-mount .mgrille.on{opacity:1;}
+#sf-mlab-mount .mrhy{display:block;width:100%;height:16px;overflow:visible;}
+#sf-mlab-mount .mstkrow{display:grid;gap:3px;}
+#sf-mlab-mount .mmask{clip-path:inset(0 100% 0 0);transition:clip-path 1.5s cubic-bezier(.22,.7,.24,1);}
+#sf-mlab-mount .mmask.on{clip-path:inset(0 0 0 0);}
+#sf-mlab-mount .mout{position:relative;}
+#sf-mlab-mount .msplitline{position:absolute;top:0;bottom:0;width:1px;background:rgba(138,110,58,.45);
+  transform-origin:50% 0;}
+#sf-mlab-mount .mbig{font-family:'Bebas Neue',sans-serif;letter-spacing:.08em;line-height:.86;
+  font-size:clamp(3rem,11vw,9rem);color:rgba(10,10,10,.1);margin:0;text-transform:uppercase;}
+#sf-mlab-mount .mk .mbig{color:rgba(244,241,236,.09);}
+@media(max-width:900px){
+  #sf-mlab-mount .mstkrow{grid-template-columns:repeat(2,1fr) !important;}
+}
+</style>
+
+<script>
+/* =========================================================================
+   MARSHALL LAB — concepts 11–20
+   ========================================================================= */
+function mmask(root,sel,x,step,delay){
+  var ns=[].slice.call(root.querySelectorAll(sel));
+  if(!ns.length) return ns;
+  delay=Math.min(delay||0,700);
+  if(!window.MOTION){ ns.forEach(function(n){ n.classList.add('on'); }); return ns; }
+  var fire=function(){ ns.forEach(function(n,k){ x.delay(function(){ n.classList.add('on'); },(delay||0)+k*(step||180)); }); };
+  /* observe the PARENT: a clip-path'd node reports isIntersecting:false in
+     Chrome, so observing the masked element itself never fires and the image
+     stays permanently invisible. This cost a whole build to find once. */
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+  io.observe(ns[0].parentElement||ns[0]); x.delay(fire,3200);
+  return ns;
+}
+/* the control-panel rhythm: evenly spaced points on a hairline. It is a
+   structural device, not a picture of a control panel. */
+function mrhythm(n,col,cls){
+  var p='<svg class="mrhy '+(cls||'')+'" viewBox="0 0 1000 16" preserveAspectRatio="none" fill="none">'+
+    '<path class="rl" d="M0 8 L1000 8" stroke="'+col+'" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".45"/>';
+  for(var i=0;i<n;i++){ var cx=(1000/(n-1))*i;
+    p+='<circle class="rd" cx="'+cx.toFixed(1)+'" cy="8" r="3.2" stroke="'+col+
+       '" stroke-width="1.2" vector-effect="non-scaling-stroke" fill="none"/>'; }
+  return p+'</svg>';
+}
+function mcapx(n,t){ return '<span class="mcap"><i>'+(n<10?'0':'')+n+'</i>'+t+'</span>'; }
+
+/* ==================== 11 — BEFORE / AFTER WITHOUT SAYING SO ==================== */
+MC(11,'BEFORE / AFTER WITHOUT SAYING SO','two worlds on one page, and no label telling you which is which',function(r,x){
+  r.innerHTML='<div class="mp" style="padding:0"><div class="min" style="max-width:none">'+
+    '<div class="g g2 gap0 mstage">'+
+      '<div class="mzoneA" style="padding:92px 48px">'+
+        '<div style="max-width:560px;margin-left:auto;padding-right:40px">'+
+          '<span class="mey" style="color:#c8a96e">'+MT.ey+'</span>'+
+          '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+          '<p class="mtx" style="color:rgba(244,241,236,.52);margin-top:26px">'+MT.p1+'</p>'+
+          '<div style="margin-top:34px">'+mcropIn('stack',MWALL,'arch mmask','aspect-ratio:1.6')+'</div>'+
+        '</div></div>'+
+      '<div class="mzoneB" style="padding:92px 48px">'+
+        '<div style="max-width:560px;padding-left:40px">'+
+          '<span class="mlab">'+MT.lT+'</span>'+
+          '<p class="mtx">'+MT.p2+'</p>'+
+          '<div class="g g2 gap12" style="margin-top:34px">'+
+            mcropIn('fam',MFAM[2],'now mmask','aspect-ratio:1.05')+
+            mcropIn('fam',MFAM[3],'now mmask','aspect-ratio:1.05')+'</div>'+
+          '<div style="margin-top:40px">'+mlabel(MT.lR,'au')+mbr()+mmets('m','mmx')+'</div>'+
+        '</div></div>'+
+      '<div class="msplitline mspl" style="left:50%"></div>'+
+    '</div></div></div>';
+  var sp=r.querySelector('.mspl');
+  if(sp&&window.MOTION){ sp.style.transform='scaleY(0)'; sp.style.transition='transform 1.8s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ sp.style.transform='scaleY(1)'; },240); }
+  mmask(r,'.mmask',x,260,500);
+  mrise(r,'.mmx .mmet',x,180,1500,16);
+});
+
+/* ==================== 12 — THE MARSHALL STACK ==================== */
+MC(12,'THE MARSHALL STACK','the page is built the way the wall is built — equal modules, three-pixel gaps, no gesture',function(r,x){
+  var top=[0,1,2,3,4,5], bot=[0,2,3,4];
+  r.innerHTML=msec('',
+    '<div style="max-width:720px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div style="margin-top:52px">'+
+      '<div>'+
+        '<div class="mstkrow g6 mrw" style="margin-bottom:3px">'+top.map(function(c){
+          var fx=MGX[c]/1536, fw=(MGX[c+1]-MGX[c])/1536;
+          return mcropIn('stack',[fx,MGY[0]/1005,fw,(MGY[1]-MGY[0])/1005],'arch','aspect-ratio:0.925');}).join('')+'</div>'+
+        '<div class="mstkrow g6 mrw" style="margin-bottom:3px">'+top.map(function(c){
+          var fx=MGX[c]/1536, fw=(MGX[c+1]-MGX[c])/1536;
+          return mcropIn('stack',[fx,MGY[1]/1005,fw,(MGY[2]-MGY[1])/1005],'arch','aspect-ratio:0.925');}).join('')+'</div>'+
+        '<div class="mstkrow g4 mrw" style="margin-top:26px">'+bot.map(function(i){
+          return mcropIn('fam',MFAM[i],'now','aspect-ratio:0.925');}).join('')+'</div>'+
+        '<span class="mcap"><i>—</i>The same module, three-pixel gaps, a different century</span>'+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:56px;max-width:720px">'+mlabel(MT.lT)+mp2()+'</div>'+
+    '<div style="margin-top:56px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm"></div>');
+  mrise(r,'.mrw',x,320,200,18);
+  mrise(r,'.mmx .mmet',x,180,1200,16);
+});
+
+/* ==================== 13 — CONTROL PANEL RHYTHM ==================== */
+MC(13,'CONTROL PANEL RHYTHM','one interval governs the whole section, the way one interval governs a control panel',function(r,x){
+  r.innerHTML=msec('',
+    mhd('big')+
+    '<div style="margin-top:32px">'+mrhythm(9,'#8a6e3a','rh1')+'</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:34px">'+
+      '<div>'+mp1()+'</div>'+
+      '<div>'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.62')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:52px">'+mrhythm(9,'#8a6e3a','rh2')+'</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:34px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+
+        '<div style="margin-top:26px;max-width:320px">'+mcrop('panel',MPANEL,'now')+
+        mcapx(1,'The interval, on the original object')+'</div></div>'+
+      '<div class="g g2 gap12">'+[0,2,3,4].map(function(i){
+        return mcropIn('fam',MFAM[i],'now','aspect-ratio:1.15');}).join('')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:56px">'+mrhythm(9,'#8a6e3a','rh3')+'</div>'+
+    '<div style="margin-top:34px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  ['rh1','rh2','rh3'].forEach(function(c,k){
+    mruleIn(r,'.'+c+' .rl',x,0,0);
+    var ns=[].slice.call(r.querySelectorAll('.'+c+' .rd'));
+    if(window.MOTION){ ns.forEach(function(n,i){ n.style.opacity='0'; n.style.transition='opacity .5s ease';
+      x.delay(function(){ n.style.opacity='1'; }, 300+k*260+i*70); }); }
+  });
+  mdraw(r,'.mrhy .rl',x,0,1300,200);
+  mrise(r,'.mmx .mmet',x,180,1400,16);
+});
+
+/* ==================== 14 — GRILLE ==================== */
+MC(14,'GRILLE','the page grid tightens into a grille where the translation happens, then lets go again',function(r,x){
+  r.innerHTML=msec('',
+    mhd('big')+mp1('margin-top:26px;max-width:620px')+
+    '<div style="margin-top:44px">'+mcropIn('stack',MWALL,'arch','aspect-ratio:2.6')+'</div>'+
+    '<div class="mstage" style="margin-top:0;padding:64px 0">'+
+      '<div class="mgrille mgr"></div>'+
+      '<div class="g gB gap64 ai-s" style="position:relative">'+
+        '<div>'+mlabel(MT.lT,'cy')+mp2()+
+          '<div style="margin-top:26px;max-width:180px">'+mglyph(['grille'],'#0a7f99',1.4,'gg')+
+          mcapx(6,MG.grille.lab)+'</div></div>'+
+        '<div class="g g2 gap12">'+[2,3].map(function(i){
+          return mcropIn('fam',MFAM[i],'now','aspect-ratio:1.1');}).join('')+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="g g5 gap12" style="margin-top:44px">'+MPROD.map(function(i){
+      return '<div class="mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1')+'</div>';}).join('')+'</div>'+
+    '<div style="margin-top:56px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  var gr=r.querySelector('.mgr');
+  if(gr){ if(!window.MOTION){ gr.classList.add('on'); }
+    else { var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+      gr.classList.toggle('on', e.isIntersecting); }); },{threshold:.25}));
+      io.observe(r.querySelector('.mgr').parentNode); } }
+  mdraw(r,'.gg path',x,44,900,300);
+  mrise(r,'.mfx',x,140,200,16);
+  mrise(r,'.mmx .mmet',x,180,900,16);
+});
+
+/* ==================== 15 — THE SILHOUETTE TEST ==================== */
+MC(15,'THE SILHOUETTE TEST','how little is left before it stops looking like Marshall',function(r,x){
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:38px">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+      '<div class="mstage">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,['module','script']),'#c8a96e',2,'s15')+
+        mcapx(1,'The proportion and where the name sits')+
+      '</div>'+
+    '</div>'+
+    '<div style="margin-top:64px">'+mlabel('The same two things, on five objects Marshall had never made','cy')+
+      '<div class="g g5 gap20 m-2up" style="margin-top:22px">'+MPROD.map(function(i,k){
+        return '<div class="mou">'+
+          '<div class="mstage">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1')+
+            movr('fam',MFAM[i],mderive(i,0.60),'#00b4d8',2,'o'+k)+'</div></div>'; }).join('')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:64px;max-width:720px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  mdraw(r,'.s15 path',x,400,1300,300);
+  mrise(r,'.mou',x,160,1600,16);
+  MPROD.forEach(function(_,k){ mdraw(r,'.o'+k+' path',x,220,900,1900+k*200); });
+  mrise(r,'.mmx .mmet',x,180,3200,16);
+});
+
+/* ==================== 16 — TACTILE TRANSLATION ==================== */
+MC(16,'TACTILE TRANSLATION','close enough to feel it: four things your hand would recognise before your eye did',function(r,x){
+  var P=[['script','script','The name, cast in relief'],
+         ['pipe','brass','The brass edge'],
+         ['corner','tex','The protected surface'],
+         ['grille','grille','The woven front']];
+  r.innerHTML=msec('',
+    '<div style="max-width:720px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    P.map(function(p,k){
+      return '<div class="g g2 gap12 mpair mrw" style="margin-top:'+(k?18:44)+'px">'+
+        '<div class="mstage">'+mcrop('stack',SRC[p[0]],'arch mmask')+
+          '<span class="mtag au" style="position:absolute;left:14px;top:14px">SOURCE</span></div>'+
+        '<div class="mstage">'+mcrop('fam',NEW[p[1]],'now mmask')+
+          '<span class="mtag cy" style="position:absolute;left:14px;top:14px">CARRIED</span></div>'+
+        '<span class="mcap" style="grid-column:1 / -1"><i>'+(k<9?'0':'')+(k+1)+'</i>'+p[2]+'</span></div>'; }).join('')+
+    '<div class="g gB gap64 ai-s" style="margin-top:64px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+mmets('l','mmx')+'</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  mmask(r,'.mmask',x,140,200);
+  mrise(r,'.mmx .mmet',x,180,1400,16);
+});
+
+/* ==================== 17 — IDENTITY WITHOUT THE LOGO ==================== */
+MC(17,'IDENTITY WITHOUT THE LOGO','every crop here avoids the wordmark, and it is still obviously Marshall',function(r,x){
+  var A=[['stack',SRC.corner,'Corner and frame'],['stack',SRC.pipe,'The brass edge'],
+         ['fam',NEW.knobs,'Controls'],['fam',NEW.tex,'Surface'],
+         ['fam',NEW.weave,'Weave'],['stack',SRC.grille,'Covering']];
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-e">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+      '<div><p class="mquote">Not one of these crops<br>contains the name.</p>'+
+        '<p class="mnote" style="margin-top:18px">Form, material, controls, colour and proportion are doing the work. '+
+        'That is what makes the identity portable in the first place.</p></div>'+
+    '</div>'+
+    '<div class="g g6 gap12 m-2up" style="margin-top:52px">'+A.map(function(a,k){
+      return '<div class="mnl">'+mcrop(a[0],a[1],a[0]==='stack'?'arch':'now')+
+        mcapx(k+1,a[2])+'</div>'; }).join('')+'</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:64px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+mmets('l','mmx')+'</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  mrise(r,'.mnl',x,130,200,16);
+  mrise(r,'.mmx .mmet',x,180,1300,16);
+});
+
+/* ==================== 18 — THE TRANSLATION MOMENT ==================== */
+MC(18,'THE TRANSLATION MOMENT','one transformation, given the whole middle of the page',function(r,x){
+  r.innerHTML=msec('',
+    '<div style="max-width:720px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div class="g gD gap48 ai-c" style="margin-top:64px">'+
+      '<div class="mstage m18">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,['module','frame','script']),'#c8a96e',1.8,'t18g')+
+        mcapx(1,'The object')+
+      '</div>'+
+      '<div class="mstage m18" style="text-align:center">'+
+        '<div style="max-width:230px;margin:0 auto">'+mglyph(['module','frame','script'],'#0a7f99',2,'t18m')+'</div>'+
+        mcapx(2,'What is actually being kept')+
+      '</div>'+
+      '<div class="mstage m18">'+
+        mcropIn('fam',MFAM[2],'now','aspect-ratio:1.1')+
+        movr('fam',MFAM[2],mderive(2,0.62),'#00b4d8',2,'t18c')+
+        mcapx(3,'Where it ends up')+
+      '</div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:70px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+mmets('l','mmx')+'</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  mdraw(r,'.t18g path',x,240,1200,300);
+  mdraw(r,'.t18m path',x,60,1000,1700);
+  mdraw(r,'.t18c path',x,300,1100,2800);
+  mrise(r,'.mmx .mmet',x,180,3600,16);
+});
+
+/* ==================== 19 — THREE LAYERS ==================== */
+MC(19,'THREE LAYERS','heritage, translation, value — three bands, no headings needed',function(r,x){
+  r.innerHTML='<div id="m19">'+
+    msec('',
+      '<div class="g gB gap64 ai-s">'+
+        '<div>'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+        '<div>'+mcropIn('stack',MWALL,'arch mmask','aspect-ratio:1.6')+'</div>'+
+      '</div>'+'<div style="height:92px"></div>')+
+    msec('mpaper',
+      '<div class="g gB gap64 ai-s">'+
+        '<div>'+mlabel(MT.lT,'cy')+mp2()+
+          '<div style="margin-top:28px;max-width:210px">'+mglyph(['module','frame','script','piping'],'#0a7f99',1.6,'l19')+'</div></div>'+
+        '<div class="g g2 gap12">'+[2,3,4,0].map(function(i){
+          return mcropIn('fam',MFAM[i],'now mmask','aspect-ratio:1.12');}).join('')+'</div>'+
+      '</div>'+'<div style="height:92px"></div>')+
+    msec('mk',
+      '<div style="max-width:760px">'+mlabel(MT.lR)+
+        '<p class="mtx" style="color:rgba(244,241,236,.6)">'+MT.br+'</p></div>'+
+      mmets('xl','mmx bare')+'<div class="mbtm"></div>')+
+  '</div>';
+  mmask(r,'.mmask',x,180,240);
+  mdraw(r,'.l19 path',x,40,900,400);
+  mrise(r,'.mmx .mmet',x,240,400,24);
+});
+
+/* ==================== 20 — THE EDITORIAL SPREAD ==================== */
+MC(20,'THE EDITORIAL SPREAD','a design magazine would run it like this: air, one gold mark, one cyan mark, big numbers',function(r,x){
+  r.innerHTML=msec('mpaper',
+    '<div class="g gC gap80 ai-e">'+
+      '<div>'+mhd('huge')+'</div>'+
+      '<div>'+mcropIn('stack',MCAB,'arch mmask','aspect-ratio:1')+'</div>'+
+    '</div>'+
+    '<div class="g gB gap80 ai-s" style="margin-top:80px">'+
+      '<div>'+mp1()+'</div>'+
+      '<div style="max-width:170px">'+mglyph(['module','script'],'#8a6e3a',1.5,'e20g')+
+        '<span class="mcap" style="color:var(--m-gold)"><i>—</i>What was already there</span></div>'+
+    '</div>'+
+    '<div style="margin-top:96px">'+mcropIn('fam',MFAM[3],'now mmask','aspect-ratio:2.9')+'</div>'+
+    '<div class="g gB gap80 ai-s" style="margin-top:64px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div class="mstage">'+mcropIn('fam',MFAM[2],'now mmask','aspect-ratio:1.2')+
+        movr('fam',MFAM[2],mderive(2,0.62),'#00b4d8',2,'e20c')+
+        '<span class="mcap" style="color:var(--m-cy)"><i>—</i>What went with it</span></div>'+
+    '</div>'+
+    '<div style="margin-top:110px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm" style="height:120px"></div>');
+  mmask(r,'.mmask',x,300,200);
+  mdraw(r,'.e20g path',x,200,1200,700);
+  mdraw(r,'.e20c path',x,300,1100,1600);
+  mrise(r,'.mmx .mmet',x,260,900,26);
+});
+</script>
+<style id="sf-mlab-css4">
+#sf-mlab-mount .arch2 img{filter:grayscale(.55) contrast(1.06) brightness(.94);}
+#sf-mlab-mount .mfrm{position:relative;border:1px solid rgba(0,180,216,.75);}
+#sf-mlab-mount .mfrm.au{border-color:rgba(138,110,58,.8);}
+#sf-mlab-mount .mhair{height:1px;background:rgba(10,10,10,.16);transform-origin:0 50%;}
+#sf-mlab-mount .mk .mhair{background:rgba(244,241,236,.18);}
+#sf-mlab-mount .mvhair{width:1px;background:rgba(10,10,10,.14);transform-origin:50% 0;}
+#sf-mlab-mount .mwm{position:absolute;left:0;right:0;top:0;pointer-events:none;overflow:hidden;}
+#sf-mlab-mount .mspread{display:flex;align-items:flex-end;gap:18px;flex-wrap:nowrap;}
+#sf-mlab-mount .mspread > *{flex:0 0 auto;}
+@media(max-width:900px){
+  #sf-mlab-mount .mspread{flex-wrap:wrap;gap:12px;}
+  #sf-mlab-mount .mspread > *{flex:0 0 calc(50% - 6px);width:auto !important;}
+}
+</style>
+
+<script>
+/* =========================================================================
+   MARSHALL LAB — concepts 21–30
+   ========================================================================= */
+
+/* ==================== 21 — ARCHIVE TO FUTURE ==================== */
+MC(21,'ARCHIVE TO FUTURE','the picture treatment moves with the business: archival, then handled, then current',function(r,x){
+  r.innerHTML=msec('',
+    '<div style="max-width:720px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div class="g gD gap48 ai-e" style="margin-top:64px">'+
+      '<div class="mst">'+mcropIn('stack',MWALL,'arch','aspect-ratio:1.5')+
+        '<span class="mcap"><i>01</i>Archive</span></div>'+
+      '<div class="mst">'+mcropIn('stack',MCAB,'arch2','aspect-ratio:1.1')+
+        '<span class="mcap"><i>02</i>Examined</span></div>'+
+      '<div class="mst">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1.1')+
+        '<span class="mcap"><i>03</i>Current</span></div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:70px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div class="g g3 gap12">'+[3,4,0].map(function(i){
+        return mcropIn('fam',MFAM[i],'now','aspect-ratio:1');}).join('')+'</div>'+
+    '</div>'+
+    '<div style="margin-top:64px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  mrise(r,'.mst',x,500,200,20);
+  mrise(r,'.mmx .mmet',x,180,1900,16);
+});
+
+/* ==================== 22 — THE EXPANDING FRAME ==================== */
+MC(22,'THE EXPANDING FRAME','one proportion, taken from the cabinet, becomes the container for everything that followed',function(r,x){
+  var CATS=[2,3,4,0];
+  r.innerHTML=msec('',
+    '<div class="g gB gap64 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:26px')+
+        '<div style="margin-top:38px">'+mlabel(MT.lT)+mp2()+'</div></div>'+
+      '<div class="mstage">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,['module']),'#c8a96e',2.2,'f22')+
+        '<span class="mcap" style="color:var(--m-gold)"><i>01</i>The proportion everything came from</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="g g4 gap20" style="margin-top:64px">'+CATS.map(function(i,k){
+      var ar=[0.925,1.16,0.8,1.4][k];
+      return '<div class="mfx"><div class="mfrm" style="padding:8px">'+
+        mcropIn('fam',MFAM[i],'now','aspect-ratio:'+ar)+'</div>'+
+        '<span class="mcap"><i>'+(k<9?'0':'')+(k+2)+'</i>The same frame, re-proportioned</span></div>'; }).join('')+'</div>'+
+    '<div style="margin-top:70px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    mmets('l','mmx')+'<div class="mbtm"></div>');
+  mdraw(r,'.f22 path',x,0,1200,300);
+  var fr=[].slice.call(r.querySelectorAll('.mfrm'));
+  if(window.MOTION){ fr.forEach(function(n,k){ n.style.opacity='0'; n.style.transform='scale(.94)';
+    n.style.transition='opacity .8s ease, transform 1s cubic-bezier(.2,.7,.26,1)';
+    x.delay(function(){ n.style.opacity='1'; n.style.transform='none'; },1500+k*240); }); }
+  mrise(r,'.mmx .mmet',x,180,2900,16);
+});
+
+/* ==================== 23 — CATEGORY EXPANSION ==================== */
+MC(23,'CATEGORY EXPANSION','one object at the left, and the market it opened spreading away from it',function(r,x){
+  var SEQ=[2,3,4,0,5];
+  r.innerHTML=msec('',
+    '<div style="max-width:700px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div class="mspread" style="margin-top:58px">'+
+      '<div class="msp" style="width:30%">'+mcropIn('stack',MCAB,'arch','aspect-ratio:0.95')+
+        '<span class="mcap"><i>01</i>Where it started</span></div>'+
+      SEQ.map(function(i,k){
+        var w=[19,16,14,12,10][k];
+        return '<div class="msp" style="width:'+w+'%">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1')+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="mhair mh23" style="margin-top:26px"></div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:44px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+'</div>'+
+    '</div>'+
+    '<div style="margin-top:64px">'+mmets('xl','mmx bare')+'</div>'+
+    '<div class="mbtm" style="height:110px"></div>');
+  mrise(r,'.msp',x,260,200,20);
+  mruleIn(r,'.mh23',x,1600,1600);
+  mrise(r,'.mmx .mmet',x,240,2200,24);
+});
+
+/* ==================== 24 — ONE LINE OF DNA ==================== */
+MC(24,'ONE LINE OF DNA','a single characteristic, followed all the way — and nothing else on the page',function(r,x){
+  r.innerHTML=msec('',
+    '<div style="max-width:680px">'+mhd('big')+
+      '<p class="mtx" style="margin-top:26px">'+MT.p1+'</p></div>'+
+    '<div class="mstage" style="margin-top:64px">'+
+      mcropIn('stack',MWALL,'arch','aspect-ratio:2.4')+
+      movr('stack',MWALL,(function(){var p=[];
+        for(var c=0;c<6;c++){ var y=MGY[0]+(MGY[1]-MGY[0])*0.53, x0=MGX[c], x1=MGX[c+1], m=(x0+x1)/2, hw=(x1-x0)*0.22;
+          p.push('M'+(m-hw).toFixed(0)+' '+y.toFixed(0)+' L'+(m+hw).toFixed(0)+' '+y.toFixed(0)); }
+        return p;})(),'#c8a96e',2.4,'l24')+
+      '<span class="mcap" style="color:var(--m-gold)"><i>—</i>One line: where the name sits on the box</span>'+
+    '</div>'+
+    '<div class="g g5 gap20" style="margin-top:54px">'+MPROD.map(function(i,k){
+      return '<div class="mstage mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1')+
+        movr('fam',MFAM[i],mderive(i,0.60).slice(1),'#00b4d8',2.4,'n24'+k)+'</div>'; }).join('')+'</div>'+
+    '<span class="mcap" style="color:var(--m-cy);margin-top:14px"><i>—</i>The same line, on five things Marshall had never made</span>'+
+    '<div style="margin-top:72px;max-width:720px">'+mbr()+'</div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm" style="height:110px"></div>');
+  mdraw(r,'.l24 path',x,180,900,300);
+  mrise(r,'.mfx',x,180,1600,18);
+  MPROD.forEach(function(_,k){ mdraw(r,'.n24'+k+' path',x,0,800,2000+k*200); });
+  mrise(r,'.mmx .mmet',x,240,3200,24);
+});
+
+/* ==================== 25 — FOUNDRY ANALYSIS ==================== */
+MC(25,'FOUNDRY ANALYSIS','the documentary picture, then the reading of it, then what the reading produced',function(r,x){
+  var KEYS=['module','frame','corner','script','piping'];
+  r.innerHTML=msec('',
+    '<div style="max-width:720px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div class="g g4 gap20 ai-s" style="margin-top:60px">'+
+      '<div class="mst"><span class="mtag">DOCUMENTARY</span>'+
+        '<div style="margin-top:12px">'+mcropIn('stack',MCAB,'arch','aspect-ratio:1')+'</div>'+
+        mcapx(1,'The object as found')+'</div>'+
+      '<div class="mst mstage"><span class="mtag au">ANALYSIS</span>'+
+        '<div style="margin-top:12px;position:relative">'+mcropIn('stack',MCAB,'arch','aspect-ratio:1')+
+          movr('stack',MCAB,cabPaths(1,0,KEYS),'#c8a96e',1.6,'a25')+'</div>'+
+        mcapx(2,'What is deliberate about it')+'</div>'+
+      '<div class="mst"><span class="mtag cy">TRANSFERABLE</span>'+
+        '<div style="margin-top:12px;padding:8%">'+mglyph(KEYS,'#0a7f99',1.8,'t25')+'</div>'+
+        mcapx(3,'The part that can leave')+'</div>'+
+      '<div class="mst mstage"><span class="mtag cy">APPLIED</span>'+
+        '<div style="margin-top:12px;position:relative">'+mcropIn('fam',MFAM[2],'now','aspect-ratio:1')+
+          movr('fam',MFAM[2],mderive(2,0.62),'#00b4d8',1.8,'p25')+'</div>'+
+        mcapx(4,'A category it had never made')+'</div>'+
+    '</div>'+
+    mkey()+
+    '<div class="g gB gap64 ai-s" style="margin-top:64px">'+
+      '<div>'+mlabel(MT.lT)+mp2()+'</div>'+
+      '<div>'+mlabel(MT.lR,'au')+mbr()+mmets('l','mmx')+'</div>'+
+    '</div>'+'<div class="mbtm"></div>');
+  mrise(r,'.mst',x,400,200,18);
+  mdraw(r,'.a25 path',x,150,1000,900);
+  mdraw(r,'.t25 path',x,60,900,2000);
+  mdraw(r,'.p25 path',x,240,900,2900);
+  mrise(r,'.mmx .mmet',x,180,3600,16);
+});
+
+/* ==================== 26 — MOVING EXTRACTION ==================== */
+MC(26,'MOVING EXTRACTION','the whole argument as one uninterrupted move, on scroll, with nothing to hover',function(r,x){
+  var KEYS=['module','frame','script','piping'];
+  r.innerHTML=msec('',
+    '<div style="max-width:680px">'+mhd('big')+mp1('margin-top:26px')+'</div>'+
+    '<div class="g gB gap80 ai-c" style="margin-top:64px">'+
+      '<div class="mstage">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,KEYS),'#c8a96e',2,'x26g')+
+        movr('stack',MCAB,cabPaths(1,0,KEYS),'#00b4d8',2,'x26c')+
+      '</div>'+
+      '<div>'+mlabel(MT.lT,'cy')+mp2()+
+        '<div class="mkey" style="margin-top:24px">'+
+          '<span class="au">MARKED ON THE ORIGINAL</span><span class="cy">LEAVING IT</span></div></div>'+
+    '</div>'+
+    '<div class="g g5 gap12" style="margin-top:70px">'+MPROD.map(function(i,k){
+      return '<div class="mstage mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1.05')+
+        movr('fam',MFAM[i],mderive(i,0.60),'#00b4d8',1.8,'y26'+k)+'</div>'; }).join('')+'</div>'+
+    '<div style="margin-top:70px"><div class="mhair mh26" style="background:rgba(138,110,58,.4)"></div>'+
+      '<div style="margin-top:28px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div></div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm" style="height:110px"></div>');
+  mdraw(r,'.x26g path',x,240,1100,300);
+  mextract(r,x,'.x26g','.x26c','58%','-6%',0.72,{a:1500,b:700,c:400,travel:1700,ghost:.22});
+  mrise(r,'.mfx',x,180,3200,18);
+  MPROD.forEach(function(_,k){ mdraw(r,'.y26'+k+' path',x,180,900,3600+k*220); });
+  mruleIn(r,'.mh26',x,1400,4600);
+  mrise(r,'.mmx .mmet',x,240,5000,24);
+});
+
+/* ==================== 27 — THE QUIET MACHINE ==================== */
+MC(27,'THE QUIET MACHINE','a presentation board, not a web page: hairlines, exact alignment, large photographs',function(r,x){
+  r.innerHTML=msec('mpaper',
+    '<div class="mhair hz" style="margin-bottom:22px"></div>'+
+    '<div class="g gA gap48 ai-s">'+
+      '<div><span class="mtag">01 · HERITAGE</span>'+
+        '<h3 class="mh" style="margin-top:16px">'+MT.hA+' '+MT.hB+'</h3></div>'+
+      '<div><span class="mtag">CASE STUDY</span>'+
+        '<span class="mtag" style="margin-top:6px;color:rgba(10,10,10,.55)">MARSHALL</span></div>'+
+    '</div>'+
+    '<div style="margin-top:32px">'+mcropIn('stack',MWALL,'arch','aspect-ratio:3.1')+'</div>'+
+    '<div class="mhair hz" style="margin-top:32px"></div>'+
+    '<div class="g gA gap48 ai-s" style="margin-top:22px">'+
+      '<div>'+mp1()+'</div>'+
+      '<div style="max-width:150px">'+mglyph(['module','frame','script'],'#8a6e3a',1.2,'q27')+'</div>'+
+    '</div>'+
+    '<div class="mhair hz" style="margin-top:40px"></div>'+
+    '<div class="g gA gap48 ai-s" style="margin-top:22px">'+
+      '<div><span class="mtag">02 · '+MT.lT.toUpperCase()+'</span>'+
+        '<p class="mtx" style="margin-top:16px">'+MT.p2+'</p></div>'+
+      '<div></div>'+
+    '</div>'+
+    '<div class="g g3 gap3" style="margin-top:32px">'+[2,3,4].map(function(i){
+      return mcropIn('fam',MFAM[i],'now','aspect-ratio:1.2');}).join('')+'</div>'+
+    '<div class="mhair hz" style="margin-top:32px"></div>'+
+    '<div class="g gA gap48 ai-s" style="margin-top:22px">'+
+      '<div><span class="mtag">03 · '+MT.lR.toUpperCase()+'</span>'+
+        '<p class="mtx" style="margin-top:16px">'+MT.br+'</p></div><div></div>'+
+    '</div>'+
+    mmets('l','mmx')+
+    '<div class="mhair hz" style="margin-top:40px"></div>'+
+    '<div class="mbtm"></div>');
+  mruleIn(r,'.hz',x,1300,120);
+  mdraw(r,'.q27 path',x,90,1100,600);
+  mrise(r,'.mmx .mmet',x,180,1200,14);
+});
+
+/* ==================== 28 — CULTURE AND PRODUCT ==================== */
+MC(28,'CULTURE AND PRODUCT','what it meant and what it was made of — the brand inherited both',function(r,x){
+  var TI=['module','script','piping','stack'];
+  r.innerHTML=msec('mk',
+    '<div class="mstage">'+
+      '<div class="mwm"><p class="mbig">'+MT.hA+' '+MT.hB+'</p></div>'+
+      '<div style="position:relative;padding-top:36px">'+
+        '<span class="mey">'+MT.ey+'</span>'+
+        '<h3 class="mh big" style="color:rgba(244,241,236,.92)">'+MT.hA+'<br>'+MT.hB+'</h3>'+
+      '</div>'+
+    '</div>'+
+    '<div class="g gB gap64 ai-s" style="margin-top:44px">'+
+      '<div><p class="mtx">'+MT.p1+'</p>'+
+        '<div style="margin-top:34px">'+mlabel(MT.lT)+
+          '<p class="mtx">'+MT.p2+'</p></div></div>'+
+      '<div class="mfirst-m">'+mcropIn('stack',MWALL,'arch mmask','aspect-ratio:1.5')+
+        '<span class="mcap"><i>—</i>What the first number is counting</span></div>'+
+    '</div>'+
+    '<div class="g g4 gap20 m-2up" style="margin-top:64px">'+TI.map(function(k,i){
+      return '<div class="mti"><div style="max-width:96px">'+mglyph([k],'#00b4d8',1.6,'ti'+i)+'</div>'+
+        '<span class="mcap" style="margin-top:14px"><i>'+MG[k].id+'</i>'+MG[k].lab+'</span>'+
+        '<span class="mtag au" style="margin-top:8px">'+MQ[k]+'</span></div>'; }).join('')+'</div>'+
+    '<div class="g g4 gap12" style="margin-top:56px">'+[2,3,4,0].map(function(i){
+      return mcropIn('fam',MFAM[i],'now mmask','aspect-ratio:1.1');}).join('')+'</div>'+
+    '<div style="margin-top:64px;max-width:760px">'+mlabel(MT.lR)+
+      '<p class="mtx">'+MT.br+'</p></div>'+
+    mmets('xl','mmx bare')+'<div class="mbtm" style="height:110px"></div>');
+  mmask(r,'.mmask',x,260,400);
+  mrise(r,'.mti',x,200,700,18);
+  TI.forEach(function(_,i){ mdraw(r,'.ti'+i+' path',x,50,900,900+i*200); });
+  mrise(r,'.mmx .mmet',x,240,2200,24);
+});
+
+/* ==================== 29 — MAXIMUM REDUCTION ==================== */
+MC(29,'MAXIMUM REDUCTION','headline, two paragraphs, one photograph, one line, one row, four numbers',function(r,x){
+  r.innerHTML=msec('',
+    '<div style="max-width:760px">'+mhdOne('huge')+
+      '<p class="mtx" style="margin-top:30px">'+MT.p1+'</p>'+
+      '<p class="mtx" style="margin-top:20px">'+MT.p2+'</p></div>'+
+    '<div class="mstage" style="margin-top:70px">'+
+      mcropIn('stack',MWALL,'arch mmask','aspect-ratio:3.2')+
+      movr('stack',MWALL,(function(){var p=[],y=MGY[0]+(MGY[1]-MGY[0])*0.53;
+        for(var c=0;c<6;c++){ var x0=MGX[c],x1=MGX[c+1],m=(x0+x1)/2,hw=(x1-x0)*0.22;
+          p.push('M'+(m-hw).toFixed(0)+' '+y.toFixed(0)+' L'+(m+hw).toFixed(0)+' '+y.toFixed(0)); }
+        return p;})(),'#c8a96e',2,'r29')+
+    '</div>'+
+    '<div class="g g3 gap3" style="margin-top:26px">'+[2,3,4].map(function(i){
+      return mcropIn('fam',MFAM[i],'now mmask','aspect-ratio:1.25');}).join('')+'</div>'+
+    '<div style="margin-top:96px">'+mmets('xl','mmx bare')+'</div>'+
+    '<div class="mbtm" style="height:120px"></div>');
+  mmask(r,'.mmask',x,220,200);
+  mdraw(r,'.r29 path',x,150,900,900);
+  mrise(r,'.mmx .mmet',x,260,1600,26);
+});
+
+/* ==================== 30 — SYNTHESIS ==================== */
+MC(30,'SYNTHESIS','the recommendation: the control’s structure, one gold-to-cyan move, detail as evidence, the result at full scale',function(r,x){
+  var KEYS=['module','script','piping'];
+  r.innerHTML=msec('',
+    /* 1 · heritage, in the shipping architecture, with room to breathe */
+    '<div class="g gB gap80 ai-s">'+
+      '<div>'+mhd('big')+mp1('margin-top:28px')+'</div>'+
+      '<div>'+mcropIn('stack',MWALL,'arch mmask','aspect-ratio:1.5')+'</div>'+
+    '</div>'+
+    /* 2 · one extraction, given real room, and nothing else marked */
+    '<div class="g gB gap80 ai-c" style="margin-top:96px">'+
+      '<div class="mstage">'+
+        mcropIn('stack',MCAB,'arch','aspect-ratio:'+(MCAB[2]*1536/(MCAB[3]*1005)).toFixed(3))+
+        movr('stack',MCAB,cabPaths(1,0,KEYS),'#c8a96e',2,'s30g')+
+        movr('stack',MCAB,cabPaths(1,0,KEYS),'#00b4d8',2,'s30c')+
+      '</div>'+
+      '<div>'+mlabel(MT.lT,'cy')+mp2()+
+        '<div class="mkey" style="margin-top:26px">'+
+          '<span class="au">WHAT MARSHALL ALREADY HAD</span>'+
+          '<span class="cy">THE PART THAT COULD TRAVEL</span></div>'+
+        /* 3 · two details, as evidence rather than illustration */
+        '<div class="g g2 gap12" style="margin-top:34px">'+
+          '<div>'+mcrop('stack',SRC.script,'arch mmask')+'<span class="mcap"><i>01</i>On the cabinet</span></div>'+
+          '<div>'+mcrop('fam',NEW.script,'now mmask')+'<span class="mcap"><i>02</i>On the speaker</span></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    /* 4 · the categories, marked with the same derived proportion */
+    '<div class="g g5 gap12" style="margin-top:88px">'+MPROD.map(function(i,k){
+      return '<div class="mstage mfx">'+mcropIn('fam',MFAM[i],'now','aspect-ratio:1.05')+
+        movr('fam',MFAM[i],mderive(i,0.60),'#00b4d8',1.8,'s30p'+k)+'</div>'; }).join('')+'</div>'+
+    /* 5 · the commercial outcome, last and largest */
+    '<div style="margin-top:96px"><div class="mhair m30r" style="background:rgba(138,110,58,.42)"></div>'+
+      '<div style="margin-top:30px;max-width:760px">'+mlabel(MT.lR,'au')+mbr()+'</div></div>'+
+    mmets('xl','mmx bare')+
+    '<div class="mbtm" style="height:120px"></div>');
+  mmask(r,'.mmask',x,240,200);
+  mdraw(r,'.s30g path',x,260,1200,900);
+  mextract(r,x,'.s30g','.s30c','54%','0%',0.78,{a:900,b:900,c:500,travel:1800,ghost:.2});
+  mrise(r,'.mfx',x,180,3400,18);
+  MPROD.forEach(function(_,k){ mdraw(r,'.s30p'+k+' path',x,180,900,3800+k*220); });
+  mruleIn(r,'.m30r',x,1500,4800);
+  mrise(r,'.mmx .mmet',x,260,5200,26);
+});
+</script>
+<script id="sf-mlab-bar">
+/* =========================================================================
+   MARSHALL LAB — the dock and the numbered boxes.
+   Runs last, so every concept title is already registered.
+   Both bars live in one fixed dock, so there is exactly one place that
+   decides how much room the page has to leave at the bottom.
+   ========================================================================= */
+(function(){
+  var MMAX=30;
+  MC(0,'PRODUCTION','the current Marshall section, exactly as it ships',function(){});
+
+  /* ---- dock ---- */
+  var bar=document.getElementById('labbar');
+  var dock=document.getElementById('labdock');
+  if(!dock){
+    dock=document.createElement('div'); dock.id='labdock';
+    bar.parentNode.insertBefore(dock,bar);
+    dock.appendChild(bar);
+  }
+  var mb=document.createElement('div'); mb.id='mlabbar';
+  mb.innerHTML='<div id="mlabname"><b>MARSHALL</b> <span id="mlabnum">00</span> / '+
+    '<span id="mlabtitle">PRODUCTION</span> <em id="mlabdesc"></em>'+
+    '<span id="mlabcount"></span>'+
+    '<span class="mj"><button id="mtgAnim" aria-pressed="true">motion on</button>'+
+    '<button id="mtgJump" aria-pressed="true">auto-scroll</button></span></div>'+
+    '<div id="mlabboxes"></div>';
+  dock.appendChild(mb);
+
+  var cn=document.getElementById('mlabcount');
+  if(cn){ cn.style.cssText='font-size:.5rem;letter-spacing:.14em;color:rgba(244,241,236,.4);text-transform:none;';
+    cn.textContent=(MMAX+1)+' options · 00–'+MMAX; }
+
+  var GRP={0:'control',1:'concepts'};
+  var bx=document.getElementById('mlabboxes');
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var k=0;k<=MMAX;k++){
+    if(GRP[k]){ var g=document.createElement('span'); g.className='gp'; g.textContent=GRP[k];
+      if(k===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=k; b.textContent=(k<10?'0':'')+k;
+    b.title=(MCON[k]?MCON[k].name:'');
+    b.addEventListener('click',(function(m){return function(){mshow(m);};})(k));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  function step(d){ var n=MCUR+d; n=((n%(MMAX+1))+(MMAX+1))%(MMAX+1); mshow(n); }
+  pv.addEventListener('click',function(){step(-1);});
+  nx.addEventListener('click',function(){step(1);});
+
+  var ta=document.getElementById('mtgAnim'), tj=document.getElementById('mtgJump');
+  ta.addEventListener('click',function(){ var on=ta.getAttribute('aria-pressed')!=='true';
+    ta.setAttribute('aria-pressed',on?'true':'false'); ta.textContent=on?'motion on':'motion off';
+    window.MOTION=on; if(MCUR>0) mshow(MCUR); });
+  tj.addEventListener('click',function(){ var on=tj.getAttribute('aria-pressed')!=='true';
+    tj.setAttribute('aria-pressed',on?'true':'false'); tj.textContent=on?'auto-scroll':'no scroll';
+    MJUMP=on; });
+
+  /* ---- one owner of the bottom padding. The SWITCH layer also sets it; this
+     listener is registered later, so on every resize it has the last word. ---- */
+  function dockPad(){
+    var d=document.getElementById('labdock'); if(!d) return;
+    document.body.style.setProperty('padding-bottom',
+      (Math.ceil(d.getBoundingClientRect().height)+8)+'px','important');
+  }
+  window.addEventListener('resize',dockPad,{passive:true});
+  dockPad(); setTimeout(dockPad,320); setTimeout(dockPad,1000); setTimeout(dockPad,2000);
+
+  /* ---- keyboard: arrows drive whichever slider was touched last ---- */
+  var LASTM=false;
+  document.getElementById('mlabbar').addEventListener('click',function(){ LASTM=true; },true);
+  document.getElementById('labbar').addEventListener('click',function(){ LASTM=false; },true);
+  window.addEventListener('keydown',function(e){
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
+    if(!LASTM) return;                       /* leave the SWITCH handler alone */
+    e.preventDefault(); e.stopPropagation();
+    step(e.key==='ArrowRight'?1:-1);
+  },true);
+
+  /* ---- the SWITCH slider rewrites the hash to '#c=NN' on every change, which
+     would drop the Marshall state from the URL. Wrap it (not edit it) so both
+     numbers always survive and a link restores both sliders. ---- */
+  var swShow=window.show;
+  window.show=function(n){
+    swShow(n);
+    var c=/[#&]c=(\d+)/.exec(location.hash);
+    var mm=(MCUR>0?MCUR:0);
+    location.hash='c='+(c?c[1]:'00')+'&m='+((mm<10?'0':'')+mm);
+  };
+
+  /* ---- deep link: #c=NN drives SWITCH, &m=NN drives Marshall ---- */
+  var m=/[#&]m=(\d+)/.exec(location.hash);
+  setTimeout(function(){ mshow(m?Math.max(0,Math.min(MMAX,+m[1])):0); }, 1900);
+})();
+</script>
 
 </body>
 </html>
