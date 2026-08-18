@@ -12997,6 +12997,709 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
   setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1700);
 })();
 </script>
+<script>
+/* =========================================================================
+   MARSHALL SECTION EXPLORATION — a SECOND slider on the same page.
+
+   Matthew asked for this on the transform page rather than a separate file
+   ("keep the switch slider but do a new one for the marshall"), so the brief's
+   "create a new test page" is answered by a second, independent control here.
+   The SWITCH slider is untouched and the two do not interact: one drives
+   #sf-dnawrap, this one drives #sfsec-dna.
+
+   00 is a TRUE CONTROL: the production .cs-dbody is left in the DOM and simply
+   shown. Variations hide it and mount a sibling. Nothing is "improved" in 00,
+   and because 00 is the default the first paint is the production section —
+   no flash of an obsolete layout.
+
+   STRATEGY (from the brief): Marshall is the PROOF, SWITCH is the METHOD.
+   Marshall stays editorial / photographic / typographic. No constellation,
+   no tracers, no pseudo-CAD. It must read calmer than SWITCH.
+   ========================================================================= */
+
+/* ---- copy, verbatim from the live section ---- */
+var MT={
+  ey :'THE CASE FOR DNA TRANSLATION: MARSHALL',
+  h1 :'ROCK & ROLL', h2:'NEVER DIES',
+  p1 :'By 2010, Marshall’s core guitar amplifier market was declining. People simply weren’t playing guitars like they used to. To revive the company and expand its addressable market, Marshall used its distinctive tangible and intangible brand DNA and translated it into new adjacent product categories.',
+  trL:'TRANSLATION',
+  trP:'Marshall did not extend a logo. It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. Not merchandise. Not licensing. Product-level DNA translation. The brand entered new adjacent categories and immediately made sense.',
+  dnL:'EXTRACTED DNA',
+  inL:'INTANGIBLE', taL:'TANGIBLE',
+  IN :['PRESENCE','ACOUSTIC IDENTITY','PROVENANCE','ATTITUDE'],
+  TA :['TACTILE','MECHANICAL','VISUAL','CMF'],
+  reL:'RESULTS',
+  reP:'Marshall transformed a declining heritage brand into a global consumer electronics business, dramatically expanded its addressable market and ultimately achieved a $1.1B acquisition.',
+  MET:[['60+','HERITAGE'],['NEW','CATEGORIES'],['$4B+','EXPANDED MARKET'],['$1.1B','EXIT IN 2025']]
+};
+/* ---- the four existing assets, and what each one actually is ---- */
+var MI={
+  heritage:'images/marshall-hero.png',                                   /* wall of amp stacks, on stage */
+  product :'images/614BCLPutVL-1__SL1000_.jpg',                          /* Acton III, product shot      */
+  detail  :'images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp',        /* gold control panel close-up  */
+  range   :'images/marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif' /* the modern family   */
+};
+/* which asset actually evidences which characteristic. Used by the aligned,
+   leader, active and detail-proof options so no relationship is invented. */
+var MEV={ PRESENCE:'heritage', 'ACOUSTIC IDENTITY':'heritage', PROVENANCE:'heritage', ATTITUDE:'heritage',
+          TACTILE:'detail', MECHANICAL:'detail', VISUAL:'product', CMF:'detail' };
+/* crops that put the right thing in frame. The detail shot carries a baked-in
+   "3.5 mm INPUT" annotation top-left, so its crops favour the knobs. */
+var MPOS={ heritage:'50% 38%', product:'50% 50%', detail:'88% 60%', range:'50% 50%' };
+
+function mimg(key,cls,style,pos,zoom){
+  var p=pos||MPOS[key];
+  var z=zoom?('transform:scale('+zoom+');transform-origin:'+p+';'):'';
+  return '<img class="'+(cls||'')+'" src="'+MI[key]+'" alt="" loading="lazy" '+
+    'style="object-position:'+p+';'+z+(style||'')+'">';
+}
+
+/* ---- shared editorial blocks ---- */
+function mEy(t){ return '<span class="m-ey">'+(t||MT.ey)+'</span>'; }
+function mHead(){ return '<h2 class="m-h">'+MT.h1+'<br>'+MT.h2+'</h2>'; }
+function mIntro(){ return '<div class="m-intro">'+mEy()+mHead()+'<p class="m-p">'+MT.p1+'</p></div>'; }
+function mTrans(cls){ return '<div class="m-tr '+(cls||'')+'"><span class="m-lab">'+MT.trL+'</span>'+
+  '<p class="m-p">'+MT.trP+'</p></div>'; }
+function mMetrics(cls){
+  return '<div class="m-met '+(cls||'')+'">'+MT.MET.map(function(q){
+    return '<div class="m-mt"><span class="m-n">'+q[0]+'</span><span class="m-k">'+q[1]+'</span></div>'; }).join('')+'</div>';
+}
+function mResults(cls,withP){
+  return '<div class="m-res '+(cls||'')+'"><span class="m-lab">'+MT.reL+'</span>'+
+    (withP===false?'':'<p class="m-p">'+MT.reP+'</p>')+mMetrics()+'</div>';
+}
+function mTerm(t,extra){ return '<span class="m-t"'+(extra||'')+' data-term="'+t+'">'+t+'</span>'; }
+
+/* the standard right-hand evidence rail, kept close to the current one */
+function mRail(cls){
+  return '<div class="m-rail '+(cls||'')+'">'+
+    '<figure class="m-fig r1">'+mimg('heritage')+'</figure>'+
+    '<figure class="m-fig r2">'+mimg('product')+'</figure>'+
+    '<figure class="m-fig r3">'+mimg('detail')+'</figure>'+
+    '</div>';
+}
+function msec(cls,inner){ return '<div class="m-sec '+cls+'">'+inner+'</div>'; }
+</script>
+
+<style id="sf-marshall-css">
+/* everything is scoped to the mount so production styles are untouched */
+#mlab-mount{display:block;background:#ede8e0;}
+#mlab-mount *{box-sizing:border-box;}
+#mlab-mount .m-sec{padding:0 24px;}
+#mlab-mount .m-in{max-width:1600px;margin:0 auto;}
+@media(min-width:1601px){ #mlab-mount .m-sec{padding-inline:calc((100% - 1600px)/2);} }
+
+/* --- type: MEASURED off the production section so 00 vs 01–20 is a fair A/B.
+   Marshall is set small and quiet on purpose — that is what keeps it calmer
+   than SWITCH. Headline is Bebas 23.04px / 5.07px / 300, not a display size. */
+#mlab-mount .m-ey{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
+  letter-spacing:2.72px;text-transform:uppercase;color:#8a6e3a;display:block;margin:0 0 34px;}
+#mlab-mount .m-h{font-family:'Bebas Neue',sans-serif;font-weight:300;font-size:23.04px;
+  line-height:.92;letter-spacing:5.0688px;text-transform:uppercase;margin:0;color:rgba(10,10,10,.75);}
+#mlab-mount .m-p{font-family:'DM Sans',sans-serif;font-size:14.4px;line-height:28.512px;
+  font-weight:300;color:rgba(10,10,10,.55);max-width:min(100%,680px);margin:24px 0 0;}
+#mlab-mount .m-lab{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
+  letter-spacing:2.72px;text-transform:uppercase;color:#8a6e3a;display:block;}
+#mlab-mount .m-cat{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;
+  letter-spacing:2.4px;text-transform:uppercase;color:rgba(10,10,10,.34);display:block;}
+#mlab-mount .m-t{font-family:'DM Sans',sans-serif;font-size:12.8px;font-weight:300;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(10,10,10,.7);display:block;}
+#mlab-mount .m-num{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;
+  letter-spacing:.18em;color:#8a6e3a;}
+
+/* --- results --- */
+#mlab-mount .m-met{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:26px;}
+#mlab-mount .m-mt{border-top:1px solid rgba(10,10,10,.16);padding-top:12px;}
+#mlab-mount .m-n{font-family:'Bebas Neue',sans-serif;font-weight:300;font-size:17.6px;
+  line-height:1;letter-spacing:.02em;color:rgba(10,10,10,.75);display:block;}
+#mlab-mount .m-k{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;letter-spacing:2.4px;
+  text-transform:uppercase;color:rgba(10,10,10,.4);display:block;margin-top:6px;}
+#mlab-mount .m-res .m-lab{margin-bottom:18px;}
+#mlab-mount .m-tr .m-lab{margin-bottom:16px;}
+#mlab-mount .m-tr{margin-top:36px;}
+#mlab-mount .m-res{margin-top:36px;}
+#mlab-mount .m-split > div > .m-intro + .m-tr{margin-top:30px;}
+
+/* --- the evidence rail --- */
+#mlab-mount .m-rail{display:grid;gap:14px;height:100%;min-height:420px;
+  grid-template-rows:1.15fr 1fr .85fr;}
+#mlab-mount .m-rail .m-fig{min-height:0;}
+/* on a narrow viewport the split stacks, so the rail needs its own height */
+@media(max-width:1023px){ #mlab-mount .m-rail{height:auto;min-height:0;grid-template-rows:none;}
+  #mlab-mount .m-rail .r1{aspect-ratio:4/3;} #mlab-mount .m-rail .r2{aspect-ratio:1/1;}
+  #mlab-mount .m-rail .r3{aspect-ratio:4/3;} }
+#mlab-mount .m-fig{margin:0;overflow:hidden;background:#e2ddd4;position:relative;}
+#mlab-mount .m-fig img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:opacity .6s ease, filter .6s ease, transform 1.2s cubic-bezier(.16,.7,.24,1);}
+#mlab-mount .m-cap{position:absolute;left:12px;bottom:10px;font-family:'DM Sans',sans-serif;
+  font-size:9.6px;font-weight:300;letter-spacing:2.4px;text-transform:uppercase;color:rgba(255,255,255,.9);}
+
+/* --- generic split --- */
+#mlab-mount .m-split{display:grid;gap:clamp(32px,5vw,80px);align-items:stretch;}
+#mlab-mount .m-rule{height:1px;background:rgba(10,10,10,.16);}
+#mlab-mount .m-vr{width:1px;background:rgba(10,10,10,.14);align-self:stretch;}
+#mlab-mount .m-btm{height:0;}
+
+/* --- DNA block variants --- */
+#mlab-mount .m-dna{margin-top:0;}
+#mlab-mount .m-2col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);}
+#mlab-mount .m-col .m-cat{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(10,10,10,.16);}
+#mlab-mount .m-col .m-t{padding:9px 0;border-bottom:1px solid rgba(10,10,10,.08);}
+#mlab-mount .m-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);
+  padding:12px 0;border-bottom:1px solid rgba(10,10,10,.1);}
+#mlab-mount .m-idx{display:grid;gap:0;}
+#mlab-mount .m-idx .ir{display:grid;grid-template-columns:34px 1fr;gap:16px;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid rgba(10,10,10,.08);}
+#mlab-mount .m-band{padding:16px 0;border-top:1px solid rgba(10,10,10,.16);}
+#mlab-mount .m-band .bl{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+#mlab-mount .m-band .bl .m-t{display:inline;}
+#mlab-mount .m-band .sep{color:rgba(10,10,10,.24);}
+#mlab-mount .m-mx{display:grid;grid-template-columns:120px repeat(4,1fr);gap:0 clamp(16px,2.4vw,40px);}
+#mlab-mount .m-mx > *{padding:12px 0;border-bottom:1px solid rgba(10,10,10,.1);}
+#mlab-mount .m-field .m-t{font-size:clamp(.95rem,1.5vw,1.25rem);letter-spacing:.1em;color:rgba(10,10,10,.78);}
+#mlab-mount .m19 .m-h{font-size:clamp(1.9rem,3.4vw,2.9rem);letter-spacing:.06em;}
+
+/* interaction: a term lights its evidence. Editorial annotation, not a network. */
+#mlab-mount .m-t[data-ev]{cursor:default;transition:color .3s ease;}
+#mlab-mount.act .m-t[data-ev]{color:rgba(10,10,10,.32);}
+#mlab-mount.act .m-t[data-ev].on{color:#8a6e3a;}
+#mlab-mount.act .m-fig img{opacity:.34;}
+#mlab-mount.act .m-fig.on img{opacity:1;}
+
+@media(max-width:1023px){
+  #mlab-mount .m-split{grid-template-columns:1fr !important;}
+  #mlab-mount .m-mx{grid-template-columns:1fr;}
+  #mlab-mount .m-mx > *{border-bottom:0;padding:6px 0;}
+}
+@media(max-width:767px){
+  #mlab-mount .m-sec{padding:0 24px;}
+  #mlab-mount .m-2col{grid-template-columns:1fr;gap:30px;}
+  #mlab-mount .m-met{grid-template-columns:1fr 1fr;gap:18px;}
+  #mlab-mount .m-row{grid-template-columns:1fr;gap:4px;padding:12px 0;}
+  /* the rail must not become an unusable image tower on a phone */
+  #mlab-mount .m-rail{grid-template-columns:1fr 1fr;gap:10px;}
+  #mlab-mount .m-rail .r1{grid-column:1 / -1;}
+}
+</style>
+
+<script>
+/* ================= registry + lifecycle for the Marshall slider ============ */
+(function(){
+window.MCON=[]; window.MCUR=-1;
+window.MC=function(n,name,desc,build){ MCON[n]={n:n,name:name,desc:desc,build:build}; };
+var MLIVE={raf:[],obs:[],lis:[],tmr:[]};
+window.mctx=function(){ return {
+  on:function(t,ty,fn,o){ t.addEventListener(ty,fn,o||{passive:true}); MLIVE.lis.push([t,ty,fn,o]); },
+  obs:function(o){ MLIVE.obs.push(o); return o; },
+  timer:function(fn,ms){ var t=setInterval(fn,ms); MLIVE.tmr.push(t); return t; },
+  delay:function(fn,ms){ var t=setTimeout(fn,ms); MLIVE.tmr.push(t); return t; },
+  frame:function(fn){ var id; (function run(t){ if(MOTION) fn(t); id=requestAnimationFrame(run); MLIVE.raf.push(id); })(0); }
+};};
+window.mteardown=function(){
+  MLIVE.raf.forEach(function(i){cancelAnimationFrame(i);});
+  MLIVE.obs.forEach(function(o){try{o.disconnect();}catch(e){}});
+  MLIVE.lis.forEach(function(l){try{l[0].removeEventListener(l[1],l[2],l[3]);}catch(e){}});
+  MLIVE.tmr.forEach(function(t){clearInterval(t);clearTimeout(t);});
+  MLIVE={raf:[],obs:[],lis:[],tmr:[]};
+};
+window.mbody=function(){ var s=document.getElementById('sfsec-dna'); return s?s.querySelector('.cs-dbody'):null; };
+window.mmount=function(){
+  var m=document.getElementById('mlab-mount'); if(m) return m;
+  var b=mbody(); if(!b) return null;
+  m=document.createElement('div'); m.id='mlab-mount';
+  b.parentNode.insertBefore(m,b.nextSibling); return m;
+};
+window.mshow=function(n){
+  if(!MCON[n]) return;
+  mteardown();
+  var b=mbody(), m=document.getElementById('mlab-mount');
+  if(m){ m.innerHTML=''; m.className=''; }
+  MCUR=n;
+  var c=MCON[n];
+  var nm=document.getElementById('mlabnum'), ti=document.getElementById('mlabtitle'), de=document.getElementById('mlabdesc');
+  if(nm) nm.textContent=(n<10?'0':'')+n;
+  if(ti) ti.textContent=c.name;
+  if(de) de.textContent=c.desc||'';
+  [].forEach.call(document.querySelectorAll('#mlabboxes button[data-n]'),function(x){
+    x.classList.toggle('on',+x.dataset.n===n); });
+  if(n===0){
+    if(b) b.style.removeProperty('display');
+    if(m) m.style.display='none';
+  }else{
+    if(b) b.style.setProperty('display','none','important');
+    m=mmount(); if(!m) return;
+    m.style.display='block';
+    try{ c.build(m, mctx()); }
+    catch(e){ m.innerHTML='<p style="padding:60px 24px;font:300 12px DM Sans">marshall option '+n+' failed: '+e.message+'</p>'; }
+  }
+};
+
+/* ---------------- 00 — CONTROL, the production section untouched --------- */
+MC(0,'CURRENT PRODUCTION MARSHALL','the live section, unchanged — the A/B reference',function(){});
+
+/* ---------------- 01 — PURE TWO-COLUMN DNA ------------------------------- */
+MC(1,'PURE TWO-COLUMN DNA','constellation replaced by a restrained typographic block',function(r,x){
+  r.innerHTML=msec('m1','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:60% 1fr">'+
+      '<div>'+mIntro()+
+        '<div class="m-dna" style="margin-top:34px"><span class="m-lab" style="margin-bottom:26px">'+MT.dnL+'</span>'+
+          '<div class="m-2col">'+
+            '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+            '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+          '</div></div>'+
+        mTrans('')+'</div>'+
+      mRail('r-tall')+
+    '</div>'+
+    '<div style="margin-top:36px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 02 — PAIRED ROWS --------------------------------------- */
+MC(2,'PAIRED ROWS','four rows, two parallel lists, no implied pairing',function(r,x){
+  var rows=MT.IN.map(function(t,i){
+    return '<div class="m-row">'+mTerm(t)+mTerm(MT.TA[i])+'</div>'; }).join('');
+  r.innerHTML=msec('m2','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:58% 1fr">'+
+      '<div>'+mIntro()+
+        '<div class="m-dna" style="margin-top:34px"><span class="m-lab" style="margin-bottom:22px">'+MT.dnL+'</span>'+
+          '<div class="m-row" style="border-top:1px solid rgba(10,10,10,.16);border-bottom:0;padding-bottom:6px">'+
+            '<span class="m-cat">'+MT.inL+'</span><span class="m-cat">'+MT.taL+'</span></div>'+
+          rows+'</div>'+
+        mTrans('')+'</div>'+
+      mRail('r-tall')+
+    '</div><div style="margin-top:36px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 03 — DNA INDEX ----------------------------------------- */
+MC(3,'DNA INDEX','the eight characteristics as a numbered editorial index',function(r,x){
+  function block(lab,arr,off){
+    return '<div style="margin-top:26px"><span class="m-cat" style="margin-bottom:10px">'+lab+'</span>'+
+      '<div class="m-idx">'+arr.map(function(t,i){
+        return '<div class="ir"><span class="m-num">'+(i+1+off<10?'0':'')+(i+1+off)+'</span>'+mTerm(t)+'</div>'; }).join('')+
+      '</div></div>';
+  }
+  r.innerHTML=msec('m3','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:56% 1fr">'+
+      '<div>'+mIntro()+
+        '<div class="m-dna" style="margin-top:42px"><span class="m-lab">'+MT.dnL+'</span>'+
+          block(MT.inL,MT.IN,0)+block(MT.taL,MT.TA,4)+'</div>'+
+        mTrans('')+'</div>'+
+      mRail('r-tall')+
+    '</div><div style="margin-top:36px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 04 — SINGLE VERTICAL REGISTER -------------------------- */
+MC(4,'SINGLE VERTICAL REGISTER','one elegant vertical list — is simplicity itself strongest?',function(r,x){
+  function reg(lab,arr){
+    return '<div style="margin-top:30px"><span class="m-cat" style="padding-bottom:10px;border-bottom:1px solid rgba(10,10,10,.16);margin-bottom:6px">'+lab+'</span>'+
+      arr.map(function(t){ return '<span class="m-t" style="padding:10px 0;font-size:15px">'+t+'</span>'; }).join('')+'</div>';
+  }
+  r.innerHTML=msec('m4','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 30% 1fr">'+
+      '<div>'+mIntro()+mTrans('')+'</div>'+
+      '<div style="padding-top:6px"><span class="m-lab">'+MT.dnL+'</span>'+reg(MT.inL,MT.IN)+reg(MT.taL,MT.TA)+'</div>'+
+      mRail('r-tall')+
+    '</div><div style="margin-top:36px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 05 — TWO HORIZONTAL BANDS ------------------------------ */
+MC(5,'TWO HORIZONTAL BANDS','two long typographic bands aligned against the image divisions',function(r,x){
+  function band(lab,arr){
+    return '<div class="m-band"><span class="m-cat">'+lab+'</span><div class="bl">'+
+      arr.map(function(t,i){ return (i?'<span class="sep">/</span>':'')+mTerm(t); }).join('')+'</div></div>';
+  }
+  r.innerHTML=msec('m5','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:58% 1fr">'+
+      '<div>'+mIntro()+mTrans('')+'</div>'+mRail('')+
+    '</div>'+
+    '<div style="margin-top:40px"><span class="m-lab" style="margin-bottom:6px">'+MT.dnL+'</span>'+
+      band(MT.inL,MT.IN)+band(MT.taL,MT.TA)+'</div>'+
+    '<div style="margin-top:34px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 06 — DNA MATRIX ---------------------------------------- */
+MC(6,'DNA MATRIX','a 2 × 4 classification, typography and alignment only',function(r,x){
+  function mrow(lab,arr){
+    return '<span class="m-cat" style="align-self:center">'+lab+'</span>'+arr.map(function(t){return mTerm(t);}).join('');
+  }
+  r.innerHTML=msec('m6','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:60% 1fr">'+
+      '<div>'+mIntro()+mTrans('')+'</div>'+mRail('')+
+    '</div>'+
+    '<div style="margin-top:42px"><span class="m-lab" style="margin-bottom:14px">'+MT.dnL+'</span>'+
+      '<div class="m-mx" style="border-top:1px solid rgba(10,10,10,.16)">'+mrow(MT.inL,MT.IN)+mrow(MT.taL,MT.TA)+'</div></div>'+
+    '<div style="margin-top:34px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 07 — LARGE WORD FIELD ---------------------------------- */
+MC(7,'LARGE WORD FIELD','the eight terms as a disciplined typographic field',function(r,x){
+  var pos=[[0,0],[1,1],[0,2],[1,3],[2,0],[3,1],[2,2],[3,3]];
+  var all=MT.IN.concat(MT.TA);
+  r.innerHTML=msec('m7','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 34%">'+
+      '<div>'+mIntro()+
+        '<div class="m-field" style="margin-top:34px"><span class="m-lab" style="margin-bottom:24px">'+MT.dnL+'</span>'+
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px 26px">'+
+            all.map(function(t,i){
+              return '<div style="grid-column:'+(pos[i][0]+1)+';grid-row:'+(pos[i][1]+1)+'">'+
+                '<span class="m-cat" style="margin-bottom:6px">'+(i<4?MT.inL:MT.taL)+'</span>'+mTerm(t)+'</div>'; }).join('')+
+          '</div></div>'+
+        mTrans('')+'</div>'+
+      mRail('')+
+    '</div><div style="margin-top:46px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 08 — IMAGE-ALIGNED DNA --------------------------------- */
+MC(8,'IMAGE-ALIGNED DNA','terms sit opposite the photography that evidences them',function(r,x){
+  function grp(lab,arr,key,cap){
+    return '<div class="m-split" style="grid-template-columns:1fr 42%;gap:clamp(24px,3vw,56px);margin-bottom:22px;align-items:stretch">'+
+      '<div style="padding-top:4px"><span class="m-cat" style="margin-bottom:12px">'+lab+'</span>'+
+        arr.map(function(t){return mTerm(t);}).join('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:4/3">'+mimg(key)+'<figcaption class="m-cap">'+cap+'</figcaption></figure>'+
+    '</div>';
+  }
+  r.innerHTML=msec('m8','<div class="m-in">'+mIntro()+
+    '<div style="margin-top:42px"><span class="m-lab" style="margin-bottom:20px">'+MT.dnL+'</span>'+
+      grp(MT.inL,MT.IN,'heritage',MT.inL)+grp(MT.taL,MT.TA,'detail',MT.taL)+'</div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 42%;gap:clamp(24px,3vw,56px);margin-top:34px">'+
+      mTrans('')+'<figure class="m-fig" style="aspect-ratio:4/3">'+mimg('product')+'</figure></div>'+
+    '<div style="margin-top:46px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 09 — SUBTLE LEADERS ------------------------------------ */
+MC(9,'SUBTLE LEADERS','four fine leaders, only enough to make text → evidence clear',function(r,x){
+  function grp(lab,arr,key){
+    return '<div class="m-split lead" style="grid-template-columns:1fr 40%;gap:0;margin-bottom:26px;align-items:stretch">'+
+      '<div style="padding:4px 0 0"><span class="m-cat" style="margin-bottom:12px">'+lab+'</span>'+
+        arr.map(function(t){ return '<div class="lr"><span class="m-t">'+t+'</span><span class="ld"></span></div>'; }).join('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:4/3;margin-left:clamp(24px,3vw,56px)">'+mimg(key)+'</figure>'+
+    '</div>';
+  }
+  r.innerHTML=msec('m9','<div class="m-in">'+mIntro()+
+    '<div style="margin-top:42px"><span class="m-lab" style="margin-bottom:20px">'+MT.dnL+'</span>'+
+      grp(MT.inL,MT.IN,'heritage')+grp(MT.taL,MT.TA,'detail')+'</div>'+
+    mTrans('')+'<div style="margin-top:34px">'+mResults()+'</div>'+
+  '</div>')+
+  '<style>#mlab-mount .lr{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid rgba(10,10,10,.08);}'+
+  '#mlab-mount .lr .ld{flex:1 1 auto;height:1px;background:rgba(138,110,58,.34);transform:scaleX(0);transform-origin:left;'+
+  'transition:transform 1s cubic-bezier(.16,.7,.24,1);}'+
+  '#mlab-mount .lr.on .ld{transform:scaleX(1);}</style>'+
+  '<div class="m-btm"></div>';
+  var lrs=[].slice.call(r.querySelectorAll('.lr'));
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return;
+    lrs.forEach(function(q,i){ x.delay(function(){ q.classList.add('on'); }, i*120); }); }); },{threshold:.2}));
+  if(lrs[0]) io.observe(lrs[0]);
+});
+
+/* ---------------- 10 — ACTIVE DNA ---------------------------------------- */
+MC(10,'ACTIVE DNA','hovering a term raises the photograph that evidences it',function(r,x){
+  function col(lab,arr){
+    return '<div class="m-col"><span class="m-cat">'+lab+'</span>'+
+      arr.map(function(t){ return mTerm(t,' data-ev="'+MEV[t]+'"'); }).join('')+'</div>';
+  }
+  r.innerHTML=msec('m10','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:56% 1fr">'+
+      '<div>'+mIntro()+
+        '<div class="m-dna" style="margin-top:42px"><span class="m-lab" style="margin-bottom:24px">'+MT.dnL+'</span>'+
+        '<div class="m-2col">'+col(MT.inL,MT.IN)+col(MT.taL,MT.TA)+'</div></div>'+mTrans('')+'</div>'+
+      '<div class="m-rail r-tall">'+
+        '<figure class="m-fig" data-ev="heritage">'+mimg('heritage')+'</figure>'+
+        '<figure class="m-fig" data-ev="product">'+mimg('product')+'</figure>'+
+        '<figure class="m-fig" data-ev="detail">'+mimg('detail')+'</figure></div>'+
+    '</div><div style="margin-top:46px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+  var terms=[].slice.call(r.querySelectorAll('.m-t[data-ev]'));
+  var figs=[].slice.call(r.querySelectorAll('.m-fig[data-ev]'));
+  function clear(){ r.classList.remove('act');
+    terms.forEach(function(t){t.classList.remove('on');}); figs.forEach(function(f){f.classList.remove('on');}); }
+  terms.forEach(function(t){
+    x.on(t,'mouseenter',function(){ clear(); r.classList.add('act'); t.classList.add('on');
+      figs.forEach(function(f){ f.classList.toggle('on', f.dataset.ev===t.dataset.ev); }); });
+    x.on(t,'mouseleave',clear);
+  });
+});
+
+/* ---------------- 11 — OLD / NEW EVIDENCE -------------------------------- */
+MC(11,'OLD / NEW EVIDENCE','the image column becomes an explicit heritage vs category comparison',function(r,x){
+  r.innerHTML=msec('m11','<div class="m-in">'+mIntro()+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;margin-top:40px;gap:clamp(20px,3vw,48px)">'+
+      '<figure class="m-fig" style="aspect-ratio:4/3">'+mimg('heritage')+'<figcaption class="m-cap">1962 — '+MT.inL+'</figcaption></figure>'+
+      '<figure class="m-fig" style="aspect-ratio:4/3">'+mimg('range')+'<figcaption class="m-cap">'+MT.taL+'</figcaption></figure>'+
+    '</div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,48px);margin-top:34px">'+
+      '<div><span class="m-cat" style="margin-bottom:12px">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+      '<div><span class="m-cat" style="margin-bottom:12px">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+    '</div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);margin-top:40px">'+
+      mTrans('')+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 12 — DNA BETWEEN OLD AND NEW --------------------------- */
+MC(12,'DNA BETWEEN OLD AND NEW','heritage → DNA → new category, read left to right',function(r,x){
+  r.innerHTML=msec('m12','<div class="m-in">'+mIntro()+
+    '<div class="m-split" style="grid-template-columns:1fr 26% 1fr;margin-top:42px;align-items:center;gap:clamp(20px,3vw,48px)">'+
+      '<figure class="m-fig" style="aspect-ratio:1/1">'+mimg('heritage')+'</figure>'+
+      '<div style="text-align:center"><span class="m-lab" style="margin-bottom:20px">'+MT.dnL+'</span>'+
+        '<span class="m-cat" style="margin-bottom:8px">'+MT.inL+'</span>'+
+        MT.IN.map(function(t){return '<span class="m-t" style="padding:5px 0">'+t+'</span>';}).join('')+
+        '<span class="m-cat" style="margin:16px 0 8px">'+MT.taL+'</span>'+
+        MT.TA.map(function(t){return '<span class="m-t" style="padding:5px 0">'+t+'</span>';}).join('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:1/1">'+mimg('product')+'</figure>'+
+    '</div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);margin-top:40px">'+
+      mTrans('')+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 13 — TYPOGRAPHIC CROSSFADE ----------------------------- */
+MC(13,'TYPOGRAPHIC CROSSFADE','the terms hold still while the photography moves category',function(r,x){
+  r.innerHTML=msec('m13','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:52% 1fr">'+
+      '<div>'+mIntro()+
+        '<div class="m-dna" style="margin-top:42px"><span class="m-lab" style="margin-bottom:22px">'+MT.dnL+'</span>'+
+        '<div class="m-2col">'+
+          '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+          '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+        '</div></div>'+mTrans('')+'</div>'+
+      '<figure class="m-fig xf" style="aspect-ratio:3/4;position:relative">'+
+        mimg('heritage','a','position:absolute;inset:0')+
+        mimg('range','b','position:absolute;inset:0;opacity:0')+
+        '<figcaption class="m-cap cc">'+MT.inL+'</figcaption></figure>'+
+    '</div><div style="margin-top:46px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+  var a=r.querySelector('.xf .a'), bI=r.querySelector('.xf .b'), cc=r.querySelector('.cc');
+  var on=false;
+  x.timer(function(){ if(!MOTION) return; on=!on;
+    a.style.opacity=on?'0':'1'; bI.style.opacity=on?'1':'0';
+    cc.textContent=on?MT.taL:MT.inL; },3200);
+});
+
+/* ---------------- 14 — DETAIL PROOF -------------------------------------- */
+MC(14,'DETAIL PROOF','the tangible is evidenced by detail; the intangible stays typographic',function(r,x){
+  /* knob cluster · toggle switch · the script logo · gold-on-black vinyl */
+  var crops=[['TACTILE','detail','56% 58%',2.6],['MECHANICAL','detail','95% 34%',3.4],
+             ['VISUAL','product','50% 52%',2.2],['CMF','detail','40% 86%',2.4]];
+  r.innerHTML=msec('m14','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 38%">'+
+      '<div>'+mIntro()+mTrans('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:3/4">'+mimg('heritage')+'<figcaption class="m-cap">'+MT.inL+'</figcaption></figure>'+
+    '</div>'+
+    '<div style="margin-top:40px"><span class="m-lab" style="margin-bottom:18px">'+MT.dnL+'</span>'+
+      '<div style="display:flex;gap:26px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid rgba(10,10,10,.14)">'+
+        '<span class="m-cat" style="min-width:110px">'+MT.inL+'</span>'+
+        MT.IN.map(function(t){return '<span class="m-t" style="display:inline">'+t+'</span>';}).join('')+'</div>'+
+      '<span class="m-cat" style="margin:24px 0 14px">'+MT.taL+'</span>'+
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,2vw,26px)">'+
+        crops.map(function(c){
+          return '<div><figure class="m-fig" style="aspect-ratio:1/1">'+mimg(c[1],'','',c[2],c[3])+'</figure>'+
+            '<span class="m-t" style="margin-top:12px">'+c[0]+'</span></div>'; }).join('')+'</div></div>'+
+    '<div style="margin-top:34px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 15 — INTANGIBLE / TANGIBLE CONTRAST -------------------- */
+MC(15,'INTANGIBLE / TANGIBLE CONTRAST','the distinction becomes the composition — airy above, dense below',function(r,x){
+  r.innerHTML=msec('m15','<div class="m-in">'+mIntro()+
+    '<div style="margin-top:34px"><span class="m-lab">'+MT.dnL+'</span></div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 34%;margin-top:40px;gap:clamp(28px,4vw,72px)">'+
+      '<div><span class="m-cat" style="margin-bottom:26px">'+MT.inL+'</span>'+
+        MT.IN.map(function(t){ return '<span class="m-t" style="font-size:clamp(1rem,1.8vw,1.5rem);letter-spacing:.08em;padding:20px 0;color:rgba(10,10,10,.62)">'+t+'</span>'; }).join('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:3/4">'+mimg('heritage')+'</figure>'+
+    '</div>'+
+    '<div class="m-split" style="grid-template-columns:1fr 34%;margin-top:38px;gap:clamp(28px,4vw,72px);align-items:start">'+
+      '<div style="background:rgba(10,10,10,.035);padding:26px 28px">'+
+        '<span class="m-cat" style="margin-bottom:12px">'+MT.taL+'</span>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 26px">'+
+          MT.TA.map(function(t){return '<span class="m-t" style="padding:8px 0">'+t+'</span>';}).join('')+'</div></div>'+
+      '<figure class="m-fig" style="aspect-ratio:1/1">'+mimg('detail')+'</figure>'+
+    '</div>'+
+    mTrans('')+'<div style="margin-top:42px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 16 — DNA AS CAPTION SYSTEM ----------------------------- */
+MC(16,'DNA AS CAPTION SYSTEM','no standalone block — the DNA annotates the evidence',function(r,x){
+  var cells=[['heritage',[MT.IN[0],MT.IN[1]],null,0],['product',[MT.IN[2],MT.TA[2]],null,0],
+             ['detail',[MT.TA[0],MT.TA[1],MT.TA[3]],'56% 58%',2.2],['range',[MT.IN[3]],null,0]];
+  r.innerHTML=msec('m16','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,72px)">'+
+      '<div>'+mIntro()+mTrans('')+'</div>'+
+      '<div><span class="m-lab" style="margin-bottom:18px">'+MT.dnL+'</span>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">'+
+          cells.map(function(c){
+            return '<div><figure class="m-fig" style="aspect-ratio:1/1">'+mimg(c[0],'','',c[2],c[3]||0)+'</figure>'+
+              '<div style="margin-top:10px">'+c[1].map(function(t){
+                return '<span class="m-t" style="font-size:11px;padding:3px 0">'+t+'</span>';}).join('')+'</div></div>'; }).join('')+
+        '</div></div>'+
+    '</div><div style="margin-top:40px">'+mResults()+'</div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 17 — COMPACT DNA + LARGE RESULTS ----------------------- */
+MC(17,'COMPACT DNA + LARGE RESULTS','extraction is simple; the commercial proof gets the scale',function(r,x){
+  r.innerHTML=msec('m17','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 36%">'+
+      '<div>'+mIntro()+
+        '<div style="margin-top:38px;display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;'+
+        'padding-bottom:26px;border-bottom:1px solid rgba(10,10,10,.14)">'+
+          '<span class="m-lab" style="min-width:100px">'+MT.dnL+'</span>'+
+          '<div><span class="m-cat" style="margin-bottom:6px">'+MT.inL+'</span>'+
+            '<span class="m-t" style="font-size:11.5px">'+MT.IN.join(' · ')+'</span></div>'+
+          '<div><span class="m-cat" style="margin-bottom:6px">'+MT.taL+'</span>'+
+            '<span class="m-t" style="font-size:11.5px">'+MT.TA.join(' · ')+'</span></div>'+
+        '</div>'+mTrans('')+'</div>'+
+      '<figure class="m-fig" style="aspect-ratio:3/4">'+mimg('product')+'</figure>'+
+    '</div>'+
+    '<div style="margin-top:46px;border-top:1px solid rgba(10,10,10,.16);padding-top:34px">'+
+      '<span class="m-lab" style="margin-bottom:16px">'+MT.reL+'</span>'+
+      '<p class="m-p" style="max-width:min(100%,780px);margin-top:0">'+MT.reP+'</p>'+
+      '<div class="m-met big">'+MT.MET.map(function(q){
+        return '<div class="m-mt"><span class="m-n" style="font-size:clamp(2.4rem,5vw,4.4rem)">'+q[0]+'</span>'+
+          '<span class="m-k">'+q[1]+'</span></div>'; }).join('')+'</div></div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 18 — DNA → RESULTS ------------------------------------- */
+MC(18,'DNA → RESULTS','a single typographic progression, one fine rule',function(r,x){
+  r.innerHTML=msec('m18','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 38%">'+
+      '<div>'+mIntro()+
+        '<div style="margin-top:40px"><span class="m-lab" style="margin-bottom:18px">'+MT.dnL+'</span>'+
+          '<div class="m-2col">'+
+            '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+            '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+          '</div></div>'+
+        '<div style="height:56px;display:flex;align-items:center"><span style="width:1px;height:100%;background:rgba(138,110,58,.4);margin-left:2px"></span></div>'+
+        mResults()+mTrans('')+'</div>'+
+      mRail('r-tall')+
+    '</div></div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 19 — EDITORIAL CASE STUDY ------------------------------ */
+MC(19,'EDITORIAL CASE STUDY','a magazine grid — strong negative space, small annotations',function(r,x){
+  r.innerHTML=msec('m19','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 1fr;gap:clamp(32px,5vw,96px);align-items:end">'+
+      '<div>'+mEy()+mHead()+'</div>'+
+      '<p class="m-p" style="margin:0">'+MT.p1+'</p>'+
+    '</div>'+
+    '<figure class="m-fig" style="aspect-ratio:21/9;margin-top:40px">'+mimg('heritage')+
+      '<figcaption class="m-cap">'+MT.ey+'</figcaption></figure>'+
+    '<div class="m-split" style="grid-template-columns:22% 1fr 26%;margin-top:40px;gap:clamp(24px,3.5vw,64px)">'+
+      '<div><span class="m-lab">'+MT.dnL+'</span></div>'+
+      '<div class="m-2col">'+
+        '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+        '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+      '</div>'+
+      '<figure class="m-fig" style="aspect-ratio:3/4">'+mimg('detail')+'</figure>'+
+    '</div>'+
+    '<div class="m-split" style="grid-template-columns:22% 1fr;margin-top:40px;gap:clamp(24px,3.5vw,64px)">'+
+      '<div><span class="m-lab">'+MT.trL+'</span></div>'+
+      '<p class="m-p" style="margin:0">'+MT.trP+'</p></div>'+
+    '<div class="m-split" style="grid-template-columns:22% 1fr;margin-top:36px;gap:clamp(24px,3.5vw,64px)">'+
+      '<div><span class="m-lab">'+MT.reL+'</span></div>'+
+      '<div><p class="m-p" style="margin:0">'+MT.reP+'</p>'+mMetrics()+'</div></div>'+
+  '</div>')+'<div class="m-btm"></div>';
+});
+
+/* ---------------- 20 — MAXIMUM REDUCTION --------------------------------- */
+MC(20,'MAXIMUM REDUCTION','the benchmark: nothing that does not aid comprehension',function(r,x){
+  r.innerHTML=msec('m20','<div class="m-in">'+
+    '<div class="m-split" style="grid-template-columns:1fr 34%">'+
+      '<div>'+mIntro()+
+        '<div style="margin-top:38px"><span class="m-lab" style="margin-bottom:18px">'+MT.dnL+'</span>'+
+          '<div class="m-2col">'+
+            '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(function(t){return mTerm(t);}).join('')+'</div>'+
+            '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(function(t){return mTerm(t);}).join('')+'</div>'+
+          '</div></div>'+
+        mTrans('')+'<div style="margin-top:36px">'+mResults()+'</div></div>'+
+      '<figure class="m-fig" style="aspect-ratio:2/3">'+mimg('product')+'</figure>'+
+    '</div></div>')+'<div class="m-btm"></div>';
+});
+})();
+</script>
+
+<script>
+/* ================= second control bar, independent of the SWITCH one ====== */
+(function(){
+  var MAX=20;
+  var css=document.createElement('style'); css.id='sf-mbar-css';
+  css.textContent=
+   '#labbar .mrow{margin-top:10px;padding-top:9px;border-top:1px solid rgba(244,241,236,.14);}'+
+   '#labbar #mlabname{font-family:var(--lab-dm);font-size:.6rem;font-weight:400;letter-spacing:.3em;'+
+   'text-transform:uppercase;color:#7fd4e6;margin:0 0 7px 2px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;}'+
+   '#labbar #mlabname em{font-style:normal;color:rgba(244,241,236,.42);letter-spacing:.14em;font-size:.5rem;text-transform:none;}'+
+   '#labbar #mlabname .tag{color:rgba(244,241,236,.34);letter-spacing:.2em;font-size:.5rem;}'+
+   '#labbar #mlabboxes{display:flex;flex-wrap:wrap;gap:3px;align-items:center;}'+
+   '#labbar #mlabboxes button{font-family:var(--lab-dm);font-size:.5rem;font-weight:400;letter-spacing:0;'+
+   'width:25px;height:22px;line-height:1;cursor:pointer;border-radius:2px;background:transparent;flex:0 0 auto;'+
+   'color:rgba(244,241,236,.5);border:1px solid rgba(244,241,236,.2);transition:background .16s,color .16s,border-color .16s;}'+
+   '#labbar #mlabboxes button:hover{color:#7fd4e6;border-color:rgba(127,212,230,.6);}'+
+   '#labbar #mlabboxes button.on{background:#7fd4e6;border-color:#7fd4e6;color:#0a0a0a;font-weight:500;}'+
+   '#labbar #mlabboxes .gp{flex:0 0 auto;display:flex;align-items:center;padding:0 9px 0 5px;'+
+   'font-family:var(--lab-dm);font-size:.4rem;letter-spacing:.18em;text-transform:uppercase;'+
+   'color:rgba(244,241,236,.32);white-space:nowrap;border-left:1px solid rgba(244,241,236,.18);margin-left:4px;height:22px;}'+
+   '@media(max-width:900px){#labbar #mlabboxes .gp{display:none;}'+
+   ' #labbar #mlabboxes button{width:23px;height:21px;}}'+
+   '@media(max-width:600px){#labbar #mlabboxes button{width:20px;height:19px;font-size:.44rem;}}';
+  document.head.appendChild(css);
+
+  var bar=document.getElementById('labbar');
+  var row=document.createElement('div'); row.className='mrow';
+  row.innerHTML='<div id="mlabname"><span class="tag">MARSHALL</span> <span id="mlabnum">00</span> / '+
+    '<span id="mlabtitle">CURRENT PRODUCTION MARSHALL</span> <em id="mlabdesc"></em></div>'+
+    '<div id="mlabboxes"></div>';
+  bar.appendChild(row);
+
+  var bx=document.getElementById('mlabboxes');
+  var pv=document.createElement('button'); pv.textContent='‹'; bx.appendChild(pv);
+  for(var k=0;k<=MAX;k++){
+    if(k===0||k===1){ var g=document.createElement('span'); g.className='gp';
+      g.textContent=(k===0?'control':'marshall');
+      if(k===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=k; b.textContent=(k<10?'0':'')+k;
+    b.title=(MCON[k]?MCON[k].name:'');
+    b.addEventListener('click',(function(m){return function(){mshow(m);};})(k));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){ mshow(((MCUR-1)%(MAX+1)+(MAX+1))%(MAX+1)); });
+  nx.addEventListener('click',function(){ mshow(((MCUR+1)%(MAX+1)+(MAX+1))%(MAX+1)); });
+
+  /* shift+arrows drive Marshall, so plain arrows stay with the SWITCH slider */
+  window.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if(!e.shiftKey) return;
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+      e.stopPropagation(); e.preventDefault();
+      mshow(((MCUR+(e.key==='ArrowRight'?1:-1))%(MAX+1)+(MAX+1))%(MAX+1));
+    }},true);
+
+  function boot(){
+    if(!mbody()) return setTimeout(boot,200);
+    var m=/[#&]m=(\d+)/.exec(location.hash);
+    mshow(m?Math.max(0,Math.min(MAX,+m[1])):0);
+    if(typeof syncPad2==='function') syncPad2();
+  }
+  setTimeout(boot,1900);
+  /* the bar just grew a row — re-measure the page padding */
+  window.syncPad2=function(){
+    var b=document.getElementById('labbar'); if(!b) return;
+    document.body.style.setProperty('padding-bottom',
+      (Math.ceil(b.getBoundingClientRect().height)+10)+'px','important');
+  };
+  window.addEventListener('resize',syncPad2,{passive:true});
+  setTimeout(syncPad2,2100); setTimeout(syncPad2,3000);
+})();
+</script>
 
 </body>
 </html>
