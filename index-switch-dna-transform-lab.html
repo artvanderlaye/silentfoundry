@@ -2498,16 +2498,14 @@ body.v11-active nav * { cursor: none !important; }
 
       <!-- ROW 2: Brand DNA | 2-up images -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dslabel dna-label">Extracted DNA</span>
-        <!-- MARSHALL EXTRACTED DNA - CANONICAL CONTENT SOURCE.
-     The eight DNA keys/descriptions and the two group labels are authored here
-     and nowhere else. They live inside a <template>, whose contents are inert:
-     never parsed into the render tree, never painted, never laid out. This is
-     the same authored markup as before, moved - not rewritten, not duplicated.
-     harvestMarshall() reads it from template.content and the approved
-     constellation is rendered from it into the empty .cs-dna-split host below. -->
-<template id="sf-dna-source"><div class="cs-dna-col"><span class="cs-dsub">Intangible</span><div class="cs-ddna cs-ddna-2"><div><span class="cs-ddna-k">Presence</span><span class="cs-ddna-v">The stage authority of a full stack, at domestic scale.</span></div><div><span class="cs-ddna-k">Acoustic Identity</span><span class="cs-ddna-v">The sound audiences already recognised as Marshall, before any logo was seen.</span></div><div><span class="cs-ddna-k">Provenance</span><span class="cs-ddna-v">Six decades on stage behind the bands people grew up listening to.</span></div><div><span class="cs-ddna-k">Attitude</span><span class="cs-ddna-v">Volume treated as a point of view rather than a specification.</span></div></div></div><div class="cs-dna-col"><span class="cs-dsub">Tangible</span><div class="cs-ddna cs-ddna-2"><div><span class="cs-ddna-k">Tactile</span><span class="cs-ddna-v">Pebbled tolex texture carried onto speaker cabinets and headphone cups.</span></div><div><span class="cs-ddna-k">Mechanical</span><span class="cs-ddna-v">Toggle switches and weighted metal controls recreated the familiar interaction.</span></div><div><span class="cs-ddna-k">Visual</span><span class="cs-ddna-v">Script logo and fret-cloth grille kept their exact amplifier proportions.</span></div><div><span class="cs-ddna-k">CMF</span><span class="cs-ddna-v">Black vinyl, brass and cream piping applied with the same discipline as the amps.</span></div></div></div></template>
-        <div class="cs-dna-split"></div>
+        <!-- EXTRACTED DNA REMOVED (Aug 2026, Matthew).
+             The label, the canonical DNA content template and the
+             .cs-dna-split constellation host all lived here and nothing else did.
+             With the template gone harvestMarshall() returns false, so
+             mountMarshall() never runs and the constellation is never built —
+             no script needed changing. The two DOM look-ups that referenced
+             this block (M.host, and the mobile order() label anchor) are both
+             null-guarded, and MLB keeps its default. -->
       </div>
       <div class="cs-row-right cs-gap-bottom">
         <div class="cs-row-right-inner">
@@ -8620,13 +8618,17 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
      state that can be left half-applied. */
   var st=document.getElementById('mi-css')||EARLY;
   st.textContent=BASECSS+smallCSS(v);
-  figure(v);
-  order(v);
-  rowsBleed(v);
-  hubSrc(v);
-  hubClear();
-  layout();
-  hubBleed(v);
+  /* each step is isolated: with the drawing gone the figure/hub/layout steps
+     have nothing to act on, and one of them failing must not stop the photo
+     ordering and bleed that follow it. */
+  function step(fn){ try{ fn(); }catch(e){} }
+  step(function(){figure(v);});
+  step(function(){order(v);});
+  step(function(){rowsBleed(v);});
+  step(function(){hubSrc(v);});
+  step(function(){hubClear();});
+  step(function(){layout();});
+  step(function(){hubBleed(v);});
   var d=document.querySelector('#sfsec-dna .dl-dial');
   if(d)d.classList.remove('mi-swap');
   reveal();
@@ -8728,7 +8730,12 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
  function boot(){
   var t=0;
   (function poll(){
-   if(!grab()){ if(++t<400)setTimeout(poll,50); return; }
+   /* EXTRACTED DNA was removed, so there is no .dl-dial to wait for. This used
+      to poll for it 400 times and never proceed, which left #mi-css empty and
+      the mobile hero photograph hidden by the default rule. With no drawing
+      present we go straight on: the module's remaining job is the photographs. */
+   var noDial=!document.querySelector('#sfsec-dna .dl-dial');
+   if(!noDial && !grab()){ if(++t<400)setTimeout(poll,50); return; }
    var gl=document.getElementById('sf-glance');
    if(gl){var row=gl; while(row&&!(row.className||'').toString().match(/cs-row-left/))row=row.parentElement;
     if(row)row.classList.add('m4-lastrow');}
@@ -12961,12 +12968,15 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
 
   var chain=window.show;
   window.show=function(n){
-    n=((n%(MAX+1))+(MAX+1))%(MAX+1);
+    /* read the live range so a later layer can extend past the shortlist
+       without renumbering anything here */
+    var L=(window.NMAX||MAX)+1; n=((n%L)+L)%L;
     chain(n);
     var c=CONCEPTS[n], d=document.getElementById('labdesc');
     if(d&&c){
       d.textContent=(c.desc||'')+(n===0?'   · control'
-        :'   · shortlist '+n+' of '+MAX+' · was '+(c.was<10?'0':'')+c.was);
+        : n<=MAX ? ('   · shortlist '+n+' of '+MAX+(c.was?' · was '+(c.was<10?'0':'')+c.was:''))
+        : '   · dna extraction');
     }
   };
 
@@ -12999,656 +13009,1034 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
 </script>
 <script>
 /* =========================================================================
-   MARSHALL SECTION EXPLORATION — second slider on the same page.
+   DESIGNED DNA: SWITCH — 30 NEW VARIATIONS  ·  06–35
+   01–05 are untouched. This layer only appends.
 
-   IMAGE RULE (Matthew, explicit): the Marshall imagery is NOT touched.
-   The production right-hand column — all three .cs-row-right cells and every
-   image in them — is left completely alone in all 21 states. No re-crop, no
-   re-order, no new figures, no zooms, no crossfades, no image captions.
+   THE COLOUR CODE IS THE ARGUMENT, not decoration:
+     GRAPHITE  the original SWITCH drawing — the source object
+     GOLD      Silent Foundry IDENTIFYING a characteristic on that object
+     CYAN      that characteristic AFTER extraction — the transferable language
 
-   So a variation only ever rewrites the THREE LEFT CELLS. It does that by
-   HIDING their original children and appending its own, which means 00 can
-   restore the production section perfectly — the original DOM, its scripts,
-   observers and animation are never destroyed, only hidden.
+   So every extraction reads: graphite object -> gold finds it -> cyan copy
+   separates and travels out -> cyan set becomes a design language -> that
+   language informs new applications.
 
-   Consequence worth stating: with the image column fixed, section height is
-   floored by the images (row 2 right is 646px). These options can make
-   Marshall calmer and clearer, but only marginally shorter.
+   NO FAKE ENGINEERING. No invented dimensions, no drawing numbers, no part
+   codes, no mm, no revision marks, no technical pill boxes. Labels name only
+   what is actually being shown.
 
-   STRATEGY: Marshall is the PROOF, SWITCH is the METHOD. Editorial,
-   typographic, calm. No constellation, no diagram, nothing pseudo-technical.
+   Geometry is reused from the measured set in the previous layer (ENCL, SIL,
+   RIB, BOLTS, SWING, the fitted wheel circles and the fork axis), so every
+   cyan shape corresponds to something visible on the real sketch.
    ========================================================================= */
 
-/* ---- copy, verbatim from the live section ---- */
-var MT={
-  ey :'THE CASE FOR DNA TRANSLATION: MARSHALL',
-  h1 :'ROCK &amp; ROLL', h2:'NEVER DIES',
-  p1 :'By 2010, Marshall’s core guitar amplifier market was declining. People simply weren’t playing guitars like they used to. To revive the company and expand its addressable market, Marshall used its distinctive tangible and intangible brand DNA and translated it into new adjacent product categories.',
-  trL:'TRANSLATION',
-  trP:'Marshall did not extend a logo. It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. Not merchandise. Not licensing. Product-level DNA translation. The brand entered new adjacent categories and immediately made sense.',
-  dnL:'EXTRACTED DNA',
-  inL:'INTANGIBLE', taL:'TANGIBLE',
-  IN :['PRESENCE','ACOUSTIC IDENTITY','PROVENANCE','ATTITUDE'],
-  TA :['TACTILE','MECHANICAL','VISUAL','CMF'],
-  reL:'RESULTS',
-  reP:'Marshall transformed a declining heritage brand into a global consumer electronics business, dramatically expanded its addressable market and ultimately achieved a $1.1B acquisition.',
-  MET:[['60+','HERITAGE'],['NEW','CATEGORIES'],['$4B+','EXPANDED MARKET'],['$1.1B','EXIT IN 2025']]
-};
+/* ---------- extra geometry derived from the same measured source ---------- */
+var GROUND = AXLE + RR.tyre;                 /* where both tyres touch      */
+var SEATLN = SIL.slice(0,6);                 /* tail face -> seat run       */
+var UPPERL = SIL.slice(5);                   /* shoulder -> top rail        */
+var CORNERS = [                              /* the enclosure's corner cuts */
+  [[525,293],[549,270]], [[689,270],[713,293]],
+  [[713,500],[700,525]], [[568,525],[525,468]] ];
+var SHOCK = [[408,386],[486,266]];
+var TRIS  = [                                /* real structural triangles   */
+  [[252,250],[376,256],[406,342]],
+  [[406,342],[486,266],[408,386]] ];
+var VOIDS = [                                /* the openings the frame makes */
+  [[530,270],[700,270],[700,300],[530,300]],
+  [[252,256],[376,258],[404,338],[262,300]] ];
 
-/* ---- editorial blocks. There is no imagery anywhere in this file. ---- */
-function mEy(){ return '<span class="m-ey">'+MT.ey+'</span>'; }
-function mHead(cls){ return '<div class="m-h '+(cls||'')+'">'+MT.h1+'<br>'+MT.h2+'</div>'; }
-function mIntro(cls){ return mEy()+mHead(cls)+'<p class="m-p">'+MT.p1+'</p>'; }
-function mTrans(){ return '<span class="m-lab">'+MT.trL+'</span><p class="m-p">'+MT.trP+'</p>'; }
-function mMet(cls){ return '<div class="m-met '+(cls||'')+'">'+MT.MET.map(function(q){
-  return '<div class="m-mt"><span class="m-n">'+q[0]+'</span><span class="m-k">'+q[1]+'</span></div>'; }).join('')+'</div>'; }
-function mRes(cls,noP){ return '<div class="m-res '+(cls||'')+'"><span class="m-lab">'+MT.reL+'</span>'+
-  (noP?'':'<p class="m-p">'+MT.reP+'</p>')+mMet()+'</div>'; }
-function mT(t){ return '<span class="m-t" data-term="'+t+'">'+t+'</span>'; }
-function mDnaLab(){ return '<span class="m-lab m-dnl">'+MT.dnL+'</span>'; }
-function mCols(){
-  return '<div class="m-2col">'+
-    '<div class="m-col"><span class="m-cat">'+MT.inL+'</span>'+MT.IN.map(mT).join('')+'</div>'+
-    '<div class="m-col"><span class="m-cat">'+MT.taL+'</span>'+MT.TA.map(mT).join('')+'</div></div>';
+/* ---------- the design-language vocabulary ----------
+   id + label only. Nothing here pretends to be a measurement. */
+function _c(cx,cy,r){ return CIR(cx,cy,r); }
+var V={
+  sil  :{id:'01',lab:'PRIMARY SILHOUETTE', p:[P(SIL)],
+          bb:BB(SIL)},
+  whl  :{id:'02',lab:'WHEEL PROPORTION',   p:[_c(RWX,AXLE,RR.tyre),_c(FWX,AXLE,RR.tyre),
+                                             _c(RWX,AXLE,RR.rim),_c(FWX,AXLE,RR.rim)],
+          bb:{x:40,y:296,w:1114,h:352}},
+  encl :{id:'03',lab:'BATTERY ENCLOSURE',  p:[P(ENCL,1)], bb:BB(ENCL)},
+  ribs :{id:'04',lab:'RIB STRUCTURE',      p:RIB.map(function(s){return P(s);}),
+          bb:{x:547,y:322,w:158,h:145}},
+  axis :{id:'05',lab:'STEERING AXIS',      p:['M'+HEAD[0]+' '+HEAD[1]+' L'+FAXLE[0]+' '+FAXLE[1]],
+          bb:{x:801,y:110,w:177,h:362}},
+  strc :{id:'06',lab:'STRUCTURAL LINE',    p:TRIS.map(function(t){return P(t,1);}).concat([P(SWING,1)]),
+          bb:{x:192,y:250,w:300,h:236}},
+  fast :{id:'07',lab:'EXPOSED FASTENERS',  p:BOLTS.map(function(b){return DOT(b,7);}),
+          bb:BB(BOLTS)},
+  datum:{id:'08',lab:'HORIZONTAL DATUM',   p:['M'+(RWX-RR.tyre)+' '+AXLE+' L'+(FWX+RR.tyre)+' '+AXLE],
+          bb:{x:40,y:452,w:1114,h:40}},
+  stnc :{id:'09',lab:'STANCE',             p:[_c(RWX,AXLE,RR.tyre),_c(FWX,AXLE,RR.tyre),P(SIL),
+                                             'M40 '+GROUND+' L1154 '+GROUND],
+          bb:{x:40,y:150,w:1114,h:508}},
+  neg  :{id:'10',lab:'NEGATIVE SPACE',     p:VOIDS.map(function(v){return P(v,1);}),
+          bb:{x:250,y:255,w:452,h:88}},
+  edge :{id:'11',lab:'EDGE GEOMETRY',      p:CORNERS.map(function(c){return P(c);}),
+          bb:BB(ENCL)},
+  mech :{id:'12',lab:'MECHANICAL EXPOSURE',p:[P(SWING,1),P(SHOCK),
+                                             'M'+HEAD[0]+' '+HEAD[1]+' L'+FAXLE[0]+' '+FAXLE[1]]
+                                             .concat(BOLTS.slice(0,5).map(function(b){return DOT(b,6);})),
+          bb:{x:192,y:110,w:800,h:400}},
+  seat :{id:'13',lab:'SEAT LINE',          p:[P(SEATLN)], bb:BB(SEATLN)},
+  upper:{id:'14',lab:'UPPER BODY LINE',    p:[P(UPPERL)], bb:BB(UPPERL)},
+  swng :{id:'15',lab:'SWINGARM',           p:[P(SWING,1)], bb:BB(SWING)},
+  shk  :{id:'16',lab:'SHOCK ANGLE',        p:[P(SHOCK)], bb:BB(SHOCK)},
+  ctrs :{id:'17',lab:'WHEEL CENTRES',      p:[DOT([RWX,AXLE],12),DOT([FWX,AXLE],12),
+                                             'M'+RWX+' '+AXLE+' L'+FWX+' '+AXLE],
+          bb:{x:190,y:445,w:812,h:54}},
+  grnd :{id:'18',lab:'GROUND LINE',        p:['M40 '+GROUND+' L1154 '+GROUND],
+          bb:{x:40,y:GROUND-30,w:1114,h:60}},
+  mass :{id:'19',lab:'MASS RELATIONSHIP',  p:[P([[495,262],[745,262],[745,535],[495,535]],1),
+                                             _c(RWX,AXLE,RR.tyre),_c(FWX,AXLE,RR.tyre)],
+          bb:{x:40,y:255,w:1114,h:400}},
+  circ :{id:'20',lab:'CIRCULAR DETAIL',    p:[_c(RWX,AXLE,RR.disc),_c(FWX,AXLE,RR.disc),
+                                             _c(272,66,15),_c(152,128,17)],
+          bb:{x:120,y:40,w:900,h:470}},
+  mod  :{id:'21',lab:'MODULAR CONSTRUCTION',p:[P(ENCL,1),P(PANEL,1),P(SWING,1)],
+          bb:{x:190,y:265,w:560,h:270}},
+  matl :{id:'22',lab:'MATERIAL SEPARATION',p:[P(PANEL,1),_c(FWX,AXLE,RR.rim),_c(RWX,AXLE,RR.rim)],
+          bb:{x:190,y:285,w:900,h:250}}
+};
+var VK=Object.keys(V);
+/* the intangible each characteristic produces — used only where the brief
+   asks for tangible -> intangible, and shown as two words, never a chart */
+var VQ={ sil:'PURPOSEFUL STANCE', whl:'PROPORTION', encl:'MODULARITY', ribs:'FUNCTIONAL EXPRESSION',
+  axis:'PRECISION', strc:'STRUCTURAL CLARITY', fast:'MECHANICAL HONESTY', datum:'DISCIPLINE',
+  stnc:'PRESENCE', neg:'RESTRAINT', edge:'CRAFT', mech:'SERVICEABILITY', seat:'CONTINUITY',
+  upper:'CONTINUITY', swng:'UTILITY', shk:'ENGINEERED SIMPLICITY', ctrs:'BALANCE',
+  grnd:'GROUNDEDNESS', mass:'COMPOSURE', circ:'DETAIL LANGUAGE', mod:'MODULARITY',
+  matl:'HONEST MATERIALS' };
+
+/* the categories the language can carry into. Abstract where it should be. */
+var APP=[
+  {k:'speaker',  img:IMG.speaker,  lab:'AUDIO',        kind:'product'},
+  {k:'battery',  img:IMG.batteryP, lab:'POWER',        kind:'product'},
+  {k:'light',    img:IMG.light,    lab:'LIGHTING',     kind:'product'},
+  {k:'board',    img:IMG.snowboard,lab:'MOBILITY',     kind:'product'},
+  {k:'guitar',   img:IMG.guitar,   lab:'INSTRUMENT',   kind:'product'}
+];
+var SYS=[
+  {lab:'PRODUCT',     g:[P(FIT(ENCL,30,18,60,64),1)]},
+  {lab:'SERVICE',     g:['M18 34 L82 34','M18 50 L82 50','M18 66 L66 66']},
+  {lab:'ENVIRONMENT', g:['M14 78 L86 78','M22 78 L22 34 L78 34 L78 78']},
+  {lab:'INTERFACE',   g:[P([[24,26],[76,26],[76,74],[24,74]],1),'M24 40 L76 40']},
+  {lab:'PACKAGING',   g:[P([[26,30],[74,30],[74,72],[26,72]],1),'M26 30 L50 16 L74 30']},
+  {lab:'VENTURE',     g:[_c(50,50,26),_c(50,50,10)]}
+];
+
+/* ---------- drawing helpers, scoped to this layer ---------- */
+var VB2='-170 -100 1540 869';                 /* the drawing plus its margin */
+function W_(u){ return (u/1540*100).toFixed(2)+'%'; }
+function H_(u){ return (u/869*100).toFixed(2)+'%'; }
+function MOVE_(dx,dy,sc){ return 'translate('+W_(dx)+','+H_(dy)+')'+(sc?' scale('+sc+')':''); }
+function lay(paths,cls,col,w,op){
+  return '<svg class="'+(cls||'')+'" viewBox="'+VB2+'" fill="none" preserveAspectRatio="none"'+
+    (op!=null?' style="opacity:'+op+'"':'')+'>'+
+    paths.map(function(d,i){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(w||2)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"/>'; }).join('')+
+    '</svg>';
+}
+function bike2(opts){
+  opts=opts||{};
+  return '<div class="vw'+(opts.dark?' vwk':'')+'">'+
+    '<img class="vsrc" src="'+SKA+'" style="'+(opts.dark?'filter:invert(1);':'')+
+      'opacity:'+(opts.src==null?0.8:opts.src)+'">'+(opts.svg||'')+'</div>';
+}
+/* a tiny label: number + name. Nothing else, ever. */
+function tag2(x,y,id,lab,align){
+  return '<div class="vtag'+(align==='r'?' r':'')+'" style="left:'+x+'%;top:'+y+'%">'+
+    '<i>'+id+'</i><b>'+lab+'</b></div>';
+}
+function vsec(cls,inner){ return '<div class="lb dp vp '+cls+'"><div class="din">'+inner+'</div></div>'; }
+function para(dark){ return '<p class="vpara'+(dark?' k':'')+'">'+T.p+'</p>'; }
+/* progressive self-drawing */
+function drawIn(root,sel,x,step,dur,delay){
+  var ps=[].slice.call(root.querySelectorAll(sel));
+  ps.forEach(function(q){ var L=700; try{L=q.getTotalLength()||700;}catch(e){}
+    q.style.strokeDasharray=L; q.style.strokeDashoffset=L;
+    q.style.transition='stroke-dashoffset '+(dur||1000)+'ms cubic-bezier(.22,.66,.28,1)'; });
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return;
+    ps.forEach(function(q,k){ x.delay(function(){ q.style.strokeDashoffset='0'; },(delay||0)+k*(step||70)); }); }); },{threshold:.12}));
+  if(ps[0]) io.observe(ps[0].ownerSVGElement||ps[0]);
+  return ps;
+}
+/* THE CORE DEVICE, used by most variations.
+   For each characteristic: a gold layer that draws itself on the bike, and a
+   cyan duplicate of the SAME paths that then separates and travels out. */
+function extractSet(keys, place){
+  return keys.map(function(k,i){
+    return lay(V[k].p,'g_'+k+' vg',AU,2.1)+lay(V[k].p,'c_'+k+' vc',CY,2.1);
+  }).join('');
+}
+function runExtraction(r,x,keys,place,opts){
+  opts=opts||{};
+  var goldStep = opts.goldStep||420, hold = opts.hold||600, moveStep = opts.moveStep||360;
+  keys.forEach(function(k,i){
+    var g=r.querySelector('.g_'+k), c=r.querySelector('.c_'+k);
+    if(!g||!c) return;
+    g.style.opacity='0'; c.style.opacity='0';
+    g.style.transition='opacity .5s ease';
+    c.style.transition='opacity .6s ease, transform '+(opts.travel||1500)+'ms cubic-bezier(.2,.7,.24,1)';
+    /* 1 · gold finds it on the machine */
+    x.delay(function(){ g.style.opacity='1'; }, 300+i*goldStep);
+    /* 2 · cyan duplicate appears exactly on top of it */
+    x.delay(function(){ c.style.opacity='1'; }, 300+i*goldStep+hold);
+    /* 3 · the cyan copy leaves; the gold trace stays behind as the origin */
+    x.delay(function(){
+      var pos=place[i]||[0,0,1];
+      c.style.transform=MOVE_(pos[0],pos[1],pos[2]);
+      g.style.opacity=(opts.ghost==null?0.32:opts.ghost);
+    }, 300+i*goldStep+hold+moveStep);
+  });
+  drawIn(r,'.vg path',x,26,900);
 }
 </script>
 
-<style id="sf-marshall-css">
-/* variations live INSIDE the production left cells. Nothing here selects a
-   .cs-row-right, a figure or an img — the image column is untouchable. */
-#sfsec-dna.mlab-on .cs-row-left > *:not(.mlab-i){display:none !important;}
-#sfsec-dna .mlab-i{width:100%;}
-
-/* type measured off the production section, so 00 vs 01–20 is a fair A/B */
-#sfsec-dna .mlab-i .m-ey{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
-  letter-spacing:2.72px;text-transform:uppercase;color:#8a6e3a;display:block;margin:0 0 34px;}
-#sfsec-dna .mlab-i .m-h{font-family:'Bebas Neue',sans-serif;font-weight:300;font-size:23.04px;
-  line-height:.92;letter-spacing:5.0688px;text-transform:uppercase;color:rgba(10,10,10,.75);}
-#sfsec-dna .mlab-i .m-h.big{font-size:clamp(1.5rem,2.5vw,2.1rem);letter-spacing:.06em;}
-#sfsec-dna .mlab-i .m-p{font-family:'DM Sans',sans-serif;font-size:14.4px;line-height:28.512px;
-  font-weight:300;color:rgba(10,10,10,.55);max-width:min(100%,680px);margin:24px 0 0;}
-#sfsec-dna .mlab-i .m-lab{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
-  letter-spacing:2.72px;text-transform:uppercase;color:#8a6e3a;display:block;}
-#sfsec-dna .mlab-i .m-dnl{margin-bottom:22px;}
-#sfsec-dna .mlab-i .m-cat{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;
-  letter-spacing:2.4px;text-transform:uppercase;color:rgba(10,10,10,.34);display:block;}
-#sfsec-dna .mlab-i .m-t{font-family:'DM Sans',sans-serif;font-size:12.8px;font-weight:300;
-  letter-spacing:.14em;text-transform:uppercase;color:rgba(10,10,10,.7);display:block;
-  transition:color .3s ease;}
-#sfsec-dna .mlab-i .m-num{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;
-  letter-spacing:.18em;color:#8a6e3a;}
-
-/* results */
-#sfsec-dna .mlab-i .m-res{margin-top:32px;}
-#sfsec-dna .mlab-i .m-res .m-lab{margin-bottom:12px;}
-#sfsec-dna .mlab-i .m-met{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:22px;}
-#sfsec-dna .mlab-i .m-mt{border-top:1px solid rgba(10,10,10,.16);padding-top:11px;}
-#sfsec-dna .mlab-i .m-n{font-family:'Bebas Neue',sans-serif;font-weight:300;font-size:17.6px;
-  line-height:1;letter-spacing:.02em;color:rgba(10,10,10,.75);display:block;}
-#sfsec-dna .mlab-i .m-met.big .m-n{font-size:clamp(1.7rem,3vw,2.6rem);}
-#sfsec-dna .mlab-i .m-k{font-family:'DM Sans',sans-serif;font-size:9.6px;font-weight:300;
-  letter-spacing:2.4px;text-transform:uppercase;color:rgba(10,10,10,.4);display:block;margin-top:6px;}
-
-/* DNA presentations */
-#sfsec-dna .mlab-i .m-2col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);}
-#sfsec-dna .mlab-i .m-col .m-cat{margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(10,10,10,.16);}
-#sfsec-dna .mlab-i .m-col .m-t{padding:9px 0;border-bottom:1px solid rgba(10,10,10,.08);}
-#sfsec-dna .mlab-i .m-row{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);
-  padding:11px 0;border-bottom:1px solid rgba(10,10,10,.1);}
-#sfsec-dna .mlab-i .ir{display:grid;grid-template-columns:32px 1fr;gap:14px;align-items:baseline;
-  padding:8px 0;border-bottom:1px solid rgba(10,10,10,.08);}
-#sfsec-dna .mlab-i .m-band{padding:14px 0;border-top:1px solid rgba(10,10,10,.16);}
-#sfsec-dna .mlab-i .m-band .bl{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px;align-items:baseline;}
-#sfsec-dna .mlab-i .m-band .bl .m-t{display:inline;}
-#sfsec-dna .mlab-i .sep{color:rgba(10,10,10,.24);font-size:11px;}
-#sfsec-dna .mlab-i .m-mx{display:grid;grid-template-columns:104px repeat(4,1fr);gap:0 clamp(12px,1.8vw,30px);}
-#sfsec-dna .mlab-i .m-mx > *{padding:12px 0;border-bottom:1px solid rgba(10,10,10,.1);}
-#sfsec-dna .mlab-i .m-field .m-t{font-size:clamp(.9rem,1.4vw,1.2rem);letter-spacing:.1em;color:rgba(10,10,10,.72);}
-#sfsec-dna .mlab-i .m-reg .m-t{padding:8px 0;font-size:14px;}
-#sfsec-dna .mlab-i .m-reg .m-cat{padding-bottom:9px;border-bottom:1px solid rgba(10,10,10,.16);margin-bottom:5px;}
-#sfsec-dna .mlab-i .m-quote{font-family:'DM Sans',sans-serif;font-weight:300;
-  font-size:clamp(1rem,1.7vw,1.45rem);line-height:1.5;letter-spacing:.01em;
-  color:rgba(10,10,10,.7);max-width:min(100%,760px);margin:0;text-indent:-.4em;}
-#sfsec-dna .mlab-i .m-inline{font-size:12px;letter-spacing:.1em;color:rgba(10,10,10,.66);}
-#sfsec-dna .mlab-i .m-note{display:grid;grid-template-columns:92px 1fr;gap:16px;align-items:baseline;
-  padding:7px 0;border-bottom:1px solid rgba(10,10,10,.07);}
-
-/* leaders — fine rules running toward the image column, never onto it */
-#sfsec-dna .mlab-i .lr{display:flex;align-items:center;gap:14px;padding:9px 0;
-  border-bottom:1px solid rgba(10,10,10,.08);}
-#sfsec-dna .mlab-i .lr .ld{flex:1 1 auto;height:1px;background:rgba(138,110,58,.34);
-  transform:scaleX(0);transform-origin:left;transition:transform 1s cubic-bezier(.16,.7,.24,1);}
-#sfsec-dna .mlab-i .lr.on .ld{transform:scaleX(1);}
-
-/* hover annotation — typography only; no image is affected */
-#sfsec-dna .mlab-i.act .m-t{color:rgba(10,10,10,.26);}
-#sfsec-dna .mlab-i.act .m-t.on{color:#8a6e3a;}
-
-/* the pinned cells are tighter at 1024 because production's own type shrinks
-   there — recover the difference in the block rhythm rather than the type */
-@media(max-width:1300px){
-  #sfsec-dna .mlab-i .m-col .m-t{padding:6px 0;}
-  #sfsec-dna .mlab-i .m-col .m-cat{margin-bottom:10px;padding-bottom:7px;}
-  #sfsec-dna .mlab-i .m-dnl{margin-bottom:14px;}
-  #sfsec-dna .mlab-i .m-res{margin-top:22px;}
-  #sfsec-dna .mlab-i .m-res .m-lab{margin-bottom:9px;}
-  #sfsec-dna .mlab-i .m-met{margin-top:15px;gap:14px;}
-  #sfsec-dna .mlab-i .m-mt{padding-top:9px;}
-  #sfsec-dna .mlab-i .m-row{padding:8px 0;}
-  #sfsec-dna .mlab-i .ir{padding:6px 0;}
-  #sfsec-dna .mlab-i .m-note{padding:5px 0;}
-  #sfsec-dna .mlab-i .m-band{padding:11px 0;}
-  #sfsec-dna .mlab-i .m-mx > *{padding:9px 0;}
-  #sfsec-dna .mlab-i .m-reg .m-t{padding:6px 0;}
-}
+<style id="sf-dna30-css">
+#sf-lab-mount .vp{background:var(--lab-cream);padding:100px 24px 0;}
+#sf-lab-mount .vp.vk{background:#0d0f12;}
+#sf-lab-mount .vp .din{max-width:1600px;margin:0 auto;}
+#sf-lab-mount .vstage{position:relative;width:100%;margin:34px auto 0;}
+#sf-lab-mount .vw{position:relative;width:100%;aspect-ratio:1540/869;}
+#sf-lab-mount .vw>*{position:absolute;inset:0;}
+#sf-lab-mount .vw .vsrc{position:absolute;left:11.04%;top:11.51%;width:77.92%;height:76.98%;
+  object-fit:fill;display:block;}
+#sf-lab-mount .vw svg{width:100%;height:100%;overflow:visible;transform-origin:50% 50%;}
+/* labels: number + name, nothing else */
+#sf-lab-mount .vtag{position:absolute;transform:translateY(-50%);pointer-events:none;
+  font-family:var(--lab-dm);white-space:nowrap;}
+#sf-lab-mount .vtag.r{transform:translate(-100%,-50%);text-align:right;}
+#sf-lab-mount .vtag i{font-style:normal;font-size:.44rem;letter-spacing:.24em;color:var(--lab-cyb);}
+#sf-lab-mount .vtag b{display:block;font-weight:300;font-size:.6rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.66);margin-top:3px;}
+#sf-lab-mount .vp.vk .vtag b{color:rgba(244,241,236,.72);}
+#sf-lab-mount .vpara{font-family:var(--lab-dm);font-size:13.6px;line-height:27.2px;font-weight:300;
+  color:rgba(10,10,10,.55);max-width:min(100%,680px);margin:30px 0 0;}
+#sf-lab-mount .vpara.k{color:rgba(244,241,236,.5);}
+#sf-lab-mount .vkey{display:flex;gap:24px;flex-wrap:wrap;margin-top:26px;}
+#sf-lab-mount .vkey span{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.36);display:flex;align-items:center;gap:8px;}
+#sf-lab-mount .vkey span::before{content:"";width:18px;height:1px;background:currentColor;}
+#sf-lab-mount .vkey .au{color:var(--lab-gold);} #sf-lab-mount .vkey .cy{color:var(--lab-cy);}
+#sf-lab-mount .vp.vk .vkey span{color:rgba(244,241,236,.36);}
+/* the extracted library / application field */
+#sf-lab-mount .vlib{display:grid;gap:16px;margin-top:38px;}
+#sf-lab-mount .vcell{position:relative;}
+#sf-lab-mount .vcell svg{width:100%;height:auto;display:block;overflow:visible;}
+#sf-lab-mount .vcap{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(10,10,10,.42);display:block;margin-top:9px;}
+#sf-lab-mount .vcap i{font-style:normal;color:var(--lab-cyb);margin-right:7px;}
+#sf-lab-mount .vp.vk .vcap{color:rgba(244,241,236,.42);}
+#sf-lab-mount .vapp{position:relative;aspect-ratio:4/3;overflow:hidden;background:#e9e5dd;}
+#sf-lab-mount .vp.vk .vapp{background:#14171b;}
+#sf-lab-mount .vapp img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:opacity .8s ease, filter .8s ease;}
+#sf-lab-mount .vapp svg{position:absolute;inset:0;width:100%;height:100%;}
+#sf-lab-mount .vbtm{height:96px;}
 @media(max-width:900px){
-  #sfsec-dna .mlab-i .m-2col{grid-template-columns:1fr;gap:24px;}
-  #sfsec-dna .mlab-i .m-met{grid-template-columns:1fr 1fr;gap:16px;}
-  #sfsec-dna .mlab-i .m-row{grid-template-columns:1fr;gap:2px;}
-  #sfsec-dna .mlab-i .m-mx{grid-template-columns:1fr;}
-  #sfsec-dna .mlab-i .m-mx > *{border-bottom:0;padding:5px 0;}
-  #sfsec-dna .mlab-i .m-note{grid-template-columns:1fr;gap:2px;}
+  #sf-lab-mount .vp{padding:88px 24px 0;}
+  #sf-lab-mount .vtag b{font-size:.5rem;}
+  #sf-lab-mount .vtag i{font-size:.4rem;}
+  #sf-lab-mount .vlib{grid-template-columns:repeat(2,1fr) !important;}
+  #sf-lab-mount .vhide-m{display:none !important;}
+}
+</style>
+<style id="sf-dna30-css2">
+/* additions used by the 30 new variations. Kept in a second block so the
+   first one stays exactly as reviewed. */
+#sf-lab-mount .vpc{transition:opacity .35s ease;}
+#sf-lab-mount .vlib.dim .vpc{opacity:.22;}
+#sf-lab-mount .vlib.dim .vpc.lit{opacity:1;}
+#sf-lab-mount .vhead{font-family:var(--lab-dm);font-size:.46rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--lab-cy);display:block;margin:0 0 14px;}
+#sf-lab-mount .vp.vk .vhead{color:var(--lab-cyb);}
+#sf-lab-mount .vhead.au{color:var(--lab-gold);}
+#sf-lab-mount .vp.vk .vhead.au{color:var(--lab-goldl);}
+#sf-lab-mount .vrule{height:1px;background:rgba(10,10,10,.14);margin:36px 0 0;}
+#sf-lab-mount .vp.vk .vrule{background:rgba(244,241,236,.16);}
+#sf-lab-mount .vcol{display:grid;gap:38px;align-items:start;margin-top:38px;}
+#sf-lab-mount .vq{font-family:var(--lab-bb);font-weight:300;letter-spacing:.16em;
+  text-transform:uppercase;font-size:clamp(1.05rem,2.3vw,1.85rem);line-height:1.02;
+  color:rgba(10,10,10,.72);margin:0;}
+#sf-lab-mount .vp.vk .vq{color:rgba(244,241,236,.88);}
+#sf-lab-mount .vsq{position:relative;}
+#sf-lab-mount .vsq svg{width:100%;height:auto;display:block;overflow:visible;}
+#sf-lab-mount .vbox{border:1px solid rgba(10,10,10,.13);padding:14px;}
+#sf-lab-mount .vp.vk .vbox{border-color:rgba(244,241,236,.15);}
+#sf-lab-mount .vtl{display:grid;grid-auto-flow:column;gap:0;align-items:start;margin-top:44px;}
+#sf-lab-mount .vtl>div{padding:16px 20px 0 0;border-top:1px solid rgba(10,10,10,.16);}
+#sf-lab-mount .vp.vk .vtl>div{border-top-color:rgba(244,241,236,.18);}
+#sf-lab-mount .vpair{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;}
+#sf-lab-mount .varr{font-family:var(--lab-dm);font-size:.6rem;color:var(--lab-cy);letter-spacing:.2em;}
+#sf-lab-mount .vlist{margin:0;padding:0;list-style:none;}
+#sf-lab-mount .vlist li{border-top:1px solid rgba(10,10,10,.13);padding:15px 0;display:flex;
+  gap:18px;align-items:baseline;font-family:var(--lab-dm);font-size:.62rem;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.62);font-weight:300;}
+#sf-lab-mount .vp.vk .vlist li{border-top-color:rgba(244,241,236,.15);color:rgba(244,241,236,.66);}
+#sf-lab-mount .vlist li i{font-style:normal;color:var(--lab-cyb);font-size:.46rem;letter-spacing:.24em;}
+#sf-lab-mount .vlist li em{font-style:normal;margin-left:auto;color:rgba(10,10,10,.34);font-size:.5rem;}
+#sf-lab-mount .vp.vk .vlist li em{color:rgba(244,241,236,.36);}
+#sf-lab-mount .vhero{position:relative;aspect-ratio:16/9;overflow:hidden;background:#e9e5dd;margin-top:34px;}
+#sf-lab-mount .vp.vk .vhero{background:#14171b;}
+#sf-lab-mount .vhero img{width:100%;height:100%;object-fit:cover;display:block;}
+#sf-lab-mount .vhero svg{position:absolute;inset:0;width:100%;height:100%;}
+#sf-lab-mount .vmini{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;filter:grayscale(1) contrast(1.05);}
+#sf-lab-mount .vfade img{transition:opacity 1.1s ease;}
+/* grid widths as CLASSES. Production carries a mobile rule
+   #fv-stage [style*="grid-template-columns"]{grid-template-columns:1fr !important}
+   and the lab mount lives inside #fv-stage, so any inline grid-template-columns
+   here is silently collapsed to one column below 900. Classes are immune. */
+#sf-lab-mount .gc2{grid-template-columns:repeat(2,1fr);}
+#sf-lab-mount .gc3{grid-template-columns:repeat(3,1fr);}
+#sf-lab-mount .gc4{grid-template-columns:repeat(4,1fr);}
+#sf-lab-mount .gc5{grid-template-columns:repeat(5,1fr);}
+#sf-lab-mount .gc6{grid-template-columns:repeat(6,1fr);}
+#sf-lab-mount .gc7{grid-template-columns:repeat(7,1fr);}
+#sf-lab-mount .gc8{grid-template-columns:repeat(8,1fr);}
+#sf-lab-mount .gc10{grid-template-columns:repeat(10,1fr);}
+#sf-lab-mount .gc12{grid-template-columns:repeat(12,1fr);}
+#sf-lab-mount .gcL15{grid-template-columns:1.15fr 1fr;}
+#sf-lab-mount .gcT{grid-template-columns:1.2fr 1fr 1fr;}
+#sf-lab-mount .gcS21{grid-template-columns:1fr 2.1fr;}
+#sf-lab-mount .gcS24{grid-template-columns:1fr 2.4fr;}
+@media(max-width:900px){
+  #sf-lab-mount .vcol{gap:26px;}
+  #sf-lab-mount .vcol{grid-template-columns:1fr !important;}
+  #sf-lab-mount .vlib{grid-template-columns:repeat(2,1fr) !important;}
+  #sf-lab-mount .vtl{grid-auto-flow:row;gap:0;}
+  #sf-lab-mount .vtl>div{padding-right:0;}
+  #sf-lab-mount .vpair{grid-template-columns:1fr;gap:12px;}
+  #sf-lab-mount .varr{transform:rotate(90deg);}
 }
 </style>
 
 <script>
-/* ============ registry: a variation supplies content for the 3 LEFT cells === */
-(function(){
-window.MCON=[]; window.MCUR=-1;
-window.MC=function(n,name,desc,cells){ MCON[n]={n:n,name:name,desc:desc,cells:cells}; };
-var MLIVE={obs:[],lis:[],tmr:[]};
-window.mctx=function(){ return {
-  on:function(t,ty,fn,o){ t.addEventListener(ty,fn,o||{passive:true}); MLIVE.lis.push([t,ty,fn,o]); },
-  obs:function(o){ MLIVE.obs.push(o); return o; },
-  delay:function(fn,ms){ var t=setTimeout(fn,ms); MLIVE.tmr.push(t); return t; },
-  timer:function(fn,ms){ var t=setInterval(fn,ms); MLIVE.tmr.push(t); return t; }
-};};
-function mteardown(){
-  MLIVE.obs.forEach(function(o){try{o.disconnect();}catch(e){}});
-  MLIVE.lis.forEach(function(l){try{l[0].removeEventListener(l[1],l[2],l[3]);}catch(e){}});
-  MLIVE.tmr.forEach(function(t){clearInterval(t);clearTimeout(t);});
-  MLIVE={obs:[],lis:[],tmr:[]};
+/* =========================================================================
+   DESIGNED DNA: SWITCH — 30 NEW VARIATIONS  ·  06–20  (of 06–35)
+   01–05 untouched. Colour is the argument:
+     GRAPHITE the machine · GOLD Silent Foundry finding it · CYAN the extracted,
+     transferable language. No invented dimensions, part codes or revisions.
+   ========================================================================= */
+
+/* place a label at REAL drawing coordinates rather than by eye */
+function LX(u){ return ((u+170)/1540*100).toFixed(2); }
+function LY(v){ return ((v+100)/869*100).toFixed(2); }
+function vtagAt(u,v,key,align){ var d=V[key];
+  return tag2(LX(u),LY(v),d.id,d.lab,align); }
+function vtagTx(u,v,id,lab,align){ return tag2(LX(u),LY(v),id,lab,align); }
+
+/* the gold/cyan pair for one characteristic, cyan carrying its key so hover
+   can find it later */
+function pair(k,gop){
+  return lay(V[k].p,'g_'+k+' vg',AU,2.1,gop)+
+         lay(V[k].p,'c_'+k+' vc',CY,2.1).replace('<svg','<svg data-dna="'+k+'"');
 }
-/* The production Marshall type is RESPONSIVE (head 23.04px at 1440 drops to
-   17.6px at 1024, body 14.4 -> 13.76). Rather than guess a second scale, copy
-   the live computed values onto our equivalents at every width. This is also
-   what keeps a variation inside the pinned cell height. */
-window.msyncType=function(){
-  var s=document.getElementById('sfsec-dna'); if(!s) return;
-  var ey=s.querySelector('.cs-dey'), h=s.querySelector('.cs-dh'), p=s.querySelector('.cs-dp');
-  if(!ey||!h||!p) return;
-  function grab(e,props){ var c=getComputedStyle(e), o=''; 
-    props.forEach(function(k){ o+=k+':'+c[k.replace(/-([a-z])/g,function(m,a){return a.toUpperCase();})]+' !important;'; });
-    return o; }
-  var T=['font-family','font-size','line-height','letter-spacing','font-weight','text-transform','color'];
-  var css='#sfsec-dna .mlab-i .m-ey{'+grab(ey,T)+'margin-bottom:'+getComputedStyle(ey).marginBottom+' !important;}'+
-          '#sfsec-dna .mlab-i .m-h{'+grab(h,T)+'}'+
-          '#sfsec-dna .mlab-i .m-p{'+grab(p,T)+'margin-top:'+getComputedStyle(p).marginTop+' !important;}';
-  var st=document.getElementById('sf-marshall-type');
-  if(!st){ st=document.createElement('style'); st.id='sf-marshall-type'; document.head.appendChild(st); }
-  st.textContent=css;
+function goldOnly(k,op){ return lay(V[k].p,'g_'+k+' vg',AU,2.1,op); }
+function cyanOnly(k,op){ return lay(V[k].p,'c_'+k+' vc',CY,2.1,op).replace('<svg','<svg data-dna="'+k+'"'); }
+
+/* a chip in the extracted library. Every chip is framed to the same aspect so
+   the grid stays even, and shows the SAME path data as the machine. */
+function BB43(b,pad){ pad=(pad==null?0.16:pad);
+  var w=b.w*(1+pad*2), h=b.h*(1+pad*2), cx=b.x+b.w/2, cy=b.y+b.h/2, TA=4/3;
+  if(w/h<TA) w=h*TA; else h=w/TA;
+  return (cx-w/2).toFixed(1)+' '+(cy-h/2).toFixed(1)+' '+w.toFixed(1)+' '+h.toFixed(1); }
+function vchip(k,col,sw){
+  var d=V[k];
+  return '<div class="vcell vch" data-key="'+k+'">'+
+    '<svg viewBox="'+BB43(d.bb)+'" fill="none" class="ch_'+k+'">'+
+      d.p.map(function(p){ return '<path d="'+p+'" stroke="'+(col||CY)+'" stroke-width="'+(sw||2.2)+
+        '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+    '</svg><span class="vcap"><i>'+d.id+'</i>'+d.lab+'</span></div>'; }
+function vlib(keys,cols,col,sw){
+  return '<div class="vlib gc'+cols+'">'+
+    keys.map(function(k){ return vchip(k,col,sw); }).join('')+'</div>'; }
+
+/* ---- applications. Each category inherits DIFFERENT characteristics, and the
+   overlay drawn on it is the real geometry, scaled, not a lookalike. ---- */
+var RAKEDX=FAXLE[0]-HEAD[0], RAKEDY=FAXLE[1]-HEAD[1];
+var AMK={
+  speaker:{keys:['encl','ribs','fast'], m:function(){
+    var e=FIT(ENCL,54,22,92,106);
+    return [P(e,1)].concat(FITSEGS(RIB,64,36,72,78,PANEL)
+        .filter(function(_,i){return i%3===0;}).map(function(s){return P(s);}))
+      .concat(FIT(BOLTS,54,22,92,106).slice(0,4).map(function(b){return DOT(b,2.4);})); }},
+  battery:{keys:['encl','mod','matl'], m:function(){
+    return [P(FIT(ENCL,60,14,80,122),1),P(FIT(PANEL,72,32,56,86),1),
+            P(FIT(CORNERS[0],60,14,80,122))]; }},
+  light  :{keys:['axis','circ','strc'], m:function(){
+    var L=0.215, ax=56, ay=130, bx=ax+RAKEDX*L, by=ay-RAKEDY*L;
+    return ['M'+ax+' '+ay+' L'+bx.toFixed(1)+' '+by.toFixed(1),
+            'M'+bx.toFixed(1)+' '+by.toFixed(1)+' L'+(bx+46).toFixed(1)+' '+by.toFixed(1),
+            CIR(Math.round(bx),Math.round(by),12), CIR(Math.round(bx),Math.round(by),2),
+            'M'+ax+' '+ay+' L'+ax+' '+(ay-52)]; }},
+  board  :{keys:['sil','datum','stnc'], m:function(){
+    return [P(FIT(SIL,18,44,164,46)),'M18 116 L182 116','M18 110 L18 122','M182 110 L182 122',
+            'M'+(18+164*(RWX-40)/1114).toFixed(1)+' 108 L'+(18+164*(RWX-40)/1114).toFixed(1)+' 124']; }},
+  guitar :{keys:['encl','fast','edge'], m:function(){
+    var e=FIT(ENCL,24,28,74,94);
+    return [P(e,1)].concat(FIT(BOLTS,24,28,74,94).map(function(b){return DOT(b,2.2);}))
+      .concat(['M106 62 L188 62','M106 82 L188 82']); }}
 };
-window.mcells=function(){
-  var s=document.getElementById('sfsec-dna');
-  return s?[].slice.call(s.querySelectorAll('.cs-row-left')):[];
-};
-/* Restore the production state completely: remove our containers and un-hide
-   every original child. The constellation writes an inline display:!important,
-   which no stylesheet can beat — so hiding has to be done in JS too. */
-function mrestore(){
-  var s=document.getElementById('sfsec-dna'); if(!s) return;
-  [].forEach.call(s.querySelectorAll('.mlab-i'),function(e){ e.parentNode.removeChild(e); });
-  s.classList.remove('mlab-on');
-  [].forEach.call(s.querySelectorAll('.cs-row-right'),function(c){
-    c.style.removeProperty('height'); c.style.removeProperty('min-height'); c.style.removeProperty('flex-shrink'); });
-  mcells().forEach(function(c){
-    c.style.removeProperty('height'); c.style.removeProperty('overflow');
-    [].forEach.call(c.children,function(k){
-      if(k.dataset.mlabDisp!==undefined){
-        if(k.dataset.mlabDisp==='') k.style.removeProperty('display');
-        else k.style.display=k.dataset.mlabDisp;
-        delete k.dataset.mlabDisp;
-      }
-    });
-  });
+function vrow(list,col,capFn,cls){
+  return '<div class="vlib vappr gc'+list.length+' '+(cls||'')+'">'+
+    list.map(function(o,i){ var a=AMK[o.k];
+      return '<div class="vcell vpc" data-k="'+a.keys.join(' ')+'" data-i="'+i+'">'+
+        '<div class="vapp"><img src="'+o.img+'" alt="">'+
+        '<svg class="am am'+i+'" viewBox="0 0 200 150" preserveAspectRatio="none" fill="none">'+
+          a.m().map(function(d,j){ return '<path d="'+d+'" stroke="'+(col||CY)+'" stroke-width="1.5'+
+            '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+j+'"/>'; }).join('')+
+        '</svg></div><span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+
+        (capFn?capFn(o,i):o.lab)+'</span></div>'; }).join('')+'</div>';
 }
-window.mshow=function(n){
-  if(!MCON[n]) return;
-  mteardown();
-  var s=document.getElementById('sfsec-dna'); if(!s) return;
-  mrestore();
-  var cells=mcells();
-  /* Pin the left cells to the PRODUCTION row heights. In production the left
-     column drives the row height and the images stretch to match, so letting a
-     variation grow would re-crop them. Pinning keeps the right-hand column
-     pixel-identical to 00.
-     MH must come from the PRISTINE section: measuring straight after un-hiding
-     returns a collapsed constellation height, which pinned the rows too short. */
-  msyncType();
-  var rightCells=[].slice.call(s.querySelectorAll('.cs-row-right'));
-  if(!window.MH0){
-    window.MH0=cells.map(function(c){ return c.getBoundingClientRect().height; });
-    /* the production script sets an explicit height on the mobile image cell;
-       losing it collapses that image to 0. Capture the rendered geometry of
-       every right cell and lock it, so the image column cannot move at all. */
-    window.MRH0=rightCells.map(function(c){ return c.getBoundingClientRect().height; });
-  }
-  var MH=window.MH0;
-  window.__MH=MH.slice();
-  MCUR=n;
-  var c=MCON[n];
-  var nm=document.getElementById('mlabnum'), ti=document.getElementById('mlabtitle'), de=document.getElementById('mlabdesc');
-  if(nm) nm.textContent=(n<10?'0':'')+n;
-  if(ti) ti.textContent=c.name;
-  if(de) de.textContent=c.desc||'';
-  [].forEach.call(document.querySelectorAll('#mlabboxes button[data-n]'),function(x){
-    x.classList.toggle('on',+x.dataset.n===n); });
+/* hovering a category lights only the geometry it actually inherited */
+function vhover(r,x){
+  var row=r.querySelector('.vappr'); if(!row) return;
+  var cells=[].slice.call(r.querySelectorAll('.vpc'));
+  var layers={}; [].forEach.call(r.querySelectorAll('[data-dna]'),function(n){ layers[n.dataset.dna]=n; });
+  function clear(){ row.classList.remove('dim');
+    cells.forEach(function(c){ c.classList.remove('lit'); });
+    for(var k in layers) layers[k].style.opacity=layers[k].dataset.base||'1'; }
+  cells.forEach(function(c){
+    x.on(c,'mouseenter',function(){ row.classList.add('dim'); c.classList.add('lit');
+      var ks=(c.dataset.k||'').split(' ');
+      for(var k in layers) layers[k].style.opacity = ks.indexOf(k)>=0 ? '1' : '.07'; });
+    x.on(c,'mouseleave',clear); });
+}
+function vkeyline(dark){
+  return '<div class="vkey'+(dark?' k':'')+'">'+
+    '<span class="au">FOUND ON THE MACHINE</span>'+
+    '<span class="cy">EXTRACTED AS LANGUAGE</span>'+
+    '<span>CARRIED INTO NEW CATEGORIES</span></div>'; }
+function vhd(pale){ return hd(pale); }
 
-  if(n===0) return;                       /* already restored above */
-  s.classList.add('mlab-on');
-  /* Pin ONLY while the grid is genuinely two-column. Once it stacks, the image
-     cells are their own rows and no longer take height from the left column —
-     pinning there would clip content for no benefit. */
-  var rights=[].slice.call(s.querySelectorAll('.cs-row-right'));
-  var twoCol = cells[0] && rights[0] &&
-    Math.abs(cells[0].getBoundingClientRect().top - rights[0].getBoundingClientRect().top) < 6;
-  /* Below the two-column breakpoint the production Marshall becomes a JS-driven
-     flex column that derives the image cells' geometry from the left content.
-     I could not keep the imagery provably untouched there, and the image rule
-     outranks having mobile variants — so mobile always shows production. */
-  if(!twoCol){
-    mrestore();
-    if(de) de.textContent=(c.desc||'')+'   · desktop only — mobile shows production';
-    return;
-  }
-  /* Options 21-24 delete the DNA block, and the POINT is to see Marshall get
-     shorter. Pinning would hide that, so they run free: same image files, same
-     order, same crops — the section simply stops being held tall. */
-  var freeRun = !!c.free;
-  cells.forEach(function(c2,i){
-    var c=c2;
-    [].forEach.call(c.children,function(k){
-      k.dataset.mlabDisp = k.style.display || '';
-      k.style.setProperty('display','none','important');
-    });
-    if(twoCol && !freeRun){
-      c.style.setProperty('height', MH[i]+'px', 'important');
-      c.style.setProperty('overflow','hidden','important');
-    }
-  });
-  /* Lock the image column to exactly what production rendered. On mobile
-     .cs-dbody is a flex column with explicit order on the children, and a
-     height alone still gets shrunk to zero — so pin min-height and shrink too. */
-  if(!freeRun) rightCells.forEach(function(c,i){
-    var h=window.MRH0 && window.MRH0[i];
-    if(h > 0){
-      c.style.setProperty('height', h+'px','important');
-      c.style.setProperty('min-height', h+'px','important');
-      c.style.setProperty('flex-shrink','0','important');
-    }
-  });
-  var html;
-  try{ html=c.cells(); }
-  catch(e){ html=['<p style="font:300 12px DM Sans">marshall option '+n+' failed: '+e.message+'</p>','','']; }
-  var made=[];
-  cells.forEach(function(cell,i){
-    var d=document.createElement('div'); d.className='mlab-i';
-    d.innerHTML=html[i]||'';
-    cell.appendChild(d); made.push(d);
-  });
-  if(c.after) try{ c.after(made, mctx()); }catch(e){}
-  /* Safety net: the pinned cells cannot grow (that would re-crop the images),
-     so if a variation's content is a little too tall at some width, shrink that
-     block to fit rather than clip it. A few percent is imperceptible and it
-     guarantees every option fits at every width. */
-  if(!freeRun) cells.forEach(function(cell,i){
-    var box=made[i]; if(!box) return;
-    box.style.transform=''; box.style.width='';
-    var over=cell.scrollHeight-cell.clientHeight;
-    if(over>2 && cell.clientHeight>0){
-      var k=Math.max(0.72, cell.clientHeight/cell.scrollHeight);
-      box.style.transformOrigin='top left';
-      box.style.transform='scale('+k.toFixed(4)+')';
-      box.style.width=(100/k).toFixed(2)+'%';
-    }
-  });
-};
-window.mafter=function(n,fn){ if(MCON[n]) MCON[n].after=fn; };
-window.mfree=function(n){ if(MCON[n]) MCON[n].free=true; };
-
-/* --------------------------------------------------------------------------
-   00 — CONTROL. Production section, untouched.
-   -------------------------------------------------------------------------- */
-MC(0,'CURRENT PRODUCTION MARSHALL','the live section, unchanged — the A/B reference',function(){ return ['','','']; });
-
-/* 01 — PURE TWO-COLUMN DNA */
-MC(1,'PURE TWO-COLUMN DNA','constellation replaced by a restrained typographic block',function(){
-  return [ mIntro(), mDnaLab()+mCols()+mRes(), mTrans() ]; });
-
-/* 02 — PAIRED ROWS */
-MC(2,'PAIRED ROWS','four rows, two parallel lists',function(){
-  var rows='<div class="m-row" style="border-top:1px solid rgba(10,10,10,.16);border-bottom:0;padding-bottom:5px">'+
-    '<span class="m-cat">'+MT.inL+'</span><span class="m-cat">'+MT.taL+'</span></div>'+
-    MT.IN.map(function(t,i){ return '<div class="m-row">'+mT(t)+mT(MT.TA[i])+'</div>'; }).join('');
-  return [ mIntro(), mDnaLab()+rows+mRes(), mTrans() ]; });
-
-/* 03 — DNA INDEX */
-MC(3,'DNA INDEX','the eight characteristics as a numbered editorial index',function(){
-  function blk(lab,arr,off){
-    return '<div style="margin-top:16px"><span class="m-cat" style="margin-bottom:8px">'+lab+'</span>'+
-      arr.map(function(t,i){ var k=i+1+off;
-        return '<div class="ir"><span class="m-num">'+(k<10?'0':'')+k+'</span>'+mT(t)+'</div>'; }).join('')+'</div>';
-  }
-  return [ mIntro(), mDnaLab()+blk(MT.inL,MT.IN,0)+blk(MT.taL,MT.TA,4)+mRes(), mTrans() ]; });
-
-/* 04 — SINGLE VERTICAL REGISTER */
-MC(4,'SINGLE VERTICAL REGISTER','one elegant list — is simplicity itself strongest?',function(){
-  function reg(lab,arr){ return '<div class="m-reg" style="margin-top:18px"><span class="m-cat">'+lab+'</span>'+
-    arr.map(mT).join('')+'</div>'; }
-  return [ mIntro(), mDnaLab()+reg(MT.inL,MT.IN)+reg(MT.taL,MT.TA)+mRes(), mTrans() ]; });
-
-/* 05 — TWO HORIZONTAL BANDS */
-MC(5,'TWO HORIZONTAL BANDS','two long typographic bands across the left column',function(){
-  function band(lab,arr){ return '<div class="m-band"><span class="m-cat">'+lab+'</span><div class="bl">'+
-    arr.map(function(t,i){ return (i?'<span class="sep">/</span>':'')+mT(t); }).join('')+'</div></div>'; }
-  return [ mIntro(), mDnaLab()+band(MT.inL,MT.IN)+band(MT.taL,MT.TA)+mRes(), mTrans() ]; });
-
-/* 06 — DNA MATRIX */
-MC(6,'DNA MATRIX','a 2 × 4 classification, alignment does the work',function(){
-  function row(lab,arr){ return '<span class="m-cat" style="align-self:center">'+lab+'</span>'+arr.map(mT).join(''); }
-  return [ mIntro(),
-    mDnaLab()+'<div class="m-mx" style="border-top:1px solid rgba(10,10,10,.16)">'+
-      row(MT.inL,MT.IN)+row(MT.taL,MT.TA)+'</div>'+mRes(),
-    mTrans() ]; });
-
-/* 07 — LARGE WORD FIELD */
-MC(7,'LARGE WORD FIELD','the eight terms as a disciplined typographic field',function(){
-  var all=MT.IN.concat(MT.TA);
-  var pos=[[1,1],[2,2],[1,3],[2,4],[3,1],[4,2],[3,3],[4,4]];
-  return [ mIntro(),
-    mDnaLab()+'<div class="m-field"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px 22px">'+
-      all.map(function(t,i){ return '<div style="grid-column:'+pos[i][0]+';grid-row:'+pos[i][1]+'">'+
-        '<span class="m-cat" style="margin-bottom:5px">'+(i<4?MT.inL:MT.taL)+'</span>'+mT(t)+'</div>'; }).join('')+
-      '</div></div>'+mRes(),
-    mTrans() ]; });
-
-/* 08 — DNA SPREAD ACROSS THE ROWS */
-MC(8,'DNA SPREAD ACROSS THE ROWS','the taxonomy is distributed down the column, level with the image bands',function(){
-  return [ mIntro(),
-    mDnaLab()+
-      '<span class="m-cat" style="margin-bottom:9px">'+MT.inL+'</span>'+
-      '<span class="m-t m-inline" style="margin-bottom:22px">'+MT.IN.join('  ·  ')+'</span>'+
-      '<span class="m-cat" style="margin-bottom:12px">'+MT.taL+'</span>'+
-      '<div class="m-2col">'+
-        '<div class="m-col">'+MT.TA.slice(0,2).map(mT).join('')+'</div>'+
-        '<div class="m-col">'+MT.TA.slice(2).map(mT).join('')+'</div></div>'+mRes(),
-    mTrans() ]; });
-
-/* 09 — SUBTLE LEADERS */
-MC(9,'SUBTLE LEADERS','fine rules run from each term toward the evidence column',function(){
-  function grp(lab,arr){ return '<div style="margin-top:16px"><span class="m-cat" style="margin-bottom:8px">'+lab+'</span>'+
-    arr.map(function(t){ return '<div class="lr"><span class="m-t">'+t+'</span><span class="ld"></span></div>'; }).join('')+'</div>'; }
-  return [ mIntro(), mDnaLab()+grp(MT.inL,MT.IN)+grp(MT.taL,MT.TA)+mRes(), mTrans() ]; });
-mafter(9,function(made,x){
-  var lrs=[].slice.call(made[1].querySelectorAll('.lr'));
-  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return;
-    lrs.forEach(function(q,i){ x.delay(function(){ q.classList.add('on'); }, i*110); }); }); },{threshold:.2}));
-  if(lrs[0]) io.observe(lrs[0]);
+/* ==================== 06 — ENHANCED SOURCE EXTRACTION ==================== */
+C(6,'ENHANCED SOURCE EXTRACTION','the strongest direction taken further: gold finds it · cyan copies it · the copy leaves',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','fast'];
+  var PL=[[0,-150,1],[-210,150,.60],[330,-60,.92],[120,215,1],[250,40,.92],[-250,-110,1]];
+  r.innerHTML=vsec('v06',vhd()+
+    '<div class="vstage">'+bike2({src:.34, svg:KS.map(function(k){return pair(k);}).join('')})+
+      vtagAt(300,60,'sil')+vtagAt(-20,690,'whl')+vtagAt(1290,300,'encl','r')+
+      vtagAt(760,760,'ribs')+vtagAt(1300,140,'axis','r')+vtagAt(60,120,'fast')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div><span class="vhead" style="margin-top:26px;display:block">The extracted language</span>'+
+    vlib(KS,6)+vrow(APP)+'<div class="vbtm"></div>');
+  runExtraction(r,x,KS,PL,{goldStep:400,hold:560,moveStep:340});
+  vhover(r,x);
 });
 
-/* 10 — ACTIVE DNA */
-MC(10,'ACTIVE DNA','hovering a term quiets the others — annotation, not animation',function(){
-  return [ mIntro(), mDnaLab()+mCols()+mRes(), mTrans() ]; });
-mafter(10,function(made,x){
-  var box=made[1], terms=[].slice.call(box.querySelectorAll('.m-t'));
-  terms.forEach(function(t){
-    x.on(t,'mouseenter',function(){ box.classList.add('act');
-      terms.forEach(function(o){ o.classList.toggle('on',o===t); }); });
-    x.on(t,'mouseleave',function(){ box.classList.remove('act');
-      terms.forEach(function(o){ o.classList.remove('on'); }); });
-  });
+/* ==================== 07 — TWELVE-POINT EXTRACTION ==================== */
+C(7,'TWELVE-POINT EXTRACTION','twelve characteristics identified at once, then filed as a set of twelve',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','strc','fast','datum','stnc','neg','edge','mech'];
+  r.innerHTML=vsec('v07',vhd()+
+    '<div class="vstage">'+bike2({src:.30, svg:KS.map(function(k){return goldOnly(k,0);}).join('')})+
+      vtagAt(300,50,'sil')+vtagAt(-30,700,'whl')+vtagAt(1300,290,'encl','r')+
+      vtagAt(770,780,'ribs')+vtagAt(1300,120,'axis','r')+vtagAt(-30,250,'strc')+
+      vtagAt(70,80,'fast')+vtagAt(1310,470,'datum','r')+vtagAt(-30,560,'stnc')+
+      vtagAt(430,-60,'neg')+vtagAt(1310,620,'edge','r')+vtagAt(430,800,'mech')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div><span class="vhead" style="margin-top:26px;display:block">Twelve characteristics, filed</span>'+
+    vlib(KS,6)+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){ var g=r.querySelector('.g_'+k);
+    if(!g) return; g.style.transition='opacity .55s ease';
+    x.delay(function(){ g.style.opacity='1'; }, 240+i*190); });
+  drawIn(r,'.vch svg path',x,16,900,900);
 });
 
-/* 11 — DNA IN THE INTRODUCTION */
-MC(11,'DNA IN THE INTRODUCTION','the taxonomy sits with the headline; the setup paragraph moves down',function(){
-  return [ mEy()+mHead()+'<div style="margin-top:16px">'+mDnaLab()+
-      '<div class="m-2col" style="gap:20px">'+
-        '<div class="m-col"><span class="m-cat" style="margin-bottom:8px;padding-bottom:6px">'+MT.inL+'</span>'+
-          '<span class="m-t m-inline" style="font-size:10px;line-height:15px">'+MT.IN.join(' · ')+'</span></div>'+
-        '<div class="m-col"><span class="m-cat" style="margin-bottom:8px;padding-bottom:6px">'+MT.taL+'</span>'+
-          '<span class="m-t m-inline" style="font-size:10px;line-height:15px">'+MT.TA.join(' · ')+'</span></div></div></div>',
-    '<p class="m-p" style="margin-top:0">'+MT.p1+'</p>'+mRes(),
-    mTrans() ]; }); /* 11 */
+/* ==================== 08 — GOLD DISCOVERY ==================== */
+C(8,'GOLD DISCOVERY','the looking, on its own — gold sweeps the machine and nothing has left it yet',function(r,x){
+  var KS=['stnc','sil','whl','encl','ribs','axis','swng','fast'];
+  r.innerHTML=vsec('v08',vhd()+
+    '<div class="vstage">'+bike2({src:.46, svg:KS.map(function(k){return goldOnly(k,0);}).join('')+
+      '<svg class="sweep" viewBox="'+VB2+'" preserveAspectRatio="none" fill="none">'+
+      '<path d="M-170 -100 L-170 769" stroke="'+AU+'" stroke-width="1.4" vector-effect="non-scaling-stroke" opacity=".8"/></svg>'})+
+      '<div class="vtag" style="left:'+LX(1300)+'%;top:'+LY(60)+'%"><i>SOURCE</i><b>Silent Foundry reading the object</b></div>'+
+    '</div>'+
+    '<div class="vkey"><span class="au">FOUND ON THE MACHINE</span><span>NOTHING EXTRACTED YET</span></div>'+
+    para()+'<div class="vrule"></div>'+
+    '<ul class="vlist" style="margin-top:8px">'+KS.map(function(k){
+      return '<li><i>'+V[k].id+'</i>'+V[k].lab+'</li>'; }).join('')+'</ul>'+
+    '<div class="vbtm"></div>');
+  var sw=r.querySelector('.sweep path');
+  if(sw){ sw.style.transition='transform 5.4s linear'; sw.style.transformOrigin='0 0';
+    x.delay(function(){ sw.style.transform='translateX(1540px)'; },260); }
+  KS.forEach(function(k,i){ var g=r.querySelector('.g_'+k); if(!g) return;
+    g.style.transition='opacity .5s ease';
+    x.delay(function(){ g.style.opacity='1'; }, 500+i*560); });
+  r.querySelectorAll('.vlist li').forEach(function(li,i){
+    li.style.opacity='0'; li.style.transition='opacity .5s ease';
+    x.delay(function(){ li.style.opacity='1'; }, 620+i*560); });
+});
 
-/* 12 — RESULTS FIRST */
-MC(12,'RESULTS FIRST','the commercial outcome leads; the taxonomy explains it underneath',function(){
-  return [ mIntro(),
-    '<span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet('big')+
-      '<div style="margin-top:34px">'+mDnaLab()+mCols()+'</div>',
-    mTrans() ]; });
+/* ==================== 09 — CYAN RELEASE ==================== */
+C(9,'CYAN RELEASE','the machine has already been read — now every extracted line releases and travels out',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','strc','fast','swng'];
+  var PL=[[-40,-190,1],[-250,170,.56],[360,-40,.9],[150,250,.95],[300,-140,.9],
+          [-300,-40,.85],[-160,-190,1],[-290,190,.9]];
+  r.innerHTML=vsec('v09 vk',vhd(1)+
+    '<div class="vstage">'+bike2({dark:1,src:.24, svg:KS.map(function(k){
+        return goldOnly(k,.34)+cyanOnly(k,0); }).join('')})+
+    '</div>'+vkeyline(1)+para(1)+
+    '<div class="vrule"></div>'+vlib(KS,8,CY,2.4)+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){
+    var c=r.querySelector('.c_'+k); if(!c) return;
+    c.style.transition='opacity .5s ease, transform 1700ms cubic-bezier(.2,.7,.24,1)';
+    x.delay(function(){ c.style.opacity='1'; }, 260+i*150);
+    x.delay(function(){ var p=PL[i]; c.style.transform=MOVE_(p[0],p[1],p[2]); }, 900+i*150);
+  });
+  drawIn(r,'.vch svg path',x,14,800,1400);
+});
 
-/* 13 — DNA AND TRANSLATION MERGED */
-MC(13,'DNA + TRANSLATION MERGED','extraction and translation read as one passage',function(){
-  return [ mIntro(),
-    mDnaLab()+mCols()+'<div style="margin-top:10px">'+mTrans()+'</div>',
-    '<span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet() ]; });
+/* ==================== 10 — AXIS AND PROPORTION ==================== */
+C(10,'AXIS AND PROPORTION','only the invisible geometry: steering axis, wheel centres, datum, ground, mass',function(r,x){
+  var KS=['axis','ctrs','datum','grnd','mass'];
+  r.innerHTML=vsec('v10',vhd()+
+    '<div class="vstage">'+bike2({src:.18, svg:KS.map(function(k){return pair(k);}).join('')})+
+      vtagAt(1300,110,'axis','r')+vtagAt(430,410,'ctrs')+vtagAt(-30,470,'datum')+
+      vtagAt(-30,690,'grnd')+vtagAt(1300,250,'mass','r')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div>'+
+    '<span class="vhead" style="margin-top:26px;display:block">The proportions the language keeps</span>'+
+    vlib(KS,5)+vrow([APP[3],APP[2],APP[1]])+'<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[0,-190,1],[0,220,1],[-40,-150,1],[0,150,1],[300,0,.8]],
+    {goldStep:520,hold:700,moveStep:420,ghost:.22});
+  vhover(r,x);
+});
 
-/* 14 — TANGIBLE EMPHASIS */
-MC(14,'TANGIBLE EMPHASIS','the physical half is set loud, the felt half quiet',function(){
-  return [ mIntro(),
-    mDnaLab()+
-      '<span class="m-cat" style="margin-bottom:8px">'+MT.inL+'</span>'+
-      '<span class="m-t m-inline" style="color:rgba(10,10,10,.42);margin-bottom:24px">'+MT.IN.join('  ·  ')+'</span>'+
-      '<span class="m-cat" style="margin-bottom:12px">'+MT.taL+'</span>'+
-      '<div class="m-field"><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 30px">'+
-        MT.TA.map(mT).join('')+'</div></div>'+mRes(),
-    mTrans() ]; });
+/* ==================== 11 — SILHOUETTE STUDY ==================== */
+C(11,'SILHOUETTE STUDY','one traced profile, lifted clear, then redrawn at four different sizes',function(r,x){
+  var S=[[0.30,'AUDIO'],[0.52,'POWER'],[0.78,'MOBILITY'],[1.0,'INSTRUMENT']];
+  r.innerHTML=vsec('v11',vhd()+
+    '<div class="vstage">'+bike2({src:.26, svg:pair('sil')+goldOnly('seat',.0)})+
+      vtagAt(300,40,'sil')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div>'+
+    '<div class="vlib gc4" style="margin-top:34px">'+
+      S.map(function(s,i){
+        var b=BB(SIL), w=b.w*s[0], h=b.h*s[0];
+        return '<div class="vcell"><svg viewBox="'+BB43(b,0.2)+'" fill="none" class="sl'+i+'">'+
+          '<path d="'+P(SIL)+'" stroke="'+CY+'" stroke-width="'+(2.6/s[0]).toFixed(2)+
+          '" fill="none" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'+
+          '</svg><span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+s[1]+'</span></div>'; }).join('')+
+    '</div>'+
+    '<p class="vpara">The same profile, at four scales. Nothing about it is redrawn — only how much room it is given.</p>'+
+    '<div class="vbtm"></div>');
+  var c=r.querySelector('.c_sil'), g=r.querySelector('.g_sil');
+  if(c&&g){ g.style.opacity='0'; c.style.opacity='0';
+    g.style.transition='opacity .6s ease'; c.style.transition='opacity .6s ease, transform 1700ms cubic-bezier(.2,.7,.24,1)';
+    x.delay(function(){ g.style.opacity='1'; },320);
+    x.delay(function(){ c.style.opacity='1'; },1000);
+    x.delay(function(){ c.style.transform=MOVE_(0,-200,1); g.style.opacity='.28'; },1600); }
+  drawIn(r,'.vcell svg path',x,220,1300,700);
+});
 
-/* 15 — INTANGIBLE / TANGIBLE CONTRAST */
-MC(15,'INTANGIBLE / TANGIBLE CONTRAST','airy above, dense below — the distinction is the composition',function(){
-  return [ mIntro(),
-    mDnaLab()+
-      '<div style="padding-bottom:20px"><span class="m-cat" style="margin-bottom:14px">'+MT.inL+'</span>'+
-        MT.IN.map(function(t){ return '<span class="m-t" style="padding:10px 0;color:rgba(10,10,10,.58)">'+t+'</span>'; }).join('')+'</div>'+
-      '<div style="background:rgba(10,10,10,.035);padding:20px 22px">'+
-        '<span class="m-cat" style="margin-bottom:10px">'+MT.taL+'</span>'+
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 26px">'+
-          MT.TA.map(function(t){ return '<span class="m-t" style="padding:6px 0">'+t+'</span>'; }).join('')+'</div></div>'+
-      mRes(),
-    mTrans() ]; });
+/* ==================== 12 — BATTERY GENOME ==================== */
+C(12,'BATTERY GENOME','one place on the machine, read completely — and five categories drawn out of it',function(r,x){
+  var KS=['encl','ribs','fast','edge','mod'];
+  r.innerHTML=vsec('v12',vhd()+
+    '<div class="vstage">'+bike2({src:.22, svg:KS.map(function(k){return pair(k);}).join('')+
+      '<svg class="zone" viewBox="'+VB2+'" preserveAspectRatio="none" fill="none">'+
+      '<rect x="505" y="250" width="228" height="295" stroke="'+AU+'" stroke-width="1" stroke-dasharray="5 6" vector-effect="non-scaling-stroke" opacity=".7"/></svg>'})+
+      vtagAt(1290,270,'encl','r')+vtagAt(1290,360,'ribs','r')+vtagAt(1290,450,'fast','r')+
+      vtagAt(200,700,'edge')+vtagAt(200,790,'mod')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div>'+vlib(KS,5)+
+    vrow(APP,CY,function(o){ return o.lab; })+'<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[330,-120,1],[380,60,1],[-300,60,1],[-320,-140,1],[-40,240,.9]],
+    {goldStep:400,hold:520,moveStep:340});
+  vhover(r,x);
+});
 
-/* 16 — DNA AS MARGIN NOTES */
-MC(16,'DNA AS MARGIN NOTES','the taxonomy runs as quiet notes down the column',function(){
-  function note(cat,t){ return '<div class="m-note"><span class="m-cat">'+cat+'</span>'+mT(t)+'</div>'; }
-  return [ mIntro(),
-    mDnaLab()+MT.IN.map(function(t){return note(MT.inL,t);}).join('')+
-      MT.TA.map(function(t){return note(MT.taL,t);}).join('')+mRes(),
-    mTrans() ]; });
+/* ==================== 13 — MECHANICAL GENOME ==================== */
+C(13,'MECHANICAL GENOME','what the designer chose to leave visible — swingarm, shock, axis, fasteners',function(r,x){
+  var KS=['swng','shk','axis','fast','mech'];
+  r.innerHTML=vsec('v13 vk',vhd(1)+
+    '<div class="vstage">'+bike2({dark:1,src:.20, svg:KS.map(function(k){return pair(k);}).join('')})+
+      vtagAt(-40,560,'swng')+vtagAt(300,250,'shk')+vtagAt(1300,120,'axis','r')+
+      vtagAt(1300,400,'fast','r')+vtagAt(430,800,'mech')+
+    '</div>'+vkeyline(1)+para(1)+
+    '<div class="vrule"></div>'+vlib(KS,5,CY,2.4)+
+    '<p class="vpara k" style="margin-top:26px">'+VQ.fast+' — the quality this produces, and the reason it survives translation.</p>'+
+    '<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[-260,150,1],[-60,-200,1],[280,-120,.9],[-300,-160,1],[80,240,.85]],
+    {goldStep:420,hold:560,moveStep:360,ghost:.24});
+});
 
-/* 17 — COMPACT DNA + LARGE RESULTS */
-MC(17,'COMPACT DNA + LARGE RESULTS','extraction is simple to state; the proof gets the scale',function(){
-  return [ mIntro(),
-    '<div style="display:flex;gap:36px;flex-wrap:wrap;align-items:flex-start;padding-bottom:24px;'+
-      'border-bottom:1px solid rgba(10,10,10,.14)">'+
-      '<span class="m-lab" style="min-width:96px">'+MT.dnL+'</span>'+
-      '<div><span class="m-cat" style="margin-bottom:6px">'+MT.inL+'</span>'+
-        '<span class="m-t m-inline">'+MT.IN.join('  ·  ')+'</span></div>'+
-      '<div><span class="m-cat" style="margin-bottom:6px">'+MT.taL+'</span>'+
-        '<span class="m-t m-inline">'+MT.TA.join('  ·  ')+'</span></div></div>'+
-      '<div class="m-res" style="margin-top:28px"><span class="m-lab">'+MT.reL+'</span>'+
-      '<p class="m-p">'+MT.reP+'</p>'+mMet('big')+'</div>',
-    mTrans() ]; });
+/* ==================== 14 — DESIGN CONSTELLATION ==================== */
+C(14,'DESIGN CONSTELLATION','the extracted set holds a shape of its own once the machine steps back',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','strc','fast','datum','stnc','neg'];
+  var NODE=[[300,80],[120,690],[1120,250],[860,780],[1180,90],[70,300],[70,90],[1180,540],[520,860],[560,-40]];
+  var LINKS=[[0,4],[0,2],[2,3],[3,8],[8,1],[1,5],[5,6],[6,0],[2,7],[7,3],[9,0],[9,2]];
+  r.innerHTML=vsec('v14 vk',vhd(1)+
+    '<div class="vstage">'+bike2({dark:1,src:.12, svg:
+      '<svg class="cst" viewBox="'+VB2+'" preserveAspectRatio="none" fill="none">'+
+      LINKS.map(function(l){ var a=NODE[l[0]],b=NODE[l[1]];
+        return '<path d="M'+a[0]+' '+a[1]+' L'+b[0]+' '+b[1]+'" stroke="'+CYD+
+          '" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".6"/>'; }).join('')+
+      NODE.map(function(n){ return '<circle cx="'+n[0]+'" cy="'+n[1]+'" r="5" fill="'+CY+'"/>'; }).join('')+
+      '</svg>'+KS.map(function(k){return cyanOnly(k,0);}).join('')})+
+      KS.map(function(k,i){ return tag2(LX(NODE[i][0]+34),LY(NODE[i][1]),V[k].id,V[k].lab,
+        NODE[i][0]>700?'r':''); }).join('')+
+    '</div>'+vkeyline(1)+para(1)+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){ var c=r.querySelector('.c_'+k); if(!c) return;
+    var b=V[k].bb, cx=b.x+b.w/2, cy=b.y+b.h/2, n=NODE[i];
+    c.style.transition='opacity .6s ease, transform 1800ms cubic-bezier(.2,.7,.24,1)';
+    x.delay(function(){ c.style.opacity='.95'; }, 260+i*130);
+    x.delay(function(){ c.style.transform=MOVE_(n[0]-cx,n[1]-cy,.30); }, 800+i*130); });
+  drawIn(r,'.cst path',x,60,1000,1600);
+});
 
-/* 18 — DNA → RESULTS */
-MC(18,'DNA → RESULTS','a single typographic progression, one fine rule between',function(){
-  return [ mIntro(),
-    mDnaLab()+mCols()+
-      '<div style="height:40px;display:flex;align-items:center"><span style="width:1px;height:100%;background:rgba(138,110,58,.42)"></span></div>'+
-      '<span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet(),
-    mTrans() ]; });
+/* ==================== 15 — LEFT / RIGHT EXTRACTION ==================== */
+C(15,'LEFT / RIGHT EXTRACTION','source held on the left, the language assembling on the right, pieces crossing between',function(r,x){
+  var KS=['sil','encl','ribs','axis','fast','whl'];
+  r.innerHTML=vsec('v15',vhd()+
+    '<div class="vcol gcL15">'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.32,
+          svg:KS.map(function(k){return pair(k);}).join('')})+'</div></div>'+
+      '<div><span class="vhead">The language</span>'+vlib(KS,3)+
+        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+    '</div>'+vkeyline()+'<div class="vrule"></div>'+vrow(APP)+'<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[420,-60,.9],[430,40,.9],[420,140,.9],[430,-160,.9],[420,240,.9],[430,320,.5]],
+    {goldStep:340,hold:460,moveStep:300,ghost:.26,travel:1700});
+  vhover(r,x);
+});
 
-/* 19 — EDITORIAL CASE STUDY */
-MC(19,'EDITORIAL CASE STUDY','magazine setting — larger head, labelled columns, generous space',function(){
-  return [ mEy()+mHead('big')+'<p class="m-p" style="margin-top:20px">'+MT.p1+'</p>',
-    '<div style="display:grid;grid-template-columns:104px 1fr;gap:26px">'+
-      '<span class="m-lab">'+MT.dnL+'</span><div>'+mCols()+'</div></div>'+
-      '<div style="display:grid;grid-template-columns:104px 1fr;gap:26px;margin-top:34px">'+
-      '<span class="m-lab">'+MT.reL+'</span><div><p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div></div>',
-    '<div style="display:grid;grid-template-columns:104px 1fr;gap:26px">'+
-      '<span class="m-lab">'+MT.trL+'</span><p class="m-p" style="margin-top:0">'+MT.trP+'</p></div>' ]; });
+/* ==================== 16 — TOP / BOTTOM EXTRACTION ==================== */
+C(16,'TOP / BOTTOM EXTRACTION','the machine above, the extracted set settling underneath it',function(r,x){
+  var KS=['stnc','sil','encl','ribs','axis','swng','fast','edge'];
+  r.innerHTML=vsec('v16',vhd()+
+    '<div class="vstage">'+bike2({src:.34, svg:KS.map(function(k){return pair(k);}).join('')})+
+    '</div>'+vkeyline()+
+    '<div class="vrule"></div><span class="vhead" style="margin-top:26px;display:block">Settled below the object it came from</span>'+
+    vlib(KS,8)+para()+'<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[0,340,.8],[-330,300,.8],[-160,340,.8],[10,360,.8],
+                        [170,330,.8],[330,320,.8],[-470,320,.8],[470,330,.8]],
+    {goldStep:330,hold:440,moveStep:290,ghost:.20});
+  drawIn(r,'.vch svg path',x,12,700,2600);
+});
 
-/* ------------------------------------------------------------------ *
-   21-24: Matthew's own proposal — delete the graphic AND the Extracted DNA
-   block. These run unpinned so the section is allowed to get shorter, which
-   is the whole reason for trying it. The photographs themselves are the same
-   files, same order, same crops — only the section stops being held tall.
- * ------------------------------------------------------------------ */
+/* ==================== 17 — SOURCE / DNA / APPLICATION ==================== */
+C(17,'SOURCE · DNA · APPLICATION','the method stated plainly in three columns, nothing else on the page',function(r,x){
+  var KS=['encl','sil','ribs','axis'];
+  r.innerHTML=vsec('v17',vhd()+
+    '<div class="vcol gcT">'+
+      '<div><span class="vhead au">01 Source</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.42,
+          svg:KS.map(function(k){return goldOnly(k,0);}).join('')})+'</div></div>'+
+      '<div><span class="vhead">02 DNA</span>'+vlib(KS,2)+'</div>'+
+      '<div><span class="vhead">03 Application</span>'+
+        '<div class="vlib vappr gc2">'+
+          [APP[0],APP[1],APP[2],APP[4]].map(function(o,i){ var a=AMK[o.k];
+            return '<div class="vcell vpc" data-k="'+a.keys.join(' ')+'"><div class="vapp">'+
+              '<img src="'+o.img+'" alt="">'+
+              '<svg viewBox="0 0 200 150" preserveAspectRatio="none" fill="none" class="am">'+
+                a.m().map(function(d){ return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+              '</svg></div><span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+o.lab+'</span></div>'; }).join('')+
+        '</div></div>'+
+    '</div>'+vkeyline()+para()+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){ var g=r.querySelector('.g_'+k); if(!g) return;
+    g.style.transition='opacity .6s ease'; x.delay(function(){ g.style.opacity='1'; },300+i*340); });
+  drawIn(r,'.vch svg path',x,18,900,1200);
+  drawIn(r,'.am path',x,22,900,2200);
+});
 
-/* 21 — NO DNA BLOCK: the proposal, exactly */
-MC(21,'NO DNA BLOCK','graphic and Extracted DNA both deleted — narrative, evidence, results',function(){
-  return [ mIntro(),
-    '<span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet(),
-    mTrans() ]; });
-mfree(21);
+/* ==================== 18 — DNA LIBRARY ==================== */
+C(18,'DNA LIBRARY','the complete filed set — every characteristic found, catalogued on one sheet',function(r,x){
+  r.innerHTML=vsec('v18',vhd()+
+    '<div class="vcol gcS21" style="margin-top:34px">'+
+      '<div><div class="vstage" style="margin-top:0">'+bike2({src:.5,
+          svg:lay([P(SIL),P(ENCL,1),CIR(RWX,AXLE,RR.tyre),CIR(FWX,AXLE,RR.tyre)],'lb0 vg',AU,1.6,.85)})+'</div>'+
+        '<p class="vpara" style="margin-top:22px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The filed set</span>'+vlib(VK,6)+'</div>'+
+    '</div>'+vkeyline()+'<div class="vbtm"></div>');
+  drawIn(r,'.lb0 path',x,140,1200);
+  drawIn(r,'.vch svg path',x,7,600,600);
+});
 
-/* 22 — DNA AS ONE LINE: graphic gone, the eight words kept as a single line */
-MC(22,'DNA AS ONE LINE','graphic gone; the eight characteristics survive as one quiet line',function(){
-  return [ mIntro(),
-    '<div style="padding-bottom:22px;border-bottom:1px solid rgba(10,10,10,.14)">'+
-      '<span class="m-lab" style="margin-bottom:10px">'+MT.dnL+'</span>'+
-      '<span class="m-t m-inline">'+MT.IN.concat(MT.TA).join('  ·  ')+'</span></div>'+
-      '<div style="margin-top:26px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
-    mTrans() ]; });
-mfree(22);
+/* ==================== 19 — EXPLODED LANGUAGE ==================== */
+C(19,'EXPLODED LANGUAGE','the machine separates into the layers a designer actually decided',function(r,x){
+  var KS=['stnc','sil','encl','ribs','strc','swng','axis','fast'];
+  r.innerHTML=vsec('v19 vk',vhd(1)+
+    '<div class="vstage">'+bike2({dark:1,src:.16, svg:KS.map(function(k){return cyanOnly(k,0);}).join('')})+
+      KS.map(function(k,i){ return vtagAt(i%2?1300:-40, 60+i*98, k, i%2?'r':''); }).join('')+
+    '</div>'+vkeyline(1)+para(1)+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){ var c=r.querySelector('.c_'+k); if(!c) return;
+    var off=(i-(KS.length-1)/2);
+    c.style.transition='opacity .6s ease, transform 1900ms cubic-bezier(.2,.7,.24,1)';
+    x.delay(function(){ c.style.opacity='1'; }, 240+i*130);
+    x.delay(function(){ c.style.transform=MOVE_(off*86, off*44, 1); }, 900+i*130); });
+});
 
-/* 23 — DNA AS A SENTENCE: the taxonomy becomes prose.
-   NOTE: the only new words on this page are the glue — "The intangible DNA
-   was", "The tangible DNA was". Everything else is Matthew's. Easy to change. */
-MC(23,'DNA AS A SENTENCE','the eight characteristics written as prose instead of a list',function(){
-  var sent='The intangible DNA was '+MT.IN.slice(0,3).join(', ').toLowerCase()+
-    ' and '+MT.IN[3].toLowerCase()+'. The tangible DNA was '+MT.TA.slice(0,3).join(', ').toLowerCase()+
-    ' and '+MT.TA[3]+'.';
-  return [ mIntro(),
-    '<span class="m-lab" style="margin-bottom:12px">'+MT.dnL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+sent+'</p>'+
-      '<div style="margin-top:30px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
-    mTrans() ]; });
-mfree(23);
+/* ==================== 20 — FORENSIC TRACE ==================== */
+C(20,'FORENSIC TRACE','the drawing is traced line by line, then withdrawn — only the trace remains',function(r,x){
+  var KS=['sil','encl','ribs','swng','axis','whl','fast','strc','seat','upper'];
+  r.innerHTML=vsec('v20',vhd()+
+    '<div class="vstage">'+bike2({src:.62, svg:KS.map(function(k){return cyanOnly(k,1);}).join('')})+
+      '<div class="vtag" style="left:'+LX(1300)+'%;top:'+LY(60)+'%"><i>TRACE</i><b>every line taken from the drawing itself</b></div>'+
+    '</div>'+vkeyline()+para()+'<div class="vrule"></div>'+vlib(KS,5)+'<div class="vbtm"></div>');
+  var img=r.querySelector('.vsrc');
+  drawIn(r,'.vc path',x,110,1500);
+  if(img){ img.style.transition='opacity 2.4s ease';
+    x.delay(function(){ img.style.opacity='.06'; }, 5200); }
+});
+</script>
+<script>
+/* =========================================================================
+   DESIGNED DNA: SWITCH — 30 NEW VARIATIONS  ·  21–35  (of 06–35)
+   ========================================================================= */
 
-/* 24 — DNA AS A PULL QUOTE: Matthew's own translation line, set large, with
-   the eight terms beneath it. No invented copy at all. */
-MC(24,'DNA AS A PULL QUOTE','the translation line set as a quote, the eight terms beneath it',function(){
-  return [ mIntro(),
-    '<p class="m-quote">“It extracted its identity and rebuilt that identity inside headphones, speakers and home audio.”</p>'+
-      '<span class="m-t m-inline" style="margin-top:18px;color:rgba(10,10,10,.45)">'+
-        MT.IN.concat(MT.TA).join('  ·  ')+'</span>'+
-      '<div style="margin-top:30px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
-      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
-    /* the quoted sentence is lifted OUT of this paragraph so it isn't said
-       twice — the only copy edit in the whole file, and it is a deletion */
-    '<span class="m-lab">'+MT.trL+'</span><p class="m-p">'+
-      MT.trP.replace('It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. ','')+
-    '</p>' ]; });
-mfree(24);
+/* ==================== 21 — CONTINUOUS DRAWING ==================== */
+C(21,'CONTINUOUS DRAWING','one line leaves the machine and keeps going through four categories',function(r,x){
+  var CAT=[{lab:'AUDIO',   pts:FIT(SIL,20,30,160,40)},
+           {lab:'POWER',   pts:FIT(SIL,20,30,160,40)},
+           {lab:'MOBILITY',pts:FIT(SIL,20,30,160,40)},
+           {lab:'VENTURE', pts:FIT(SIL,20,30,160,40)}];
+  r.innerHTML=vsec('v21',vhd()+
+    '<div class="vstage">'+bike2({src:.24, svg:pair('sil')+goldOnly('upper',0)})+
+      vtagAt(300,30,'sil')+
+    '</div>'+
+    '<div class="vkey"><span class="au">ONE LINE, FOUND</span><span class="cy">THE SAME LINE, CONTINUED</span></div>'+
+    para()+'<div class="vrule"></div>'+
+    '<div class="vlib gc4" style="margin-top:34px">'+
+      CAT.map(function(c,i){
+        return '<div class="vcell"><svg viewBox="0 0 200 100" fill="none" class="cl'+i+' cont">'+
+          '<path d="'+P(c.pts)+'" stroke="'+CY+'" stroke-width="2.2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'+
+          '<path d="M20 78 L180 78" stroke="'+CY+'" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".4"/>'+
+          '</svg><span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+c.lab+'</span></div>'; }).join('')+
+    '</div>'+
+    '<p class="vpara">The profile is not redrawn for each category. It is the same continuous line, given a different job.</p>'+
+    '<div class="vbtm"></div>');
+  var g=r.querySelector('.g_sil'), c=r.querySelector('.c_sil');
+  if(g&&c){ g.style.opacity='0'; c.style.opacity='0';
+    g.style.transition='opacity .6s ease';
+    c.style.transition='opacity .6s ease, transform 1900ms cubic-bezier(.2,.7,.24,1)';
+    x.delay(function(){ g.style.opacity='1'; },300);
+    x.delay(function(){ c.style.opacity='1'; },1000);
+    x.delay(function(){ c.style.transform=MOVE_(120,-220,1); g.style.opacity='.26'; },1600); }
+  drawIn(r,'.cont path',x,420,1800,900);
+});
 
-/* 20 — MAXIMUM REDUCTION */
-MC(20,'MAXIMUM REDUCTION','the benchmark: nothing that does not aid comprehension',function(){
-  return [ mIntro(), mDnaLab()+mCols()+mRes('',true), mTrans() ]; });
-})();
+/* ==================== 22 — FIVE STRONG RULES ==================== */
+C(22,'FIVE STRONG RULES','five rules, each with the geometry that proves it. No photography.',function(r,x){
+  var RULES=[
+    {k:'stnc', t:'It sits low and level.'},
+    {k:'encl', t:'The largest volume is a made object, not a cover.'},
+    {k:'ribs', t:'Surface earns its texture from function.'},
+    {k:'fast', t:'Fixings are shown, not hidden.'},
+    {k:'axis', t:'One axis governs the front of the machine.'}
+  ];
+  r.innerHTML=vsec('v22',vhd()+
+    '<div class="vstage" style="max-width:1100px">'+bike2({src:.18,
+      svg:RULES.map(function(o){return goldOnly(o.k,0);}).join('')})+'</div>'+
+    '<div class="vcol gc5" style="margin-top:44px">'+
+      RULES.map(function(o,i){
+        return '<div class="vrl"><span class="vcap" style="margin:0 0 12px"><i>'+V[o.k].id+'</i>'+V[o.k].lab+'</span>'+
+          '<div class="vsq"><svg viewBox="'+BB43(V[o.k].bb)+'" fill="none" class="rl'+i+'">'+
+            V[o.k].p.map(function(p){ return '<path d="'+p+'" stroke="'+CY+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+          '</svg></div>'+
+          '<p class="vq" style="margin-top:16px;font-size:clamp(.8rem,1.15vw,1rem)">'+o.t+'</p></div>'; }).join('')+
+    '</div>'+vkeyline()+para()+'<div class="vbtm"></div>');
+  RULES.forEach(function(o,i){ var g=r.querySelector('.g_'+o.k); if(!g) return;
+    g.style.transition='opacity .6s ease'; x.delay(function(){ g.style.opacity='1'; },300+i*360); });
+  drawIn(r,'.vsq path',x,24,1000,900);
+});
+
+/* ==================== 23 — MICRO / MACRO ==================== */
+C(23,'MICRO / MACRO','one fastener at full page scale, beside the whole stance at the same weight',function(r,x){
+  var B=BOLTS[0];
+  r.innerHTML=vsec('v23 vk',vhd(1)+
+    '<div class="vcol gc2">'+
+      '<div><span class="vhead">Micro</span>'+
+        '<div class="vsq"><svg viewBox="'+(B[0]-60)+' '+(B[1]-45)+' 120 90" fill="none" class="mc">'+
+          '<path d="'+DOT(B,7)+'" stroke="'+CY+'" stroke-width="1.6" vector-effect="non-scaling-stroke"/>'+
+          '<path d="'+DOT(B,20)+'" stroke="'+CY+'" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".5"/>'+
+          '<path d="M'+(B[0]-56)+' '+B[1]+' L'+(B[0]+56)+' '+B[1]+'" stroke="'+AU+'" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".6"/>'+
+          '<path d="M'+B[0]+' '+(B[1]-42)+' L'+B[0]+' '+(B[1]+42)+'" stroke="'+AU+'" stroke-width="1" vector-effect="non-scaling-stroke" opacity=".6"/>'+
+        '</svg></div>'+
+        '<span class="vcap"><i>'+V.fast.id+'</i>'+V.fast.lab+'</span></div>'+
+      '<div><span class="vhead">Macro</span>'+
+        '<div class="vsq"><svg viewBox="'+BB43(V.stnc.bb,.06)+'" fill="none" class="ma">'+
+          V.stnc.p.map(function(p){ return '<path d="'+p+'" stroke="'+CY+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+        '</svg></div>'+
+        '<span class="vcap"><i>'+V.stnc.id+'</i>'+V.stnc.lab+'</span></div>'+
+    '</div>'+
+    '<p class="vq" style="margin-top:40px">The smallest decision and the largest one are the same decision.</p>'+
+    vkeyline(1)+para(1)+'<div class="vbtm"></div>');
+  drawIn(r,'.mc path',x,180,1300);
+  drawIn(r,'.ma path',x,180,1300,400);
+});
+
+/* ==================== 24 — FORM / DETAIL / PRINCIPLE ==================== */
+C(24,'FORM · DETAIL · PRINCIPLE','the same characteristic read at three registers, four times over',function(r,x){
+  var ROWS=[['sil','seat','stnc'],['encl','edge','mod'],['ribs','matl','mech'],['whl','circ','ctrs']];
+  r.innerHTML=vsec('v24',vhd()+
+    '<div class="vstage" style="max-width:1000px">'+bike2({src:.2,
+      svg:['sil','encl','ribs','whl'].map(function(k){return goldOnly(k,0);}).join('')})+'</div>'+
+    '<div class="vcol gc3" style="gap:0 28px;margin-top:44px">'+
+      ['Form','Detail','Principle'].map(function(h){ return '<span class="vhead">'+h+'</span>'; }).join('')+
+    '</div>'+
+    ROWS.map(function(row){
+      return '<div class="vlib gc3" style="margin-top:18px">'+
+        row.map(function(k){ return vchip(k); }).join('')+'</div>'; }).join('')+
+    vkeyline()+para()+'<div class="vbtm"></div>');
+  ['sil','encl','ribs','whl'].forEach(function(k,i){ var g=r.querySelector('.g_'+k); if(!g) return;
+    g.style.transition='opacity .6s ease'; x.delay(function(){ g.style.opacity='1'; },300+i*300); });
+  drawIn(r,'.vch svg path',x,9,700,900);
+});
+
+/* ==================== 25 — TANGIBLE / INTANGIBLE ==================== */
+C(25,'TANGIBLE / INTANGIBLE','what can be pointed at on the machine, and the quality it produces',function(r,x){
+  var KS=['sil','encl','ribs','fast','axis','swng','whl','neg'];
+  r.innerHTML=vsec('v25',vhd()+
+    '<div class="vstage">'+bike2({src:.26, svg:KS.map(function(k){return goldOnly(k,0);}).join('')})+
+    '</div>'+
+    '<div class="vkey"><span class="au">TANGIBLE · FOUND ON THE MACHINE</span><span class="cy">INTANGIBLE · WHAT IT PRODUCES</span></div>'+
+    '<ul class="vlist" style="margin-top:26px">'+KS.map(function(k){
+      return '<li><i>'+V[k].id+'</i>'+V[k].lab+'<em>'+VQ[k]+'</em></li>'; }).join('')+'</ul>'+
+    para()+'<div class="vbtm"></div>');
+  KS.forEach(function(k,i){ var g=r.querySelector('.g_'+k); if(!g) return;
+    g.style.transition='opacity .5s ease'; x.delay(function(){ g.style.opacity='1'; },260+i*230); });
+  var li=[].slice.call(r.querySelectorAll('.vlist li'));
+  li.forEach(function(n,i){ n.style.opacity='0'; n.style.transition='opacity .55s ease';
+    x.delay(function(){ n.style.opacity='1'; },320+i*230);
+    var e=n.querySelector('em'); if(e){ e.style.opacity='0'; e.style.transition='opacity .7s ease';
+      x.delay(function(){ e.style.opacity='1'; },700+i*230); } });
+});
+
+/* ==================== 26 — GHOST APPLICATIONS ==================== */
+C(26,'GHOST APPLICATIONS','the photographs withdraw and leave behind only what SWITCH gave them',function(r,x){
+  var KS=['encl','ribs','sil','axis','fast'];
+  r.innerHTML=vsec('v26 vk',vhd(1)+
+    '<div class="vstage">'+bike2({dark:1,src:.22, svg:KS.map(function(k){return pair(k);}).join('')})+
+    '</div>'+vkeyline(1)+para(1)+'<div class="vrule"></div>'+
+    vrow(APP,CY,null,'vfade')+
+    '<p class="vpara k" style="margin-top:26px">What is left on each is not a style applied afterwards. It is the geometry the motorcycle already had.</p>'+
+    '<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[330,-90,.9],[300,120,.9],[-300,-160,.9],[280,-200,.9],[-320,120,.9]],
+    {goldStep:360,hold:460,moveStep:300,ghost:.2});
+  drawIn(r,'.am path',x,26,900,2400);
+  var imgs=[].slice.call(r.querySelectorAll('.vfade img'));
+  imgs.forEach(function(im,i){ x.delay(function(){ im.style.opacity='.10'; }, 4200+i*220); });
+});
+
+/* ==================== 27 — ONE HERO TRANSLATION ==================== */
+C(27,'ONE HERO TRANSLATION','the full width given to a single translation, followed all the way through',function(r,x){
+  var o=APP[0], a=AMK[o.k];
+  r.innerHTML=vsec('v27',vhd()+
+    '<div class="vstage">'+bike2({src:.28, svg:pair('encl')+pair('ribs')+pair('fast')})+
+      vtagAt(1290,270,'encl','r')+vtagAt(1290,380,'ribs','r')+vtagAt(1290,490,'fast','r')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vhero"><img src="'+o.img+'" alt="">'+
+      '<svg viewBox="0 0 200 150" preserveAspectRatio="none" fill="none" class="hm">'+
+        a.m().map(function(d){ return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.4" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+      '</svg></div>'+
+    '<span class="vcap"><i>'+V.encl.id+'</i>'+o.lab+' — carrying '+V.encl.lab.toLowerCase()+', '+
+      V.ribs.lab.toLowerCase()+' and '+V.fast.lab.toLowerCase()+'</span>'+
+    '<div class="vbtm"></div>');
+  runExtraction(r,x,['encl','ribs','fast'],[[300,-80,.95],[300,90,.95],[-320,-120,.95]],
+    {goldStep:460,hold:600,moveStep:380});
+  drawIn(r,'.hm path',x,60,1200,2200);
+});
+
+/* ==================== 28 — MULTI-CATEGORY TRANSLATION ==================== */
+C(28,'MULTI-CATEGORY TRANSLATION','five categories at once — hover one and only its inherited geometry lights up',function(r,x){
+  var KS=['encl','ribs','fast','mod','matl','axis','circ','strc','sil','datum','stnc','edge'];
+  r.innerHTML=vsec('v28',vhd()+
+    '<div class="vstage">'+bike2({src:.28, svg:KS.map(function(k){return cyanOnly(k,.9);}).join('')})+
+      '<div class="vtag" style="left:'+LX(1300)+'%;top:'+LY(50)+'%"><i>HOVER</i><b>a category below</b></div>'+
+    '</div>'+vkeyline()+para()+'<div class="vrule"></div>'+
+    vrow(APP,CY,function(o,i){ return o.lab+' · '+AMK[o.k].keys.map(function(k){return V[k].lab;}).join(' · '); })+
+    '<div class="vbtm"></div>');
+  drawIn(r,'.vc path',x,60,1100);
+  drawIn(r,'.am path',x,24,900,1400);
+  vhover(r,x);
+});
+
+/* ==================== 29 — PRODUCT AND SERVICE ==================== */
+C(29,'PRODUCT AND SERVICE','the language does not stop at objects — it also sets how the venture behaves',function(r,x){
+  var KS=['encl','sil','ribs','axis'];
+  r.innerHTML=vsec('v29 vk',vhd(1)+
+    '<div class="vstage" style="max-width:1080px">'+bike2({dark:1,src:.2,
+      svg:KS.map(function(k){return cyanOnly(k,.9);}).join('')})+'</div>'+
+    vkeyline(1)+para(1)+'<div class="vrule"></div>'+
+    '<span class="vhead" style="margin-top:26px;display:block">Where the same language applies</span>'+
+    '<div class="vlib gc6">'+
+      SYS.map(function(s,i){
+        return '<div class="vcell"><div class="vsq"><svg viewBox="0 0 100 100" fill="none" class="sy'+i+' sysg">'+
+          s.g.map(function(d){ return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+          '</svg></div><span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+s.lab+'</span></div>'; }).join('')+
+    '</div>'+
+    '<p class="vpara k" style="margin-top:28px">The first two are products. The rest are not — and the same rules still hold.</p>'+
+    '<div class="vbtm"></div>');
+  drawIn(r,'.vc path',x,80,1200);
+  drawIn(r,'.sysg path',x,40,900,1300);
+});
+
+/* ==================== 30 — NO PHOTOGRAPHY ==================== */
+C(30,'NO PHOTOGRAPHY','the entire argument carried in line alone — not one photograph on the page',function(r,x){
+  var KS=['sil','encl','ribs','whl','axis','fast','swng','strc','datum','stnc','neg','edge'];
+  r.innerHTML=vsec('v30',vhd()+
+    '<div class="vstage">'+
+      '<div class="vw">'+
+        lay(['sil','encl','ribs','whl','axis','swng','strc'].reduce(function(a,k){return a.concat(V[k].p);},[]),
+            'ln0 vg',GR,1.6,1)+
+        lay(['sil','encl','ribs'].reduce(function(a,k){return a.concat(V[k].p);},[]),'ln1 vc',CY,2.2,1)+
+      '</div>'+
+      vtagAt(300,40,'sil')+vtagAt(1290,290,'encl','r')+vtagAt(760,780,'ribs')+
+    '</div>'+
+    '<div class="vkey"><span>THE DRAWING</span><span class="cy">THE EXTRACTED LANGUAGE</span></div>'+
+    para()+'<div class="vrule"></div>'+vlib(KS,6)+
+    '<p class="vpara" style="margin-top:28px">Every shape above is taken from the SWITCH drawing. Nothing here needs a photograph to be true.</p>'+
+    '<div class="vbtm"></div>');
+  drawIn(r,'.ln0 path',x,24,1200);
+  drawIn(r,'.ln1 path',x,20,1100,900);
+  drawIn(r,'.vch svg path',x,8,600,1800);
+});
+
+/* ==================== 31 — PHOTOGRAPHY AS EVIDENCE ==================== */
+C(31,'PHOTOGRAPHY AS EVIDENCE','the drawing makes the case; the photographs arrive at the end, small, as proof',function(r,x){
+  var KS=['sil','encl','ribs','axis','fast'];
+  r.innerHTML=vsec('v31',vhd()+
+    '<div class="vstage">'+bike2({src:.0, svg:
+      lay(KS.reduce(function(a,k){return a.concat(V[k].p);},[]),'ev0 vg',AU,1.6,1)+
+      lay(KS.reduce(function(a,k){return a.concat(V[k].p);},[]),'ev1 vc',CY,2.2,0)})+
+    '</div>'+vkeyline()+para()+'<div class="vrule"></div>'+
+    '<span class="vhead" style="margin-top:26px;display:block">Evidence</span>'+
+    '<div class="vlib gc5">'+
+      APP.map(function(o,i){ return '<div class="vcell"><img class="vmini" src="'+o.img+'" alt="">'+
+        '<span class="vcap"><i>'+(i<9?'0':'')+(i+1)+'</i>'+o.lab+'</span></div>'; }).join('')+
+    '</div>'+'<div class="vbtm"></div>');
+  drawIn(r,'.ev0 path',x,26,1200);
+  var c=r.querySelector('.ev1');
+  if(c){ c.style.transition='opacity 1.2s ease'; x.delay(function(){ c.style.opacity='1'; },2400); }
+  var mini=[].slice.call(r.querySelectorAll('.vmini'));
+  mini.forEach(function(m,i){ m.style.opacity='0'; m.style.transition='opacity .9s ease';
+    x.delay(function(){ m.style.opacity='1'; },3200+i*220); });
+});
+
+/* ==================== 32 — DESIGN SYSTEM FIELD ==================== */
+C(32,'DESIGN SYSTEM FIELD','the machine takes its place as one item in a field it created',function(r,x){
+  var FIELD=VK.slice(0,18);
+  r.innerHTML=vsec('v32 vk',vhd(1)+
+    '<div class="vcol gcS24">'+
+      '<div><span class="vhead">The origin</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({dark:1,src:.44,
+          svg:lay([P(SIL),P(ENCL,1),CIR(RWX,AXLE,RR.tyre),CIR(FWX,AXLE,RR.tyre)],'fo vg',AU,1.6,.9)})+'</div>'+
+        '<p class="vpara k" style="margin-top:22px">'+T.p+'</p></div>'+
+      '<div><span class="vhead">The field it produced</span>'+vlib(FIELD,6,CY,2.2)+'</div>'+
+    '</div>'+vkeyline(1)+'<div class="vrule"></div>'+vrow(APP)+'<div class="vbtm"></div>');
+  drawIn(r,'.fo path',x,140,1300);
+  drawIn(r,'.vch svg path',x,6,600,500);
+  vhover(r,x);
+});
+
+/* ==================== 33 — EXTRACTION TIMELINE ==================== */
+C(33,'EXTRACTION TIMELINE','the method laid out end to end: object · reading · extraction · language · application',function(r,x){
+  var STEPS=[
+    {h:'Object',     k:null,   t:'An award-winning electric motorcycle, already designed.'},
+    {h:'Reading',    k:'stnc', t:'Silent Foundry reads it and marks what is deliberate.'},
+    {h:'Extraction', k:'encl', t:'Each characteristic is copied off the machine.'},
+    {h:'Language',   k:'ribs', t:'The copies hold together as one vocabulary.'},
+    {h:'Application',k:'sil',  t:'The vocabulary carries into categories it never had.'}
+  ];
+  r.innerHTML=vsec('v33',vhd()+
+    '<div class="vstage" style="max-width:1080px">'+bike2({src:.24,
+      svg:['stnc','encl','ribs','sil'].map(function(k){return pair(k);}).join('')})+'</div>'+
+    '<div class="vtl">'+STEPS.map(function(s,i){
+      return '<div class="tls"><span class="vcap" style="margin:0"><i>'+(i<9?'0':'')+(i+1)+'</i>'+s.h+'</span>'+
+        (s.k?'<div class="vsq" style="margin-top:14px"><svg viewBox="'+BB43(V[s.k].bb)+'" fill="none" class="tl'+i+' tlg">'+
+          V[s.k].p.map(function(p){ return '<path d="'+p+'" stroke="'+CY+'" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/>'; }).join('')+
+        '</svg></div>':'<div class="vsq" style="margin-top:14px"><img class="vmini" src="'+IMG.bike+'" alt=""></div>')+
+        '<p class="vpara" style="margin-top:14px;font-size:12.4px;line-height:22px">'+s.t+'</p></div>'; }).join('')+
+    '</div>'+vkeyline()+para()+'<div class="vbtm"></div>');
+  runExtraction(r,x,['stnc','encl','ribs','sil'],[[0,-200,.9],[300,80,.9],[-300,140,.9],[-40,-260,.9]],
+    {goldStep:420,hold:520,moveStep:340,ghost:.22});
+  var st=[].slice.call(r.querySelectorAll('.tls'));
+  st.forEach(function(n,i){ n.style.opacity='0'; n.style.transition='opacity .7s ease';
+    x.delay(function(){ n.style.opacity='1'; },900+i*380); });
+  drawIn(r,'.tlg path',x,24,1000,1400);
+});
+
+/* ==================== 34 — ULTRA REDUCTIVE ==================== */
+C(34,'ULTRA REDUCTIVE','three lines and one sentence — the least that still says it',function(r,x){
+  r.innerHTML=vsec('v34',
+    '<span class="ey eygap">'+T.ey+'</span>'+
+    '<div class="vstage" style="max-width:900px;margin-top:10px">'+
+      '<div class="vw">'+
+        lay([P(SIL),'M'+HEAD[0]+' '+HEAD[1]+' L'+FAXLE[0]+' '+FAXLE[1],
+             'M'+(RWX-RR.tyre)+' '+GROUND+' L'+(FWX+RR.tyre)+' '+GROUND],'rd vc',CY,2.2,1)+
+      '</div>'+
+    '</div>'+
+    '<p class="vq" style="margin-top:52px;max-width:900px">'+T.hA+' <span style="color:var(--lab-cyb)">'+T.hB+'</span></p>'+
+    '<p class="vpara" style="margin-top:26px">'+T.p+'</p>'+
+    '<div class="vbtm"></div>');
+  drawIn(r,'.rd path',x,700,2200);
+});
+
+/* ==================== 35 — SYNTHESIS ==================== */
+C(35,'SYNTHESIS','the whole method in one section: found · extracted · filed · carried',function(r,x){
+  var KS=['sil','encl','ribs','axis','fast','whl'];
+  r.innerHTML=vsec('v35',vhd()+
+    '<div class="vstage">'+bike2({src:.30, svg:KS.map(function(k){return pair(k);}).join('')})+
+      vtagAt(300,50,'sil')+vtagAt(1290,280,'encl','r')+vtagAt(760,790,'ribs')+
+      vtagAt(1290,110,'axis','r')+vtagAt(60,110,'fast')+vtagAt(-30,700,'whl')+
+    '</div>'+vkeyline()+para()+
+    '<div class="vrule"></div>'+
+    '<span class="vhead" style="margin-top:26px;display:block">Filed as a language</span>'+vlib(KS,6)+
+    '<div class="vrule"></div>'+
+    '<span class="vhead" style="margin-top:26px;display:block">Carried into new categories</span>'+
+    vrow(APP,CY,function(o){ return o.lab+' · '+AMK[o.k].keys.map(function(k){return V[k].lab;}).join(' · '); })+
+    '<p class="vpara" style="margin-top:30px">'+T.f.rec.charAt(0).toUpperCase()+T.f.rec.slice(1)+'.</p>'+
+    '<div class="vbtm"></div>');
+  runExtraction(r,x,KS,[[-40,-190,1],[330,-70,.92],[120,230,1],[280,-150,.92],[-300,-140,1],[-250,180,.58]],
+    {goldStep:380,hold:520,moveStep:330,ghost:.22});
+  drawIn(r,'.vch svg path',x,10,700,2600);
+  drawIn(r,'.am path',x,22,900,3400);
+  vhover(r,x);
+});
 </script>
 
 <script>
-/* ================= second control bar, independent of the SWITCH one ====== */
+/* ============ additive bootstrap: extend the range to 35, rebuild the bar ====
+   01–05 are not touched: the shortlist layer already installed them, and this
+   only widens the range the bar and the show() wrapper cover. ================ */
 (function(){
-  var MAX=24;
-  var css=document.createElement('style'); css.id='sf-mbar-css';
-  css.textContent=
-   '#labbar .mrow{margin-top:10px;padding-top:9px;border-top:1px solid rgba(244,241,236,.14);}'+
-   '#labbar #mlabname{font-family:var(--lab-dm);font-size:.6rem;font-weight:400;letter-spacing:.3em;'+
-   'text-transform:uppercase;color:#7fd4e6;margin:0 0 7px 2px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;}'+
-   '#labbar #mlabname em{font-style:normal;color:rgba(244,241,236,.42);letter-spacing:.14em;font-size:.5rem;text-transform:none;}'+
-   '#labbar #mlabname .tag{color:rgba(244,241,236,.34);letter-spacing:.2em;font-size:.5rem;}'+
-   '#labbar #mlabboxes{display:flex;flex-wrap:wrap;gap:3px;align-items:center;}'+
-   '#labbar #mlabboxes button{font-family:var(--lab-dm);font-size:.5rem;font-weight:400;letter-spacing:0;'+
-   'width:25px;height:22px;line-height:1;cursor:pointer;border-radius:2px;background:transparent;flex:0 0 auto;'+
-   'color:rgba(244,241,236,.5);border:1px solid rgba(244,241,236,.2);transition:background .16s,color .16s,border-color .16s;}'+
-   '#labbar #mlabboxes button:hover{color:#7fd4e6;border-color:rgba(127,212,230,.6);}'+
-   '#labbar #mlabboxes button.on{background:#7fd4e6;border-color:#7fd4e6;color:#0a0a0a;font-weight:500;}'+
-   '#labbar #mlabboxes .gp{flex:0 0 auto;display:flex;align-items:center;padding:0 9px 0 5px;'+
-   'font-family:var(--lab-dm);font-size:.4rem;letter-spacing:.18em;text-transform:uppercase;'+
-   'color:rgba(244,241,236,.32);white-space:nowrap;border-left:1px solid rgba(244,241,236,.18);margin-left:4px;height:22px;}'+
-   '@media(max-width:900px){#labbar #mlabboxes .gp{display:none;}'+
-   ' #labbar #mlabboxes button{width:23px;height:21px;}}'+
-   '@media(max-width:600px){#labbar #mlabboxes button{width:20px;height:19px;font-size:.44rem;}}';
-  document.head.appendChild(css);
+  var NEW_MAX=35;
+  window.NMAX=NEW_MAX;
+  for(var i=6;i<=NEW_MAX;i++) if(!PORT[i]) PORT[i]='keep';
 
-  var bar=document.getElementById('labbar');
-  var row=document.createElement('div'); row.className='mrow';
-  row.innerHTML='<div id="mlabname"><span class="tag">MARSHALL</span> <span id="mlabnum">00</span> / '+
-    '<span id="mlabtitle">CURRENT PRODUCTION MARSHALL</span> <em id="mlabdesc"></em></div>'+
-    '<div id="mlabboxes"></div>';
-  bar.appendChild(row);
+  var GRP={0:'control',1:'shortlist',6:'dna extraction · 30 new'};
 
-  var bx=document.getElementById('mlabboxes');
-  var pv=document.createElement('button'); pv.textContent='‹'; bx.appendChild(pv);
-  for(var k=0;k<=MAX;k++){
-    if(k===0||k===1){ var g=document.createElement('span'); g.className='gp';
-      g.textContent=(k===0?'control':'marshall');
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent=(NEW_MAX+1)+' options · 00–'+NEW_MAX;
+
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var k=0;k<=NEW_MAX;k++){
+    if(GRP[k]){ var g=document.createElement('span'); g.className='gp'; g.textContent=GRP[k];
       if(k===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
     var b=document.createElement('button');
     b.dataset.n=k; b.textContent=(k<10?'0':'')+k;
-    b.title=(MCON[k]?MCON[k].name:'');
-    b.addEventListener('click',(function(m){return function(){mshow(m);};})(k));
+    b.title=(CONCEPTS[k]?CONCEPTS[k].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(k));
     bx.appendChild(b);
   }
-  var nx=document.createElement('button'); nx.textContent='›'; bx.appendChild(nx);
-  pv.addEventListener('click',function(){ mshow(((MCUR-1)%(MAX+1)+(MAX+1))%(MAX+1)); });
-  nx.addEventListener('click',function(){ mshow(((MCUR+1)%(MAX+1)+(MAX+1))%(MAX+1)); });
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){show(CUR-1);});
+  nx.addEventListener('click',function(){show(CUR+1);});
 
-  /* shift+arrows drive Marshall so plain arrows stay with the SWITCH slider */
-  window.addEventListener('keydown',function(e){
-    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
-    if(!e.shiftKey) return;
-    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
-      e.stopPropagation(); e.preventDefault();
-      mshow(((MCUR+(e.key==='ArrowRight'?1:-1))%(MAX+1)+(MAX+1))%(MAX+1));
-    }},true);
-
-  window.syncPad2=function(){
-    var b=document.getElementById('labbar'); if(!b) return;
+  /* the bar now wraps to more rows — re-measure the padding it needs */
+  function syncPad(){
+    var bar=document.getElementById('labbar'); if(!bar) return;
     document.body.style.setProperty('padding-bottom',
-      (Math.ceil(b.getBoundingClientRect().height)+10)+'px','important');
-  };
-  window.addEventListener('resize',syncPad2,{passive:true});
-  /* the pinned heights are width-dependent — re-capture from state 00 */
-  var rz;
-  window.addEventListener('resize',function(){
-    clearTimeout(rz);
-    rz=setTimeout(function(){
-      var n=MCUR; if(n<0) return;
-      window.MH0=null; window.MRH0=null;
-      msyncType();
-      mshow(0);
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){
-        window.MH0=mcells().map(function(c){ return c.getBoundingClientRect().height; });
-        if(n>0) mshow(n);
-      });});
-    },260);
-  },{passive:true});
-
-  function boot(){
-    if(!mcells().length) return setTimeout(boot,200);
-    var m=/[#&]m=(\d+)/.exec(location.hash);
-    mshow(m?Math.max(0,Math.min(MAX,+m[1])):0);
-    syncPad2();
+      (Math.ceil(bar.getBoundingClientRect().height)+10)+'px','important');
   }
-  setTimeout(boot,1900); setTimeout(syncPad2,2200); setTimeout(syncPad2,3100);
+  window.addEventListener('resize',syncPad,{passive:true});
+  syncPad(); setTimeout(syncPad,300); setTimeout(syncPad,1500);
+
+  /* honour a deep link that points past the shortlist */
+  var m=/[#&]c=(\d+)/.exec(location.hash);
+  if(m) setTimeout(function(){ show(Math.max(0,Math.min(NEW_MAX,+m[1]))); },1750);
 })();
 </script>
 
