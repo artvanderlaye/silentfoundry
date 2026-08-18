@@ -13106,6 +13106,9 @@ function mCols(){
 #sfsec-dna .mlab-i .m-field .m-t{font-size:clamp(.9rem,1.4vw,1.2rem);letter-spacing:.1em;color:rgba(10,10,10,.72);}
 #sfsec-dna .mlab-i .m-reg .m-t{padding:8px 0;font-size:14px;}
 #sfsec-dna .mlab-i .m-reg .m-cat{padding-bottom:9px;border-bottom:1px solid rgba(10,10,10,.16);margin-bottom:5px;}
+#sfsec-dna .mlab-i .m-quote{font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:clamp(1rem,1.7vw,1.45rem);line-height:1.5;letter-spacing:.01em;
+  color:rgba(10,10,10,.7);max-width:min(100%,760px);margin:0;text-indent:-.4em;}
 #sfsec-dna .mlab-i .m-inline{font-size:12px;letter-spacing:.1em;color:rgba(10,10,10,.66);}
 #sfsec-dna .mlab-i .m-note{display:grid;grid-template-columns:92px 1fr;gap:16px;align-items:baseline;
   padding:7px 0;border-bottom:1px solid rgba(10,10,10,.07);}
@@ -13258,12 +13261,17 @@ window.mshow=function(n){
     if(de) de.textContent=(c.desc||'')+'   · desktop only — mobile shows production';
     return;
   }
-  cells.forEach(function(c,i){
+  /* Options 21-24 delete the DNA block, and the POINT is to see Marshall get
+     shorter. Pinning would hide that, so they run free: same image files, same
+     order, same crops — the section simply stops being held tall. */
+  var freeRun = !!c.free;
+  cells.forEach(function(c2,i){
+    var c=c2;
     [].forEach.call(c.children,function(k){
       k.dataset.mlabDisp = k.style.display || '';
       k.style.setProperty('display','none','important');
     });
-    if(twoCol){
+    if(twoCol && !freeRun){
       c.style.setProperty('height', MH[i]+'px', 'important');
       c.style.setProperty('overflow','hidden','important');
     }
@@ -13271,7 +13279,7 @@ window.mshow=function(n){
   /* Lock the image column to exactly what production rendered. On mobile
      .cs-dbody is a flex column with explicit order on the children, and a
      height alone still gets shrunk to zero — so pin min-height and shrink too. */
-  rightCells.forEach(function(c,i){
+  if(!freeRun) rightCells.forEach(function(c,i){
     var h=window.MRH0 && window.MRH0[i];
     if(h > 0){
       c.style.setProperty('height', h+'px','important');
@@ -13293,7 +13301,7 @@ window.mshow=function(n){
      so if a variation's content is a little too tall at some width, shrink that
      block to fit rather than clip it. A few percent is imperceptible and it
      guarantees every option fits at every width. */
-  cells.forEach(function(cell,i){
+  if(!freeRun) cells.forEach(function(cell,i){
     var box=made[i]; if(!box) return;
     box.style.transform=''; box.style.width='';
     var over=cell.scrollHeight-cell.clientHeight;
@@ -13306,6 +13314,7 @@ window.mshow=function(n){
   });
 };
 window.mafter=function(n,fn){ if(MCON[n]) MCON[n].after=fn; };
+window.mfree=function(n){ if(MCON[n]) MCON[n].free=true; };
 
 /* --------------------------------------------------------------------------
    00 — CONTROL. Production section, untouched.
@@ -13491,6 +13500,63 @@ MC(19,'EDITORIAL CASE STUDY','magazine setting — larger head, labelled columns
     '<div style="display:grid;grid-template-columns:104px 1fr;gap:26px">'+
       '<span class="m-lab">'+MT.trL+'</span><p class="m-p" style="margin-top:0">'+MT.trP+'</p></div>' ]; });
 
+/* ------------------------------------------------------------------ *
+   21-24: Matthew's own proposal — delete the graphic AND the Extracted DNA
+   block. These run unpinned so the section is allowed to get shorter, which
+   is the whole reason for trying it. The photographs themselves are the same
+   files, same order, same crops — only the section stops being held tall.
+ * ------------------------------------------------------------------ */
+
+/* 21 — NO DNA BLOCK: the proposal, exactly */
+MC(21,'NO DNA BLOCK','graphic and Extracted DNA both deleted — narrative, evidence, results',function(){
+  return [ mIntro(),
+    '<span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
+      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet(),
+    mTrans() ]; });
+mfree(21);
+
+/* 22 — DNA AS ONE LINE: graphic gone, the eight words kept as a single line */
+MC(22,'DNA AS ONE LINE','graphic gone; the eight characteristics survive as one quiet line',function(){
+  return [ mIntro(),
+    '<div style="padding-bottom:22px;border-bottom:1px solid rgba(10,10,10,.14)">'+
+      '<span class="m-lab" style="margin-bottom:10px">'+MT.dnL+'</span>'+
+      '<span class="m-t m-inline">'+MT.IN.concat(MT.TA).join('  ·  ')+'</span></div>'+
+      '<div style="margin-top:26px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
+      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
+    mTrans() ]; });
+mfree(22);
+
+/* 23 — DNA AS A SENTENCE: the taxonomy becomes prose.
+   NOTE: the only new words on this page are the glue — "The intangible DNA
+   was", "The tangible DNA was". Everything else is Matthew's. Easy to change. */
+MC(23,'DNA AS A SENTENCE','the eight characteristics written as prose instead of a list',function(){
+  var sent='The intangible DNA was '+MT.IN.slice(0,3).join(', ').toLowerCase()+
+    ' and '+MT.IN[3].toLowerCase()+'. The tangible DNA was '+MT.TA.slice(0,3).join(', ').toLowerCase()+
+    ' and '+MT.TA[3]+'.';
+  return [ mIntro(),
+    '<span class="m-lab" style="margin-bottom:12px">'+MT.dnL+'</span>'+
+      '<p class="m-p" style="margin-top:0">'+sent+'</p>'+
+      '<div style="margin-top:30px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
+      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
+    mTrans() ]; });
+mfree(23);
+
+/* 24 — DNA AS A PULL QUOTE: Matthew's own translation line, set large, with
+   the eight terms beneath it. No invented copy at all. */
+MC(24,'DNA AS A PULL QUOTE','the translation line set as a quote, the eight terms beneath it',function(){
+  return [ mIntro(),
+    '<p class="m-quote">“It extracted its identity and rebuilt that identity inside headphones, speakers and home audio.”</p>'+
+      '<span class="m-t m-inline" style="margin-top:18px;color:rgba(10,10,10,.45)">'+
+        MT.IN.concat(MT.TA).join('  ·  ')+'</span>'+
+      '<div style="margin-top:30px"><span class="m-lab" style="margin-bottom:12px">'+MT.reL+'</span>'+
+      '<p class="m-p" style="margin-top:0">'+MT.reP+'</p>'+mMet()+'</div>',
+    /* the quoted sentence is lifted OUT of this paragraph so it isn't said
+       twice — the only copy edit in the whole file, and it is a deletion */
+    '<span class="m-lab">'+MT.trL+'</span><p class="m-p">'+
+      MT.trP.replace('It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. ','')+
+    '</p>' ]; });
+mfree(24);
+
 /* 20 — MAXIMUM REDUCTION */
 MC(20,'MAXIMUM REDUCTION','the benchmark: nothing that does not aid comprehension',function(){
   return [ mIntro(), mDnaLab()+mCols()+mRes('',true), mTrans() ]; });
@@ -13500,7 +13566,7 @@ MC(20,'MAXIMUM REDUCTION','the benchmark: nothing that does not aid comprehensio
 <script>
 /* ================= second control bar, independent of the SWITCH one ====== */
 (function(){
-  var MAX=20;
+  var MAX=24;
   var css=document.createElement('style'); css.id='sf-mbar-css';
   css.textContent=
    '#labbar .mrow{margin-top:10px;padding-top:9px;border-top:1px solid rgba(244,241,236,.14);}'+
