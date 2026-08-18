@@ -11661,6 +11661,509 @@ C(62,'FULL TRANSFORMATION','the whole method in one held sequence, then the port
   /* deep links are handled by the existing boot, which now reads window.NMAX */
 })();
 </script>
+<script>
+/* =========================================================================
+   SWITCH DESIGNED DNA LAB — SHORTLIST + DNA TRANSFER FAMILY
+   Keeps only the eleven Matthew named, renumbered from 01, and adds the
+   twelve-variation family built on the idea he liked in the old 13:
+
+     real side photo -> the venture-style sketch -> specific things on that
+     sketch highlighted (lines, angles, ribs, radii, materials, lighting)
+     -> those same things arriving inside the new products.
+
+   Everything here is drawn on the REAL sketch he added
+   (images/bike-side-sketch.*), with overlay geometry measured against that
+   drawing rather than an invented reduction.
+   ========================================================================= */
+
+/* the sketch, cropped to its artwork and optimised. .jpg is opaque for light
+   fields; .png is black line-art + alpha, so it recolours cleanly on dark. */
+var SKF='images/bike-side-sketch.jpg';
+var SKA='images/bike-side-sketch.png';
+
+/* upgrade every kept variation that already showed a sketch, without editing
+   any of them: im2() and SK.line are read at build time, so repointing here
+   is enough. */
+PEND.pencil=[SKF,SKF,''];
+PEND.ink   =[SKF,SKF,'contrast(1.3)'];
+SK.line    = SKF;
+
+/* ---- geometry measured ON the sketch, viewBox 0 0 1200 669 ---- */
+function cr(cx,cy,r){ return 'M'+cx+' '+cy+' m-'+r+' 0 a'+r+' '+r+' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 -'+(2*r)+' 0'; }
+var G={
+  wheelR:cr(210,455,163), rimR:cr(208,455,126), hubR:cr(208,455,20),
+  wheelF:cr(976,466,163), rimF:cr(974,465,118), hubF:cr(974,465,16),
+  batt  :'M517 270 L715 270 L740 294 L740 502 L715 526 L517 526 L495 502 L495 294 Z',
+  battF :'M740 294 L740 502',  battB:'M495 294 L495 502',
+  tank  :'M530 168 L706 190 L790 214',
+  seat  :'M240 192 L525 168',
+  tail  :'M238 182 L238 216',
+  forkA :'M795 108 L966 452', forkB:'M817 98 L988 442',
+  bar   :'M735 72 L806 46',
+  lamp  :'M778 34 L812 34 L812 66 L778 66 Z',
+  shock :'M448 286 L406 400',
+  swing :'M460 470 L207 452',
+  fendF :'M834 306 C884 268 952 264 1000 294',
+  fendR :'M352 320 C306 288 220 284 158 320'
+};
+var RIBS=[]; for(var _y=305;_y<=465;_y+=20) RIBS.push('M512 '+_y+' L718 '+_y);
+var G_LINE =[G.tank,G.seat,G.tail,G.swing,G.bar];           /* the drawn lines   */
+var G_ANG  =[G.forkA,G.forkB,G.swing,G.battF,G.battB];       /* the angles        */
+var G_RAD  =[G.wheelR,G.wheelF,G.rimR,G.rimF];               /* the radii         */
+var G_STRUCT=[G.forkA,G.forkB,G.shock,G.swing,G.tank];
+var G_ALL  =[G.wheelR,G.rimR,G.hubR,G.wheelF,G.rimF,G.hubF,G.batt,G.tank,G.seat,
+             G.tail,G.forkA,G.forkB,G.bar,G.lamp,G.shock,G.swing,G.fendF,G.fendR];
+
+/* the products the portfolio already ships. The DNA is applied to the real
+   PRODUCT IMAGES, not to vector stand-ins — the point of the section is that
+   you see the language land on the actual thing. */
+var P_OUT=[
+  {k:'speaker', img:IMG.speaker}, {k:'battery', img:IMG.batteryP},
+  {k:'light',   img:IMG.light},   {k:'board',   img:IMG.snowboard},
+  {k:'guitar',  img:IMG.guitar}
+];
+/* one mark set, applied identically to every product — the same rule, spoken
+   by five different objects. Normalised to the tile, so it lands on any photo. */
+var M={
+  rib :['M30 40 L170 40','M30 48 L170 48','M30 56 L170 56','M30 64 L170 64'],
+  rad :['M12 30 L12 18 L24 18','M188 30 L188 18 L176 18','M12 70 L12 82 L24 82','M188 70 L188 82 L176 82'],
+  edge:['M12 18 L188 18 L188 82 L12 82 Z'],
+  lamp:['M170 28 m-8 0 a8 8 0 1 0 16 0 a8 8 0 1 0 -16 0'],
+  meas:['M12 90 L188 90','M12 86 L12 94','M188 86 L188 94'],
+  ang :['M12 82 L64 18','M188 82 L136 18'],
+  line:['M12 34 L188 26','M12 70 L188 76']
+};
+
+/* ---- helpers ---- */
+function bikeStage(opts){
+  opts=opts||{};
+  /* always the alpha PNG: the .jpg is opaque white and reads as a photograph
+     pasted onto the cream. Black art on light, inverted to white on dark. */
+  var img = '<img src="'+SKA+'" style="'+(opts.dark?'filter:invert(1);':'')+
+            'opacity:'+(opts.sk==null?1:opts.sk)+'">';
+  var photo = opts.photo!==false
+    ? '<img class="ph" src="'+IMG.bike+'" style="object-fit:cover;opacity:'+(opts.pho==null?0:opts.pho)+'">' : '';
+  return '<div class="tw">'+photo+'<div class="skw">'+img+'</div>'+(opts.svg||'')+'</div>';
+}
+function ov(paths,cls,col,w,extra){
+  return '<svg class="'+(cls||'')+'" viewBox="0 0 1200 669" fill="none" preserveAspectRatio="none">'+
+    paths.map(function(d,i){ return '<path d="'+d+'" stroke="'+(col||'#00b4d8')+'" stroke-width="'+(w||2.2)+
+      '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+i+'"'+
+      (extra||'')+'/>'; }).join('')+'</svg>';
+}
+/* a row of the real product photos, each carrying the same overlay marks */
+function pgrid(cls,marks,col,w,label,dark){
+  return '<div class="prow">'+P_OUT.map(function(o,i){
+    return '<div class="pcell"><div class="pim'+(dark?' pimk':'')+'">'+
+      '<img src="'+o.img+'" alt="">'+
+      '<svg class="'+cls+' '+cls+i+'" viewBox="0 0 200 100" preserveAspectRatio="none" fill="none">'+
+        marks.map(function(d,j){ return '<path d="'+d+'" stroke="'+col+'" stroke-width="'+(w||1.6)+
+          '" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" data-i="'+j+'"/>'; }).join('')+
+      '</svg></div><span class="tlab">'+label+'</span></div>'; }).join('')+'</div>';
+}
+function tsec(cls,inner,style){ return '<div class="lb dp tp '+cls+'" style="'+(style||'')+'"><div class="din">'+inner+'</div></div>'; }
+function dashIn(root,sel,x,step,dur,delay){
+  var ps=[].slice.call(root.querySelectorAll(sel));
+  ps.forEach(function(q){ var L=400; try{L=q.getTotalLength()||400;}catch(e){}
+    q.style.strokeDasharray=L; q.style.strokeDashoffset=L;
+    q.style.transition='stroke-dashoffset '+(dur||800)+'ms cubic-bezier(.22,.61,.36,1)'; });
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting) return;
+    ps.forEach(function(q,k){ x.delay(function(){ q.style.strokeDashoffset='0'; },(delay||0)+k*(step||70)); }); });},{threshold:.2}));
+  if(ps[0]) io.observe(ps[0].ownerSVGElement||ps[0]);
+  return ps;
+}
+/* the shared three-beat clock every transfer variation runs on:
+   0 photo · 1 sketch · 2 highlight · 3 transfer  */
+function beats(x,fn,ms){
+  var i=0; fn(0);
+  x.timer(function(){ if(!MOTION) return; i=(i+1)%4; fn(i); }, ms||1600);
+}
+</script>
+
+<style id="sf-lab-transfer-css">
+#sf-lab-mount .tp{background:var(--lab-cream);}
+#sf-lab-mount .tp.tk{background:var(--lab-dark);}
+/* the drawing is capped so the bike and the products it feeds are on screen
+   TOGETHER — that pairing is the whole point of this family. Width cap, not a
+   max-height: aspect-ratio plus max-height over-constrains and shrinks width. */
+#sf-lab-mount .tw{position:relative;width:min(100%,980px);margin:0 auto;aspect-ratio:1200/669;}
+#sf-lab-mount .tw>*{position:absolute;inset:0;}
+#sf-lab-mount .tw img{width:100%;height:100%;object-fit:fill;display:block;transition:opacity .7s ease;}
+#sf-lab-mount .tw .ph{object-fit:cover;}
+#sf-lab-mount .tw svg{width:100%;height:100%;overflow:visible;}
+#sf-lab-mount .tw .skw{transition:opacity .7s ease;}
+#sf-lab-mount .prow{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:start;margin-top:34px;}
+#sf-lab-mount .pcell{position:relative;}
+/* the real product photo, with the mark set laid over it */
+#sf-lab-mount .pim{position:relative;aspect-ratio:2/1;overflow:hidden;background:#e9e5dd;}
+#sf-lab-mount .pim.pimk{background:#14171b;}
+#sf-lab-mount .pim img{width:100%;height:100%;object-fit:cover;display:block;}
+#sf-lab-mount .pim svg{position:absolute;inset:0;width:100%;height:100%;}
+#sf-lab-mount .tlab{font-family:var(--lab-dm);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--lab-cy);display:block;margin-top:8px;}
+#sf-lab-mount .tp.tk .tlab{color:var(--lab-cyb);}
+#sf-lab-mount .tbeat{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+#sf-lab-mount .tbeat span{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(10,10,10,.16);color:rgba(10,10,10,.34);padding:5px 9px;transition:all .3s ease;}
+#sf-lab-mount .tbeat span.on{border-color:var(--lab-cy);color:var(--lab-cy);}
+#sf-lab-mount .tp.tk .tbeat span{border-color:rgba(244,241,236,.18);color:rgba(244,241,236,.34);}
+#sf-lab-mount .tp.tk .tbeat span.on{border-color:var(--lab-cyb);color:var(--lab-cyb);}
+@media(max-width:900px){
+  #sf-lab-mount .prow{grid-template-columns:repeat(3,1fr);gap:14px;}
+}
+</style>
+
+<script>
+/* ---- re-index to the eleven kept, leaving slot 05 for the engineered strip ---- */
+(function(){
+  var KEEP=[1,2,13,24,null,27,28,54,57,58,59,61];   /* null = 05, filled below */
+  var OLD=CONCEPTS.slice(), OP={};
+  for(var k in PORT) OP[k]=PORT[k];
+  CONCEPTS.length=0;
+  CONCEPTS[0]=OLD[0];
+  var NP={0:'keep'};
+  KEEP.forEach(function(o,i){
+    if(o===null) return;                 /* left for C(5,...) */
+    var c=OLD[o]; if(!c) return;
+    c.was=o; c.n=i+1;
+    CONCEPTS[i+1]=c;
+    NP[i+1]=OP[o]||'keep';
+  });
+  window.PORT=NP;
+})();
+</script>
+
+<script>
+/* ============ 05 — ARCHIVE STRIP, ENGINEERED ============
+   Same reveal Matthew liked, given the apparatus it was missing: sheet
+   numbers, datum letters, a running title strip, measured gaps and a
+   registration cross that lands before each frame does. */
+C(5,'ARCHIVE STRIP · ENGINEERED','the strip he liked, given the drawing-sheet apparatus',function(r,x){
+  var A=[[SK.thumb,'2017',SEQ[1]],[SK.c1,'2017',SEQ[1]],[SK.kase,'2017',SEQ[2]],
+         [SKF,'2017',SEQ[2]],[SK.plate,'CAD',SEQ[3]],[IMG.bike,LBL.product,SEQ[0]]];
+  var DAT=['A','B','C','D','E','F'];
+  r.innerHTML=tsec('c05',hd()+
+   '<div class="esheet" style="margin-top:40px;border:1px solid rgba(10,10,10,.2)">'+
+     '<div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid rgba(10,10,10,.14)">'+
+       '<span class="rmono">'+TB.part+'</span><span class="rmono">'+TB.mat+'</span>'+
+       '<span class="rmono">'+TB.un+'</span><span class="rmono">'+TB.rev+'</span></div>'+
+     '<div class="egrid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:0">'+
+       A.map(function(a,i){ return '<div class="ec" style="border-right:'+(i<5?'1px solid rgba(10,10,10,.12)':'0')+';padding:12px">'+
+         '<div style="display:flex;justify-content:space-between;align-items:baseline">'+
+           '<span class="rmono" style="color:var(--lab-cy)">'+DAT[i]+'</span>'+
+           '<span class="rmono">'+(i+1)+'/6</span></div>'+
+         '<div class="rfig" style="aspect-ratio:3/4;background:#fff;margin-top:8px;position:relative;overflow:hidden">'+
+           '<svg class="reg" viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%;z-index:2" fill="none">'+
+             '<path d="M50 34 L50 66 M34 50 L66 50" stroke="rgba(10,127,153,.75)" stroke-width="1" vector-effect="non-scaling-stroke"/>'+
+             '<circle cx="50" cy="50" r="13" stroke="rgba(10,127,153,.45)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>'+
+           im1(a[0],'width:100%;height:100%;object-fit:cover;position:relative;z-index:1')+
+         '</div>'+
+         '<span class="rmono" style="display:block;padding-top:8px">'+a[1]+'</span>'+
+         '<span class="rmono" style="display:block;color:rgba(10,10,10,.28)">'+a[2]+'</span>'+
+       '</div>'; }).join('')+
+     '</div>'+
+     '<div style="display:flex;justify-content:space-between;padding:8px 14px;border-top:1px solid rgba(10,10,10,.14)">'+
+       '<span class="rmono">'+DAT[0]+'–'+DAT[5]+'</span>'+
+       '<span class="rmono">'+DIMS[0]+' '+TB.un+'</span>'+
+       '<span class="rmono">'+TB.prod+'</span></div>'+
+   '</div>'+
+   '<style>@media(max-width:900px){#sf-lab-mount .egrid{grid-template-columns:repeat(3,1fr)!important;}'+
+   '#sf-lab-mount .ec{border-right:0!important;border-bottom:1px solid rgba(10,10,10,.12);}}</style>'+
+   bp(0,40)+'<div class="dbtm"></div>');
+  var cs=[].slice.call(r.querySelectorAll('.ec'));
+  cs.forEach(function(c,i){
+    var fig=c.querySelector('.rfig'), im=c.querySelector('img'), rg=c.querySelector('.reg');
+    im.style.opacity='0'; im.style.transition='opacity .55s ease';
+    rg.style.opacity='0'; rg.style.transition='opacity .3s ease';
+    c.style.opacity='0'; c.style.transition='opacity .45s ease';
+    x.delay(function(){ c.style.opacity='1'; rg.style.opacity='1'; },140+i*150);
+    x.delay(function(){ im.style.opacity='1'; },140+i*150+320);
+    x.delay(function(){ rg.style.opacity='0'; },140+i*150+700);
+  });
+});
+
+/* ==================== 13 — LINE LIFT ==================== */
+C(13,'LINE LIFT','the drawn lines lift off the sketch and settle into the product',function(r,x){
+  r.innerHTML=tsec('c13',hd()+
+   '<div style="margin-top:40px">'+bikeStage({svg:ov(G_LINE,'lift','#0a7f99',4)})+'</div>'+
+   pgrid('plift',M.line.concat(M.edge),'#00d5ff',2,LBL.cats)+
+   '<div class="tbeat">'+[SEQ[0],SEQ[1],SEQ[2],SEQ[4]].map(function(s,i){return '<span data-b="'+i+'">'+s+'</span>';}).join('')+'</div>'+
+   bp(0,34)+'<div class="dbtm"></div>');
+  var ph=r.querySelector('.ph'), sk=r.querySelector('.skw'), lf=r.querySelector('.lift');
+  var pl=[].slice.call(r.querySelectorAll('.plift path'));
+  pl.forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .6s ease'; });
+  lf.style.transition='opacity .6s ease, transform .9s cubic-bezier(.4,0,.2,1)';
+  beats(x,function(i){
+    ph.style.opacity = i===0?'1':'0';
+    sk.style.opacity = i===0?'0':'1';
+    lf.style.opacity = i>=2?'1':'0';
+    lf.style.transform = i===3?'translateY(-26px) scale(1.02)':'none';
+    pl.forEach(function(q,k){ q.style.opacity = i===3?'1':'0'; q.style.transitionDelay=(k*90)+'ms'; });
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(s){ s.classList.toggle('on',+s.dataset.b===i); });
+  });
+});
+
+/* ==================== 14 — ANGLE FLASH ==================== */
+C(14,'ANGLE FLASH','the governing angles flash, then flash again on the new products',function(r,x){
+  var ext=['M795 108 L795 452','M460 470 L207 470','M740 294 L900 294'];
+  r.innerHTML=tsec('c14 tk',hd(1)+
+   '<div style="margin-top:40px">'+bikeStage({dark:true,sk:.42,
+      svg:ov(G_ANG,'ang','#00b4d8',2.6)+ov(ext,'angx','rgba(0,180,216,.3)',1.2)})+'</div>'+
+   pgrid('pang',M.ang,'#00d5ff',2.2,FOUR[0],1)+
+   '<div class="tbeat">'+[SEQ[1],SEQ[2],CALLS[3],CALLS[4]].map(function(s,i){return '<span data-b="'+i+'">'+s+'</span>';}).join('')+'</div>'+
+   bp(1,34)+'<div class="dbtm"></div>');
+  var an=[].slice.call(r.querySelectorAll('.ang path'));
+  var pa=[].slice.call(r.querySelectorAll('.pang path'));
+  an.concat(pa).forEach(function(q){ q.style.transition='opacity .18s linear'; q.style.opacity='0'; });
+  var t=0;
+  x.frame(function(){ t+=1; if(t%9) return;
+    var s=Math.floor(t/9)%(an.length+pa.length+4);
+    an.forEach(function(q,k){ q.style.opacity = s===k?'1':(s>k&&s<an.length?'.3':'0'); });
+    pa.forEach(function(q,k){ q.style.opacity = s>=an.length+2?'1':'0'; });
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(sp,i){
+      sp.classList.toggle('on', i===Math.min(3,Math.floor(s/3))); });
+  });
+});
+
+/* ==================== 15 — RIB TRANSFER ==================== */
+C(15,'RIB TRANSFER','the battery ribs highlight, then reappear as the product’s own',function(r,x){
+  r.innerHTML=tsec('c15',hd()+
+   '<div style="margin-top:40px">'+bikeStage({sk:.9,
+      svg:ov([G.batt],'bx','rgba(10,127,153,.5)',2)+ov(RIBS,'rib','#0a7f99',3.4)})+'</div>'+
+   pgrid('prib',M.rib,'#00d5ff',1.9,FOUR[2])+
+   '<div class="tbeat">'+[LBL.moto,FOUR[2],LBL.lang,LBL.cats].map(function(s,i){return '<span data-b="'+i+'">'+s+'</span>';}).join('')+'</div>'+
+   bp(0,34)+'<div class="dbtm"></div>');
+  var rb=[].slice.call(r.querySelectorAll('.rib path'));
+  var pr=[].slice.call(r.querySelectorAll('.prib path'));
+  rb.concat(pr).forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .4s ease'; });
+  beats(x,function(i){
+    rb.forEach(function(q,k){ q.style.opacity=i>=1?'1':'0'; q.style.transitionDelay=(k*55)+'ms'; });
+    pr.forEach(function(q,k){ q.style.opacity=i>=3?'1':'0'; q.style.transitionDelay=(k*70)+'ms'; });
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(s){ s.classList.toggle('on',+s.dataset.b===i); });
+  },1500);
+});
+
+/* ==================== 16 — MATERIAL PASS ==================== */
+C(16,'MATERIAL PASS','material zones light on the drawing, then on the products',function(r,x){
+  var Z=[{p:[G.batt],c:'#0a7f99',l:TB.mat},{p:[G.rimR,G.rimF],c:'#8a6e3a',l:FOUR[2]},
+         {p:[G.forkA,G.forkB,G.shock],c:'#0a7f99',l:FOUR[1]},{p:[G.tank,G.seat],c:'#8a6e3a',l:FOUR[3]}];
+  r.innerHTML=tsec('c16',hd()+
+   '<div style="margin-top:40px">'+bikeStage({sk:.88,
+      svg:Z.map(function(z,i){return ov(z.p,'mz mz'+i,z.c,3.6);}).join('')})+'</div>'+
+   pgrid('pmz',M.edge.concat(M.rib),'#e0b978',1.9,TB.mat)+
+   '<div class="tbeat">'+Z.map(function(z,i){return '<span data-b="'+i+'">'+z.l+'</span>';}).join('')+'</div>'+
+   bp(0,34)+'<div class="dbtm"></div>');
+  var zs=Z.map(function(z,i){ return [].slice.call(r.querySelectorAll('.mz'+i+' path')); });
+  var pm=[].slice.call(r.querySelectorAll('.pmz path'));
+  zs.forEach(function(g){ g.forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .45s ease'; }); });
+  pm.forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .5s ease'; });
+  var i=0;
+  x.timer(function(){ if(!MOTION) return;
+    zs.forEach(function(g,k){ g.forEach(function(q){ q.style.opacity = k===i?'1':(k<i?'.22':'0'); }); });
+    pm.forEach(function(q,k){ q.style.opacity = i===zs.length-1?'1':'0'; q.style.transitionDelay=(k*80)+'ms'; });
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(s){ s.classList.toggle('on',+s.dataset.b===i); });
+    i=(i+1)%zs.length;
+  },1400);
+});
+
+/* ==================== 17 — EDGE TRACE ==================== */
+C(17,'EDGE TRACE','a light runs the signature edge, then runs it again on the product',function(r,x){
+  r.innerHTML=tsec('c17 tk',hd(1)+
+   '<div style="margin-top:40px">'+bikeStage({dark:true,sk:.4,
+      svg:ov([G.seat,G.tank,G.batt],'edg','#00b4d8',3)})+'</div>'+
+   pgrid('pedg',M.edge,'#00d5ff',2.4,LBL.lang,1)+
+   bp(1,34)+'<div class="dbtm"></div>');
+  function runner(sel,per){
+    var ps=[].slice.call(r.querySelectorAll(sel));
+    ps.forEach(function(q){ var L=400; try{L=q.getTotalLength()||400;}catch(e){}
+      q.dataset.l=L; q.style.strokeDasharray=(L*0.16)+' '+L; });
+    return ps;
+  }
+  var a=runner('.edg path'), b=runner('.pedg path'), t=0;
+  x.frame(function(){ t+=0.006; var v=(t%1);
+    a.forEach(function(q,k){ var L=+q.dataset.l; q.style.strokeDashoffset=(-((v+k*0.14)%1)*L*1.16).toFixed(1); });
+    b.forEach(function(q,k){ var L=+q.dataset.l; q.style.strokeDashoffset=(-((v+k*0.1)%1)*L*1.16).toFixed(1); });
+  });
+});
+
+/* ==================== 18 — COMPONENT FLIGHT ==================== */
+C(18,'COMPONENT FLIGHT','the battery slab leaves the drawing and lands in the product',function(r,x){
+  r.innerHTML=tsec('c18',hd()+
+   '<div style="position:relative;margin-top:40px">'+
+     bikeStage({sk:.9,svg:ov([G.batt].concat(RIBS),'fly','#0a7f99',3.2)})+
+   '</div>'+
+   pgrid('pfly',M.rib.concat(M.edge),'#00d5ff',1.9,LBL.dna)+
+   '<div class="tbeat">'+[LBL.moto,LBL.dna,LBL.lang,LBL.cats].map(function(s,i){return '<span data-b="'+i+'">'+s+'</span>';}).join('')+'</div>'+
+   bp(0,34)+'<div class="dbtm"></div>');
+  var fly=r.querySelector('.fly'), pf=[].slice.call(r.querySelectorAll('.pfly'));
+  fly.style.transition='transform 1.1s cubic-bezier(.5,0,.2,1),opacity .5s ease';
+  pf.forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .5s ease'; });
+  beats(x,function(i){
+    fly.style.opacity = i===0?'0':'1';
+    fly.style.transform = i>=2 ? 'translate('+(i===3?'6%':'2%')+','+(i===3?'46%':'8%')+') scale('+(i===3?0.42:0.9)+')' : 'none';
+    pf.forEach(function(q,k){ q.style.opacity=i===3?'1':'0'; q.style.transitionDelay=(k*80)+'ms'; });
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(s){ s.classList.toggle('on',+s.dataset.b===i); });
+  },1800);
+});
+
+/* ==================== 19 — PROPORTION CARRY ==================== */
+C(19,'PROPORTION CARRY','the proportions measured on the drawing redraw on the product',function(r,x){
+  var meas=['M210 620 L976 620','M495 560 L740 560','M240 130 L790 130'];
+  r.innerHTML=tsec('c19',hd()+
+   '<div style="margin-top:40px">'+bikeStage({sk:.92,
+      svg:ov(meas,'meas','#0a7f99',2.6)+ov([G.wheelR,G.wheelF,G.batt],'ref','rgba(10,127,153,.3)',1.2)})+
+     '<div class="drow" style="margin-top:12px">'+DIMS.slice(0,3).map(function(v){
+       return '<span class="dchip">'+v+' '+TB.un+'</span>';}).join('')+'</div></div>'+
+   pgrid('pms',M.meas,'#00d5ff',1.8,TB.un)+
+   bp(0,34)+'<div class="dbtm"></div>');
+  dashIn(r,'.meas path',x,220,900);
+  dashIn(r,'.pms path',x,120,700,900);
+});
+
+/* ==================== 20 — RADIUS STAMP ==================== */
+C(20,'RADIUS STAMP','one corner radius, stamped onto every product',function(r,x){
+  var corners=['M517 270 L495 294','M715 270 L740 294','M740 502 L715 526','M495 502 L517 526'];
+  r.innerHTML=tsec('c20',hd()+
+   '<div style="margin-top:40px">'+bikeStage({sk:.9,
+      svg:ov([G.batt],'bq','rgba(10,127,153,.28)',1.4)+ov(corners,'cor','#0a7f99',5)})+'</div>'+
+   pgrid('pcor',M.rad,'#00d5ff',2.6,CALLS[4])+
+   bp(0,34)+'<div class="dbtm"></div>');
+  var cs=[].slice.call(r.querySelectorAll('.cor path'));
+  var pc=[].slice.call(r.querySelectorAll('.pcor path'));
+  cs.concat(pc).forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .3s ease,transform .3s ease'; });
+  var i=0, all=cs.length+2;
+  x.timer(function(){ if(!MOTION) return;
+    cs.forEach(function(q,k){ q.style.opacity = k<=i?'1':'0'; });
+    pc.forEach(function(q,k){ q.style.opacity = i>=cs.length?'1':'0'; q.style.transitionDelay=(k*70)+'ms'; });
+    i=(i+1)%(all+1);
+  },520);
+});
+
+/* ==================== 21 — SCAN & COLLECT ==================== */
+C(21,'SCAN & COLLECT','a scan crosses the drawing; what it finds deploys onto the products',function(r,x){
+  r.innerHTML=tsec('c21 tk',hd(1)+
+   '<div style="position:relative;overflow:hidden;margin-top:40px">'+
+     bikeStage({dark:true,sk:.34,svg:ov(G_ALL,'sc','rgba(0,180,216,.95)',1.8)})+
+     '<div class="beam" style="position:absolute;top:0;bottom:0;left:0;width:2px;background:#00b4d8;box-shadow:0 0 26px 6px rgba(0,180,216,.5)"></div>'+
+   '</div>'+
+   pgrid('psc',M.edge.concat(M.rib),'#00d5ff',1.9,SEQ[2],1)+
+   bp(1,34)+'<div class="dbtm"></div>');
+  var svg=r.querySelector('.sc'), bm=r.querySelector('.beam');
+  var ps=[].slice.call(r.querySelectorAll('.psc'));
+  ps.forEach(function(q){ q.style.opacity='0'; q.style.transition='opacity .5s ease'; });
+  var t=0;
+  x.frame(function(){ t+=0.005; var v=t%1.6;
+    var w=Math.min(1,v);
+    svg.style.clipPath='inset(0 '+((1-w)*100).toFixed(1)+'% 0 0)';
+    bm.style.left=(w*100).toFixed(1)+'%'; bm.style.opacity=v<1?'1':'0';
+    ps.forEach(function(q,k){ q.style.opacity = v>1.05+k*0.08 ? '1':'0'; });
+  });
+});
+
+/* ==================== 22 — LIGHTING SIGNATURE ==================== */
+C(22,'LIGHTING SIGNATURE','the lit element on the bike becomes the lit element on the product',function(r,x){
+  r.innerHTML=tsec('c22 tk',hd(1)+
+   '<div style="margin-top:40px">'+bikeStage({dark:true,sk:.36,
+      svg:ov([G.lamp,G.bar],'lmp','#00b4d8',2.6)})+'</div>'+
+   pgrid('plmp',M.lamp,'#00d5ff',2.6,LBL.dna,1)+
+   bp(1,34)+'<div class="dbtm"></div>');
+  var l=r.querySelector('.lmp'), pl=[].slice.call(r.querySelectorAll('.plmp'));
+  var t=0;
+  x.frame(function(){ t+=0.03;
+    var v=(Math.sin(t)*0.5+0.5), f='drop-shadow(0 0 '+(4+9*v).toFixed(1)+'px rgba(0,180,216,.9))';
+    l.style.filter=f; l.style.opacity=(0.55+0.45*v).toFixed(2);
+    pl.forEach(function(q,k){ var w=(Math.sin(t-0.7-k*0.35)*0.5+0.5);
+      q.style.filter='drop-shadow(0 0 '+(3+7*w).toFixed(1)+'px rgba(0,180,216,.85))';
+      q.style.opacity=(0.35+0.65*w).toFixed(2); });
+  });
+});
+
+/* ==================== 23 — GRID INHERIT ==================== */
+C(23,'GRID INHERIT','the drawing’s own construction circles stay behind the new products',function(r,x){
+  r.innerHTML=tsec('c23',hd()+
+   '<div style="margin-top:40px">'+bikeStage({sk:.85,
+      svg:ov([G.wheelR,G.wheelF,'M18 455 L1182 455','M18 168 L1182 168','M517 20 L517 649','M740 20 L740 649'],'gr','rgba(10,127,153,.5)',1.2)})+'</div>'+
+   '<div class="gwrap" style="position:relative;margin-top:34px">'+
+     '<svg class="gback" viewBox="0 0 1200 400" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;z-index:0" fill="none">'+
+       [120,360,600,840,1080].map(function(cx){ return '<circle cx="'+cx+'" cy="180" r="150" stroke="rgba(10,127,153,.3)" stroke-width="1" vector-effect="non-scaling-stroke"/>'; }).join('')+
+       '<path d="M0 180 L1200 180" stroke="rgba(10,127,153,.3)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg>'+
+     pgrid('pgr',[],'#00d5ff',1,LBL.cats).replace('class="prow"','class="prow" style="position:relative;z-index:1"')+
+   '</div>'+bp(0,38)+'<div class="dbtm"></div>');
+  dashIn(r,'.gr path',x,150,1000);
+});
+
+/* ==================== 24 — FULL HANDOFF ==================== */
+C(24,'FULL HANDOFF','the whole sequence held on scroll, then handed to the portfolio',function(r,x){
+  r.innerHTML=tsec('c24','<div style="height:340vh;position:relative">'+
+   '<div class="pin" style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden">'+
+     hd()+
+     '<div style="margin-top:26px">'+bikeStage({sk:0,
+        svg:ov(G_ALL,'h2','rgba(10,127,153,.85)',1.8)+ov(G_LINE.concat(RIBS),'h3','#0a7f99',3.6)})+'</div>'+
+     pgrid('ph4',M.rib.concat(M.edge),'#00d5ff',1.8,LBL.cats).replace('class="prow"','class="prow h4" style="opacity:0;transition:opacity .6s ease"')+
+     '<div class="tbeat">'+[SEQ[0],SEQ[1],SEQ[2],SEQ[3],SEQ[4]].map(function(s,i){return '<span data-b="'+i+'">'+s+'</span>';}).join('')+'</div>'+
+     '<p class="bd" style="margin-top:18px">'+T.p+'</p>'+
+   '</div></div>'+'<div class="dbtm"></div>');
+  var wrap=r.querySelector('.c24 > .din > div');
+  var ph=r.querySelector('.ph'), sk=r.querySelector('.skw');
+  var h2=r.querySelector('.h2'), h3=r.querySelector('.h3'), h4=r.querySelector('.h4');
+  [h2,h3].forEach(function(n){ n.style.transition='opacity .5s ease'; n.style.opacity='0'; });
+  x.on(window,'scroll',function(){
+    var p=x.pinProg(wrap), i=Math.max(0,Math.min(4,Math.floor(p*5)));
+    ph.style.opacity = i===0?'1':(i===1?'.18':'0');
+    sk.style.opacity = i>=1?'1':'0';
+    h2.style.opacity = i>=2?'1':'0';
+    h3.style.opacity = i>=3?'1':'0';
+    h4.style.opacity = i>=4?'1':'0';
+    [].forEach.call(r.querySelectorAll('.tbeat span'),function(s){ s.classList.toggle('on',+s.dataset.b===i); });
+  });
+});
+</script>
+
+<script>
+/* ---- range, portfolio rules and the bar for 00–24 ---- */
+(function(){
+  var MAX=24;
+  window.NMAX=MAX;
+  for(var i=13;i<=MAX;i++) PORT[i]='keep';
+  [13,15,16,18,21,23].forEach(function(n){ PORT[n]='handoff'; });
+  PORT[24]='handoff';
+
+  var GRP={0:'control',1:'kept',13:'dna transfer'};
+
+  var chain=window.show;
+  window.show=function(n){
+    n=((n%(MAX+1))+(MAX+1))%(MAX+1);
+    chain(n);
+    var c=CONCEPTS[n], d=document.getElementById('labdesc');
+    if(d&&c){
+      var tag = n===0?'control' : (n<=12?('kept'+(c.was?' · was '+(c.was<10?'0':'')+c.was:'')) : 'dna transfer');
+      d.textContent=(c.desc||'')+'   · '+tag;
+    }
+  };
+
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent='25 options · 00–'+MAX;
+
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var k=0;k<=MAX;k++){
+    if(GRP[k]){ var g=document.createElement('span'); g.className='gp'; g.textContent=GRP[k];
+      if(k===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=k; b.textContent=(k<10?'0':'')+k;
+    b.title=(CONCEPTS[k]?CONCEPTS[k].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(k));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){show(CUR-1);});
+  nx.addEventListener('click',function(){show(CUR+1);});
+
+  var m=/[#&]c=(\d+)/.exec(location.hash);
+  setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1500);
+})();
+</script>
 
 </body>
 </html>
