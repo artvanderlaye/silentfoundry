@@ -2498,16 +2498,14 @@ body.v11-active nav * { cursor: none !important; }
 
       <!-- ROW 2: Brand DNA | 2-up images -->
       <div class="cs-row-left cs-has-divider">
-        <span class="cs-dslabel dna-label">Extracted DNA</span>
-        <!-- MARSHALL EXTRACTED DNA - CANONICAL CONTENT SOURCE.
-     The eight DNA keys/descriptions and the two group labels are authored here
-     and nowhere else. They live inside a <template>, whose contents are inert:
-     never parsed into the render tree, never painted, never laid out. This is
-     the same authored markup as before, moved - not rewritten, not duplicated.
-     harvestMarshall() reads it from template.content and the approved
-     constellation is rendered from it into the empty .cs-dna-split host below. -->
-<template id="sf-dna-source"><div class="cs-dna-col"><span class="cs-dsub">Intangible</span><div class="cs-ddna cs-ddna-2"><div><span class="cs-ddna-k">Presence</span><span class="cs-ddna-v">The stage authority of a full stack, at domestic scale.</span></div><div><span class="cs-ddna-k">Acoustic Identity</span><span class="cs-ddna-v">The sound audiences already recognised as Marshall, before any logo was seen.</span></div><div><span class="cs-ddna-k">Provenance</span><span class="cs-ddna-v">Six decades on stage behind the bands people grew up listening to.</span></div><div><span class="cs-ddna-k">Attitude</span><span class="cs-ddna-v">Volume treated as a point of view rather than a specification.</span></div></div></div><div class="cs-dna-col"><span class="cs-dsub">Tangible</span><div class="cs-ddna cs-ddna-2"><div><span class="cs-ddna-k">Tactile</span><span class="cs-ddna-v">Pebbled tolex texture carried onto speaker cabinets and headphone cups.</span></div><div><span class="cs-ddna-k">Mechanical</span><span class="cs-ddna-v">Toggle switches and weighted metal controls recreated the familiar interaction.</span></div><div><span class="cs-ddna-k">Visual</span><span class="cs-ddna-v">Script logo and fret-cloth grille kept their exact amplifier proportions.</span></div><div><span class="cs-ddna-k">CMF</span><span class="cs-ddna-v">Black vinyl, brass and cream piping applied with the same discipline as the amps.</span></div></div></div></template>
-        <div class="cs-dna-split"></div>
+        <!-- EXTRACTED DNA REMOVED (Aug 2026, Matthew).
+             The label, the canonical DNA content template and the
+             .cs-dna-split constellation host all lived here and nothing else did.
+             With the template gone harvestMarshall() returns false, so
+             mountMarshall() never runs and the constellation is never built —
+             no script needed changing. The two DOM look-ups that referenced
+             this block (M.host, and the mobile order() label anchor) are both
+             null-guarded, and MLB keeps its default. -->
       </div>
       <div class="cs-row-right cs-gap-bottom">
         <div class="cs-row-right-inner">
@@ -8620,13 +8618,17 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
      state that can be left half-applied. */
   var st=document.getElementById('mi-css')||EARLY;
   st.textContent=BASECSS+smallCSS(v);
-  figure(v);
-  order(v);
-  rowsBleed(v);
-  hubSrc(v);
-  hubClear();
-  layout();
-  hubBleed(v);
+  /* each step is isolated: with the drawing gone the figure/hub/layout steps
+     have nothing to act on, and one of them failing must not stop the photo
+     ordering and bleed that follow it. */
+  function step(fn){ try{ fn(); }catch(e){} }
+  step(function(){figure(v);});
+  step(function(){order(v);});
+  step(function(){rowsBleed(v);});
+  step(function(){hubSrc(v);});
+  step(function(){hubClear();});
+  step(function(){layout();});
+  step(function(){hubBleed(v);});
   var d=document.querySelector('#sfsec-dna .dl-dial');
   if(d)d.classList.remove('mi-swap');
   reveal();
@@ -8728,7 +8730,12 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
  function boot(){
   var t=0;
   (function poll(){
-   if(!grab()){ if(++t<400)setTimeout(poll,50); return; }
+   /* EXTRACTED DNA was removed, so there is no .dl-dial to wait for. This used
+      to poll for it 400 times and never proceed, which left #mi-css empty and
+      the mobile hero photograph hidden by the default rule. With no drawing
+      present we go straight on: the module's remaining job is the photographs. */
+   var noDial=!document.querySelector('#sfsec-dna .dl-dial');
+   if(!noDial && !grab()){ if(++t<400)setTimeout(poll,50); return; }
    var gl=document.getElementById('sf-glance');
    if(gl){var row=gl; while(row&&!(row.className||'').toString().match(/cs-row-left/))row=row.parentElement;
     if(row)row.classList.add('m4-lastrow');}
