@@ -12929,6 +12929,74 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
   setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1600);
 })();
 </script>
+<script>
+/* =========================================================================
+   SWITCH DESIGNED DNA LAB — SHORTLIST
+   Matthew kept five, in this order: 34, 42, 43, 39, 26.
+   They are re-indexed to 01–05 with 00 left as the untouched control.
+
+   Nothing is redesigned. The registry is re-indexed and the bar rebuilt, so
+   each variation, its animation, its hover wiring and its portfolio rule all
+   travel with it. Every earlier layer still holds the variations that were
+   cut, so any of them can be restored by number.
+   ========================================================================= */
+(function(){
+  var KEEP=[34,42,43,39,26];
+  var OLD=CONCEPTS.slice(), OP={};
+  for(var k in PORT) OP[k]=PORT[k];
+
+  CONCEPTS.length=0;
+  CONCEPTS[0]=OLD[0];
+  var NP={0:'keep'};
+  KEEP.forEach(function(o,i){
+    var c=OLD[o]; if(!c) return;
+    c.was=o; c.n=i+1;
+    CONCEPTS[i+1]=c;
+    NP[i+1]=OP[o]||'keep';
+  });
+  window.PORT=NP;
+
+  var MAX=KEEP.length;                 /* 5 */
+  window.NMAX=MAX;
+
+  var chain=window.show;
+  window.show=function(n){
+    n=((n%(MAX+1))+(MAX+1))%(MAX+1);
+    chain(n);
+    var c=CONCEPTS[n], d=document.getElementById('labdesc');
+    if(d&&c){
+      d.textContent=(c.desc||'')+(n===0?'   · control'
+        :'   · shortlist '+n+' of '+MAX+' · was '+(c.was<10?'0':'')+c.was);
+    }
+  };
+
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent=(MAX+1)+' options · 00–0'+MAX;
+
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var i=0;i<=MAX;i++){
+    if(i===0||i===1){
+      var g=document.createElement('span'); g.className='gp';
+      g.textContent = i===0?'control':'shortlist';
+      if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; }
+      bx.appendChild(g);
+    }
+    var b=document.createElement('button');
+    b.dataset.n=i; b.textContent=(i<10?'0':'')+i;
+    b.title=(CONCEPTS[i]?CONCEPTS[i].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(i));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){show(CUR-1);});
+  nx.addEventListener('click',function(){show(CUR+1);});
+
+  var m=/[#&]c=(\d+)/.exec(location.hash);
+  setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1700);
+})();
+</script>
 
 </body>
 </html>
