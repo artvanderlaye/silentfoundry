@@ -9969,6 +9969,7 @@ window.addEventListener('load',function(){
 });
 </script>
 
+
 <!-- ============================================================
      SWITCH DNA TRANSFORM LAB  —  FULL SITE HOST
      This file is production index.html with a lab layer appended.
@@ -10816,7 +10817,7 @@ io.observe(r.querySelector('.feed'));
 
   var _show=window.show;
   window.show=function(n){
-    n=((n%33)+33)%33;
+    var _L=(window.NMAX||32)+1; n=((n%_L)+_L)%_L;
     _show(n);
     var pf=document.getElementById('sf-pfwrap');
     if(pf){
@@ -10859,10 +10860,805 @@ io.observe(r.querySelector('.feed'));
   function boot(){
     if(!document.getElementById('sf-dnawrap')){ return setTimeout(boot,150); }
     var m=/[#&]c=(\d+)/.exec(location.hash);
-    show(m?Math.max(0,Math.min(32,+m[1])):0);
+    show(m?Math.max(0,Math.min(window.NMAX||32,+m[1])):0);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,900);});
   else setTimeout(boot,900);
+})();
+</script>
+<script>
+/* =========================================================================
+   SWITCH DESIGNED DNA LAB — ADDITIVE PASS  ·  33–62
+   Thirty methods of visually EXTRACTING design DNA from the real
+   eSCRAMBLER. Nothing in 00–32 is touched: this file only appends.
+
+   Two sources of truth are used, deliberately paired:
+     · the REAL material  — the 2017 line drawing, the concept sketches,
+       the CAD wireframe / render / drivetrain frames, the product photos
+     · an EXTRACTED reduction — hand-authored side-view geometry of the
+       eSCRAMBLER, split into wheels / body / structure / detail so each
+       concept can isolate a different layer of the same object
+
+   COPY RULE unchanged: every word rendered comes from window.T, FOUR,
+   LBL, or the engineering data transcribed off the real SWIFT-CJ-20
+   sheet (DIMS / CALLS / TB / SEQ). Nothing is invented.
+   ========================================================================= */
+
+/* ---------- extracted eSCRAMBLER geometry, viewBox 0 0 400 200 ---------- */
+function _circ(cx,cy,r){ return 'M'+cx+' '+cy+' m-'+r+' 0 a'+r+' '+r+' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 -'+(2*r)+' 0'; }
+function _spokes(cx,cy,r0,r1,n,off){
+  var a=[],i,t;
+  for(i=0;i<n;i++){ t=(off||0)+i*2*Math.PI/n;
+    a.push('M'+(cx+r0*Math.cos(t)).toFixed(1)+' '+(cy+r0*Math.sin(t)).toFixed(1)+
+           ' L'+(cx+r1*Math.cos(t)).toFixed(1)+' '+(cy+r1*Math.sin(t)).toFixed(1)); }
+  return a;
+}
+var E={
+  tyreR:_circ(92,132,44), rimR:_circ(92,132,26), hubR:_circ(92,132,7),
+  tyreF:_circ(312,132,44), rimF:_circ(312,132,26), hubF:_circ(312,132,7),
+  batt :'M148 74 L226 74 L232 92 L232 122 L214 134 L156 134 L142 120 L142 88 Z',
+  battIn:'M157 85 L217 85 L217 121 L157 121 Z',
+  battRib:'M172 85 L172 121 M187 85 L187 121 M202 85 L202 121',
+  tank :'M150 74 C170 60 208 58 228 74',
+  seat :'M100 84 L152 77',
+  tail :'M74 88 L100 84 L100 92 L78 94 Z',
+  frameA:'M148 128 L143 98 L150 76',
+  frameB:'M228 76 L252 78',
+  frameC:'M150 100 L226 88',
+  swing :'M152 127 L96 132',
+  swing2:'M152 118 L98 127',
+  shock :'M150 118 L136 92',
+  forkA :'M256 76 L306 124',
+  forkB :'M268 71 L318 119',
+  yoke  :'M250 68 L276 62',
+  bar   :'M238 54 L272 47',
+  lamp  :_circ(272,66,15),
+  lampIn:_circ(272,66,8),
+  motor :_circ(152,128,17),
+  motorIn:_circ(152,128,8),
+  peg   :'M170 142 L186 142',
+  fendF :'M280 98 C294 82 332 82 346 100',
+  fendR :'M52 108 C64 90 118 88 132 102',
+  ground:'M18 180 L382 180'
+};
+var E_WHEEL=[E.tyreR,E.rimR,E.hubR,E.tyreF,E.rimF,E.hubF]
+  .concat(_spokes(92,132,8,25,8,0.2)).concat(_spokes(312,132,8,25,8,0.2));
+var E_BODY =[E.batt,E.battIn,E.battRib,E.tank,E.seat,E.tail];
+var E_STRUCT=[E.frameA,E.frameB,E.frameC,E.swing,E.swing2,E.shock,E.forkA,E.forkB,E.yoke];
+var E_DET  =[E.lamp,E.lampIn,E.motor,E.motorIn,E.bar,E.peg,E.fendF,E.fendR];
+var E_ALL  =E_WHEEL.concat(E_BODY,E_STRUCT,E_DET);
+var E_SIL  =[E.tyreR,E.tyreF,E.batt,E.tank,E.seat,E.tail,E.forkA,E.forkB,E.fendF,E.fendR,E.lamp];
+
+/* the same reduction applied to the categories the portfolio already ships */
+var X_OUT=[
+  {k:'speaker', p:GEO.speakerPath, img:IMG.speaker},
+  {k:'battery', p:GEO.batteryPath, img:IMG.battery},
+  {k:'light',   p:GEO.lightPath,   img:IMG.light},
+  {k:'board',   p:GEO.boardPath,   img:IMG.snowboard},
+  {k:'guitar',  p:GEO.guitarPath,  img:IMG.guitar}
+];
+
+var CY='rgba(10,127,153,0.75)', INK='rgba(10,10,10,0.5)', PALE='rgba(10,10,10,0.16)';
+function D(paths,opt){ opt=opt||{}; opt.vb=opt.vb||'0 0 400 200'; return svgOf(paths,opt); }
+function dimg(src,fb,style,cls){
+  return '<img class="'+(cls||'')+'" src="'+src+'"'+
+   (fb?' onerror="this.onerror=null;this.src=\''+fb.replace(/'/g,"\\'")+'\'"':'')+
+   ' style="'+(style||'')+'" alt="">';
+}
+function sec(cls,inner,style){ return '<div class="lb dp '+cls+'" style="'+(style||'')+'"><div class="din">'+inner+'</div></div>'; }
+/* dash-draw a set of paths in order */
+function draw(root,sel,x,step,dur){
+  var ps=[].slice.call(root.querySelectorAll(sel));
+  ps.forEach(function(q){ var L=0; try{L=q.getTotalLength();}catch(e){L=400;}
+    q.style.strokeDasharray=L; q.style.strokeDashoffset=L;
+    q.style.transition='stroke-dashoffset '+(dur||900)+'ms cubic-bezier(.22,.61,.36,1)'; });
+  var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return;
+    ps.forEach(function(q,k){ x.delay(function(){ q.style.strokeDashoffset='0'; }, k*(step||55)); }); }); },{threshold:.22}));
+  if(ps[0]&&ps[0].ownerSVGElement) io.observe(ps[0].ownerSVGElement);
+  return ps;
+}
+</script>
+
+<style id="sf-lab-deep-css">
+#sf-lab-mount .dp{padding:100px 24px 0;background:var(--lab-cream);}
+#sf-lab-mount .dp .din{max-width:1600px;margin:0 auto;position:relative;}
+#sf-lab-mount .dp.dk{background:var(--lab-dark);}
+#sf-lab-mount .dp svg{width:100%;height:auto;display:block;overflow:visible;}
+#sf-lab-mount .dstage{position:relative;width:100%;}
+#sf-lab-mount .dstage>*{position:absolute;inset:0;}
+#sf-lab-mount .dstage img{width:100%;height:100%;object-fit:contain;display:block;}
+#sf-lab-mount .dlab{font-family:var(--lab-dm);font-size:.5rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--lab-cy);display:block;}
+#sf-lab-mount .dnum{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.16em;color:var(--lab-cy);}
+#sf-lab-mount .dsheet{border:1px solid rgba(10,10,10,.2);background:rgba(255,255,255,.4);position:relative;}
+#sf-lab-mount .dsheet.dkk{border-color:rgba(244,241,236,.18);background:rgba(255,255,255,.03);}
+#sf-lab-mount .dcols{display:grid;gap:34px;}
+#sf-lab-mount .dgrid-mm{background-image:
+  repeating-linear-gradient(0deg,transparent,transparent 15px,rgba(10,10,10,.05) 15px,rgba(10,10,10,.05) 16px),
+  repeating-linear-gradient(90deg,transparent,transparent 15px,rgba(10,10,10,.05) 15px,rgba(10,10,10,.05) 16px);}
+#sf-lab-mount .dgrid-bl{background-image:
+  repeating-linear-gradient(0deg,transparent,transparent 15px,rgba(140,190,215,.14) 15px,rgba(140,190,215,.14) 16px),
+  repeating-linear-gradient(90deg,transparent,transparent 15px,rgba(140,190,215,.14) 15px,rgba(140,190,215,.14) 16px);}
+#sf-lab-mount .drow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+#sf-lab-mount .dchip{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;
+  border:1px solid rgba(10,127,153,.42);color:var(--lab-cy);padding:5px 9px;border-radius:1px;white-space:nowrap;}
+#sf-lab-mount .dchip.q{border-color:rgba(10,10,10,.18);color:rgba(10,10,10,.42);}
+#sf-lab-mount .dcap{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(10,10,10,.36);margin-top:9px;display:block;}
+#sf-lab-mount .dp.dk .dcap,#sf-lab-mount .dp.dk .dchip.q{color:rgba(244,241,236,.4);}
+#sf-lab-mount .dp.dk .dchip.q{border-color:rgba(244,241,236,.2);}
+#sf-lab-mount .dbtm{height:100px;}
+@media(max-width:900px){
+  #sf-lab-mount .dp{padding:88px 24px 0;}
+  #sf-lab-mount .dcols{grid-template-columns:1fr !important;gap:26px;}
+  #sf-lab-mount .dhide-m{display:none !important;}
+}
+</style>
+
+<script>
+/* ============================ 33 — PURE TRACE ============================ */
+C(33,'PURE TRACE','the photograph is traced, then withdrawn, leaving only line',function(r,x){
+  r.innerHTML=sec('c33',hd()+
+   '<div class="dstage" style="height:46vh;min-height:300px;margin-top:44px">'+
+     '<div class="ph">'+dimg(IMG.bike,null,'object-fit:cover;filter:grayscale(1) contrast(.9)')+'</div>'+
+     '<div class="ln">'+D(E_ALL,{stroke:CY,sw:1.3})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+SEQ[0]+'</span><span class="dchip">'+SEQ[2]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var ph=r.querySelector('.ph'), t=0;
+  draw(r,'.ln path',x,26,700);
+  x.frame(function(){ t+=0.006; var v=(Math.sin(t)+1)/2; ph.style.opacity=(0.12+0.72*v).toFixed(3); });
+});
+
+/* ====================== 34 — CONSTRUCTION GEOMETRY ====================== */
+C(34,'CONSTRUCTION GEOMETRY','the circles and axes the form is built on, then the form',function(r,x){
+  var cons=[_circ(92,132,44),_circ(312,132,44),_circ(202,104,86),
+    'M92 132 L312 132','M92 132 L202 60','M312 132 L202 60','M202 60 L202 180',
+    'M18 74 L382 74','M18 132 L382 132'];
+  r.innerHTML=sec('c34',hd()+
+   '<div class="dstage dgrid-mm" style="height:46vh;min-height:300px;margin-top:44px">'+
+     '<div>'+D(cons,{stroke:'rgba(10,127,153,0.32)',sw:0.8,cls:'cons'})+'</div>'+
+     '<div>'+D(E_SIL,{stroke:INK,sw:1.3,cls:'form'})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+FOUR[0]+'</span><span class="dchip q">'+LBL.dna+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  draw(r,'.cons path',x,60,700);
+  var f=[].slice.call(r.querySelectorAll('.form path'));
+  f.forEach(function(q){q.style.opacity='0';q.style.transition='opacity .7s ease';});
+  x.delay(function(){ f.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';},k*45); }); },900);
+});
+
+/* ======================= 35 — SKETCH EXTRACTION ========================= */
+C(35,'SKETCH EXTRACTION','lines lift off the original sketch and stand alone',function(r,x){
+  r.innerHTML=sec('c35',hd()+
+   '<div class="dcols" style="grid-template-columns:1.15fr 1fr;align-items:center;margin-top:44px">'+
+     '<div><div class="dstage" style="height:38vh;min-height:240px">'+
+       '<div class="sk">'+im2('pencil','object-fit:contain')+'</div></div>'+
+       '<span class="dcap">'+SEQ[1]+'</span></div>'+
+     '<div><div class="dstage" style="height:38vh;min-height:240px">'+
+       '<div>'+D(E_STRUCT.concat(E_BODY),{stroke:CY,sw:1.3,cls:'ex'})+'</div></div>'+
+       '<span class="dcap">'+SEQ[2]+'</span></div>'+
+   '</div>'+bp(0,40)+'<div class="dbtm"></div>');
+  draw(r,'.ex path',x,70,800);
+});
+
+/* ======================== 36 — WIREFRAME REVEAL ========================= */
+C(36,'WIREFRAME REVEAL','a wipe carries the product into its wireframe',function(r,x){
+  r.innerHTML=sec('c36',hd()+
+   '<div class="dstage" id="d36" style="height:48vh;min-height:300px;margin-top:44px;overflow:hidden">'+
+     '<div>'+dimg(IMG.bike,null,'object-fit:cover')+'</div>'+
+     '<div class="wf" style="clip-path:inset(0 100% 0 0)">'+dimg(SK.wire,IMG.cadScreen,'object-fit:cover;filter:grayscale(1) contrast(1.15)')+'</div>'+
+     '<div class="edge" style="position:absolute;top:0;bottom:0;left:0;width:1px;background:var(--lab-cyb)"></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+SEQ[0]+'</span><span class="dchip">'+FOUR[1]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var wf=r.querySelector('.wf'), ed=r.querySelector('.edge'), t=0;
+  x.frame(function(){ t+=0.004; var v=(Math.sin(t)*0.5+0.5);
+    wf.style.clipPath='inset(0 '+((1-v)*100).toFixed(2)+'% 0 0)'; ed.style.left=(v*100).toFixed(2)+'%'; });
+});
+
+/* ========================= 37 — X-RAY STRUCTURE ========================= */
+C(37,'X-RAY STRUCTURE','the outside dims and the structure inside it glows',function(r,x){
+  r.innerHTML=sec('c37 dk',hd(1)+
+   '<div class="dstage" style="height:48vh;min-height:300px;margin-top:44px">'+
+     '<div class="sh">'+dimg(IMG.bike,null,'object-fit:cover;filter:grayscale(1) brightness(.42) contrast(1.1)')+'</div>'+
+     '<div>'+D(E_STRUCT.concat(E_WHEEL),{stroke:'rgba(0,180,216,0.85)',sw:1.1,cls:'xr'})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+FOUR[1]+'</span><span class="dchip q">'+LBL.dna+'</span></div>'+
+   bp(1,32)+'<div class="dbtm"></div>');
+  draw(r,'.xr path',x,30,800);
+  var svg=r.querySelector('.xr'), t=0;
+  x.frame(function(){ t+=0.02; svg.style.filter='drop-shadow(0 0 '+(3+2*Math.sin(t)).toFixed(2)+'px rgba(0,180,216,.55))'; });
+});
+
+/* ========================== 38 — DATUM SYSTEM =========================== */
+C(38,'DATUM SYSTEM','datum lines and the real dimension chain off the sheet',function(r,x){
+  var d=E_SIL.concat(['M18 168 L382 168','M60 20 L60 190','M344 20 L344 190']);
+  var chain=DIMS.slice(0,6).map(function(v,i){
+    return '<span class="rdim" style="left:'+(16+i*15)+'%;top:'+(12+i*13)+'%">'+v+'</span>'; }).join('');
+  r.innerHTML=sec('c38',hd()+
+   '<div class="dstage dgrid-mm" style="height:50vh;min-height:320px;margin-top:44px">'+
+     '<div>'+D(d,{stroke:INK,sw:1.1,cls:'dt'})+'</div>'+
+     '<div style="pointer-events:none">'+chain+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+TB.un+'</span><span class="dchip q">'+TB.part+'</span><span class="dchip q">'+TB.rev+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  draw(r,'.dt path',x,45,700);
+  var ds=[].slice.call(r.querySelectorAll('.rdim'));
+  ds.forEach(function(q){q.style.opacity='0';q.style.transition='opacity .5s ease';});
+  x.delay(function(){ ds.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';},k*140); }); },700);
+});
+
+/* ========================= 39 — ANGLE EXTRACTION ======================== */
+C(39,'ANGLE EXTRACTION','the governing angles and the sheet’s own chamfer and radius',function(r,x){
+  var ang=['M256 76 L306 124','M256 76 L256 150','M152 127 L96 132','M152 127 L60 127',
+    'M148 74 L226 74','M148 74 L148 150',
+    _circ(256,76,26),_circ(152,127,22),_circ(148,74,20)];
+  r.innerHTML=sec('c39',hd()+
+   '<div class="dstage" style="height:48vh;min-height:300px;margin-top:44px">'+
+     '<div>'+D(E_SIL,{stroke:PALE,sw:1})+'</div>'+
+     '<div>'+D(ang,{stroke:CY,sw:1,cls:'ag'})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+CALLS[3]+'</span><span class="dchip">'+CALLS[4]+'</span><span class="dchip q">'+FOUR[0]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  draw(r,'.ag path',x,80,700);
+});
+
+/* ========================= 40 — PROPORTION MAP ========================== */
+C(40,'PROPORTION MAP','the object read as proportion, measured with the real numbers',function(r,x){
+  var bands=DIMS.slice(0,5).map(function(v,i){
+    var w=(parseFloat(v)/parseFloat(DIMS[0])*100).toFixed(1);
+    return '<div style="display:grid;grid-template-columns:70px 1fr;gap:14px;align-items:center;margin-bottom:9px">'+
+      '<span class="dnum">'+v+'</span>'+
+      '<span class="pb" style="height:2px;background:rgba(10,127,153,.5);width:0;--w:'+w+'%;transition:width 1s cubic-bezier(.22,.61,.36,1)"></span></div>'; }).join('');
+  r.innerHTML=sec('c40',hd()+
+   '<div class="dcols" style="grid-template-columns:1.25fr .85fr;align-items:center;margin-top:44px">'+
+     '<div class="dstage" style="height:38vh;min-height:240px">'+
+       '<div>'+D(E_SIL,{stroke:INK,sw:1.2})+'</div>'+
+       '<div>'+D(['M18 74 L382 74','M18 106 L382 106','M18 134 L382 134','M18 176 L382 176'],{stroke:'rgba(10,127,153,.3)',sw:0.8})+'</div>'+
+     '</div>'+
+     '<div>'+bands+'<span class="dcap">'+TB.un+' · '+TB.part+'</span></div>'+
+   '</div>'+bp(0,40)+'<div class="dbtm"></div>');
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    [].forEach.call(r.querySelectorAll('.pb'),function(b,k){ x.delay(function(){ b.style.width=b.style.getPropertyValue('--w'); },k*110); }); });},{threshold:.3}));
+  io.observe(r.querySelector('.dcols'));
+});
+
+/* ========================== 41 — DETAIL CALLOUTS ======================== */
+C(41,'DETAIL CALLOUTS','magnified details, labelled with the sheet’s own callouts',function(r,x){
+  /* the bubble is a precise zoom of the photograph, positioned with
+     background-size/position rather than margin guesswork */
+  var pts=[{l:'20%',t:'30%',bx:'22%',by:'62%'},{l:'44%',t:'58%',bx:'46%',by:'70%'},
+           {l:'66%',t:'26%',bx:'74%',by:'46%'},{l:'36%',t:'18%',bx:'40%',by:'40%'},
+           {l:'56%',t:'66%',bx:'62%',by:'76%'}];
+  var bub=pts.map(function(p,i){
+    return '<div class="db" style="position:absolute;left:'+p.l+';top:'+p.t+';width:96px;height:96px;'+
+      'border:1px solid rgba(10,127,153,.5);border-radius:50%;overflow:hidden;background:#fff '+
+      'url('+IMG.bike+') no-repeat;background-size:520% auto;background-position:'+p.bx+' '+p.by+'">'+
+      '<span class="dnum" style="position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);white-space:nowrap">'+CALLS[i]+'</span></div>'; }).join('');
+  r.innerHTML=sec('c41',hd()+
+   '<div class="dstage" style="height:52vh;min-height:340px;margin-top:44px">'+
+     '<div>'+D(E_ALL,{stroke:PALE,sw:1})+'</div>'+
+     '<div style="pointer-events:none">'+bub+'</div>'+
+   '</div>'+bp(0,44)+'<div class="dbtm"></div>');
+  var b=[].slice.call(r.querySelectorAll('.db')),i=0;
+  b.forEach(function(q){q.style.opacity='.25';q.style.transition='opacity .45s ease,transform .45s ease';q.style.transform='scale(.9)';});
+  x.timer(function(){ if(!MOTION)return;
+    b.forEach(function(q,k){ var on=k===i; q.style.opacity=on?'1':'.22'; q.style.transform=on?'scale(1.06)':'scale(.9)'; });
+    i=(i+1)%b.length; },1200);
+});
+
+/* ========================= 42 — ENGINEERING SHEET ======================= */
+C(42,'ENGINEERING SHEET','the section presented as a drawing sheet of the product',function(r,x){
+  r.innerHTML=sec('c42',
+   '<div class="dsheet" style="padding:0">'+
+     '<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:11px 16px;border-bottom:1px solid rgba(10,10,10,.14)">'+
+       '<span class="rmono">'+TB.part+'</span><span class="rmono">'+TB.mat+'</span><span class="rmono">'+TB.un+'</span><span class="rmono">'+TB.rev+'</span></div>'+
+     '<div style="padding:44px 34px 0">'+hd()+
+       '<div class="dstage dgrid-mm" style="height:40vh;min-height:260px;margin-top:34px;border:1px solid rgba(10,10,10,.12)">'+
+         '<div>'+D(E_ALL,{stroke:INK,sw:1.1,cls:'sh42'})+'</div></div>'+
+       bp(0,34)+
+       '<div class="rtb" style="margin:30px 0 34px"><span>'+LBL.switch_+'</span><span><b>'+TB.prod+'</b></span><span>'+TB.mat+'</span><span>'+TB.rev+'</span></div>'+
+     '</div>'+
+   '</div><div class="dbtm"></div>');
+  draw(r,'.sh42 path',x,20,700);
+});
+
+/* =========================== 43 — SKETCH → CAD ========================== */
+C(43,'SKETCH → CAD','the hand drawing resolves into the engineered model',function(r,x){
+  r.innerHTML=sec('c43',hd()+
+   '<div class="dstage" style="height:50vh;min-height:320px;margin-top:44px;overflow:hidden">'+
+     '<div>'+im2('pencil','object-fit:contain;filter:contrast(1.15)')+'</div>'+
+     '<div class="cd" style="clip-path:inset(0 0 0 50%)">'+dimg(SK.plate,SK.wire,'object-fit:contain')+'</div>'+
+     '<div class="dv" style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(10,127,153,.65)"></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+SEQ[1]+'</span><span class="dchip">'+FOUR[1]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var cd=r.querySelector('.cd'), dv=r.querySelector('.dv'), t=0;
+  x.frame(function(){ t+=0.005; var v=32+26*Math.sin(t);
+    cd.style.clipPath='inset(0 0 0 '+v.toFixed(2)+'%)'; dv.style.left=v.toFixed(2)+'%'; });
+});
+
+/* =================== 44 — PHOTO → WIREFRAME → DNA ======================= */
+C(44,'PHOTO → WIREFRAME → DNA','three states of the same object, held on scroll',function(r,x){
+  r.innerHTML=sec('c44','<div style="height:230vh;position:relative">'+
+   '<div class="pin" style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center">'+
+     hd()+
+     '<div class="dstage" style="height:46vh;margin-top:34px">'+
+       '<div class="s0">'+dimg(IMG.bike,null,'object-fit:contain')+'</div>'+
+       '<div class="s1" style="opacity:0">'+dimg(SK.wire,IMG.cadScreen,'object-fit:contain;filter:grayscale(1) contrast(1.15)')+'</div>'+
+       '<div class="s2" style="opacity:0">'+D(E_ALL,{stroke:CY,sw:1.2})+'</div>'+
+     '</div>'+
+     '<div class="drow" style="margin-top:20px">'+
+       [SEQ[0],FOUR[1],LBL.dna].map(function(s,i){return '<span class="dchip q st" data-i="'+i+'">'+s+'</span>';}).join('')+
+     '</div>'+
+   '</div></div>'+bp(0,44)+'<div class="dbtm"></div>');
+  var wrap=r.querySelector('.c44 > .din > div'), st=[r.querySelector('.s0'),r.querySelector('.s1'),r.querySelector('.s2')];
+  var chips=[].slice.call(r.querySelectorAll('.st'));
+  x.on(window,'scroll',function(){
+    var p=x.pinProg(wrap), i=p<.34?0:(p<.68?1:2);
+    st.forEach(function(s,k){ s.style.transition='opacity .45s ease'; s.style.opacity=k===i?'1':'0'; });
+    chips.forEach(function(c,k){ c.classList.toggle('q',k!==i); });
+  });
+});
+
+/* ======================= 45 — COMPONENT DISSECTION ====================== */
+C(45,'COMPONENT DISSECTION','the object comes apart into the parts that carry the language',function(r,x){
+  var parts=[
+    {n:'ex-w', p:[E.tyreR,E.rimR,E.hubR], dx:-52,dy:26},
+    {n:'ex-f', p:[E.tyreF,E.rimF,E.hubF], dx:56, dy:26},
+    {n:'ex-b', p:[E.batt,E.battIn,E.battRib], dx:0, dy:-54},
+    {n:'ex-s', p:E_STRUCT, dx:0, dy:14},
+    {n:'ex-d', p:E_DET, dx:22, dy:-24}
+  ];
+  r.innerHTML=sec('c45',hd()+
+   '<div class="dstage" style="height:52vh;min-height:330px;margin-top:44px">'+
+     parts.map(function(q){ return '<div class="'+q.n+' pt" data-dx="'+q.dx+'" data-dy="'+q.dy+'">'+
+       D(q.p,{stroke:INK,sw:1.15})+'</div>'; }).join('')+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px">'+FOUR.map(function(f){return '<span class="dchip q">'+f+'</span>';}).join('')+'</div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var pt=[].slice.call(r.querySelectorAll('.pt')), t=0;
+  pt.forEach(function(q){ q.style.transition='transform .1s linear'; });
+  x.frame(function(){ t+=0.006; var v=(Math.sin(t)*0.5+0.5);
+    pt.forEach(function(q){ q.style.transform='translate('+(+q.dataset.dx*v).toFixed(1)+'px,'+(+q.dataset.dy*v).toFixed(1)+'px)'; }); });
+});
+
+/* ========================= 46 — SILHOUETTE FAMILY ======================= */
+C(46,'SILHOUETTE FAMILY','solid mass, not outline — the family read at a glance',function(r,x){
+  /* mass is built from CLOSED shapes only. Open paths are stroked heavy so
+     they still read as mass instead of filling into wrong polygons. */
+  var MASS=[_circ(92,132,44),_circ(312,132,44),_circ(272,66,15),E.batt,
+    'M96 94 L150 78 C170 62 210 60 230 76 L230 94 L150 102 L96 102 Z',
+    'M68 88 L104 82 L104 98 L70 100 Z',
+    'M252 72 L266 66 L320 120 L308 129 Z',
+    'M96 124 L154 118 L154 132 L96 138 Z'];
+  function fill(paths){
+    var cl=paths.filter(function(d){return /z/i.test(d);});
+    var op=paths.filter(function(d){return !/z/i.test(d);});
+    return '<svg viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet">'+
+      cl.map(function(d){return '<path d="'+d+'" fill="rgba(10,10,10,.78)" stroke="none"/>';}).join('')+
+      op.map(function(d){return '<path d="'+d+'" fill="none" stroke="rgba(10,10,10,.78)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';}).join('')+'</svg>'; }
+  r.innerHTML=sec('c46',hd()+
+   '<div style="margin-top:44px"><svg viewBox="0 0 400 200" style="height:32vh;min-height:200px">'+
+     MASS.map(function(d){return '<path d="'+d+'" fill="rgba(10,10,10,.8)" stroke="none"/>';}).join('')+'</svg>'+
+     '<span class="dcap">'+LBL.moto+'</span></div>'+
+   '<div class="dcols" style="grid-template-columns:repeat(5,1fr);margin-top:38px">'+
+     X_OUT.map(function(o,i){ return '<div class="fm" data-i="'+i+'" style="opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease">'+
+       fill(o.p)+'<span class="dcap">'+LBL.cats+'</span></div>'; }).join('')+
+   '</div>'+bp(0,44)+'<div class="dbtm"></div>');
+  var f=[].slice.call(r.querySelectorAll('.fm'));
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    f.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';q.style.transform='none';},k*150); }); });},{threshold:.25}));
+  io.observe(r.querySelector('.dcols'));
+});
+
+/* =========================== 47 — LINE MIGRATION ======================== */
+C(47,'LINE MIGRATION','one characteristic line leaves the motorcycle and arrives elsewhere',function(r,x){
+  r.innerHTML=sec('c47',hd()+
+   '<div class="dstage" style="height:50vh;min-height:320px;margin-top:44px">'+
+     '<div>'+D(E_ALL,{stroke:PALE,sw:1})+'</div>'+
+     '<div>'+D([E.tank,E.seat,E.batt],{stroke:CY,sw:1.8,cls:'mg'})+'</div>'+
+     '<div class="tg" style="opacity:0;transition:opacity .8s ease">'+
+       '<svg viewBox="0 0 400 200"><g transform="translate(200,40) scale(0.8)">'+
+       GEO.speakerPath.map(function(d){return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.4" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+
+       '</g></svg></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+LBL.moto+'</span><span class="dchip">'+LBL.lang+'</span><span class="dchip q">'+LBL.cats+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var mg=r.querySelector('.mg'), tg=r.querySelector('.tg'), t=0;
+  draw(r,'.mg path',x,120,900);
+  x.frame(function(){ t+=0.005; var v=(Math.sin(t)*0.5+0.5);
+    mg.style.transform='translate('+(v*90).toFixed(1)+'px,'+(-v*26).toFixed(1)+'px)';
+    mg.style.opacity=(1-v*0.55).toFixed(2); tg.style.opacity=v.toFixed(2); });
+});
+
+/* ========================== 48 — RADIUS LANGUAGE ======================== */
+C(48,'RADIUS LANGUAGE','one radius from the sheet, repeated as a rule',function(r,x){
+  var arcs=[];
+  [[92,132,44],[312,132,44],[272,66,15],[152,128,17],[148,88,14],[232,92,14]].forEach(function(c){ arcs.push(_circ(c[0],c[1],c[2])); });
+  r.innerHTML=sec('c48',hd()+
+   '<div class="dcols" style="grid-template-columns:1.2fr .8fr;align-items:center;margin-top:44px">'+
+     '<div class="dstage" style="height:40vh;min-height:250px">'+
+       '<div>'+D(E_SIL,{stroke:PALE,sw:1})+'</div>'+
+       '<div>'+D(arcs,{stroke:CY,sw:1.4,cls:'ra'})+'</div></div>'+
+     '<div><span class="dlab">'+CALLS[4]+'</span>'+
+       '<div class="drow" style="margin-top:18px">'+X_OUT.slice(0,4).map(function(o){
+         return '<div style="width:78px"><svg viewBox="0 0 200 100">'+o.p.map(function(d){
+           return '<path d="'+d+'" stroke="'+INK+'" stroke-width="1.1" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+
+           '<circle cx="100" cy="52" r="26" stroke="'+CY+'" stroke-width="1" fill="none"/></svg></div>';}).join('')+'</div>'+
+       '<span class="dcap">'+TB.un+'</span></div>'+
+   '</div>'+bp(0,40)+'<div class="dbtm"></div>');
+  draw(r,'.ra path',x,110,900);
+});
+
+/* ======================== 49 — STRUCTURAL SKELETON ====================== */
+C(49,'STRUCTURAL SKELETON','only what carries load; everything else is dropped',function(r,x){
+  r.innerHTML=sec('c49',hd()+
+   '<div class="dstage" style="height:48vh;min-height:300px;margin-top:44px">'+
+     '<div class="gh">'+D(E_ALL,{stroke:'rgba(10,10,10,.1)',sw:1})+'</div>'+
+     '<div>'+D(E_STRUCT,{stroke:INK,sw:2.1,cls:'sk49'})+'</div>'+
+     '<div>'+D([E.hubR,E.hubF,E.motorIn],{stroke:CY,sw:2.4})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+FOUR[1]+'</span><span class="dchip q">'+FOUR[3]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  draw(r,'.sk49 path',x,90,800);
+});
+
+/* ============================ 50 — MATERIAL MAP ========================= */
+C(50,'MATERIAL MAP','the object read as materials, named by the sheet',function(r,x){
+  var sw=[{i:IMG.cnc,l:TB.mat},{i:IMG.frameB,l:FOUR[3]},{i:IMG.pcb,l:FOUR[1]},{i:IMG.cnc2,l:FOUR[2]}];
+  r.innerHTML=sec('c50',hd()+
+   '<div class="dstage" style="height:40vh;min-height:250px;margin-top:44px">'+
+     '<div>'+D(E_ALL,{stroke:PALE,sw:1})+'</div>'+
+     '<div>'+D(E_BODY,{stroke:CY,sw:1.6})+'</div>'+
+     '<div>'+D([E.rimR,E.rimF,E.forkA,E.forkB],{stroke:'rgba(138,110,58,.85)',sw:1.6})+'</div>'+
+   '</div>'+
+   '<div class="dcols" style="grid-template-columns:repeat(4,1fr);margin-top:30px">'+
+     sw.map(function(s){ return '<div><div style="height:96px;overflow:hidden">'+
+       dimg(s.i,IMG.frameA,'width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)')+'</div>'+
+       '<span class="dcap">'+s.l+'</span></div>'; }).join('')+
+   '</div>'+bp(0,40)+'<div class="dbtm"></div>');
+});
+
+/* ============================== 51 — MASS MAP ========================== */
+C(51,'MASS MAP','where the weight sits, and what that gives the form',function(r,x){
+  var blocks=[{x:8,w:20,h:34},{x:30,w:16,h:52},{x:46,w:22,h:88},{x:68,w:14,h:44},{x:82,w:14,h:30}];
+  r.innerHTML=sec('c51',hd()+
+   '<div class="dstage" style="height:38vh;min-height:240px;margin-top:44px">'+
+     '<div>'+D(E_SIL,{stroke:PALE,sw:1})+'</div>'+
+   '</div>'+
+   '<div style="position:relative;height:110px;margin-top:6px;border-top:1px solid rgba(10,10,10,.14)">'+
+     blocks.map(function(b,i){ return '<div class="ms" style="position:absolute;bottom:0;left:'+b.x+'%;width:'+b.w+'%;'+
+       'height:0;--h:'+b.h+'px;background:rgba(10,127,153,'+(0.16+i*0.13).toFixed(2)+');transition:height .8s cubic-bezier(.22,.61,.36,1)"></div>'; }).join('')+
+   '</div>'+
+   '<div class="drow" style="margin-top:16px"><span class="dchip q">'+LBL.dna+'</span><span class="dchip">'+FOUR[0]+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    [].forEach.call(r.querySelectorAll('.ms'),function(b,k){ x.delay(function(){b.style.height=b.style.getPropertyValue('--h');},k*120); }); });},{threshold:.3}));
+  io.observe(r.querySelector('.dstage'));
+});
+
+/* =========================== 52 — NEGATIVE SPACE ======================== */
+C(52,'NEGATIVE SPACE','the voids the structure makes, read as the signature',function(r,x){
+  var voids=['M150 100 L224 90 L228 76 L152 78 Z','M148 130 L142 100 L150 78 L156 84 L157 121 Z',
+             'M258 80 L306 124 L268 124 L256 100 Z','M100 132 L152 128 L152 118 L100 124 Z'];
+  r.innerHTML=sec('c52 dk',hd(1)+
+   '<div class="dstage" style="height:48vh;min-height:300px;margin-top:44px">'+
+     '<div><svg viewBox="0 0 400 200">'+voids.map(function(d){
+       return '<path class="vd" d="'+d+'" fill="rgba(0,180,216,.24)" stroke="rgba(0,180,216,.8)" stroke-width="1" vector-effect="non-scaling-stroke" style="opacity:0;transition:opacity .7s ease"/>';}).join('')+'</svg></div>'+
+     '<div>'+D(E_ALL,{stroke:'rgba(244,241,236,.14)',sw:1})+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+FOUR[0]+'</span><span class="dchip q">'+LBL.dna+'</span></div>'+
+   bp(1,32)+'<div class="dbtm"></div>');
+  var v=[].slice.call(r.querySelectorAll('.vd'));
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    v.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';},k*220); }); });},{threshold:.3}));
+  io.observe(r.querySelector('.dstage'));
+});
+
+/* ======================= 53 — CONNECTION LANGUAGE ======================= */
+C(53,'CONNECTION LANGUAGE','how it is held together — the sheet’s own fasteners',function(r,x){
+  var pts=[[92,132],[312,132],[152,128],[228,76],[148,74],[256,76],[232,122]];
+  r.innerHTML=sec('c53',hd()+
+   '<div class="dstage" style="height:48vh;min-height:300px;margin-top:44px">'+
+     '<div>'+D(E_ALL,{stroke:PALE,sw:1})+'</div>'+
+     '<div><svg viewBox="0 0 400 200">'+pts.map(function(p,i){
+       return '<g class="jt" style="opacity:0;transition:opacity .5s ease">'+
+         '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="6" fill="none" stroke="'+CY+'" stroke-width="1.2" vector-effect="non-scaling-stroke"/>'+
+         '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1.6" fill="'+CY+'"/>'+
+         '<text x="'+(p[0]+11)+'" y="'+(p[1]-8)+'" fill="rgba(10,127,153,.85)" font-size="7" font-family="DM Sans,sans-serif" letter-spacing="1">'+CALLS[i%CALLS.length]+'</text></g>';}).join('')+'</svg></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+FOUR[3]+'</span><span class="dchip">'+TB.mat+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var j=[].slice.call(r.querySelectorAll('.jt'));
+  x.delay(function(){ j.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';},k*160); }); },350);
+});
+
+/* ============================= 54 — DNA INDEX =========================== */
+C(54,'DNA INDEX','the extraction filed as a numbered index of elements',function(r,x){
+  /* per-tile viewBox, cropped to each element — same reason as 58 */
+  var tiles=[
+    {p:[E.tyreR,E.rimR,E.hubR].concat(_spokes(92,132,8,25,8,0.2)),vb:'44 84 96 96', l:FOUR[0]},
+    {p:[E.batt,E.battIn,E.battRib],vb:'134 66 106 78', l:FOUR[2]},
+    {p:[E.frameA,E.frameC,E.shock],vb:'128 68 110 70', l:FOUR[1]},
+    {p:[E.forkA,E.forkB,E.yoke],   vb:'244 56 80 76',  l:FOUR[1]},
+    {p:[E.tank,E.seat,E.tail],     vb:'62 52 176 52',  l:FOUR[0]},
+    {p:[E.lamp,E.lampIn],          vb:'253 47 38 38',  l:FOUR[0]},
+    {p:[E.swing,E.swing2,E.motor], vb:'90 105 86 46',  l:FOUR[3]},
+    {p:[E.fendF,E.fendR],          vb:'46 76 306 40',  l:FOUR[2]}
+  ];
+  r.innerHTML=sec('c54',hd()+
+   '<div class="dcols" style="grid-template-columns:repeat(4,1fr);margin-top:44px">'+
+     tiles.map(function(t,i){ return '<div class="tl" style="border:1px solid rgba(10,10,10,.12);padding:14px;opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease">'+
+       '<span class="dnum">'+(i<9?'0':'')+(i+1)+'</span>'+
+       '<svg viewBox="'+t.vb+'" preserveAspectRatio="xMidYMid meet" style="margin:8px 0;height:88px">'+t.p.map(function(d){
+         return '<path d="'+d+'" stroke="'+INK+'" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+       '<span class="dcap" style="margin:0">'+t.l+'</span></div>'; }).join('')+
+   '</div>'+bp(0,44)+'<div class="dbtm"></div>');
+  var t=[].slice.call(r.querySelectorAll('.tl'));
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    t.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';q.style.transform='none';},k*90); }); });},{threshold:.2}));
+  io.observe(r.querySelector('.dcols'));
+});
+
+/* ============================ 55 — SCANNING LINE ======================== */
+C(55,'SCANNING LINE','a scan passes over the product and leaves the drawing behind',function(r,x){
+  r.innerHTML=sec('c55 dk',hd(1)+
+   '<div class="dstage" style="height:50vh;min-height:320px;margin-top:44px;overflow:hidden">'+
+     '<div>'+dimg(IMG.bike,null,'object-fit:cover;filter:grayscale(1) brightness(.55)')+'</div>'+
+     '<div class="lft" style="clip-path:inset(0 50% 0 0)">'+D(E_ALL,{stroke:'rgba(0,180,216,.9)',sw:1.1})+'</div>'+
+     '<div class="bm" style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--lab-cyb);box-shadow:0 0 22px 5px rgba(0,180,216,.5)"></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip">'+SEQ[1]+'</span><span class="dchip q">'+SEQ[2]+'</span></div>'+
+   bp(1,32)+'<div class="dbtm"></div>');
+  var lf=r.querySelector('.lft'), bm=r.querySelector('.bm'), t=0;
+  x.frame(function(){ t+=0.007; var v=(t/(Math.PI*2))%1;
+    lf.style.clipPath='inset(0 '+((1-v)*100).toFixed(2)+'% 0 0)'; bm.style.left=(v*100).toFixed(2)+'%'; });
+});
+
+/* =========================== 56 — BLUEPRINT GHOST ======================= */
+C(56,'BLUEPRINT GHOST','the whole section becomes the blueprint it came from',function(r,x){
+  r.innerHTML=sec('c56 dk',hd(1)+
+   '<div class="dstage dgrid-bl" style="height:52vh;min-height:330px;margin-top:44px;background-color:#0b1b26">'+
+     '<div>'+D(E_ALL,{stroke:'rgba(226,238,244,.72)',sw:1,cls:'bl'})+'</div>'+
+     '<div style="pointer-events:none">'+DIMS.slice(0,4).map(function(v,i){
+       return '<span class="dnum" style="position:absolute;left:'+(12+i*20)+'%;top:'+(14+i*17)+'%;color:rgba(226,238,244,.55)">'+v+'</span>';}).join('')+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q" style="border-color:rgba(226,238,244,.22);color:rgba(226,238,244,.5)">'+TB.part+'</span>'+
+     '<span class="dchip q" style="border-color:rgba(226,238,244,.22);color:rgba(226,238,244,.5)">'+TB.un+'</span></div>'+
+   bp(1,32)+'<div class="dbtm"></div>');
+  draw(r,'.bl path',x,18,900);
+});
+
+/* =========================== 57 — DESIGNER’S DESK ======================= */
+C(57,'DESIGNER’S DESK','the extraction as it actually happened, laid out',function(r,x){
+  var items=[
+    {s:SK.c1, fb:SK.line, l:'12%',t:'6%', w:'30%',rz:'-3deg'},
+    {s:SK.thumb, fb:SK.line, l:'46%',t:'2%', w:'20%',rz:'2.5deg'},
+    {s:SK.kase, fb:SK.line, l:'68%',t:'10%',w:'22%',rz:'-1.5deg'},
+    {s:SK.wire, fb:IMG.cadScreen, l:'22%',t:'44%',w:'26%',rz:'1.5deg'},
+    {s:SK.drive, fb:IMG.cadScreen, l:'52%',t:'48%',w:'18%',rz:'-2deg'},
+    {s:IMG.bike, fb:null, l:'70%',t:'52%',w:'24%',rz:'2deg'}
+  ];
+  r.innerHTML=sec('c57',hd()+
+   '<div class="dstage" style="height:56vh;min-height:360px;margin-top:44px;background:#e6e1d8">'+
+     '<div>'+items.map(function(it,i){ return '<div class="dk57" style="position:absolute;left:'+it.l+';top:'+it.t+';width:'+it.w+';'+
+       'transform:rotate('+it.rz+') translateY(14px);opacity:0;transition:opacity .6s ease,transform .6s ease;'+
+       'background:#fff;padding:6px;box-shadow:0 8px 26px rgba(0,0,0,.13)">'+
+       dimg(it.s,it.fb,'width:100%;height:auto;display:block')+'</div>'; }).join('')+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px">'+[SEQ[1],SEQ[2],SEQ[0]].map(function(s){return '<span class="dchip q">'+s+'</span>';}).join('')+'</div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var d=[].slice.call(r.querySelectorAll('.dk57'));
+  x.delay(function(){ d.forEach(function(q,k){ x.delay(function(){ q.style.opacity='1';
+    q.style.transform=q.style.transform.replace(' translateY(14px)',''); },k*170); }); },250);
+});
+
+/* =========================== 58 — RULE EXTRACTION ======================= */
+C(58,'RULE EXTRACTION','each rule stated once, with the diagram that proves it',function(r,x){
+  /* each diagram gets its own viewBox cropped to its own geometry, so the
+     rule is legible at 64px instead of a speck inside the full 400x200 field */
+  var rules=[
+    {p:[E.tank,E.seat],            vb:'88 52 152 56',  t:T.f.moto},
+    {p:[E.batt,E.battIn,E.battRib],vb:'134 66 106 78', t:T.f.dna},
+    {p:[E.frameA,E.frameC,E.shock],vb:'128 68 110 70', t:T.f.four},
+    {p:[E.lamp,E.lampIn,E.forkA],  vb:'248 44 76 88',  t:T.f.lang},
+    {p:E_SIL.slice(0,5),           vb:'40 50 330 136', t:T.f.rec}
+  ];
+  r.innerHTML=sec('c58',hd()+
+   '<div style="margin-top:44px;border-top:1px solid rgba(10,10,10,.12)">'+
+     rules.map(function(q,i){ return '<div class="rl" style="display:grid;grid-template-columns:56px 150px 1fr;gap:24px;align-items:center;'+
+       'padding:20px 0;border-bottom:1px solid rgba(10,10,10,.12);opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease">'+
+       '<span class="dnum">'+(i<9?'0':'')+(i+1)+'</span>'+
+       '<svg viewBox="'+q.vb+'" preserveAspectRatio="xMidYMid meet" style="height:64px">'+q.p.map(function(d){
+         return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.6" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+       '<span class="bd" style="font-size:.8rem">'+q.t+'</span></div>'; }).join('')+
+   '</div>'+bp(0,40)+'<div class="dbtm"></div>');
+  var rl=[].slice.call(r.querySelectorAll('.rl'));
+  var io=x.obs(new IntersectionObserver(function(es){es.forEach(function(e){ if(!e.isIntersecting)return;
+    rl.forEach(function(q,k){ x.delay(function(){q.style.opacity='1';q.style.transform='none';},k*130); }); });},{threshold:.15}));
+  io.observe(rl[0]);
+});
+
+/* ============================= 59 — TWO LANGUAGES ======================= */
+C(59,'TWO LANGUAGES','the same rules, spoken by two different objects',function(r,x){
+  r.innerHTML=sec('c59',hd()+
+   '<div class="dcols" style="grid-template-columns:1fr 1px 1fr;align-items:center;margin-top:44px">'+
+     '<div><svg viewBox="0 0 400 200" style="height:34vh;min-height:210px">'+E_SIL.concat(E_WHEEL.slice(0,6)).map(function(d){
+        return '<path class="lA" d="'+d+'" stroke="'+INK+'" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+       '<span class="dcap">'+LBL.moto+'</span></div>'+
+     '<div style="background:rgba(10,10,10,.14);align-self:stretch" class="dhide-m"></div>'+
+     '<div><svg viewBox="0 0 200 100" style="height:34vh;min-height:210px">'+GEO.speakerPath.concat(GEO.lightPath).map(function(d){
+        return '<path class="lB" d="'+d+'" stroke="'+CY+'" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+       '<span class="dcap">'+LBL.cats+'</span></div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:22px">'+FOUR.map(function(f){return '<span class="dchip">'+f+'</span>';}).join('')+'</div>'+
+   bp(0,36)+'<div class="dbtm"></div>');
+  draw(r,'.lA',x,32,700); draw(r,'.lB',x,90,900);
+});
+
+/* ============================== 60 — DNA TRANSFER ======================= */
+C(60,'DNA TRANSFER','the elements physically move from one object into the next',function(r,x){
+  r.innerHTML=sec('c60',hd()+
+   '<div class="dstage" style="height:52vh;min-height:330px;margin-top:44px">'+
+     '<div style="left:0;right:52%"><svg viewBox="0 0 400 200" style="height:100%">'+
+       E_ALL.map(function(d){return '<path d="'+d+'" stroke="'+PALE+'" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg></div>'+
+     '<div style="left:52%;right:0"><svg viewBox="0 0 200 100" style="height:100%">'+
+       GEO.speakerPath.map(function(d){return '<path d="'+d+'" stroke="'+PALE+'" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg></div>'+
+     '<div style="pointer-events:none">'+FOUR.map(function(f,i){
+       return '<span class="tk dchip" style="position:absolute;left:0;top:'+(20+i*15)+'%;white-space:nowrap;background:var(--lab-cream)">'+f+'</span>';}).join('')+'</div>'+
+   '</div>'+
+   '<div class="drow" style="margin-top:18px"><span class="dchip q">'+LBL.dna+'</span><span class="dchip q">'+LBL.lang+'</span></div>'+
+   bp(0,32)+'<div class="dbtm"></div>');
+  var tk=[].slice.call(r.querySelectorAll('.tk')), t=0;
+  x.frame(function(){ t+=0.005;
+    tk.forEach(function(q,i){ var v=((t+i*0.55)/(Math.PI*2))%1;
+      q.style.left=(8+v*74).toFixed(2)+'%';
+      q.style.opacity=(Math.sin(v*Math.PI)).toFixed(2); }); });
+});
+
+/* =========================== 61 — CONTINUOUS FIELD ====================== */
+C(61,'CONTINUOUS FIELD','one uninterrupted field: product, language, categories',function(r,x){
+  r.innerHTML=sec('c61',hd()+
+   '<div style="margin-top:44px;overflow-x:hidden">'+
+     '<div class="fld" style="display:flex;align-items:center;gap:70px;will-change:transform">'+
+       '<div style="flex:0 0 46%"><svg viewBox="0 0 400 200" style="height:34vh;min-height:200px">'+
+         E_ALL.map(function(d){return '<path d="'+d+'" stroke="'+INK+'" stroke-width="1.1" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+         '<span class="dcap">'+LBL.moto+'</span></div>'+
+       '<div style="flex:0 0 22%"><svg viewBox="0 0 400 200" style="height:34vh;min-height:200px">'+
+         E_BODY.concat([E.frameC]).map(function(d){return '<path d="'+d+'" stroke="'+CY+'" stroke-width="1.4" fill="none" vector-effect="non-scaling-stroke"/>';}).join('')+'</svg>'+
+         '<span class="dcap">'+LBL.dna+'</span></div>'+
+       X_OUT.map(function(o){ return '<div style="flex:0 0 20%"><div style="height:34vh;min-height:200px">'+
+         dimg(o.img,IMG.bike,'width:100%;height:100%;object-fit:contain')+'</div>'+
+         '<span class="dcap">'+LBL.cats+'</span></div>'; }).join('')+
+     '</div>'+
+   '</div>'+bp(0,44)+'<div class="dbtm"></div>');
+  var fld=r.querySelector('.fld');
+  x.on(window,'scroll',function(){
+    var rc=r.getBoundingClientRect();
+    var p=Math.max(0,Math.min(1,(innerHeight-rc.top)/(innerHeight+rc.height)));
+    fld.style.transform='translateX('+(-p*46).toFixed(2)+'%)';
+  });
+});
+
+/* ========================= 62 — FULL TRANSFORMATION ===================== */
+C(62,'FULL TRANSFORMATION','the whole method in one held sequence, then the portfolio',function(r,x){
+  r.innerHTML=sec('c62','<div style="height:320vh;position:relative">'+
+   '<div class="pin" style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden">'+
+     hd()+
+     '<div class="dstage" style="height:44vh;margin-top:30px">'+
+       '<div class="q0">'+dimg(IMG.bike,null,'object-fit:contain')+'</div>'+
+       '<div class="q1" style="opacity:0">'+im2('pencil','object-fit:contain')+'</div>'+
+       '<div class="q2" style="opacity:0">'+D(E_ALL,{stroke:CY,sw:1.2})+'</div>'+
+       '<div class="q3" style="opacity:0">'+D(E_BODY.concat([E.frameC,E.lamp]),{stroke:CY,sw:1.8})+'</div>'+
+       '<div class="q4" style="opacity:0;display:flex;align-items:center;gap:28px;justify-content:center">'+
+         X_OUT.map(function(o){ return '<div style="flex:0 0 17%">'+dimg(o.img,IMG.bike,'width:100%;height:auto;object-fit:contain')+'</div>'; }).join('')+
+       '</div>'+
+     '</div>'+
+     '<div class="drow" style="margin-top:22px">'+
+       [SEQ[0],SEQ[1],SEQ[2],SEQ[3],SEQ[5]].map(function(s,i){return '<span class="dchip q sq" data-i="'+i+'">'+s+'</span>';}).join('')+
+       '<span class="dchip q" style="margin-left:auto">'+TB.prod+'</span></div>'+
+     '<p class="bd" style="margin-top:24px">'+T.p+'</p>'+
+   '</div></div><div class="dbtm"></div>');
+  var wrap=r.querySelector('.c62 > .din > div');
+  var q=[0,1,2,3,4].map(function(i){ return r.querySelector('.q'+i); });
+  var sq=[].slice.call(r.querySelectorAll('.sq'));
+  q.forEach(function(n){ n.style.transition='opacity .5s ease'; });
+  x.on(window,'scroll',function(){
+    var p=x.pinProg(wrap), i=Math.max(0,Math.min(4,Math.floor(p*5)));
+    q.forEach(function(n,k){ n.style.opacity=k===i?'1':'0'; });
+    sq.forEach(function(c,k){ c.classList.toggle('q',k!==i); });
+  });
+});
+</script>
+
+<script>
+/* ============ additive bootstrap: extend the range to 62, rebuild the rail ==== */
+(function(){
+  var NEW_MAX=62;
+  window.NMAX=NEW_MAX;                       /* the mod in the 00–32 layer reads this */
+  for(var i=33;i<=NEW_MAX;i++) PORT[i]='keep';
+  [44,46,47,54,59,60,62].forEach(function(n){ PORT[n]='handoff'; });
+  PORT[61]='remove';                          /* the field already shows the categories */
+
+  /* group boundaries for the rail */
+  var GRP={0:'control',1:'base',3:'real material',33:'dna extraction'};
+
+  var chain=window.show;
+  window.show=function(n){
+    n=((n%(NEW_MAX+1))+(NEW_MAX+1))%(NEW_MAX+1);
+    chain(n);
+    var c=CONCEPTS[n], d=document.getElementById('labdesc');
+    if(d&&c){
+      var tag = n===0?'control' : (n<=2?'kept base' : (n<=32?'real material':'dna extraction'));
+      d.textContent=(c.desc||'')+'   · '+tag;
+    }
+    /* no scrollIntoView: every box is on screen, and calling it would scroll
+       the page out from under the concept that was just mounted */
+  };
+
+  /* ---- ALL 63 boxes on screen at once. No horizontal scrolling: a rail that
+     scrolls sideways hides half the options behind a 4px scrollbar and there is
+     no way to tell they are there. The boxes are shrunk instead and allowed to
+     wrap, so every number is always visible and clickable. Two rows at 1440. ---- */
+  var css=document.createElement('style'); css.id='sf-lab-rail-css';
+  /* NOTE: the shell's #labboxes rules live in a <style> inside <body>, so a
+     head-level rule of equal specificity loses the tie. Every selector here is
+     deliberately raised to #labbar #labboxes so position stops mattering. */
+  css.textContent=
+   '#labbar{padding:8px 14px 9px;}'+
+   '#labbar #labboxes{flex-wrap:wrap;overflow:visible;gap:3px;row-gap:3px;}'+
+   '#labbar #labboxes button{flex:0 0 auto;width:25px;height:22px;font-size:.5rem;letter-spacing:0;}'+
+   '#labbar #labboxes .nav{width:25px;}'+
+   '#labbar #labboxes .gp{flex:0 0 auto;display:flex;align-items:center;'+
+   'padding:0 8px 0 5px;font-family:var(--lab-dm);font-size:.4rem;letter-spacing:.18em;'+
+   'text-transform:uppercase;color:rgba(244,241,236,.34);white-space:nowrap;'+
+   'border-left:1px solid rgba(244,241,236,.18);margin-left:4px;height:22px;}'+
+   '#labbar #labname{margin:0 0 7px 2px;}'+
+   '#labbar #labcount{font-size:.5rem;letter-spacing:.14em;color:rgba(244,241,236,.4);text-transform:none;}'+
+   /* below 900 the group labels cost a whole row each — drop them, keep numbers */
+   '@media(max-width:900px){#labbar #labboxes .gp{display:none;}'+
+   ' #labbar #labboxes button{width:23px;height:21px;}}'+
+   '@media(max-width:600px){#labbar{padding:7px 10px 8px;}'+
+   ' #labbar #labboxes{gap:2px;row-gap:2px;}'+
+   ' #labbar #labboxes button,#labbar #labboxes .nav{width:20px;height:19px;font-size:.44rem;}}';
+  document.head.appendChild(css);
+
+  /* The bar height depends on how many rows the boxes wrap into, which depends
+     on the width. Guessing a padding per breakpoint gets it wrong somewhere —
+     measure the bar and set the padding from it. Inline beats the shell's rule. */
+  function syncPad(){
+    var bar=document.getElementById('labbar'); if(!bar) return;
+    document.body.style.setProperty('padding-bottom',
+      (Math.ceil(bar.getBoundingClientRect().height)+10)+'px','important');
+  }
+  window.addEventListener('resize',syncPad,{passive:true});
+  syncPad(); setTimeout(syncPad,300); setTimeout(syncPad,1400);
+  /* running count, so the full range is legible without counting boxes */
+  var nm=document.getElementById('labname');
+  if(nm && !document.getElementById('labcount')){
+    var cn=document.createElement('span'); cn.id='labcount';
+    cn.textContent='63 options · 00–'+NEW_MAX;
+    nm.insertBefore(cn, nm.querySelector('.jump'));
+  }
+
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var k=0;k<=NEW_MAX;k++){
+    if(GRP[k]){ var g=document.createElement('span'); g.className='gp'; g.textContent=GRP[k];
+      if(k===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    var b=document.createElement('button');
+    b.dataset.n=k; b.textContent=(k<10?'0':'')+k;
+    b.title=(CONCEPTS[k]?CONCEPTS[k].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(k));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){show(CUR-1);});
+  nx.addEventListener('click',function(){show(CUR+1);});
+  /* deep links are handled by the existing boot, which now reads window.NMAX */
 })();
 </script>
 
