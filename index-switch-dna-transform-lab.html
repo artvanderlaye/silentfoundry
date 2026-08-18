@@ -11567,5 +11567,75 @@ x.on(window,'scroll',d);x.on(window,'resize',d);d();
     show(m?Math.max(0,Math.min(50,+m[1])):(CUR<0?0:CUR)); }, 1200);
 })();
 </script>
+<script>
+/* =========================================================================
+   SHORTLIST — the ten kept concepts, renumbered 01–10.
+   Nothing is redesigned. The registry is re-indexed and the bar rebuilt, so
+   each concept, its animation and its portfolio rule travel with it.
+      01 <- 04   02 <- 10   03 <- 14   04 <- 16   05 <- 20
+      06 <- 26   07 <- 29   08 <- 41   09 <- 42   10 <- 47
+   ========================================================================= */
+(function(){
+  var PICK=[4,10,14,16,20,26,29,41,42,47];
+  var OLD=CONCEPTS.slice(), OLDPORT={};
+  for(var k in PORT) OLDPORT[k]=PORT[k];
+
+  CONCEPTS.length=0;
+  CONCEPTS[0]=OLD[0];
+  var NEWPORT={0:'keep'};
+  PICK.forEach(function(o,i){
+    var c=OLD[o]; if(!c) return;
+    c.was=o; c.n=i+1;
+    CONCEPTS[i+1]=c;
+    NEWPORT[i+1]=OLDPORT[o]||'keep';
+  });
+  window.PORT=NEWPORT;
+  var MAX=PICK.length;                       /* 10 */
+
+  /* one final wrapper: clamp/wrap the index, then fix the labels the older
+     wrappers wrote using the 0–50 assumptions */
+  var chain=window.show;
+  window.show=function(n){
+    n=((n%(MAX+1))+(MAX+1))%(MAX+1);
+    chain(n);
+    var c=CONCEPTS[n];
+    var fam=document.getElementById('labfam');
+    if(fam) fam.textContent = n===0 ? '· control' : '· shortlist ' + n + ' of ' + MAX;
+    var d=document.getElementById('labdesc');
+    if(d && c) d.textContent=(c.desc||'')+(c.was?'   · was '+(c.was<10?'0':'')+c.was:'');
+    [].forEach.call(document.querySelectorAll('#labboxes button[data-n]'),function(b){
+      b.classList.toggle('on',+b.dataset.n===n); });
+  };
+
+  /* rebuild the bar for 00–10 */
+  var bx=document.getElementById('labboxes');
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav'; pv.textContent='‹'; bx.appendChild(pv);
+  for(var i=0;i<=MAX;i++){
+    var b=document.createElement('button');
+    b.dataset.n=i; b.textContent=(i<10?'0':'')+i;
+    b.title=(CONCEPTS[i]?CONCEPTS[i].name:'');
+    b.addEventListener('click',(function(m){return function(){show(m);};})(i));
+    bx.appendChild(b);
+  }
+  var nx=document.createElement('button'); nx.className='nav'; nx.textContent='›'; bx.appendChild(nx);
+  pv.addEventListener('click',function(){show(CUR-1);});
+  nx.addEventListener('click',function(){show(CUR+1);});
+
+  /* Two earlier keydown handlers are still bound to document (modulus 31 and
+     51) and both fired, so one press moved twice. A capture listener on window
+     runs before any document listener, so it takes the key and stops it there. */
+  window.addEventListener('keydown',function(e){
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
+      e.stopPropagation(); e.preventDefault();
+      show(CUR+(e.key==='ArrowRight'?1:-1));
+    }
+  },true);
+
+  var m=/[#&]c=(\d+)/.exec(location.hash);
+  setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1400);
+})();
+</script>
 </body>
 </html>
