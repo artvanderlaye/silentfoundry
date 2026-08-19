@@ -18787,6 +18787,54 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   #sf-lab-mount .mhrow{grid-template-columns:1fr !important;
     column-gap:0 !important;row-gap:32px;}
 }
+
+/* =========================================================================
+   THE FIVE CORRECTIONS FROM THE AUDIT
+   ========================================================================= */
+
+/* 1 · READING MEASURE. The columns are the right shape, but the text was
+   running the full 648px of them — about 95 characters a line. The Foundry's
+   body sits at 464px, about 60. Comfortable measure is 55–75, and the working
+   notes already flag this exact failure ("Marshall ran to 934px / 109
+   characters"). Capped at 520px, which lands around 76. The column stays the
+   same width; only the text stops running to its edge. */
+#sf-lab-mount .mhrow p{max-width:520px !important;}
+
+/* 2 · SIDE PADDING. The section sat at 24px left and right while The Foundry
+   and Venture Models both sit at 48. 24 is the correct MOBILE margin from the
+   working notes — the fault was using it on desktop as well. */
+#sf-lab-mount .pv{padding-left:48px !important;padding-right:48px !important;}
+@media(max-width:900px){
+  #sf-lab-mount .pv{padding-left:24px !important;padding-right:24px !important;}
+}
+
+/* 3 · THE EYEBROWS. Every comparable text block on the site is introduced by
+   one — OUR THESIS, HOW WE BUILD, RESULTS, HERITAGE. These two paragraphs were
+   the only ones that just started. The words come from the approved structural
+   label set, not from new copy. */
+#sf-lab-mount .mheyb{display:block;margin:0 0 12px;}
+
+/* 4 · THE SPACING LADDER. The section was separating its blocks with 26 / 34 /
+   34 — those are WITHIN-block intervals (Marshall runs 24 / 26 / 34 / 40
+   inside a column, and 34 is the eyebrow-to-headline step in DESIGN-CHOICES).
+   The Foundry gives 72px to the same job. Everything sat at half distance and
+   all at the same distance, so nothing read as grouped. The ladder now rises
+   with the conceptual distance:
+        40  the machine and what came off it — one idea
+        72  a real block change, The Foundry's own gap
+        96  language to applications — the biggest jump
+       120  section end, matching Venture Models                            */
+#sf-lab-mount .ofgrid{margin-top:40px !important;}
+#sf-lab-mount .mhrow{margin-top:72px !important;}
+#sf-lab-mount .fstrip{margin-top:96px !important;}
+#sf-lab-mount .rbtm{height:120px !important;}
+@media(max-width:900px){
+  /* the ladder compresses on a phone but keeps its order */
+  #sf-lab-mount .ofgrid{margin-top:28px !important;}
+  #sf-lab-mount .mhrow{margin-top:48px !important;}
+  #sf-lab-mount .fstrip{margin-top:64px !important;}
+  #sf-lab-mount .rbtm{height:88px !important;}
+}
 </style>
 
 <script id="sf-base-js">
@@ -18855,6 +18903,27 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     var ho=new MutationObserver(function(){ killHero(); });
     ho.observe(document.documentElement,{childList:true,subtree:true});
   }catch(e){ [0,500,1200,2400,4000,6500].forEach(function(t){ setTimeout(killHero,t); }); }
+
+  /* the eyebrows, inserted after the concept builds. LBL is the shell's
+     structural label set — "every one is a word that appears in the approved
+     copy" — so nothing new is written here. */
+  (function(){
+    var c=CONCEPTS[KEEP[0]]; if(!c) return;
+    var base=c.build;
+    CONCEPTS[KEEP[0]]={n:c.n,name:c.name,desc:c.desc,build:function(r,x){
+      base(r,x);
+      var row=r.querySelector('.mhrow'); if(!row) return;
+      var L=window.LBL||{};
+      var words=[L.venture||'NEW VENTURE', L.lang||'DESIGN LANGUAGE'];
+      [].forEach.call(row.children,function(col,i){
+        if(i>1||col.querySelector('.mheyb')) return;
+        var e=document.createElement('span');
+        e.className='mhey mheyb';
+        e.textContent=words[i];
+        col.insertBefore(e,col.firstChild);
+      });
+    }};
+  })();
 
   function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
   var baseShow=window.show;
