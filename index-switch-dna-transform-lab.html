@@ -18390,8 +18390,15 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
      --------------------------------------------------------------------- */
   function fvHide(on){
     var t=document.querySelector('#fv-stage .t-in'); if(!t) return;
-    [0,1].forEach(function(i){
-      var n=t.children[i]; if(!n) return;
+    var su=document.getElementById('su');
+    /* BY IDENTITY, NOT BY INDEX. This used to hide children [0] and [1] on the
+       assumption that they were always the venture copy and the hero. Once the
+       baseline layer removes those two nodes outright, the DNA section itself
+       becomes child [0] — and this hid the section. Anything that contains #su
+       is the section and is never touched. */
+    [].forEach.call(t.children,function(n){
+      if(n.id==='sw28') return;
+      if(su&&n.contains(su)) return;
       n.style.setProperty('display', on?'none':'', 'important');
     });
   }
@@ -18818,6 +18825,36 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     var cn=document.getElementById('labcount');
     if(cn) cn.textContent='the baseline';
   }
+
+  /* ---------------------------------------------------------------------
+     THE HERO SLIDER AND THE VENTURE COPY ARE REMOVED, not hidden.
+     Both live as the first two children of #fv-stage .t-in: [0] is the
+     FEATURED VENTURE eyebrow, display line and two paragraphs, [1] is the
+     three-photograph hero carousel (#c16s-wrap). The baseline carries that
+     copy and that photograph inside its own frame, so on the page they were
+     the same thing said twice.
+
+     They were already display:none on this concept; that was a style, and you
+     asked for them gone. Taking the nodes out also stops the carousel's own
+     timers running against a stage nobody can see. The observer puts them out
+     again if anything re-inserts them, the same way the portfolio mosaic is
+     handled. Nothing here touches index.html — this is the lab only. */
+  function killHero(){
+    var t=document.querySelector('#fv-stage .t-in'); if(!t) return false;
+    var gone=false;
+    /* walk from the end so removing one does not shift the other's index */
+    [1,0].forEach(function(i){
+      var n=t.children[i]; if(!n) return;
+      if(n.id==='sw28'||n.contains(document.getElementById('su'))) return;  /* never the section */
+      n.parentNode.removeChild(n); gone=true;
+    });
+    return gone;
+  }
+  killHero();
+  try{
+    var ho=new MutationObserver(function(){ killHero(); });
+    ho.observe(document.documentElement,{childList:true,subtree:true});
+  }catch(e){ [0,500,1200,2400,4000,6500].forEach(function(t){ setTimeout(killHero,t); }); }
 
   function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
   var baseShow=window.show;
