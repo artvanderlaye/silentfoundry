@@ -16702,6 +16702,45 @@ MC(35,'WHAT SURVIVED THE CROSSING','the old page is read, two things cross, and 
   mrise(r,'.mmx .mmet',x,180,900,16);
 });
 
+/* ==================== 11 — the images stop sliding ====================
+   11 is the chosen Marshall direction. Its reveal used a left-to-right
+   clip-path wipe, which reads as the pictures sliding in from the edge — the
+   composition is already doing the work here, so the pictures should simply
+   arrive. The build is NOT touched: it is called exactly as written, then the
+   wipe is cancelled before first paint and replaced with a still fade. The
+   metrics lose their 16px rise for the same reason.
+   11D is deliberately left alone — the reveal IS its concept. */
+function mstill(r,x,sel,step,delay){
+  var ns=[].slice.call(r.querySelectorAll(sel));
+  ns.forEach(function(n,i){
+    n.style.transition='none';
+    n.classList.add('on');
+    n.style.clipPath='none';          /* kill the wipe outright */
+    if(!window.MOTION) return;
+    n.style.opacity='0';
+    void n.offsetWidth;               /* paint the hidden state before easing */
+    n.style.transition='opacity .95s ease';
+    x.delay(function(){ n.style.opacity='1'; },(delay||200)+i*(step||150));
+  });
+  return ns;
+}
+function mnoRise(r,sel){
+  [].forEach.call(r.querySelectorAll(sel),function(n){
+    n.style.transform='none';
+    n.style.transition='opacity .8s ease';
+  });
+}
+(function(){
+  [11,32,35].forEach(function(n){
+    var base=MCON[n]; if(!base) return;
+    MC(n, base.name, base.desc, function(r,x){
+      base.build(r,x);
+      mstill(r,x,'.mmask',150,220);
+      mnoRise(r,'.mmx .mmet');
+    });
+  });
+})();
+
 /* ==================== prune and rebuild the MARSHALL bar ==================== */
 (function(){
   var KEEP=[0,1,2,3,9,11,31,32,33,34,35];
