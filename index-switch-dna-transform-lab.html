@@ -16809,6 +16809,637 @@ function mnoRise(r,sel){
   },2500);
 })();
 </script>
+<style id="sf-rec-css">
+/* =========================================================================
+   THE RECOGNITION ENGINE — SWITCH refinement pass (40–49)
+   Nothing travels. A characteristic is FOUND on the machine in gold, and the
+   cyan record of it — which already exists, in its final place — answers.
+   Gold says "here is where we found it". Cyan says "here is what it becomes".
+   The viewer joins them; the page does not drag one into the other.
+   ========================================================================= */
+#sf-lab-mount .rp{--sw-or:#e2661c;--sw-alu:#8d918a;--sw-alu-dk:#6e726b;}
+#sf-lab-mount .rc{position:relative;}
+#sf-lab-mount .rc svg{width:100%;height:auto;display:block;overflow:visible;
+  transform-origin:50% 50%;}
+/* a specimen in a grid is sized by its COLUMN, and at 1600px a column is
+   enormous — without a ceiling the language reads as billboards. The three
+   steps are the only sizes used: supporting, dominant, and the minimal set. */
+#sf-lab-mount .rc:not(.rabs) svg{max-height:104px;}
+#sf-lab-mount .rc.rlg:not(.rabs) svg{max-height:168px;}
+#sf-lab-mount .rc.rxl:not(.rabs) svg{max-height:240px;}
+/* the record is present from the first frame, just unlit. It is never absent,
+   because the argument is that the language ALREADY exists. */
+#sf-lab-mount .rt{opacity:.13;transition:opacity .42s ease, transform .30s cubic-bezier(.2,.8,.3,1);}
+#sf-lab-mount .rt.on{opacity:1;}
+#sf-lab-mount .rt.pls{transform:scale(1.055);}
+#sf-lab-mount .rcap{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(10,10,10,.40);display:block;margin-top:9px;
+  transition:color .5s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#sf-lab-mount .rcap i{font-style:normal;color:var(--lab-cyb);margin-right:7px;}
+#sf-lab-mount .rc.lit .rcap{color:rgba(10,10,10,.62);}
+/* an absolutely placed specimen, for the spatial families */
+#sf-lab-mount .rabs{position:absolute;pointer-events:none;}
+/* the application proof. Light by default — it is evidence, not the hero. */
+#sf-lab-mount .rapp{position:relative;overflow:hidden;background:#e9e5dd;}
+#sf-lab-mount .rapp img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(.35) brightness(.94);transition:filter .6s ease;}
+#sf-lab-mount .rapp.on img{filter:grayscale(0) brightness(1.03);}
+/* placed by the caller's own inline box — never stretched to the frame */
+#sf-lab-mount .rapp svg{position:absolute;overflow:visible;}
+#sf-lab-mount .rappcap{font-family:var(--lab-dm);font-size:.4rem;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(10,10,10,.36);display:block;margin-top:8px;}
+/* the machine plate used by the editorial-specimen family */
+#sf-lab-mount .rplate{position:relative;padding:26px 30px;
+  border:1px solid rgba(141,145,138,.5);}
+#sf-lab-mount .rplate::after{content:"";position:absolute;left:30px;right:30px;bottom:14px;
+  height:1px;background:linear-gradient(90deg,rgba(141,145,138,.55),rgba(141,145,138,0));}
+/* a hairline the orange cable earns — used once per concept, never decorative */
+#sf-lab-mount .rp .vhead.or::before{content:"";display:inline-block;width:15px;height:2px;
+  background:var(--sw-or);margin-right:10px;vertical-align:middle;}
+#sf-lab-mount .rrow{display:grid;align-items:end;}
+#sf-lab-mount .rspan2{grid-column:span 2;}
+#sf-lab-mount .rspan3{grid-column:span 3;}
+#sf-lab-mount .rspan4{grid-column:span 4;}
+#sf-lab-mount .rbtm{height:96px;}
+#sf-lab-mount .rins{padding:0 16%;}
+/* the dense reading carries eighteen cyan records on the drawing itself, so
+   their resting state has to be quieter than a field of separate specimens */
+/* the dense reading hands over IN PLACE: gold marks the machine, then leaves,
+   and the cyan record is what remains standing on the drawing. Holding both
+   at once just turned the sketch into mud. */
+#sf-lab-mount .r48 .rt:not(.on){opacity:0;}
+@media(max-width:900px){
+  /* the spatial families stop being spatial: specimens fall into a compact
+     multi-column field rather than one enormous card per screen. */
+  #sf-lab-mount .rfield{position:static !important;height:auto !important;}
+  #sf-lab-mount .rfield .rabs{position:static !important;width:auto !important;
+    left:auto !important;top:auto !important;}
+  #sf-lab-mount .rmob3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 14px;margin-top:22px;}
+  #sf-lab-mount .rmob2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 16px;margin-top:22px;}
+  #sf-lab-mount .rspan2,#sf-lab-mount .rspan3,#sf-lab-mount .rspan4{grid-column:span 1;}
+  #sf-lab-mount .rcap{font-size:.4rem;letter-spacing:.18em;}
+  #sf-lab-mount .rplate{padding:16px 14px;}
+  /* the desktop insets come off, or the drawing is squeezed to nothing */
+  #sf-lab-mount .rfield{padding:0 !important;}
+  #sf-lab-mount .rins{padding:0 !important;}
+}
+</style>
+
+<script id="sf-rec-js">
+/* -------------------------------------------------------------------------
+   Building blocks. All geometry comes from the measured set in V — every
+   cyan mark corresponds to something actually visible on the sketch.
+   No dimensions, no part numbers, no revision marks: the drawing is the
+   evidence, and inventing precision would only make it less credible.
+   ------------------------------------------------------------------------- */
+
+/* the gold reading, laid straight over the drawing at the bike's own viewBox */
+function rGold(keys,sw){
+  /* AUD, not AU. The light gold is almost invisible against the cream once it
+     settles back to a resting opacity, and the whole argument depends on the
+     viewer being able to still SEE where each characteristic was found. */
+  return keys.map(function(k){
+    return lay(V[k].p,'r_'+k+' rg',AUD,XSW(k,sw||2.4));
+  }).join('');
+}
+/* the cyan record: the same paths, in their own frame, wherever it lives */
+function rsvg(k,sw,style){
+  var r=BB43R(V[k].bb);
+  return '<svg class="rt rt_'+k+'" viewBox="'+VBOF(r)+'" fill="none"'+
+    (style?' style="'+style+'"':'')+'>'+
+    V[k].p.map(function(d){ return '<path d="'+d+'" stroke="'+CY+'" stroke-width="'+
+      XSW(k,sw)+'" vector-effect="non-scaling-stroke" stroke-linecap="round" '+
+      'stroke-linejoin="round"/>'; }).join('')+'</svg>';
+}
+/* a specimen. The shape dominates; the label is optional and small. */
+function rcell(k,lab,cls,sw){
+  return '<div class="rc rc_'+k+' '+(cls||'')+'">'+rsvg(k,sw)+
+    (lab?'<span class="rcap"><i>'+V[k].id+'</i>'+V[k].lab+'</span>':'')+'</div>';
+}
+/* the same specimen with the catalogue numeral only — used where naming
+   every characteristic would turn the page into a list */
+function rcellN(k,cls,sw){
+  return '<div class="rc rc_'+k+' '+(cls||'')+'">'+rsvg(k,sw)+
+    '<span class="rcap"><i>'+V[k].id+'</i></span></div>';
+}
+/* a specimen placed by hand in a field */
+function rat(k,x,y,w,lab,sw){
+  return '<div class="rc rc_'+k+' rabs" style="left:'+x+'%;top:'+y+'%;width:'+w+'%">'+
+    rsvg(k,sw)+(lab?'<span class="rcap"><i>'+V[k].id+'</i>'+V[k].lab+'</span>':'')+'</div>';
+}
+/* an application, carrying one cyan characteristic of its own so the
+   relationship is seen rather than announced. No arrows. */
+function rapp(i,k,ar,cap){
+  var a=APP[i%APP.length];
+  return '<div class="rapp ra_'+(k||a.k)+'" style="aspect-ratio:'+(ar||'4/3')+'">'+
+    '<img loading="lazy" decoding="async" alt="" src="'+a.img+'">'+
+    (k?rsvg(k,1.6,'position:absolute;left:14%;top:16%;width:72%;height:auto'):'')+
+    '</div>'+(cap===false?'':'<span class="rappcap">'+a.lab+'</span>');
+}
+
+/* -------------------------------------------------------------------------
+   THE SEQUENCE.
+   Fast. A gold trace draws on the machine, and its cyan counterpart answers
+   within a beat. The next one starts before the last has finished settling,
+   so it reads as someone marking up a drawing, not as a slideshow.
+   Once complete it stops — the composition is left standing.
+   ------------------------------------------------------------------------- */
+function recognise(root,x,host,items,o){
+  o=o||{};
+  var t0   = (o.t0   ==null? 180 : o.t0),     /* before the first mark      */
+      gap  = (o.gap  ==null? 300 : o.gap),    /* between characteristics    */
+      draw = (o.draw ==null? 400 : o.draw),   /* how fast gold traces       */
+      lag  = (o.lag  ==null? 130 : o.lag),    /* gold -> cyan answer        */
+      rest = (o.rest ==null? 0.30: o.rest);   /* gold left on the machine   */
+
+  function nodes(it){
+    return { s:root.querySelector(it.src||('.r_'+it.k)),
+             d:root.querySelector(it.dst||('.rt_'+it.k)),
+             c:root.querySelector('.rc_'+it.k),
+             a:it.app?root.querySelector(it.app):null };
+  }
+  /* every record begins present but unlit, and dashed if it will draw */
+  items.forEach(function(it){
+    var n=nodes(it);
+    if(n.s){ xdash(n.s); n.s.style.opacity='0'; }
+    if(n.d&&(it.resp||'draw')==='draw') xdash(n.d);
+  });
+
+  if(!window.MOTION){
+    /* with motion off the reading has still happened: the marks sit lightly
+       on the machine and every record is complete. */
+    items.forEach(function(it){
+      var n=nodes(it);
+      if(n.s){ n.s.style.opacity=String(rest);
+        [].forEach.call(n.s.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); }
+      if(n.d){ n.d.classList.add('on');
+        [].forEach.call(n.d.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); }
+      if(n.c) n.c.classList.add('lit');
+      if(n.a){ n.a.classList.add('on');
+        /* the cyan detail carried BY the application has to complete too, or
+           the product looks like it is missing the characteristic it proves */
+        var ov=n.a.querySelector('.rt');
+        if(ov){ ov.classList.add('on');
+          [].forEach.call(ov.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';}); } }
+    });
+    if(o.onDone) o.onDone();
+    return;
+  }
+
+  var ran=false;
+  var fire=function(){
+    if(ran) return; ran=true;
+    items.forEach(function(it,i){
+      var t=t0+i*gap+(it.dt||0);
+      var n=nodes(it);
+      if(!n.s&&!n.d) return;
+      /* 1 · gold finds it */
+      if(n.s) x.delay(function(){
+        n.s.style.transition='opacity .18s ease';
+        n.s.style.opacity='1';
+        xundash(n.s,draw,0);
+      },t);
+      /* 2 · the record answers, in place */
+      x.delay(function(){
+        if(n.c) n.c.classList.add('lit');
+        if(!n.d) return;
+        n.d.classList.add('on');
+        var mode=it.resp||'draw';
+        if(mode==='draw') xundash(n.d,o.rdraw||380,0);
+        else [].forEach.call(n.d.querySelectorAll('path'),function(p){p.style.strokeDashoffset='0';});
+        if(mode==='pulse'){
+          n.d.classList.add('pls');
+          x.delay(function(){ n.d.classList.remove('pls'); },260);
+        }
+        if(mode==='weight'){
+          var ws=[].map.call(n.d.querySelectorAll('path'),function(p){
+            var w=p.getAttribute('stroke-width');
+            p.style.transition='stroke-width .18s ease';
+            p.style.strokeWidth=(parseFloat(w)*1.9)+'px'; return w; });
+          x.delay(function(){ [].forEach.call(n.d.querySelectorAll('path'),function(p,q){
+            p.style.strokeWidth=ws[q]+'px'; }); },220);
+        }
+        /* 3 · where an application carries the same characteristic, it
+               acknowledges it. It does not receive anything. */
+        if(n.a){ n.a.classList.add('on');
+          var ov=n.a.querySelector('.rt'); if(ov){ ov.classList.add('on'); xundash(ov,520,0); } }
+      },t+lag);
+      /* 4 · the mark stays on the machine, quietly, as the evidence */
+      if(n.s) x.delay(function(){
+        n.s.style.transition='opacity .6s ease';
+        n.s.style.opacity=String(rest);
+      },t+draw+380);
+    });
+    if(o.onDone) x.delay(o.onDone,t0+items.length*gap+draw+600);
+  };
+
+  /* automatic on scroll — the viewer never operates the diagram.
+     The observer watches the HOST, which is never clipped or scaled;
+     Chrome reports isIntersecting:false for a clip-pathed element. */
+  var io=x.obs(new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ fire(); io.disconnect(); } });
+  },{threshold:0}));
+  io.observe(host);
+  x.delay(fire,2600);                 /* safety net; fire() is idempotent */
+}
+
+/* group activation: FORM / STRUCTURE / DETAIL / PROPORTION read together
+   rather than one at a time. Same engine, items batched with a shared dt. */
+function recogniseGroups(root,x,host,groups,o){
+  o=o||{}; var items=[], t=0;
+  groups.forEach(function(g,gi){
+    g.keys.forEach(function(k,i){
+      items.push({k:k, resp:g.resp||'draw', dt:t+i*(o.inner==null?70:o.inner)});
+    });
+    t+=(o.between==null?520:o.between);
+  });
+  recognise(root,x,host,items,{t0:o.t0,gap:0,draw:o.draw,lag:o.lag,rest:o.rest,onDone:o.onDone});
+}
+</script>
+<style id="sf-rec-css2">
+/* grid widths as CLASSES, never inline. Production carries
+   #fv-stage [style*="grid-template-columns"]{grid-template-columns:1fr !important}
+   and the lab mount lives inside #fv-stage, so an inline grid here is silently
+   collapsed to one column below 900. (CLAUDE.md, the layout traps.) */
+#sf-lab-mount .gcR46{grid-template-columns:.72fr 1fr;}
+#sf-lab-mount .gcR55{grid-template-columns:1fr 1fr;}
+#sf-lab-mount .gcR3{grid-template-columns:1.45fr 1.05fr .5fr;}
+#sf-lab-mount .gcR64{grid-template-columns:1.35fr 1fr;}
+#sf-lab-mount .rg2{display:grid;grid-template-columns:repeat(2,1fr);}
+#sf-lab-mount .rg3{display:grid;grid-template-columns:repeat(3,1fr);}
+#sf-lab-mount .rg4{display:grid;grid-template-columns:repeat(4,1fr);}
+#sf-lab-mount .rg5{display:grid;grid-template-columns:repeat(5,1fr);}
+#sf-lab-mount .rg7{display:grid;grid-template-columns:repeat(7,1fr);}
+#sf-lab-mount .rg12{display:grid;grid-template-columns:repeat(12,1fr);}
+#sf-lab-mount .rgap14{gap:14px;} #sf-lab-mount .rgap20{gap:20px;}
+#sf-lab-mount .rgap28{gap:28px;} #sf-lab-mount .rgap40{gap:40px 28px;}
+/* the specimens of a spatial field are laid out against the field itself.
+   display:contents removes this box, so the absolute children resolve
+   against .rfield — and on mobile it becomes a real compact grid. */
+#sf-lab-mount .rspec{display:contents;}
+#sf-lab-mount .rstack>div{margin-bottom:12px;}
+#sf-lab-mount .rfield{position:relative;}
+#sf-lab-mount .rline{height:1px;background:rgba(141,145,138,.45);margin:34px 0 0;}
+#sf-lab-mount .rnote{font-family:var(--lab-dm);font-size:.44rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sw-alu-dk,#6e726b);display:block;margin-top:14px;}
+@media(max-width:900px){
+  #sf-lab-mount .rspec{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 14px;margin-top:24px;}
+  #sf-lab-mount .rspec.s2{grid-template-columns:repeat(2,1fr);}
+  #sf-lab-mount .rg12,#sf-lab-mount .rg7,#sf-lab-mount .rg5{grid-template-columns:repeat(3,1fr);}
+  #sf-lab-mount .rg4,#sf-lab-mount .rg3{grid-template-columns:repeat(2,1fr);}
+  /* stacked, a five-high column of applications is a page on its own */
+  #sf-lab-mount .rstack{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  #sf-lab-mount .gcR46,#sf-lab-mount .gcR55,#sf-lab-mount .gcR3,
+  #sf-lab-mount .gcR64{grid-template-columns:1fr !important;}
+}
+</style>
+
+<script id="sf-rec-fam">
+/* =========================================================================
+   SWITCH REFINEMENT PASS — 40–49
+   Ten compositions in one visual language. Nothing here replaces or edits
+   an existing concept; every registration lands in a free slot.
+
+   The system, stated once and then obeyed:
+     GRAPHITE  the SWITCH drawing — the source object, untouched
+     GOLD      Silent Foundry identifying something that is already there
+     CYAN      that characteristic after extraction — the transferable language
+   Gold appears ON the machine. Cyan already exists, in its final place.
+   Nothing travels between them. The relationship is shown by timing.
+   ========================================================================= */
+(function(){
+
+/* the reading order used most often: overall form, then proportion, then
+   structure, then detail — the order a designer actually looks in. */
+function seq(keys,resp){ return keys.map(function(k,i){
+  return {k:k, resp:(resp&&resp[i])||'draw'}; }); }
+function rsec(cls,inner){ return vsec('rp '+cls,inner); }
+function eyA(t,mt){ return '<span class="vhead au" style="margin-top:'+(mt||30)+'px;display:block">'+t+'</span>'; }
+function eyC(t,mt){ return '<span class="vhead" style="margin-top:'+(mt||30)+'px;display:block">'+t+'</span>'; }
+
+/* ===================== 40 · SPATIAL FIELD  (family A) =====================
+   01o's architecture, opened up: the machine whole in the middle, the
+   language distributed around it as specimens that were already there. */
+C(10,'SPATIAL FIELD','the machine stays whole; twelve characteristics sit around it and light up as they are found',function(r,x){
+  var SP=[
+    ['sil' ,  2,  4, 15, 1], ['upper', 24,  2, 11, 0], ['neg' , 42,  1,  9, 0],
+    ['encl', 84,  5, 12, 1], ['edge' , 86, 28,  9, 0], ['ribs', 85, 46, 10, 1],
+    ['axis', 86, 67,  9, 0], ['fast' , 66, 82, 11, 1], ['ctrs', 45, 84, 12, 0],
+    ['whl' , 21, 82, 13, 1], ['strc',  3, 62, 11, 0], ['seat',  2, 36, 11, 1]
+  ];
+  var KS=SP.map(function(s){return s[0];});
+  r.innerHTML=rsec('r40',hd()+
+    eyA('The machine, read in place')+
+    '<div class="vstage" style="margin-top:16px"><div class="rfield" style="padding:9% 22% 13%">'+
+      bike2({src:.30, svg:rGold(KS)})+
+      '<div class="rspec">'+SP.map(function(s){
+        return rat(s[0],s[1],s[2],s[3],s[4]); }).join('')+'</div>'+
+    '</div></div>'+
+    para()+
+    '<div class="rline"></div>'+eyC('Where the language has already gone',24)+
+    '<div class="rg5 rgap14" style="margin-top:16px">'+
+      [0,1,2,3,4].map(function(i){ return '<div>'+rapp(i,null,'16/7')+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),
+    seq(KS,['draw','lift','lift','draw','pulse','draw','draw','pulse','lift','draw','draw','lift']),
+    {t0:160,gap:226,draw:336,lag:102,rest:.53});
+});
+
+/* ===================== 41 · THE READING  (family B) =======================
+   20o's strongest move kept and the catalogue underneath cut right down:
+   the analysis on the machine is the hero, the output is a compact field. */
+C(11,'THE READING','fourteen marks go down on the drawing itself; the output underneath stays small',function(r,x){
+  var KS=['stnc','sil','upper','seat','whl','ctrs','datum','encl','edge','ribs','strc','swng','shk','fast'];
+  var LAB={sil:1,whl:1,encl:1,ribs:1,fast:1};
+  r.innerHTML=rsec('r41',hd()+
+    eyA('The machine')+
+    '<div class="vstage" style="margin-top:14px">'+bike2({src:.34, svg:rGold(KS,1.9)})+'</div>'+
+    '<div class="rline"></div>'+
+    '<div class="vcol gcR64">'+
+      '<div>'+eyC('The language it produces',0)+
+        '<div class="rg7 rgap20" style="margin-top:18px">'+
+          KS.slice(0,7).map(function(k){ return rcell(k,LAB[k],'',2.4); }).join('')+'</div>'+
+        '<div class="rg7 rgap20" style="margin-top:26px">'+
+          KS.slice(7).map(function(k){ return rcell(k,LAB[k],'',2.4); }).join('')+'</div>'+
+      '</div>'+
+      '<div>'+para()+'<span class="rnote">Every mark corresponds to something visible in the drawing</span></div>'+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),seq(KS),
+    {t0:128,gap:176,draw:286,lag:85,rest:.60,rdraw:235});
+});
+
+/* ===================== 42 · ORDERED FIELD  (family C) =====================
+   03o's discipline, but the strip is composed rather than tiled: one
+   dominant characteristic, then supporting ones at two scales. */
+C(12,'ORDERED FIELD','the machine isolated, then a DNA field with a hierarchy instead of a row of equal icons',function(r,x){
+  var BIG='sil', MID=['whl','encl','ribs','axis'], SML=['fast','edge','seat','strc','ctrs','neg'];
+  var KS=[BIG].concat(MID,SML);
+  r.innerHTML=rsec('r42',hd()+
+    '<div class="vstage" style="margin-top:34px"><div class="rins">'+
+      bike2({src:.26, svg:rGold(KS,1.9)})+'</div></div>'+
+    '<div class="rline"></div>'+eyC('The field',24)+
+    '<div class="rg12 rgap28" style="margin-top:20px;align-items:end">'+
+      '<div class="rspan4">'+rcell(BIG,1,'rlg',2.8)+'</div>'+
+      MID.map(function(k){ return '<div class="rspan2">'+rcell(k,1,'',2.6)+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rg12 rgap28" style="margin-top:30px;align-items:end">'+
+      SML.map(function(k,i){ return '<div class="rspan2">'+rcell(k,i<3,'',2.4)+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="vcol gcR64">'+
+      '<div class="rg4 rgap14">'+[0,1,2,3].map(function(i){
+        return '<div>'+rapp(i,null,'16/9')+'</div>'; }).join('')+'</div>'+
+      '<div>'+para()+'</div>'+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),
+    seq(KS,['draw','draw','draw','draw','draw','pulse','pulse','lift','lift','weight','lift']),
+    {t0:160,gap:211,draw:336,lag:110,rest:.49});
+});
+
+/* ===================== 43 · MACHINE / LANGUAGE 40:60  (family D) ==========
+   The two-column argument, off-centre and off-baseline: the machine sits
+   low on the left, the language starts higher and runs deeper. */
+C(13,'MACHINE / LANGUAGE 40:60','machine left and low, language right and tall — twelve records, five named',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','strc','fast','seat','upper','edge','swng','neg'];
+  var LAB={sil:1,encl:1,ribs:1,axis:1,fast:1};
+  r.innerHTML=rsec('r43',hd()+
+    '<div class="vcol gcR46" style="margin-top:40px">'+
+      '<div>'+
+        '<div style="height:64px"></div>'+
+        eyA('The machine',0)+
+        '<div class="vstage" style="margin-top:12px">'+bike2({src:.28, svg:rGold(KS,2.0)})+'</div>'+
+        para()+
+      '</div>'+
+      '<div>'+eyC('The language',0)+
+        '<div class="rg3 rgap28" style="margin-top:18px">'+
+          KS.map(function(k){ return rcell(k,LAB[k],'',2.5); }).join('')+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="rline"></div>'+
+    '<div class="rg5 rgap14" style="margin-top:20px">'+
+      [0,1,2,3,4].map(function(i){ return '<div>'+rapp(i,null,'16/6')+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),
+    seq(KS,['draw','draw','draw','draw','draw','lift','pulse','draw','lift','pulse','lift','lift']),
+    {t0:160,gap:218,draw:353,lag:110,rest:.53});
+});
+
+/* ============ 44 · SOURCE / LANGUAGE / APPLICATION  (family E) ============
+   Three stages, all visible at once, none of them moving. Gold finds it on
+   the machine, the record answers, and the product that carries it
+   acknowledges — three things lighting in sequence, in three places. */
+C(14,'SOURCE / LANGUAGE / APPLICATION','all three stages on screen at once; only the emphasis moves',function(r,x){
+  var PAIR=[['sil',0],['encl',1],['ribs',1],['axis',2],['whl',3],['fast',4]];
+  var KS=PAIR.map(function(p){return p[0];});
+  r.innerHTML=rsec('r44',hd()+
+    '<div class="vcol gcR3" style="margin-top:40px">'+
+      '<div>'+eyA('Source',0)+
+        '<div class="vstage" style="margin-top:12px">'+bike2({src:.28, svg:rGold(KS,2.0)})+'</div>'+
+        para()+'</div>'+
+      '<div>'+eyC('Language',0)+
+        '<div class="rg2 rgap28" style="margin-top:18px">'+
+          KS.map(function(k){ return rcell(k,1,'',2.5); }).join('')+'</div></div>'+
+      '<div>'+eyC('Application',0)+
+        '<div class="rstack" style="margin-top:18px">'+[0,1,2,3,4].map(function(i){
+          return '<div>'+rapp(i,null,'3/2')+'</div>'; }).join('')+
+        '</div></div>'+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  var items=PAIR.map(function(p,i){
+    return {k:p[0], resp:(i%3===1?'lift':'draw'), app:'.ra_'+APP[p[1]].k};
+  });
+  recognise(r,x,r.querySelector('.din'),items,{t0:176,gap:265,draw:361,lag:128,rest:.53});
+});
+
+/* ===================== 45 · CONSTELLATION  (family F) =====================
+   The machine dominates and sits right of centre; the language gathers to
+   the left at three different scales. Asymmetric on purpose. */
+C(16,'CONSTELLATION','the machine holds the right; the language gathers asymmetrically to the left',function(r,x){
+  var SP=[
+    ['sil' ,  1,  4, 21, 1], ['encl',  4, 30, 12, 0], ['ribs', 19, 27, 10, 1],
+    ['whl' ,  1, 50, 17, 0], ['strc', 21, 52, 11, 0], ['axis',  3, 74, 10, 1],
+    ['fast', 18, 74, 11, 0], ['neg' , 33, 76,  9, 0], ['seat', 46, 84, 12, 1],
+    ['edge', 62, 86,  9, 0], ['upper',76, 87, 12, 1]
+  ];
+  var KS=SP.map(function(s){return s[0];});
+  r.innerHTML=rsec('r45',hd()+
+    eyA('One object, read eleven ways')+
+    '<div class="vstage" style="margin-top:16px"><div class="rfield" style="padding:4% 2% 22% 34%">'+
+      bike2({src:.32, svg:rGold(KS,2.0)})+
+      '<div class="rspec s2">'+SP.map(function(s){ return rat(s[0],s[1],s[2],s[3],s[4]); }).join('')+'</div>'+
+    '</div></div>'+
+    '<div class="vcol gcR64">'+
+      '<div>'+para()+'</div>'+
+      '<div><span class="rnote" style="margin-top:6px">Gold marks the machine · cyan is the language it yields</span></div>'+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),
+    seq(KS,['draw','draw','pulse','draw','lift','draw','pulse','lift','draw','weight','lift']),
+    {t0:144,gap:207,draw:328,lag:102,rest:.56});
+});
+
+/* ================== 46 · EDITORIAL SPECIMEN  (family G) ==================
+   The machine treated as a plate in a monograph, and the characteristics
+   set as specimens beneath it — numerals only, names withheld. */
+C(17,'EDITORIAL SPECIMEN','the machine as a plate, the characteristics set as specimens beneath it',function(r,x){
+  var TOP=['sil','stnc','whl'], BOT=['encl','ribs','axis','strc','fast','edge','seat','neg'];
+  var KS=TOP.concat(BOT);
+  r.innerHTML=rsec('r46',hd()+
+    '<div class="vcol gcR64" style="margin-top:44px">'+
+      '<div class="rplate">'+bike2({src:.26, svg:rGold(KS,1.9)})+
+        '<span class="rnote" style="margin-top:18px">The SWITCH eSCRAMBLER · the drawing the language is taken from</span></div>'+
+      '<div>'+para()+
+        '<div class="rg3 rgap14" style="margin-top:26px">'+[0,2,4].map(function(i){
+          return '<div>'+rapp(i,null,'1/1')+'</div>'; }).join('')+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="rline"></div>'+
+    '<div class="rg12 rgap28" style="margin-top:24px;align-items:end">'+
+      TOP.map(function(k){ return '<div class="rspan4">'+rcell(k,1,'rlg',2.7)+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rg12 rgap28" style="margin-top:28px;align-items:end">'+
+      BOT.map(function(k){ return '<div class="rspan3">'+rcellN(k,'',2.4)+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),seq(KS),{t0:176,gap:195,draw:344,lag:110,rest:.46});
+});
+
+/* ================== 47 · MINIMAL EXTRACTION  (family H) ==================
+   Six characteristics, chosen hard and scaled up. Three names between them.
+   The restraint is the point: this is a language, not an inventory. */
+C(19,'MINIMAL EXTRACTION','six characteristics, dramatically scaled, three of them named',function(r,x){
+  var KS=['sil','whl','encl','ribs','axis','fast'];
+  var LAB={sil:1,encl:1,fast:1};
+  r.innerHTML=rsec('r47',hd()+
+    '<div class="vstage" style="margin-top:40px"><div class="rins">'+
+      bike2({src:.24, svg:rGold(KS,2.2)})+'</div></div>'+
+    '<div style="margin-top:52px;max-width:min(100%,680px)">'+para()+'</div>'+
+    '<div class="rg3 rgap40" style="margin-top:56px">'+
+      KS.slice(0,3).map(function(k){ return rcell(k,LAB[k],'rxl',3.0); }).join('')+'</div>'+
+    '<div class="rg3 rgap40" style="margin-top:56px">'+
+      KS.slice(3).map(function(k){ return rcell(k,LAB[k],'rxl',3.0); }).join('')+'</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),
+    seq(KS,['draw','pulse','draw','weight','draw','pulse']),
+    {t0:192,gap:296,draw:437,lag:144,rest:.53,rdraw:371});
+});
+
+/* ==================== 48 · DENSE READING  (family I) =====================
+   No specimens at all. Eighteen characteristics are found on the machine
+   and their cyan records light exactly where they were found, so the
+   motorcycle itself becomes the analytical drawing. One label, at the end. */
+C(21,'DENSE READING','gold marks the machine, then leaves — the cyan reading is what stays on the drawing',function(r,x){
+  var KS=['stnc','sil','upper','seat','grnd','whl','ctrs','encl','edge',
+          'ribs','strc','swng','axis','fast'];
+  r.innerHTML=rsec('r48',hd()+
+    eyA('Fourteen readings, left on the drawing')+
+    '<div class="vstage" style="margin-top:14px">'+
+      bike2({src:.36, svg:rGold(KS,1.8)+
+        KS.map(function(k){ return lay(V[k].p,'rt rt_'+k,CY,XSW(k,1.8)); }).join('')})+
+    '</div>'+
+    '<div class="vcol gcR64">'+
+      '<div>'+para()+'</div>'+
+      '<div><span class="rnote" style="margin-top:6px">Nothing is added to the drawing · everything shown is already in it</span></div>'+
+    '</div>'+
+    '<div class="rbtm"></div>');
+  recognise(r,x,r.querySelector('.din'),seq(KS),
+    {t0:112,gap:150,draw:260,lag:120,rest:0,rdraw:240});
+});
+
+/* ============= 49 · TRANSITION TO APPLICATION  (family J) ================
+   The language field and the application row share one column grid, so
+   each record stands directly above the product that carries it. The
+   alignment is the argument — there is not an arrow on the page. */
+C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid, so each record stands over its own application',function(r,x){
+  var COL=[['sil',0],['encl',1],['axis',2],['whl',3],['ribs',4]];
+  var KS=COL.map(function(c){return c[0];});
+  r.innerHTML=rsec('r49',hd()+
+    '<div class="vstage" style="margin-top:38px"><div class="rins">'+
+      bike2({src:.28, svg:rGold(KS,2.0)})+'</div></div>'+
+    '<div class="rline"></div>'+
+    '<div class="rg5 rgap28" style="margin-top:26px;align-items:end">'+
+      COL.map(function(c){ return '<div>'+rcell(c[0],1,'',2.6)+'</div>'; }).join('')+
+    '</div>'+
+    '<div class="rg5 rgap28" style="margin-top:22px">'+
+      COL.map(function(c){ return '<div>'+rapp(c[1],c[0],'4/3')+'</div>'; }).join('')+
+    '</div>'+
+    para()+'<div class="rbtm"></div>');
+  var items=COL.map(function(c,i){
+    return {k:c[0], resp:(i===1||i===4)?'lift':'draw', app:'.ra_'+c[0]};
+  });
+  recognise(r,x,r.querySelector('.din'),items,{t0:176,gap:281,draw:370,lag:128,rest:.53});
+});
+
+})();
+</script>
+<script id="sf-rec-bar">
+/* =========================================================================
+   Extend the SWITCH bar with the refinement pass. This layer ADDS a third
+   group; it does not touch the control, the seven refined concepts or the
+   seven restored originals, and it renumbers nothing.
+
+   Slot numbers vs bar labels are deliberately different. lab6/extract.html
+   wraps any index through ((n%(MAX+1))+(MAX+1))%(MAX+1) with MAX hard-coded
+   at 44, so a concept registered at 40+ would resolve to a low number and
+   show somebody else's work. The ten new concepts therefore live in free
+   slots below that ceiling and are LABELLED 40–49 on the bar — SLBL already
+   decouples the two, exactly as it does for the 'o' originals.
+   ========================================================================= */
+(function(){
+  var NEW=[10,11,12,13,14,16,17,19,21,23];
+  var NLBL={10:'40',11:'41',12:'42',13:'43',14:'44',
+            16:'45',17:'46',19:'47',21:'48',23:'49'};
+
+  /* the existing map is extended, never replaced */
+  var SLBL=window.SLBL||{};
+  NEW.forEach(function(n){ SLBL[n]=NLBL[n]; });
+  window.SLBL=SLBL;
+
+  var KEEP=[0, 1,3,15,18,20,22,33, 2,4,5,6,7,8,9].concat(NEW);
+  window.SKEEP=KEEP;
+
+  var bx=document.getElementById('labboxes');
+  if(!bx) return;
+  /* append rather than rebuild, so the boxes already on the bar keep their
+     own click handlers and nothing that works has to be re-derived */
+  var nx=bx.querySelector('.nav.nx');
+  function ins(el){ if(nx) bx.insertBefore(el,nx); else bx.appendChild(el); }
+
+  var g=document.createElement('span');
+  g.className='gp'; g.textContent='refinement';
+  ins(g);
+  NEW.forEach(function(n){
+    if(!CONCEPTS[n]) return;
+    var b=document.createElement('button');
+    b.dataset.n=n; b.textContent=NLBL[n];
+    b.title=CONCEPTS[n].name;
+    b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+    ins(b);
+  });
+
+  /* the arrows have to walk the whole bar, including the new group */
+  var pv=bx.querySelector('.nav.pv');
+  function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+    i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+  function rebind(btn,d){
+    if(!btn) return;
+    var c=btn.cloneNode(true);            /* drop the old handler cleanly */
+    btn.parentNode.replaceChild(c,btn);
+    c.addEventListener('click',function(){ step(d); });
+  }
+  rebind(pv,-1); rebind(nx,1);
+
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent='7 refined + 7 originals + 10 new';
+
+  /* keyboard stepping lives in the shell and reads NMAX; point it at the
+     bar order instead so arrows never land on a pruned slot */
+  window.SSTEP=step;
+})();
+</script>
 
 </body>
 </html>
