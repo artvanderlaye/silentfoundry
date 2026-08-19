@@ -18670,6 +18670,90 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   setTimeout(land,1850); setTimeout(land,2750); setTimeout(land,3500);
 })();
 </script>
+<script id="sf-f3-js">
+/* =========================================================================
+   THE THREE THAT SURVIVED, renumbered.
+     01  was 04   SPATIAL FIELD
+     02  was 06   THE MASTHEAD
+     03  was 07   ONE FRAME CARRIES EVERYTHING
+   Slot numbers are left where they are — lab6/extract.html wraps any index
+   through ((n%45)+45)%45, so moving the concepts to slots 1–3 would collide
+   with what is already registered there. Only the LABEL changes, the way it
+   has every time we have renumbered.
+   ========================================================================= */
+(function(){
+  var KEEP=[10,13,14];
+  var LBL ={10:'01', 13:'02', 14:'03'};
+  window.SLBL=LBL; window.SKEEP=KEEP;
+
+  /* slot 0 stays defined as show()'s fallback; it never appears on the bar */
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    bx.innerHTML='';
+    var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹';
+    bx.appendChild(pv);
+    var g=document.createElement('span'); g.className='gp'; g.textContent='shortlist';
+    g.style.borderLeft='0'; g.style.marginLeft='0'; bx.appendChild(g);
+    KEEP.forEach(function(n){
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=LBL[n];
+      b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      bx.appendChild(b);
+    });
+    var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›';
+    bx.appendChild(nx);
+    function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+      i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+    pv.addEventListener('click',function(){ step(-1); });
+    nx.addEventListener('click',function(){ step(1); });
+    window.SSTEP=step;
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='three';
+  }
+
+  /* last layer in the file, so it has the final word on the number and the URL */
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var baseShow=window.show;
+  window.show=function(n){
+    baseShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+  function land(){
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
+    var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
+    if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
+    if(want!==null&&CONCEPTS[want]){ if(CUR!==want) show(want); return; }
+    /* a c= that is no longer on the bar is a stale link — land on 01 */
+    if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
+  }
+  /* Every layer under this one runs its own deep-link timer against its own
+     label map, and the last of those fires at 3500. Anything scheduled before
+     that can be undone by it — which is exactly what left the bar reading 01
+     while a different concept was mounted. So: land after all of them, and
+     then reconcile the number against CUR for a few seconds in case a late
+     timer fires again. */
+  setTimeout(land,3900); setTimeout(land,4700);
+  var t0=Date.now===undefined?0:0, ticks=0;
+  var iv=setInterval(function(){
+    ticks++;
+    if(!keep[CUR]||CUR===0){ show(KEEP[0]); }
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]&&num.textContent!==LBL[CUR]) num.textContent=LBL[CUR];
+    if(ticks>24) clearInterval(iv);          /* ~7s, then leave it alone */
+  },300);
+})();
+</script>
 
 </body>
 </html>
