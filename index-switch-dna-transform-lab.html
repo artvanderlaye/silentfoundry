@@ -18947,15 +18947,1042 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
      mount out and leaves CUR pointing at the baseline with nothing rendered.
      Check the mount as well as the number. */
   function ok(){ return CUR===KEEP[0] && !!document.getElementById('sf-lab-mount'); }
-  function land(){ if(!ok()) show(KEEP[0]); }
+  /* When a later layer exists this file is no longer the last word: the
+     control becomes one of several and holding the page on it would fight
+     whatever the viewer actually selected. window.__L14 is set at parse time
+     by lab14/engine2.html, so it is already true before the first tick. */
+  function land(){ if(window.__L14) return; if(!ok()) show(KEEP[0]); }
   setTimeout(land,4900); setTimeout(land,5600);
   var ticks=0;
   var iv=setInterval(function(){
     ticks++;
+    if(window.__L14){ clearInterval(iv); return; }
     if(!ok()) show(KEEP[0]);
     var num=document.getElementById('labnum');
     if(num&&num.textContent!==LBL[KEEP[0]]) num.textContent=LBL[KEEP[0]];
     if(ticks>28) clearInterval(iv);            /* ~8.5s, then leave it alone */
+  },300);
+})();
+</script>
+<style id="sf-e2-css">
+/* =========================================================================
+   THE SECOND ENGINE.
+
+   Everything the twenty variations share, written ONCE. The first brief was
+   answered with one motion — a drawing appearing over a photograph. This
+   layer adds the vocabulary the second brief asks for: reversible scroll,
+   autonomous micro-motion, correspondence in both directions, colour with a
+   provenance, typographic DNA, and inheritance into the products.
+
+   Nothing here touches concept 00. Every rule is scoped to .v14, which only
+   the new variations carry, so the control renders exactly as it does today.
+   ========================================================================= */
+
+/* ---- THE COLOUR SYSTEM -------------------------------------------------
+   #e43c00 is not a chosen colour. It is the measured mode of the 5,956
+   orange pixels in switch-professional-task-light.jpg — the antenna, the one
+   part of that object that carries a signal. Its hue is 15.8 degrees. The
+   orange in SWITCH's own Concept 2 drawing is 14.8 degrees. One degree apart,
+   drawn years apart, no shared file. So orange is not being introduced here;
+   it is being noticed.
+
+   ORANGE  = the asset. Energy, current, what SWITCH already had.
+   CYAN    = the analysis. What Silent Foundry is doing to it.
+   ALUMINIUM / BLACK = the material ground both sit on.
+   ----------------------------------------------------------------------- */
+#sf-lab-mount .v14{
+  --or:#e43c00;          /* sampled — the antenna body      */
+  --or-lit:#f36c35;      /* sampled — its lit edge          */
+  /* the existing orange treatments (the energy slides, the power numerals)
+     are written against --sw-or. Rebinding it HERE and only here means they
+     inherit the true value on the new variations while concept 00 keeps the
+     approximate one it shipped with, untouched. */
+  --sw-or:#e43c00;
+  --sw-or-lit:#f36c35;
+  --alu:#8d918a;
+  --alu-dk:#6e726b;
+  --cy:#00b4d8;
+  --cyd:#0a7f99;
+}
+
+/* ---- the colour/material sample ---------------------------------------
+   Not a website swatch. A specimen card in the same family as the geometry
+   ones: a square of the material, a hairline, a catalogue numeral. */
+/* A solid field of #e43c00 at the width of a specimen column out-shouted
+   every drawn characteristic beside it — the loudest thing in the section,
+   which is exactly the "do not simply make more things orange" failure. It
+   is a SAMPLE: smaller than the geometry, and read as a chip. */
+#sf-lab-mount .v14 .sw{position:relative;display:block;width:62%;
+  max-width:72px;aspect-ratio:1/1;border:1px solid rgba(141,145,138,.5);
+  opacity:.16;transition:opacity .6s ease;}
+#sf-lab-mount .v14 .sw.on{opacity:1;}
+#sf-lab-mount .v14 .sw.or{background:var(--or);}
+#sf-lab-mount .v14 .sw.alu{background:linear-gradient(105deg,#b8bcb6 0%,#8d918a 46%,#6e726b 100%);}
+#sf-lab-mount .v14 .sw.blk{background:#14171b;}
+#sf-lab-mount .v14 .sw.cyn{background:var(--cy);}
+/* the crop of the real object the colour came from. A background-position of
+   66.6% / 16.6% at 520% puts the antenna in the middle of the window — those
+   two numbers are the centroid of the orange pixels in that photograph. */
+#sf-lab-mount .v14 .swsrc{position:relative;display:block;width:100%;
+  aspect-ratio:1/1;background-image:url(images/switch-professional-task-light.jpg);
+  background-size:520% auto;background-position:66.6% 16.6%;
+  border:1px solid rgba(141,145,138,.5);filter:grayscale(1) brightness(.92);
+  transition:filter 1.2s ease;}
+#sf-lab-mount .v14 .swsrc.found{filter:grayscale(0) brightness(1.02);}
+
+/* ---- typographic DNA ---------------------------------------------------
+   The intangible half has no shape, so it is not given one. It enters the
+   same slot the geometry occupies, as type, at the same size the site gives
+   an eyebrow. No icons. A lightning bolt would cheapen the whole argument. */
+#sf-lab-mount .v14 .d2{display:block;font-family:'DM Sans',sans-serif;
+  font-size:10.88px;letter-spacing:2.72px;text-transform:uppercase;font-weight:300;
+  color:rgba(10,10,10,.34);margin-top:6px;
+  opacity:0;transform:translateY(3px);
+  transition:opacity .55s ease, transform .55s cubic-bezier(.2,.8,.3,1);}
+#sf-lab-mount .v14 .d2.on{opacity:1;transform:none;}
+#sf-lab-mount .v14 .d2.en{color:var(--or);}
+/* a word standing alone, where the characteristic IS a word */
+#sf-lab-mount .v14 .wtok{display:flex;align-items:center;justify-content:center;
+  min-height:52px;border-top:1px solid rgba(141,145,138,.32);
+  font-family:'Bebas Neue',sans-serif;font-weight:300;font-size:1.05rem;
+  letter-spacing:.18em;text-transform:uppercase;color:rgba(10,10,10,.24);
+  transition:color .6s ease;}
+#sf-lab-mount .v14 .wtok.on{color:rgba(10,10,10,.72);}
+#sf-lab-mount .v14 .wtok.en.on{color:var(--or);}
+
+/* ---- connector lines (05) ---------------------------------------------- */
+#sf-lab-mount .v14 .flowwrap{position:relative;}
+#sf-lab-mount .v14 .flowsvg{position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;overflow:visible;z-index:3;}
+#sf-lab-mount .v14 .flowsvg path{fill:none;stroke:var(--cyd);stroke-width:1;
+  opacity:.55;vector-effect:non-scaling-stroke;}
+#sf-lab-mount .v14 .flowsvg path.en{stroke:var(--or);opacity:.8;}
+
+/* ---- 03 · the analysis stands off the object --------------------------- */
+#sf-lab-mount .v14 .offstage{position:relative;display:grid;
+  grid-template-columns:132px 1fr 132px;gap:0;align-items:center;}
+#sf-lab-mount .v14 .offrail{display:grid;gap:34px;}
+#sf-lab-mount .v14 .offrail .rc{position:relative;}
+#sf-lab-mount .v14 .offrail .rcap{font-size:.4rem;letter-spacing:.18em;}
+#sf-lab-mount .v14 .offmid{position:relative;padding:0 26px;}
+
+/* ---- the photograph, held ---------------------------------------------
+   The single most repeated note in the brief: stop covering the motorcycle.
+   .soft caps the drawing well below full strength, so it reads as something
+   found inside the photograph rather than something painted over it. */
+#sf-lab-mount .v14 .pvstage.soft .pvline{opacity:.42;}
+#sf-lab-mount .v14 .pvstage.trace .pvline{opacity:.13;}
+#sf-lab-mount .v14 .pvstage .pvphoto{transition:filter 1.4s ease, opacity 1.1s ease;}
+#sf-lab-mount .v14 .pvstage.half .pvphoto{filter:grayscale(.55) brightness(.82);}
+/* a single characteristic held on the machine and then let go */
+#sf-lab-mount .v14 .solo{opacity:0;transition:opacity .5s ease;}
+#sf-lab-mount .v14 .solo.on{opacity:1;}
+
+/* ---- the caption line -------------------------------------------------- */
+#sf-lab-mount .v14 .vcap{font-family:'DM Sans',sans-serif;font-size:10.88px;
+  letter-spacing:2.72px;text-transform:uppercase;font-weight:300;
+  color:var(--alu-dk);display:block;margin-top:16px;}
+#sf-lab-mount .v14 .vcap b{font-weight:300;color:var(--or);}
+
+/* ---- the specimen row, shared ------------------------------------------ */
+#sf-lab-mount .v14 .ofgrid{align-items:end;}
+#sf-lab-mount .v14 .ofspec{position:relative;}
+#sf-lab-mount .v14 .ofspec .rcap{color:rgba(10,10,10,.42);}
+#sf-lab-mount .v14 .ofspec.now .rcap{color:rgba(10,10,10,.78);}
+
+@media(max-width:900px){
+  /* On a phone the specimens fall into three columns and every one of them
+     was carrying TWO stacked captions — the tangible name and the intangible
+     word — which wrapped to four or five lines each and put three variations
+     over the section's own height. The second face is the argument, so the
+     first one steps aside: on a small screen the shape is captioned by what
+     it MEANS, and the catalogue numeral keeps it identifiable. Nothing is
+     lost that the reader cannot get by widening the window. */
+  #sf-lab-mount .v14 .ofspec .rcap{display:none;}
+  #sf-lab-mount .v14 .ofspec .d2{margin-top:7px;}
+  #sf-lab-mount .v14 .vcap{margin-top:10px;}
+  #sf-lab-mount .v14 .offstage{grid-template-columns:1fr;gap:22px;}
+  #sf-lab-mount .v14 .offrail{grid-template-columns:repeat(3,1fr);display:grid;gap:18px 14px;}
+  #sf-lab-mount .v14 .offmid{padding:0;}
+  #sf-lab-mount .v14 .flowsvg{display:none;}     /* nothing to connect once stacked */
+  #sf-lab-mount .v14 .wtok{min-height:40px;font-size:.9rem;}
+}
+@media(prefers-reduced-motion:reduce){
+  #sf-lab-mount .v14 .d2{transition:none;}
+}
+</style>
+
+<script id="sf-e2-js">
+/* =========================================================================
+   Shared behaviour. Deliberately global (window.X2) so every later batch can
+   use it without any of them re-implementing scroll maths or idle timing.
+   ========================================================================= */
+/* Set before anything else runs. The baseline layer below holds the page on
+   the control with a repeating timer for the first eight seconds; that was
+   correct when the control was the only thing here and is wrong now. The flag
+   is read there, and it is set at parse time — before that timer's first
+   tick — so no wrestling between layers is possible. */
+window.__L14=1;
+(function(){
+  var X2={};
+
+  /* ---- THE TWO-FACE DNA MODEL ------------------------------------------
+     The correction at the centre of the second brief: the eight things on
+     screen are all design attributes, and design attributes are not what
+     made Marshall transferable. Rather than adding seven more labels — which
+     would put MORE on screen, the opposite of what was asked — every
+     characteristic already there is given a second face. The strip shows the
+     tangible one. The intangible one appears only at the moment of transfer,
+     in the same slot, as type.
+
+     Every right-hand word is a claim about the asset, not a mood word. */
+  X2.D2={
+    sil  :'INDEPENDENCE',        /* a silhouette you can name from a distance */
+    stnc :'INDEPENDENCE',
+    whl  :'MOVEMENT',
+    encl :'ELECTRIC ARCHITECTURE',
+    ribs :'MECHANICAL HONESTY',
+    axis :'PRECISION',
+    strc :'MECHANICAL HONESTY',
+    fast :'SERVICEABLE BY HAND',
+    mod  :'MODULAR THINKING',
+    matl :'RAW UTILITY',
+    edge :'MADE, NOT MOULDED',
+    seat :'MADE FOR A BODY',
+    mech :'NOTHING HIDDEN',
+    ctrs :'BALANCE',
+    datum:'DISCIPLINE'
+  };
+  /* the colour characteristic, which has no geometry at all */
+  X2.OR={id:'23', lab:'SIGNAL ORANGE', d2:'ENERGY', hex:'#e43c00'};
+  X2.ALU={id:'24', lab:'RAW ALUMINIUM', d2:'UTILITY'};
+
+  /* ---- section wrappers, local copies -----------------------------------
+     refine2's helpers are shut inside its own closure, so these are written
+     again here rather than reached for. Same output, plus the .v14 hook that
+     scopes every new rule away from concept 00. */
+  X2.sec=function(cls,inner){
+    return '<div class="lb dp rp pv fb-host sfmat v14 '+cls+'"><div class="din">'+inner+'</div></div>';
+  };
+  X2.mast=function(){
+    return '<div><span class="mhey">'+T.fvEy+'</span>'+
+      '<h3 class="mhh">'+T.fvA+'<br><i>'+T.fvB+'</i></h3></div>';
+  };
+  /* the two-column text block, at the widths the consistency pass settled */
+  X2.rows=function(){
+    var L=window.LBL||{};
+    return '<div class="mhrow">'+
+      '<div><span class="mhey mheyb">'+(L.venture||'NEW VENTURE')+'</span>'+
+        '<p class="vpara">'+T.fv2+'</p></div>'+
+      '<div><span class="mhey mheyb">'+(L.lang||'DESIGN LANGUAGE')+'</span>'+
+        '<p class="vpara">'+T.p+'</p></div></div>';
+  };
+
+  /* ---- a specimen that carries both faces ------------------------------- */
+  X2.spec=function(k,lab,cls){
+    return '<div class="ofspec rc rc_'+k+' '+(cls||'')+'">'+rsvg(k,2.4)+
+      (lab===false?'':'<span class="rcap"><i>'+V[k].id+'</i>'+V[k].lab+'</span>')+
+      (X2.D2[k]?'<span class="d2 d2_'+k+'">'+X2.D2[k]+'</span>':'')+
+    '</div>';
+  };
+  /* the colour specimen — a material sample, and where it was found */
+  X2.orspec=function(showSrc){
+    return '<div class="ofspec rc rc_or">'+
+      (showSrc?'<span class="swsrc"></span>':'<span class="sw or"></span>')+
+      '<span class="rcap"><i>'+X2.OR.id+'</i>'+X2.OR.lab+'</span>'+
+      '<span class="d2 d2_or en">'+X2.OR.d2+'</span></div>';
+  };
+
+  /* ---- the photograph is never fully covered ---------------------------
+     Used by every variation that keeps a stage. Returns the parts so each
+     one can decide how far it is willing to go. */
+  X2.parts=function(r){
+    return { st:r.querySelector('.pvstage'),
+             g :r.querySelector('.pvg'),
+             c :r.querySelector('.pvc'),
+             ln:r.querySelector('.pvline') };
+  };
+
+  /* =======================================================================
+     1 · REVERSIBLE SCROLL.
+     fn(p) is called with 0..1 as the frame crosses the viewport, and it is
+     called again going the other way. Nothing latches. Scroll back to the
+     top and the motorcycle is the motorcycle again — the brief's
+     "no permanently contaminated end state".
+     ======================================================================= */
+  X2.prog=function(x,host,fn){
+    if(!window.MOTION){ fn(1); return; }
+    var last=-1, queued=false;
+    function calc(){
+      var b=host.getBoundingClientRect(), vh=window.innerHeight||1;
+      /* the reading runs from the frame's top reaching 88% of the viewport
+         to its own middle reaching 34% — a band wide enough that the whole
+         sequence happens while the frame is comfortably on screen */
+      /* complete when the frame is roughly centred, not when it has almost
+         left the top of the screen — otherwise the last four characteristics
+         all land in the final few hundred pixels and read as a rush */
+      var span=(vh*0.54)+(b.height*0.26);
+      var t=((vh*0.88)-b.top)/(span||1);
+      return t<0?0:(t>1?1:t);
+    }
+    function tick(){ queued=false;
+      var p=calc();
+      if(Math.abs(p-last)<0.0015) return;
+      last=p; fn(p);
+    }
+    function ping(){ if(!queued){ queued=true; requestAnimationFrame(tick); } }
+    x.on(window,'scroll',ping); x.on(window,'resize',ping);
+    ping(); x.delay(ping,400); x.delay(ping,1400);
+  };
+  /* a 0..1 window inside the progress, for staging several things along it */
+  X2.seg=function(p,a,b){ var t=(p-a)/((b-a)||1); return t<0?0:(t>1?1:t); };
+
+  /* =======================================================================
+     2 · AUTONOMOUS MICRO-MOTION.
+     Every few seconds one characteristic quietly activates, its counterpart
+     on the machine becomes faintly visible, and both recede. Museum vitrine,
+     not dashboard. Stops itself if the section is off screen, so it is never
+     animating to nobody.
+     ======================================================================= */
+  X2.idle=function(r,x,host,keys,step,o){
+    if(!window.MOTION) return;
+    o=o||{};
+    var every=o.every||4200, i=0, vis=true;
+    try{
+      var io=x.obs(new IntersectionObserver(function(es){
+        es.forEach(function(e){ vis=e.isIntersecting; }); },{threshold:0}));
+      io.observe(host);
+    }catch(e){}
+    x.delay(function(){
+      x.timer(function(){
+        if(!vis||!keys.length) return;
+        step(keys[i%keys.length], i);
+        i++;
+      },every);
+    }, o.after==null?3000:o.after);
+  };
+
+  /* =======================================================================
+     3 · CORRESPONDENCE, BOTH WAYS.
+     hold(k) makes one characteristic momentarily visible on the machine and
+     lights its record; release(k) puts both back. The machine can lead or
+     the record can — which is the difference between variation 02 and 04.
+     ======================================================================= */
+  X2.hold=function(r,k,ms,o){
+    o=o||{};
+    var s=r.querySelector('.r_'+k)||r.querySelector('.solo_'+k),
+        c=r.querySelector('.rc_'+k),
+        d=r.querySelector('.rc_'+k+' .rt')||r.querySelector('.rt_'+k),
+        w=r.querySelector('.d2_'+k);
+    if(s){ s.style.transition='opacity .42s ease'; s.style.opacity=String(o.on==null?0.95:o.on); }
+    if(c) c.classList.add('now');
+    if(d) d.classList.add('on');
+    if(w&&o.word!==false) w.classList.add('on');
+    if(ms) setTimeout(function(){ X2.release(r,k,o); }, ms);
+  };
+  X2.release=function(r,k,o){
+    o=o||{};
+    var s=r.querySelector('.r_'+k)||r.querySelector('.solo_'+k),
+        c=r.querySelector('.rc_'+k),
+        d=r.querySelector('.rc_'+k+' .rt')||r.querySelector('.rt_'+k);
+    if(s){ s.style.transition='opacity .9s ease'; s.style.opacity=String(o.rest==null?0:o.rest); }
+    if(c) c.classList.remove('now');
+    if(o.keep===false&&d) d.classList.remove('on');
+  };
+
+  /* =======================================================================
+     4 · FLOW — real lines between real elements.
+     Draws from the point on the photograph where a characteristic actually
+     is, to the record it becomes. Measured from the live DOM and redrawn on
+     resize, so it cannot drift the way hand-placed percentages do.
+     ======================================================================= */
+  X2.flow=function(r,x,wrapSel,pairs){
+    var wrap=r.querySelector(wrapSel); if(!wrap) return;
+    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('class','flowsvg'); svg.setAttribute('preserveAspectRatio','none');
+    wrap.insertBefore(svg,wrap.firstChild);
+    function draw(){
+      var wb=wrap.getBoundingClientRect();
+      if(!wb.width||wb.width<560){ svg.innerHTML=''; return; }   /* stacked layout */
+      svg.setAttribute('viewBox','0 0 '+Math.round(wb.width)+' '+Math.round(wb.height));
+      svg.innerHTML=pairs.map(function(p){
+        var a=r.querySelector(p.from), b=r.querySelector(p.to);
+        if(!a||!b) return '';
+        var ab=a.getBoundingClientRect(), bb=b.getBoundingClientRect();
+        /* from a point on the frame, down to the top edge of the record */
+        var x1=(p.fx==null? ab.left+ab.width*0.5 : ab.left+ab.width*p.fx)-wb.left;
+        var y1=(p.fy==null? ab.bottom : ab.top+ab.height*p.fy)-wb.top;
+        var x2=bb.left+bb.width*0.5-wb.left, y2=bb.top-wb.top;
+        var my=y1+(y2-y1)*0.55;
+        return '<path class="'+(p.en?'en':'')+'" d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+
+               ' L'+x1.toFixed(1)+' '+my.toFixed(1)+
+               ' L'+x2.toFixed(1)+' '+my.toFixed(1)+
+               ' L'+x2.toFixed(1)+' '+y2.toFixed(1)+'"/>';
+      }).join('');
+      /* drawn on, not popped on */
+      if(window.MOTION) [].forEach.call(svg.querySelectorAll('path'),function(pt,i){
+        var L=pt.getTotalLength();
+        pt.style.strokeDasharray=L; pt.style.strokeDashoffset=L;
+        pt.style.transition='stroke-dashoffset .9s ease '+(i*0.11).toFixed(2)+'s';
+        requestAnimationFrame(function(){ pt.style.strokeDashoffset='0'; });
+      });
+    }
+    /* two frames, because the images have not laid out on the first */
+    requestAnimationFrame(function(){ requestAnimationFrame(draw); });
+    x.delay(draw,600); x.delay(draw,1800);
+    x.on(window,'resize',function(){ clearTimeout(svg.__t);
+      svg.__t=setTimeout(draw,160); });
+  };
+
+  /* =======================================================================
+     5 · SETTLED STATE.
+     With animation off, the reading has still HAPPENED. Every variation is
+     required to be complete and readable as a still image — which is also
+     what makes the length test meaningful.
+     ======================================================================= */
+  X2.settle=function(r,o){
+    o=o||{};
+    var st=r.querySelector('.pvstage');
+    if(st&&o.ink!==false) st.classList.add(o.soft?'soft':'ink', o.grey===false?'half':'grey');
+    /* .solo belongs here as much as .pvg does. The per-characteristic gold
+       layers are dashed at build time so they can be drawn; leaving them out
+       of the settled state left 36–40 paths sitting half-drawn on the machine
+       with animation off — the exact "somebody pressed pause" look the brief
+       rules out. */
+    [].forEach.call(r.querySelectorAll('.pvg,.pvc,.solo'),function(g){
+      g.classList.add('on'); g.style.opacity=String(o.rest==null?0.34:o.rest);
+      [].forEach.call(g.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+    });
+    [].forEach.call(r.querySelectorAll('.rt'),function(n){
+      if(n.closest('.fslide')) return;
+      n.classList.add('on'); n.style.opacity='1';
+      [].forEach.call(n.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+    });
+    [].forEach.call(r.querySelectorAll('.d2,.sw,.wtok'),function(n){ n.classList.add('on'); });
+    [].forEach.call(r.querySelectorAll('.swsrc'),function(n){ n.classList.add('found'); });
+    [].forEach.call(r.querySelectorAll('.rc'),function(n){ n.classList.add('lit'); });
+  };
+  /* records present and complete from the start, for the variations whose
+     argument is not "watch them arrive" */
+  X2.ready=function(r){
+    [].forEach.call(r.querySelectorAll('.rt'),function(n){
+      if(n.closest('.fslide')) return;
+      n.classList.add('on'); n.style.opacity='1'; n.style.transition='none';
+      [].forEach.call(n.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+    });
+    [].forEach.call(r.querySelectorAll('.rc'),function(n){ n.classList.add('lit'); });
+  };
+
+  /* run once on scroll, for the variations that are not scroll-linked */
+  X2.once=function(r,x,host,fn,settleOpts){
+    if(!window.MOTION){ X2.settle(r,settleOpts); return; }
+    var ran=false, go=function(){ if(ran) return; ran=true; fn(); };
+    try{
+      var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+        if(e.isIntersecting){ go(); io.disconnect(); } }); },{threshold:0}));
+      io.observe(host);
+    }catch(e){}
+    x.delay(go,2800);
+  };
+
+  /* the venture copy and the hero carousel stay out of the page on every new
+     variation — each one carries that material inside its own frame */
+  X2.fvHide=function(){
+    var t=document.querySelector('#fv-stage .t-in'); if(!t) return;
+    var su=document.getElementById('su');
+    [].forEach.call(t.children,function(n){
+      if(n.id==='sw28') return;
+      if(su&&n.contains(su)) return;
+      n.style.setProperty('display','none','important');
+    });
+  };
+
+  window.X2=X2;
+})();
+</script>
+<style id="sf-a-css">
+/* =========================================================================
+   BATCH A — the five that stay close to the current design.
+   01 · 02 · 03 · 05 · 12
+   ========================================================================= */
+
+/* the stage every one of them uses. 2000/1180 is the crop concept 00 already
+   established; keeping it means the length test compares like with like. */
+#sf-lab-mount .v14 .oneframe{position:relative;}
+#sf-lab-mount .v14 .oneframe .pvstage{aspect-ratio:2000/1180;}
+#sf-lab-mount .v14 .ofcopy{position:absolute;left:3.5%;top:7%;width:33%;z-index:4;
+  pointer-events:none;}
+#sf-lab-mount .v14 .ofcopy .mhh{font-size:clamp(1.4rem,2.9vw,2.3rem);
+  color:rgba(244,241,236,.94);margin-top:24px;}
+#sf-lab-mount .v14 .ofcopy .mhey{color:#5fd8f2;}
+#sf-lab-mount .v14 .ofcopy .mhh i{color:#5fd8f2;}
+#sf-lab-mount .v14 .ofcopy p{font-family:'DM Sans',sans-serif !important;
+  font-size:13.6px !important;line-height:26px !important;letter-spacing:normal !important;
+  font-weight:300 !important;color:rgba(244,241,236,.66) !important;
+  margin:22px 0 0;max-width:min(100%,520px);}
+
+/* an anchor is a point on the photograph where a characteristic actually is.
+   It has no appearance of its own — it exists so a line can be measured to a
+   real place rather than guessed at in percentages twice. */
+#sf-lab-mount .v14 .anch{position:absolute;width:1px;height:1px;}
+/* except on 03, where the anchor is the only mark allowed on the machine */
+#sf-lab-mount .v14 .anch.dot{width:7px;height:7px;margin:-3px 0 0 -3px;border-radius:50%;
+  background:var(--cy);opacity:0;transition:opacity .5s ease;
+  box-shadow:0 0 0 3px rgba(0,180,216,.16);}
+#sf-lab-mount .v14 .anch.dot.on{opacity:.92;}
+#sf-lab-mount .v14 .anch.dot.en{background:var(--or);box-shadow:0 0 0 3px rgba(228,60,0,.18);}
+
+/* ---- 03 · the rails either side of the machine -------------------------- */
+#sf-lab-mount .v14 .offwrap{position:relative;margin-top:12px;}
+#sf-lab-mount .v14 .leadsvg{position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;overflow:visible;z-index:5;}
+#sf-lab-mount .v14 .leadsvg path{fill:none;stroke:var(--cyd);stroke-width:1;opacity:.5;
+  vector-effect:non-scaling-stroke;}
+#sf-lab-mount .v14 .leadsvg path.en{stroke:var(--or);opacity:.75;}
+#sf-lab-mount .v14 .offstage .pvstage{aspect-ratio:2000/1240;}
+
+/* ---- 05 · the downward system ------------------------------------------ */
+#sf-lab-mount .v14 .dnrail{position:relative;height:1px;margin-top:26px;
+  background:rgba(141,145,138,.4);}
+#sf-lab-mount .v14 .dntick{position:absolute;top:-3px;width:1px;height:7px;
+  background:var(--cyd);opacity:0;transition:opacity .6s ease;}
+#sf-lab-mount .v14 .dntick.on{opacity:.85;}
+#sf-lab-mount .v14 .dntick.en{background:var(--or);}
+
+/* ---- 12 · the flash ----------------------------------------------------- */
+/* ---- the specimen row takes exactly as many columns as it has specimens.
+   The control has eight and the grid was written for eight; a ninth wrapped
+   to a second row and put the section 11% over its own height. The row count
+   is now derived from the content rather than assumed. -------------------- */
+#sf-lab-mount .v14 .ofgrid.n5{grid-template-columns:repeat(5,1fr);}
+#sf-lab-mount .v14 .ofgrid.n6{grid-template-columns:repeat(6,1fr);}
+#sf-lab-mount .v14 .ofgrid.n7{grid-template-columns:repeat(7,1fr);}
+#sf-lab-mount .v14 .ofgrid.n9{grid-template-columns:repeat(9,1fr);}
+@media(max-width:900px){
+  #sf-lab-mount .v14 .ofgrid.n5,#sf-lab-mount .v14 .ofgrid.n6,
+  #sf-lab-mount .v14 .ofgrid.n7,#sf-lab-mount .v14 .ofgrid.n9{
+    grid-template-columns:repeat(3,1fr);}
+}
+
+#sf-lab-mount .v14 .flash .pvline{transition:opacity .34s ease;}
+#sf-lab-mount .v14 .flash .pvg,#sf-lab-mount .v14 .flash .solo{transition:opacity .3s ease;}
+
+@media(max-width:900px){
+  #sf-lab-mount .v14 .oneframe .ofcopy{position:static;width:auto;margin-bottom:22px;}
+  #sf-lab-mount .v14 .oneframe .ofcopy .mhey{color:#0a7f99;}
+  #sf-lab-mount .v14 .oneframe .ofcopy .mhh{color:rgba(10,10,10,.86);}
+  #sf-lab-mount .v14 .oneframe .ofcopy p{color:rgba(10,10,10,.55) !important;}
+  #sf-lab-mount .v14 .leadsvg{display:none;}
+  /* 05's continuation rail marks where three characteristics carry on into
+     the products. Below 900 the connectors it belongs to are gone, so it is
+     a bar with nothing attached to it — and it was the last 27px keeping the
+     variation over the section's height on a phone. */
+  #sf-lab-mount .v14 .dnrail{display:none;}
+  #sf-lab-mount .v14 .offstage .pvstage{aspect-ratio:2000/1333;}
+}
+</style>
+
+<script id="sf-a-js">
+(function(){
+  var X=window.X2;
+  var PHOTO=IMG.bike;
+
+  /* -----------------------------------------------------------------------
+     Where each characteristic actually sits on the photograph, as a percent
+     of the 2000/1180 crop. Read off the image, not invented: the enclosure
+     is the black ribbed box mid-frame, the steering axis runs through the
+     fork, the front wheel is right of centre. These are what the lines point
+     at and what the held marks appear over.
+     --------------------------------------------------------------------- */
+  var AT={ sil:[31,38], whl:[75,72], encl:[52,56], ribs:[45,59],
+           axis:[68,31], fast:[41,69], strc:[26,61], seat:[36,39] };
+
+  /* a stage with the gold marks as SEPARATE layers, one per characteristic,
+     so any single one can be shown alone. PVSTAGE welds them into one. */
+  function stage2(keys,o){
+    o=o||{};
+    return '<div class="pvstage '+(o.cls||'')+'">'+
+      '<img class="pvphoto" decoding="async" alt="" src="'+PHOTO+'">'+
+      '<div class="pvsk">'+
+        (o.noLine?'':'<img class="pvline" decoding="async" alt="" src="'+SKA+'">')+
+        keys.map(function(k){
+          return lay(V[k].p,'solo solo_'+k,AUD,XSW(k,2.4));
+        }).join('')+
+      '</div>'+
+      keys.map(function(k){
+        var a=AT[k]||[50,50];
+        return '<span class="anch a_'+k+(o.dots?' dot':'')+'" style="left:'+a[0]+'%;top:'+a[1]+'%"></span>';
+      }).join('')+
+    '</div>';
+  }
+  /* dash bookkeeping, so a mark can be driven straight off scroll position */
+  function lens(el){
+    if(!el) return [];
+    return [].map.call(el.querySelectorAll('path'),function(p){
+      var L=0; try{ L=p.getTotalLength()||0; }catch(e){ L=0; }
+      p.style.strokeDasharray=L; p.style.strokeDashoffset=L; p.style.transition='none';
+      return L; });
+  }
+  function drive(el,ls,t){
+    if(!el) return;
+    [].forEach.call(el.querySelectorAll('path'),function(p,i){
+      p.style.strokeDashoffset=((ls[i]||0)*(1-t)).toFixed(1); });
+  }
+  function specs(keys,extra){
+    var n=keys.length+(extra?1:0);
+    return '<div class="ofgrid n'+n+'">'+keys.map(function(k){ return X.spec(k); }).join('')+
+      (extra||'')+'</div>';
+  }
+  function cap(html){ return '<span class="vcap">'+html+'</span>'; }
+
+  /* =======================================================================
+     01 — BASELINE, BUT FIXED.
+     The same composition as the control, with the four behavioural faults
+     corrected: the photograph is held far longer, the drawing never reaches
+     full strength, the characteristics arrive one at a time rather than in a
+     single wash, and the whole thing is tied to scroll in both directions.
+     Scroll back up and the motorcycle is a motorcycle again.
+     End state: the photograph, two traces, and the language underneath.
+     ======================================================================= */
+  C(15,'BASELINE, BUT FIXED','the control with its behaviour fixed — photograph held, drawing capped, marks sequential, fully reversible',function(r,x){
+    var KS=['sil','whl','encl','ribs','axis','fast','strc','seat'];
+    var KEEPMARK={sil:1,encl:1};                 /* the two left standing    */
+    r.innerHTML=X.sec('a01',
+      '<div class="oneframe" style="margin-top:12px">'+
+        stage2(KS)+
+        '<div class="ofcopy">'+X.mast()+'<p>'+T.fv1+'</p></div>'+
+      '</div>'+
+      specs(KS, X.orspec(false))+
+      cap('Scroll returns the motorcycle. Nothing found here is added to it.')+
+      X.rows()+FSTRIP('e')+'<div class="rbtm"></div>');
+
+    var st=r.querySelector('.pvstage'), ln=r.querySelector('.pvline');
+    var L={}; KS.forEach(function(k){ L[k]=lens(r.querySelector('.solo_'+k)); });
+    var sw=r.querySelector('.rc_or .sw');
+
+    if(!window.MOTION){
+      st.classList.add('half','soft');
+      KS.forEach(function(k){ var s=r.querySelector('.solo_'+k);
+        if(s){ s.classList.add('on'); s.style.opacity=KEEPMARK[k]?'.85':'.26'; drive(s,L[k],1); } });
+      X.settle(r,{soft:true,grey:false,rest:0.3});
+      return;
+    }
+
+    X.prog(x,r.querySelector('.oneframe'),function(p){
+      /* 0 - 0.20   the photograph, untouched. This is the correction.       */
+      /* 0.20- 0.34 it cools, but only halfway — never to a grey plate       */
+      st.classList.toggle('half', p>0.20);
+      /* 0.34- 0.48 the drawing rises to 42% and stops there                 */
+      var d=X.seg(p,0.34,0.48);
+      if(ln) ln.style.opacity=(0.42*d).toFixed(3);
+      /* 0.48- 0.88 one characteristic at a time                            */
+      KS.forEach(function(k,i){
+        var a=0.48+(i*0.05), t=X.seg(p,a,a+0.075);
+        var s=r.querySelector('.solo_'+k); if(!s) return;
+        s.classList.toggle('on',t>0);
+        s.style.opacity=t>0?'1':'0';
+        drive(s,L[k],t);
+        var rec=r.querySelector('.rc_'+k+' .rt'), w=r.querySelector('.d2_'+k),
+            cell=r.querySelector('.rc_'+k);
+        if(rec) rec.classList.toggle('on',t>0.55);
+        if(cell) cell.classList.toggle('now',t>0.55&&t<1);
+        if(w) w.classList.toggle('on',t>0.92);
+      });
+      if(sw) sw.classList.toggle('on',p>0.80);
+      var orw=r.querySelector('.d2_or'); if(orw) orw.classList.toggle('on',p>0.86);
+      /* 0.88- 1    the photograph comes back and all but two marks let go   */
+      var back=X.seg(p,0.88,1);
+      if(back>0){
+        st.classList.toggle('half',back<0.6);
+        if(ln) ln.style.opacity=(0.42*(1-back)+0.10*back).toFixed(3);
+        KS.forEach(function(k){
+          var s=r.querySelector('.solo_'+k); if(!s) return;
+          s.style.opacity=String(KEEPMARK[k]?(1-back*0.28):(1-back));
+        });
+      }
+    });
+  });
+
+  /* =======================================================================
+     02 — THE SLOW EXTRACTION.
+     There is no drawing in this one at all. The photograph is never cooled,
+     never covered and never left. One characteristic is found, held for a
+     beat, and let go; the record it produced stays. When the sequence has
+     run it does not stop — every few seconds the system quietly goes back
+     and touches one of them again.
+     ======================================================================= */
+  C(16,'THE SLOW EXTRACTION','no drawing at all — one characteristic found, held and released at a time, and it never stops looking',function(r,x){
+    var KS=['sil','whl','encl','ribs','axis','fast'];
+    r.innerHTML=X.sec('a02',
+      '<div class="oneframe" style="margin-top:12px">'+
+        stage2(KS,{noLine:1})+
+        '<div class="ofcopy">'+X.mast()+'<p>'+T.fv1+'</p></div>'+
+      '</div>'+
+      specs(KS)+
+      cap('The photograph is never altered. Only what has been read from it accumulates.')+
+      X.rows()+FSTRIP('b')+'<div class="rbtm"></div>');
+
+    var L={};
+    KS.forEach(function(k){ L[k]=lens(r.querySelector('.solo_'+k)); });
+
+    function findIt(k,i,hold){
+      var s=r.querySelector('.solo_'+k);
+      if(s){ s.classList.add('on'); s.style.transition='opacity .34s ease';
+        s.style.opacity='1';
+        [].forEach.call(s.querySelectorAll('path'),function(p,q){
+          p.style.transition='stroke-dashoffset .55s cubic-bezier(.3,.8,.3,1) '+(q*0.05).toFixed(2)+'s';
+          p.style.strokeDashoffset='0'; }); }
+      x.delay(function(){
+        var rec=r.querySelector('.rc_'+k+' .rt'), cell=r.querySelector('.rc_'+k);
+        if(rec) rec.classList.add('on');
+        if(cell) cell.classList.add('now');
+      },420);
+      x.delay(function(){
+        if(s){ s.style.transition='opacity .8s ease'; s.style.opacity='0'; }
+        var cell=r.querySelector('.rc_'+k); if(cell) cell.classList.remove('now');
+        var w=r.querySelector('.d2_'+k); if(w) w.classList.add('on');
+      }, hold||1250);
+    }
+
+    X.once(r,x,r.querySelector('.din'),function(){
+      KS.forEach(function(k,i){ x.delay(function(){ findIt(k,i); }, 300+i*1500); });
+      /* and then it keeps looking, indefinitely, one at a time */
+      X.idle(r,x,r.querySelector('.oneframe'),KS,function(k){
+        findIt(k,0,1400);
+      },{after:300+KS.length*1500+1800, every:4600});
+    },{ink:false,soft:true,grey:false});
+  });
+
+  /* =======================================================================
+     03 — THE ANALYSIS NEVER COVERS THE OBJECT.
+     Nothing is drawn on the machine. The photograph sits clean in the middle
+     and the reading happens in the cream either side of it: a point is
+     marked on the object, a hairline leaves the frame, and the specimen it
+     becomes is standing out there waiting for it. The information is pulled
+     OUT rather than laid ON.
+     ======================================================================= */
+  C(17,'ANALYSIS NEVER COVERS THE OBJECT','nothing is drawn on the machine — points are marked and the reading happens in the margin either side',function(r,x){
+    var LEFT=['sil','encl','ribs'], RIGHT=['whl','axis','fast'];
+    var KS=LEFT.concat(RIGHT);
+    r.innerHTML=X.sec('a03',
+      X.mast()+
+      '<div class="offwrap">'+
+        '<div class="offstage">'+
+          '<div class="offrail lft">'+LEFT.map(function(k){ return X.spec(k); }).join('')+'</div>'+
+          '<div class="offmid">'+stage2(KS,{noLine:1,dots:1})+'</div>'+
+          '<div class="offrail rgt">'+RIGHT.map(function(k){ return X.spec(k); }).join('')+'</div>'+
+        '</div>'+
+      '</div>'+
+      cap('Every mark is a point on the object. Nothing has been drawn over it.')+
+      X.rows()+FSTRIP('a')+'<div class="rbtm"></div>');
+
+    X.ready(r);
+    /* the records are present from the start but unlit — this variation is
+       about where the information goes, not about it arriving */
+    [].forEach.call(r.querySelectorAll('.ofspec .rt'),function(n){
+      n.classList.remove('on'); n.style.opacity=''; n.style.transition='';
+    });
+
+    /* leader lines: object point -> out through the frame edge -> specimen */
+    var wrap=r.querySelector('.offwrap');
+    var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('class','leadsvg'); svg.setAttribute('preserveAspectRatio','none');
+    wrap.insertBefore(svg,wrap.firstChild);
+    /* Which lines have already been drawn. lead() rebuilds the whole SVG on
+       resize and on its two settling passes, so without this the second pass
+       replaced the drawn paths with fresh ones at full dash offset — the
+       lines revealed and then silently vanished. */
+    var shown={};
+    function lead(){
+      var wb=wrap.getBoundingClientRect();
+      if(!wb.width||wb.width<760){ svg.innerHTML=''; return; }
+      svg.setAttribute('viewBox','0 0 '+Math.round(wb.width)+' '+Math.round(wb.height));
+      svg.innerHTML=KS.map(function(k){
+        var a=r.querySelector('.a_'+k), c=r.querySelector('.rc_'+k);
+        if(!a||!c) return '';
+        var ab=a.getBoundingClientRect(), cb=c.getBoundingClientRect();
+        var left=LEFT.indexOf(k)>=0;
+        var x1=ab.left+ab.width/2-wb.left, y1=ab.top+ab.height/2-wb.top;
+        var x2=(left? cb.right : cb.left)-wb.left, y2=cb.top+cb.height/2-wb.top;
+        var mx=x1+(x2-x1)*0.62;
+        return '<path class="ld_'+k+'" d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+
+               ' L'+mx.toFixed(1)+' '+y1.toFixed(1)+
+               ' L'+mx.toFixed(1)+' '+y2.toFixed(1)+
+               ' L'+x2.toFixed(1)+' '+y2.toFixed(1)+'"/>';
+      }).join('');
+      KS.forEach(function(k){
+        var p=svg.querySelector('.ld_'+k); if(!p) return;
+        var Lg=p.getTotalLength();
+        p.style.strokeDasharray=Lg;
+        p.style.strokeDashoffset=(shown[k]||!window.MOTION)?0:Lg;
+      });
+    }
+    requestAnimationFrame(function(){ requestAnimationFrame(lead); });
+    x.delay(lead,700); x.delay(lead,1900);
+    x.on(window,'resize',function(){ clearTimeout(svg.__t); svg.__t=setTimeout(lead,160); });
+
+    X.once(r,x,r.querySelector('.offwrap'),function(){
+      KS.forEach(function(k,i){
+        x.delay(function(){
+          var dot=r.querySelector('.a_'+k); if(dot) dot.classList.add('on');
+          shown[k]=1;
+          var p=svg.querySelector('.ld_'+k);
+          if(p){ p.style.transition='stroke-dashoffset .85s cubic-bezier(.3,.8,.3,1)';
+                 p.style.strokeDashoffset='0'; }
+          setTimeout(function(){
+            var rec=r.querySelector('.rc_'+k+' .rt'), w=r.querySelector('.d2_'+k);
+            if(rec) rec.classList.add('on');
+            if(w) w.classList.add('on');
+          },700);
+        }, 200+i*420);
+      });
+    },{ink:false});
+    if(!window.MOTION){
+      [].forEach.call(r.querySelectorAll('.anch.dot'),function(n){ n.classList.add('on'); });
+    }
+  });
+
+  /* =======================================================================
+     05 — EXTRACTION FLOWS DOWNWARD.
+     The composition is read as one vertical system rather than three stacked
+     blocks. Lines leave the object at the point each characteristic actually
+     occupies and terminate in the record below it; further down, three of
+     those records continue into the product strip. Object, language, new
+     objects — one movement, top to bottom.
+     ======================================================================= */
+  C(18,'EXTRACTION FLOWS DOWNWARD','one vertical system: lines leave the object where the characteristic is and carry on into the products',function(r,x){
+    var KS=['sil','encl','ribs','axis','whl','fast'];
+    /* the copy rides inside the frame, as it does on the control. Standing it
+       above added 149px and made the frame the second thing on the page —
+       wrong for the one variation whose whole argument is downward movement. */
+    r.innerHTML=X.sec('a05',
+      '<div class="flowwrap" style="margin-top:12px">'+
+        '<div class="oneframe">'+stage2(KS,{dots:1})+
+          '<div class="ofcopy">'+X.mast()+'<p>'+T.fv1+'</p></div></div>'+
+        specs(KS, X.orspec(true))+
+      '</div>'+
+      '<div class="dnrail">'+
+        [22,50,78].map(function(p,i){ return '<span class="dntick t'+i+(i===2?' en':'')+
+          '" style="left:'+p+'%"></span>'; }).join('')+
+      '</div>'+
+      cap('The orange was not chosen. It was found on the object at <b>#E43C00</b> and kept.')+
+      X.rows()+FSTRIP('d')+'<div class="rbtm"></div>');
+
+    var st=r.querySelector('.pvstage'), ln=r.querySelector('.pvline');
+    var L={}; KS.forEach(function(k){ L[k]=lens(r.querySelector('.solo_'+k)); });
+
+    X.flow(r,x,'.flowwrap',KS.map(function(k){
+      return {from:'.a_'+k, to:'.rc_'+k, fx:0.5, fy:0.5};
+    }).concat([{from:'.a_encl', to:'.rc_or', fx:0.5, fy:0.5, en:1}]));
+
+    X.once(r,x,r.querySelector('.flowwrap'),function(){
+      st.classList.add('half');
+      x.delay(function(){ if(ln) ln.style.opacity='.30'; },500);
+      KS.forEach(function(k,i){
+        x.delay(function(){
+          var dot=r.querySelector('.a_'+k); if(dot) dot.classList.add('on');
+          var s=r.querySelector('.solo_'+k);
+          if(s){ s.classList.add('on'); s.style.opacity='.9';
+            [].forEach.call(s.querySelectorAll('path'),function(p,q){
+              p.style.transition='stroke-dashoffset .6s ease '+(q*0.04).toFixed(2)+'s';
+              p.style.strokeDashoffset='0'; }); }
+          var rec=r.querySelector('.rc_'+k+' .rt'); if(rec) rec.classList.add('on');
+          var w=r.querySelector('.d2_'+k); if(w) w.classList.add('on');
+          x.delay(function(){ if(s) s.style.opacity='.26'; },1100);
+        }, 300+i*340);
+      });
+      /* the colour is found last, on the object it already travelled to */
+      x.delay(function(){
+        var src=r.querySelector('.swsrc'); if(src) src.classList.add('found');
+        var w=r.querySelector('.d2_or'); if(w) w.classList.add('on');
+      }, 300+KS.length*340+400);
+      /* and the system carries on downward into the products */
+      x.delay(function(){
+        [].forEach.call(r.querySelectorAll('.dntick'),function(n,i){
+          setTimeout(function(){ n.classList.add('on'); },i*220); });
+      }, 300+KS.length*340+900);
+    },{soft:true,grey:false,rest:0.26});
+  });
+
+  /* =======================================================================
+     12 — THE DRAWING AS A FLASH OF UNDERSTANDING.
+     Almost the whole thing is a photograph. Once, and only once, the entire
+     structure is visible at the same moment — everything the machine is
+     made of, seen at once — and then it is gone. Two traces stay. This is
+     the test of whether the drawing is stronger as a moment than as a state.
+     ======================================================================= */
+  C(19,'A FLASH OF UNDERSTANDING','photographic throughout, except for one moment when the whole structure is visible at once',function(r,x){
+    var KS=['sil','whl','encl','ribs','axis','fast','strc','seat'];
+    var STAY={encl:1,whl:1};
+    r.innerHTML=X.sec('a12',
+      '<div class="oneframe flash" style="margin-top:12px">'+
+        stage2(KS)+
+        '<div class="ofcopy">'+X.mast()+'<p>'+T.fv1+'</p></div>'+
+      '</div>'+
+      specs(KS)+
+      cap('One moment of the whole structure. Then the object again.')+
+      X.rows()+FSTRIP('c')+'<div class="rbtm"></div>');
+
+    var st=r.querySelector('.pvstage'), ln=r.querySelector('.pvline');
+    var L={}; KS.forEach(function(k){ L[k]=lens(r.querySelector('.solo_'+k)); });
+    if(ln) ln.style.opacity='0';
+
+    X.once(r,x,r.querySelector('.oneframe'),function(){
+      /* the held photograph */
+      x.delay(function(){
+        st.classList.add('half');
+        if(ln) ln.style.opacity='.78';
+        KS.forEach(function(k){
+          var s=r.querySelector('.solo_'+k); if(!s) return;
+          s.classList.add('on'); s.style.opacity='1';
+          [].forEach.call(s.querySelectorAll('path'),function(p){
+            p.style.transition='stroke-dashoffset .34s ease'; p.style.strokeDashoffset='0'; });
+        });
+        KS.forEach(function(k,i){
+          setTimeout(function(){
+            var rec=r.querySelector('.rc_'+k+' .rt'), w=r.querySelector('.d2_'+k);
+            if(rec) rec.classList.add('on');
+            if(w) w.classList.add('on');
+          }, 120+i*70);
+        });
+      },900);
+      /* and it recedes */
+      x.delay(function(){
+        st.classList.remove('half');
+        if(ln) ln.style.opacity='.08';
+        KS.forEach(function(k){
+          var s=r.querySelector('.solo_'+k); if(!s) return;
+          s.style.transition='opacity 1.1s ease';
+          s.style.opacity=STAY[k]?'.5':'0';
+        });
+      },2500);
+      /* thereafter it only ever glances at one thing at a time */
+      X.idle(r,x,r.querySelector('.oneframe'),KS,function(k){
+        var s=r.querySelector('.solo_'+k); if(!s) return;
+        var back=STAY[k]?'.5':'0';
+        s.style.transition='opacity .7s ease'; s.style.opacity='.85';
+        var cell=r.querySelector('.rc_'+k); if(cell) cell.classList.add('now');
+        setTimeout(function(){ s.style.transition='opacity 1.2s ease'; s.style.opacity=back;
+          if(cell) cell.classList.remove('now'); },1500);
+      },{after:4200,every:4800});
+    },{soft:true,grey:false,rest:0.3});
+  });
+
+  /* -----------------------------------------------------------------------
+     Shared post-build for the new five: the venture copy and hero stay out
+     of the page (each variation carries that material itself), and the
+     energy slides in the strip take the sampled orange.
+     --------------------------------------------------------------------- */
+  [15,16,17,18,19].forEach(function(n){
+    var c=CONCEPTS[n]; if(!c) return;
+    var base=c.build;
+    CONCEPTS[n]={n:n,name:c.name,desc:c.desc,build:function(r,x){
+      X.fvHide();
+      base(r,x);
+      [].forEach.call(r.querySelectorAll('.fslide'),function(sl){
+        var ey=sl.querySelector('.fey'); if(!ey) return;
+        if(/^(energy|power)$/i.test((ey.textContent||'').trim())) sl.classList.add('pw');
+      });
+    }};
+  });
+})();
+</script>
+<script id="sf-a-bar">
+/* =========================================================================
+   THE BAR — batch A joins the control.
+
+   Numbering follows the brief, not the slot: the control is 00 and the five
+   new ones are 01, 02, 03, 05 and 12. The gaps are deliberate — 04, 06–11 and
+   13–20 belong to the batches still to come, and renumbering these later
+   would break every link and every note made against them in the meantime.
+
+   Slots stay where they are. lab6/extract.html wraps any index through
+   ((n%45)+45)%45, so a concept cannot live above 44 and moving one to match
+   its label would collide with something already registered.
+   ========================================================================= */
+(function(){
+  var KEEP=[14,15,16,17,18,19];
+  var LBL ={14:'00', 15:'01', 16:'02', 17:'03', 18:'05', 19:'12'};
+  var GRP ={14:'control', 15:'close to current'};
+  window.SLBL=LBL; window.SKEEP=KEEP;
+
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  /* numbered boxes, one per variation, the active one filled. No slider. */
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    bx.innerHTML='';
+    var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹';
+    bx.appendChild(pv);
+    KEEP.forEach(function(n,i){
+      if(GRP[n]){
+        var g=document.createElement('span'); g.className='gp'; g.textContent=GRP[n];
+        if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; }
+        bx.appendChild(g);
+      }
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=LBL[n];
+      b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      bx.appendChild(b);
+    });
+    var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›';
+    bx.appendChild(nx);
+    function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+      i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+    pv.addEventListener('click',function(){ step(-1); });
+    nx.addEventListener('click',function(){ step(1); });
+    window.SSTEP=step;
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='control + five of twenty';
+  }
+
+  /* the outermost wrapper, so this file has the final word on the number and
+     the URL — every layer beneath writes its own label from its own closure */
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var baseShow=window.show;
+  window.show=function(n){
+    baseShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+
+  /* __labHash0 is the hash as the page was OPENED. Layers below rewrite
+     location.hash from about 1.7s onward, so reading it live here would read
+     their writes rather than the link that was followed. */
+  function land(){
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
+    var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
+    if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
+    if(want!==null&&CONCEPTS[want]){
+      if(CUR!==want||!document.getElementById('sf-lab-mount')) show(want);
+      return;
+    }
+    /* a c= that is no longer on the bar is a stale link — land on the control */
+    if(m||!keep[CUR]||CUR===0||!document.getElementById('sf-lab-mount')){
+      if(CUR!==KEEP[0]) show(KEEP[0]);
+    }
+  }
+  /* after every timer beneath this one: the deepest fires at 3500, the
+     baseline layer's at 5600 (now short-circuited, but land late anyway) */
+  setTimeout(land,3900); setTimeout(land,4700); setTimeout(land,5900);
+  var ticks=0;
+  var iv=setInterval(function(){
+    ticks++;
+    if(!keep[CUR]||CUR===0){ show(KEEP[0]); }
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]&&num.textContent!==LBL[CUR]) num.textContent=LBL[CUR];
+    if(ticks>26) clearInterval(iv);          /* ~8s, then leave it alone */
   },300);
 })();
 </script>
