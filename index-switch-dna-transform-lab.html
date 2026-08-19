@@ -16743,20 +16743,25 @@ function mnoRise(r,sel){
 
 /* ==================== prune and rebuild the MARSHALL bar ==================== */
 (function(){
-  var KEEP=[0,1,2,3,9,11,31,32,33,34,35];
-  var LBL={0:'00',1:'01',2:'02',3:'03',9:'09',11:'11',
-           31:'11A',32:'11B',33:'11C',34:'11D',35:'11E'};
-  var keep={}; KEEP.forEach(function(n){ keep[n]=1; });
+  /* Marshall is finished: 11 IS the section. No concepts, no control — one
+     box, and the page opens on it.
+     MCON[0] stays registered but off the bar: it is the machinery's fallback
+     for "show the production markup", and removing it would leave mshow(0)
+     as a silent no-op. */
+  var KEEP=[11];
+  var LBL={0:'00',11:'11'};
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
   for(var i=0;i<MCON.length;i++) if(!keep[i]) MCON[i]=undefined;
   window.MLBL=LBL;
 
   var bx=document.getElementById('mlabboxes');
   bx.innerHTML='';
-  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹';
+  if(KEEP.length>1) bx.appendChild(pv);
   KEEP.forEach(function(n,i){
-    if(i===0||i===1||n===31){ var g=document.createElement('span'); g.className='gp';
-      g.textContent = (i===0?'control':(n===31?'from 11':'concepts'));
-      if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+    if(i===0){ var g=document.createElement('span'); g.className='gp';
+      g.textContent='final section';
+      g.style.borderLeft='0'; g.style.marginLeft='0'; bx.appendChild(g); }
     var b=document.createElement('button');
     b.dataset.n=n; b.textContent=LBL[n];
     if(LBL[n].length>2) b.style.width='31px';
@@ -16764,14 +16769,15 @@ function mnoRise(r,sel){
     b.addEventListener('click',(function(m){return function(){mshow(m);};})(n));
     bx.appendChild(b);
   });
-  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›';
+  if(KEEP.length>1) bx.appendChild(nx);
   function step(d){ var i=KEEP.indexOf(MCUR); if(i<0) i=0;
     i=(i+d+KEEP.length)%KEEP.length; mshow(KEEP[i]); }
   pv.addEventListener('click',function(){step(-1);});
   nx.addEventListener('click',function(){step(1);});
 
   var cn=document.getElementById('mlabcount');
-  if(cn) cn.textContent=KEEP.length+' options · shortlist + five from 11';
+  if(cn) cn.textContent='marshall is settled';
 
   /* the hash carries labels on both sides — c=15o&m=11C rather than c=45&m=33 */
   var mshowBase=window.mshow;
@@ -16789,13 +16795,17 @@ function mnoRise(r,sel){
   }
   /* both sliders restore from one link, after every earlier deep-link has run */
   setTimeout(function(){
-    var h=window.__labHash0||location.hash;
+    /* Use the captured arrival hash even when it is EMPTY. Falling back to
+       location.hash here would read whatever the earlier layers had already
+       written to it (#c=00&m=00), which reads as "the user asked for 00". */
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
     var cm=/[#&]c=([0-9]+o?)/i.exec(h), mm=/[#&]m=([0-9a-e]+)/i.exec(h);
     var wantC=fromLabel(window.SLBL||{},cm&&cm[1],null);
     var wantM=fromLabel(LBL,mm&&mm[1],null);
     if(wantC!==null&&CONCEPTS[wantC]) show(wantC);
     else if(!CONCEPTS[CUR]) show(0);
-    mshow(wantM!==null&&MCON[wantM]?wantM:0);
+    /* the page opens on the section itself, not on the old production markup */
+    mshow(wantM!==null&&MCON[wantM]?wantM:11);
   },2500);
 })();
 </script>
