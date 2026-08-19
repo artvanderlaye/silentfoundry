@@ -17718,6 +17718,9 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     return           ftwin({r2:'two2',  topDna:1, botDna:1});
   }
 
+  window.FSTRIP=fstrip;          /* later layers build their own strips */
+  window.FPORTF=PORTF;
+
   /* --------------------------------------------------------------------
      Install. Each concept keeps its own build; the strip is swapped in
      afterwards, so none of the five compositions is edited.
@@ -17878,6 +17881,7 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
         lay(V_keys(keys),'pvc',CY,2.2)+
       '</div></div>';
   }
+  window.PVSTAGE=stage;          /* the registered photo/drawing frame */
   function V_keys(keys){ var out=[]; keys.forEach(function(k){ out=out.concat(V[k].p); }); return out; }
   function head(){
     return '<span class="pvey">'+T.fvEy+'</span>'+
@@ -18285,6 +18289,385 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
   }
   setTimeout(land,1800); setTimeout(land,2700); setTimeout(land,3400);
+})();
+</script>
+<style id="sf-r2-css">
+/* =========================================================================
+   05 · 06 · 07 — modifications of 01, 03 and 04.
+
+   TYPE. The SWITCH paragraph was rendering at 10.88px with 2.72px of tracking
+   — that is the site's EYEBROW setting applied to body copy, which is why it
+   read as a label rather than a sentence. The site's body is DM Sans 14.4px
+   on 28.5px with normal tracking (measured off FEATURED VENTURE, the Marshall
+   case study and Venture Models — all three agree). Corrected on every
+   concept, old and new, because it is a fault rather than a design choice.
+   ========================================================================= */
+#sf-lab-mount .vpara,#sf-lab-mount .pvp,#sf-lab-mount .mhp p,#sf-lab-mount .bd{
+  font-family:'DM Sans',sans-serif !important;
+  font-size:14.4px !important; line-height:28.5px !important;
+  letter-spacing:normal !important; font-weight:300 !important;
+  color:rgba(10,10,10,.55) !important; max-width:min(100%,680px);}
+/* the eyebrow and the display line, at the site's own settings */
+#sf-lab-mount .mhey{font-family:'DM Sans',sans-serif;font-size:10.88px;
+  letter-spacing:2.72px;text-transform:uppercase;font-weight:300;
+  color:#0a7f99;display:block;}
+#sf-lab-mount .mhh{font-family:'Bebas Neue',sans-serif;font-weight:300;
+  font-size:clamp(2rem,4.6vw,3.5rem);letter-spacing:.16em;text-transform:uppercase;
+  line-height:.92;color:rgba(10,10,10,.86);margin:34px 0 0;}
+#sf-lab-mount .mhh i{font-style:normal;color:var(--lab-cyb);}
+#sf-lab-mount .mhp{display:grid;grid-template-columns:1fr 1fr;gap:38px;margin-top:30px;}
+#sf-lab-mount .mhp p{margin:0;}
+#sf-lab-mount .mhband{border-bottom:1px solid rgba(141,145,138,.55);padding-bottom:38px;}
+#sf-lab-mount .mhrow{display:grid;grid-template-columns:.82fr 1.18fr;gap:44px;
+  align-items:start;margin-top:38px;}
+
+/* ---- 07 · everything inside one frame ---------------------------------- */
+#sf-lab-mount .oneframe{position:relative;}
+#sf-lab-mount .oneframe .pvstage{aspect-ratio:2000/1180;}
+#sf-lab-mount .ofcopy{position:absolute;left:3.5%;top:7%;width:33%;z-index:4;pointer-events:none;}
+#sf-lab-mount .ofcopy .mhh{font-size:clamp(1.4rem,2.9vw,2.3rem);}
+#sf-lab-mount .ofcopy .mhey{color:#5fd8f2;}
+#sf-lab-mount .ofcopy .mhh{color:rgba(244,241,236,.94);margin-top:24px;}
+#sf-lab-mount .ofcopy .mhh i{color:#5fd8f2;}
+#sf-lab-mount .ofcopy p{font-family:'DM Sans',sans-serif !important;font-size:13.6px !important;
+  line-height:26px !important;letter-spacing:normal !important;font-weight:300 !important;
+  color:rgba(244,241,236,.66) !important;margin:22px 0 0;max-width:min(100%,520px);}
+/* The specimens started life laid over the photograph. They collided with the
+   machine wherever they went — in this crop the bike runs almost the full
+   width and there is no honest empty ground for eight of them. They sit in one
+   row directly under the frame instead, joined to it with no gap, so the frame
+   still carries the copy, the hero and the machine in one screen. */
+#sf-lab-mount .ofgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:22px;
+  margin-top:26px;align-items:end;}
+#sf-lab-mount .ofspec{position:relative;}
+/* a specimen label over a photograph needs its own ground */
+#sf-lab-mount .ofspec .rcap{color:rgba(10,10,10,.42);}
+
+/* ---- the correspondence devices ---------------------------------------- */
+/* 05 · a paired pulse — the mark on the machine and its record brighten
+       together, once, and then both settle back into the ambient light */
+@keyframes sfpair{0%{opacity:var(--o0,1)}22%{opacity:1;filter:brightness(1.55)}
+                  100%{opacity:var(--o0,1);filter:none}}
+#sf-lab-mount .sfpair{animation:sfpair 1200ms ease-out 1;}
+/* 06 · the whole genome row lifts when its mark lands, and holds */
+#sf-lab-mount .gn{transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.3,1);}
+#sf-lab-mount .r206 .gn{opacity:.42;}
+#sf-lab-mount .r206 .gn.up{opacity:1;transform:translateY(-4px);}
+#sf-lab-mount .r206 .gn.up .sn{color:rgba(10,10,10,.72);}
+/* 07 · the record takes the gold for a beat, then resolves to cyan in place */
+#sf-lab-mount .sfhand path{transition:stroke .55s ease;}
+/* the ambient light, on all three */
+@keyframes sfglint2{0%{opacity:.82}44%{opacity:1}56%{opacity:1}100%{opacity:.82}}
+#sf-lab-mount .sfglint2 .rt,#sf-lab-mount .sfglint2 .ofspec .rt{
+  animation:sfglint2 7.5s ease-in-out infinite;}
+@media(prefers-reduced-motion:reduce){
+  #sf-lab-mount .sfglint2 .rt{animation:none;opacity:1;}
+  #sf-lab-mount .sfpair{animation:none;}
+}
+@media(max-width:900px){
+  #sf-lab-mount .mhp{grid-template-columns:1fr;gap:22px;}
+  #sf-lab-mount .mhrow{grid-template-columns:1fr;gap:26px;}
+  #sf-lab-mount .mhh{margin-top:24px;}
+  /* 07 cannot hold copy over the photograph on a phone — it comes out and
+     sits above the frame, and the specimens fall into a compact grid */
+  #sf-lab-mount .oneframe .ofcopy{position:static;width:auto;margin-bottom:22px;}
+  #sf-lab-mount .oneframe .ofcopy .mhey{color:#0a7f99;}
+  #sf-lab-mount .oneframe .ofcopy .mhh{color:rgba(10,10,10,.86);}
+  #sf-lab-mount .oneframe .ofcopy p{color:rgba(10,10,10,.55) !important;}
+  #sf-lab-mount .ofgrid{grid-template-columns:repeat(3,1fr);gap:20px 14px;margin-top:22px;}
+}
+</style>
+
+<script id="sf-r2-js">
+(function(){
+  var PHOTO=IMG.bike;
+
+  /* ---------------------------------------------------------------------
+     The FEATURED VENTURE block and the hero carousel are two separate full
+     stops before the section even starts. On 05–07 they come out of the page
+     and go INTO the concept, each in a different way. Nothing is deleted from
+     index.html — this hides them in the lab only, and only for these three.
+     --------------------------------------------------------------------- */
+  function fvHide(on){
+    var t=document.querySelector('#fv-stage .t-in'); if(!t) return;
+    [0,1].forEach(function(i){
+      var n=t.children[i]; if(!n) return;
+      n.style.setProperty('display', on?'none':'', 'important');
+    });
+  }
+  function masthead(band){
+    return '<div class="'+(band?'mhband':'')+'">'+
+      '<span class="mhey">'+T.fvEy+'</span>'+
+      '<h3 class="mhh">'+T.fvA+'<br><i>'+T.fvB+'</i></h3>'+
+      (band?'<div class="mhp"><p>'+T.fv1+'</p><p>'+T.fv2+'</p></div>':'')+
+    '</div>';
+  }
+  /* fb-host clips the full-bleed strip so a 100vw child cannot reach the page */
+  function sec(cls,inner){ return '<div class="lb dp rp pv fb-host sfmat '+cls+
+    '"><div class="din">'+inner+'</div></div>'; }
+  function ready(root){                       /* records present, never revealed */
+    [].forEach.call(root.querySelectorAll('.rt'),function(n){
+      if(n.closest('.fslide')) return;
+      n.classList.add('on'); n.style.opacity='1'; n.style.transition='none';
+      [].forEach.call(n.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; });
+    });
+    [].forEach.call(root.querySelectorAll('.rc'),function(n){ n.classList.add('lit'); });
+  }
+  function ambient(root,x,delay){
+    if(!window.MOTION) return;
+    x.delay(function(){
+      var h=root.querySelector('.din')||root; h.classList.add('sfglint2');
+      var i=0;
+      [].forEach.call(root.querySelectorAll('.rt'),function(n){
+        if(n.closest('.fslide')) return;
+        n.style.animationDelay=(i*0.3).toFixed(2)+'s'; i++; });
+    }, delay||4200);
+  }
+  /* with animation off the reading has still HAPPENED: the photograph is the
+     drawing, the gold marks are on it, and nothing is left half-drawn */
+  function settleStage(root){
+    var st=root.querySelector('.pvstage'); if(st) st.classList.add('grey','ink');
+    var g=root.querySelector('.pvg');
+    if(g){ g.classList.add('on'); g.style.opacity='1';
+      [].forEach.call(g.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; }); }
+  }
+  /* run once, on scroll */
+  function once(root,x,host,fn){
+    var ran=false, go=function(){ if(ran) return; ran=true; fn(); };
+    if(!window.MOTION){ settleStage(root); return; }
+    var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting){ go(); io.disconnect(); } }); },{threshold:0}));
+    io.observe(host); x.delay(go,2800);
+  }
+  function pulse(el,dur){
+    if(!el) return;
+    el.classList.remove('sfpair'); void el.offsetWidth; el.classList.add('sfpair');
+    setTimeout(function(){ el.classList.remove('sfpair'); }, dur||1300);
+  }
+
+  /* =====================================================================
+     05 — from 01.  ONE FRAME, TWO STATES.
+     The venture copy and the hero stop being two separate stops: the copy
+     sits in a column beside a single stage that IS the hero photograph and
+     turns into the drawing in place. One image instead of two.
+     Correspondence: a PAIRED PULSE — the mark on the machine and its record
+     brighten together, once, travelling down the set.
+     ===================================================================== */
+  C(12,'ONE FRAME, TWO STATES','the hero photograph and the drawing share one stage; each mark pulses with its own record',function(r,x){
+    var KS=['sil','whl','encl','ribs','axis','fast','seat','strc'];
+    r.innerHTML=sec('r205',
+      masthead(false)+
+      '<div class="mhrow">'+
+        '<div><p class="vpara">'+T.fv1+'</p><p class="vpara" style="margin-top:26px">'+T.fv2+'</p></div>'+
+        '<div>'+PVSTAGE(KS)+
+          '<span class="pvcap">The photograph, and the drawing taken from it</span></div>'+
+      '</div>'+
+      '<div class="rline"></div>'+
+      '<span class="vhead" style="margin-top:24px;display:block">The language it produces</span>'+
+      '<div class="rg4 rgap28" style="margin-top:20px">'+
+        KS.map(function(k){ return rcell(k,1,'',2.5); }).join('')+'</div>'+
+      '<p class="vpara" style="margin-top:34px">'+T.p+'</p>'+
+      FSTRIP('a')+'<div class="rbtm"></div>');
+    ready(r);
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg'), c=r.querySelector('.pvc');
+    if(c) c.remove();                       /* the language lives below, not on the machine */
+    if(g) xdash(g);
+    once(r,x,r.querySelector('.din'),function(){
+      st.classList.add('grey');
+      x.delay(function(){ st.classList.add('ink'); },700);
+      x.delay(function(){ if(g){ g.classList.add('on'); xundash(g,900,70); } },1500);
+      /* then each characteristic and its record brighten together */
+      KS.forEach(function(k,i){
+        x.delay(function(){
+          var mark=r.querySelector('.pvg'), rec=r.querySelector('.rc_'+k);
+          pulse(rec); pulse(mark);
+        }, 2600+i*520);
+      });
+    });
+    ambient(r,x,2600+KS.length*520+600);
+  });
+
+  /* =====================================================================
+     06 — from 03.  THE MASTHEAD.
+     The venture copy is compressed into a single band across the top —
+     eyebrow, display line, and the two paragraphs side by side — and the
+     hero image is dropped entirely, because the portfolio strip already
+     opens on the bike. 03's own machine and genome are untouched.
+     Correspondence: THE ROW LIFTS. The genome sits back at 42%; when a mark
+     lands on the machine its row comes up to full and stays up.
+     ===================================================================== */
+  (function(){
+    /* 03 as it stands right now — already carrying its strip and its material.
+       Captured before the prune at the foot of this file empties the slot. */
+    var src=CONCEPTS[4]; if(!src) return;
+    var srcBuild=src.build;
+    C(13,'THE MASTHEAD','the venture copy folded into one band, the hero dropped, and each genome row lifts as its mark lands',function(r,x){
+      srcBuild(r,x);
+      var host=r.querySelector('.din'); if(!host) return;
+      var sect=r.querySelector('.vp')||r.firstElementChild;
+      if(sect){ sect.classList.add('sfmat'); sect.classList.add('r206'); }
+      var d=document.createElement('div'); d.innerHTML=masthead(true);
+      host.insertBefore(d.firstChild, host.firstChild);
+      /* pair each genome cell with the gold mark of the same characteristic */
+      var PAIR=[['sil','.g2_sil'],['whl','.g2_wheel'],['encl','.g2_encl'],
+                ['ribs','.g2_ribs'],['strc','.g2_frame'],['swng','.g2_swing'],
+                ['fast','.g2_bolts'],['matl','.g2_mat']];
+      var cells=[].slice.call(r.querySelectorAll('.gn'));
+      function cellFor(k){
+        var lab=(V[k]&&V[k].lab||'').toLowerCase();
+        for(var i=0;i<cells.length;i++){
+          var n=cells[i].querySelector('.sn');
+          if(!n) continue;
+          var t=(n.textContent||'').toLowerCase();
+          if(t===lab||lab.indexOf(t)===0||t.indexOf(lab)===0) return cells[i];
+        }
+        return null;
+      }
+      if(!window.MOTION){ cells.forEach(function(c){ c.classList.add('up'); }); return; }
+      once(r,x,host,function(){
+        PAIR.forEach(function(pr,i){
+          x.delay(function(){
+            var mark=r.querySelector(pr[1]); if(mark) pulse(mark,1100);
+            var cell=cellFor(pr[0]); if(cell) cell.classList.add('up');
+          }, 700+i*460);
+        });
+        /* nothing is left sitting back once the reading is done */
+        x.delay(function(){ cells.forEach(function(c){ c.classList.add('up'); }); },
+                700+PAIR.length*460+500);
+      });
+      ambient(r,x,700+PAIR.length*460+900);
+    });
+  })();
+
+  /* =====================================================================
+     07 — from 04.  ONE FRAME CARRIES EVERYTHING.
+     The hero photograph becomes the ground the whole section stands on: the
+     venture eyebrow, the display line and the first paragraph sit on it, the
+     machine turns into the drawing inside it, and the specimens are arranged
+     around the machine in the same frame. Copy, hero, machine and language
+     in one screen instead of four stacked blocks.
+     Correspondence: THE HANDOVER. When a mark completes on the machine, its
+     specimen flushes to the same gold for a beat and then resolves back to
+     cyan where it stands — found there, becomes this. Nothing moves.
+     ===================================================================== */
+  C(14,'ONE FRAME CARRIES EVERYTHING','copy, hero, machine and language in a single frame; each specimen takes the gold for a beat',function(r,x){
+    /* the machine occupies roughly the left two thirds of this crop, so the
+       specimens sit as a rail down the empty pavement on the right — nothing
+       is laid over the photographed bike */
+    var SP=[
+      ['sil',1],['whl',1],['encl',1],['ribs',1],['axis',0],['fast',1],['strc',0],['seat',0]
+    ];
+    var KS=SP.map(function(s){return s[0];});
+    r.innerHTML=sec('r207',
+      '<div class="oneframe" style="margin-top:12px">'+
+        PVSTAGE(KS)+
+        '<div class="ofcopy">'+masthead(false)+'<p>'+T.fv1+'</p></div>'+
+      '</div>'+
+      '<div class="ofgrid">'+SP.map(function(s){
+        return '<div class="ofspec rc rc_'+s[0]+'">'+rsvg(s[0],2.4)+
+          (s[1]?'<span class="rcap"><i>'+V[s[0]].id+'</i>'+V[s[0]].lab+'</span>':'')+
+        '</div>'; }).join('')+'</div>'+
+      '<div class="mhrow" style="margin-top:34px">'+
+        '<div><p class="vpara">'+T.fv2+'</p></div>'+
+        '<div><p class="vpara">'+T.p+'</p></div>'+
+      '</div>'+
+      FSTRIP('e')+'<div class="rbtm"></div>');
+    ready(r);
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg'), c=r.querySelector('.pvc');
+    if(c) c.remove();
+    if(g) xdash(g);
+    once(r,x,r.querySelector('.din'),function(){
+      st.classList.add('grey');
+      x.delay(function(){ st.classList.add('ink'); },650);
+      x.delay(function(){ if(g){ g.classList.add('on'); xundash(g,850,60); } },1400);
+      KS.forEach(function(k,i){
+        x.delay(function(){
+          var rec=r.querySelector('.rc_'+k+' .rt'); if(!rec) return;
+          rec.classList.add('sfhand');
+          [].forEach.call(rec.querySelectorAll('path'),function(p){ p.style.stroke=AUD; });
+          setTimeout(function(){
+            [].forEach.call(rec.querySelectorAll('path'),function(p){ p.style.stroke=CY; });
+          },620);
+        }, 2500+i*430);
+      });
+    });
+    ambient(r,x,2500+KS.length*430+700);
+  });
+
+  /* ---------------------------------------------------------------------
+     the bar
+     --------------------------------------------------------------------- */
+  var KEEP=[11,4,10,12,13,14];
+  var LBL ={11:'01',4:'03',10:'04',12:'05',13:'06',14:'07'};
+  window.SLBL=LBL; window.SKEEP=KEEP;
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  /* only 05–07 absorb the venture block; 01/03/04 keep the page as it was */
+  var NEWONES={12:1,13:1,14:1};
+  KEEP.forEach(function(n){
+    var c=CONCEPTS[n]; if(!c) return;
+    var base=c.build;
+    CONCEPTS[n]={n:n,name:c.name,desc:c.desc,build:function(r,x){
+      fvHide(!!NEWONES[n]);
+      base(r,x);
+      var sect=r.querySelector('.vp')||r.firstElementChild;
+      if(sect) sect.classList.add('sfmat');
+      [].forEach.call(r.querySelectorAll('.fslide'),function(sl){
+        var ey=sl.querySelector('.fey'); if(!ey) return;
+        if(/^(energy|power)$/i.test((ey.textContent||'').trim())) sl.classList.add('pw');
+      });
+    }};
+  });
+
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    bx.innerHTML='';
+    var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹'; bx.appendChild(pv);
+    [[0,'shortlist'],[3,'modified']].forEach(function(){});
+    KEEP.forEach(function(n,i){
+      if(i===0||i===3){ var g=document.createElement('span'); g.className='gp';
+        g.textContent=(i===0?'kept':'modified');
+        if(i===0){ g.style.borderLeft='0'; g.style.marginLeft='0'; } bx.appendChild(g); }
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=LBL[n];
+      b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      bx.appendChild(b);
+    });
+    var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›'; bx.appendChild(nx);
+    function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+      i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+    pv.addEventListener('click',function(){ step(-1); });
+    nx.addEventListener('click',function(){ step(1); });
+    window.SSTEP=step;
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='three kept + three modified';
+  }
+
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var baseShow=window.show;
+  window.show=function(n){
+    baseShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+  function land(){
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
+    var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
+    if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
+    if(want!==null&&CONCEPTS[want]){ if(CUR!==want) show(want); return; }
+    if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
+  }
+  setTimeout(land,1850); setTimeout(land,2750); setTimeout(land,3500);
 })();
 </script>
 
