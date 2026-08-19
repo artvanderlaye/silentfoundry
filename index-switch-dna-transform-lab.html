@@ -17538,9 +17538,15 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
     if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
     if(want!==null&&CONCEPTS[want]){ if(CUR!==want) show(want); return; }
-    /* a c= that is not one of the five is a stale link — land on 01 rather than
+    /* the venture layer adds more slots after this one, so ask the live map
+       rather than the five this block started with */
+    var live=window.SKEEP||KEEP, ok={}; live.forEach(function(n){ ok[n]=1; });
+    var l2=window.SLBL||LBL, w2=null;
+    if(m){ for(var q in l2){ if(l2[q].toLowerCase()===m[1].toLowerCase()){ w2=+q; break; } } }
+    if(w2!==null&&CONCEPTS[w2]){ if(CUR!==w2) show(w2); return; }
+    /* a c= that is not on the bar is a stale link — land on 01 rather than
        wherever a lower layer's own clamp happened to leave it */
-    if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
+    if(m||!ok[CUR]||CUR===0){ if(CUR!==live[0]) show(live[0]); }
   }
   /* twice: once as soon as the layers below have booted, and once after the
      last of their own deep-link timers (marshall-refine fires at 2500) so a
@@ -17582,8 +17588,14 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
    sliders that happen to be stacked. The second row runs at a bigger scale —
    two or three across instead of four — and carries the whole portfolio, so
    the pair works as a slidable directory of everything SWITCH has become. */
-#sf-lab-mount .fstack{display:flex;flex-direction:column;gap:1px;width:max-content;}
-#sf-lab-mount .fstack .ftrack{width:auto;}
+/* Two scroll containers, stacked with a 1px join. The cursor decides which
+   row moves: over the top row the top row scrolls and the bottom stays put,
+   and the other way round. They still read as one block because there is no
+   vertical gap and the join matches the 1px between slides. */
+#sf-lab-mount .fstack{display:flex;flex-direction:column;gap:1px;}
+#sf-lab-mount .fstack .fwrap{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}
+#sf-lab-mount .fstack .fwrap::-webkit-scrollbar{display:none;}
+#sf-lab-mount .fstack .ftrack{width:max-content;}
 /* the second row is wider AND shallower than the first. Repeating the top
    row's near-square at double the size made the block 2500px tall and read as
    the same row twice; the flatter crop keeps the pair compact and makes the
@@ -17691,10 +17703,10 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
       : fill(PROD,28,need,{dna:o.topDna});
     var bot=PORTF.map(function(p){ return slide(p,{dna:o.botDna}); }).join('');
     return '<div class="fstrip bleed '+o.r2+(o.stag?' stag':'')+'">'+
-      '<div class="fwrap"><div class="fstack">'+
-        '<div class="ftrack r1">'+top+'</div>'+
-        '<div class="ftrack r2">'+bot+'</div>'+
-      '</div></div>'+
+      '<div class="fstack">'+
+        '<div class="fwrap"><div class="ftrack r1">'+top+'</div></div>'+
+        '<div class="fwrap"><div class="ftrack r2">'+bot+'</div></div>'+
+      '</div>'+
       (o.note?'<span class="fnote">'+o.note+'</span>':'')+'</div>';
   }
   /* the five variants. Same engine, five different splits and emphases. */
@@ -17762,6 +17774,323 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     var mo=new MutationObserver(function(){ killPF(); });
     mo.observe(document.documentElement,{childList:true,subtree:true});
   }catch(e){ [0,400,900,1800,3200,6000].forEach(function(t){ setTimeout(killPF,t); }); }
+})();
+</script>
+<style id="sf-pv-css">
+/* =========================================================================
+   FEATURED VENTURE — the photograph becomes the drawing  (06–10)
+
+   The registration is real, not approximate. Both axle centres were read off
+   SWITCH_eSCRAMBLER_bike-6.jpg (rear 503,873.5 · front 1512,873.5) and matched
+   to the drawing's own fitted geometry (RWX 216 · FWX 978 · AXLE 472), giving
+   a single scale of 1.3241. Laid over the photograph at that scale the sketch
+   sits on the machine almost line for line — the enclosure, the frame loop,
+   the fork legs, the seat rail and the swingarm all land. It was clearly drawn
+   from this photograph, which is exactly why the dissolve works.
+
+   One honest limit: the drawing is stylised, and its wheels are drawn a little
+   larger relative to the wheelbase than the real bike's. Matching the axles is
+   the right anchor — it is what makes the two read as the same object — and
+   the tyre circles sit a few pixels proud. In a dissolve that reads as a
+   drawing, not as an error.
+   ========================================================================= */
+#sf-lab-mount .pv{background:var(--lab-cream);padding:100px 24px 0;}
+#sf-lab-mount .pv .din{max-width:1600px;margin:0 auto;}
+#sf-lab-mount .pvstage{position:relative;width:100%;aspect-ratio:2000/1333;
+  overflow:hidden;background:#14171b;}
+#sf-lab-mount .pvphoto{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+  filter:grayscale(0) brightness(.92);transition:filter 1.1s ease, opacity 1.1s ease;}
+#sf-lab-mount .pvstage.grey .pvphoto{filter:grayscale(1) contrast(1.06) brightness(.62);}
+#sf-lab-mount .pvstage.gone .pvphoto{opacity:0;}
+/* the drawing frame, placed so the axles land on the axles */
+#sf-lab-mount .pvsk{position:absolute;left:-0.406%;top:8.709%;
+  width:101.959%;height:86.323%;pointer-events:none;}
+#sf-lab-mount .pvsk>*{position:absolute;inset:0;width:100%;height:100%;overflow:visible;}
+#sf-lab-mount .pvline{position:absolute;left:11.04%;top:11.51%;width:77.92%;height:76.98%;
+  object-fit:fill;display:block;filter:invert(1);opacity:0;
+  transition:opacity 1.15s ease;}
+#sf-lab-mount .pvstage.ink .pvline{opacity:.92;}
+#sf-lab-mount .pvstage.faded .pvline{opacity:.16;}
+/* the reading, over the photograph */
+#sf-lab-mount .pvg path{stroke:#d8b87a;}
+#sf-lab-mount .pvc path{stroke:#3ddcff;}
+#sf-lab-mount .pvg,#sf-lab-mount .pvc{opacity:0;transition:opacity .5s ease;}
+#sf-lab-mount .pvg.on,#sf-lab-mount .pvc.on{opacity:1;}
+/* the wipe used by 07 */
+#sf-lab-mount .pvwipe{position:absolute;inset:0;overflow:hidden;
+  clip-path:inset(0 100% 0 0);transition:clip-path 1.5s cubic-bezier(.3,.75,.25,1);}
+#sf-lab-mount .pvstage.wiped .pvwipe{clip-path:inset(0 0 0 0);}
+#sf-lab-mount .pvedge{position:absolute;top:0;bottom:0;width:1px;left:0;
+  background:#d8b87a;opacity:0;transition:left 1.5s cubic-bezier(.3,.75,.25,1),opacity .4s ease;}
+#sf-lab-mount .pvstage.wiped .pvedge{left:100%;opacity:.85;}
+/* the windows used by 09 */
+#sf-lab-mount .pvwin{position:absolute;overflow:hidden;opacity:0;
+  outline:1px solid rgba(216,184,122,.7);outline-offset:0;
+  transition:opacity .8s ease;}
+#sf-lab-mount .pvwin.on{opacity:1;}
+#sf-lab-mount .pvwin .pvinner{position:absolute;}
+/* the labels sit over a photograph, so they carry their own ground — cyan on
+   red brick or on a bright tyre is unreadable otherwise */
+#sf-lab-mount .pvwlab{position:absolute;font-family:var(--lab-dm);font-size:.42rem;
+  letter-spacing:.22em;text-transform:uppercase;color:#3ddcff;white-space:nowrap;
+  opacity:0;transition:opacity .6s ease;padding:5px 9px;
+  background:rgba(10,12,14,.72);transform:translateX(-50%);}
+#sf-lab-mount .pvwlab.on{opacity:1;}
+/* copy */
+#sf-lab-mount .pvey{font-family:var(--lab-dm);font-size:.46rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--lab-gold);display:block;}
+#sf-lab-mount .pvh{font-family:var(--lab-bb);font-weight:300;
+  font-size:clamp(1.9rem,4.4vw,3.4rem);letter-spacing:.14em;text-transform:uppercase;
+  line-height:.96;color:rgba(10,10,10,.82);margin:18px 0 0;}
+#sf-lab-mount .pvh i{font-style:normal;color:var(--lab-cyb);}
+#sf-lab-mount .pvp{font-family:var(--lab-dm);font-size:13.6px;line-height:27.2px;
+  font-weight:300;color:rgba(10,10,10,.55);max-width:min(100%,680px);margin:24px 0 0;}
+#sf-lab-mount .pvcap{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sw-alu-dk,#6e726b);display:block;margin-top:14px;}
+#sf-lab-mount .pvrow{display:grid;gap:24px;margin-top:30px;}
+#sf-lab-mount .pvrow.c6{grid-template-columns:repeat(6,1fr);}
+#sf-lab-mount .pvrow.c4{grid-template-columns:repeat(4,1fr);}
+#sf-lab-mount .pvcol{display:grid;gap:44px;align-items:center;margin-top:44px;}
+#sf-lab-mount .pvcol.a{grid-template-columns:.85fr 1.15fr;}
+#sf-lab-mount .pvbtm{height:96px;}
+@media(max-width:900px){
+  #sf-lab-mount .pv{padding:80px 24px 0;}
+  #sf-lab-mount .pvcol.a{grid-template-columns:1fr !important;gap:28px;}
+  #sf-lab-mount .pvrow.c6{grid-template-columns:repeat(3,1fr);}
+  #sf-lab-mount .pvrow.c4{grid-template-columns:repeat(2,1fr);}
+  #sf-lab-mount .pvwlab{font-size:.38rem;letter-spacing:.16em;}
+}
+</style>
+
+<script id="sf-pv-js">
+(function(){
+  var PHOTO='images/SWITCH_eSCRAMBLER_bike-6.jpg';
+
+  /* the stage: photograph, drawing on top of it in register, and two overlay
+     layers in the drawing's own coordinate frame */
+  function stage(keys,cls){
+    return '<div class="pvstage '+(cls||'')+'">'+
+      '<img class="pvphoto" decoding="async" alt="" src="'+PHOTO+'">'+
+      '<div class="pvsk">'+
+        '<img class="pvline" decoding="async" alt="" src="'+SKA+'">'+
+        lay(V_keys(keys),'pvg',AUD,2.2)+
+        lay(V_keys(keys),'pvc',CY,2.2)+
+      '</div></div>';
+  }
+  function V_keys(keys){ var out=[]; keys.forEach(function(k){ out=out.concat(V[k].p); }); return out; }
+  function head(){
+    return '<span class="pvey">'+T.fvEy+'</span>'+
+      '<h3 class="pvh">'+T.fvA+'<br><i>'+T.fvB+'</i></h3>';
+  }
+  function p1(){ return '<p class="pvp">'+T.fv1+'</p>'; }
+  function p2(){ return '<p class="pvp">'+T.fv2+'</p>'; }
+  function sec(cls,inner){ return '<div class="lb dp pv rp '+cls+'"><div class="din">'+inner+'</div></div>'; }
+  function chips(keys,n){
+    return '<div class="pvrow c'+(n||6)+'">'+keys.map(function(k){
+      return rcell(k,1,'',2.4); }).join('')+'</div>';
+  }
+  /* a step sequence that runs once, on scroll, and then stops */
+  function run(r,x,host,steps){
+    var ran=false;
+    var fire=function(){ if(ran) return; ran=true;
+      steps.forEach(function(s){ x.delay(s[1], s[0]); }); };
+    var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){
+      if(e.isIntersecting){ fire(); io.disconnect(); } }); },{threshold:0}));
+    io.observe(host);
+    x.delay(fire,2600);
+    if(!window.MOTION){ ran=true; steps.forEach(function(s){ s[1](); }); }
+  }
+
+  /* ============ 06 · THE DISSOLVE ============================
+     The photograph loses its colour, the drawing comes up through it in
+     register, the reading goes down, and the language settles underneath. */
+  C(1,'THE DISSOLVE','the photograph turns into the drawing it produced, then the drawing is read',function(r,x){
+    var KS=['sil','whl','encl','ribs','axis','fast'];
+    r.innerHTML=sec('pv06',head()+p1()+
+      '<div style="margin-top:40px">'+stage(KS)+'</div>'+
+      '<span class="pvcap">The drawing laid back over the photograph it was made from</span>'+
+      chips(KS,6)+p2()+'<div class="pvbtm"></div>');
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg'), c=r.querySelector('.pvc');
+    if(g) xdash(g); if(c) xdash(c);
+    run(r,x,r.querySelector('.din'),[
+      [200,  function(){ st.classList.add('grey'); }],
+      [900,  function(){ st.classList.add('ink');  }],
+      [2000, function(){ if(g){ g.classList.add('on'); xundash(g,900,60); } }],
+      [3000, function(){ if(c){ c.classList.add('on'); xundash(c,800,50); }
+                         if(g) g.style.opacity='.34'; }],
+      [3400, function(){ [].forEach.call(r.querySelectorAll('.pvrow .rt'),function(n,i){
+                          setTimeout(function(){ n.classList.add('on'); },i*120); }); }]
+    ]);
+  });
+
+  /* ============ 07 · THE WIPE ================================
+     One edge crosses the machine. Behind it the photograph; ahead of it the
+     drawing. Only the drawing side is marked up. */
+  C(3,'THE WIPE','one edge crosses the machine — photograph behind it, drawing ahead of it',function(r,x){
+    var KS=['sil','encl','ribs','whl','axis'];
+    r.innerHTML=sec('pv07',head()+
+      '<div style="margin-top:38px"><div class="pvstage">'+
+        '<img class="pvphoto" decoding="async" alt="" src="'+PHOTO+'">'+
+        '<div class="pvwipe">'+
+          '<img class="pvphoto" decoding="async" alt="" style="filter:grayscale(1) brightness(.5)" src="'+PHOTO+'">'+
+          '<div class="pvsk"><img class="pvline" decoding="async" alt="" src="'+SKA+'">'+
+            lay(V_keys(KS),'pvg',AUD,2.2)+'</div>'+
+        '</div>'+
+        '<div class="pvedge"></div>'+
+      '</div></div>'+
+      '<div class="pvcol a"><div>'+p1()+'</div><div>'+chips(KS,5)+'</div></div>'+
+      '<div class="pvbtm"></div>');
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg');
+    var ln=r.querySelector('.pvwipe .pvline');
+    if(g) xdash(g);
+    run(r,x,r.querySelector('.din'),[
+      [200,  function(){ if(ln) ln.style.opacity='.92'; st.classList.add('wiped'); }],
+      [1800, function(){ if(g){ g.classList.add('on'); xundash(g,760,70); } }],
+      [2700, function(){ [].forEach.call(r.querySelectorAll('.pvrow .rt'),function(n,i){
+                          setTimeout(function(){ n.classList.add('on'); },i*130); }); }]
+    ]);
+  });
+
+  /* ============ 08 · ACQUIRED / REBUILT ======================
+     Copy on the left, and on the right one frame that passes through all
+     three states: the asset, the drawing, the language. */
+  C(5,'ACQUIRED / REBUILT','the copy holds still on the left while the asset becomes a drawing and then a language',function(r,x){
+    var KS=['sil','encl','ribs','axis','whl','strc','fast','seat'];
+    r.innerHTML=sec('pv08',head()+
+      '<div class="pvcol a">'+
+        '<div>'+p1()+p2()+'</div>'+
+        '<div>'+stage(KS)+
+          '<span class="pvcap">Acquired asset · the drawing it produced · the language it becomes</span></div>'+
+      '</div>'+chips(KS.slice(0,4),4)+'<div class="pvbtm"></div>');
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg'), c=r.querySelector('.pvc');
+    if(g) xdash(g); if(c) xdash(c);
+    run(r,x,r.querySelector('.din'),[
+      [200,  function(){ st.classList.add('grey'); }],
+      [800,  function(){ st.classList.add('ink'); }],
+      [1700, function(){ if(g){ g.classList.add('on'); xundash(g,820,55); } }],
+      [2700, function(){ if(c){ c.classList.add('on'); xundash(c,760,45); } if(g) g.style.opacity='.28'; }],
+      [3400, function(){ st.classList.add('gone'); st.classList.add('faded'); }],
+      [3600, function(){ [].forEach.call(r.querySelectorAll('.pvrow .rt'),function(n,i){
+                          setTimeout(function(){ n.classList.add('on'); },i*130); }); }]
+    ]);
+  });
+
+  /* ============ 09 · WINDOWS =================================
+     The photograph stays. Three openings are cut into it, and inside those
+     openings only, the machine is a drawing. */
+  C(6,'WINDOWS','three openings are cut into the photograph, and inside them the machine is a drawing',function(r,x){
+    var WIN=[
+      {k:'encl', x:44.0, y:44.0, w:19.0, h:26.0, lx:53.5, ly:74.5},
+      {k:'whl',  x:63.5, y:47.0, w:23.0, h:35.0, lx:75.0, ly:86.5},
+      {k:'axis', x:60.0, y:20.0, w:16.0, h:26.0, lx:68.0, ly:14.0}
+    ];
+    var KS=WIN.map(function(w){return w.k;});
+    r.innerHTML=sec('pv09',head()+
+      '<div style="margin-top:38px"><div class="pvstage">'+
+        '<img class="pvphoto" decoding="async" alt="" src="'+PHOTO+'">'+
+        WIN.map(function(w,i){
+          return '<div class="pvwin w'+i+'" style="left:'+w.x+'%;top:'+w.y+'%;width:'+w.w+'%;height:'+w.h+'%">'+
+            '<div class="pvinner" style="left:'+(-w.x/w.w*100)+'%;top:'+(-w.y/w.h*100)+'%;'+
+              'width:'+(100/w.w*100)+'%;height:'+(100/w.h*100)+'%">'+
+              '<img class="pvphoto" style="filter:grayscale(1) brightness(.5)" decoding="async" alt="" src="'+PHOTO+'">'+
+              '<div class="pvsk"><img class="pvline" style="opacity:.92" decoding="async" alt="" src="'+SKA+'">'+
+                lay(V[w.k].p,'pvg g'+i,AUD,2.2)+'</div>'+
+            '</div></div>'+
+          '<span class="pvwlab l'+i+'" style="left:'+w.lx+'%;top:'+w.ly+'%">'+V[w.k].id+'  '+V[w.k].lab+'</span>';
+        }).join('')+
+      '</div></div>'+
+      '<div class="pvcol a"><div>'+p1()+'</div><div>'+chips(KS,3)+'</div></div>'+
+      '<div class="pvbtm"></div>');
+    var steps=[];
+    WIN.forEach(function(w,i){
+      steps.push([300+i*620, (function(i){ return function(){
+        var win=r.querySelector('.pvwin.w'+i), lab=r.querySelector('.pvwlab.l'+i),
+            g=r.querySelector('.pvg.g'+i);
+        if(win) win.classList.add('on');
+        if(g){ xdash(g); g.classList.add('on'); xundash(g,700,0); }
+        if(lab) lab.classList.add('on');
+      };})(i)]);
+    });
+    steps.push([2400, function(){ [].forEach.call(r.querySelectorAll('.pvrow .rt'),function(n,i){
+      setTimeout(function(){ n.classList.add('on'); },i*140); }); }]);
+    run(r,x,r.querySelector('.din'),steps);
+  });
+
+  /* ============ 10 · PHOTOGRAPH TO LANGUAGE ==================
+     The most reductive of the five. The photograph goes, the drawing goes,
+     and what is left standing in the frame is the language on its own. */
+  C(7,'PHOTOGRAPH TO LANGUAGE','the photograph goes, the drawing goes, and the language is left standing in the frame',function(r,x){
+    var KS=['stnc','sil','upper','seat','whl','ctrs','encl','edge','ribs','strc','swng','axis','fast'];
+    r.innerHTML=sec('pv10',head()+
+      '<div style="margin-top:38px">'+stage(KS)+'</div>'+
+      '<div class="pvcol a"><div>'+p2()+'</div>'+
+      '<div><span class="pvcap" style="margin-top:0">Nothing has been added · everything left standing was in the photograph</span></div></div>'+
+      '<div class="pvbtm"></div>');
+    var st=r.querySelector('.pvstage'), g=r.querySelector('.pvg'), c=r.querySelector('.pvc');
+    if(g) xdash(g); if(c) xdash(c);
+    run(r,x,r.querySelector('.din'),[
+      [180,  function(){ st.classList.add('grey'); }],
+      [800,  function(){ st.classList.add('ink'); }],
+      [1600, function(){ if(g){ g.classList.add('on'); xundash(g,620,35); } }],
+      [2500, function(){ if(c){ c.classList.add('on'); xundash(c,620,30); } }],
+      [3100, function(){ if(g) g.style.opacity='0'; st.classList.add('faded'); }],
+      [3700, function(){ st.classList.add('gone'); }]
+    ]);
+  });
+})();
+</script>
+
+<script id="sf-pv-bar">
+/* ---- the five join the bar as 06–10, and the MARSHALL slider comes off ---- */
+(function(){
+  var NEW=[1,3,5,6,7];
+  var NLBL={1:'06',3:'07',5:'08',6:'09',7:'10'};
+  var LBL=window.SLBL||{};
+  NEW.forEach(function(n){ LBL[n]=NLBL[n]; });
+  window.SLBL=LBL;
+  var KEEP=(window.SKEEP||[]).concat(NEW);
+  window.SKEEP=KEEP;
+
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    var nx=bx.querySelector('.nav.nx');
+    var g=document.createElement('span'); g.className='gp'; g.textContent='venture';
+    if(nx) bx.insertBefore(g,nx); else bx.appendChild(g);
+    NEW.forEach(function(n){
+      if(!CONCEPTS[n]) return;
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=NLBL[n]; b.title=CONCEPTS[n].name;
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      if(nx) bx.insertBefore(b,nx); else bx.appendChild(b);
+    });
+    function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+      i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+    function rebind(sel,d){
+      var btn=bx.querySelector(sel); if(!btn) return;
+      var c=btn.cloneNode(true); btn.parentNode.replaceChild(c,btn);
+      c.addEventListener('click',function(){ step(d); });
+    }
+    rebind('.nav.pv',-1); rebind('.nav.nx',1);
+    window.SSTEP=step;
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='five compositions + five venture';
+  }
+
+  /* MARSHALL IS SETTLED. Concept 11 is already baked into the production
+     homepage, so the bar has nothing left to choose between — it comes off.
+     mshow() and MCON stay intact so the section still mounts 11; only the
+     control strip is removed. */
+  function killMarshallBar(){
+    var mb=document.getElementById('mlabbar');
+    if(mb&&mb.parentNode){ mb.parentNode.removeChild(mb); return true; }
+    return false;
+  }
+  killMarshallBar();
+  [200,700,1500,2800].forEach(function(t){ setTimeout(killMarshallBar,t); });
+  /* labHash() reads MLBL[MCUR]; with the bar gone the Marshall half of the
+     URL is fixed at 11, which is what the section always shows now. */
+  window.MLBL={0:'11',11:'11'};
 })();
 </script>
 
