@@ -17440,6 +17440,115 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   window.SSTEP=step;
 })();
 </script>
+<script id="sf-rec-prune">
+/* =========================================================================
+   SWITCH SHORTLIST — the five that survived, renumbered 01–05.
+   Order is the order they were chosen in:
+     01  was 41   THE READING
+     02  was 01o  DETAIL LIBRARY
+     03  was 03o  DESIGN GENOME
+     04  was 40   SPATIAL FIELD
+     05  was 43   MACHINE / LANGUAGE 40:60
+   Everything else comes off the bar. Slot numbers are left alone — only the
+   LABEL changes, because lab6/extract.html wraps any index through
+   ((n%(MAX+1))+(MAX+1))%(MAX+1) with MAX hard-coded at 44, and moving the
+   concepts to slots 1–5 would collide with what is already registered there.
+   ========================================================================= */
+(function(){
+  var KEEP=[11, 2, 4, 10, 13];
+  var LBL ={11:'01', 2:'02', 4:'03', 10:'04', 13:'05'};
+  window.SLBL=LBL;
+  window.SKEEP=KEEP;
+
+  /* slot 0 stays defined: it is the machinery's "show the production markup"
+     fallback, and dropping it would leave show() with nothing to fall back to.
+     It simply never appears on the bar. */
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  /* 02 and 03 still carried the engineering title block in their legend —
+     SWIFT-CJ-20 and MM sat there as two extra colour keys. They are exactly the
+     invented precision the brief says to take out, and now that these two are
+     part of the final five rather than reference copies, they come off. The
+     concept builds themselves are untouched; only the stray legend keys go. */
+  var FAKE=/^(SWIFT-CJ(-20)?|REV\s*\d+|6061(\s*T6)?|MM)$/i;
+  [2,4].forEach(function(n){
+    var c=CONCEPTS[n]; if(!c) return;
+    var base=c.build;
+    CONCEPTS[n]={n:n, name:c.name, desc:c.desc, build:function(r,x){
+      base(r,x);
+      [].forEach.call(r.querySelectorAll('span,b,i,p,td'),function(e){
+        if(e.children.length) return;
+        if(FAKE.test((e.textContent||'').trim())&&e.parentNode) e.parentNode.removeChild(e);
+      });
+    }};
+    if(window.PORT&&PORT[n]==null) PORT[n]=PORT[n];
+  });
+
+  var bx=document.getElementById('labboxes');
+  if(!bx) return;
+  bx.innerHTML='';
+  var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹';
+  bx.appendChild(pv);
+  var g=document.createElement('span'); g.className='gp'; g.textContent='shortlist';
+  g.style.borderLeft='0'; g.style.marginLeft='0'; bx.appendChild(g);
+  KEEP.forEach(function(n){
+    var b=document.createElement('button');
+    b.dataset.n=n; b.textContent=LBL[n];
+    b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+    b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+    bx.appendChild(b);
+  });
+  var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›';
+  bx.appendChild(nx);
+
+  function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+    i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+  pv.addEventListener('click',function(){ step(-1); });
+  nx.addEventListener('click',function(){ step(1); });
+  window.SSTEP=step;
+
+  var cn=document.getElementById('labcount');
+  if(cn) cn.textContent='five, renumbered';
+
+  /* switch-refine's show() wrapper writes the number and the hash from ITS OWN
+     closed-over label map, not window.SLBL — so without wrapping again the bar
+     would still read 41 / 01o / 03o / 40 / 43. This wrapper is the outermost,
+     so it has the last word on both. */
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var base=window.show;
+  window.show=function(n){
+    base(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+
+  /* The layers underneath each run their own deep-link timer and can leave CUR
+     on a slot that no longer exists. Land on 01 unless the URL asked for one of
+     the five — and read the hash the page ARRIVED with, not whatever the
+     earlier layers have since written into it. */
+  function land(){
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
+    var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
+    if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
+    if(want!==null&&CONCEPTS[want]){ if(CUR!==want) show(want); return; }
+    /* a c= that is not one of the five is a stale link — land on 01 rather than
+       wherever a lower layer's own clamp happened to leave it */
+    if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
+  }
+  /* twice: once as soon as the layers below have booted, and once after the
+     last of their own deep-link timers (marshall-refine fires at 2500) so a
+     lower layer cannot leave the bar pointing at a slot that no longer exists */
+  setTimeout(land,1750);
+  setTimeout(land,2650);
+})();
+</script>
 
 </body>
 </html>
