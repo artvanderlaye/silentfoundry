@@ -17549,6 +17549,175 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   setTimeout(land,2650);
 })();
 </script>
+<style id="sf-strip-css">
+/* =========================================================================
+   THE APPLICATION STRIP — built to the Foundry carousel's size and design.
+   Measured off #hiw-stage at 1440: slides 404 x 374 (28% of the frame, very
+   slightly landscape), 1px gaps, images cover-cropped and darkened to 0.6,
+   the label set INSIDE the image at the bottom left — a small coloured
+   eyebrow over a larger white name. The track runs past both edges and
+   scrolls, so the row reads as continuing rather than as five cards.
+
+   The big portfolio mosaic underneath the section is hidden: these are the
+   same products, and showing them twice at two sizes reads as a mistake.
+   ========================================================================= */
+#sf-lab-mount .fb-host{overflow-x:clip;}
+#sf-lab-mount .fstrip{position:relative;margin-top:34px;}
+/* full width of the viewport, out of the 1600 frame and out of the section
+   padding. overflow-x:clip on the host stops this reaching the page. */
+#sf-lab-mount .fstrip.bleed{margin-left:calc(50% - 50vw);width:100vw;}
+#sf-lab-mount .fwrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;}
+#sf-lab-mount .fwrap::-webkit-scrollbar{display:none;}
+#sf-lab-mount .ftrack{display:flex;gap:1px;width:max-content;}
+/* HEIGHT, not aspect-ratio. A percentage flex-basis would resolve against the
+   track (width:max-content, so unbounded) and run away, and an aspect-ratio
+   would make the double-width slide twice as TALL as its neighbours instead of
+   just twice as wide. 25.9vw is 28vw x 374/404 — the Foundry slide's own ratio. */
+#sf-lab-mount .fslide{position:relative;overflow:hidden;background:#14171b;
+  flex:0 0 calc(28vw - 1px);height:25.9vw;}
+#sf-lab-mount .fslide.w2{flex-basis:calc(56vw - 1px);}
+#sf-lab-mount .fslide img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(.84);transition:filter .6s ease;}
+#sf-lab-mount .fslide.on img{filter:brightness(.95);}
+/* The Foundry's slides are dark photographs, so a flat brightness knock-down
+   is enough there. These are product shots on light grey — knocking the whole
+   image down far enough for white type would kill the product. A scrim under
+   the caption keeps the type legible and leaves the product alone. */
+#sf-lab-mount .fslide::after{content:"";position:absolute;left:0;right:0;bottom:0;
+  height:54%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,10,10,0) 0%,rgba(10,10,10,.34) 46%,rgba(10,10,10,.80) 100%);}
+#sf-lab-mount .fcap{position:absolute;left:24px;right:24px;bottom:20px;pointer-events:none;z-index:2;}
+#sf-lab-mount .fey{display:block;font-family:var(--lab-dm);font-size:.44rem;
+  letter-spacing:.24em;text-transform:uppercase;color:#5fd8f2;margin-bottom:6px;}
+#sf-lab-mount .fnm{display:block;font-family:var(--lab-bb);font-weight:300;
+  font-size:clamp(.9rem,1.35vw,1.15rem);letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(244,241,236,.94);line-height:1;}
+/* the cyan characteristic the product carries, drawn on the image itself */
+#sf-lab-mount .fslide .rt{opacity:.9;}
+/* the staggered variant */
+#sf-lab-mount .fstrip.stag .ftrack{align-items:flex-start;padding-bottom:30px;}
+#sf-lab-mount .fstrip.stag .fslide:nth-child(even){margin-top:30px;}
+/* the framed variant */
+#sf-lab-mount .fstrip.framed{border-top:1px solid rgba(141,145,138,.45);padding-top:26px;}
+#sf-lab-mount .fnote{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--sw-alu-dk,#6e726b);display:block;margin-top:14px;}
+@media(max-width:900px){
+  #sf-lab-mount .fslide{flex:0 0 calc(76vw - 1px);height:70.4vw;}
+  #sf-lab-mount .fslide.w2{flex-basis:calc(90vw - 1px);}
+  #sf-lab-mount .fstrip.stag .fslide:nth-child(even){margin-top:0;}
+  #sf-lab-mount .fstrip.stag .ftrack{padding-bottom:0;}
+  #sf-lab-mount .fcap{left:16px;right:16px;bottom:14px;}
+}
+@media(min-width:1921px){
+  #sf-lab-mount .fslide{flex:0 0 calc(18vw - 1px);height:16.7vw;}
+  #sf-lab-mount .fslide.w2{flex-basis:calc(36vw - 1px);}
+}
+</style>
+
+<script id="sf-strip-js">
+(function(){
+  /* the products, named the way the site already names them in its own
+     portfolio — nothing here is invented copy */
+  var PROD=[
+    {img:IMG.speaker,   ey:'Audio',        nm:'Speaker',      k:'encl'},
+    {img:IMG.batteryP,  ey:'Power',        nm:'Battery Pack', k:'ribs'},
+    {img:IMG.light,     ey:'Lighting',     nm:'Task Light',   k:'axis'},
+    {img:IMG.snowboard, ey:'Mobility',     nm:'Snowboard',    k:'sil' },
+    {img:IMG.guitar,    ey:'Instrument',   nm:'Guitar',       k:'fast'}
+  ];
+
+  function slide(p,o){
+    o=o||{};
+    return '<div class="fslide'+(o.w2?' w2':'')+'">'+
+      '<img loading="lazy" decoding="async" alt="" src="'+p.img+'">'+
+      (o.dna?rsvg(p.k,1.7,'position:absolute;left:16%;top:17%;width:68%;height:auto'):'')+
+      '<div class="fcap"><span class="fey">'+p.ey+'</span>'+
+        '<span class="fnm">'+p.nm+'</span></div></div>';
+  }
+  /* variants. Same slide size in all five — only the composition changes. */
+  function fstrip(v){
+    var cls='fstrip', inner='';
+    if(v==='a'){                 /* 01 — one continuous run, cut at both edges */
+      cls+=' bleed';
+      inner=PROD.concat(PROD).map(function(p){return slide(p);}).join('');
+      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack" '+
+        'style="margin-left:-9vw">'+inner+'</div></div></div>';
+    }
+    if(v==='b'){                 /* 02 — held inside the frame, rule above */
+      cls+=' framed';
+      inner=PROD.map(function(p){return slide(p,{dna:1});}).join('');
+      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+
+        '</div></div><span class="fnote">The same language, five categories on</span></div>';
+    }
+    if(v==='c'){                 /* 03 — one dominant, then the supporting four */
+      cls+=' bleed';
+      inner=slide(PROD[3],{w2:1,dna:1})+
+            PROD.filter(function(_,i){return i!==3;}).map(function(p){return slide(p);}).join('');
+      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+'</div></div></div>';
+    }
+    if(v==='d'){                 /* 04 — staggered, an editorial rhythm */
+      cls+=' bleed stag';
+      inner=PROD.concat(PROD.slice(0,2)).map(function(p){return slide(p);}).join('');
+      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack" '+
+        'style="margin-left:-5vw">'+inner+'</div></div></div>';
+    }
+    /* 05 — every product carries its own cyan characteristic */
+    cls+=' bleed';
+    inner=PROD.map(function(p){return slide(p,{dna:1});}).join('');
+    return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+'</div></div></div>';
+  }
+
+  /* --------------------------------------------------------------------
+     Install. Each concept keeps its own build; the strip is swapped in
+     afterwards, so none of the five compositions is edited.
+     -------------------------------------------------------------------- */
+  var PLAN=[
+    {n:11, v:'a', mode:'append'},   /* 01 THE READING — had no strip at all   */
+    {n:2,  v:'b', mode:'replace', sel:'.prow'},   /* 02 DETAIL LIBRARY        */
+    {n:4,  v:'c', mode:'replace', sel:'.prow'},   /* 03 DESIGN GENOME         */
+    {n:10, v:'d', mode:'replace', sel:'.rg5'},    /* 04 SPATIAL FIELD         */
+    {n:13, v:'e', mode:'replace', sel:'.rg5'}     /* 05 MACHINE / LANGUAGE    */
+  ];
+  PLAN.forEach(function(pl){
+    var c=CONCEPTS[pl.n]; if(!c) return;
+    var base=c.build;
+    CONCEPTS[pl.n]={n:pl.n, name:c.name, desc:c.desc, build:function(r,x){
+      base(r,x);
+      /* the section itself has to clip, or a 100vw child reaches the page */
+      var sec=r.querySelector('.vp')||r.firstElementChild;
+      if(sec) sec.classList.add('fb-host');
+      var host=r.querySelector('.din'); if(!host) return;
+      var html=fstrip(pl.v);
+      if(pl.mode==='replace'){
+        var old=host.querySelector(pl.sel);
+        if(old){
+          /* the caption that belonged to the old row goes with it */
+          var prev=old.previousElementSibling;
+          if(prev&&/^(SPAN)$/.test(prev.tagName)&&/where the language/i.test(prev.textContent||''))
+            prev.parentNode.removeChild(prev);
+          var d=document.createElement('div'); d.innerHTML=html;
+          old.parentNode.replaceChild(d.firstChild,old);
+          return;
+        }
+      }
+      var btm=host.querySelector('.rbtm')||host.querySelector('.vbtm');
+      var d2=document.createElement('div'); d2.innerHTML=html;
+      if(btm) btm.parentNode.insertBefore(d2.firstChild,btm);
+      else host.appendChild(d2.firstChild);
+    }};
+  });
+
+  /* the big portfolio mosaic below the section shows the same products at a
+     larger size. With the strip in place it is a second telling of the same
+     thing, so it comes off. */
+  function hidePF(){
+    var pf=document.getElementById('sf-pfwrap');
+    if(pf) pf.style.setProperty('display','none','important');
+  }
+  hidePF(); setTimeout(hidePF,600); setTimeout(hidePF,1800); setTimeout(hidePF,3200);
+})();
+</script>
 
 </body>
 </html>
