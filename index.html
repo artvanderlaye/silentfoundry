@@ -2483,58 +2483,154 @@ body.v11-active nav * { cursor: none !important; }
 
 <section class="case-study csw" id="sfsec-dna">
   <div class="sf-marshall-wave" id="sf-mwave"></div>
-  <div class="cs-wrap">
-    <div class="cs-dbody">
+  <!-- ===== MARSHALL DNA TRANSLATION — baked from transform-lab concept 11 =====
+       Two worlds on one page, no label telling you which is which. The layout
+       below IS the finished design: it is what the browser paints on the first
+       frame. The script that follows only fades the images up and lifts the
+       four numbers — remove it and the section still reads correctly. -->
+  <style id="sf-m11-css">
+  #sf-m11{--m11-cream:#e8e2d9;--m11-gold:#8a6e3a;--m11-goldl:#c8a96e;
+          background:var(--m11-cream);position:relative;overflow:hidden;}
+  #sf-m11 *{box-sizing:border-box;}
+  #sf-m11 .m11-min{max-width:1440px;margin:0 auto;position:relative;}
+  #sf-m11 .m11-stage{display:grid;grid-template-columns:repeat(2,1fr);gap:0;position:relative;}
+  #sf-m11 .m11-zone{padding:92px 48px;}
+  #sf-m11 .m11-a{background:#141414;}
+  #sf-m11 .m11-b{background:#f3efe9;}
+  #sf-m11 .m11-ia{max-width:560px;margin-left:auto;padding-right:40px;}
+  #sf-m11 .m11-ib{max-width:560px;padding-left:40px;}
+  #sf-m11 .m11-ey{font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.25em;
+          text-transform:uppercase;color:var(--m11-goldl);font-weight:300;display:block;margin:0 0 24px;}
+  #sf-m11 .m11-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.9rem,4.6vw,3.6rem);
+          letter-spacing:0.16em;text-transform:uppercase;color:rgba(244,241,236,.92);
+          line-height:0.92;margin:0;}
+  #sf-m11 .m11-tx{font-family:'DM Sans',sans-serif;font-size:0.9rem;line-height:1.85;
+          color:rgba(10,10,10,.55);font-weight:300;max-width:min(100%,680px);margin:0;}
+  #sf-m11 .m11-a .m11-tx{color:rgba(244,241,236,.52);margin-top:26px;}
+  #sf-m11 .m11-lab{font-family:'DM Sans',sans-serif;font-size:0.48rem;letter-spacing:0.22em;
+          text-transform:uppercase;color:rgba(10,10,10,.38);font-weight:300;display:block;margin:0 0 10px;}
+  #sf-m11 .m11-lab.au{color:var(--m11-gold);}
+  #sf-m11 .m11-crop{position:relative;overflow:hidden;background:#ddd7ce;}
+  #sf-m11 .m11-crop img{position:absolute;object-fit:fill;display:block;max-width:none;}
+  #sf-m11 .m11-arch img{filter:grayscale(1) contrast(1.12) brightness(.86);}
+  #sf-m11 .m11-now img{filter:saturate(1.02) brightness(1.02);}
+  #sf-m11 .m11-pair{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:34px;}
+  #sf-m11 .m11-mets{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:30px;}
+  #sf-m11 .m11-met{padding-right:20px;margin-right:20px;border-right:1px solid rgba(10,10,10,.1);}
+  #sf-m11 .m11-met:last-child{border-right:none;padding-right:0;margin-right:0;}
+  #sf-m11 .m11-metv{font-family:'Bebas Neue',sans-serif;letter-spacing:0.04em;
+          color:rgba(10,10,10,.78);display:block;line-height:0.9;font-size:clamp(1.5rem,3vw,2.3rem);}
+  #sf-m11 .m11-metl{font-family:'DM Sans',sans-serif;font-size:0.4rem;letter-spacing:0.16em;
+          text-transform:uppercase;color:rgba(10,10,10,.34);display:block;margin-top:8px;font-weight:300;}
+  #sf-m11 .m11-line{position:absolute;top:0;bottom:0;left:50%;width:1px;
+          background:rgba(138,110,58,.45);transform-origin:50% 0;}
+  /* the reveal. These rules only exist once the m11-anim class is set, which the
+     inline script below adds before first paint and only when motion is wanted. */
+  .m11-anim #sf-m11 .m11-fade{opacity:0;transition:opacity .95s ease;}
+  .m11-anim #sf-m11 .m11-fade.in{opacity:1;}
+  .m11-anim #sf-m11 .m11-met{opacity:0;transform:translateY(16px);
+          transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.26,1);}
+  .m11-anim #sf-m11 .m11-met.in{opacity:1;transform:none;}
+  .m11-anim #sf-m11 .m11-line{transform:scaleY(0);
+          transition:transform 1.8s cubic-bezier(.2,.7,.26,1);}
+  .m11-anim #sf-m11 .m11-line.in{transform:scaleY(1);}
+  @media(max-width:900px){
+    #sf-m11 .m11-stage{grid-template-columns:1fr;}
+    #sf-m11 .m11-zone{padding:64px 24px;}
+    #sf-m11 .m11-ia{max-width:none;margin-left:0;padding-right:0;}
+    #sf-m11 .m11-ib{max-width:none;padding-left:0;}
+    /* the centre line is a desktop device. Stacked, the seam is horizontal. */
+    #sf-m11 .m11-line{display:none;}
+    #sf-m11 .m11-b{border-top:1px solid rgba(138,110,58,.45);}
+    /* stacked, the product pair reads full width — same as the lab at 390 */
+    #sf-m11 .m11-pair{grid-template-columns:1fr;gap:16px;}
+    #sf-m11 .m11-mets{grid-template-columns:repeat(2,1fr);gap:22px 0;}
+    #sf-m11 .m11-met{border-right:none;padding-right:0;margin-right:0;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .m11-anim #sf-m11 .m11-fade,.m11-anim #sf-m11 .m11-met,.m11-anim #sf-m11 .m11-line{
+      opacity:1 !important;transform:none !important;transition:none !important;}
+  }
+  </style>
+  <script id="sf-m11-pre">
+  /* set before the section paints, so the fade has something to fade from.
+     If this never runs the section is simply already visible. */
+  try{ if(!matchMedia('(prefers-reduced-motion:reduce)').matches)
+         document.documentElement.classList.add('m11-anim'); }catch(e){}
+  </script>
 
-      <!-- ROW 1: Situation + Numbers | Concert image -->
-      <div class="cs-row-left cs-has-divider">
-        <span class="cs-dey">Case Study — Marshall DNA Translation</span>
-        <div class="cs-dh">Rock &amp; Roll<br/>Never Dies</div>
-        <p class="cs-dp">By 2010, Marshall&#8217;s core amplifier market had matured. Rather than simply licensing its logo, the company extracted the DNA that made the brand distinctive and translated it into entirely new product categories.</p>
-      </div>
-      <div class="cs-row-right cs-row-right-r1 cs-gap-bottom">
-        <img loading="lazy" decoding="async" src="images/marshall-hero.png" style="filter:brightness(.84) saturate(.88);" alt=""/>
-      </div>
+  <div id="sf-m11">
+    <div class="m11-min">
+      <div class="m11-stage">
 
-      <!-- ROW 2: Brand DNA | 2-up images -->
-      <div class="cs-row-left cs-has-divider">
-        <!-- EXTRACTED DNA REMOVED (Aug 2026, Matthew).
-             The label, the canonical DNA content template and the
-             .cs-dna-split constellation host all lived here and nothing else did.
-             With the template gone harvestMarshall() returns false, so
-             mountMarshall() never runs and the constellation is never built —
-             no script needed changing. The two DOM look-ups that referenced
-             this block (M.host, and the mobile order() label anchor) are both
-             null-guarded, and MLB keeps its default. -->
-      </div>
-      <div class="cs-row-right cs-gap-bottom">
-        <div class="cs-row-right-inner">
-          <img loading="lazy" decoding="async" src="images/614BCLPutVL-1__SL1000_.jpg" style="filter:brightness(.8) saturate(.82);" alt=""/>
-          <img loading="lazy" decoding="async" src="images/MarshallActonIIIBluetoothSpeakers_6_jpg.webp" style="filter:brightness(.8) saturate(.82);" alt=""/>
-        </div>
-      </div>
-
-      <!-- ROW 3: Translation + Result | Bluetooth image -->
-      <div class="cs-row-left">
-        <span class="cs-dslabel">Translation</span>
-        <p class="cs-dp">Marshall did not extend a logo. It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. Not merchandise. Not licensing. Product-level DNA translation &mdash; the brand arrived intact in a category it had never made before.</p>
-        <div id="sf-glance" style="margin-top:12px;">
-          <span class="cs-dslabel">Results</span>
-          <p class="cs-bridge">Marshall transformed a declining heritage brand into a global consumer electronics business, dramatically expanded its addressable market and ultimately achieved a $1.1B acquisition.</p>
-          <div class="cs-dmets">
-            <div class="cs-dmet"><span class="cs-dmetv">60+</span><span class="cs-dmetl">Heritage</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">New</span><span class="cs-dmetl">Categories</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$4B+</span><span class="cs-dmetl">Expanded Market</span></div>
-            <div class="cs-dmet"><span class="cs-dmetv">$1.1B</span><span class="cs-dmetl">Exit in 2025</span></div>
+        <!-- HERITAGE — the world the brand came from -->
+        <div class="m11-zone m11-a">
+          <div class="m11-ia">
+            <span class="m11-ey">Case Study &#8212; Marshall DNA Translation</span>
+            <h3 class="m11-h">Rock &amp; Roll<br/>Never Dies</h3>
+            <p class="m11-tx">By 2010, Marshall&#8217;s core amplifier market had matured. Rather than simply licensing its logo, the company extracted the DNA that made the brand distinctive and translated it into entirely new product categories.</p>
+            <div style="margin-top:34px">
+              <div class="m11-crop m11-arch m11-fade" style="aspect-ratio:1.6/1">
+                <img loading="lazy" decoding="async" alt="" src="images/marshall-hero.png" style="width:108.015%;height:131.027%;left:-2.463%;top:-23.205%;"/>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="cs-row-right cs-show-mobile">
-        <img loading="lazy" decoding="async" src="images/marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="filter:brightness(.82) saturate(.85);" alt=""/>
-      </div>
 
+        <!-- TRANSLATION + RESULT — the world it arrived in -->
+        <div class="m11-zone m11-b">
+          <div class="m11-ib">
+            <span class="m11-lab">Translation</span>
+            <p class="m11-tx">Marshall did not extend a logo. It extracted its identity and rebuilt that identity inside headphones, speakers and home audio. Not merchandise. Not licensing. Product-level DNA translation &#8212; the brand arrived intact in a category it had never made before.</p>
+            <div class="m11-pair">
+              <div class="m11-crop m11-now m11-fade" style="aspect-ratio:1.05/1">
+                <img loading="lazy" decoding="async" alt="" src="images/marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="width:285.714%;height:251.889%;left:-179.714%;top:-1.259%;"/>
+              </div>
+              <div class="m11-crop m11-now m11-fade" style="aspect-ratio:1.05/1">
+                <img loading="lazy" decoding="async" alt="" src="images/marshall-bluetooth-speakers-buying-guide-blog-header_jpg.avif" style="width:337.838%;height:243.309%;left:-1.351%;top:-100.000%;"/>
+              </div>
+            </div>
+            <div style="margin-top:40px">
+              <span class="m11-lab au">Results</span>
+              <p class="m11-tx">Marshall transformed a declining heritage brand into a global consumer electronics business, dramatically expanded its addressable market and ultimately achieved a $1.1B acquisition.</p>
+              <div class="m11-mets">
+                <div class="m11-met"><span class="m11-metv">60+</span><span class="m11-metl">Heritage</span></div>
+                <div class="m11-met"><span class="m11-metv">New</span><span class="m11-metl">Categories</span></div>
+                <div class="m11-met"><span class="m11-metv">$4B+</span><span class="m11-metl">Expanded Market</span></div>
+                <div class="m11-met"><span class="m11-metv">$1.1B</span><span class="m11-metl">Exit in 2025</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m11-line"></div>
+      </div>
     </div>
   </div>
+
+  <script id="sf-m11-anim">
+  (function(){
+    var root=document.getElementById('sf-m11'); if(!root) return;
+    if(!document.documentElement.classList.contains('m11-anim')) return;
+    function run(){
+      var f=[].slice.call(root.querySelectorAll('.m11-fade'));
+      f.forEach(function(n,i){ setTimeout(function(){ n.classList.add('in'); }, 220+i*150); });
+      var ln=root.querySelector('.m11-line');
+      if(ln) setTimeout(function(){ ln.classList.add('in'); },240);
+      var m=[].slice.call(root.querySelectorAll('.m11-met'));
+      m.forEach(function(n,i){ setTimeout(function(){ n.classList.add('in'); },1500+i*180); });
+    }
+    var done=false, go=function(){ if(done) return; done=true; run(); };
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ io.disconnect(); go(); } });
+      },{threshold:0.12});
+      io.observe(root);
+      /* safety net: if the observer never fires, the section must not stay blank */
+      setTimeout(go,4000);
+    } else { go(); }
+  })();
+  </script>
 </section>
 
 <!-- THESIS QUOTE -->
@@ -7603,7 +7699,12 @@ html body #sfsec-dna .cs-dbody > .cs-row-left.cs-has-divider.m4-lastrow::after{
  }
 
  function relines(){
+  /* the dial belongs to an earlier Marshall figure that the section no longer
+     builds. This runs straight off the resize event, so an unguarded null here
+     throws on every resize. */
+  if(!dial)return;
   var hub=dial.querySelector('.dl-dhub');
+  if(!hub)return;
   var db=dial.getBoundingClientRect(), hb=hub.getBoundingClientRect();
   var hx=hb.left+hb.width/2-db.left, hy=hb.top+hb.height/2-db.top;
   var pts=[].slice.call(dial.querySelectorAll('.dl-dpt'));
