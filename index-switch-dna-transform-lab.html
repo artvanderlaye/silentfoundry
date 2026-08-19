@@ -18754,6 +18754,105 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   },300);
 })();
 </script>
+<style id="sf-base-css">
+/* =========================================================================
+   TWO-COLUMN CONSISTENCY.
+   The site's canonical two-column text block is the one in The Foundry
+   (#hiw-stage): measured at 1440 it is 464px | 464px with a 96px gutter —
+   EQUAL columns, and a gutter more than twice what this section was using.
+   The Marshall split and the case-study pairs are equal columns too. This
+   row was 553 | 795 on a 44px gap, which is why it did not sit with the
+   rest of the page. Same proportions and same gutter now; the frame stays
+   the section's own 1600, not The Foundry's narrower 1120 cap (a known
+   inconsistency, flagged in the working notes, not one to copy).
+   ========================================================================= */
+#sf-lab-mount .mhrow{grid-template-columns:1fr 1fr !important;
+  column-gap:96px !important;row-gap:32px;}
+/* The Foundry steps its own gutter 48 -> 96 -> 144 as the page widens; the
+   row follows the same steps so the two never drift apart on a wide screen. */
+@media(min-width:1601px){
+  #sf-lab-mount .mhrow{column-gap:144px !important;}
+}
+@media(max-width:1100px){
+  #sf-lab-mount .mhrow{column-gap:48px !important;}
+}
+@media(max-width:900px){
+  #sf-lab-mount .mhrow{grid-template-columns:1fr !important;
+    column-gap:0 !important;row-gap:32px;}
+}
+</style>
+
+<script id="sf-base-js">
+/* =========================================================================
+   THE BASELINE.
+   One concept left — ONE FRAME CARRIES EVERYTHING, which you have been
+   calling 03. The label stays 03 so it still matches what you call it; the
+   slot number stays 14 because lab6/extract.html wraps any index through
+   ((n%45)+45)%45 and moving it would collide with what is registered there.
+
+   This is now the thing to work off. Everything else is gone.
+   ========================================================================= */
+(function(){
+  var KEEP=[14];
+  var LBL ={14:'03'};
+  window.SLBL=LBL; window.SKEEP=KEEP;
+
+  /* slot 0 survives as show()'s fallback but never appears on the bar */
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    bx.innerHTML='';
+    var g=document.createElement('span'); g.className='gp'; g.textContent='baseline';
+    g.style.borderLeft='0'; g.style.marginLeft='0'; bx.appendChild(g);
+    KEEP.forEach(function(n){
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=LBL[n];
+      b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      bx.appendChild(b);
+    });
+    /* nothing to step through, so the arrows come off */
+    window.SSTEP=function(){};
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='the baseline';
+  }
+
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var baseShow=window.show;
+  window.show=function(n){
+    baseShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+
+  /* Every layer below runs its own deep-link timer against its own label map,
+     the last at 4700. Land after all of them, then hold the page on the
+     baseline in case a late timer fires again. */
+  /* CUR alone is not enough to know the page is right: an earlier layer's own
+     resolver can call show() with a slot this file has emptied, which tears the
+     mount out and leaves CUR pointing at the baseline with nothing rendered.
+     Check the mount as well as the number. */
+  function ok(){ return CUR===KEEP[0] && !!document.getElementById('sf-lab-mount'); }
+  function land(){ if(!ok()) show(KEEP[0]); }
+  setTimeout(land,4900); setTimeout(land,5600);
+  var ticks=0;
+  var iv=setInterval(function(){
+    ticks++;
+    if(!ok()) show(KEEP[0]);
+    var num=document.getElementById('labnum');
+    if(num&&num.textContent!==LBL[KEEP[0]]) num.textContent=LBL[KEEP[0]];
+    if(ticks>28) clearInterval(iv);            /* ~8.5s, then leave it alone */
+  },300);
+})();
+</script>
 
 </body>
 </html>
