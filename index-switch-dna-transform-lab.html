@@ -18093,6 +18093,200 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
   window.MLBL={0:'11',11:'11'};
 })();
 </script>
+<style id="sf-fin-css">
+/* =========================================================================
+   THE MATERIAL — the two colours taken off the motor, put back.
+     ALUMINIUM  #8d918a   the stator lamination frame · every structural
+                          hairline, every frame round the machine, the
+                          brushed edge under the drawing
+     CABLE      #e2661c   the high-voltage wiring · the rule before the
+                          machine heading, and the power products in the strip
+   They are MATERIAL, not meaning. Gold still means Silent Foundry reading the
+   object and cyan still means the language it yields; the metal and the cable
+   are what the object is made of, so they hold the frame and the wiring only.
+   ========================================================================= */
+#sf-lab-mount .sfmat{--sw-or:#e2661c;--sw-alu:#8d918a;--sw-alu-dk:#6e726b;}
+/* the machine sits inside the frame's own steel */
+#sf-lab-mount .sfmat .vstage{position:relative;}
+#sf-lab-mount .sfmat .vstage::before{content:"";position:absolute;inset:-18px -22px -24px;
+  border:1px solid rgba(141,145,138,.55);pointer-events:none;z-index:0;}
+#sf-lab-mount .sfmat .vstage::after{content:"";position:absolute;left:-22px;right:-22px;bottom:-24px;
+  height:7px;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,#d3d6ce 0%,#b0b5ac 38%,#8d918a 70%,#767a72 100%);}
+#sf-lab-mount .sfmat .vstage>*{position:relative;z-index:1;}
+/* 03 is an older build and frames its machine as .xstage rather than .vstage */
+#sf-lab-mount .sfmat .xstage{position:relative;}
+#sf-lab-mount .sfmat .xstage::before{content:"";position:absolute;inset:-18px -22px -24px;
+  border:1px solid rgba(141,145,138,.55);pointer-events:none;z-index:0;}
+#sf-lab-mount .sfmat .xstage::after{content:"";position:absolute;left:-22px;right:-22px;bottom:-24px;
+  height:7px;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,#d3d6ce 0%,#b0b5ac 38%,#8d918a 70%,#767a72 100%);}
+#sf-lab-mount .sfmat .xstage>*{position:relative;z-index:1;}
+/* every structural hairline is drawn in that steel */
+#sf-lab-mount .sfmat .rline{background:rgba(141,145,138,.55);}
+#sf-lab-mount .sfmat .rnote,#sf-lab-mount .sfmat .fnote{color:var(--sw-alu-dk);}
+#sf-lab-mount .sfmat .fstrip.framed{border-top-color:rgba(141,145,138,.55);}
+#sf-lab-mount .sfmat .xstrip{border-top-color:rgba(141,145,138,.55);}
+#sf-lab-mount .sfmat .xrow{border-bottom-color:rgba(141,145,138,.42);}
+#sf-lab-mount .sfmat .hl{background:rgba(141,145,138,.55) !important;}
+#sf-lab-mount .sfmat .xkey{color:var(--sw-alu-dk);}
+/* the cable, before the heading that names the machine */
+#sf-lab-mount .sfmat .vhead.au{color:var(--sw-alu-dk);}
+#sf-lab-mount .sfmat .vhead.au::before{content:"";display:inline-block;width:15px;height:2px;
+  background:var(--sw-or);vertical-align:middle;margin-right:10px;transform:translateY(-1px);}
+/* the electrical block — the enclosure and its cooling ribs are the parts the
+   cable actually runs to, so those two carry the cable colour on their numeral */
+#sf-lab-mount .sfmat .rc_encl .rcap i,#sf-lab-mount .sfmat .rc_ribs .rcap i{color:var(--sw-or);}
+#sf-lab-mount .sfmat .fslide.pw .fey{color:var(--sw-or);}
+#sf-lab-mount .sfmat .gn.pw .xid{color:var(--sw-or);}
+@media(max-width:900px){
+  #sf-lab-mount .sfmat .vstage::before,#sf-lab-mount .sfmat .xstage::before{inset:-12px -14px -18px;}
+  #sf-lab-mount .sfmat .vstage::after,#sf-lab-mount .sfmat .xstage::after{
+    left:-14px;right:-14px;bottom:-18px;height:5px;}
+}
+
+/* -------------------------------------------------------------------------
+   THE GLISTEN. Not a reveal — the records are already there. This is light
+   moving very slowly across brushed metal: a seven-second breathe, offset a
+   little per record so a wave crosses the field rather than the whole field
+   pulsing at once. Amplitude is small on purpose.
+   ------------------------------------------------------------------------- */
+@keyframes sfglint{
+  0%   {opacity:.84}
+  42%  {opacity:1}
+  58%  {opacity:1}
+  100% {opacity:.84}
+}
+#sf-lab-mount .sfglint .rt{animation:sfglint 7s ease-in-out infinite;}
+@media(prefers-reduced-motion:reduce){
+  #sf-lab-mount .sfglint .rt{animation:none;opacity:1;}
+}
+</style>
+
+<script id="sf-fin-js">
+(function(){
+  var KEEP=[11,4,10];                        /* 01 · 03 · 04, numbers unchanged */
+  var LBL ={11:'01', 4:'03', 10:'04'};
+  window.SLBL=LBL; window.SKEEP=KEEP;
+
+  var keep={0:1}; KEEP.forEach(function(n){ keep[n]=1; });
+  for(var i=0;i<CONCEPTS.length;i++) if(!keep[i]) CONCEPTS[i]=undefined;
+
+  /* ---------------------------------------------------------------------
+     THE LANGUAGE IS ALREADY THERE.
+     The reading still happens on the machine — that is the part worth
+     watching. The records underneath stop drawing themselves in; they are
+     simply present from the first frame, the way 03 already had it.
+     --------------------------------------------------------------------- */
+  function settle(root){
+    [].forEach.call(root.querySelectorAll('.rt'),function(n){
+      if(n.closest('.fslide')) return;              /* strip overlays already handled */
+      n.classList.add('on');
+      n.style.transition='none';
+      n.style.opacity='1';
+      [].forEach.call(n.querySelectorAll('path'),function(p){
+        p.style.strokeDasharray=''; p.style.strokeDashoffset='0'; p.style.transition='none'; });
+    });
+    [].forEach.call(root.querySelectorAll('.rc'),function(n){ n.classList.add('lit'); });
+  }
+  /* the wave is started a beat after the machine has been read, so the two
+     do not compete for attention */
+  function glint(root,x,delay){
+    if(!window.MOTION) return;
+    x.delay(function(){
+      var host=root.querySelector('.din')||root;
+      host.classList.add('sfglint');
+      var i=0;
+      [].forEach.call(root.querySelectorAll('.rt'),function(n){
+        if(n.closest('.fslide')) return;
+        n.style.animationDelay=(i*0.28).toFixed(2)+'s'; i++;
+      });
+    }, delay||3200);
+  }
+
+  var TREAT={
+    11:{settle:1, glint:0},   /* 01 — records simply present, no shimmer      */
+    10:{settle:1, glint:1},   /* 04 — records present, and a slow glisten     */
+     4:{settle:0, glint:0}    /* 03 — already worked this way, left alone     */
+  };
+  KEEP.forEach(function(n){
+    var c=CONCEPTS[n]; if(!c) return;
+    var t=TREAT[n]||{};
+    var base=c.build;
+    CONCEPTS[n]={n:n, name:c.name, desc:c.desc, build:function(r,x){
+      base(r,x);
+      var host=r.querySelector('.din')||r;
+      /* the material, on every one of the three */
+      var sect=r.querySelector('.vp')||r.firstElementChild;
+      if(sect) sect.classList.add('sfmat');
+      /* 03's genome cells: the enclosure and its ribs are the electrical block */
+      [].forEach.call(r.querySelectorAll('.gn'),function(cell){
+        var nm=cell.querySelector('.sn');
+        if(nm&&/battery enclosure|rib structure/i.test(nm.textContent||'')) cell.classList.add('pw');
+      });
+      /* the cable colour on the power products in the strip */
+      [].forEach.call(r.querySelectorAll('.fslide'),function(sl){
+        var ey=sl.querySelector('.fey'); if(!ey) return;
+        if(/^(energy|power)$/i.test((ey.textContent||'').trim())) sl.classList.add('pw');
+      });
+      if(t.settle) settle(r);
+      if(t.glint)  glint(r,x,3200);
+    }};
+  });
+
+  /* ---------------------------------------------------------------------
+     the bar: three boxes, numbers unchanged so they still match what you
+     have been calling them
+     --------------------------------------------------------------------- */
+  var bx=document.getElementById('labboxes');
+  if(bx){
+    bx.innerHTML='';
+    var pv=document.createElement('button'); pv.className='nav pv'; pv.textContent='‹';
+    bx.appendChild(pv);
+    var g=document.createElement('span'); g.className='gp'; g.textContent='shortlist';
+    g.style.borderLeft='0'; g.style.marginLeft='0'; bx.appendChild(g);
+    KEEP.forEach(function(n){
+      var b=document.createElement('button');
+      b.dataset.n=n; b.textContent=LBL[n];
+      b.title=(CONCEPTS[n]?CONCEPTS[n].name:'');
+      b.addEventListener('click',(function(m){return function(){ show(m); };})(n));
+      bx.appendChild(b);
+    });
+    var nx=document.createElement('button'); nx.className='nav nx'; nx.textContent='›';
+    bx.appendChild(nx);
+    function step(d){ var i=KEEP.indexOf(CUR); if(i<0) i=0;
+      i=(i+d+KEEP.length)%KEEP.length; show(KEEP[i]); }
+    pv.addEventListener('click',function(){ step(-1); });
+    nx.addEventListener('click',function(){ step(1); });
+    window.SSTEP=step;
+    var cn=document.getElementById('labcount');
+    if(cn) cn.textContent='three';
+  }
+
+  /* this layer is last, so it has the final word on the number and the URL */
+  function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
+  var baseShow=window.show;
+  window.show=function(n){
+    baseShow(n);
+    var num=document.getElementById('labnum');
+    if(num&&LBL[n]) num.textContent=LBL[n];
+    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+  };
+  window.labHash=function(){
+    var num=document.getElementById('labnum');
+    if(num&&LBL[CUR]) num.textContent=LBL[CUR];
+    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+  };
+  function land(){
+    var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
+    var m=/[#&]c=([0-9]+o?)/i.exec(h), want=null;
+    if(m){ for(var k in LBL){ if(LBL[k].toLowerCase()===m[1].toLowerCase()){ want=+k; break; } } }
+    if(want!==null&&CONCEPTS[want]){ if(CUR!==want) show(want); return; }
+    if(m||!keep[CUR]||CUR===0){ if(CUR!==KEEP[0]) show(KEEP[0]); }
+  }
+  setTimeout(land,1800); setTimeout(land,2700); setTimeout(land,3400);
+})();
+</script>
 
 </body>
 </html>
