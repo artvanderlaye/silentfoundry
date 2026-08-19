@@ -17577,6 +17577,21 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
 #sf-lab-mount .fslide{position:relative;overflow:hidden;background:#14171b;
   flex:0 0 calc(28vw - 1px);height:25.9vw;}
 #sf-lab-mount .fslide.w2{flex-basis:calc(56vw - 1px);}
+/* TWO ROWS, ONE SCROLL CONTAINER. Both rows sit inside a single .fwrap, so a
+   drag moves them together and the join reads as one block rather than two
+   sliders that happen to be stacked. The second row runs at a bigger scale —
+   two or three across instead of four — and carries the whole portfolio, so
+   the pair works as a slidable directory of everything SWITCH has become. */
+#sf-lab-mount .fstack{display:flex;flex-direction:column;gap:1px;width:max-content;}
+#sf-lab-mount .fstack .ftrack{width:auto;}
+/* the second row is wider AND shallower than the first. Repeating the top
+   row's near-square at double the size made the block 2500px tall and read as
+   the same row twice; the flatter crop keeps the pair compact and makes the
+   two scales obviously different. */
+#sf-lab-mount .r2 .fslide{flex:0 0 calc(var(--r2w) - 1px);height:calc(var(--r2w) * 0.62);}
+#sf-lab-mount .fstrip.two2{--r2w:50vw;}
+#sf-lab-mount .fstrip.two25{--r2w:40vw;}
+#sf-lab-mount .fstrip.two3{--r2w:33vw;}
 #sf-lab-mount .fslide img{width:100%;height:100%;object-fit:cover;display:block;
   filter:brightness(.84);transition:filter .6s ease;}
 #sf-lab-mount .fslide.on img{filter:brightness(.95);}
@@ -17597,75 +17612,98 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
 #sf-lab-mount .fslide .rt{opacity:.9;}
 /* the staggered variant */
 #sf-lab-mount .fstrip.stag .ftrack{align-items:flex-start;padding-bottom:30px;}
-#sf-lab-mount .fstrip.stag .fslide:nth-child(even){margin-top:30px;}
+#sf-lab-mount .fstrip.stag .r1 .fslide:nth-child(even){margin-top:30px;}
 /* the framed variant */
 #sf-lab-mount .fstrip.framed{border-top:1px solid rgba(141,145,138,.45);padding-top:26px;}
 #sf-lab-mount .fnote{font-family:var(--lab-dm);font-size:.42rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--sw-alu-dk,#6e726b);display:block;margin-top:14px;}
 @media(max-width:900px){
   #sf-lab-mount .fslide{flex:0 0 calc(76vw - 1px);height:70.4vw;}
+  /* stacked, two full-size rows would be a page each. The top row steps down
+     so the pair still reads as one block on a phone. */
+  #sf-lab-mount .fstack .r1 .fslide{flex:0 0 calc(58vw - 1px);height:53.7vw;}
+  #sf-lab-mount .fstrip.two2,#sf-lab-mount .fstrip.two25,
+  #sf-lab-mount .fstrip.two3{--r2w:80vw;}
   #sf-lab-mount .fslide.w2{flex-basis:calc(90vw - 1px);}
-  #sf-lab-mount .fstrip.stag .fslide:nth-child(even){margin-top:0;}
+  #sf-lab-mount .fstrip.stag .r1 .fslide:nth-child(even){margin-top:0;}
   #sf-lab-mount .fstrip.stag .ftrack{padding-bottom:0;}
   #sf-lab-mount .fcap{left:16px;right:16px;bottom:14px;}
 }
 @media(min-width:1921px){
   #sf-lab-mount .fslide{flex:0 0 calc(18vw - 1px);height:16.7vw;}
+  #sf-lab-mount .fstrip.two2{--r2w:32vw;}
+  #sf-lab-mount .fstrip.two25{--r2w:26vw;}
+  #sf-lab-mount .fstrip.two3{--r2w:22vw;}
   #sf-lab-mount .fslide.w2{flex-basis:calc(36vw - 1px);}
 }
 </style>
 
 <script id="sf-strip-js">
 (function(){
-  /* the products, named the way the site already names them in its own
-     portfolio — nothing here is invented copy */
+  /* The five that carry a characteristic into a new category, and then the
+     WHOLE portfolio. Every image, category and name below is lifted verbatim
+     from the site's own portfolio array — nothing here is written new. */
   var PROD=[
     {img:IMG.speaker,   ey:'Audio',        nm:'Speaker',      k:'encl'},
-    {img:IMG.batteryP,  ey:'Power',        nm:'Battery Pack', k:'ribs'},
-    {img:IMG.light,     ey:'Lighting',     nm:'Task Light',   k:'axis'},
-    {img:IMG.snowboard, ey:'Mobility',     nm:'Snowboard',    k:'sil' },
-    {img:IMG.guitar,    ey:'Instrument',   nm:'Guitar',       k:'fast'}
+    {img:IMG.batteryP,  ey:'Energy',       nm:'Battery Pack', k:'ribs'},
+    {img:IMG.light,     ey:'Professional', nm:'Task Light',   k:'axis'},
+    {img:IMG.snowboard, ey:'Lifestyle',    nm:'Snowboard',    k:'sil' },
+    {img:IMG.guitar,    ey:'Audio',        nm:'Guitar',       k:'fast'}
+  ];
+  var PORTF=[
+    {img:'images/eSCRAMBLER_dirt-13.jpg',                 ey:'Mobility',     nm:'Off-Road',     k:'stnc'},
+    {img:'images/snowboard.jpg',                          ey:'Lifestyle',    nm:'Snowboard',    k:'sil' },
+    {img:'images/guitar.jpg',                             ey:'Audio',        nm:'Guitar',       k:'fast'},
+    {img:'images/Upscaled_amp.png',                       ey:'Audio',        nm:'Amplifier',    k:'ribs'},
+    {img:'images/prototype_assembly.jpg',                 ey:'Workspace',    nm:'Bench System', k:'mod' },
+    {img:'images/switch_battery.jpg',                     ey:'Energy',       nm:'Battery Pack', k:'ribs'},
+    {img:'images/switch-professional-task-light.jpg',     ey:'Professional', nm:'Task Light',   k:'axis'},
+    {img:'images/switch_speaker.png',                     ey:'Audio',        nm:'Speaker',      k:'encl'}
   ];
 
   function slide(p,o){
     o=o||{};
     return '<div class="fslide'+(o.w2?' w2':'')+'">'+
-      '<img loading="lazy" decoding="async" alt="" src="'+p.img+'">'+
-      (o.dna?rsvg(p.k,1.7,'position:absolute;left:16%;top:17%;width:68%;height:auto'):'')+
+      /* NOT lazy. These sit in a horizontally scrolling track, so the browser
+         treats everything past the right edge as off-screen and defers it —
+         the slides you swipe to arrive black. There are only eight distinct
+         images across the whole strip, and every one is already used elsewhere
+         on the page, so eager costs nothing. */
+      '<img decoding="async" alt="" src="'+p.img+'">'+
+      (o.dna&&p.k?rsvg(p.k,1.7,'position:absolute;left:16%;top:17%;width:68%;height:auto'):'')+
       '<div class="fcap"><span class="fey">'+p.ey+'</span>'+
         '<span class="fnm">'+p.nm+'</span></div></div>';
   }
-  /* variants. Same slide size in all five — only the composition changes. */
+  /* the top row has to be at least as long as the bottom one, or it runs out
+     part-way through the drag and leaves a hole at the right-hand end */
+  function fill(list,unit,target,o){
+    var out=[], w=0, i=0;
+    while(w<target && out.length<40){ out.push(slide(list[i%list.length],o)); w+=unit; i++; }
+    return out.join('');
+  }
+  /* two rows in one scroll container. Only the composition changes between
+     concepts; the slide size is the Foundry's in every one of them. */
+  function ftwin(o){
+    var r2u=o.r2==='two2'?50:(o.r2==='two25'?40:33);
+    var need=r2u*PORTF.length;
+    var top=o.lead
+      ? slide(PORTF[0],{w2:1,dna:1})+fill(PROD,28,need-56,{dna:o.topDna})
+      : fill(PROD,28,need,{dna:o.topDna});
+    var bot=PORTF.map(function(p){ return slide(p,{dna:o.botDna}); }).join('');
+    return '<div class="fstrip bleed '+o.r2+(o.stag?' stag':'')+'">'+
+      '<div class="fwrap"><div class="fstack">'+
+        '<div class="ftrack r1">'+top+'</div>'+
+        '<div class="ftrack r2">'+bot+'</div>'+
+      '</div></div>'+
+      (o.note?'<span class="fnote">'+o.note+'</span>':'')+'</div>';
+  }
+  /* the five variants. Same engine, five different splits and emphases. */
   function fstrip(v){
-    var cls='fstrip', inner='';
-    if(v==='a'){                 /* 01 — one continuous run, cut at both edges */
-      cls+=' bleed';
-      inner=PROD.concat(PROD).map(function(p){return slide(p);}).join('');
-      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack" '+
-        'style="margin-left:-9vw">'+inner+'</div></div></div>';
-    }
-    if(v==='b'){                 /* 02 — held inside the frame, rule above */
-      cls+=' framed';
-      inner=PROD.map(function(p){return slide(p,{dna:1});}).join('');
-      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+
-        '</div></div><span class="fnote">The same language, five categories on</span></div>';
-    }
-    if(v==='c'){                 /* 03 — one dominant, then the supporting four */
-      cls+=' bleed';
-      inner=slide(PROD[3],{w2:1,dna:1})+
-            PROD.filter(function(_,i){return i!==3;}).map(function(p){return slide(p);}).join('');
-      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+'</div></div></div>';
-    }
-    if(v==='d'){                 /* 04 — staggered, an editorial rhythm */
-      cls+=' bleed stag';
-      inner=PROD.concat(PROD.slice(0,2)).map(function(p){return slide(p);}).join('');
-      return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack" '+
-        'style="margin-left:-5vw">'+inner+'</div></div></div>';
-    }
-    /* 05 — every product carries its own cyan characteristic */
-    cls+=' bleed';
-    inner=PROD.map(function(p){return slide(p,{dna:1});}).join('');
-    return '<div class="'+cls+'"><div class="fwrap"><div class="ftrack">'+inner+'</div></div></div>';
+    if(v==='a') return ftwin({r2:'two2',  note:'The language, and everywhere it has already gone'});
+    if(v==='b') return ftwin({r2:'two3',  topDna:1});
+    if(v==='c') return ftwin({r2:'two25', lead:1});
+    if(v==='d') return ftwin({r2:'two3',  stag:1});
+    return           ftwin({r2:'two2',  topDna:1, botDna:1});
   }
 
   /* --------------------------------------------------------------------
@@ -17708,14 +17746,22 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     }};
   });
 
-  /* the big portfolio mosaic below the section shows the same products at a
-     larger size. With the strip in place it is a second telling of the same
-     thing, so it comes off. */
-  function hidePF(){
+  /* THE PORTFOLIO MOSAIC IS DELETED, not hidden. The base page builds it at
+     runtime inside mountSwitch(), and several earlier lab layers also reach for
+     it, so a one-shot removal can be undone a second later. The stylesheet rule
+     means it never paints even for a frame, and the observer takes the node out
+     again every time anything re-inserts it. Nothing here touches index.html —
+     this is the lab only. */
+  function killPF(){
     var pf=document.getElementById('sf-pfwrap');
-    if(pf) pf.style.setProperty('display','none','important');
+    if(pf&&pf.parentNode){ pf.parentNode.removeChild(pf); return true; }
+    return false;
   }
-  hidePF(); setTimeout(hidePF,600); setTimeout(hidePF,1800); setTimeout(hidePF,3200);
+  killPF();
+  try{
+    var mo=new MutationObserver(function(){ killPF(); });
+    mo.observe(document.documentElement,{childList:true,subtree:true});
+  }catch(e){ [0,400,900,1800,3200,6000].forEach(function(t){ setTimeout(killPF,t); }); }
 })();
 </script>
 
