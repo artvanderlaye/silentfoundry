@@ -15811,7 +15811,7 @@ function xflyer(host,srcEl){
   host.appendChild(f);
   return f;
 }
-function xflyTo(f,host,dstEl,dur,toCyan){
+function xflyTo(f,host,dstEl,dur,toCyan,via){
   var a=f.getBoundingClientRect(), b=dstEl.getBoundingClientRect();
   if(!a.width||!b.width) return;
   var s=b.width/a.width;
@@ -15822,8 +15822,14 @@ function xflyTo(f,host,dstEl,dur,toCyan){
   /* force a frame so the transition actually runs */
   void f.offsetWidth;
   f.style.transform='translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+s.toFixed(4)+')';
-  if(toCyan) setTimeout(function(){
-    [].forEach.call(f.querySelectorAll('path'),function(p){ p.style.stroke=CY; }); }, Math.round(dur*0.34));
+  function ink(c){ [].forEach.call(f.querySelectorAll('path'),function(p){ p.style.stroke=c; }); }
+  if(toCyan){
+    /* SWITCH passes through the cable orange while the piece is in transit:
+       gold where it was found, orange while it is live and moving, cyan once
+       it has been codified. Marshall omits `via` and stays gold -> cyan. */
+    if(via) setTimeout(function(){ ink(via); }, Math.round(dur*0.20));
+    setTimeout(function(){ ink(CY); }, Math.round(dur*(via?0.62:0.34)));
+  }
 }
 
 /* ---------- the orchestrator ----------
@@ -15858,7 +15864,7 @@ function xtransfer(root,x,host,items,o){
       x.delay(function(){
         var f=xflyer(host,s);
         s.style.opacity=String(ghost);
-        x.delay(function(){ xflyTo(f,host,d,fly,true); },40);
+        x.delay(function(){ xflyTo(f,host,d,fly,true,o.via); },40);
         x.delay(function(){ f.style.opacity='0'; xreveal(d,900,0); },40+fly);
         x.delay(function(){ if(f.parentNode) f.parentNode.removeChild(f); },40+fly+700);
       }, t+draw+hold);
@@ -15953,6 +15959,59 @@ function xpopulate(root,x,host,items,o){
 }
 </script>
 <style id="sf-x-switch-css">
+/* =========================================================================
+   SWITCH's OWN MATERIALS, added to the analytical palette.
+   Sampled off the motor photographs:
+     ORANGE  #e2661c  the high-voltage cable — the machine while it is live
+     STEEL   #8d918a  the stator lamination frame — what the machine is made of
+   They carry meaning rather than decoration:
+     steel  = the material the source object is built from, so it frames the
+              machine and draws every structural hairline on that side;
+     orange = the live state. It marks the source column, and a characteristic
+              turns orange for the part of its journey when it has left the
+              machine but has not yet been codified. Gold still means found,
+              cyan still means extracted.
+   Scoped to .xref so the restored originals (01o…33o) keep their old palette.
+   ========================================================================= */
+#sf-lab-mount .xref{--sw-or:#e2661c;--sw-or-dk:#c4500e;
+  --sw-alu:#8d918a;--sw-alu-lt:#c6cac2;--sw-alu-dk:#6e726b;}
+/* the machine sits inside its own frame, with the lamination stack beneath it */
+#sf-lab-mount .xref .vstage{position:relative;
+  /* the frame is drawn 18px outside the stage, so it needs clearance from the
+     heading above it — the concepts set margin-top inline, hence !important */
+  margin-top:30px !important;}
+#sf-lab-mount .xref .vstage::before{content:"";position:absolute;inset:-18px -22px -24px;
+  border:1px solid rgba(141,145,138,.55);pointer-events:none;z-index:0;}
+#sf-lab-mount .xref .vstage::after{content:"";position:absolute;left:-22px;right:-22px;bottom:-24px;
+  height:7px;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,#d3d6ce 0%,#b0b5ac 38%,#8d918a 70%,#767a72 100%);}
+#sf-lab-mount .xref .vstage > *{position:relative;z-index:1;}
+/* the source column is the live one */
+#sf-lab-mount .xref .vhead.au{color:var(--sw-alu-dk);}
+#sf-lab-mount .xref .vhead.au::before{content:"";display:inline-block;width:15px;height:2px;
+  background:var(--sw-or);vertical-align:middle;margin-right:10px;transform:translateY(-1px);}
+/* every structural hairline on the refined concepts is drawn in the frame's steel */
+#sf-lab-mount .xref .xband,#sf-lab-mount .xref .xrule{border-top-color:rgba(141,145,138,.5);}
+#sf-lab-mount .xref .xband:last-child,
+#sf-lab-mount .xref .xrule:last-child{border-bottom-color:rgba(141,145,138,.5);}
+#sf-lab-mount .xref .xstrip{border-top-color:rgba(141,145,138,.55);}
+#sf-lab-mount .xref .xrow{border-bottom-color:rgba(141,145,138,.42);}
+#sf-lab-mount .xref .xnote{color:var(--sw-alu-dk);}
+/* 01's stage holds the whole constellation, so its frame goes round the
+   machine itself rather than round everything that came out of it */
+#sf-lab-mount .xref.v01 .vstage::before,#sf-lab-mount .xref.v01 .vstage::after{display:none;}
+#sf-lab-mount .xref.v01 .x01wrap::before{content:"";position:absolute;inset:6.5% 13.5% 5%;
+  border:1px solid rgba(141,145,138,.5);pointer-events:none;z-index:0;}
+#sf-lab-mount .xref.v01 .x01wrap::after{content:"";position:absolute;left:13.5%;right:13.5%;bottom:5%;
+  height:6px;pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,#d3d6ce 0%,#b0b5ac 38%,#8d918a 70%,#767a72 100%);}
+@media(max-width:900px){
+  #sf-lab-mount .xref .vstage::before{inset:-12px -14px -18px;}
+  #sf-lab-mount .xref .vstage::after{left:-14px;right:-14px;bottom:-18px;height:5px;}
+  #sf-lab-mount .xref.v01 .x01wrap::before,
+  #sf-lab-mount .xref.v01 .x01wrap::after{display:none;}
+}
+
 #sf-lab-mount .x01wrap{position:relative;padding:9% 16%;}
 #sf-lab-mount .x01wrap .vw{width:100%;}
 #sf-lab-mount .xframe{position:relative;width:100%;aspect-ratio:1540/869;}
@@ -16023,6 +16082,7 @@ function xchipN(k,cls,sw){
   return '<div class="vcell xch '+(cls||'')+'" data-key="'+k+'">'+xsvg(k,sw)+
     '<span class="vcap">'+V[k].lab+'</span></div>';
 }
+var SWOR='#e2661c';   /* the cable, sampled off the motor */
 function xitems(keys){ return keys.map(function(k){ return {k:k,src:'.g_'+k,dst:'.t_'+k}; }); }
 
 /* ==================== 01 — DETAIL LIBRARY (spatial) ==================== */
@@ -16033,21 +16093,22 @@ C(1,'DETAIL LIBRARY','nine characteristics are read off the machine and settle a
     ['shk'  , 45, 88, 12],  ['whl'  , 15, 86, 14],  ['strc' ,  1, 44, 12]
   ];
   var KS=SLOT.map(function(s){return s[0];});
-  r.innerHTML=vsec('v01',hd()+
-    '<div class="vstage"><div class="x01wrap">'+
+  r.innerHTML=vsec('v01 xref',hd()+
+    '<span class="vhead au" style="margin-top:30px">The machine</span>'+
+    '<div class="vstage" style="margin-top:14px"><div class="x01wrap">'+
       bike2({src:.30, svg:srcLayer(KS)})+
       SLOT.map(function(s){
         return '<div class="xslot" style="left:'+s[1]+'%;top:'+s[2]+'%;width:'+s[3]+'%">'+
           xsvg(s[0],2.3)+'<span class="sn"><i>'+V[s[0]].id+'</i>'+V[s[0]].lab+'</span></div>'; }).join('')+
     '</div></div>'+
     para()+'<div class="vbtm"></div>');
-  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1100,draw:640,hold:320,fly:1150});
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1100,draw:640,hold:320,fly:1150,via:SWOR});
 });
 
 /* ==================== 03 — DESIGN GENOME (machine | genome) ==================== */
 C(3,'DESIGN GENOME','the machine on the left is read line by line, and the genome fills in on the right',function(r,x){
   var KS=['sil','whl','encl','ribs','axis','fast'];
-  r.innerHTML=vsec('v03',hd()+
+  r.innerHTML=vsec('v03 xref',hd()+
     '<div class="vcol gcL15">'+
       '<div><span class="vhead au">The machine</span>'+
         '<div class="vstage" style="margin-top:0">'+bike2({src:.24, svg:srcLayer(KS)})+'</div>'+
@@ -16059,13 +16120,13 @@ C(3,'DESIGN GENOME','the machine on the left is read line by line, and the genom
             '<div>'+xsvg(k,2.6)+'</div></div>'; }).join('')+'</div>'+
         '<span class="xnote">Six readings, in the order they were taken</span></div>'+
     '</div>'+'<div class="vbtm"></div>');
-  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1250,draw:680,hold:340,fly:1150});
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1250,draw:680,hold:340,fly:1150,via:SWOR});
 });
 
 /* ==================== 15 — MACHINE | LANGUAGE ==================== */
 C(15,'MACHINE | LANGUAGE','one characteristic at a time leaves the machine and completes the library beside it',function(r,x){
   var KS=['sil','encl','ribs','axis','fast','whl'];
-  r.innerHTML=vsec('v15',hd()+
+  r.innerHTML=vsec('v15 xref',hd()+
     '<div class="vcol gcL15">'+
       '<div><span class="vhead au">The machine</span>'+
         '<div class="vstage" style="margin-top:0">'+bike2({src:.18, svg:srcLayer(KS)})+'</div></div>'+
@@ -16074,7 +16135,7 @@ C(15,'MACHINE | LANGUAGE','one characteristic at a time leaves the machine and c
         '<p class="vpara" style="margin-top:32px">'+T.p+'</p></div>'+
     '</div>'+'<div class="vbtm"></div>');
   /* the machine ends clean: every gold trace leaves with the piece it belongs to */
-  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1500,draw:780,hold:460,fly:1300,ghost:0});
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1500,draw:780,hold:460,fly:1300,ghost:0,via:SWOR});
 });
 
 /* ==================== 18 — DESIGN GENOME, CURATED ==================== */
@@ -16084,10 +16145,11 @@ C(18,'THE CURATED SET','fifteen characteristics, chosen because each one says so
   var FIELD=['sil','whl','encl','ribs','axis','strc','fast','datum','stnc',
              'neg','edge','mech','seat','swng','shk'];
   var READ=['encl','sil','whl','axis','ribs'];       /* the five that are shown being read */
-  r.innerHTML=vsec('v18',hd()+
+  r.innerHTML=vsec('v18 xref',hd()+
     '<div class="vcol gcS21">'+
-      '<div><div class="vstage" style="margin-top:0">'+bike2({src:.34, svg:srcLayer(READ)})+'</div>'+
-        '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
+      '<div><span class="vhead au">The machine</span>'+
+        '<div class="vstage" style="margin-top:0">'+bike2({src:.34, svg:srcLayer(READ)})+'</div>'+
+        '<p class="vpara" style="margin-top:38px">'+T.p+'</p></div>'+
       '<div><span class="vhead">The set</span>'+
         '<div class="vlib gc5">'+FIELD.map(function(k){ return xchipN(k); }).join('')+'</div></div>'+
     '</div>'+'<div class="vbtm"></div>');
@@ -16109,7 +16171,7 @@ C(18,'THE CURATED SET','fifteen characteristics, chosen because each one says so
 /* ==================== 20 — THE DRAWING IS USED UP ==================== */
 C(20,'THE DRAWING IS USED UP','everything taken off the machine reassembles on the right — and the photograph is gone',function(r,x){
   var KS=['sil','encl','ribs','swng','axis','whl','fast','strc','seat','datum'];
-  r.innerHTML=vsec('v20',hd()+
+  r.innerHTML=vsec('v20 xref',hd()+
     '<div class="vcol gcL15">'+
       '<div><span class="vhead au">What is there</span>'+
         '<div class="vstage" style="margin-top:0">'+
@@ -16121,7 +16183,7 @@ C(20,'THE DRAWING IS USED UP','everything taken off the machine reassembles on t
         '</div>'+
         '<p class="vpara" style="margin-top:26px">'+T.p+'</p></div>'+
     '</div>'+'<div class="vbtm"></div>');
-  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:780,draw:520,hold:220,fly:1050,ghost:0,
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:780,draw:520,hold:220,fly:1050,ghost:0,via:SWOR,
     onDone:function(){
       var im=r.querySelector('.vsrc');
       if(im) im.style.opacity='.04';
@@ -16140,7 +16202,7 @@ C(22,'FIVE STRONG RULES','five things the machine does, each with the piece of i
     {k:'axis', t:'One axis governs the front of the machine.'}
   ];
   var KS=RULES.map(function(o){return o.k;});
-  r.innerHTML=vsec('v22',hd()+
+  r.innerHTML=vsec('v22 xref',hd()+
     '<div class="vcol gcL15">'+
       '<div><span class="vhead au">The machine</span>'+
         '<div class="vstage" style="margin-top:0">'+bike2({src:.22, svg:srcLayer(KS)})+'</div>'+
@@ -16150,13 +16212,13 @@ C(22,'FIVE STRONG RULES','five things the machine does, each with the piece of i
           return '<div class="xrule"><div>'+xsvg(o.k,2.6)+'</div>'+
             '<div><p>'+o.t+'</p><span>'+V[o.k].lab+'</span></div></div>'; }).join('')+'</div></div>'+
     '</div>'+'<div class="vbtm"></div>');
-  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1450,draw:760,hold:420,fly:1250,ghost:0});
+  xtransfer(r,x,r.querySelector('.din'),xitems(KS),{gap:1450,draw:760,hold:420,fly:1250,ghost:0,via:SWOR});
 });
 
 /* ==================== 33 — SOURCE FEATURE / EXTRACTED EXPRESSION ============ */
 C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece you end up reading',function(r,x){
   var KS=['sil','encl','whl','ribs','axis','strc'];
-  r.innerHTML=vsec('v33',hd()+
+  r.innerHTML=vsec('v33 xref',hd()+
     '<div class="vcol gcL15">'+
       '<div><span class="vhead au">The machine</span>'+
         '<div class="vstage" style="margin-top:0">'+bike2({src:.34, svg:srcLayer(KS)})+'</div>'+
@@ -16171,7 +16233,7 @@ C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece
      and each piece starts before the one ahead of it has settled */
   var DT=[0,-120,180,-160,120,-80];
   var IT=xitems(KS).map(function(it,i){ it.dt=DT[i]; return it; });
-  xtransfer(r,x,r.querySelector('.din'),IT,{t0:300,gap:1320,draw:720,hold:380,fly:1300,ghost:0});
+  xtransfer(r,x,r.querySelector('.din'),IT,{t0:300,gap:1320,draw:720,hold:380,fly:1300,ghost:0,via:SWOR});
 });
 
 /* ==================== prune and rebuild the SWITCH bar ==================== */
