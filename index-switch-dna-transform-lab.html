@@ -19767,6 +19767,97 @@ window.__L14=1;
     [].forEach.call(ns,function(n,i){ x.delay(function(){ n.classList.add('on'); },(t0||1300)+i*(step||130)); });
   };
 
+
+  /* -----------------------------------------------------------------------
+     DIRECTION-DRIVEN STEPPING.
+     Not a position map: it answers which WAY you are scrolling. Every `px`
+     of travel while the host is on screen moves the value by one, clamped.
+     Used where the hero should assemble going down and come apart going up.
+     --------------------------------------------------------------------- */
+  H.dir=function(x,host,n,fn){
+    if(!window.MOTION){ fn(n-1,0); return; }
+    var v=0, acc=0, last=window.pageYOffset||0, vis=true;
+    try{
+      var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ vis=e.isIntersecting; }); },{threshold:0}));
+      io.observe(host);
+    }catch(e){}
+    fn(0,0);
+    x.on(window,'scroll',function(){
+      var y=window.pageYOffset||0, d=y-last; last=y;
+      if(!vis) return;
+      acc+=d;
+      while(acc>=(H.STEPPX||150)){ acc-=(H.STEPPX||150); if(v<n-1){ v++; fn(v,1); } }
+      while(acc<=-(H.STEPPX||150)){ acc+=(H.STEPPX||150); if(v>0){ v--; fn(v,-1); } }
+    });
+  };
+  H.STEPPX=150;
+
+  /* -----------------------------------------------------------------------
+     THROUGH — position mapped across a TALL host's own travel.
+     H.states measures a band in front of the element, which is right for a
+     150px panel and wrong for a 2,400px section: by the time the section is
+     on screen most of the band is already spent, so five states collapse into
+     two. This maps the value to how far the host has actually travelled past
+     the top of the window, which is what "where you are in the section"
+     means. Same hysteresis, same reversibility.
+     --------------------------------------------------------------------- */
+  H.through=function(x,host,n,fn){
+    if(!window.MOTION){ fn(n-1,0); return; }
+    var cur=-1, q=false;
+    function t(){
+      var b=host.getBoundingClientRect(), vh=window.innerHeight||1;
+      var travel=Math.max(1,b.height-vh*0.55);
+      var v=(-b.top)/travel;
+      return v<0?0:(v>1?1:v);
+    }
+    function tick(){
+      q=false;
+      var v=t()*(n-1), w=Math.round(v);
+      if(cur>=0){ if(Math.abs(v-cur)<0.56) return; w=v>cur?cur+1:cur-1; }
+      if(w===cur) return;
+      var d=w>cur?1:-1; cur=w; fn(cur,d);
+    }
+    function ping(){ if(!q){ q=true; requestAnimationFrame(tick); } }
+    x.on(window,'scroll',ping); x.on(window,'resize',ping);
+    ping(); x.delay(ping,400);
+  };
+
+  /* -----------------------------------------------------------------------
+     A LONG CROSS-FADE.
+     The whole drawing rises and falls on a slow cycle with nothing else
+     moving — used where the hero should breathe rather than be read.
+     --------------------------------------------------------------------- */
+  H.breathe=function(r,x,host,o){
+    if(!window.MOTION) return;
+    o=o||{};
+    var ln=r.querySelector('.pvline'), up=true, vis=true;
+    try{
+      var io=x.obs(new IntersectionObserver(function(es){ es.forEach(function(e){ vis=e.isIntersecting; }); },{threshold:0}));
+      io.observe(host);
+    }catch(e){}
+    if(ln) ln.style.transition='opacity '+(o.dur||6500)+'ms ease-in-out';
+    x.delay(function(){
+      x.timer(function(){
+        if(!vis||!ln) return;
+        up=!up;
+        ln.style.opacity=String(up?(o.hi==null?0.6:o.hi):(o.lo==null?0.05:o.lo));
+        if(o.each) o.each(up);
+      }, o.dur||6500);
+    }, o.after==null?2600:o.after);
+  };
+
+  /* photo treatment, switched per state rather than set once */
+  H.photo=function(r,mode){
+    var st=r.querySelector('.pvstage'); if(!st) return;
+    st.classList.remove('grey');
+    st.style.setProperty('--none','0');
+    var img=st.querySelector('.pvphoto'); if(!img) return;
+    img.style.transition='filter 1.2s ease';
+    img.style.filter = mode==='colour' ? 'grayscale(0) contrast(1.03) brightness(1)'
+                     : mode==='soft'   ? 'grayscale(.5) contrast(1.04) brightness(.9)'
+                     : 'grayscale(1) contrast(1.06) brightness(.62)';
+  };
+
   H.strip=function(v){ return FSTRIP(v||'e'); };
   H.reg=function(n){
     var c=CONCEPTS[n]; if(!c) return;
@@ -19975,20 +20066,33 @@ window.__L14=1;
       '</div>'+
       H.rows()+H.strip('b')+'<div class="rbtm"></div>');
 
-    var ledg=r.querySelector('.ledg');
-    H.open(r,x,{done:function(instant){
-      if(instant){ return; }
-    }});
-    /* the reading travels the ledger, one column at a time, and the machine
-       answers each one */
+    var ledg=r.querySelector('.ledg'), ln=r.querySelector('.pvline');
+    /* MOTION · SCROLL READS THE LEDGER, BOTH WAYS.
+       No timer anywhere in this variation. Where you are in the section is
+       which column is being read: scrolling down walks the reading left to
+       right, scrolling up walks it back. The hero holds exactly one gold
+       trace at a time and the drawing sits low behind it, so the frame is a
+       reference rather than a diagram. */
     var last=null;
-    H.loop(r,x,r.querySelector('.din'),COLS,function(t){
+    function readCol(i){
       if(ledg) ledg.classList.add('dim');
-      if(last) H.off(r,H.byF(last.f).k);
-      H.mark(r,[H.byF(t.f).c]);
-      H.on(r,H.byF(t.f).k);
-      last=t;
-    },{after:3400,every:3000});
+      if(last!=null) H.off(r,H.byF(COLS[last].f).k,0);
+      H.mark(r,[H.byF(COLS[i].f).c]);
+      H.on(r,H.byF(COLS[i].f).k);
+      if(ln) ln.style.opacity='.2';
+      last=i;
+    }
+    H.open(r,x,{ink:0.2,rest:0,done:function(instant){ if(instant) readCol(0); }});
+    /* The reader is attached AFTER the opening finishes, and the opening no
+       longer sets a column of its own. Doing both left the scroll state
+       believing it was on column four while a delayed call had put column one
+       on the page, so the first scroll produced nothing and it never moved
+       again. One thing owns the column, and it is the scroll. The host is the
+       whole section rather than the ledger element — six states mapped across
+       330px are all used up before the ledger is properly on screen. */
+    if(window.MOTION) x.delay(function(){
+      H.through(x,r.querySelector('.din'),COLS.length,readCol);
+    },1700);
   });
 
   /* =======================================================================
@@ -20515,23 +20619,32 @@ window.__L14=1;
       H.rows()+H.strip('d')+'<div class="rbtm"></div>');
 
     var ln=r.querySelector('.pvline'), stamp=r.querySelector('.lstamp');
+    /* MOTION · THE PHOTOGRAPH ITSELF IS A LAYER.
+       The other variations only ever change what is drawn ON the hero. Here
+       the hero's own treatment changes with the layer, because the three
+       layers need three different things from it: FORM needs the machine
+       cool and the drawing up; MATERIAL needs the photograph back in full
+       colour, since you cannot read a finish off a grey plate; MEANING needs
+       it dark and almost bare. Three cross-fades, tied to scroll bands, and
+       every one of them reverses when you scroll back up. */
     function layer(i){
       [].forEach.call(r.querySelectorAll('.lyr'),function(n,j){ n.classList.toggle('on',j===i); });
       [].forEach.call(r.querySelectorAll('.lcontent'),function(n,j){ n.classList.toggle('on',j===i); });
       if(stamp) stamp.textContent=LY[i].stamp;
-      /* the hero answers whichever layer is on, and never keeps more than
-         one of them */
-      H.FK.forEach(function(kk){ H.off(r,kk,0.12); });
-      if(ln) ln.style.opacity = i===0?'.62' : i===1?'.24' : '.1';
+      H.FK.forEach(function(kk){ H.off(r,kk,0); });
+      if(ln){ ln.style.transition='opacity 1.2s ease';
+              ln.style.opacity = i===0?'.72' : i===1?'.1' : '.05'; }
+      H.photo(r, i===0?'soft' : i===1?'colour' : 'deep');
       if(i===0) H.F.forEach(function(f){ H.on(r,f.k); });
       if(i===2) H.on(r,'encl');
     }
-    H.open(r,x,{ink:0.5,done:function(instant){ if(instant) layer(1); }});
+    H.open(r,x,{peak:0.72,ink:0.72,rest:0,done:function(instant){
+      if(instant){ layer(1); return; }
+      x.delay(function(){ layer(0); },1600);
+    }});
     if(!window.MOTION){ layer(1); return; }
-    layer(0);
-    var i=0;
-    H.loop(r,x,r.querySelector('.lay3'),[0,1,2],function(){ i=(i+1)%3; layer(i); },
-      {after:3200,every:3400});
+    /* bands, not a carousel — the layer you are on is where you are */
+    H.states(x,r.querySelector('.lay3'),3,layer);
   });
 
   [20,21,22,23,24].forEach(H.reg);
@@ -20696,14 +20809,26 @@ window.__L14=1;
       }).join('')+'</div>'+
       H.rows()+H.strip('a')+'<div class="rbtm"></div>');
 
-    var cat=r.querySelector('.cat');
-    H.open(r,x,{});
+    var cat=r.querySelector('.cat'), ln=r.querySelector('.pvline');
+    /* MOTION · A LONG BREATH, AND NOTHING TIED TO SCROLL.
+       A catalogue is looked at, not operated. The whole drawing cross-fades
+       up and down over thirteen seconds — slow enough that you notice it has
+       changed rather than watching it change — and scroll position does
+       nothing to the hero at all. The only quick thing is the entry being
+       catalogued, which changes underneath on its own clock. */
+    H.open(r,x,{ink:0.5,rest:0.26});
+    H.breathe(r,x,r.querySelector('.oneframe'),{dur:6500,hi:0.66,lo:0.04,after:2400,
+      each:function(up){
+        /* on the way down the machine keeps one trace; on the way up it
+           keeps none, so the two halves of the breath are not mirror images */
+        H.FK.forEach(function(kk){ H.off(r,kk, up?0.22:0); });
+        if(!up) H.on(r,'encl');
+      }});
+    var i=0;
     H.loop(r,x,r.querySelector('.din'),H.F,function(f){
       if(cat) cat.classList.add('dim');
       H.mark(r,[f.c]);
-      H.FK.forEach(function(kk){ H.off(r,kk); });
-      H.on(r,f.k);
-    },{after:3400,every:3200});
+    },{after:4000,every:3600});
   });
 
   /* =======================================================================
@@ -21122,15 +21247,31 @@ window.__L14=1;
       if(codes) codes.textContent=o.f.concat(o.m).concat([o.p]).join('  ·  ');
       if(rimg) rimg.src=o.img;
       if(rn) rn.textContent=o.n;
-      H.FK.forEach(function(kk){ H.off(r,kk); });
-      o.f.forEach(function(fc){ H.on(r,H.byF(fc).k); });
+      /* build() no longer touches the machine. assemble() owns the hero in
+         this variation, and build() was resetting the traces to the recipe's
+         two every time the recipe changed — which is why the assembly stalled
+         at two parts however far you scrolled. */
     }
-    H.open(r,x,{done:function(instant){ if(instant) build(REC[0]); }});
+    var ln=r.querySelector('.pvline');
+    /* MOTION · IT ASSEMBLES DOWNWARD AND COMES APART UPWARD.
+       This one answers scroll DIRECTION rather than scroll position. Every
+       150px of downward travel adds one part to the machine — a trace at a
+       time until all six are on and the drawing is up — and every 150px
+       upward takes one off again. Stop scrolling and it stops; there is no
+       clock in this variation. The recipe below changes with it, so the kit
+       being picked and the machine being built are the same gesture. */
+    var ORDERK=['encl','ribs','whl','fast','axis','sil'];
+    function assemble(v){
+      ORDERK.forEach(function(k,j){ if(j<v) H.on(r,k); else H.off(r,k,0); });
+      if(ln){ ln.style.transition='opacity .8s ease';
+              ln.style.opacity=String(0.06+(v/ORDERK.length)*0.5); }
+      build(REC[Math.min(REC.length-1,Math.max(0,Math.round(v/2)))]);
+    }
+    H.open(r,x,{ink:0.06,rest:0,done:function(instant){
+      if(instant){ ORDERK.forEach(function(k){ H.on(r,k); }); build(REC[0]); }
+    }});
     if(!window.MOTION){ build(REC[0]); return; }
-    x.delay(function(){ build(REC[0]); },1500);
-    var i=0;
-    H.loop(r,x,r.querySelector('.kit'),REC,function(){ i=(i+1)%REC.length; build(REC[i]); },
-      {after:4400,every:3600});
+    H.dir(x,r.querySelector('.kit'),ORDERK.length+1,function(v){ assemble(v); });
   });
 
   /* =======================================================================
