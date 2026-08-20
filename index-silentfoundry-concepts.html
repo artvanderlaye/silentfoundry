@@ -20230,6 +20230,16 @@ window.__L14=1;
     x.delay(function(){ [].forEach.call(ns,function(n){ n.classList.add('on'); }); },7000);
   };
 
+  /* THE PORTFOLIO STRIP — the two-level slider.
+     Two rows in one stack, each a native horizontal scroller, running at
+     different scales: products across the top, the portfolio across the
+     bottom, both carrying their cyan DNA trace. lab12 DELETES the base page's
+     own portfolio mosaic (killPF, with a MutationObserver so it stays gone)
+     on the assumption that a section puts this back in its place — and the
+     new framework did not, which is why the portfolio disappeared entirely.
+     Variants a–e are the same engine with different splits. */
+  B.strip=function(v){ return H.strip(v||'e'); };
+
   /* the section shell. Every concept gets the same outer frame so the page
      structure, spacing logic and content architecture stay Version 18's. */
   B.sec=function(cls,inner){
@@ -20343,7 +20353,10 @@ window.__L14=1;
       '<div class="wrap">'+B.head('Product translations',1)+
         '<div class="p00">'+B.prods('power','board','speaker','light').map(function(p){
           return '<div>'+ph(p.img)+'<span class="term">'+p.n+'</span>'+
-            '<p class="note q" style="margin-top:7px">'+p.r+'</p></div>'; }).join('')+'</div></div>');
+            '<p class="note q" style="margin-top:7px">'+p.r+'</p></div>'; }).join('')+'</div></div>'+
+
+      /* the two-level portfolio slider, closing the section as it always did */
+      B.strip('e'));
     B.openHero(r,x);
   });
 
@@ -22073,6 +22086,10 @@ window.__L14=1;
       /* 5 · the product translations */
       '<div class="wrap prod">'+B.head('Product translations',1)+
         '<div class="prodg">'+prods.map(g('prod')).join('')+'</div></div>'+
+      /* 6 · the two-level portfolio slider — part of the Version 00 format,
+         so every repackaging carries it. The variant is a treatment choice;
+         the strip's presence and position are not. */
+      B.strip(o.strip||'e')+
       (o.post||''));
 
     /* the hero animation is 00's on every version, without exception */
@@ -22199,7 +22216,7 @@ window.__L14=1;
                    and a two-up observation grid instead.
      ===================================================================== */
   reg(22,'21 · SPECIFICATION','20.01 repackaged — the document authority of heavy rules and display-type observations, inside the baseline split',function(r,x){
-    F.build(r,x,{cls:'w21',
+    F.build(r,x,{cls:'w21', strip:'a',
       con:function(){ return '<div class="conline"><span class="term">'+
         B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; }
     });
@@ -22294,7 +22311,7 @@ window.__L14=1;
                    grid, the order and the footprint are unchanged.
      ===================================================================== */
   reg(26,'25 · THE FOLD','20.05 repackaged — the fold kept by making the baseline’s right column sticky, rather than adding a column',function(r,x){
-    F.build(r,x,{cls:'w25',
+    F.build(r,x,{cls:'w25', strip:'c',
       mat:function(){ return '<div class="hold">'+ph(IMG.dirt)+
         '<p class="note q" style="margin-top:10px">The source object, held while it is read.</p></div>'+
         '<div style="margin-top:4px">'+B.bar()+B.barLeg()+'</div>'; }
@@ -22461,7 +22478,7 @@ window.__L14=1;
      Change      the breaking happens inside the baseline's columns; the
                  outer split and the content footprint are untouched */
   reg(30,'29 · GRID BREAK','20.09 repackaged — uneven spans and mixed aspect ratios kept, but inside the baseline’s own columns',function(r,x){
-    F.build(r,x,{cls:'w29'});
+    F.build(r,x,{cls:'w29', strip:'d'});
   });
 
   /* VERSION 30 ← 20.10 · THE CONTACT SHEET
@@ -22473,7 +22490,7 @@ window.__L14=1;
   reg(31,'30 · CONTACT SHEET','20.10 repackaged — the photographic sheet leading the right column, drawings reduced to citations',function(r,x){
     var CS=[{s:IMG.bike,n:'THE SOURCE OBJECT'},{s:IMG.cnc,n:'MACHINED PRECISION'},
             {s:IMG.frameB,n:'FORMED FRAMEWORK'}];
-    F.build(r,x,{cls:'w30',
+    F.build(r,x,{cls:'w30', strip:'c',
       mat:function(){
         return '<div class="sheet">'+CS.map(function(c){ return ph(c.s); }).join('')+'</div>'+
           '<div class="sheetcap">'+CS.map(function(c){
@@ -22639,7 +22656,7 @@ window.__L14=1;
      Change      the frames ARE the baseline's expansion cells, widened —
                  no new section, and the readings above stay editorial */
   reg(34,'33 · FULL FRAME','20.13 repackaged — the cinematic frame treatment applied to the baseline’s expansion cells',function(r,x){
-    F.build(r,x,{cls:'w33',
+    F.build(r,x,{cls:'w33', strip:'c',
       terr:function(t){ return '<div class="tc">'+ph(t.img)+
         '<span class="ov"><span class="tn">'+t.n+'</span>'+
         '<span><p class="note">'+t.d+'</p>'+
@@ -22673,7 +22690,7 @@ window.__L14=1;
      Change      the depth is applied to the baseline's own blocks; only the
                  spacing changes, never the order or the columns */
   reg(36,'35 · THE STACK','20.15 repackaged — unequal depth applied to the baseline’s own blocks, so rhythm carries the hierarchy',function(r,x){
-    F.build(r,x,{cls:'w35'});
+    F.build(r,x,{cls:'w35', strip:'d'});
   });
 
 })();
@@ -22887,7 +22904,7 @@ window.__L14=1;
      Change      the baseline's STYLING is simplified, never its structure:
                  rules go, spacing doubles, everything stays where it was */
   reg(41,'40 · THE QUIET ONE','20.20 repackaged — the baseline simplified rather than restructured: rules removed, air doubled, nothing moved',function(r,x){
-    F.build(r,x,{cls:'w40', seq:false,
+    F.build(r,x,{cls:'w40', seq:false, strip:'b',
       con:function(){ return '<div class="conq"><span class="term s">'+
         B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; },
       terr:function(t){ return '<div class="tc"><span class="tn">'+t.n+'</span>'+
