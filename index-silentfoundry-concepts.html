@@ -20032,6 +20032,13 @@ window.__L14=1;
 (function(){
   var H=window.G3, B={};
 
+  /* THE SLOT CEILING. lab11 pins window.NMAX to 33 and lab7 wraps every index
+     through ((n%(NMAX+1))+(NMAX+1))%(NMAX+1), so slot 34 has always resolved
+     to 0 and silently shown the control. Forty-one versions need headroom, so
+     the live range is raised here — show() reads it at call time, and this
+     layer is the last one to set it. Nothing renumbers. */
+  window.NMAX=63;
+
   /* REDUCED MOTION IS HONOURED AT THE DOOR. If the operating system asks for
      reduced motion, the whole page renders in its settled state — every
      drawing complete, every term visible, nothing half-drawn. */
@@ -21938,6 +21945,958 @@ window.__L14=1;
   [16,17,18,19,20].forEach(function(n){ H.reg(n); (window.__C20=window.__C20||{})[n]=1; });
 })();
 </script>
+<style id="sf-v00-css">
+/* =========================================================================
+   THE VERSION 00 FRAMEWORK.
+
+   Versions 21–40 are NOT twenty websites. They are twenty treatments of one
+   website, and this file is that website. Every one of them renders through
+   V00.build(), which emits the same markup in the same order:
+
+     1  hero            00's frame, 00's crop, 00's sketch-to-DNA animation
+     2  statement       "From physical character to transferable design language"
+     3  split           form left · materials + character right
+     4  expansion       From DNA to new categories — Energy / Motion /
+                        Control / Utility
+     5  translations    product concepts as translations of those territories
+
+   A version may change typography, image treatment, colour balance, overlays,
+   rules, texture, DNA graphics, motion character, transitions, density and
+   tone. It may NOT change page architecture, section order, hero placement,
+   the primary column structure, the content footprint or the responsive
+   hierarchy — those live here and nowhere else, which is why the baseline
+   cannot drift.
+
+   Treatment reaches in through named hooks (obs, sup, mat, con, prin, terr,
+   prod, pre, post). A hook that is not supplied falls back to the baseline's
+   own rendering, so a version only writes the part it is actually changing.
+   ========================================================================= */
+
+/* the framework's own structure — shared by 00 and by every repackaging */
+#sf-lab-mount .vf .split{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(0,1fr);
+  gap:0 72px;margin-top:40px;align-items:start;}
+#sf-lab-mount .vf .obsg{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 34px;margin-top:24px;}
+#sf-lab-mount .vf .obsg .sym{margin-bottom:12px;}
+#sf-lab-mount .vf .obsg .termP{font-size:clamp(1.05rem,1.85vw,1.55rem);}
+#sf-lab-mount .vf .supg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 34px;
+  margin-top:30px;padding-top:16px;border-top:1px solid var(--rule);}
+#sf-lab-mount .vf .rgt > div{margin-top:34px;}
+#sf-lab-mount .vf .rgt > div:first-child{margin-top:0;}
+#sf-lab-mount .vf .cong{display:grid;grid-template-columns:repeat(3,1fr);gap:0 22px;margin-top:24px;}
+#sf-lab-mount .vf .cong .ph{width:100%;aspect-ratio:3/2;margin-bottom:10px;}
+#sf-lab-mount .vf .pring > div{padding:16px 0;border-top:1px solid var(--rule);}
+#sf-lab-mount .vf .pring > div:first-child{border-top:0;padding-top:4px;}
+#sf-lab-mount .vf .terrg{display:grid;grid-template-columns:repeat(4,1fr);gap:0 34px;margin-top:28px;}
+#sf-lab-mount .vf .terrg .ph{aspect-ratio:4/3;margin-bottom:14px;}
+#sf-lab-mount .vf .tn{font-family:'Bebas Neue',sans-serif;font-weight:300;letter-spacing:.13em;
+  text-transform:uppercase;font-size:clamp(1.45rem,2.7vw,2rem);line-height:1;color:var(--ink);
+  display:block;}
+#sf-lab-mount .vf .ex{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--cyd);margin-top:10px;display:block;}
+#sf-lab-mount .vf .prodg{display:grid;grid-template-columns:repeat(4,1fr);gap:0 34px;margin-top:24px;}
+#sf-lab-mount .vf .prodg .ph{aspect-ratio:4/3;margin-bottom:11px;}
+
+@media(max-width:900px){
+  #sf-lab-mount .vf .split{grid-template-columns:1fr;gap:34px 0;}
+  #sf-lab-mount .vf .obsg{grid-template-columns:1fr 1fr;gap:24px 20px;}
+  #sf-lab-mount .vf .supg{grid-template-columns:1fr 1fr;gap:16px 20px;}
+  #sf-lab-mount .vf .terrg,#sf-lab-mount .vf .prodg{grid-template-columns:1fr 1fr;gap:22px 20px;}
+  #sf-lab-mount .vf .cong{gap:0 12px;}
+}
+</style>
+
+<script id="sf-v00-js">
+(function(){
+  var H=window.G3, B=window.B19, F={};
+
+  function ph(src,cls){ return '<img class="ph '+(cls||'')+'" decoding="async" alt="" src="'+src+'">'; }
+  F.ph=ph;
+
+  /* ---- the framework's default rendering of each block ------------------- */
+  var D={
+    obs:function(o){ return '<div class="oc">'+B.sym(o,'lg')+'<span class="termP">'+o.n+'</span>'+
+      '<p class="note" style="margin-top:9px">'+o.r+'</p></div>'; },
+    sup:function(o){ return '<div class="sc">'+B.sym(o,'xs')+
+      '<span class="term s" style="margin-top:9px">'+o.n+'</span></div>'; },
+    mat:function(){ return '<div style="margin-top:24px">'+B.bar()+B.barLeg()+'</div>'; },
+    con:function(){ return '<div class="cong">'+B.CON.map(function(c){
+      return '<div>'+ph(c.img)+'<span class="term s">'+c.n+'</span></div>'; }).join('')+'</div>'; },
+    prin:function(p){ return '<div class="pc"><span class="termP">'+p.n+'</span>'+
+      '<p class="note" style="margin-top:9px">'+p.r+'</p></div>'; },
+    terr:function(t){ return '<div class="tc">'+ph(t.img)+'<span class="tn">'+t.n+'</span>'+
+      '<p class="note" style="margin-top:11px">'+t.d+'</p>'+
+      '<span class="ex">'+t.e.join(' · ')+'</span></div>'; },
+    prod:function(p){ return '<div class="pdc">'+ph(p.img)+'<span class="term">'+p.n+'</span>'+
+      '<p class="note q" style="margin-top:7px">'+p.r+'</p></div>'; }
+  };
+  F.D=D;
+
+  /* ---- THE FRAMEWORK ----------------------------------------------------
+     Section order, hero placement, column structure and responsive logic are
+     all decided here. A treatment supplies hooks; it never supplies markup
+     for the frame itself. */
+  F.build=function(r,x,o){
+    o=o||{};
+    var g=function(k){ return o[k]||D[k]; };
+    var terr=B.terr(!!o.connection);
+    var prods=o.prods||B.prods('power','board','speaker','light');
+
+    var left=
+      B.head('Form &amp; architecture')+
+      (o.obsWrap ? o.obsWrap(B.OP.map(g('obs')).join(''))
+                 : '<div class="obsg">'+B.OP.map(g('obs')).join('')+'</div>')+
+      (o.supWrap ? o.supWrap(B.OS.map(g('sup')).join(''))
+                 : '<div class="supg">'+B.OS.map(g('sup')).join('')+'</div>');
+
+    var right=
+      '<div class="mblk">'+B.head('Materials &amp; construction')+g('mat')()+g('con')()+'</div>'+
+      '<div class="cblk">'+B.head('Character &amp; principles')+
+        '<div class="pring" style="margin-top:22px">'+B.PP.map(g('prin')).join('')+'</div>'+
+        '<div class="supp" style="margin-top:22px;padding-top:14px;'+
+          'border-top:1px solid var(--rule)"><span class="term s">'+
+          B.PS.join(' &nbsp;·&nbsp; ')+'</span></div></div>';
+
+    r.innerHTML=B.sec('vf '+(o.cls||''),
+      /* 1 · the hero — 00's, always */
+      B.hero({seq:o.seq})+
+      (o.pre||'')+
+      /* 2 · the statement */
+      '<div class="wrap stmt">'+(o.stmt||B.stmt())+
+        '<div class="lede-w" style="margin-top:24px">'+(o.lede||B.lede())+'</div></div>'+
+      /* 3 · the split */
+      '<div class="split"><div class="lft">'+left+'</div><div class="rgt">'+right+'</div></div>'+
+      /* 4 · the expansion framework */
+      '<div class="wrap loose exp">'+B.head('From DNA to new categories')+
+        '<div style="margin-top:24px">'+B.terrLede()+'</div>'+
+        (o.terrWrap ? o.terrWrap(terr.map(g('terr')).join(''),terr)
+                    : '<div class="terrg">'+terr.map(g('terr')).join('')+'</div>')+'</div>'+
+      /* 5 · the product translations */
+      '<div class="wrap prod">'+B.head('Product translations',1)+
+        '<div class="prodg">'+prods.map(g('prod')).join('')+'</div></div>'+
+      (o.post||''));
+
+    /* the hero animation is 00's on every version, without exception */
+    B.openHero(r,x,{done:o.heroDone});
+    if(o.after) o.after(r,x);
+  };
+
+  window.V00=F;
+})();
+</script>
+<style id="sf-v21a-css">
+/* =========================================================================
+   VERSIONS 21–25.  Treatments only — the frame is lab19/core.html.
+   ========================================================================= */
+
+/* ---- 21 ← 20.01 THE SPECIFICATION --------------------------------------
+   Preserved: document authority carried by full-width rules, and the four
+   primary observations set as display type.
+   Translated: 20.01 ran its readings as full-page bands. Here the same
+   authority comes from rule WEIGHT inside the baseline split. */
+#sf-lab-mount .w21 .bhead{border-top-width:2px;}
+#sf-lab-mount .w21 .obsg{grid-template-columns:repeat(2,1fr);gap:34px 44px;}
+#sf-lab-mount .w21 .obsg .oc{border-top:1px solid var(--rule);padding-top:18px;}
+#sf-lab-mount .w21 .obsg .termP{font-size:clamp(1.35rem,2.5vw,2.05rem);}
+#sf-lab-mount .w21 .supg{border-top-width:1px;}
+#sf-lab-mount .w21 .cong{display:none;}          /* 20.01 kept no photography here */
+#sf-lab-mount .w21 .conline{margin-top:24px;padding-top:14px;border-top:1px solid var(--rule);}
+#sf-lab-mount .w21 .terrg{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .w21 .terrg .tc{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);
+  gap:0 48px;align-items:center;padding:26px 0;border-top:1px solid var(--rule);}
+#sf-lab-mount .w21 .terrg .tc .ph{aspect-ratio:21/9;margin-bottom:0;}
+
+/* ---- 22 ← 20.02 THE PLATE SEQUENCE -------------------------------------
+   Preserved: one enormous drawing standing for a whole reading.
+   Translated: instead of a plate per section, the big drawing becomes a
+   watermark behind the left column, so the split is untouched. */
+#sf-lab-mount .w22 .lft{position:relative;}
+#sf-lab-mount .w22 .plate{position:absolute;left:-4%;top:60px;width:108%;opacity:.14;
+  pointer-events:none;z-index:0;}
+#sf-lab-mount .w22 .plate .rt{max-height:520px !important;}
+/* NOT the plate — a blanket `.lft > *{position:relative}` overrode its
+   position:absolute and put 520px of watermark into the flow */
+#sf-lab-mount .w22 .lft > *:not(.plate){position:relative;z-index:1;}
+#sf-lab-mount .w22 .obsg .sym{display:none;}
+#sf-lab-mount .w22 .obsg .oc{border-left:1px solid var(--rule);padding-left:18px;}
+#sf-lab-mount .w22 .terrg .ph{aspect-ratio:16/10;}
+
+/* ---- 23 ← 20.03 THE MARGIN NOTES ---------------------------------------
+   Preserved: the annotated-document reading, drawings set as marginal notes.
+   Translated: the margin moves inside the left column of the baseline split
+   rather than the page becoming a 940px document. */
+#sf-lab-mount .w23 .obsg{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .w23 .obsg .oc{display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 30px;
+  padding:20px 0;border-top:1px solid var(--rule);align-items:start;}
+#sf-lab-mount .w23 .obsg .oc .sym{justify-self:end;width:100%;margin-bottom:0;}
+#sf-lab-mount .w23 .obsg .oc .sym .rt{max-height:64px !important;}
+#sf-lab-mount .w23 .supg{grid-template-columns:120px minmax(0,1fr);gap:0 30px;}
+#sf-lab-mount .w23 .supg .sc{display:contents;}
+#sf-lab-mount .w23 .suprail{grid-column:2;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px 20px;}
+#sf-lab-mount .w23 .pring > div{display:grid;grid-template-columns:120px minmax(0,1fr);gap:0 30px;}
+#sf-lab-mount .w23 .pring .mg{font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--ink3);text-align:right;}
+
+/* ---- 24 ← 20.04 THE OVERLAY --------------------------------------------
+   Preserved: annotation in place on the object.
+   Translated: the tags go on the BASELINE HERO instead of a second held
+   field, so no section is added. */
+#sf-lab-mount .w24 .oneframe{position:relative;}
+#sf-lab-mount .w24 .htag{position:absolute;transform:translate(-50%,-50%);text-align:center;
+  pointer-events:none;z-index:4;opacity:0;transition:opacity .8s ease;}
+#sf-lab-mount .w24 .htag.on{opacity:1;}
+#sf-lab-mount .w24 .htag .dot{display:block;width:5px;height:5px;border-radius:50%;
+  background:var(--cy);margin:0 auto 7px;box-shadow:0 0 0 3px rgba(0,180,216,.18);}
+#sf-lab-mount .w24 .htag .tt{font-family:'DM Sans',sans-serif;font-size:9.6px;letter-spacing:2px;
+  text-transform:uppercase;font-weight:300;color:#fff;white-space:nowrap;
+  text-shadow:0 1px 12px rgba(0,0,0,.9);}
+#sf-lab-mount .w24 .htag.p .tt{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;
+  letter-spacing:.13em;color:var(--cy);}
+#sf-lab-mount .w24 .obsg .oc{position:relative;padding-left:20px;}
+#sf-lab-mount .w24 .obsg .oc:before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;
+  border-radius:50%;background:var(--cy);}
+
+/* ---- 25 ← 20.05 THE FOLD ------------------------------------------------
+   Preserved: the machine held on screen while the reading scrolls past it.
+   Translated: the RIGHT column of the baseline split becomes sticky. The
+   grid, the order and the footprint are unchanged. */
+#sf-lab-mount .w25 .rgt{position:sticky;top:70px;}
+#sf-lab-mount .w25 .hold{margin-bottom:26px;}
+#sf-lab-mount .w25 .hold .ph{width:100%;aspect-ratio:4/3;}
+#sf-lab-mount .w25 .obsg{grid-template-columns:1fr 1fr;gap:32px 34px;}
+#sf-lab-mount .w25 .terrg .ph{aspect-ratio:3/4;}
+
+@media(max-width:900px){
+  #sf-lab-mount .w21 .obsg{grid-template-columns:1fr;gap:22px;}
+  #sf-lab-mount .w21 .terrg .tc{grid-template-columns:1fr;gap:14px;}
+  #sf-lab-mount .w22 .plate{display:none;}
+  #sf-lab-mount .w23 .obsg .oc,#sf-lab-mount .w23 .supg,
+  #sf-lab-mount .w23 .pring > div{grid-template-columns:1fr;gap:10px;}
+  #sf-lab-mount .w23 .obsg .oc .sym{justify-self:start;width:96px;}
+  #sf-lab-mount .w23 .suprail{grid-column:1;grid-template-columns:1fr 1fr;}
+  #sf-lab-mount .w23 .pring .mg{text-align:left;}
+  #sf-lab-mount .w24 .htag .tt{font-size:7.6px;letter-spacing:1px;}
+  #sf-lab-mount .w24 .htag.p .tt{font-size:.76rem;}
+  #sf-lab-mount .w25 .rgt{position:static;}
+  #sf-lab-mount .w25 .obsg{grid-template-columns:1fr 1fr;gap:22px 18px;}
+}
+</style>
+
+<script id="sf-v21a-js">
+(function(){
+  var H=window.G3, B=window.B19, F=window.V00, ph=F.ph;
+  function reg(n,name,desc,fn){ C(n,name,desc,fn); H.reg(n);
+    (window.__C20=window.__C20||{})[n]=1; }
+
+  /* =====================================================================
+     VERSION 21  ←  Concept 20.01 · THE SPECIFICATION
+     Thesis        a document read top to bottom, with authority
+     Preserved     heavy full-width rules, four observations in display type,
+                   no photography inside the readings, territories as wide
+                   21:9 bands
+     Structural    20.01 gave each reading a full-page band. Inside the
+     change        baseline split the same authority comes from rule weight
+                   and a two-up observation grid instead.
+     ===================================================================== */
+  reg(22,'21 · SPECIFICATION','20.01 repackaged — the document authority of heavy rules and display-type observations, inside the baseline split',function(r,x){
+    F.build(r,x,{cls:'w21',
+      con:function(){ return '<div class="conline"><span class="term">'+
+        B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; }
+    });
+  });
+
+  /* =====================================================================
+     VERSION 22  ←  Concept 20.02 · THE PLATE SEQUENCE
+     Thesis        one enormous drawing carries a whole reading
+     Preserved     the oversized analytical drawing, and terms held small
+                   against it
+     Structural    20.02 needed a plate per section. Here the big drawing
+     change        sits behind the left column as a watermark, so the split
+                   and the section order are untouched.
+     ===================================================================== */
+  reg(23,'22 · PLATE','20.02 repackaged — the oversized analytical drawing kept, now standing behind the baseline’s form column',function(r,x){
+    F.build(r,x,{cls:'w22', seq:false,
+      obsWrap:function(inner){
+        return '<span class="plate">'+rsvg('stnc',2.3)+'</span>'+
+          '<div class="obsg">'+inner+'</div>'; }
+    });
+  });
+
+  /* =====================================================================
+     VERSION 23  ←  Concept 20.03 · THE MARGIN NOTES
+     Thesis        an annotated engineering document
+     Preserved     drawings set as right-aligned marginal notes, one entry to
+                   a line, hierarchy by position rather than scale
+     Structural    20.03 narrowed the whole page to a 940px measure. Here the
+     change        margin lives inside the left column, so the baseline's
+                   content width and two-column structure survive.
+     ===================================================================== */
+  reg(24,'23 · MARGIN NOTES','20.03 repackaged — the annotated-document reading, with the margin moved inside the baseline’s form column',function(r,x){
+    F.build(r,x,{cls:'w23', connection:1,
+      obs:function(o){ return '<div class="oc">'+B.sym(o,'lg')+
+        '<div><span class="termP">'+o.n+'</span>'+
+        '<p class="note" style="margin-top:9px">'+o.r+'</p></div></div>'; },
+      supWrap:function(){
+        return '<div class="supg"><span class="mg" style="font-family:\'DM Sans\',sans-serif;'+
+          'font-size:8.6px;letter-spacing:1.8px;text-transform:uppercase;color:var(--ink3);'+
+          'text-align:right">Supporting</span>'+
+          '<div class="suprail">'+B.OS.map(function(o){
+            return '<div>'+B.sym(o,'xs')+'<span class="term s" style="margin-top:8px;'+
+              'display:block">'+o.n+'</span></div>'; }).join('')+'</div></div>'; },
+      prin:function(p){ return '<div><span class="mg">Primary</span>'+
+        '<div><span class="termP">'+p.n+'</span>'+
+        '<p class="note" style="margin-top:9px">'+p.r+'</p></div></div>'; }
+    });
+  });
+
+  /* =====================================================================
+     VERSION 24  ←  Concept 20.04 · THE OVERLAY
+     Thesis        the reading never leaves the object
+     Preserved     annotation in place, primaries landing before the
+                   supporting notes, cyan leaders on the photograph
+     Structural    20.04 added a second held image field below the hero.
+     change        Here the tags are placed on the BASELINE HERO itself, so
+                   no section is added and the hero frame is untouched.
+     ===================================================================== */
+  var AT={ sil:[30,26], stnc:[50,84], encl:[52,50], mod:[76,63],
+           whl:[22,66], ribs:[46,45], axis:[70,26], rad:[80,52], fast:[38,72] };
+  reg(25,'24 · OVERLAY','20.04 repackaged — the annotation-in-place idea moved onto the baseline hero itself, so no section is added',function(r,x){
+    F.build(r,x,{cls:'w24', seq:false,
+      after:function(r,x){
+        var st=r.querySelector('.pvstage'); if(!st) return;
+        var html=B.OP.map(function(o){
+          return '<span class="htag p" style="left:'+AT[o.k][0]+'%;top:'+AT[o.k][1]+'%">'+
+            '<span class="dot"></span><span class="tt">'+o.n+'</span></span>'; }).join('')+
+          B.OS.map(function(o){
+            return '<span class="htag" style="left:'+AT[o.k][0]+'%;top:'+AT[o.k][1]+'%">'+
+              '<span class="dot"></span><span class="tt">'+o.n+'</span></span>'; }).join('');
+        st.insertAdjacentHTML('beforeend',html);
+        var tags=[].slice.call(st.querySelectorAll('.htag'));
+        if(!window.MOTION){ tags.forEach(function(t){ t.classList.add('on'); }); return; }
+        /* the four primaries land with the gold reading, the five supporting
+           notes follow — 20.04's order, on 00's timing */
+        tags.forEach(function(t,i){
+          var pri=t.classList.contains('p');
+          x.delay(function(){ t.classList.add('on'); }, pri?(1700+i*220):(2900+i*130));
+        });
+      }
+    });
+  });
+
+  /* =====================================================================
+     VERSION 25  ←  Concept 20.05 · THE FOLD
+     Thesis        the machine stays on screen while the reading passes it
+     Preserved     the fold itself, and the source photograph held against
+                   the analysis
+     Structural    20.05 gave the photograph its own tall column outside the
+     change        reading. Here the baseline's RIGHT column becomes sticky
+                   and carries the photograph above the material bar, so the
+                   grid, the order and the footprint are unchanged.
+     ===================================================================== */
+  reg(26,'25 · THE FOLD','20.05 repackaged — the fold kept by making the baseline’s right column sticky, rather than adding a column',function(r,x){
+    F.build(r,x,{cls:'w25',
+      mat:function(){ return '<div class="hold">'+ph(IMG.dirt)+
+        '<p class="note q" style="margin-top:10px">The source object, held while it is read.</p></div>'+
+        '<div style="margin-top:4px">'+B.bar()+B.barLeg()+'</div>'; }
+    });
+  });
+
+})();
+</script>
+<style id="sf-v21b-css">
+/* ---- 26 ← 20.06 THE DARK STUDY -----------------------------------------
+   Preserved: the reading as a technical plate on near-black, cyan at full
+   strength. Translated: only the SPLIT goes dark. The hero, the expansion
+   section and the translations stay on the cream, so the page rhythm and
+   section order read as the baseline's. */
+#sf-lab-mount .w26 .split{background:#0d1013;padding:44px 44px 50px;margin-top:34px;}
+#sf-lab-mount .w26 .split .bey{color:#3ddcff;}
+#sf-lab-mount .w26 .split .bhead{border-top-color:rgba(61,220,255,.5);}
+#sf-lab-mount .w26 .split .bhead.q{border-top-color:rgba(255,255,255,.2);}
+#sf-lab-mount .w26 .split .term{color:rgba(255,255,255,.86);}
+#sf-lab-mount .w26 .split .term.s{color:rgba(255,255,255,.46);}
+#sf-lab-mount .w26 .split .termP{color:rgba(255,255,255,.94);}
+#sf-lab-mount .w26 .split .note{color:rgba(255,255,255,.5) !important;}
+#sf-lab-mount .w26 .split .note.q{color:rgba(255,255,255,.34) !important;}
+#sf-lab-mount .w26 .split .sym svg path{stroke:#3ddcff !important;}
+#sf-lab-mount .w26 .split .mlegP span{color:rgba(255,255,255,.86);}
+#sf-lab-mount .w26 .split .mlegS span{color:rgba(255,255,255,.4);}
+#sf-lab-mount .w26 .split .pct{color:rgba(255,255,255,.38);}
+#sf-lab-mount .w26 .split .supg,#sf-lab-mount .w26 .split .pring > div,
+#sf-lab-mount .w26 .split .supp{border-top-color:rgba(255,255,255,.16) !important;}
+#sf-lab-mount .w26 .split .ph{filter:grayscale(1) contrast(1.08) brightness(.74);}
+
+/* ---- 27 ← 20.07 THE LINE ------------------------------------------------
+   Preserved: the five stages of the argument as stations on one cyan line.
+   Translated: the line runs down the inside edge of the baseline split and
+   marks the block heads, instead of the page being rebuilt around it. */
+#sf-lab-mount .w27 .split{position:relative;padding-left:56px;}
+#sf-lab-mount .w27 .split:before{content:'';position:absolute;left:16px;top:10px;bottom:10px;
+  width:1px;background:var(--cyd);opacity:.42;}
+#sf-lab-mount .w27 .bhead{position:relative;}
+#sf-lab-mount .w27 .lft .bhead:before{content:'';position:absolute;left:-47px;top:-6px;width:13px;
+  height:13px;border-radius:50%;border:1px solid var(--cyd);background:var(--cy);}
+#sf-lab-mount .w27 .exp,#sf-lab-mount .w27 .prod{position:relative;padding-left:56px;}
+#sf-lab-mount .w27 .exp:before,#sf-lab-mount .w27 .prod:before{content:'';position:absolute;
+  left:16px;top:0;bottom:0;width:1px;background:var(--cyd);opacity:.42;}
+#sf-lab-mount .w27 .exp .bhead:before,#sf-lab-mount .w27 .prod .bhead:before{content:'';
+  position:absolute;left:-47px;top:-6px;width:13px;height:13px;border-radius:50%;
+  border:1px solid var(--cyd);background:var(--cy);}
+#sf-lab-mount .w27 .stmt{position:relative;padding-left:56px;}
+#sf-lab-mount .w27 .stmt:before{content:'';position:absolute;left:16px;top:14px;bottom:-40px;
+  width:1px;background:var(--cyd);opacity:.42;}
+#sf-lab-mount .w27 .stmt:after{content:'';position:absolute;left:11px;top:14px;width:11px;height:11px;
+  border-radius:50%;background:var(--cy);}
+
+/* ---- 28 ← 20.08 THE LARGE SYMBOL ---------------------------------------
+   Preserved: drawings big enough to be technical illustrations rather than
+   icons, and no photography inside the readings.
+   Translated: they grow inside the baseline's own cells; the grid is the
+   baseline's, two-up instead of three so the drawings have room. */
+#sf-lab-mount .w28 .obsg{grid-template-columns:repeat(2,1fr);gap:40px 48px;}
+#sf-lab-mount .w28 .obsg .sym .rt{max-height:150px !important;}
+#sf-lab-mount .w28 .obsg .termP{font-size:clamp(1.3rem,2.4vw,1.95rem);}
+#sf-lab-mount .w28 .supg .sym .rt{max-height:46px !important;}
+#sf-lab-mount .w28 .cong{display:none;}
+#sf-lab-mount .w28 .conline{margin-top:26px;padding-top:14px;border-top:1px solid var(--rule);}
+#sf-lab-mount .w28 .terrg{gap:0 40px;}
+#sf-lab-mount .w28 .terrg .ph{display:none;}
+#sf-lab-mount .w28 .terrg .tc{border-top:1px solid var(--cyd);padding-top:16px;}
+
+/* ---- 29 ← 20.09 THE GRID BREAK -----------------------------------------
+   Preserved: elements deliberately not spanning what you expect, and four
+   aspect ratios in one composition.
+   Translated: the breaking happens INSIDE the baseline's columns. The outer
+   split, the section order and the footprint are untouched. */
+#sf-lab-mount .w29 .obsg{grid-template-columns:repeat(6,1fr);gap:30px 26px;}
+#sf-lab-mount .w29 .obsg .oc:nth-child(1){grid-column:span 4;}
+#sf-lab-mount .w29 .obsg .oc:nth-child(2){grid-column:span 2;}
+#sf-lab-mount .w29 .obsg .oc:nth-child(3){grid-column:span 2;}
+#sf-lab-mount .w29 .obsg .oc:nth-child(4){grid-column:span 4;}
+#sf-lab-mount .w29 .supg{grid-template-columns:repeat(5,1fr);gap:0 18px;}
+#sf-lab-mount .w29 .cong{grid-template-columns:2fr 1fr 1fr;}
+#sf-lab-mount .w29 .cong .ph{aspect-ratio:1/1;}
+#sf-lab-mount .w29 .cong div:first-child .ph{aspect-ratio:16/9;}
+#sf-lab-mount .w29 .terrg{grid-template-columns:repeat(6,1fr);gap:0 26px;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(1){grid-column:span 2;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(2){grid-column:span 1;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(3){grid-column:span 2;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(4){grid-column:span 1;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(1) .ph{aspect-ratio:16/9;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(2) .ph{aspect-ratio:4/5;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(3) .ph{aspect-ratio:3/2;}
+#sf-lab-mount .w29 .terrg .tc:nth-child(4) .ph{aspect-ratio:1/1;}
+
+/* ---- 30 ← 20.10 THE CONTACT SHEET --------------------------------------
+   Preserved: photography leading and analysis following it.
+   Translated: the sheet takes the top of the baseline's right column, where
+   the material bar already lived, so nothing moves. */
+#sf-lab-mount .w30 .sheet{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+#sf-lab-mount .w30 .sheet .ph{aspect-ratio:4/5;}
+#sf-lab-mount .w30 .sheetcap{display:grid;grid-template-columns:repeat(3,1fr);gap:0 2px;
+  margin-top:10px;}
+#sf-lab-mount .w30 .obsg .sym .rt{max-height:40px !important;}
+#sf-lab-mount .w30 .terrg .ph{aspect-ratio:1/1;}
+#sf-lab-mount .w30 .prodg .ph{aspect-ratio:1/1;}
+
+@media(max-width:900px){
+  #sf-lab-mount .w26 .split{padding:22px 16px 26px;}
+  #sf-lab-mount .w27 .split,#sf-lab-mount .w27 .exp,
+  #sf-lab-mount .w27 .prod,#sf-lab-mount .w27 .stmt{padding-left:30px;}
+  #sf-lab-mount .w27 .split:before,#sf-lab-mount .w27 .exp:before,
+  #sf-lab-mount .w27 .prod:before,#sf-lab-mount .w27 .stmt:before{left:6px;}
+  #sf-lab-mount .w27 .lft .bhead:before,#sf-lab-mount .w27 .exp .bhead:before,
+  #sf-lab-mount .w27 .prod .bhead:before{left:-27px;width:11px;height:11px;}
+  #sf-lab-mount .w27 .stmt:after{left:1px;}
+  #sf-lab-mount .w28 .obsg{grid-template-columns:1fr 1fr;gap:24px 18px;}
+  #sf-lab-mount .w28 .obsg .sym .rt{max-height:92px !important;}
+  #sf-lab-mount .w29 .obsg,#sf-lab-mount .w29 .terrg{grid-template-columns:repeat(2,1fr);}
+  #sf-lab-mount .w29 .obsg .oc,#sf-lab-mount .w29 .terrg .tc{grid-column:span 1 !important;}
+  #sf-lab-mount .w29 .supg{grid-template-columns:repeat(2,1fr);gap:14px 18px;}
+  #sf-lab-mount .w29 .cong{grid-template-columns:1fr 1fr 1fr;}
+  #sf-lab-mount .w30 .sheet,#sf-lab-mount .w30 .sheetcap{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+
+<script id="sf-v21b-js">
+(function(){
+  var H=window.G3, B=window.B19, F=window.V00, ph=F.ph;
+  function reg(n,name,desc,fn){ C(n,name,desc,fn); H.reg(n);
+    (window.__C20=window.__C20||{})[n]=1; }
+
+  /* VERSION 26 ← 20.06 · THE DARK STUDY
+     Thesis      the reading as a piece of engineering documentation
+     Preserved   the near-black plate, full-strength cyan drawings, light type
+     Change      only the split goes dark; hero, expansion and translations
+                 stay on the cream so the page rhythm is still 00's */
+  reg(27,'26 · DARK STUDY','20.06 repackaged — the dark technical plate applied to the baseline’s split only, so the page rhythm stays 00’s',function(r,x){
+    F.build(r,x,{cls:'w26'});
+  });
+
+  /* VERSION 27 ← 20.07 · THE LINE
+     Thesis      the argument as stations on one line
+     Preserved   the cyan spine and its filled markers at each stage
+     Change      the line runs down the inside edge of the baseline sections
+                 rather than the page being rebuilt around it */
+  reg(28,'27 · THE LINE','20.07 repackaged — the cyan spine and its station markers running down the edge of the baseline sections',function(r,x){
+    F.build(r,x,{cls:'w27'});
+  });
+
+  /* VERSION 28 ← 20.08 · THE LARGE SYMBOL
+     Thesis      the drawings are illustrations, not icons
+     Preserved   drawings at illustration scale, and no photography in the
+                 readings or the expansion section
+     Change      they grow inside the baseline's own cells — two-up rather
+                 than a screen each */
+  reg(29,'28 · LARGE SYMBOL','20.08 repackaged — drawings at illustration scale inside the baseline cells, photography kept out of the readings',function(r,x){
+    F.build(r,x,{cls:'w28',
+      con:function(){ return '<div class="conline"><span class="term">'+
+        B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; }
+    });
+  });
+
+  /* VERSION 29 ← 20.09 · THE GRID BREAK
+     Thesis      nothing spans the number of columns you expect
+     Preserved   uneven spans and four aspect ratios in one composition
+     Change      the breaking happens inside the baseline's columns; the
+                 outer split and the content footprint are untouched */
+  reg(30,'29 · GRID BREAK','20.09 repackaged — uneven spans and mixed aspect ratios kept, but inside the baseline’s own columns',function(r,x){
+    F.build(r,x,{cls:'w29'});
+  });
+
+  /* VERSION 30 ← 20.10 · THE CONTACT SHEET
+     Thesis      photography leads, analysis follows
+     Preserved   the three-up sheet of source and process photography, and
+                 drawings reduced to citations
+     Change      the sheet sits at the top of the baseline's right column,
+                 where the material bar already was */
+  reg(31,'30 · CONTACT SHEET','20.10 repackaged — the photographic sheet leading the right column, drawings reduced to citations',function(r,x){
+    var CS=[{s:IMG.bike,n:'THE SOURCE OBJECT'},{s:IMG.cnc,n:'MACHINED PRECISION'},
+            {s:IMG.frameB,n:'FORMED FRAMEWORK'}];
+    F.build(r,x,{cls:'w30',
+      mat:function(){
+        return '<div class="sheet">'+CS.map(function(c){ return ph(c.s); }).join('')+'</div>'+
+          '<div class="sheetcap">'+CS.map(function(c){
+            return '<span class="term s">'+c.n+'</span>'; }).join('')+'</div>'+
+          '<div style="margin-top:26px">'+B.bar()+B.barLeg()+'</div>'; },
+      con:function(){ return '<div style="margin-top:22px;padding-top:14px;'+
+        'border-top:1px solid var(--rule)"><span class="term">'+
+        B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; }
+    });
+  });
+
+})();
+</script>
+<style id="sf-v21c-css">
+/* ---- 31 ← 20.11 THE MANIFESTO -------------------------------------------
+   Preserved: the argument stated in display sentences with the drawings set
+   inside the lines at cap height.
+   Translated: the manifesto occupies the baseline's statement block. The
+   readings below it stay in the baseline grid rather than becoming prose. */
+#sf-lab-mount .w31 .say{font-family:'Bebas Neue',sans-serif;font-weight:300;letter-spacing:.08em;
+  text-transform:uppercase;line-height:1.08;color:var(--ink);margin:0;
+  font-size:clamp(1.35rem,2.9vw,2.35rem);max-width:min(100%,1080px);}
+#sf-lab-mount .w31 .say em{font-style:normal;color:var(--cyd);}
+#sf-lab-mount .w31 .inl{display:inline-block;vertical-align:-.16em;width:2.1em;margin:0 .1em;}
+#sf-lab-mount .w31 .inl .rt{max-height:1.05em !important;opacity:1 !important;}
+#sf-lab-mount .w31 .inl svg path{stroke:var(--cy) !important;}
+#sf-lab-mount .w31 .obsg .sym{display:none;}
+#sf-lab-mount .w31 .obsg .termP{font-size:clamp(1.15rem,2vw,1.7rem);}
+#sf-lab-mount .w31 .pring .termP{font-size:clamp(1.3rem,2.4vw,2rem);}
+
+/* ---- 32 ← 20.12 THE DIPTYCH ---------------------------------------------
+   Preserved: everything stated twice — the evidence and the drawing taken
+   from it, at the same size in the same frame.
+   Translated: the pairing happens inside each observation cell, so the
+   baseline's three-up grid and split are unchanged. */
+#sf-lab-mount .w32 .obsg{grid-template-columns:repeat(2,1fr);gap:34px 40px;}
+#sf-lab-mount .w32 .dy{display:grid;grid-template-columns:1fr 1fr;gap:0 2px;margin-bottom:14px;}
+#sf-lab-mount .w32 .dy .ph{width:100%;aspect-ratio:4/3;}
+#sf-lab-mount .w32 .dy .sy{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;
+  background:#eeebe5;}
+#sf-lab-mount .w32 .dy .sy .rt{max-height:78px !important;opacity:1 !important;}
+#sf-lab-mount .w32 .dy .sy svg path{stroke:var(--cy) !important;}
+#sf-lab-mount .w32 .cong .ph{aspect-ratio:1/1;}
+#sf-lab-mount .w32 .terrg .tc{display:grid;grid-template-columns:1fr 1fr;gap:0 2px;align-items:start;}
+#sf-lab-mount .w32 .terrg .tc .ph{aspect-ratio:1/1;margin-bottom:0;}
+#sf-lab-mount .w32 .terrg .tc .tn,#sf-lab-mount .w32 .terrg .tc .note,
+#sf-lab-mount .w32 .terrg .tc .ex{padding-left:12px;}
+
+/* ---- 33 ← 20.13 THE FULL FRAME ------------------------------------------
+   Preserved: cinematic imagery with the type set over it on a guaranteed
+   scrim, and the widest crops.
+   Translated: the frames are the baseline's own expansion cells, widened.
+   No new section, and the readings above stay editorial. */
+#sf-lab-mount .w33 .terrg{grid-template-columns:1fr;gap:2px;}
+#sf-lab-mount .w33 .terrg .tc{position:relative;}
+#sf-lab-mount .w33 .terrg .tc .ph{aspect-ratio:32/9;margin-bottom:0;
+  filter:grayscale(1) contrast(1.05) brightness(.55);}
+#sf-lab-mount .w33 .terrg .tc:after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to right,rgba(6,8,10,.86) 0%,rgba(6,8,10,.55) 46%,rgba(6,8,10,.1) 100%);}
+#sf-lab-mount .w33 .terrg .tc .ov{position:absolute;inset:0;z-index:2;padding:0 44px;display:grid;
+  grid-template-columns:minmax(0,.55fr) minmax(0,1fr);gap:0 40px;align-items:center;}
+#sf-lab-mount .w33 .terrg .tc .tn{color:#fff;}
+#sf-lab-mount .w33 .terrg .tc .note{color:rgba(255,255,255,.78) !important;margin-top:0;}
+#sf-lab-mount .w33 .terrg .tc .ex{color:#3ddcff;margin-top:8px;}
+#sf-lab-mount .w33 .prodg .ph{aspect-ratio:21/9;}
+#sf-lab-mount .w33 .cong .ph{aspect-ratio:21/9;}
+
+/* ---- 34 ← 20.14 THE INDEX -----------------------------------------------
+   Preserved: one indexed run with row height as the only hierarchy, terms
+   flush left and geometry flush right.
+   Translated: the index is the baseline's left column. The right column,
+   the expansion section and the translations are unchanged. */
+#sf-lab-mount .w34 .obsg{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .w34 .obsg .oc{display:grid;grid-template-columns:30px minmax(0,1fr) 120px;
+  gap:0 26px;align-items:center;padding:22px 0;border-top:1px solid rgba(10,10,10,.3);}
+#sf-lab-mount .w34 .obsg .oc .sym{order:3;justify-self:end;width:100%;margin-bottom:0;}
+#sf-lab-mount .w34 .obsg .oc .sym .rt{max-height:58px !important;}
+#sf-lab-mount .w34 .supg{grid-template-columns:1fr;gap:0;padding-top:0;border-top:0;}
+#sf-lab-mount .w34 .supg .sc{display:grid;grid-template-columns:30px minmax(0,1fr) 120px;
+  gap:0 26px;align-items:center;padding:12px 0;border-top:1px solid var(--rule);}
+#sf-lab-mount .w34 .supg .sc .sym{order:3;justify-self:end;width:100%;}
+#sf-lab-mount .w34 .supg .sc .sym .rt{max-height:34px !important;}
+#sf-lab-mount .w34 .ixn{font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.7px;
+  color:var(--cyd);}
+
+/* ---- 35 ← 20.15 THE STACK -----------------------------------------------
+   Preserved: rhythm as the argument — depth states importance.
+   Translated: the depth is applied to the baseline's own blocks. Section
+   order, columns and content are untouched; only the air changes. */
+#sf-lab-mount .w35 .split{margin-top:70px;}
+#sf-lab-mount .w35 .obsg{margin-top:44px;gap:52px 34px;}
+#sf-lab-mount .w35 .supg{margin-top:56px;padding-top:22px;}
+#sf-lab-mount .w35 .rgt .mblk .cong{margin-top:16px;}
+#sf-lab-mount .w35 .rgt > div{margin-top:78px;}
+#sf-lab-mount .w35 .rgt > div:first-child{margin-top:0;}
+#sf-lab-mount .w35 .pring > div{padding:30px 0;}
+#sf-lab-mount .w35 .pring .termP{font-size:clamp(1.4rem,2.7vw,2.2rem);}
+#sf-lab-mount .w35 .exp{margin-top:132px;}
+#sf-lab-mount .w35 .prod{margin-top:44px;}
+#sf-lab-mount .w35 .terrg .ph{aspect-ratio:2/3;}
+
+@media(max-width:900px){
+  #sf-lab-mount .w31 .say{font-size:1.22rem;}
+  #sf-lab-mount .w31 .inl{width:1.8em;}
+  #sf-lab-mount .w32 .obsg{grid-template-columns:1fr 1fr;gap:22px 16px;}
+  #sf-lab-mount .w32 .dy .sy .rt{max-height:48px !important;}
+  #sf-lab-mount .w33 .terrg .tc .ph{aspect-ratio:3/2;}
+  #sf-lab-mount .w33 .terrg .tc .ov{grid-template-columns:1fr;gap:8px;padding:0 18px;
+    align-content:center;}
+  #sf-lab-mount .w33 .prodg .ph,#sf-lab-mount .w33 .cong .ph{aspect-ratio:16/9;}
+  #sf-lab-mount .w34 .obsg .oc,#sf-lab-mount .w34 .supg .sc{grid-template-columns:24px minmax(0,1fr) 76px;
+    gap:0 14px;}
+  #sf-lab-mount .w35 .split{margin-top:36px;}
+  #sf-lab-mount .w35 .rgt > div{margin-top:44px;}
+  #sf-lab-mount .w35 .exp{margin-top:60px;}
+  #sf-lab-mount .w35 .obsg{gap:30px 18px;margin-top:26px;}
+}
+</style>
+
+<script id="sf-v21c-js">
+(function(){
+  var H=window.G3, B=window.B19, F=window.V00, ph=F.ph;
+  function reg(n,name,desc,fn){ C(n,name,desc,fn); H.reg(n);
+    (window.__C20=window.__C20||{})[n]=1; }
+
+  /* VERSION 31 ← 20.11 · THE MANIFESTO
+     Thesis      the argument made in sentences, drawings inside the lines
+     Preserved   the display sentence and the inline cap-height drawings
+     Change      the manifesto occupies the baseline's statement block only;
+                 the readings below stay in the baseline grid */
+  reg(32,'31 · MANIFESTO','20.11 repackaged — the display sentence with inline drawings, held to the baseline’s statement block',function(r,x){
+    function inl(k){ return '<span class="inl">'+rsvg(k,2.3)+'</span>'; }
+    F.build(r,x,{cls:'w31',
+      stmt:'<p class="say">We buy a finished object and read it three ways — '+
+        'its '+inl('sil')+' <em>form</em>, its '+inl('encl')+' <em>construction</em>, and '+
+        '<em>what those two choices mean</em> for everything built after it.</p>',
+      lede:'<p class="lede">Form, construction and character become practical design rules — '+
+        'not motorcycle styling copied across — so recognisable SWITCH DNA can move into '+
+        'entirely new product categories.</p>'
+    });
+  });
+
+  /* VERSION 32 ← 20.12 · THE DIPTYCH
+     Thesis      everything stated twice: evidence, then extraction
+     Preserved   the pairing of a photograph with the drawing taken from it,
+                 same size, same frame
+     Change      the pairing happens inside each observation cell instead of
+                 across full-width panels */
+  reg(33,'32 · DIPTYCH','20.12 repackaged — evidence paired with its drawing inside each baseline observation cell',function(r,x){
+    var EV={sil:IMG.bike, stnc:IMG.dirt, encl:IMG.batteryP, mod:IMG.frameA};
+    F.build(r,x,{cls:'w32',
+      obs:function(o){ return '<div class="oc">'+
+        '<div class="dy">'+ph(EV[o.k])+'<span class="sy">'+rsvg(o.k,2.3)+'</span></div>'+
+        '<span class="termP">'+o.n+'</span>'+
+        '<p class="note" style="margin-top:9px">'+o.r+'</p></div>'; }
+    });
+  });
+
+  /* VERSION 33 ← 20.13 · THE FULL FRAME
+     Thesis      the reading set over cinematic imagery
+     Preserved   the widest crops, type over a guaranteed scrim, cyan
+                 picking out the examples
+     Change      the frames ARE the baseline's expansion cells, widened —
+                 no new section, and the readings above stay editorial */
+  reg(34,'33 · FULL FRAME','20.13 repackaged — the cinematic frame treatment applied to the baseline’s expansion cells',function(r,x){
+    F.build(r,x,{cls:'w33',
+      terr:function(t){ return '<div class="tc">'+ph(t.img)+
+        '<span class="ov"><span class="tn">'+t.n+'</span>'+
+        '<span><p class="note">'+t.d+'</p>'+
+        '<span class="ex">'+t.e.join(' · ')+'</span></span></span></div>'; }
+    });
+  });
+
+  /* VERSION 34 ← 20.14 · THE INDEX
+     Thesis      one indexed run, row height the only hierarchy
+     Preserved   numbers left, terms flush left, geometry flush right, and
+                 primaries taking a taller row
+     Change      the index is the baseline's left column; everything else in
+                 the framework is unchanged */
+  reg(35,'34 · INDEX','20.14 repackaged — the indexed run, with row height as hierarchy, used as the baseline’s form column',function(r,x){
+    var n=0;
+    F.build(r,x,{cls:'w34',
+      obs:function(o){ n++; return '<div class="oc"><span class="ixn">'+
+        (n<10?'0':'')+n+'</span>'+
+        '<div><span class="termP">'+o.n+'</span>'+
+        '<p class="note" style="margin-top:7px">'+o.r+'</p></div>'+
+        B.sym(o,'lg')+'</div>'; },
+      sup:function(o){ n++; return '<div class="sc"><span class="ixn">'+
+        (n<10?'0':'')+n+'</span>'+
+        '<span class="term s">'+o.n+'</span>'+B.sym(o,'xs')+'</div>'; }
+    });
+  });
+
+  /* VERSION 35 ← 20.15 · THE STACK
+     Thesis      rhythm is the argument — depth states importance
+     Preserved   the unequal band depths, character given the most air
+     Change      the depth is applied to the baseline's own blocks; only the
+                 spacing changes, never the order or the columns */
+  reg(36,'35 · THE STACK','20.15 repackaged — unequal depth applied to the baseline’s own blocks, so rhythm carries the hierarchy',function(r,x){
+    F.build(r,x,{cls:'w35'});
+  });
+
+})();
+</script>
+<style id="sf-v21d-css">
+/* ---- 36 ← 20.16 THE MEASURE ---------------------------------------------
+   Preserved: the drawing-office apparatus — cyan dimension lines across the
+   material bar, leader lines from every term to its note, a datum rule.
+   Translated: the apparatus is applied to the baseline's existing blocks
+   rather than the page being redrawn around it. */
+#sf-lab-mount .w36 .dimr{position:relative;height:22px;margin-top:8px;}
+#sf-lab-mount .w36 .dimr:before{content:'';position:absolute;left:0;right:0;top:10px;height:1px;
+  background:var(--cyd);opacity:.6;}
+#sf-lab-mount .w36 .dimr i{position:absolute;top:3px;width:1px;height:15px;background:var(--cyd);
+  opacity:.6;}
+#sf-lab-mount .w36 .dimr i.l{left:0;} #sf-lab-mount .w36 .dimr i.r{right:0;}
+#sf-lab-mount .w36 .dimr span{position:absolute;left:50%;top:1px;transform:translateX(-50%);
+  background:var(--lab-cream,#f4f1ec);padding:0 6px;font-family:'DM Sans',sans-serif;
+  font-size:8.2px;letter-spacing:1.2px;color:var(--cyd);white-space:nowrap;}
+#sf-lab-mount .w36 .mseg{display:flex;width:100%;}
+#sf-lab-mount .w36 .mseg > div{position:relative;min-width:0;}
+#sf-lab-mount .w36 .ldr{position:relative;padding-left:22px;margin-top:10px;}
+#sf-lab-mount .w36 .ldr:before{content:'';position:absolute;left:0;top:8px;width:14px;height:1px;
+  background:var(--cyd);opacity:.6;}
+#sf-lab-mount .w36 .ldr:after{content:'';position:absolute;left:0;top:6px;width:5px;height:5px;
+  border-radius:50%;background:var(--cy);}
+#sf-lab-mount .w36 .supg{position:relative;}
+#sf-lab-mount .w36 .supg:before{content:'';position:absolute;left:0;right:0;top:-1px;height:1px;
+  background:var(--cyd);opacity:.5;}
+
+/* ---- 37 ← 20.17 THE CENTRE LINE -----------------------------------------
+   Preserved: symmetry about a single axis, with the drawings mirrored.
+   Translated: each column centres on ITS OWN axis inside the baseline
+   split, so the page keeps two columns rather than becoming one. */
+#sf-lab-mount .w37 .lft,#sf-lab-mount .w37 .rgt{text-align:center;}
+#sf-lab-mount .w37 .lft{position:relative;}
+#sf-lab-mount .w37 .lft:after{content:'';position:absolute;left:50%;top:70px;bottom:0;width:1px;
+  background:var(--cyd);opacity:.2;}
+#sf-lab-mount .w37 .obsg{grid-template-columns:1fr 1fr;gap:34px 56px;position:relative;z-index:1;}
+#sf-lab-mount .w37 .obsg .oc:nth-child(even) .sym{transform:scaleX(-1);}
+#sf-lab-mount .w37 .lft .bhead,#sf-lab-mount .w37 .rgt .bhead{text-align:left;}
+#sf-lab-mount .w37 .note{margin-left:auto;margin-right:auto;max-width:min(100%,300px);}
+#sf-lab-mount .w37 .mlegP,#sf-lab-mount .w37 .mlegS{justify-content:center;}
+#sf-lab-mount .w37 .terrg .tc{text-align:center;}
+#sf-lab-mount .w37 .terrg .note{max-width:min(100%,260px);}
+#sf-lab-mount .w37 .exp .lede,#sf-lab-mount .w37 .stmt .lede{margin-left:0;}
+
+/* ---- 38 ← 20.18 THE DOCUMENT COVER --------------------------------------
+   Preserved: the title block with its issue line, and numbered chapters.
+   Translated: the title block replaces the baseline's statement rather than
+   adding a section, and the chapter numbers hang off the existing heads. */
+#sf-lab-mount .w38 .cov{border-top:2px solid var(--ink);border-bottom:1px solid var(--ink);
+  padding:26px 0 20px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);
+  gap:0 56px;align-items:end;}
+#sf-lab-mount .w38 .cov .tt{font-family:'Bebas Neue',sans-serif;font-weight:300;letter-spacing:.07em;
+  text-transform:uppercase;line-height:.92;color:var(--ink);font-size:clamp(1.9rem,4.4vw,3.4rem);}
+#sf-lab-mount .w38 .meta{display:grid;grid-template-columns:auto 1fr;gap:5px 20px;margin:0;}
+#sf-lab-mount .w38 .meta dt{font-family:'DM Sans',sans-serif;font-size:8.4px;letter-spacing:1.7px;
+  text-transform:uppercase;color:var(--ink3);margin:0;}
+#sf-lab-mount .w38 .meta dd{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--ink);margin:0;}
+#sf-lab-mount .w38 .bhead{border-top-width:2px;position:relative;padding-left:44px;}
+#sf-lab-mount .w38 .bhead:before{content:attr(data-ch);position:absolute;left:0;top:12px;
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.8px;color:var(--cyd);}
+
+/* ---- 39 ← 20.19 THE TRANSLATION LADDER ----------------------------------
+   Preserved: the one idea the others only imply — how far the DNA travels,
+   read left to right as observation, principle, territory, product.
+   Translated: the ladder IS the baseline's expansion section. Nothing else
+   in the framework moves. */
+#sf-lab-mount .w39 .ladg{margin-top:26px;}
+#sf-lab-mount .w39 .rg{display:grid;
+  grid-template-columns:66px minmax(0,.85fr) 34px minmax(0,.85fr) 34px minmax(0,1.1fr);
+  gap:0 20px;align-items:center;padding:26px 0;border-top:1px solid var(--rule);}
+#sf-lab-mount .w39 .rg .lv{font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.8px;
+  text-transform:uppercase;color:var(--cyd);}
+#sf-lab-mount .w39 .rg .ar{height:1px;background:var(--cyd);opacity:.5;position:relative;}
+#sf-lab-mount .w39 .rg .ar:after{content:'';position:absolute;right:0;top:-3px;
+  border-left:6px solid var(--cyd);border-top:3.5px solid transparent;
+  border-bottom:3.5px solid transparent;opacity:.8;}
+#sf-lab-mount .w39 .rg .sym .rt{max-height:52px !important;}
+#sf-lab-mount .w39 .rg .ph{aspect-ratio:3/2;margin-bottom:0;}
+#sf-lab-mount .w39 .rg .tn{font-size:1.4rem;}
+
+/* ---- 40 ← 20.20 THE QUIET ONE -------------------------------------------
+   Preserved: radical minimalism — the least ink of the twenty.
+   Translated: the baseline's styling is simplified, not its structure. Rules
+   go, air doubles, everything stays exactly where it was. */
+#sf-lab-mount .w40 .bhead{border-top-color:rgba(141,145,138,.28);padding-top:14px;}
+#sf-lab-mount .w40 .supg,#sf-lab-mount .w40 .supp,
+#sf-lab-mount .w40 .pring > div{border-top-color:transparent !important;}
+#sf-lab-mount .w40 .split{margin-top:66px;gap:0 96px;}
+#sf-lab-mount .w40 .obsg{gap:48px 40px;margin-top:34px;}
+#sf-lab-mount .w40 .supg{margin-top:48px;padding-top:0;}
+#sf-lab-mount .w40 .rgt > div{margin-top:64px;}
+#sf-lab-mount .w40 .pring > div{padding:22px 0;}
+#sf-lab-mount .w40 .cong{display:none;}
+#sf-lab-mount .w40 .conq{margin-top:26px;}
+#sf-lab-mount .w40 .exp{margin-top:120px;}
+#sf-lab-mount .w40 .terrg{gap:0 44px;margin-top:40px;}
+#sf-lab-mount .w40 .terrg .ph{display:none;}
+#sf-lab-mount .w40 .terrg .ex{display:none;}
+#sf-lab-mount .w40 .prodg .ph{aspect-ratio:1/1;}
+#sf-lab-mount .w40 .prodg .note{display:none;}
+
+@media(max-width:900px){
+  #sf-lab-mount .w36 .dimr span{font-size:7px;padding:0 3px;letter-spacing:.4px;}
+  #sf-lab-mount .w37 .lft:after{display:none;}
+  #sf-lab-mount .w37 .obsg{grid-template-columns:1fr 1fr;gap:24px 18px;}
+  #sf-lab-mount .w38 .cov{grid-template-columns:1fr;gap:18px;}
+  #sf-lab-mount .w38 .bhead{padding-left:34px;}
+  #sf-lab-mount .w39 .rg{grid-template-columns:1fr 1fr;gap:12px 16px;padding:18px 0;}
+  #sf-lab-mount .w39 .rg .lv{grid-column:1/-1;}
+  #sf-lab-mount .w39 .rg .ar{display:none;}
+  #sf-lab-mount .w40 .split{margin-top:34px;gap:34px 0;}
+  #sf-lab-mount .w40 .obsg{gap:30px 20px;}
+  #sf-lab-mount .w40 .rgt > div{margin-top:40px;}
+  #sf-lab-mount .w40 .exp{margin-top:56px;}
+}
+</style>
+
+<script id="sf-v21d-js">
+(function(){
+  var H=window.G3, B=window.B19, F=window.V00, ph=F.ph;
+  function reg(n,name,desc,fn){ C(n,name,desc,fn); H.reg(n);
+    (window.__C20=window.__C20||{})[n]=1; }
+
+  /* VERSION 36 ← 20.16 · THE MEASURE
+     Thesis      the page behaves like the drawing office it came from
+     Preserved   dimension lines segment by segment across the material bar,
+                 leader lines from each term to its note, a datum rule
+     Change      the apparatus is applied to the baseline's blocks; nothing
+                 is redrawn around it */
+  reg(37,'36 · THE MEASURE','20.16 repackaged — dimension lines, leaders and a datum applied to the baseline’s own blocks',function(r,x){
+    function dim(l){ return '<div class="dimr"><i class="l"></i><i class="r"></i><span>'+l+
+      '</span></div>'; }
+    F.build(r,x,{cls:'w36',
+      obs:function(o){ return '<div class="oc">'+B.sym(o,'lg')+'<span class="termP">'+o.n+'</span>'+
+        '<div class="ldr"><p class="note">'+o.r+'</p></div></div>'; },
+      mat:function(){ return '<div style="margin-top:24px">'+B.bar()+
+        '<div class="mseg">'+B.MALL.map(function(m){
+          return '<div style="flex:0 0 '+m.pc+'%">'+dim(m.pc+'%')+'</div>'; }).join('')+'</div>'+
+        B.barLeg()+'</div>'; },
+      prin:function(p){ return '<div class="pc"><span class="termP">'+p.n+'</span>'+
+        '<div class="ldr"><p class="note">'+p.r+'</p></div></div>'; }
+    });
+  });
+
+  /* VERSION 37 ← 20.17 · THE CENTRE LINE
+     Thesis      the object has one centre line and so does the page
+     Preserved   symmetry and the mirrored drawings
+     Change      each column centres on its own axis inside the baseline
+                 split, so the page keeps two columns */
+  reg(38,'37 · CENTRE LINE','20.17 repackaged — symmetry and mirrored drawings, applied within each of the baseline’s two columns',function(r,x){
+    F.build(r,x,{cls:'w37', seq:false});
+  });
+
+  /* VERSION 38 ← 20.18 · THE DOCUMENT COVER
+     Thesis      a design-language document, opened at its cover
+     Preserved   the title block with its issue line, and numbered chapters
+     Change      the title block replaces the baseline's statement instead
+                 of adding a section; the numbers hang off existing heads */
+  reg(39,'38 · DOCUMENT COVER','20.18 repackaged — the title block and chapter numbering carried by the baseline’s own statement and heads',function(r,x){
+    F.build(r,x,{cls:'w38',
+      stmt:'<div class="cov"><div><span class="tt">SWITCH<br>Brand DNA</span></div>'+
+        '<dl class="meta">'+
+          '<dt>Subject</dt><dd>Acquired asset · electric motorcycle</dd>'+
+          '<dt>Reading</dt><dd>Form · Materials · Character</dd>'+
+          '<dt>Conclusion</dt><dd>Transferable design language</dd>'+
+          '<dt>Issued by</dt><dd>Silent Foundry</dd></dl></div>',
+      after:function(r){
+        var ch=['01','02','03','04'], hs=r.querySelectorAll('.bhead');
+        [].forEach.call(hs,function(h,i){ if(ch[i]) h.setAttribute('data-ch',ch[i]); });
+      }
+    });
+  });
+
+  /* VERSION 39 ← 20.19 · THE TRANSLATION LADDER
+     Thesis      how far the DNA actually travels
+     Preserved   the four rungs — observation, principle, territory, product
+                 — read left to right with cyan arrows between
+     Change      the ladder IS the baseline's expansion section; nothing
+                 else in the framework moves */
+  reg(40,'39 · TRANSLATION LADDER','20.19 repackaged — the four-rung ladder used as the baseline’s expansion section',function(r,x){
+    var P=B.PROD;
+    var PAIR=[ {o:B.OP[2], p:'ELECTRIC ARCHITECTURE', pr:P.power},
+               {o:B.OP[1], p:'MOVEMENT',              pr:P.board},
+               {o:B.OP[3], p:'MECHANICAL HONESTY',    pr:P.speaker},
+               {o:B.OP[0], p:'UTILITY',               pr:P.tool} ];
+    F.build(r,x,{cls:'w39',
+      prods:B.prods('power','board','speaker','tool'),
+      terrWrap:function(inner,terr){
+        return '<div class="ladg">'+terr.map(function(t,i){
+          var u=PAIR[i];
+          return '<div class="rg"><span class="lv">Level '+(i+1<10?'0':'')+(i+1)+'</span>'+
+            '<div>'+B.sym(u.o,'sm')+'<span class="term" style="margin-top:9px">'+u.o.n+'</span></div>'+
+            '<span class="ar"></span>'+
+            '<div><span class="term s">Principle</span>'+
+              '<span class="tn" style="margin-top:6px">'+u.p+'</span>'+
+              '<p class="note q" style="margin-top:7px">Territory: '+t.n+'</p></div>'+
+            '<span class="ar"></span>'+
+            '<div>'+ph(u.pr.img)+'<span class="term" style="margin-top:9px">'+u.pr.n+'</span>'+
+              '<p class="note q" style="margin-top:6px">'+t.e.slice(0,2).join(' · ')+'</p></div></div>';
+        }).join('')+'</div>'; }
+    });
+  });
+
+  /* VERSION 40 ← 20.20 · THE QUIET ONE
+     Thesis      the least said
+     Preserved   radical restraint — minimum ink, maximum air
+     Change      the baseline's STYLING is simplified, never its structure:
+                 rules go, spacing doubles, everything stays where it was */
+  reg(41,'40 · THE QUIET ONE','20.20 repackaged — the baseline simplified rather than restructured: rules removed, air doubled, nothing moved',function(r,x){
+    F.build(r,x,{cls:'w40', seq:false,
+      con:function(){ return '<div class="conq"><span class="term s">'+
+        B.CON.map(function(c){ return c.n; }).join(' &nbsp;·&nbsp; ')+'</span></div>'; },
+      terr:function(t){ return '<div class="tc"><span class="tn">'+t.n+'</span>'+
+        '<p class="note" style="margin-top:12px">'+t.d+'</p></div>'; }
+    });
+  });
+
+})();
+</script>
 <script id="sf-c20-bar">
 /* =========================================================================
    THE TWENTY CONCEPTS.
@@ -21961,10 +22920,34 @@ window.__L14=1;
      Version 00  index-switch-dna-transform-lab.html  (concept 00)
    ========================================================================= */
 (function(){
+  /* ONE RAIL, THREE RANGES.
+       00        the baseline                          slot 21
+       01 – 20   the twenty concepts                   slots 1–20
+       21 – 40   those twenty repackaged inside 00     slots 22–41
+     Version 21 is concept 20.01 repackaged, 22 is 20.02, and so on to
+     40 = 20.20. Nothing is renumbered and nothing is replaced. */
   var ORDER=[[21,'00','baseline']];
   for(var i=1;i<=20;i++){
     ORDER.push([i,(i<10?'0':'')+i, i===1?'concepts 20.01–20.20':null]);
   }
+  for(var j=21;j<=40;j++){
+    ORDER.push([j+1,String(j), j===21?'repackaged 21–40':null]);
+  }
+
+  /* FORTY-ONE LABELS WILL NOT SIT ON ONE WRAPPED ROW. The rail keeps its own
+     boxes, its own gold active state and its own ‹ › controls — it just stops
+     wrapping and scrolls instead, and the active box is always brought into
+     view. Established visual language, more range. */
+  (function(){
+    var st=document.createElement('style'); st.id='sf-rail-40';
+    st.textContent='#labboxes{flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;'+
+      'scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;}'+
+      '#labboxes::-webkit-scrollbar{display:none;}'+
+      '#labboxes button,#labboxes .gp{flex:0 0 auto;}'+
+      '#labboxes .nav{position:sticky;left:0;z-index:2;background:#0a0a0a;}'+
+      '#labboxes .nav.nx{left:auto;right:0;}';
+    document.head.appendChild(st);
+  })();
   var KEEP=[], LBL={}, GRP={};
   /* only slots THIS page registered — an unwritten slot must not fall through
      to whatever an older layer happened to leave in that index */
@@ -22002,7 +22985,7 @@ window.__L14=1;
     nx.addEventListener('click',function(){ step(1); });
     window.SSTEP=step;
     var cn=document.getElementById('labcount');
-    if(cn) cn.textContent='baseline + twenty concepts';
+    if(cn) cn.textContent='00 baseline · 01–20 concepts · 21–40 repackaged';
   }
 
   function mlab(){ return (window.MLBL&&window.MLBL[window.MCUR])||'11'; }
@@ -22013,7 +22996,10 @@ window.__L14=1;
     if(num&&LBL[n]) num.textContent=LBL[n];
     if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
     if(bx) [].forEach.call(bx.querySelectorAll('button'),function(b){
-      b.classList.toggle('on', b.dataset.n==String(n)); });
+      var on=(b.dataset.n==String(n));
+      b.classList.toggle('on', on);
+      if(on&&b.scrollIntoView){ try{ b.scrollIntoView({inline:'center',block:'nearest'}); }catch(e){} }
+    });
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
