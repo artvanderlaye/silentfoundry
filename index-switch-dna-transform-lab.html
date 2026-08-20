@@ -19879,20 +19879,24 @@ window.__L14=1;
 })();
 </script>
 <style id="sf-g3a-css">
-/* ---- 01 · the plate ------------------------------------------------------ */
-#sf-lab-mount .g3 .pl1{display:grid;grid-template-columns:repeat(6,1fr);gap:0 26px;margin-top:22px;}
+/* ---- 01 · the plate · three chapters, one line an entry -------------------
+   Every chapter is six items on the same six-column grid, so the three
+   readings line up vertically without a single connector being drawn. */
+#sf-lab-mount .g3 .pl1,#sf-lab-mount .g3 .pl2,#sf-lab-mount .g3 .pl3{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:0 26px;margin-top:20px;}
 #sf-lab-mount .g3 .pl1 .cell .gcode{display:block;margin-bottom:12px;}
 #sf-lab-mount .g3 .pl1 .cell .gname{display:block;margin-top:12px;}
-#sf-lab-mount .g3 .pl2{display:grid;grid-template-columns:repeat(6,1fr);gap:18px 26px;margin-top:20px;}
-#sf-lab-mount .g3 .mrow{display:grid;grid-template-columns:26px 1fr;gap:0 14px;align-items:start;
+/* one line: code above, then chip · name · hex */
+#sf-lab-mount .g3 .mrow{display:grid;grid-template-columns:auto auto 1fr;
+  grid-template-areas:'c c c' 'k n n' 'k h h';gap:0 10px;align-items:center;
   border-top:1px solid rgba(141,145,138,.32);padding-top:12px;}
-#sf-lab-mount .g3 .mrow .mh{display:flex;align-items:baseline;gap:0 10px;}
-#sf-lab-mount .g3 .mrow .gmeta{display:block;margin-top:5px;}
-#sf-lab-mount .g3 .pl3{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 34px;margin-top:20px;}
-#sf-lab-mount .g3 .pprow{display:grid;grid-template-columns:auto 1fr;gap:0 18px;align-items:baseline;
-  border-top:1px solid rgba(141,145,138,.32);padding-top:12px;}
-#sf-lab-mount .g3 .pprow .ev{display:block;font-family:'DM Sans',sans-serif;font-size:12.4px;
-  line-height:22px;font-weight:300;color:rgba(10,10,10,.5);margin-top:7px;}
+#sf-lab-mount .g3 .mrow .gcode{grid-area:c;margin-bottom:11px;}
+#sf-lab-mount .g3 .mrow .chip{grid-area:k;width:30px;height:30px;flex:none;}
+#sf-lab-mount .g3 .mrow .gname{grid-area:n;align-self:end;}
+#sf-lab-mount .g3 .mrow .ghex{grid-area:h;align-self:start;margin-top:3px;}
+#sf-lab-mount .g3 .pprow{border-top:1px solid rgba(141,145,138,.32);padding-top:12px;}
+#sf-lab-mount .g3 .pprow .gcode{display:block;margin-bottom:11px;}
+#sf-lab-mount .g3 .pprow .gprin{display:block;font-size:1.06rem;}
 
 /* ---- 02 · the ledger ----------------------------------------------------- */
 #sf-lab-mount .g3 .ledg{display:grid;grid-template-columns:118px repeat(6,1fr);gap:0;
@@ -19970,12 +19974,10 @@ window.__L14=1;
 #sf-lab-mount .g3 .bnav i.on{background:var(--cyd);}
 
 @media(max-width:900px){
-  #sf-lab-mount .g3 .pl1{grid-template-columns:repeat(3,1fr);gap:18px 12px;}
-  #sf-lab-mount .g3 .pl2{grid-template-columns:repeat(3,1fr);gap:12px 12px;}
-  #sf-lab-mount .g3 .mrow{grid-template-columns:1fr;gap:8px;}
-  #sf-lab-mount .g3 .mrow .gmeta{display:none;}
-  #sf-lab-mount .g3 .pl3{grid-template-columns:repeat(2,1fr);gap:10px 16px;}
-  #sf-lab-mount .g3 .pprow .ev{display:none;}
+
+  #sf-lab-mount .g3 .pl1,#sf-lab-mount .g3 .pl2,#sf-lab-mount .g3 .pl3{
+    grid-template-columns:repeat(3,1fr);gap:16px 12px;}
+
   #sf-lab-mount .g3 .ledg{grid-template-columns:repeat(3,1fr);}
   #sf-lab-mount .g3 .ledg .lrail{display:none;}
   #sf-lab-mount .g3 .lcol{padding:12px 8px 14px;grid-template-rows:auto 62px auto 44px auto auto;}
@@ -20008,35 +20010,37 @@ window.__L14=1;
      and its own kind of atom — drawings, then chips, then type. Nothing
      repeats a row; the three sections are three different objects.
      ======================================================================= */
-  C(15,'BRAND-GUIDELINES PLATE','three controlled chapters — form, material, meaning — each set with its own rule, numbering and kind of atom',function(r,x){
+  C(15,'BRAND-GUIDELINES PLATE','three separated chapters — form, material, meaning — each read as one line per entry, and nothing animates but the hero',function(r,x){
+    /* STRIPPED. This is a presentation, not a document. Every chapter now
+       reads at the same economy as the form row: a code, a mark or a chip,
+       and a name. The finish descriptions, the use lines, the percentages,
+       the share bars, the chapter sub-lines and the sentence under every
+       principle are all gone — they were the reason it read as a spec sheet.
+
+       Six, six and six, on one grid. The seventh principle (SERVICEABLE BY
+       HAND) is cut rather than left hanging on a second row: it is the same
+       claim as MECHANICAL HONESTY made twice.
+
+       No content animation at all. Only the hero moves. */
+    var PSIX=H.P.filter(function(p){ return p.c!=='P07'; });
     r.innerHTML=H.sec('b01',
       H.hero()+H.lead()+
-      '<div class="chh"><span class="cn">§ 01</span><span class="ct">Form &amp; geometry</span>'+
-        '<span class="cs">Six characteristics, measured off the drawing the photograph produced</span></div>'+
+      '<div class="chh"><span class="cn">§ 01</span><span class="ct">Form &amp; geometry</span></div>'+
       '<div class="pl1">'+H.F.map(function(f){
-        return '<div class="cell fade" data-c="'+f.c+'"><span class="gcode">'+f.c+'</span>'+
+        return '<div class="cell" data-c="'+f.c+'"><span class="gcode">'+f.c+'</span>'+
           H.form(f)+'<span class="gname">'+f.n+'</span></div>'; }).join('')+'</div>'+
-      '<div class="chh"><span class="cn">§ 02</span><span class="ct">Material &amp; CMF</span>'+
-        '<span class="cs">Six finishes, with the share of the object each one covers</span></div>'+
+      '<div class="chh"><span class="cn">§ 02</span><span class="ct">Material &amp; CMF</span></div>'+
       '<div class="pl2">'+H.M.map(function(m){
-        return '<div class="mrow fade" data-c="'+m.c+'">'+H.chip(m)+
-          '<div><div class="mh"><span class="gname">'+m.n+'</span>'+
-          '<span class="ghex">'+m.hex+'</span></div>'+
-          '<span class="gmeta">'+m.fin+'<br>'+m.use+' · '+m.share+'%</span></div></div>'; }).join('')+'</div>'+
-      '<div class="chh"><span class="cn">§ 03</span><span class="ct">Meaning &amp; principle</span>'+
-        '<span class="cs">What the first two chapters are evidence of</span></div>'+
-      '<div class="pl3">'+H.P.map(function(p){
-        return '<div class="pprow fade" data-c="'+p.c+'"><span class="gcode">'+p.c+'</span>'+
-          '<div><span class="gprin'+(p.en?' en':'')+'">'+p.n+'</span>'+
-          '<span class="ev">'+p.ev+'</span></div></div>'; }).join('')+'</div>'+
+        return '<div class="mrow" data-c="'+m.c+'"><span class="gcode">'+m.c+'</span>'+
+          H.chip(m)+'<span class="gname">'+m.n+'</span>'+
+          '<span class="ghex">'+m.hex+'</span></div>'; }).join('')+'</div>'+
+      '<div class="chh"><span class="cn">§ 03</span><span class="ct">Meaning &amp; principle</span></div>'+
+      '<div class="pl3">'+PSIX.map(function(p){
+        return '<div class="pprow" data-c="'+p.c+'"><span class="gcode">'+p.c+'</span>'+
+          '<span class="gprin'+(p.en?' en':'')+'">'+p.n+'</span></div>'; }).join('')+'</div>'+
       H.rows()+H.strip('e')+'<div class="rbtm"></div>');
 
-    H.open(r,x,{done:function(instant){
-      if(instant){ H.revealAll(r); return; }
-      H.cascade(r,x,'.pl1 .fade',1250,90);
-      H.cascade(r,x,'.pl2 .fade',2000,90);
-      H.cascade(r,x,'.pl3 .fade',2650,80);
-    }});
+    H.open(r,x,{});
   });
 
   /* =======================================================================
@@ -21479,6 +21483,118 @@ window.__L14=1;
   H.reg(13);
 })();
 </script>
+<style id="sf-g3f-css">
+/* =========================================================================
+   06 — THE TOOLKIT IN TWO COLUMNS.
+
+   Same design as 05, one layout decision changed: the CMF tokens and the
+   principles share the right-hand column instead of each taking a third of
+   the page. CMF is six chips and six names — it does not need a third of the
+   width, and giving it one forced the form modules into a column too narrow
+   to read the drawings in.
+
+   The counter-argument, which is why this is a variation and not a
+   replacement: form, material and meaning are of equal importance, and three
+   equal trays say so. Two columns say the form is the primary reading and
+   the other two support it. Both are defensible; they are here side by side
+   so the difference can be looked at rather than argued about.
+
+   Everything else — the parts, the picking, the recipe line, the assembly
+   that builds going down and comes apart going up — is 05's, unchanged.
+   ========================================================================= */
+#sf-lab-mount .g3 .kit2{display:grid;grid-template-columns:1.32fr 1fr;gap:0 1px;
+  margin-top:30px;background:rgba(141,145,138,.3);}
+#sf-lab-mount .g3 .kit2 .tray{background:var(--lab-cream,#f4f1ec);padding:0 30px 20px;}
+#sf-lab-mount .g3 .kit2 .tray:first-child{padding-left:0;}
+#sf-lab-mount .g3 .kit2 .tray:last-child{padding-right:0;}
+/* the form modules get the room the drawings actually need */
+#sf-lab-mount .g3 .kit2 .parts.big{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+#sf-lab-mount .g3 .kit2 .parts.big .part{justify-content:flex-start;padding:11px 12px;}
+#sf-lab-mount .g3 .kit2 .parts.big .part .fspec .rt{max-height:36px !important;}
+/* the right column stacks two registers, each with its own rule */
+#sf-lab-mount .g3 .kit2 .sub{margin-top:20px;}
+#sf-lab-mount .g3 .kit2 .sub:first-child{margin-top:0;}
+
+@media(max-width:900px){
+  #sf-lab-mount .g3 .kit2{grid-template-columns:1fr;gap:1px 0;}
+  #sf-lab-mount .g3 .kit2 .tray{padding:0 0 12px;}
+  #sf-lab-mount .g3 .kit2 .parts.big{grid-template-columns:repeat(2,1fr);gap:8px;}
+}
+</style>
+
+<script id="sf-g3f-js">
+(function(){
+  var H=window.G3;
+
+  C(26,'TOOLKIT · TWO COLUMNS','05 with the CMF tokens and the principles sharing the right-hand column, so the form modules get the width the drawings need',function(r,x){
+    var REC=[
+      {n:'BATTERY PACK', img:IMG.batteryP, f:['F03','F04'], m:['M01','M04'], p:'P01'},
+      {n:'SPEAKER',      img:IMG.speaker,  f:['F04','F06'], m:['M01','M02'], p:'P03'},
+      {n:'TASK LIGHT',   img:IMG.light,    f:['F05','F06'], m:['M05','M06'], p:'P06'},
+      {n:'SNOWBOARD',    img:IMG.snowboard,f:['F01','F02'], m:['M02','M03'], p:'P02'}
+    ];
+    var PSIX=H.P.filter(function(p){ return p.c!=='P07'; });
+
+    r.innerHTML=H.sec('b06',
+      H.hero()+H.lead()+
+      '<div class="kit2">'+
+        '<div class="tray"><div class="th"><span class="ct">Form modules</span>'+
+          '<span class="gcode">F</span></div>'+
+          '<div class="parts big">'+H.F.map(function(f){
+            return '<span class="part p_'+f.c+'">'+H.form(f,'sm')+
+              '<span class="gcode">'+f.c+'</span></span>'; }).join('')+'</div></div>'+
+        '<div class="tray">'+
+          '<div class="sub"><div class="th"><span class="ct">CMF tokens</span>'+
+            '<span class="gcode">M</span></div>'+
+            '<div class="parts">'+H.M.map(function(m){
+              return '<span class="part p_'+m.c+(m.en?' en':'')+'">'+H.chip(m)+
+                '<span class="gcode">'+m.c+'</span></span>'; }).join('')+'</div></div>'+
+          '<div class="sub"><div class="th"><span class="ct">Principles</span>'+
+            '<span class="gcode">P</span></div>'+
+            '<div class="parts">'+PSIX.map(function(p){
+              return '<span class="part p_'+p.c+(p.en?' en':'')+'">'+
+                '<span class="gprin'+(p.en?' en':'')+'" style="font-size:.86rem">'+p.n+'</span></span>';
+            }).join('')+'</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="recipe"><span class="rc">Assembled from</span>'+
+        '<span class="rcodes gmeta"></span>'+
+        '<span style="display:flex;align-items:center;gap:16px">'+
+        '<img class="rimg" decoding="async" alt="" src="'+REC[0].img+'">'+
+        '<span class="rn">'+REC[0].n+'</span></span></div>'+
+      H.rows()+H.strip('a')+'<div class="rbtm"></div>');
+
+    var kit=r.querySelector('.kit2'), codes=r.querySelector('.rcodes'),
+        rimg=r.querySelector('.rimg'), rn=r.querySelector('.rn'),
+        ln=r.querySelector('.pvline');
+
+    function build(o){
+      kit.classList.add('dim');
+      [].forEach.call(r.querySelectorAll('.part'),function(n){ n.classList.remove('pick'); });
+      o.f.concat(o.m).concat([o.p]).forEach(function(c){
+        var n=r.querySelector('.p_'+c); if(n) n.classList.add('pick'); });
+      if(codes) codes.textContent=o.f.concat(o.m).concat([o.p]).join('  ·  ');
+      if(rimg) rimg.src=o.img;
+      if(rn) rn.textContent=o.n;
+    }
+    /* 05's motion, unchanged: down assembles, up takes it apart */
+    var ORDERK=['encl','ribs','whl','fast','axis','sil'];
+    function assemble(v){
+      ORDERK.forEach(function(k,j){ if(j<v) H.on(r,k); else H.off(r,k,0); });
+      if(ln){ ln.style.transition='opacity .8s ease';
+              ln.style.opacity=String(0.06+(v/ORDERK.length)*0.5); }
+      build(REC[Math.min(REC.length-1,Math.max(0,Math.round(v/2)))]);
+    }
+    H.open(r,x,{ink:0.06,rest:0,done:function(instant){
+      if(instant){ ORDERK.forEach(function(k){ H.on(r,k); }); build(REC[0]); }
+    }});
+    if(!window.MOTION){ build(REC[0]); return; }
+    H.dir(x,r.querySelector('.kit2'),ORDERK.length+1,function(v){ assemble(v); });
+  });
+
+  H.reg(26);
+})();
+</script>
 <script id="sf-g3-bar">
 /* =========================================================================
    THE BAR — the five you kept, renumbered 01–05 in the order you gave them.
@@ -21488,16 +21604,19 @@ window.__L14=1;
    ORDER. Any of the other fifteen comes back by adding one line here.
 
      00 -> 14   control, untouched
-     01 -> 15   was 01 · brand-guidelines plate
-     02 -> 16   was 02 · aligned dna ledger
-     03 -> 24   was 10 · layered blueprint
-     04 -> 25   was 11 · object catalogue
-     05 -> 32   was 18 · modular toolkit
+     01 -> 15   the plate — stripped to one line an entry, no content motion
+     05 -> 32   the toolkit, three trays
+     06 -> 26   the toolkit, two columns
+
+   02, 03 and 04 are out. Their numbers are not reused: 05 stays 05 so the
+   references you have already made to it still point at the same thing, and
+   the new one is 06 as you numbered it. Say the word and they renumber to
+   01–03.
    ========================================================================= */
 (function(){
   var ORDER=[
     [14,'00','control'],
-    [15,'01','kept'], [16,'02'], [24,'03'], [25,'04'], [32,'05']
+    [15,'01','kept'], [32,'05','toolkit'], [26,'06']
   ];
   var KEEP=[], LBL={}, GRP={};
   ORDER.forEach(function(o){ if(!CONCEPTS[o[0]]) return;
