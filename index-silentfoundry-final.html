@@ -22831,9 +22831,117 @@ window.__L14=1;
   window.X28={FULL:FULL,SHORT:SHORT};
 })();
 </script>
+<style id="sf-v29-css">
+/* =========================================================================
+   29 · THE FINAL.
+
+     the introduction   19's full-width row inside the top of the panel
+     the sentence       set to the site's own 680 measure, the one used by
+                        "Silent Foundry takes brand DNA and transforms it
+                        into premium physical products."
+     the categories     22's transition into the portfolio
+     the venture line   removed entirely
+     the portfolio      photographs only — the cyan traces are taken off
+
+   Everything else is 18's, which is the approved layout.
+   ========================================================================= */
+
+/* ---- the introductory row ----------------------------------------------
+   19 put the headline and the sentence side by side. Holding the sentence to
+   the site's 680 measure means the two cannot both sit at full width below
+   1600: the headline needs 618 and the sentence 680, and the panel's inner
+   width at 1440 is 1232. So they sit side by side where there is room for
+   both, and stack where there is not — the measure is never compromised and
+   the headline is never broken mid-phrase. */
+#sf-lab-mount .d29 .dnai{grid-column:1/-1;padding-bottom:44px;margin-bottom:44px;
+  border-bottom:1px solid rgba(61,220,255,.22);}
+#sf-lab-mount .d29 .dnai h4{max-width:min(100%,700px);}
+/* the site's own body measure, matched exactly */
+#sf-lab-mount .d29 .dnai p{max-width:min(100%,680px) !important;
+  font-size:14.4px !important;line-height:26.64px !important;margin-top:26px;}
+
+@media(min-width:1601px){
+  #sf-lab-mount .d29 .dnai{display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:0 70px;align-items:end;}
+  #sf-lab-mount .d29 .dnai p{margin-top:0;}
+}
+
+/* ---- the transition into the portfolio ---------------------------------
+   22's: the categories run straight into the photographs. With the venture
+   line gone there is nothing between them but the interval itself. */
+#sf-lab-mount .d29 .fcats{margin-top:104px;}
+#sf-lab-mount .d29 .fstrip{margin-top:44px !important;}
+
+/* ---- the portfolio, without the traces ---------------------------------
+   The cyan extraction lines are removed from the product photographs, so the
+   images are read as products rather than as continued analysis. Every image,
+   crop, row, title and label is untouched. */
+#sf-lab-mount .d29 .fslide svg{display:none !important;}
+
+@media(max-width:900px){
+  #sf-lab-mount .d29.b19 .dnai p{max-width:100% !important;}
+  #sf-lab-mount .d29.b19 .fcats{margin-top:70px;}
+  #sf-lab-mount .d29.b19 .fstrip{margin-top:30px !important;}
+}
+</style>
+
+<script id="sf-v29-js">
+(function(){
+  var H=window.G3, F=window.FD, MID=window.MID, X=window.X10,
+      R=(window.__FD=window.__FD||{});
+
+  C(29,'29 · THE FINAL',
+    '19’s introductory row inside the panel with the sentence on the site’s own 680 measure, 22’s run straight from the categories into the portfolio, no venture line, and the cyan traces taken off the product photographs',
+    function(r,x){
+      F.build(r,x,'f6 gx g09 h17 h18 dn d29',{blue:true,noHero:true,
+        after:function(rr,xx){
+          X.reduce(rr,{sub:false});
+
+          /* the introduction moves into the panel — same words, same order */
+          var gl=rr.querySelector('.glead');
+          if(gl){
+            var h4=gl.querySelector('h4'), p=gl.querySelector('p'),
+                split=rr.querySelector('.split');
+            if(split&&h4){
+              var box=document.createElement('div');
+              box.className='dnai';
+              box.appendChild(h4); if(p) box.appendChild(p);
+              split.insertBefore(box,split.firstChild);
+            }
+            if(gl.parentNode) gl.parentNode.removeChild(gl);
+          }
+
+          /* the two-column essay goes, and nothing replaces it */
+          var row=rr.querySelector('.mhrow');
+          if(row&&row.parentNode) row.parentNode.removeChild(row);
+
+          /* the traces come off the photographs. Removed rather than hidden,
+             and the strip is watched because it rebuilds its own slides when
+             the carousel recycles them. */
+          function strip(){
+            [].forEach.call(rr.querySelectorAll('.fslide svg'),function(s){
+              if(s.parentNode) s.parentNode.removeChild(s); });
+          }
+          strip();
+          try{
+            var st=rr.querySelector('.fstrip');
+            if(st){
+              var mo=new MutationObserver(strip);
+              mo.observe(st,{childList:true,subtree:true});
+              if(xx.obs) xx.obs(mo);
+            }
+          }catch(e){}
+          xx.delay(strip,1200); xx.delay(strip,3000);
+
+          MID.hero(rr,xx,rr.querySelector('.split'));
+        }});
+    });
+  H.reg(29); R[29]=1;
+})();
+</script>
 <script id="sf-fd-bar">
 /* =========================================================================
-   THE SLIDER — TWENTY-NINE POSITIONS.
+   THE SLIDER — THIRTY POSITIONS.
 
      00   the approved baseline, unchanged
      01   PRECISION GRID
@@ -22846,9 +22954,10 @@ window.__L14=1;
      17   THE SELECTION — the picks from the study, assembled
      18   THE SELECTION on the house type standard
      19-28  THE INTEGRATION STUDY — ten layouts derived from 18
+     29   THE FINAL — 19's intro row, 22's transition, no venture line, no traces
 
    Same behaviour as the slider it replaces: the current number is shown, ‹ ›
-   step, every position is directly selectable, and #c=00 … #c=28 open their
+   step, every position is directly selectable, and #c=00 … #c=29 open their
    version straight from the address bar. Nothing else is added — no tabs, no
    toolbar, no panel. It stays quiet and secondary to the website.
 
@@ -22868,6 +22977,8 @@ window.__L14=1;
   ORDER.push([18,'18']);
   /* 19–28, the integration study derived from 18 */
   for(var q9=19;q9<=28;q9++) ORDER.push([q9,String(q9)]);
+  /* 29 — the final */
+  ORDER.push([29,'29']);
 
   var MINE={}; var a=window.__FD||{}, b=window.__C20||{};
   for(var q in a) MINE[q]=1; for(var w in b) MINE[w]=1;
@@ -22916,7 +23027,7 @@ window.__L14=1;
     nx.addEventListener('click',function(){ step(1); });
     window.SSTEP=step;
     var cn=document.getElementById('labcount');
-    if(cn) cn.textContent='00 baseline · 01–05 five designs · 06 the selection · 07–16 refinement study · 17–18 the selection · 19–28 integration study';
+    if(cn) cn.textContent='00 baseline · 01–05 five designs · 06 the selection · 07–16 refinement study · 17–18 the selection · 19–28 integration study · 29 THE FINAL';
   }
 
   var baseShow=window.show;
