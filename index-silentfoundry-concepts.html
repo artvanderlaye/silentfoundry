@@ -22048,52 +22048,36 @@ window.__L14=1;
      Section order, hero placement, column structure and responsive logic are
      all decided here. A treatment supplies hooks; it never supplies markup
      for the frame itself. */
+  /* ---- THE FRAMEWORK ----------------------------------------------------
+     Now emits 00's middle section verbatim. Section order, hero placement,
+     column structure and responsive logic are decided here; the CONTENT of
+     the three readings is decided in lab22/mid.html and is identical on all
+     forty-one. A version supplies a treatment class and nothing else, so the
+     only thing that can differ between sliders is design language. */
   F.build=function(r,x,o){
     o=o||{};
-    var g=function(k){ return o[k]||D[k]; };
-    var terr=B.terr(!!o.connection);
-    var prods=o.prods||B.prods('power','board','speaker','light');
+    var MID=window.MID;
 
-    var left=
-      B.head('Form &amp; architecture')+
-      (o.obsWrap ? o.obsWrap(B.OP.map(g('obs')).join(''))
-                 : '<div class="obsg">'+B.OP.map(g('obs')).join('')+'</div>')+
-      (o.supWrap ? o.supWrap(B.OS.map(g('sup')).join(''))
-                 : '<div class="supg">'+B.OS.map(g('sup')).join('')+'</div>');
-
-    var right=
-      '<div class="mblk">'+B.head('Materials &amp; construction')+g('mat')()+g('con')()+'</div>'+
-      '<div class="cblk">'+B.head('Character &amp; principles')+
-        '<div class="pring" style="margin-top:22px">'+B.PP.map(g('prin')).join('')+'</div>'+
-        '<div class="supp" style="margin-top:22px;padding-top:14px;'+
-          'border-top:1px solid var(--rule)"><span class="term s">'+
-          B.PS.join(' &nbsp;·&nbsp; ')+'</span></div></div>';
-
-    r.innerHTML=B.sec('vf '+(o.cls||''),
-      /* 1 · the hero — 00's, always */
-      B.hero({seq:o.seq})+
-      (o.pre||'')+
+    r.innerHTML=B.sec('vf md '+(o.cls||''),
+      /* 1 · the hero — 00's frame, 00's crop, 00's animation */
+      B.hero({seq:false})+
       /* 2 · the statement */
-      '<div class="wrap stmt">'+(o.stmt||B.stmt())+
-        '<div class="lede-w" style="margin-top:24px">'+(o.lede||B.lede())+'</div></div>'+
-      /* 3 · the split */
-      '<div class="split"><div class="lft">'+left+'</div><div class="rgt">'+right+'</div></div>'+
-      /* 4 · the expansion framework */
-      '<div class="wrap loose exp">'+B.head('From DNA to new categories')+
-        '<div style="margin-top:24px">'+B.terrLede()+'</div>'+
-        (o.terrWrap ? o.terrWrap(terr.map(g('terr')).join(''),terr)
-                    : '<div class="terrg">'+terr.map(g('terr')).join('')+'</div>')+'</div>'+
-      /* 5 · the product translations */
-      '<div class="wrap prod">'+B.head('Product translations',1)+
-        '<div class="prodg">'+prods.map(g('prod')).join('')+'</div></div>'+
-      /* 6 · the two-level portfolio slider — part of the Version 00 format,
-         so every repackaging carries it. The variant is a treatment choice;
-         the strip's presence and position are not. */
-      B.strip(o.strip||'e')+
-      (o.post||''));
+      '<div class="wrap stmt">'+(o.stmt||B.stmt())+'</div>'+
+      /* 3 · the split — form left, materials + character right */
+      '<div class="split">'+
+        '<div class="lft">'+B.head('Form &amp; architecture')+MID.form()+'</div>'+
+        '<div class="rgt">'+
+          '<div class="mblk">'+B.head('Materials &amp; construction')+MID.mat()+'</div>'+
+          '<div class="cblk">'+B.head('Character &amp; principles')+MID.chr()+'</div>'+
+        '</div>'+
+      '</div>'+
+      /* 4 · from DNA to new categories — type only, no image grid */
+      '<div class="exp">'+MID.cats(function(t){ return B.head(t); })+'</div>'+
+      /* 5 · NEW VENTURE, then the two-level portfolio slider — both 00's */
+      H.rows()+B.strip('e'));
 
-    /* the hero animation is 00's on every version, without exception */
-    B.openHero(r,x,{done:o.heroDone});
+    /* 00's hero, exactly — quiet at .06, assembling as you scroll */
+    window.MID.hero(r,x,r.querySelector('.split'));
     if(o.after) o.after(r,x);
   };
 
@@ -23218,6 +23202,241 @@ window.__L14=1;
   window.TK=K;
 })();
 </script>
+<style id="sf-mid-css">
+/* =========================================================================
+   THE SHARED MIDDLE SECTION.
+
+   One implementation of everything between the hero and NEW VENTURE, used by
+   00 and by all of 01–40. Above it and below it nothing is touched: the hero
+   and its sketch-to-DNA animation, the NEW VENTURE rows and the two-level
+   portfolio slider are 00's and stay 00's.
+
+   WHAT CHANGED AND WHY
+
+   1 · NO PILL BOXES. The drawings stand on the page with their label under
+       them. Nothing encloses them and nothing looks selectable.
+
+   2 · THE DRAWINGS ARE ONE SIZE NOW. This was the real bug. rsvg() pads every
+       bounding box out to 4:3 before drawing, so a wide flat outline and a
+       tall narrow one, given the same max-height, rendered at wildly
+       different sizes — measured across the nine, a 1.62x spread, which is
+       why WHEEL PROPORTION looked tiny next to BATTERY ENCLOSURE. nsvg()
+       below crops the viewBox to the drawing's own measured ink instead, then
+       sizes each one by 1/sqrt(aspect) so all nine occupy the same optical
+       area while keeping their natural shape. A silhouette is still long and
+       an enclosure still tall — they just carry equal weight.
+
+   3 · NO PROSE IN THE DNA BLOCK. Names, the bar, and its percentages. The
+       finish descriptions, the use lines and the per-principle sentences are
+       gone. This is a website, not a specification.
+
+   4 · "ASSEMBLED FROM THE KIT" IS GONE, replaced by FROM DNA TO NEW
+       CATEGORIES — Energy, Motion, Control, Utility — as type only. No image
+       grid: the portfolio slider underneath already is the products.
+   ========================================================================= */
+
+/* ---- the normalised drawing -------------------------------------------- */
+/* a detail crop has to actually clip — the other seventeen ribs were painting
+   outside the box and striking through the label */
+#sf-lab-mount .md .nt_ribs{overflow:hidden !important;}
+#sf-lab-mount .md .nt{display:block;width:auto;overflow:visible;
+  height:calc(var(--sz,64px) * var(--kh,1));}
+#sf-lab-mount .md .nt path{stroke:var(--cy,#00b4d8) !important;stroke-width:2.1;}
+/* DENSE DRAWINGS NEED A FINER LINE. The stroke is non-scaling, so it stays a
+   fixed number of screen pixels however small the drawing renders — which
+   turned the rib structure into a solid cyan block and the repeated radii
+   into a filled bullseye. These two carry many closely-spaced lines, so they
+   get a thinner one; the supporting row is smaller again and thinner still. */
+#sf-lab-mount .md .dnaS .nt path{stroke-width:1.5;}
+#sf-lab-mount .md .nt_ribs path{stroke-width:1.15;}
+#sf-lab-mount .md .nt_rad path{stroke-width:1.35;}
+#sf-lab-mount .md .dnaS .nt_ribs path{stroke-width:1.0;}
+#sf-lab-mount .md .dnaS .nt_rad path{stroke-width:0.95;}
+#sf-lab-mount .md .nw{display:flex;align-items:flex-end;min-height:calc(var(--sz,64px) * 1.5);}
+
+/* ---- form & architecture ------------------------------------------------ */
+#sf-lab-mount .md .dnaP{display:grid;grid-template-columns:repeat(2,1fr);gap:34px 30px;
+  margin-top:26px;--sz:78px;}
+#sf-lab-mount .md .dnaS{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 24px;
+  margin-top:34px;padding-top:20px;border-top:1px solid var(--rule,rgba(141,145,138,.34));
+  --sz:44px;}
+#sf-lab-mount .md .dcell .lbl{display:block;margin-top:14px;font-family:'DM Sans',sans-serif;
+  font-size:13.2px;letter-spacing:2.3px;text-transform:uppercase;font-weight:300;
+  color:rgba(10,10,10,.86);line-height:1.35;}
+#sf-lab-mount .md .dnaS .dcell .lbl{font-size:11.4px;letter-spacing:2px;
+  color:rgba(10,10,10,.5);margin-top:11px;}
+
+/* ---- materials & construction ------------------------------------------- */
+#sf-lab-mount .md .mbar2{display:flex;width:100%;height:40px;overflow:hidden;margin-top:24px;}
+#sf-lab-mount .md .mbar2 i{display:block;height:100%;}
+#sf-lab-mount .md .mnames{display:flex;flex-wrap:wrap;gap:4px 28px;margin-top:14px;}
+#sf-lab-mount .md .mnames span{font-family:'DM Sans',sans-serif;font-size:12.4px;
+  letter-spacing:2.1px;text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.84);}
+#sf-lab-mount .md .mnames b{font-weight:300;color:rgba(10,10,10,.32);margin-left:7px;
+  font-size:9.4px;letter-spacing:1.2px;}
+#sf-lab-mount .md .mminor{display:flex;flex-wrap:wrap;gap:3px 20px;margin-top:8px;}
+#sf-lab-mount .md .mminor span{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:1.7px;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.34);}
+#sf-lab-mount .md .constr{margin-top:22px;padding-top:14px;
+  border-top:1px solid var(--rule,rgba(141,145,138,.34));display:flex;flex-wrap:wrap;gap:4px 26px;}
+#sf-lab-mount .md .constr span{font-family:'DM Sans',sans-serif;font-size:11.6px;letter-spacing:2px;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.6);}
+
+/* ---- character & principles --------------------------------------------- */
+#sf-lab-mount .md .prin{margin-top:24px;}
+#sf-lab-mount .md .prin > span{display:block;font-family:'Bebas Neue',sans-serif;font-weight:300;
+  letter-spacing:.12em;text-transform:uppercase;line-height:1;color:rgba(10,10,10,.88);
+  font-size:clamp(1.35rem,2.6vw,2.05rem);padding:15px 0;
+  border-top:1px solid var(--rule,rgba(141,145,138,.34));}
+#sf-lab-mount .md .prin > span:first-child{border-top:0;padding-top:0;}
+#sf-lab-mount .md .qual{margin-top:20px;padding-top:14px;
+  border-top:1px solid var(--rule,rgba(141,145,138,.34));font-family:'DM Sans',sans-serif;
+  font-size:11px;letter-spacing:1.9px;text-transform:uppercase;font-weight:300;
+  color:rgba(10,10,10,.4);display:block;}
+
+/* ---- from DNA to new categories — type only ----------------------------- */
+#sf-lab-mount .md .cats{margin-top:46px;padding-top:16px;
+  border-top:1px solid var(--cyd,#0a7f99);}
+#sf-lab-mount .md .catrow{display:grid;grid-template-columns:repeat(4,1fr);gap:0 34px;
+  margin-top:22px;}
+#sf-lab-mount .md .catrow > span{display:block;}
+#sf-lab-mount .md .catrow .cn{display:block;font-family:'Bebas Neue',sans-serif;font-weight:300;
+  letter-spacing:.13em;text-transform:uppercase;line-height:1;color:rgba(10,10,10,.88);
+  font-size:clamp(1.4rem,2.7vw,2.1rem);}
+#sf-lab-mount .md .catrow .cd{display:block;margin-top:10px;font-family:'DM Sans',sans-serif;
+  font-size:10.4px;letter-spacing:1.7px;text-transform:uppercase;font-weight:300;
+  color:rgba(10,10,10,.42);line-height:1.7;}
+
+@media(max-width:900px){
+  #sf-lab-mount .md .dnaP{grid-template-columns:1fr 1fr;gap:24px 18px;--sz:58px;}
+  #sf-lab-mount .md .dnaS{grid-template-columns:repeat(3,1fr);gap:18px 14px;--sz:34px;}
+  #sf-lab-mount .md .catrow{grid-template-columns:1fr 1fr;gap:20px 18px;}
+  #sf-lab-mount .md .mbar2{height:30px;}
+  #sf-lab-mount .md .mnames{gap:4px 18px;}
+}
+</style>
+
+<script id="sf-mid-js">
+(function(){
+  var H=window.G3, M={};
+
+  /* THE MEASURED INK OF EACH DRAWING, in the drawing's own user units.
+     Read off the live SVGs with getBBox() — not estimated. `kh` is
+     1/sqrt(aspect), the height multiplier that gives every drawing the same
+     optical area whatever its shape. */
+  var INK={
+    sil : {b:[228,150,546,127], kh:0.482},
+    whl : {b:[40,296,1114,352], kh:0.562},
+    stnc: {b:[40,150,1114,498], kh:0.669},
+    encl: {b:[525,270,188,255], kh:1.165},
+    /* RIB STRUCTURE IS A DETAIL CROP, not the whole field. There are twenty
+       ribs at 7.63 units apart; the full 145-unit height rendered at supporting
+       size gives a 2px pitch and the drawing fills in as a solid cyan block.
+       This is a window onto the first eight — real geometry, nothing invented
+       or removed — at a pitch the eye can actually resolve. */
+    ribs: {b:[547,318,158,66], kh:0.621},
+    axis: {b:[801,110,177,362], kh:1.430},
+    rad : {b:[802,296,352,352], kh:1.000},
+    fast: {b:[497,269,233,264], kh:1.064},
+    mod : {b:[192,270,521,255], kh:0.700}
+  };
+  M.INK=INK;
+
+  /* the drawing, cropped to its own ink and sized for equal optical area */
+  M.nsvg=function(k,sw){
+    var i=INK[k]; if(!i) return rsvg(k,sw||2.2);
+    var b=i.b, m=Math.max(b[2],b[3])*0.05;
+    var vb=(b[0]-m)+' '+(b[1]-m)+' '+(b[2]+2*m)+' '+(b[3]+2*m);
+    return '<svg class="nt nt_'+k+'" viewBox="'+vb+'" fill="none" style="--kh:'+i.kh+'">'+
+      V[k].p.map(function(d){
+        return '<path d="'+d+'" stroke="'+CY+'" stroke-width="'+XSW(k,sw||2.2)+
+          '" vector-effect="non-scaling-stroke" stroke-linecap="round" '+
+          'stroke-linejoin="round"/>'; }).join('')+'</svg>';
+  };
+
+  /* the nine readings, four primary and five supporting */
+  M.P=[{k:'sil',n:'PRIMARY SILHOUETTE'},{k:'stnc',n:'HORIZONTAL STANCE'},
+       {k:'encl',n:'BATTERY ENCLOSURE'},{k:'mod',n:'COMPONENT HIERARCHY'}];
+  M.S=[{k:'whl',n:'WHEEL PROPORTION'},{k:'ribs',n:'RIB STRUCTURE'},
+       {k:'axis',n:'STEERING AXIS'},{k:'rad',n:'REPEATED RADII'},
+       {k:'fast',n:'EXPOSED FASTENERS'}];
+
+  M.MP=[{n:'RAW ALUMINIUM',hex:'#B8BCB6',pc:38},{n:'STRUCTURAL BLACK',hex:'#14171B',pc:34},
+        {n:'OFF-WHITE',hex:'#EFECE6',pc:14}];
+  M.MS=[{n:'MACHINED FACE',hex:'#8D918A',pc:8},{n:'BLACK ANODISE',hex:'#2A2E33',pc:4},
+        {n:'SIGNAL ORANGE',hex:'#E43C00',pc:2}];
+  M.CON=['EXTRUDED STRUCTURE','MACHINED PRECISION','FORMED FRAMEWORK'];
+  M.PP=['MECHANICAL HONESTY','ELECTRIC ARCHITECTURE','MOVEMENT'];
+  M.PS=['Energy','Precision','Utility','Serviceability','Modular thinking'];
+  M.CAT=[{n:'ENERGY', d:'Portable power · Charging · Lighting'},
+         {n:'MOTION', d:'Mobility · Snow · Performance'},
+         {n:'CONTROL',d:'Audio · Radio · Connected equipment'},
+         {n:'UTILITY',d:'Tools · Carry · Workshop'}];
+
+  /* EVERY CELL CARRIES BOTH NAMES. The twenty treatments were written against
+     .obsg / .supg / .terrg / .oc / .sym / .term, and they are what gives each
+     slider its identity — columns, spacing, type, rules. Emitting both class
+     sets means those treatments keep applying to the new simplified content
+     instead of being orphaned by the rename. The one family of rules that does
+     go dead is `.sym .rt{max-height:…}` — the drawing is a .nt now — and those
+     are precisely the rules that made the nine sizes uneven. */
+  function cell(o,cls){
+    return '<span class="dcell oc '+(cls||'')+'"><span class="nw sym">'+M.nsvg(o.k)+'</span>'+
+      '<span class="lbl term">'+o.n+'</span></span>';
+  }
+
+  /* ---- the three blocks -------------------------------------------------- */
+  M.form=function(){
+    return '<div class="dnaP obsg">'+M.P.map(function(o){ return cell(o); }).join('')+'</div>'+
+           '<div class="dnaS supg">'+M.S.map(function(o){ return cell(o,'sc'); }).join('')+'</div>';
+  };
+  M.mat=function(){
+    return '<div class="mbar2">'+M.MP.concat(M.MS).map(function(m){
+        return '<i style="flex:0 0 '+m.pc+'%;background:'+m.hex+'"></i>'; }).join('')+'</div>'+
+      '<div class="mnames">'+M.MP.map(function(m){
+        return '<span>'+m.n+'<b>'+m.pc+'%</b></span>'; }).join('')+'</div>'+
+      '<div class="mminor">'+M.MS.map(function(m){
+        return '<span>'+m.n+' '+m.pc+'%</span>'; }).join('')+'</div>'+
+      '<div class="constr">'+M.CON.map(function(c){
+        return '<span>'+c+'</span>'; }).join('')+'</div>';
+  };
+  M.chr=function(){
+    return '<div class="prin">'+M.PP.map(function(p){
+        return '<span>'+p+'</span>'; }).join('')+'</div>'+
+      '<span class="qual">'+M.PS.join(' &nbsp;·&nbsp; ')+'</span>';
+  };
+  /* type only — the portfolio slider below is already the products */
+  M.cats=function(head){
+    return '<div class="cats">'+head('From DNA to new categories')+
+      '<div class="catrow terrg">'+M.CAT.map(function(c){
+        return '<span class="tc"><span class="cn tn">'+c.n+'</span>'+
+          '<span class="cd ex">'+c.d+'</span></span>'; }).join('')+'</div></div>';
+  };
+
+  /* ---- 00's HERO, EXACTLY -----------------------------------------------
+     Lifted out of the toolkit lab's wire(): the photograph cools, the drawing
+     sits quiet at .06, and every 150px of downward travel brings one more
+     trace up while the line ramps to .56 — coming apart again on the way
+     back. This is the hero Matthew signed off on 00, so 01–40 now run it
+     rather than their own opening. */
+  M.hero=function(r,x,host){
+    var ln=r.querySelector('.pvline');
+    var ORDER=['encl','ribs','whl','fast','axis','sil'];
+    function assemble(v){
+      ORDER.forEach(function(k,j){ if(j<v) H.on(r,k); else H.off(r,k,0); });
+      if(ln){ ln.style.transition='opacity .8s ease';
+              ln.style.opacity=String(0.06+(v/ORDER.length)*0.5); }
+    }
+    H.open(r,x,{ink:0.06,rest:0,done:function(instant){
+      if(instant) ORDER.forEach(function(k){ H.on(r,k); }); }});
+    if(!window.MOTION) return;
+    H.dir(x, host||r.querySelector('.tkp')||r.querySelector('.split')||r,
+      ORDER.length+1, assemble);
+  };
+
+  window.MID=M;
+})();
+</script>
 <style id="sf-base18-css">
 /* =========================================================================
    00 — VERSION 18, PULLED OUT.
@@ -23272,24 +23491,15 @@ window.__L14=1;
 
   /* slot 42 — clear of everything already registered, so nothing is
      overwritten and no number on the rail moves */
-  C(42,'00 · VERSION 18','the selected design, pulled out of the toolkit lab exactly as it is and set as the baseline',function(r,x){
-    r.innerHTML=K.sec('tkB18',
+  C(42,'00 · VERSION 18','the selected design — the two-column split kept, the DNA block simplified, the drawings evened up and the kit line replaced by the four categories',function(r,x){
+    r.innerHTML=K.sec('tkB18 md',
       '<div class="tkp t2">'+
-        col(block(K.T1,K.listF('box','xs'),0,'tkgrid g3'))+VR+
-        col(
-          '<div class="tksub">'+K.head(K.T2,1)+
-            '<div class="tkstrip">'+K.M.map(function(m){
-              return '<i class="pp_'+m.c+(m.en?' en':'')+'" style="flex:0 0 '+m.share+
-                '%;background:'+m.hex+'"></i>'; }).join('')+'</div>'+
-            '<div class="tkleg">'+K.M.map(function(m){
-              return '<span class="pp_'+m.c+(m.en?' en':'')+'">'+m.n+' &nbsp;'+m.share+'%</span>';
-            }).join('')+'</div>'+
-            '<div class="tkcn">'+K.listC('box')+'</div>'+
-          '</div>'+
-          block(K.T3,K.listP('box'),1,'tkw',1))+
-      '</div>'+K.recipe());
-    /* the strip and its legend answer the same pick the boxes do */
-    var w=K.wire; w(r,x);
+        col(K.head(K.T1)+MID.form())+VR+
+        col('<div class="tksub">'+K.head(K.T2,1)+MID.mat()+'</div>'+
+            '<div class="tksub">'+K.head(K.T3,1)+MID.chr()+'</div>')+
+      '</div>'+
+      MID.cats(function(t){ return K.head(t); }));
+    MID.hero(r,x,r.querySelector('.tkp'));
   });
   H.reg(42); (window.__C20=window.__C20||{})[42]=1;
 })();
@@ -23459,6 +23669,257 @@ window.__L14=1;
       H.reg(slot); (window.__C20=window.__C20||{})[slot]=1;
     })(i);
   }
+})();
+</script>
+<style id="sf-treat-css">
+/* =========================================================================
+   THE TWENTY TREATMENTS, REWRITTEN AGAINST THE NEW MIDDLE SECTION.
+
+   The content is now identical on all forty-one — same nine readings, same
+   bar, same three principles, same four categories. What separates one
+   slider from another is design language only, and this file is all of it.
+
+   Two things forced a rewrite rather than a patch:
+
+     · the old treatments were hooked to markup that the simplification
+       removed — .terrg .ph, .prodg, .cong, .oc internals — so thirteen of
+       the expressive set had quietly collapsed into the same look;
+     · .xp (the expressive amplifier) is two classes deep and loads last, so
+       it was beating every per-version rule written at the same weight.
+
+   Everything here is written as `.md.wNN`, which outranks `.xp` and lands
+   on both members of each pair — 01 and 21 are the same idea, 01 just gets
+   the amplifier over the top.
+
+   Each treatment moves at least three of: column structure, drawing scale,
+   type scale, rule weight, cyan, ground, density, alignment.
+   ========================================================================= */
+
+/* 21 · SPECIFICATION — document authority: heavy rules, wide labels */
+#sf-lab-mount .md.w21 .bhead{border-top-width:2px;border-top-color:rgba(10,10,10,.62);}
+#sf-lab-mount .md.w21 .dnaP{grid-template-columns:1fr;gap:0;--sz:70px;}
+#sf-lab-mount .md.w21 .dnaP .dcell{display:grid;grid-template-columns:150px 1fr;gap:0 30px;
+  align-items:center;border-top:1px solid var(--rule);padding:16px 0;}
+#sf-lab-mount .md.w21 .dnaP .lbl{margin-top:0;font-size:15px;letter-spacing:3px;}
+#sf-lab-mount .md.w21 .catrow .cn{font-size:clamp(1.1rem,2vw,1.5rem);}
+
+/* 22 · PLATE — one enormous drawing standing behind the reading */
+#sf-lab-mount .md.w22 .lft{position:relative;}
+#sf-lab-mount .md.w22 .lft:before{content:'';position:absolute;left:2%;top:56px;width:86%;
+  height:340px;background:no-repeat center/contain;opacity:.1;pointer-events:none;
+  background-image:var(--plate);}
+#sf-lab-mount .md.w22 .dnaP{grid-template-columns:repeat(4,1fr);gap:26px 18px;--sz:46px;}
+#sf-lab-mount .md.w22 .dnaS{grid-template-columns:repeat(5,1fr);--sz:30px;}
+#sf-lab-mount .md.w22 .prin > span{font-size:clamp(1.6rem,3.2vw,2.6rem);}
+
+/* 23 · MARGIN NOTES — drawings set as right-aligned marginal notes */
+#sf-lab-mount .md.w23 .dnaP,#sf-lab-mount .md.w23 .dnaS{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .md.w23 .dcell{display:grid;grid-template-columns:118px 1fr;gap:0 28px;
+  align-items:center;border-top:1px solid var(--rule);padding:14px 0;}
+#sf-lab-mount .md.w23 .dcell .nw{justify-content:flex-end;min-height:0;}
+#sf-lab-mount .md.w23 .dcell .lbl{margin-top:0;}
+#sf-lab-mount .md.w23 .dnaS{--sz:34px;margin-top:20px;}
+
+/* 24 · OVERLAY — every reading marked as if annotated in place */
+#sf-lab-mount .md.w24 .dcell{position:relative;padding-left:20px;}
+#sf-lab-mount .md.w24 .dcell:before{content:'';position:absolute;left:0;top:6px;width:6px;height:6px;
+  border-radius:50%;background:var(--cy);box-shadow:0 0 0 3px rgba(0,180,216,.16);}
+#sf-lab-mount .md.w24 .dnaP{grid-template-columns:repeat(2,1fr);--sz:72px;}
+#sf-lab-mount .md.w24 .bhead{border-top-color:var(--cy);}
+#sf-lab-mount .md.w24 .catrow .cn{color:var(--cyd);}
+
+/* 25 · THE FOLD — the right column holds while the left scrolls past it */
+#sf-lab-mount .md.w25 .rgt{position:sticky;top:72px;}
+#sf-lab-mount .md.w25 .dnaP{grid-template-columns:1fr 1fr;gap:44px 30px;--sz:84px;}
+#sf-lab-mount .md.w25 .split{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);}
+#sf-lab-mount .md.w25 .mbar2{height:56px;}
+
+/* 26 · DARK STUDY — the reading contained in a near-black plate */
+#sf-lab-mount .md.w26 .split{background:#0d1013;padding:44px 44px 50px;margin-top:34px;}
+#sf-lab-mount .md.w26 .split .bey{color:#3ddcff;}
+#sf-lab-mount .md.w26 .split .bhead{border-top-color:rgba(61,220,255,.5);}
+#sf-lab-mount .md.w26 .split .lbl,#sf-lab-mount .md.w26 .split .mnames span{color:rgba(255,255,255,.86);}
+#sf-lab-mount .md.w26 .split .prin > span{color:rgba(255,255,255,.94);}
+#sf-lab-mount .md.w26 .split .mminor span,#sf-lab-mount .md.w26 .split .constr span,
+#sf-lab-mount .md.w26 .split .qual,#sf-lab-mount .md.w26 .split .mnames b{color:rgba(255,255,255,.42);}
+#sf-lab-mount .md.w26 .split .nt path{stroke:#3ddcff !important;}
+#sf-lab-mount .md.w26 .split .prin > span,#sf-lab-mount .md.w26 .split .qual,
+#sf-lab-mount .md.w26 .split .dnaS,#sf-lab-mount .md.w26 .split .constr{
+  border-top-color:rgba(255,255,255,.16) !important;}
+
+/* 27 · THE LINE — everything indented off one cyan spine */
+#sf-lab-mount .md.w27 .split,#sf-lab-mount .md.w27 .exp{position:relative;padding-left:56px;}
+#sf-lab-mount .md.w27 .split:before,#sf-lab-mount .md.w27 .exp:before{content:'';position:absolute;
+  left:16px;top:6px;bottom:6px;width:1px;background:var(--cyd);opacity:.45;}
+#sf-lab-mount .md.w27 .lft .bhead:before,#sf-lab-mount .md.w27 .exp .cats:before{content:'';
+  position:absolute;left:-47px;top:-6px;width:13px;height:13px;border-radius:50%;background:var(--cy);}
+#sf-lab-mount .md.w27 .lft .bhead,#sf-lab-mount .md.w27 .exp .cats{position:relative;}
+#sf-lab-mount .md.w27 .dnaP{grid-template-columns:repeat(2,1fr);--sz:66px;}
+
+/* 28 · LARGE SYMBOL — the drawings are illustrations, not marks */
+#sf-lab-mount .md.w28 .dnaP{grid-template-columns:1fr 1fr;gap:46px 40px;--sz:132px;}
+#sf-lab-mount .md.w28 .dnaS{grid-template-columns:repeat(5,1fr);--sz:38px;}
+#sf-lab-mount .md.w28 .split{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);}
+#sf-lab-mount .md.w28 .prin > span{font-size:clamp(1.1rem,2.1vw,1.6rem);}
+
+/* 29 · GRID BREAK — nothing spans what you expect */
+#sf-lab-mount .md.w29 .dnaP{grid-template-columns:repeat(6,1fr);gap:32px 22px;}
+#sf-lab-mount .md.w29 .dnaP .dcell:nth-child(1){grid-column:span 4;}
+#sf-lab-mount .md.w29 .dnaP .dcell:nth-child(2){grid-column:span 2;}
+#sf-lab-mount .md.w29 .dnaP .dcell:nth-child(3){grid-column:span 2;}
+#sf-lab-mount .md.w29 .dnaP .dcell:nth-child(4){grid-column:span 4;}
+#sf-lab-mount .md.w29 .dnaS{grid-template-columns:repeat(5,1fr);}
+#sf-lab-mount .md.w29 .catrow{grid-template-columns:2fr 1fr 2fr 1fr;}
+
+/* 30 · CONTACT SHEET — the material bar given photographic weight */
+#sf-lab-mount .md.w30 .mbar2{height:104px;margin-top:18px;}
+#sf-lab-mount .md.w30 .dnaP{grid-template-columns:repeat(4,1fr);gap:24px 16px;--sz:44px;}
+#sf-lab-mount .md.w30 .dnaS{grid-template-columns:repeat(5,1fr);--sz:30px;}
+#sf-lab-mount .md.w30 .split{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);}
+
+/* 31 · MANIFESTO — the statement carries the section */
+#sf-lab-mount .md.w31 .stmt .disp{font-size:clamp(2.4rem,5.6vw,4.6rem);}
+#sf-lab-mount .md.w31 .dnaP{grid-template-columns:repeat(2,1fr);--sz:60px;}
+#sf-lab-mount .md.w31 .prin > span{font-size:clamp(1.7rem,3.4vw,2.8rem);border-top:0;padding:9px 0;}
+#sf-lab-mount .md.w31 .lbl{font-size:11.6px;letter-spacing:1.9px;color:rgba(10,10,10,.5);}
+
+/* 32 · DIPTYCH — label and drawing paired left/right in every cell */
+#sf-lab-mount .md.w32 .dnaP{grid-template-columns:1fr 1fr;gap:26px 26px;}
+#sf-lab-mount .md.w32 .dnaP .dcell{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;
+  align-items:center;background:#efece6;padding:14px 16px;}
+#sf-lab-mount .md.w32 .dnaP .dcell .lbl{margin-top:0;font-size:11.4px;letter-spacing:1.8px;}
+#sf-lab-mount .md.w32 .dnaS{grid-template-columns:repeat(5,1fr);--sz:32px;}
+
+/* 33 · FULL FRAME — the categories run as one dark cinematic band */
+#sf-lab-mount .md.w33 .cats{background:#0d1013;padding:26px 34px 32px;border-top:0;margin-top:52px;}
+#sf-lab-mount .md.w33 .cats .bey{color:#3ddcff;}
+#sf-lab-mount .md.w33 .cats .bhead{border-top-color:rgba(61,220,255,.45);}
+#sf-lab-mount .md.w33 .cats .cn{color:#fff;font-size:clamp(1.6rem,3.2vw,2.5rem);}
+#sf-lab-mount .md.w33 .cats .cd{color:rgba(255,255,255,.5);}
+#sf-lab-mount .md.w33 .dnaP{grid-template-columns:repeat(2,1fr);--sz:74px;}
+
+/* 34 · INDEX — one numbered run, geometry flush right */
+#sf-lab-mount .md.w34 .dnaP,#sf-lab-mount .md.w34 .dnaS{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .md.w34 .dcell{display:grid;grid-template-columns:1fr 110px;gap:0 24px;
+  align-items:center;border-top:1px solid rgba(10,10,10,.28);padding:15px 0;}
+#sf-lab-mount .md.w34 .dcell .nw{order:2;justify-content:flex-end;min-height:0;}
+#sf-lab-mount .md.w34 .dcell .lbl{margin-top:0;}
+#sf-lab-mount .md.w34 .dnaS{--sz:32px;margin-top:0;padding-top:0;border-top:0;}
+#sf-lab-mount .md.w34 .dnaS .dcell{border-top-color:var(--rule);padding:9px 0;}
+
+/* 35 · THE STACK — depth states importance */
+#sf-lab-mount .md.w35 .split{margin-top:96px;}
+#sf-lab-mount .md.w35 .dnaP{gap:64px 30px;margin-top:40px;}
+#sf-lab-mount .md.w35 .dnaS{margin-top:66px;padding-top:26px;}
+#sf-lab-mount .md.w35 .cblk{margin-top:96px;}
+#sf-lab-mount .md.w35 .prin > span{padding:30px 0;}
+#sf-lab-mount .md.w35 .cats{margin-top:118px;}
+
+/* 36 · THE MEASURE — the drawing office: dimensions and leaders */
+#sf-lab-mount .md.w36 .mbar2{margin-bottom:8px;}
+#sf-lab-mount .md.w36 .mnames{position:relative;padding-top:16px;}
+#sf-lab-mount .md.w36 .mnames:before{content:'';position:absolute;left:0;right:0;top:4px;height:1px;
+  background:var(--cyd);opacity:.6;}
+#sf-lab-mount .md.w36 .mnames:after{content:'';position:absolute;left:0;top:0;width:1px;height:9px;
+  background:var(--cyd);opacity:.6;}
+#sf-lab-mount .md.w36 .dcell .lbl{position:relative;padding-left:20px;}
+#sf-lab-mount .md.w36 .dcell .lbl:before{content:'';position:absolute;left:0;top:7px;width:13px;
+  height:1px;background:var(--cyd);opacity:.65;}
+#sf-lab-mount .md.w36 .dnaP{grid-template-columns:repeat(2,1fr);--sz:68px;}
+#sf-lab-mount .md.w36 .bhead{border-top-color:var(--cyd);}
+
+/* 37 · CENTRE LINE — symmetry, drawings mirrored about one axis */
+#sf-lab-mount .md.w37 .lft,#sf-lab-mount .md.w37 .rgt{text-align:center;}
+#sf-lab-mount .md.w37 .lft .bhead,#sf-lab-mount .md.w37 .rgt .bhead{text-align:left;}
+#sf-lab-mount .md.w37 .dcell .nw{justify-content:center;}
+#sf-lab-mount .md.w37 .dnaP .dcell:nth-child(even) .nt{transform:scaleX(-1);}
+#sf-lab-mount .md.w37 .mnames,#sf-lab-mount .md.w37 .mminor,
+#sf-lab-mount .md.w37 .constr{justify-content:center;}
+#sf-lab-mount .md.w37 .catrow{text-align:center;}
+
+/* 38 · DOCUMENT COVER — a title block and numbered chapters */
+#sf-lab-mount .md.w38 .stmt{border-top:2px solid rgba(10,10,10,.86);
+  border-bottom:1px solid rgba(10,10,10,.86);padding:24px 0 18px;}
+#sf-lab-mount .md.w38 .bhead{border-top-width:2px;position:relative;padding-left:42px;}
+#sf-lab-mount .md.w38 .bhead:before{content:attr(data-ch);position:absolute;left:0;top:12px;
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.8px;color:var(--cyd);}
+#sf-lab-mount .md.w38 .dnaP{grid-template-columns:repeat(2,1fr);--sz:64px;}
+
+/* 39 · TRANSLATION LADDER — the categories as four numbered rungs */
+#sf-lab-mount .md.w39 .catrow{grid-template-columns:1fr;gap:0;}
+#sf-lab-mount .md.w39 .catrow .tc{display:grid;grid-template-columns:56px minmax(0,.7fr) 30px 1fr;
+  gap:0 20px;align-items:center;border-top:1px solid var(--rule);padding:18px 0;
+  counter-increment:rung;}
+#sf-lab-mount .md.w39 .catrow .tc:before{content:'Level 0' counter(rung);
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--cyd);}
+#sf-lab-mount .md.w39 .catrow .tc:after{content:'';height:1px;background:var(--cyd);opacity:.5;
+  grid-column:3;grid-row:1;}
+#sf-lab-mount .md.w39 .catrow .cd{margin-top:0;grid-column:4;}
+#sf-lab-mount .md.w39 .cats{counter-reset:rung;}
+#sf-lab-mount .md.w39 .dnaP{grid-template-columns:repeat(4,1fr);--sz:48px;}
+
+/* 40 · THE QUIET ONE — the least ink of the forty */
+#sf-lab-mount .md.w40 .bhead{border-top-color:rgba(141,145,138,.24);}
+#sf-lab-mount .md.w40 .dnaS,#sf-lab-mount .md.w40 .constr,
+#sf-lab-mount .md.w40 .qual,#sf-lab-mount .md.w40 .prin > span{border-top-color:transparent !important;}
+#sf-lab-mount .md.w40 .split{margin-top:80px;gap:0 104px;}
+#sf-lab-mount .md.w40 .dnaP{gap:56px 44px;--sz:64px;}
+#sf-lab-mount .md.w40 .cats{margin-top:110px;border-top-color:rgba(141,145,138,.24);}
+#sf-lab-mount .md.w40 .mminor{display:none;}
+
+@media(max-width:900px){
+  #sf-lab-mount .md.w21 .dnaP .dcell,#sf-lab-mount .md.w23 .dcell,
+  #sf-lab-mount .md.w34 .dcell{grid-template-columns:84px 1fr;gap:0 16px;}
+  #sf-lab-mount .md.w34 .dcell .nw{order:0;justify-content:flex-start;}
+  #sf-lab-mount .md.w22 .dnaP,#sf-lab-mount .md.w30 .dnaP,
+  #sf-lab-mount .md.w39 .dnaP{grid-template-columns:1fr 1fr;}
+  #sf-lab-mount .md.w22 .dnaS,#sf-lab-mount .md.w28 .dnaS,#sf-lab-mount .md.w29 .dnaS,
+  #sf-lab-mount .md.w30 .dnaS,#sf-lab-mount .md.w32 .dnaS{grid-template-columns:repeat(3,1fr);}
+  #sf-lab-mount .md.w26 .split{padding:22px 16px 26px;}
+  #sf-lab-mount .md.w27 .split,#sf-lab-mount .md.w27 .exp{padding-left:30px;}
+  #sf-lab-mount .md.w27 .split:before,#sf-lab-mount .md.w27 .exp:before{left:6px;}
+  #sf-lab-mount .md.w27 .lft .bhead:before,#sf-lab-mount .md.w27 .exp .cats:before{left:-27px;
+    width:11px;height:11px;}
+  #sf-lab-mount .md.w28 .dnaP{--sz:78px;}
+  #sf-lab-mount .md.w29 .dnaP{grid-template-columns:1fr 1fr;}
+  #sf-lab-mount .md.w29 .dnaP .dcell{grid-column:span 1 !important;}
+  #sf-lab-mount .md.w29 .catrow{grid-template-columns:1fr 1fr;}
+  #sf-lab-mount .md.w33 .cats{padding:20px 16px 24px;}
+  #sf-lab-mount .md.w35 .split{margin-top:44px;} #sf-lab-mount .md.w35 .cblk{margin-top:48px;}
+  #sf-lab-mount .md.w35 .cats{margin-top:56px;}
+  #sf-lab-mount .md.w39 .catrow .tc{grid-template-columns:1fr;gap:6px;}
+  #sf-lab-mount .md.w39 .catrow .tc:after{display:none;}
+  #sf-lab-mount .md.w39 .catrow .cd{grid-column:1;}
+  #sf-lab-mount .md.w40 .split{margin-top:40px;gap:34px 0;}
+}
+</style>
+
+<script id="sf-treat-js">
+(function(){
+  /* 22 needs a real drawing behind the column, and 38 needs its chapter
+     numbers. Both are cheap to attach after the section renders. */
+  var base=window.show;
+  window.show=function(n){
+    base(n);
+    setTimeout(function(){
+      var m=document.getElementById('sf-lab-mount'); if(!m) return;
+      var sec=m.querySelector('.md'); if(!sec) return;
+      if(sec.classList.contains('w22')){
+        var lft=sec.querySelector('.lft');
+        if(lft && !lft.style.getPropertyValue('--plate')){
+          var svg=(window.MID?window.MID.nsvg('stnc'):'');
+          lft.style.setProperty('--plate',
+            "url('data:image/svg+xml;utf8,"+encodeURIComponent(svg.replace(/class="[^"]*"/,''))+"')");
+        }
+      }
+      if(sec.classList.contains('w38')){
+        var ch=['01','02','03','04'];
+        [].forEach.call(sec.querySelectorAll('.bhead'),function(h,i){
+          if(ch[i]) h.setAttribute('data-ch',ch[i]); });
+      }
+    },60);
+  };
 })();
 </script>
 <script id="sf-c20-bar">
