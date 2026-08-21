@@ -23491,15 +23491,28 @@ window.__L14=1;
 
   /* slot 42 — clear of everything already registered, so nothing is
      overwritten and no number on the rail moves */
-  C(42,'00 · VERSION 18','the selected design — the two-column split kept, the DNA block simplified, the drawings evened up and the kit line replaced by the four categories',function(r,x){
-    r.innerHTML=K.sec('tkB18 md',
+  /* FROZEN. This box is Version 18 as it was selected — the original builder,
+     the original markup, the original wiring, nothing from the new rules.
+     The twenty treatments and the shared middle section are all scoped under
+     .md; this section does not carry that class, so none of them can reach
+     it. Sliders 01–40 carry the new rules; 00 stays as the reference. */
+  C(42,'00 · VERSION 18','the swatch strip — the six finishes as one continuous bar divided by how much of the object each covers; orange is a measurable sliver',function(r,x){
+    r.innerHTML=K.sec('tkB18',
       '<div class="tkp t2">'+
-        col(K.head(K.T1)+MID.form())+VR+
-        col('<div class="tksub">'+K.head(K.T2,1)+MID.mat()+'</div>'+
-            '<div class="tksub">'+K.head(K.T3,1)+MID.chr()+'</div>')+
-      '</div>'+
-      MID.cats(function(t){ return K.head(t); }));
-    MID.hero(r,x,r.querySelector('.tkp'));
+        col(block(K.T1,K.listF('box','xs'),0,'tkgrid g3'))+VR+
+        col(
+          '<div class="tksub">'+K.head(K.T2,1)+
+            '<div class="tkstrip">'+K.M.map(function(m){
+              return '<i class="pp_'+m.c+(m.en?' en':'')+'" style="flex:0 0 '+m.share+
+                '%;background:'+m.hex+'"></i>'; }).join('')+'</div>'+
+            '<div class="tkleg">'+K.M.map(function(m){
+              return '<span class="pp_'+m.c+(m.en?' en':'')+'">'+m.n+' &nbsp;'+m.share+'%</span>';
+            }).join('')+'</div>'+
+            '<div class="tkcn">'+K.listC('box')+'</div>'+
+          '</div>'+
+          block(K.T3,K.listP('box'),1,'tkw',1))+
+      '</div>'+K.recipe());
+    K.wire(r,x);
   });
   H.reg(42); (window.__C20=window.__C20||{})[42]=1;
 })();
