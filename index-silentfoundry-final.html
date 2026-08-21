@@ -21070,9 +21070,18 @@ window.__L14=1;
     {k:'axis',n:'STEERING ACCESS'},  {k:'rad', n:'REPEATED RADII'},   {k:'fast',n:'EXPOSED FASTENERS'}
   ];
 
-  /* three samples, no values anywhere */
+  /* separated samples, no values anywhere.
+     THE FOUR-SAMPLE SET adds SWITCH blue. The value is the site's own
+     --cy (#00B4D8); the brand mark itself measures #00B8F0, so this is the
+     established SWITCH blue rather than a new one invented for the swatch. */
   F.SW=[{c:'#B8BCB6',w:52,cls:''},{c:'#14171B',w:38,cls:'k'},{c:'#E43C00',w:4,cls:''}];
   F.SWL='RAW ALUMINIUM &nbsp;·&nbsp; STRUCTURAL BLACK &nbsp;·&nbsp; SIGNAL ORANGE';
+  F.SW4=[{c:'#B8BCB6',w:46,cls:''},{c:'#14171B',w:34,cls:'k'},
+         {c:'#00B4D8',w:12,cls:''},{c:'#E43C00',w:4,cls:''}];
+  /* four names have to sit on one line in a narrow column, so the separators
+     are thin spaces rather than full ones */
+  F.SWL4='RAW ALUMINIUM&thinsp; ·&thinsp; STRUCTURAL BLACK&thinsp; ·&thinsp; SWITCH BLUE'+
+         '&thinsp; ·&thinsp; SIGNAL ORANGE';
 
   F.PR=['MECHANICAL HONESTY',
         'ELECTRIC ARCHITECTURE &nbsp;·&nbsp; MOVEMENT',
@@ -21136,10 +21145,11 @@ window.__L14=1;
       return '<span class="d9"><span class="nw">'+fit(MID.nsvg(o.k))+'</span>'+
              '<span class="dl">'+o.n+'</span></span>'; }).join('')+'</div>';
   };
-  F.mat=function(){
-    return '<div class="msw">'+F.SW.map(function(s){
+  F.mat=function(blue){
+    var set=blue?F.SW4:F.SW, lab=blue?F.SWL4:F.SWL;
+    return '<div class="msw">'+set.map(function(s){
         return '<i class="'+s.cls+'" style="flex:0 0 '+s.w+'%;background:'+s.c+'"></i>';
-      }).join('')+'</div><span class="mnm">'+F.SWL+'</span>';
+      }).join('')+'</div><span class="mnm">'+lab+'</span>';
   };
   F.chr=function(){
     return '<div class="prn"><span class="p1">'+F.PR[0]+'</span>'+
@@ -21182,7 +21192,7 @@ window.__L14=1;
       '<div class="split">'+
         '<div class="lft">'+B.head('Form &amp; architecture')+F.form()+'</div>'+
         '<div class="rgt">'+
-          '<div class="mblk">'+B.head('Materials &amp; construction')+F.mat()+'</div>'+
+          '<div class="mblk">'+B.head('Materials &amp; construction')+F.mat(opt.blue)+'</div>'+
           '<div class="cblk">'+B.head('Character &amp; principles')+F.chr()+'</div>'+
         '</div>'+
       '</div>'+
@@ -21373,9 +21383,60 @@ window.__L14=1;
 #sf-lab-mount .f5 .tc:last-child .otk{left:100px;top:21px;}
 #sf-lab-mount .f5 .cn{font-size:clamp(1.6rem,3vw,2.2rem);}
 
+
+/* =========================================================================
+   06 — THE SELECTION.
+   Not a sixth idea: the four picks, assembled.
+
+     FORM & ARCHITECTURE      02, with the corner coordinate marks removed
+     MATERIALS & CONSTRUCTION 02, with the datum ticks removed and SWITCH
+                              blue added to the palette (four samples)
+     CHARACTER & PRINCIPLES   01
+     FROM DNA TO NEW CATEGORIES  03, one rule above instead of two, and the
+                              type taken down in weight and presence
+   ========================================================================= */
+/* ---- form & architecture · from 02 (no corner marks) -------------------- */
+#sf-lab-mount .f6 .split{padding:56px 56px 60px;position:relative;
+  grid-template-columns:minmax(0,1.34fr) minmax(0,1fr);gap:0 70px;}
+#sf-lab-mount .f6 .split::before{content:'';position:absolute;left:calc(56.5% + 3px);
+  top:56px;bottom:60px;width:1px;background:#3ddcff;opacity:.16;}
+#sf-lab-mount .f6 .dna9{gap:40px 30px;}
+#sf-lab-mount .f6 .dl{font-size:10.4px;letter-spacing:3.2px;color:rgba(255,255,255,.78);}
+#sf-lab-mount .f6 .glead h4{font-size:clamp(1.6rem,3vw,2.3rem);padding-top:16px;
+  border-top:1px solid rgba(10,127,153,.45);}
+
+/* ---- materials · from 02 (no ticks), four samples ----------------------- */
+#sf-lab-mount .f6 .msw{margin-top:40px;gap:14px;}
+
+/* four names on one line at full width; below that it wraps, and balance
+   splits it evenly rather than leaving one name stranded */
+#sf-lab-mount .f6 .mnm{letter-spacing:1.9px;font-size:9.4px;line-height:2;
+  text-wrap:balance;}
+
+/* ---- character & principles · from 01 ----------------------------------- */
+#sf-lab-mount .f6 .p1{font-size:clamp(1.9rem,3.6vw,2.7rem);margin-top:28px;}
+#sf-lab-mount .f6 .p2{font-size:clamp(1.08rem,2.05vw,1.54rem);margin-top:22px;}
+#sf-lab-mount .f6 .p3{margin-top:38px;}
+
+/* ---- from DNA to new categories · from 03, quieter ----------------------
+   03 carried two rules above the eyebrow — the band's own and the heading's.
+   The band's is dropped, so one rule is left doing the work. The territory
+   names come down in size, open up in tracking and drop in contrast; the
+   supporting line goes smaller and lighter still. Less shout, more Foundry. */
+#sf-lab-mount .f6 .fcats{margin-top:140px;border-top:0;padding-top:0;}
+#sf-lab-mount .f6 .crow{gap:0 60px;margin-top:42px;}
+#sf-lab-mount .f6 .cn{font-size:clamp(1.42rem,2.7vw,2rem);letter-spacing:.165em;
+  color:rgba(10,10,10,.7);}
+#sf-lab-mount .f6 .cd{font-size:9.8px;letter-spacing:1.9px;color:rgba(10,10,10,.34);}
+#sf-lab-mount .f6 .tc::after{right:-60px;}
+#sf-lab-mount .f6 .tc:last-child::after{right:auto;width:38px;}
+#sf-lab-mount .f6 .tc:last-child .otk{left:100px;}
+
 /* ---- responsive, per version ------------------------------------------- */
 @media(max-width:1000px){
-  #sf-lab-mount .f2.b19 .split::before{display:none;}
+  #sf-lab-mount .f2.b19 .split::before,#sf-lab-mount .f6.b19 .split::before{display:none;}
+  #sf-lab-mount .f6.b19 .crow{gap:44px 44px;}
+  #sf-lab-mount .f6.b19 .tc::after{right:-44px;}
   #sf-lab-mount .f3.b19 .crow{gap:44px 44px;}
   #sf-lab-mount .f3.b19 .tc::after{right:-44px;}
   #sf-lab-mount .f3.b19 .rgt{margin-top:0;}
@@ -21384,17 +21445,20 @@ window.__L14=1;
 }
 @media(max-width:680px){
   #sf-lab-mount .f1.b19 .split,#sf-lab-mount .f2.b19 .split,#sf-lab-mount .f3.b19 .split,
-  #sf-lab-mount .f4.b19 .split,#sf-lab-mount .f5.b19 .split{padding:30px 22px 34px;}
+  #sf-lab-mount .f4.b19 .split,#sf-lab-mount .f5.b19 .split,
+  #sf-lab-mount .f6.b19 .split{padding:30px 22px 34px;}
   #sf-lab-mount .f3.b19 .msw{height:58px;}
   #sf-lab-mount .f5.b19 .d9{min-height:0;}
   #sf-lab-mount .f5.b19 .dna9{gap:24px 18px;}
-  #sf-lab-mount .f3.b19 .fcats,#sf-lab-mount .f4.b19 .fcats,#sf-lab-mount .f5.b19 .fcats{margin-top:76px;}
-  #sf-lab-mount .f3.b19 .crow{gap:40px 40px;}
-  #sf-lab-mount .f3.b19 .tc::after{right:-40px;}
+  #sf-lab-mount .f3.b19 .fcats,#sf-lab-mount .f4.b19 .fcats,#sf-lab-mount .f5.b19 .fcats,
+  #sf-lab-mount .f6.b19 .fcats{margin-top:76px;}
+  #sf-lab-mount .f3.b19 .crow,#sf-lab-mount .f6.b19 .crow{gap:40px 40px;}
+  #sf-lab-mount .f3.b19 .tc::after,#sf-lab-mount .f6.b19 .tc::after{right:-40px;}
 }
 @media(max-width:520px){
   /* the vertical datum is shared behaviour — only the offsets are art direction */
-  #sf-lab-mount .f3.b19 .tc::after,#sf-lab-mount .f5.b19 .tc::after{right:auto;}
+  #sf-lab-mount .f3.b19 .tc::after,#sf-lab-mount .f5.b19 .tc::after,
+  #sf-lab-mount .f6.b19 .tc::after{right:auto;}
   #sf-lab-mount .f5.b19 .tc::after{left:23px;}
   #sf-lab-mount .f5.b19 .tc:last-child .otk{left:21px;top:92px;}
 }
@@ -21449,6 +21513,12 @@ window.__L14=1;
   reg(5,'05 · MODULAR FOUNDRY',
     'built rather than laid out — a 24px module throughout, cyan spines instead of rules, nine equal modules for the nine readings and the widest scale contrast of the five',
     'f5');
+
+  /* 06 — the selection. Four picks assembled on the same shared middle, with
+     SWITCH blue joining the material palette. */
+  reg(6,'06 · THE SELECTION',
+    'the picks assembled — 02 form and materials without the corner marks or the datum ticks, SWITCH blue added to the palette, 01 principles, 03 categories on one rule and taken down in weight',
+    'f6', {blue:true});
 })();
 </script>
 <script id="sf-fd-bar">
@@ -21461,6 +21531,7 @@ window.__L14=1;
      03   MATERIAL EDITORIAL
      04   KINETIC SYSTEM
      05   MODULAR FOUNDRY
+     06   THE SELECTION — 02 form + materials, 01 principles, 03 categories
 
    Same behaviour as the slider it replaces: the current number is shown, ‹ ›
    step, every position is directly selectable, and #c=00 … #c=05 open their
@@ -21474,7 +21545,7 @@ window.__L14=1;
 (function(){
   /* slot 42 is the baseline, lifted whole out of the approved build; 1–5 are
      the five new designs */
-  var ORDER=[[42,'00'],[1,'01'],[2,'02'],[3,'03'],[4,'04'],[5,'05']];
+  var ORDER=[[42,'00'],[1,'01'],[2,'02'],[3,'03'],[4,'04'],[5,'05'],[6,'06']];
 
   var MINE={}; var a=window.__FD||{}, b=window.__C20||{};
   for(var q in a) MINE[q]=1; for(var w in b) MINE[w]=1;
@@ -21516,7 +21587,7 @@ window.__L14=1;
     nx.addEventListener('click',function(){ step(1); });
     window.SSTEP=step;
     var cn=document.getElementById('labcount');
-    if(cn) cn.textContent='00 baseline · 01–05 five designs';
+    if(cn) cn.textContent='00 baseline · 01–05 five designs · 06 the selection';
   }
 
   var baseShow=window.show;
