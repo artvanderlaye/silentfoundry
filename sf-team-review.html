@@ -5884,3 +5884,481 @@ html[data-sfr="32"] .sfr-reg::after{left:3px;top:0;width:1px;height:7px;}
   };
 })();
 </script>
+
+<style id="sf-tm4-css">
+/* =========================================================================
+   TEAM PAGE — 33ORG AND THE REFINED COLLECTIVE 34–44.
+
+   33ORG is variation 29 — its two-row collective and its Marshall-grid
+   gutter — corrected on the eight points in the brief. 29 builds first, by
+   29's own code; everything below is subtraction and correction, not a
+   rebuild. 22ORG and 29 are both left exactly as they are.
+
+   THE TWO NUMBERS THE BRIEF SAID NOT TO GUESS, MEASURED
+
+   1 · THE HOUSE SECTION TITLE
+       Read off the live homepage — h2.section-title inside section.funds,
+       which is SAME ENGINE / DIFFERENT OWNERSHIP:
+         font-family      Bebas Neue
+         font-size        clamp(1.1rem,1.6vw,1.8rem)  = 23.04px at 1440
+         font-weight      700          (the brief said 400; the page says 700)
+         line-height      0.92                         = 21.1968px
+         letter-spacing   0.22em                       = 5.0688px
+         colour           rgba(10,10,10,.75)
+         em               rgba(200,169,110,.65) at 0.14em, font-style normal
+                          (the brief said rgba(138,110,58,.7); that value is
+                           the .case-study override, not the funds one)
+       The clamp is kept rather than the resolved pixel value, so the title
+       tracks the homepage at every width instead of only at 1440.
+
+   2 · THE 22ORG CARD
+       Measured on the live 22ORG card, not read off a variable:
+         card    360 x 695        portrait 500px, object-position untouched
+         panel   360 x 195        padding 46px 22px 22px
+         panel   rgba(42,46,51,.055) on a #efece6 card, no shadow
+       The two-row layer was overriding the portrait to 340. 33ORG takes the
+       height back from the card's own inline value at runtime, so the number
+       cannot drift out of step with 22ORG — nothing here restates 500.
+
+   With the portrait back at full height the collective is about 1,390 tall
+   instead of 1,124. That is the trade the brief asks for and accepts.
+   ========================================================================= */
+
+/* ---- the house section title, reproduced from the measured values ------ */
+html[data-sf33] #pc .sf4-title{
+  font-family:'Bebas Neue',sans-serif !important;
+  font-size:clamp(1.1rem,1.6vw,1.8rem) !important;
+  font-weight:700 !important;
+  line-height:.92 !important;
+  letter-spacing:.22em !important;
+  text-transform:uppercase !important;
+  color:rgba(10,10,10,.75) !important;
+  display:block !important;
+  margin:0 0 22px 0 !important;
+  padding:0 !important;}
+html[data-sf33] #pc .sf4-title em{
+  font-family:'Bebas Neue',sans-serif !important;
+  font-style:normal !important;
+  letter-spacing:.14em !important;
+  color:rgba(200,169,110,.65) !important;}
+
+/* ---- 4 · the card rule comes out, and its space with it ---------------- */
+html[data-sf33] #pc .tc .fmark{display:none !important;margin:0 !important;height:0 !important;}
+
+/* ---- 3 and 10 · no measurement furniture in the gutter ----------------- */
+/* removed from the DOM as well; this is here so a resize cannot bring one
+   back between one frame and the next */
+html[data-sf33] .sfr-vt,
+html[data-sf33] .sfr-node,
+html[data-sf33] .sfr-tick,
+html[data-sf33] .sfr-reg,
+html[data-sf33] .sfr-em{display:none !important;}
+
+/* ---- 9 · no decorative circular scroll / target markers ---------------- */
+html[data-sf33] #v11-cursor,
+html[data-sf33] #v11-cursor-ring,
+html[data-sf33] #pc .tm-scroll{display:none !important;}
+/* 29's long progress line goes; a short one is added back only on overflow */
+html[data-sf33] .sfr-progwrap{display:none !important;}
+
+/* ---- the restrained overflow cue --------------------------------------- */
+html[data-sf33] .sf4-cue{
+  display:flex;align-items:center;justify-content:flex-end;gap:14px;
+  padding:14px clamp(24px,5vw,64px) 0;}
+html[data-sf33] .sf4-cue span{
+  font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.3);white-space:nowrap;
+  transition:opacity .5s ease;}
+html[data-sf33] .sf4-cue i{
+  position:relative;display:block;width:74px;height:1px;
+  background:rgba(42,46,51,.13);}
+html[data-sf33] .sf4-cue i b{
+  position:absolute;top:0;bottom:0;left:0;display:block;
+  background:rgba(138,110,58,.6);}
+html[data-sf33] .sf4-cue.gone span{opacity:0;}
+
+/* ---- the gutter, clean ------------------------------------------------- */
+html[data-sf33] #pc .hs{--sf4-g:28px;}
+html[data-sf33] #pc .hs{row-gap:var(--sf4-g) !important;
+  gap:var(--sf4-g) 2px !important;}
+html[data-sf33] .sfr-gut{background:var(--sfd-paper,#f6f3ec);}
+html[data-sf33] .sfr-gridhost canvas{opacity:var(--sf4-grid,.26) !important;}
+
+/* =========================================================================
+   34–44 · refinements on the same system. Every one of them is 33ORG with
+   one decision changed; none of them touches the card.
+   ========================================================================= */
+
+/* 34 · TIGHT COLLECTIVE — the smallest gutter that still reads, no rule */
+html[data-sfv="34"] #pc .hs{--sf4-g:24px;}
+html[data-sfv="34"]{--sf4-grid:.16;}
+
+/* 35 · BALANCED GRID GUTTER — architectural, one mark at the far left only */
+html[data-sfv="35"] #pc .hs{--sf4-g:34px;}
+html[data-sfv="35"]{--sf4-grid:.4;}
+html[data-sfv="35"] .sf4-mark{position:absolute;left:0;top:50%;
+  width:26px;height:1px;margin-top:-.5px;background:rgba(138,110,58,.7);}
+
+/* 36 · HALF-CARD STAGGER */
+html[data-sfv="36"] #pc .hs{--sf4-g:28px;}
+html[data-sfv="36"]{--sf4-grid:.24;}
+html[data-sfv="36"] #pc .hs > .tc:nth-child(even){
+  transform:translateX(calc(var(--sfr-w) / 2 + 1px));}
+
+/* 37 · QUARTER-CARD STAGGER — calmer, production-minded */
+html[data-sfv="37"] #pc .hs{--sf4-g:26px;}
+html[data-sfv="37"]{--sf4-grid:.2;}
+html[data-sfv="37"] #pc .hs > .tc:nth-child(even){
+  transform:translateX(calc(var(--sfr-w) / 4 + 1px));}
+
+/* 38 · TONAL ROW DISTINCTION — no line at all, one step of parchment */
+html[data-sfv="38"] #pc .hs{--sf4-g:26px;}
+html[data-sfv="38"]{--sf4-grid:.12;}
+html[data-sfv="38"] .sfr-gut{background:transparent !important;}
+html[data-sfv="38"] #pc .hs > .tc:nth-child(even) > div:nth-child(2){
+  background:rgba(200,169,110,.07) !important;}
+html[data-sfv="38"] #pc .hs > .tc:nth-child(even) > div:nth-child(2)::before{
+  background:rgba(138,110,58,.28) !important;}
+
+/* 39 · CLEAN PAPER SEPARATOR — two rows mounted on one technical sheet */
+html[data-sfv="39"] #pc .hs{--sf4-g:30px;}
+html[data-sfv="39"]{--sf4-grid:.1;}
+html[data-sfv="39"] .sfr-gut{background:#f6f3ec !important;
+  box-shadow:inset 0 1px 0 rgba(239,236,230,1),inset 0 -1px 0 rgba(239,236,230,1);}
+
+/* 40 · FLUSH COLLECTIVE WALL — the minimum safe seam */
+html[data-sfv="40"] #pc .hs{--sf4-g:12px;}
+html[data-sfv="40"]{--sf4-grid:.3;}
+
+/* 41 · SOFT COLUMN RHYTHM — every second column a shade warmer */
+html[data-sfv="41"] #pc .hs{--sf4-g:26px;}
+html[data-sfv="41"]{--sf4-grid:.14;}
+/* column, not card: the pair in a column shares the tone, so it reads as a
+   vertical rhythm rather than a checkerboard */
+html[data-sfv="41"] #pc .hs > .tc.sf4-colB{background:#f2efe9 !important;}
+
+/* 42 · DISCIPLINE RHYTHM — the descriptor boxes are the only accent */
+html[data-sfv="42"] #pc .hs{--sf4-g:26px;}
+html[data-sfv="42"]{--sf4-grid:.1;}
+html[data-sfv="42"] .sfr-gut{background:transparent !important;}
+
+/* 43 · REFINED OVERFLOW CUE — 33ORG unchanged, the cue worked out */
+html[data-sfv="43"] #pc .hs{--sf4-g:28px;}
+html[data-sfv="43"]{--sf4-grid:.26;}
+
+/* 44 · PRODUCTION-READY COLLECTIVE */
+html[data-sfv="44"] #pc .hs{--sf4-g:26px;}
+html[data-sfv="44"]{--sf4-grid:.22;}
+
+/* ---- responsive --------------------------------------------------------
+   Below 861 the derived portrait height is released and the two-row layer's
+   own breakpoints take over, so a 500px portrait is never asked to sit on a
+   342px card. Typography is not reduced anywhere. */
+@media(max-width:1100px){
+  html[data-sf33] #pc .hs{--sf4-g:24px;}
+  html[data-sfv="40"] #pc .hs{--sf4-g:12px;}
+}
+@media(max-width:860px){
+  html[data-sf33] #pc .hs{--sf4-g:20px;}
+  html[data-sf33] .sf4-mark{display:none !important;}
+  html[data-sf33] .sfr-gridhost canvas{opacity:calc(var(--sf4-grid,.26) * .7) !important;}
+}
+@media(max-width:700px){
+  html[data-sf33] #pc .hs{--sf4-g:16px;}
+  html[data-sf33] .sf4-cue{padding-left:24px;padding-right:24px;}
+  /* the stagger is not readable at one card per screen */
+  html[data-sfv="36"] #pc .hs > .tc:nth-child(even),
+  html[data-sfv="37"] #pc .hs > .tc:nth-child(even){transform:none !important;}
+  html[data-sf33] #pc .sf4-title{margin-bottom:18px !important;}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-sf33] .sf4-cue span{transition:none !important;}
+}
+</style>
+
+<script id="sf-tm4-js">
+(function(){
+
+  var V=['33ORG','34','35','36','37','38','39','40','41','42','43','44'];
+
+  var NOTE={
+    '33ORG':'variation 29 corrected — the 22ORG portrait taken back from the card’s own inline height, the card rule and its space removed, every measurement line and gold node taken out of the gutter, THE / TEAM and THE PEOPLE / BEHIND IT set in the homepage’s own section-title system, the People columns realigned and the runway under the collective closed',
+    '34':'tight collective — the smallest gutter that still lets the grid read (24px), the Marshall texture at its faintest, no rule and no progress line: dense, confident, highly populated',
+    '35':'balanced grid gutter — 34px with the grid a step clearer, one short muted-gold mark at the far left edge of the gutter and nowhere else. The most architectural of the set',
+    '36':'half-card stagger — the lower level offset half a card on one linked interaction, clean gutter, runway added at both ends so neither the first nor the last person is cut',
+    '37':'quarter-card stagger — the same idea held back to a quarter card, a narrower gutter and no progress bar. Calmer than 36 and the more production-minded of the two',
+    '38':'tonal row distinction — no line at all: the upper panels keep 22ORG’s graphite wash and the lower take one step toward parchment, with the grid left only as a faint central texture',
+    '39':'clean paper separator — the gutter becomes a pale technical sheet with the grid at very low opacity and a fine cream boundary where it meets each row: two rows mounted on one sheet',
+    '40':'flush collective wall — the gutter cut to a 12px seam with the grid just visible inside it. The most powerful wall in the set, and the least separated',
+    '41':'soft column rhythm — every second COLUMN takes a slightly warmer cream, so the pair in a column shares its tone and the rhythm reads vertically instead of as a checkerboard',
+    '42':'discipline rhythm — every surface identical and the descriptor boxes left as the only accent, their widths falling naturally out of the words. No central ornament at all',
+    '43':'refined overflow cue — 33ORG visually unchanged, with the cue worked out: shown only on real overflow, a small EXPLORE → outside the cards and a short progress mark, and the label steps back once you have started',
+    '44':'production-ready collective — a 26px gutter, the authentic grid held very faint, no measurement furniture, no card rule, full 22ORG proportions, both house titles, the columns aligned and the cue shown only when it is needed'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function hs(){ return $('#pc .hs'); }
+  function strip(){ return $('#pc > section:nth-of-type(2)'); }
+  function close_(){ return document.getElementById('tm-close'); }
+
+  var TM=[],LS=[],RAFS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function raf(f){ var i=requestAnimationFrame(f); RAFS.push(i); return i; }
+
+  /* what has to be put back on the way out */
+  var UNDO=[];
+  function remember(el,prop){
+    if(!el) return;
+    UNDO.push({el:el, prop:prop, html:(prop==='html'?el.innerHTML:null),
+               style:el.getAttribute('style')});
+  }
+  function restore(){
+    UNDO.slice().reverse().forEach(function(u){
+      if(u.prop==='html') u.el.innerHTML=u.html;
+      if(u.style===null) u.el.removeAttribute('style');
+      else u.el.setAttribute('style',u.style);
+    });
+    UNDO=[];
+  }
+
+  /* -----------------------------------------------------------------------
+     1 · THE PORTRAIT, TAKEN BACK FROM THE CARD ITSELF.
+     The base page writes height straight onto each portrait as an inline
+     style. That inline value IS 22ORG's portrait height — it is what 22ORG
+     renders — so reading it back is the shared reference the brief asks for.
+     No number is restated here, and 22ORG and 33ORG cannot drift apart.
+     Released below 861 so a full-height portrait is never asked to sit on a
+     narrow card; the two-row layer's own breakpoints take over there.
+     --------------------------------------------------------------------- */
+  function portrait(){
+    var img=$('#pc .tc img.ph'); if(!img) return;
+    var h=(img.style&&img.style.height)||'';
+    /* the card's own value is clamp(400px,52vh,500px) — responsive, capped at
+       500. Taking the EXPRESSION rather than the pixel it happens to resolve
+       to is what makes this a shared token: 33ORG then tracks 22ORG at every
+       viewport height instead of only at the one it was measured on. */
+    if(!h||/var\(--sfr-ph\)/.test(h)) return;
+    var de=document.documentElement;
+    if(window.innerWidth>860) de.style.setProperty('--sfr-ph',h);
+    else de.style.removeProperty('--sfr-ph');
+  }
+
+  /* -----------------------------------------------------------------------
+     3 and 10 · THE GUTTER IS EMPTIED.
+     29 builds the vertical connectors and their gold squares in a second,
+     TRAVELLING gutter host. The elements are removed and the host that
+     re-fills them on resize is removed with them, so nothing can put them
+     back. The Marshall grid host is left exactly where 29 puts it.
+     --------------------------------------------------------------------- */
+  function clean(){
+    $$('.sfr-vt,.sfr-node,.sfr-tick,.sfr-reg,.sfr-em').forEach(function(n){ n.remove(); });
+    $$('.sfr-in').forEach(function(n){
+      if(!$('.sfr-gridhost',n)) n.remove();          /* the travelling host */
+    });
+    $$('.sfr-progwrap').forEach(function(n){ n.remove(); });
+  }
+
+  /* -----------------------------------------------------------------------
+     6 and 7 · THE TWO HOUSE TITLES.
+     Both are set with the homepage's own values, measured off
+     h2.section-title in section.funds. The elements themselves are the
+     page's own; only their content and class change, and both are put back
+     verbatim on the way out.
+     --------------------------------------------------------------------- */
+  function titles(){
+    var head=document.getElementById('tm-head');
+    if(head&&head.children[0]&&/the\s*team/i.test(head.children[0].textContent||'')){
+      var t=head.children[0];
+      if(!t.classList.contains('sf4-title')){
+        remember(t,'html');
+        t.classList.add('sf4-title');
+        t.innerHTML='THE<br>TEAM';
+      }
+    }
+    var pair=$('#tm-close .tm-pair');
+    if(pair&&pair.children[0]){
+      var lead=pair.children[0].children[0];
+      if(lead&&/people\s*behind/i.test(lead.textContent||'')&&
+         !lead.classList.contains('sf4-title')){
+        remember(lead,'html');
+        lead.classList.add('sf4-title');
+        lead.innerHTML='THE PEOPLE<br><em>BEHIND IT</em>';
+      }
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     8 · THE PEOPLE COLUMNS.
+     The brief asks for both candidates to be tried and the better one used.
+     They are both computed here and the one that leaves the two columns
+     closest in height wins — measured, not chosen by eye.
+       A · the right column starts level with the top of the two-line title
+       B · the right column starts level with the introductory paragraph
+     --------------------------------------------------------------------- */
+  var ALIGN=null;
+  function align(){
+    var pair=$('#tm-close .tm-pair');
+    if(!pair||!pair.children[1]) return;
+    var L=pair.children[0], R=pair.children[1];
+    var title=L.children[0], intro=L.children[1];
+    if(!title||!intro) return;
+    R.style.removeProperty('padding-top');
+    var lb=L.getBoundingClientRect(), rb=R.getBoundingClientRect();
+    var tTop=title.getBoundingClientRect().top;
+    var iTop=intro.getBoundingClientRect().top;
+    var rTop=rb.top;
+    /* A: no offset at all — both columns start together */
+    var offA=tTop-rTop;
+    /* B: the right column dropped to the paragraph */
+    var offB=iTop-rTop;
+    function balance(off){
+      return Math.abs((lb.bottom) - (rb.bottom+off));
+    }
+    var pick = balance(offA)<=balance(offB) ? offA : offB;
+    ALIGN={A:Math.round(offA),B:Math.round(offB),
+           balA:Math.round(balance(offA)),balB:Math.round(balance(offB)),
+           used:Math.round(pick)};
+    if(Math.abs(pick)>0.5){
+      remember(R,'style');
+      R.style.setProperty('padding-top',Math.max(0,pick).toFixed(1)+'px','important');
+    }
+  }
+
+  /* -----------------------------------------------------------------------
+     11 · THE SPACE UNDER THE COLLECTIVE.
+     29 left a runway for a progress bar that is no longer there. The strip
+     section's bottom padding is closed to the site's own section step, so
+     the collective and THE PEOPLE / BEHIND IT read as one move.
+     --------------------------------------------------------------------- */
+  function spacing(){
+    var s=strip(); if(!s) return;
+    remember(s,'style');
+    s.style.setProperty('padding-bottom','0px','important');
+    var c=close_(); if(!c) return;
+    remember(c,'style');
+    c.style.setProperty('padding-top','clamp(72px,9vh,116px)','important');
+    /* the same step at the foot of the block: 29 left 140px of grid running
+       under nothing between GET IN TOUCH and the Thesis */
+    c.style.setProperty('padding-bottom','clamp(72px,9vh,116px)','important');
+  }
+
+  /* -----------------------------------------------------------------------
+     THE OVERFLOW CUE.
+     Shown only when the track genuinely overflows, worked out from
+     scrollWidth against clientWidth and re-checked on resize. The label
+     steps back once the viewer has started; the short progress mark stays,
+     because that is the part that says how much is left.
+     --------------------------------------------------------------------- */
+  function cue(v){
+    var h=hs(), s=strip(); if(!h||!s) return;
+    if($('.sf4-cue',s)) return;
+    var box=document.createElement('div'); box.className='sf4-cue';
+    var bar=document.createElement('i'); var fill=document.createElement('b');
+    bar.appendChild(fill);
+    var lab=document.createElement('span');
+    lab.textContent = (v==='43'||v==='44') ? 'Explore →' : 'Drag →';
+    box.appendChild(bar); box.appendChild(lab);
+    s.appendChild(box);
+    var moved=false;
+    function upd(){
+      var over=h.scrollWidth>h.clientWidth+4;
+      box.style.display = over ? 'flex' : 'none';
+      if(!over) return;
+      var max=h.scrollWidth-h.clientWidth;
+      var seen=Math.min(1,h.clientWidth/h.scrollWidth);
+      var w=Math.max(14,seen*100);
+      fill.style.width=w+'%';
+      fill.style.left=((max>0?h.scrollLeft/max:0)*(100-w))+'%';
+    }
+    upd();
+    on(h,'scroll',function(){
+      if(!moved&&h.scrollLeft>18){ moved=true; box.classList.add('gone'); }
+      upd();
+    });
+    on(window,'resize',function(){ later(upd,150); });
+    later(upd,500); later(upd,1600);
+  }
+
+  /* 35's single mark, at the far left of the gutter and nowhere else */
+  function leftMark(){
+    var g=$('.sfr-gut'); if(!g||$('.sf4-mark',g)) return;
+    if(getComputedStyle(g).position==='static') g.style.position='absolute';
+    var i=document.createElement('i'); i.className='sf4-mark'; g.appendChild(i);
+  }
+
+  /* 41's column tone — applied per COLUMN, so a column's pair share it */
+  function columns(){
+    $$('#pc .hs > .tc').forEach(function(c,i){
+      c.classList.toggle('sf4-colB', Math.floor(i/2)%2===1);
+    });
+  }
+  function unColumns(){
+    $$('#pc .hs > .tc').forEach(function(c){ c.classList.remove('sf4-colB'); });
+  }
+
+  /* the staggered versions need runway or the last lower card is unreachable */
+  function runway(frac){
+    var h=hs(); if(!h) return;
+    remember(h,'style');
+    h.style.setProperty('padding-right','calc(var(--sfr-w) * '+frac+' + 24px)','important');
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    RAFS.forEach(cancelAnimationFrame); RAFS=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    $$('.sf4-cue,.sf4-mark').forEach(function(n){ n.remove(); });
+    unColumns();
+    $$('.sf4-title').forEach(function(n){
+      n.classList.remove('sf4-title');
+      /* these elements carried no class attribute at all before; leaving an
+         empty one behind is a difference, however small */
+      if(!n.getAttribute('class')) n.removeAttribute('class');
+    });
+    restore();
+    document.documentElement.style.removeProperty('--sfr-ph');
+    document.documentElement.removeAttribute('data-sf33');
+    document.documentElement.removeAttribute('data-sfv');
+    ALIGN=null;
+  }
+
+  function build(v){
+    portrait(); clean(); titles();
+    if(v==='35') leftMark();
+    if(v==='41') columns();
+    if(v==='36') runway(0.5);
+    if(v==='37') runway(0.25);
+    spacing();
+    align();
+    cue(v);
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 29 builds first, by 29's own code */
+      try{ prev.apply&&prev.apply('29'); }catch(e){}
+      var de=document.documentElement;
+      de.setAttribute('data-sf33','1');
+      de.setAttribute('data-sfv',v);
+      build(v);
+      /* 29 lays its gutter furniture out again on a delay and on resize, so
+         the removal is repeated on the same beats */
+      later(function(){ build(v); },420);
+      later(function(){ clean(); align(); },1000);
+      later(function(){ clean(); align(); },2000);
+      on(window,'resize',function(){ later(function(){ portrait(); clean(); align(); },200); });
+      window.__sf4align=function(){ return ALIGN; };
+    }
+  };
+})();
+</script>
