@@ -6648,3 +6648,449 @@ html[data-sfw="55"]{--sf5-inset:24px;--sf5-ar:.72;--sf5-g:26px;--sf5-cg:3px;--sf
   };
 })();
 </script>
+
+<style id="sf-tm6-css">
+/* =========================================================================
+   TEAM PAGE — 56–65. VARIATION 45, FINISHED.
+
+   Two things, both scoped to this lab. 45's typography, colour, content,
+   navigation, footer, photography and responsive logic are untouched.
+
+   1 · THE PHOTOGRAPHY GOES SCREEN TO SCREEN
+       45's collective already spans the page, but the page is 64px in from
+       the window on each side, so the imagery reads as pictures inside a
+       container. It now runs to the actual window edges.
+
+       It is done on a MEASURED viewport width, not 100vw. 100vw includes the
+       scrollbar, so the usual full-bleed trick (width:100vw + a negative
+       margin) makes the page a scrollbar wider than the window and gives the
+       document a horizontal scroll — which is exactly the bug this same file
+       had at 700px earlier today. --sf6-vw is documentElement.clientWidth,
+       written on resize, so the breakout is exact at every width and there is
+       never a horizontal scrollbar.
+
+       Nothing is stretched. The portrait keeps aspect-ratio and object-fit:
+       cover, so widening a card changes how much of the frame is seen, never
+       the shape of what is in it. Below 900 the object-position moves to the
+       subject rather than keeping a desktop value that was chosen for a
+       different crop.
+
+   2 · THE COMMERCIAL PLATFORM
+       A new movement after THE PEOPLE BEHIND IT: who we are, then the people,
+       then the platform around them. It is built from the page's own parts —
+       the house section-title, the body measure, the Marshall grid, the
+       descriptor-box tracking — so it reads as architecture rather than as an
+       addition.
+   ========================================================================= */
+
+/* ---- 1 · screen to screen ---------------------------------------------- */
+html[data-sf6] #pc .hs{
+  width:var(--sf6-vw,100%) !important;
+  margin-left:calc(50% - var(--sf6-vw,100%) / 2) !important;
+  margin-right:0 !important;
+  padding-left:var(--sf6-bleed,0px) !important;
+  padding-right:var(--sf6-bleed,0px) !important;}
+/* the crop is protected, never the shape: cover + a deliberate position */
+html[data-sf6] #pc .hs > .tc img.ph{
+  object-fit:cover !important;
+  object-position:var(--sf6-pos, 50% 26%);}
+/* each member keeps their own approved position on desktop; the variable is
+   only a floor for the narrow crops below */
+html[data-sf6] #pc .hs > .tc img.ph[style*="object-position"]{
+  object-position:revert-layer;}
+
+@media(max-width:900px){
+  /* a desktop object-position was chosen against a much wider frame. Below
+     900 the card is narrower than it is tall by a long way, so the same
+     percentage walks off the subject. These pull back toward the centre. */
+  html[data-sf6] #pc .hs > .tc img.ph{
+    object-position:50% 22% !important;}
+}
+
+/* ---- 2 · the platform movement ----------------------------------------- */
+html[data-sf6] .sf6{
+  position:relative;display:block;
+  /* 60's rule deliberately runs out past both ends and is measured in vw,
+     which counts the scrollbar; clipped here so it can overrun visually
+     without ever giving the document a horizontal scroll */
+  overflow-x:clip;
+  background:var(--sf6-bg,#efece6);
+  padding:var(--sf6-pt,clamp(76px,10vh,132px)) clamp(24px,5vw,64px)
+          var(--sf6-pb,clamp(76px,10vh,132px));}
+html[data-sf6] .sf6-in{position:relative;z-index:2;max-width:1600px;margin:0 auto;}
+html[data-sf6] .sf6-bp{position:absolute;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;opacity:var(--sf6-grid,.16);}
+html[data-sf6] .sf6-bp canvas{position:absolute;inset:0;display:block;}
+
+/* the house section title, the same one THE PEOPLE / BEHIND IT uses */
+html[data-sf6] .sf6-t{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);
+  font-weight:700;line-height:.92;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(10,10,10,.75);margin:0 0 22px;display:block;}
+html[data-sf6] .sf6-t em{font-style:normal;letter-spacing:.14em;
+  color:rgba(200,169,110,.65);}
+html[data-sf6] .sf6-p{
+  font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:2;
+  font-weight:300;color:rgba(10,10,10,.55);margin:0;
+  max-width:min(100%,var(--sf6-measure,62ch));}
+html[data-sf6] .sf6-ey{
+  font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;font-weight:400;color:#8a6e3a;display:block;
+  margin:0 0 18px;}
+
+/* the five, as a shared system every variation re-shapes */
+/* Five equal columns look even in the CSS and uneven on the page: M&A leaves
+   most of its column empty while PARTNERSHIPS fills its own and crowds EXITS.
+   The default is optical instead — each term takes the width of its word and
+   the space is shared out between them. Variations that genuinely want a
+   ruled grid (63's index, 58's rows, 59's pairs) set their own. */
+html[data-sf6] .sf6-five{display:flex;flex-wrap:wrap;
+  justify-content:space-between;align-items:flex-start;
+  gap:clamp(22px,3vw,58px);
+  margin-top:var(--sf6-fm,clamp(44px,6vh,76px));}
+html[data-sf6] .sf6-f{flex:0 0 auto;}
+html[data-sf6] .sf6-f{position:relative;}
+html[data-sf6] .sf6-k{
+  font-family:'Bebas Neue',sans-serif;font-weight:700;
+  font-size:var(--sf6-ks,clamp(1rem,1.5vw,1.55rem));
+  line-height:.94;letter-spacing:var(--sf6-kl,.16em);text-transform:uppercase;
+  color:var(--sf6-kc,rgba(10,10,10,.72));display:block;}
+html[data-sf6] .sf6-s{
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.38);
+  display:block;margin-top:9px;}
+html[data-sf6] .sf6-rule{height:1px;background:rgba(42,46,51,.14);
+  margin:var(--sf6-rm,26px) 0 0;}
+html[data-sf6] .sf6-n{
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:.2em;
+  color:rgba(10,10,10,.28);display:block;margin-bottom:10px;}
+
+/* ================= 56 · EDITORIAL FOUNDATION ============================ */
+html[data-sfx="56"]{--sf6-grid:.1;--sf6-fg:2px;}
+html[data-sfx="56"] .sf6-five{border-top:1px solid rgba(42,46,51,.14);
+  padding-top:26px;}
+
+/* ================= 57 · PULL BACK FROM THE PEOPLE ======================= */
+html[data-sfx="57"]{--sf6-grid:.2;--sf6-measure:52ch;--sf6-fg:2px;}
+/* the copy sits at the People column's measure and the five open out past it
+   to the full frame — the camera pulling back, done with width alone */
+html[data-sfx="57"] .sf6-five{
+  width:var(--sf6-vw,100%);margin-left:calc(50% - var(--sf6-vw,100%)/2);
+  padding:0 clamp(24px,5vw,64px);}
+html[data-sfx="57"] .sf6-t{margin-bottom:26px;}
+html[data-sfx="57"] .sf6-k{--sf6-ks:clamp(1.1rem,1.9vw,2rem);}
+
+/* ================= 58 · FIVE CAPABILITIES =============================== */
+html[data-sfx="58"]{--sf6-grid:.12;}
+/* not five cards — five rows, the way the Board rows already read */
+html[data-sfx="58"] .sf6-five{display:grid;grid-template-columns:1fr;gap:0;}
+html[data-sfx="58"] .sf6-f{flex:none;}
+html[data-sfx="58"] .sf6-f{
+  display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr) minmax(0,5fr);
+  align-items:baseline;gap:24px;
+  border-top:1px solid rgba(42,46,51,.13);padding:20px 0 19px;}
+html[data-sfx="58"] .sf6-f:last-child{border-bottom:1px solid rgba(42,46,51,.13);}
+html[data-sfx="58"] .sf6-k{font-size:clamp(1.15rem,2vw,2.05rem);letter-spacing:.14em;}
+html[data-sfx="58"] .sf6-s{margin-top:0;}
+html[data-sfx="58"] .sf6-d{font-family:'DM Sans',sans-serif;font-size:.78rem;
+  line-height:1.85;font-weight:300;color:rgba(10,10,10,.48);}
+
+/* ================= 59 · NETWORK ========================================= */
+html[data-sfx="59"]{--sf6-grid:.26;--sf6-measure:56ch;}
+html[data-sfx="59"] .sf6-net{
+  display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);
+  gap:clamp(32px,5vw,88px);margin-top:clamp(44px,6vh,76px);
+  align-items:start;}
+html[data-sfx="59"] .sf6-who{display:block;}
+html[data-sfx="59"] .sf6-w{
+  font-family:'DM Sans',sans-serif;font-size:12.4px;letter-spacing:2.1px;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.62);
+  border-top:1px solid rgba(42,46,51,.12);padding:13px 0;display:block;}
+html[data-sfx="59"] .sf6-w:last-child{border-bottom:1px solid rgba(42,46,51,.12);}
+html[data-sfx="59"] .sf6-five{display:grid;margin-top:0;
+  grid-template-columns:repeat(2,1fr);gap:22px 30px;}
+html[data-sfx="59"] .sf6-f{flex:none;}
+html[data-sfx="59"] .sf6-f{border-top:1px solid rgba(138,110,58,.3);padding-top:14px;}
+html[data-sfx="59"] .sf6-f:last-child{grid-column:1 / -1;}
+
+/* ================= 60 · VENTURE LIFECYCLE =============================== */
+html[data-sfx="60"]{--sf6-grid:.14;--sf6-fg:0px;}
+/* one rule through all five, running past both ends: the involvement does
+   not start at the first term or stop at the last */
+html[data-sfx="60"] .sf6-five{position:relative;padding-top:38px;}
+html[data-sfx="60"] .sf6-five::before{content:"";position:absolute;
+  left:-6vw;right:-6vw;top:0;height:1px;background:rgba(42,46,51,.16);}
+html[data-sfx="60"] .sf6-f{padding-right:18px;}
+html[data-sfx="60"] .sf6-f::before{content:"";position:absolute;
+  left:0;top:-38px;width:1px;height:12px;background:rgba(138,110,58,.6);}
+html[data-sfx="60"] .sf6-k{font-size:clamp(1.05rem,1.7vw,1.75rem);}
+
+/* ================= 61 · THE PLATFORM BENEATH ============================ */
+html[data-sfx="61"]{--sf6-grid:.3;--sf6-bg:#e9e5dd;--sf6-pt:clamp(60px,8vh,104px);}
+/* no gap above it at all — it is the course the People block sits on */
+html[data-sfx="61"] .sf6{box-shadow:inset 0 1px 0 rgba(42,46,51,.1);}
+html[data-sfx="61"] .sf6-five{
+  border-top:1px solid rgba(42,46,51,.16);padding-top:30px;
+  align-items:end;}
+html[data-sfx="61"] .sf6-k{color:rgba(10,10,10,.66);}
+
+/* ================= 62 · INTERNATIONAL PLATFORM ========================== */
+html[data-sfx="62"]{--sf6-grid:.16;--sf6-measure:58ch;}
+html[data-sfx="62"] .sf6-geo{
+  display:flex;flex-wrap:wrap;gap:0 clamp(28px,4vw,64px);
+  margin:clamp(34px,5vh,58px) 0 0;
+  border-top:1px solid rgba(42,46,51,.14);padding-top:22px;}
+html[data-sfx="62"] .sf6-g{
+  font-family:'Bebas Neue',sans-serif;font-weight:700;
+  font-size:clamp(1.1rem,1.9vw,2rem);line-height:.94;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.68);}
+html[data-sfx="62"] .sf6-g em{font-style:normal;color:rgba(200,169,110,.65);}
+html[data-sfx="62"] .sf6-five{--sf6-ks:clamp(.92rem,1.3vw,1.3rem);
+  margin-top:clamp(34px,5vh,58px);}
+
+/* ================= 63 · TRANSACTION LANGUAGE ============================ */
+html[data-sfx="63"]{--sf6-grid:.1;--sf6-bg:#eae7e0;--sf6-kl:.2em;}
+html[data-sfx="63"] .sf6-five{display:grid;
+  grid-template-columns:repeat(5,1fr);
+  border-top:1px solid rgba(42,46,51,.2);
+  border-bottom:1px solid rgba(42,46,51,.2);
+  padding:24px 0 22px;gap:0;}
+html[data-sfx="63"] .sf6-f{flex:none;}
+html[data-sfx="63"] .sf6-f + .sf6-f{
+  border-left:1px solid rgba(42,46,51,.11);padding-left:26px;}
+html[data-sfx="63"] .sf6-k{color:rgba(10,10,10,.8);
+  font-size:clamp(.95rem,1.4vw,1.4rem);}
+html[data-sfx="63"] .sf6-n{color:rgba(138,110,58,.7);}
+
+/* ================= 64 · RADICAL MINIMAL ================================= */
+html[data-sfx="64"]{--sf6-grid:0;--sf6-measure:48ch;
+  --sf6-pt:clamp(120px,17vh,220px);--sf6-pb:clamp(120px,17vh,220px);
+  --sf6-fm:clamp(90px,12vh,150px);}
+html[data-sfx="64"] .sf6-bp{display:none;}
+html[data-sfx="64"] .sf6-five{gap:0;}
+html[data-sfx="64"] .sf6-k{font-size:clamp(.9rem,1.25vw,1.2rem);
+  letter-spacing:.24em;color:rgba(10,10,10,.6);}
+html[data-sfx="64"] .sf6-s{display:none;}
+html[data-sfx="64"] .sf6-rule{display:none;}
+
+/* ================= 65 · THE ONE I'D SHIP ================================
+   The people, then the platform, with nothing between them: 61's idea that
+   the platform is the course underneath, 57's mechanism of the five opening
+   out past the copy's measure, and 64's discipline about how little else is
+   needed. The eyebrow goes, the sub-labels go, the grid stays faint. */
+html[data-sfx="65"]{--sf6-grid:.2;--sf6-bg:#ebe8e1;--sf6-measure:54ch;
+  --sf6-pt:clamp(84px,11vh,140px);--sf6-pb:clamp(96px,12vh,156px);}
+html[data-sfx="65"] .sf6{box-shadow:inset 0 1px 0 rgba(42,46,51,.09);}
+html[data-sfx="65"] .sf6-ey{display:none;}
+html[data-sfx="65"] .sf6-five{
+  width:var(--sf6-vw,100%);margin-left:calc(50% - var(--sf6-vw,100%)/2);
+  padding:32px clamp(24px,5vw,64px) 0;
+  border-top:1px solid rgba(42,46,51,.13);
+  margin-top:clamp(52px,7vh,88px);}
+html[data-sfx="65"] .sf6-k{font-size:clamp(1.05rem,1.75vw,1.85rem);
+  letter-spacing:.15em;color:rgba(10,10,10,.72);}
+html[data-sfx="65"] .sf6-s{color:rgba(138,110,58,.62);}
+
+/* ---- responsive -------------------------------------------------------- */
+@media(max-width:1100px){
+  html[data-sf6] .sf6-five{gap:26px clamp(20px,3vw,44px);}
+  html[data-sfx="63"] .sf6-five{grid-template-columns:repeat(3,1fr);row-gap:22px;}
+  html[data-sfx="59"] .sf6-net{grid-template-columns:1fr;}
+  html[data-sfx="63"] .sf6-f + .sf6-f{border-left:0;padding-left:0;}
+}
+@media(max-width:700px){
+  html[data-sf6] .sf6-five{gap:22px 26px;}
+  html[data-sfx="63"] .sf6-five{grid-template-columns:repeat(2,1fr);}
+  html[data-sf6] .sf6{padding-left:24px;padding-right:24px;}
+  html[data-sfx="58"] .sf6-f{grid-template-columns:1fr;gap:6px;}
+  html[data-sfx="60"] .sf6-five::before{left:-24px;right:-24px;}
+  html[data-sfx="57"] .sf6-five,html[data-sfx="65"] .sf6-five{
+    padding-left:24px;padding-right:24px;}
+}
+@media(max-width:460px){
+  html[data-sf6] .sf6-five{gap:18px;}
+  html[data-sfx="63"] .sf6-five{grid-template-columns:1fr;}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-sf6] .sf6-bp{transition:none !important;}
+}
+</style>
+
+<script id="sf-tm6-js">
+(function(){
+
+  var V=['56','57','58','59','60','61','62','63','64','65'];
+
+  /* Matthew's paragraph, used as given. The short labels under each term are
+     lifted straight out of that same sentence — origination from "deal flow",
+     formation from "capital formation", realisation from "realise value" —
+     so nothing here asserts anything he has not written. */
+  var TITLE='A Platform Built Around <em>the Venture</em>.';
+  var BODY='Silent Foundry brings together a wider network of investors, operators, advisors and transaction partners across Asia, Europe and Australia. From deal flow and acquisitions through capital formation, strategic partnerships and exits, the platform extends beyond product creation to the commercial infrastructure required to build and realise value.';
+  var FIVE=[
+    ['Deal Flow','Origination'],
+    ['Capital','Formation'],
+    ['M&amp;A','Acquisition'],
+    ['Partnerships','Strategic'],
+    ['Exits','Realisation']
+  ];
+  /* 58 gives each one a line; every phrase is a restatement of the paragraph */
+  var LINE={
+    'Deal Flow':'Opportunities reaching the Foundry through the network before they reach a market.',
+    'Capital':'Capital formation for the ventures the Foundry builds, from the investors around it.',
+    'M&amp;A':'Acquisition of brands, assets and businesses worth translating into product.',
+    'Partnerships':'Strategic partners on the commercial side, alongside the manufacturing base.',
+    'Exits':'Realising value once a venture is built, not only creating it.'
+  };
+  var WHO=['Investors','Operators','Advisors','Transaction Partners'];
+  var GEO=['Asia','Europe','Australia'];
+
+  var NOTE={
+    '56':'editorial foundation — the house section title, the paragraph at the page’s own measure, and the five set as a quiet typographic foundation across one rule underneath. The conservative production candidate',
+    '57':'pull back from the people — the copy holds the People column’s measure and the five open out past it to the full window, so the section physically widens as you read it: the camera pulling back off the individuals onto the network',
+    '58':'five capabilities — not five cards but five rows, in the language the Board rows already use: term, function, and one line of what it means. Institutional weight without a single box',
+    '59':'network — the four constituencies named down the left as an index, the five functions emerging from them on the right, tied together only by the Marshall grid behind. No diagram, no graph',
+    '60':'venture lifecycle — one fine rule running through all five and out past both ends, with a gold tick at each. The involvement does not begin at the first term or stop at the last',
+    '61':'the platform beneath — a slightly deeper stone course sitting hard against the People block with no gap at all, the five along its base. The platform as the thing the people stand on',
+    '62':'international platform — Asia, Europe and Australia given display weight above the five, so the reach is the setup and the capability is the conclusion. No map',
+    '63':'transaction language — the sharpest of the set: a tabular index between two rules, divided by hairlines, numbered, tracked wider. Financially literate, still cream and gold',
+    '64':'radical minimal — the sentence, one paragraph and five words, at almost double the section padding. No grid, no sub-labels, no rule. Nothing but scale and space',
+    '65':'the one I would ship — 61’s course beneath the people, 57’s widening, 64’s discipline: no eyebrow, no ornament, the five opening to the full window on one hairline'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  var TM=[],LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+
+  /* the measured window width — clientWidth excludes the scrollbar, which is
+     the whole reason this is not 100vw */
+  function vw(){
+    var w=document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--sf6-vw',w+'px');
+  }
+
+  function el(tag,cls,html){
+    var n=document.createElement(tag);
+    if(cls) n.className=cls;
+    if(html!=null) n.innerHTML=html;
+    return n;
+  }
+
+  function five(v){
+    var box=el('div','sf6-five');
+    FIVE.forEach(function(f,i){
+      var n=el('div','sf6-f');
+      if(v==='63') n.appendChild(el('span','sf6-n',('0'+(i+1)).slice(-2)));
+      n.appendChild(el('span','sf6-k',f[0]));
+      if(v!=='64') n.appendChild(el('span','sf6-s',f[1]));
+      if(v==='58') n.appendChild(el('p','sf6-d',LINE[f[0]]||''));
+      box.appendChild(n);
+    });
+    return box;
+  }
+
+  function build(v){
+    if($('.sf6')) return;
+    var close=document.getElementById('tm-close');
+    if(!close||!close.parentNode) return;
+    var sec=el('section','sf6');
+    var inn=el('div','sf6-in');
+    sec.appendChild(el('div','sf6-bp'));
+    sec.appendChild(inn);
+
+    inn.appendChild(el('span','sf6-ey','The Platform'));
+    inn.appendChild(el('h2','sf6-t',TITLE));
+    inn.appendChild(el('p','sf6-p',BODY));
+
+    if(v==='62'){
+      var g=el('div','sf6-geo');
+      GEO.forEach(function(x,i){
+        g.appendChild(el('span','sf6-g',(i===1?'<em>'+x+'</em>':x)));
+      });
+      inn.appendChild(g);
+      inn.appendChild(five(v));
+    } else if(v==='59'){
+      var net=el('div','sf6-net');
+      var who=el('div','sf6-who');
+      WHO.forEach(function(w){ who.appendChild(el('span','sf6-w',w)); });
+      net.appendChild(who);
+      net.appendChild(five(v));
+      inn.appendChild(net);
+    } else {
+      inn.appendChild(five(v));
+    }
+
+    close.parentNode.insertBefore(sec, close.nextSibling);
+
+    /* 61 and 65 are the two that read as the course the people stand on, so
+       the space between the two blocks closes. 33ORG sets that padding as an
+       inline !important, which no stylesheet can outrank — it has to be set
+       the same way, and it is put back by 33ORG's own teardown because that
+       is where the original was recorded. */
+    tight(v);
+
+    /* the Marshall grid, drawn by the homepage's own function */
+    var host=$('.sf6-bp',sec);
+    if(host&&window.__sfMarshall){
+      var draw=function(){
+        $$('canvas',host).forEach(function(c){ c.__stop=1; c.remove(); });
+        if(host.offsetWidth<8||host.offsetHeight<8) return;
+        window.__sfMarshall(host,{opacity:1});
+      };
+      later(draw,90); later(draw,900);
+      on(window,'resize',function(){ later(draw,240); });
+    }
+  }
+
+  /* 61 and 65 are the two that read as the course the people stand on, so the
+     space between the two blocks closes. 33ORG sets that padding as an inline
+     !important, which no stylesheet can outrank, and it re-applies it on its
+     own timers — so this has to be set the same way and asserted after the
+     last of them. 33ORG's teardown put the original back either way, because
+     that is where it was recorded. */
+  function tight(v){
+    if(v!=='61'&&v!=='65') return;
+    var c=document.getElementById('tm-close');
+    if(c) c.style.setProperty('padding-bottom','clamp(28px,3.5vh,52px)','important');
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    $$('.sf6 .sf6-bp canvas').forEach(function(c){ c.__stop=1; });
+    $$('.sf6').forEach(function(n){ n.remove(); });
+    var de=document.documentElement;
+    de.style.removeProperty('--sf6-vw');
+    de.removeAttribute('data-sf6');
+    de.removeAttribute('data-sfx');
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 45 builds first, by 45's own code */
+      try{ prev.apply&&prev.apply('45'); }catch(e){}
+      var de=document.documentElement;
+      de.setAttribute('data-sf6','1');
+      de.setAttribute('data-sfx',v);
+      vw(); build(v);
+      later(function(){ vw(); build(v); },420);
+      later(function(){ vw(); },1400);
+      /* after 33ORG's last pass */
+      later(function(){ tight(v); },2400);
+      later(function(){ tight(v); },3400);
+      on(window,'resize',function(){ later(vw,120); });
+    }
+  };
+})();
+</script>
