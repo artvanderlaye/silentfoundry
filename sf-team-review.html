@@ -6362,3 +6362,289 @@ html[data-sfv="44"]{--sf4-grid:.22;}
   };
 })();
 </script>
+
+<style id="sf-tm5-css">
+/* =========================================================================
+   TEAM PAGE — 45–55. 34–44 REDONE, SCREEN TO SCREEN.
+
+   THE THING THAT CHANGED
+   34–44 kept the horizontal track from 29, so the collective was a slider
+   that happened to have two rows in it. With two rows there is no need for
+   one: ten people is five columns, and five columns fit the screen. So the
+   track is gone. The strip becomes a grid that spans the page, every member
+   is on screen at once, and there is nothing to drag, nothing to scroll and
+   no cue to show — the cue only ever existed to say there was more off the
+   edge, and now there isn't.
+
+   Because the cards now size themselves to the screen rather than being
+   fixed at 360, card size becomes something to vary rather than something to
+   hold — which is what these eleven do. Two levers, both honest:
+     the inset   how far the collective is held off the page edges (0–96px)
+     the aspect  the portrait's width-to-height, 22ORG's being 360/500 = .72
+   The crop itself never changes: aspect-ratio holds the same shape at any
+   width and every approved object-position is untouched.
+
+   Card widths across the set run 224 to 268 at 1440, portrait heights 312 to
+   419. Enough to tell them apart, not enough to be a different card.
+
+   ALSO FIXED
+     THE TEAM is on one line.
+     The rule above MISSION is gone — it was a border-top on the first item
+     of the right column, where the other two rules are dividers BETWEEN
+     items and belong.
+
+   Everything else is 33ORG: full-height portraits by ratio, no card rule, no
+   measurement furniture, the clean Marshall gutter, THE PEOPLE / BEHIND IT
+   in the homepage's own title system.
+   ========================================================================= */
+
+/* ---- the collective, spanning the page --------------------------------- */
+html[data-sf5] #pc .hs{
+  display:grid !important;
+  grid-template-columns:repeat(var(--sf5-units,5),1fr) !important;
+  grid-template-rows:none !important;
+  grid-auto-flow:row !important;
+  gap:var(--sf5-g,26px) var(--sf5-cg,2px) !important;
+  row-gap:var(--sf5-g,26px) !important;
+  column-gap:var(--sf5-cg,2px) !important;
+  padding-left:var(--sf5-inset,0px) !important;
+  padding-right:var(--sf5-inset,0px) !important;
+  overflow:visible !important;
+  cursor:default !important;
+  /* the base file gives the strip width:100vw and pulls it left by half the
+     difference, which is right for a full-bleed slider and wrong here: 100vw
+     counts the scrollbar, so the grid ends up a scrollbar wider than the page
+     and the document gains a horizontal scroll. The grid takes the column's
+     own width instead. */
+  width:auto !important;
+  margin-left:0 !important;margin-right:0 !important;}
+html[data-sf5] #pc .hs > .tc{
+  flex:none !important;width:auto !important;max-width:none !important;
+  min-width:0 !important;height:auto !important;cursor:pointer;}
+/* the portrait keeps 22ORG's shape by ratio rather than by a pixel height,
+   so the crop is identical at every card width */
+html[data-sf5] #pc .hs > .tc img.ph{
+  width:100% !important;height:auto !important;max-width:none !important;
+  aspect-ratio:var(--sf5-ar,.72) !important;
+  object-fit:cover !important;margin:0 !important;}
+/* nothing overflows, so nothing announces that it does */
+html[data-sf5] .sf4-cue{display:none !important;}
+
+/* ---- no rule above MISSION --------------------------------------------- */
+html[data-sf5] #pc #tm-close .tm-pair > div:nth-child(2) > div:first-child{
+  border-top:0 !important;padding-top:0 !important;}
+
+/* =========================================================================
+   45–55 · the same eleven ideas, each at its own card size
+   ========================================================================= */
+
+/* 45 · TIGHT COLLECTIVE — 22ORG's ratio exactly, edge to edge */
+html[data-sfw="45"]{--sf5-inset:0px;--sf5-ar:.72;--sf5-g:24px;--sf5-cg:2px;--sf4-grid:.16;}
+
+/* 46 · BALANCED — held off the edges, a shorter portrait, the clearest grid */
+html[data-sfw="46"]{--sf5-inset:48px;--sf5-ar:.78;--sf5-g:34px;--sf5-cg:6px;--sf4-grid:.4;}
+
+/* 47 · HALF-CARD STAGGER — a real half offset, still entirely on screen */
+html[data-sfw="47"]{--sf5-inset:0px;--sf5-ar:.72;--sf5-g:28px;--sf5-cg:2px;--sf4-grid:.24;}
+
+/* 48 · QUARTER-CARD STAGGER — the calmer offset */
+html[data-sfw="48"]{--sf5-inset:24px;--sf5-ar:.75;--sf5-g:26px;--sf5-cg:4px;--sf4-grid:.2;}
+
+/* 49 · TONAL ROW DISTINCTION — the tallest portraits, no line at all */
+html[data-sfw="49"]{--sf5-inset:0px;--sf5-ar:.68;--sf5-g:26px;--sf5-cg:2px;--sf4-grid:.12;}
+html[data-sfw="49"] .sfr-gut{background:transparent !important;}
+html[data-sfw="49"] #pc .hs > .tc:nth-child(even) > div:nth-child(2){
+  background:rgba(200,169,110,.07) !important;}
+html[data-sfw="49"] #pc .hs > .tc:nth-child(even) > div:nth-child(2)::before{
+  background:rgba(138,110,58,.28) !important;}
+
+/* 50 · CLEAN PAPER SEPARATOR */
+html[data-sfw="50"]{--sf5-inset:32px;--sf5-ar:.74;--sf5-g:30px;--sf5-cg:4px;--sf4-grid:.1;}
+html[data-sfw="50"] .sfr-gut{background:#f6f3ec !important;
+  box-shadow:inset 0 1px 0 #efece6,inset 0 -1px 0 #efece6;}
+
+/* 51 · FLUSH COLLECTIVE WALL — no column gap at all, the widest cards */
+html[data-sfw="51"]{--sf5-inset:0px;--sf5-ar:.72;--sf5-g:10px;--sf5-cg:0px;--sf4-grid:.3;}
+html[data-sfw="51"] #pc .hs > .tc{
+  box-shadow:inset -1px 0 0 rgba(42,46,51,.09);}
+
+/* 52 · SOFT COLUMN RHYTHM — every second column a shade warmer */
+html[data-sfw="52"]{--sf5-inset:0px;--sf5-ar:.70;--sf5-g:26px;--sf5-cg:2px;--sf4-grid:.14;}
+html[data-sfw="52"] #pc .hs > .tc.sf4-colB{background:#f2efe9 !important;}
+
+/* 53 · DISCIPLINE RHYTHM — the most air, the shortest portrait, no ornament */
+html[data-sfw="53"]{--sf5-inset:96px;--sf5-ar:.80;--sf5-g:26px;--sf5-cg:8px;--sf4-grid:.1;}
+html[data-sfw="53"] .sfr-gut{background:transparent !important;}
+
+/* 54 · PORTRAIT AUTHORITY — the tallest crop the ratio allows, tight rows */
+html[data-sfw="54"]{--sf5-inset:0px;--sf5-ar:.64;--sf5-g:22px;--sf5-cg:2px;--sf4-grid:.18;}
+
+/* 55 · PRODUCTION-READY COLLECTIVE */
+html[data-sfw="55"]{--sf5-inset:24px;--sf5-ar:.72;--sf5-g:26px;--sf5-cg:3px;--sf4-grid:.22;}
+
+/* ---- responsive --------------------------------------------------------
+   The column count comes down as the screen does, and the roster keeps
+   filling down-then-across, so member 1 and member 2 stay in the same column
+   at every size. Still no slider anywhere, so vertical scrolling is never
+   competed for and nothing is off the edge. */
+@media(max-width:1200px){
+  html[data-sf5]{--sf5-inset:0px !important;}
+}
+@media(max-width:900px){
+  html[data-sf5]{--sf5-cg:2px !important;}
+  html[data-sf5] #pc .hs{--sf5-g:20px;}
+}
+@media(max-width:700px){
+  html[data-sf5] #pc .hs{
+    padding-left:24px !important;padding-right:24px !important;}
+  html[data-sf5] #pc .hs > .tc > div:nth-child(2){
+    padding-left:18px !important;padding-right:18px !important;}
+}
+@media(max-width:480px){
+  html[data-sf5] #pc .hs > .tc > div:nth-child(2){
+    padding-left:22px !important;padding-right:22px !important;}
+}
+</style>
+
+<script id="sf-tm5-js">
+(function(){
+
+  var V=['45','46','47','48','49','50','51','52','53','54','55'];
+
+  /* per version: how many grid units one card spans, and how far the lower
+     row is offset in those units. Aligned is 1 and 0; a half-card stagger is
+     2 and 1; a quarter-card stagger is 4 and 1. Expressing the offset as a
+     grid unit rather than a transform is what keeps the staggered versions
+     entirely on screen — the row is placed, not pushed. */
+  var STEP={'47':[2,1], '48':[4,1]};
+
+  var NOTE={
+    '45':'tight collective — 22ORG’s portrait ratio exactly, edge to edge, the narrowest row gap and the faintest grid. Five columns, ten people, nothing off the screen',
+    '46':'balanced — the collective held 48px off the page edges with a shorter portrait and the clearest reading of the Marshall grid, plus the single gold mark at the far left of the gutter',
+    '47':'half-card stagger — the lower row placed half a card across in the grid itself rather than pushed, so the offset is real and every member is still on screen',
+    '48':'quarter-card stagger — the same idea held back to a quarter, on a slightly shorter portrait and a little inset. The calmer of the two',
+    '49':'tonal row distinction — the tallest portraits in the set, no line between the rows at all, the lower panels one step toward parchment',
+    '50':'clean paper separator — the gutter as a pale technical sheet with a fine cream boundary at each row, on a slightly inset, slightly shorter card',
+    '51':'flush collective wall — no column gap at all, so the cards meet on a hairline and the row reads as one surface. The widest cards in the set',
+    '52':'soft column rhythm — every second COLUMN a shade warmer, so a column’s pair share the tone and the rhythm reads vertically',
+    '53':'discipline rhythm — the most air: held 96px off the edges with the shortest portrait and no central ornament, the descriptor boxes carrying it alone',
+    '54':'portrait authority — the tallest crop in the set on the tightest rows, so the faces do the work and the collective still fits the screen',
+    '55':'production-ready — 22ORG’s ratio, a modest inset, a 26px gutter and the grid held quiet. The resolved combination of the set'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function hs(){ return $('#pc .hs'); }
+
+  var TM=[],LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+
+  /* how many columns the screen can hold. Two rows is the design; below that
+     the roster keeps the same down-then-across rule in more rows. */
+  function colsFor(n){
+    var w=window.innerWidth;
+    if(w<=480) return 1;
+    if(w<=700) return 2;
+    if(w<=900) return 3;
+    if(w<=1200) return 4;
+    return Math.ceil(n/2);
+  }
+
+  /* -----------------------------------------------------------------------
+     PLACEMENT.
+     Every card is given an explicit column and row, so the roster order is
+     literally the placement rule — member 1 top of column 1, member 2 below
+     it, member 3 top of column 2 — at any column count, and the reading
+     order in the DOM is never disturbed.
+     --------------------------------------------------------------------- */
+  var CUR=null;
+  function place(v){
+    var h=hs(); if(!h) return;
+    var cards=$$('#pc .hs > .tc');
+    if(!cards.length) return;
+    var n=cards.length;
+    var cols=colsFor(n);
+    var rows=Math.ceil(n/cols);
+    var st=(rows===2&&STEP[v])?STEP[v]:[1,0];
+    var per=st[0], off=st[1];
+    cards.forEach(function(c,i){
+      var col=Math.floor(i/rows), row=(i%rows)+1;
+      var start=col*per+1+((row===2)?off:0);
+      c.style.setProperty('grid-column',start+' / span '+per,'important');
+      c.style.setProperty('grid-row',row+' / span 1','important');
+    });
+    document.documentElement.style.setProperty('--sf5-units',String(cols*per+off));
+    CUR=v;
+  }
+
+  function unplace(){
+    $$('#pc .hs > .tc').forEach(function(c){
+      c.style.removeProperty('grid-column');
+      c.style.removeProperty('grid-row');
+    });
+    document.documentElement.style.removeProperty('--sf5-units');
+  }
+
+  /* 52's column tone — by column, so a column's pair share it */
+  function columns(on_){
+    var cards=$$('#pc .hs > .tc');
+    var cols=colsFor(cards.length), rows=Math.ceil(cards.length/cols);
+    cards.forEach(function(c,i){
+      c.classList.toggle('sf4-colB', on_ && Math.floor(i/rows)%2===1);
+    });
+  }
+
+  /* THE TEAM on one line. Set as text rather than by hiding the <br>, which
+     would run the two words together. 33ORG recorded the element's original
+     content before it touched it, so its own teardown still restores it. */
+  function oneLine(){
+    var t=$('#pc #tm-head .sf4-title');
+    if(t&&t.innerHTML!=='THE TEAM') t.innerHTML='THE TEAM';
+  }
+
+  /* 46 keeps 35's single mark at the far left of the gutter */
+  function leftMark(){
+    var g=$('.sfr-gut'); if(!g||$('.sf4-mark',g)) return;
+    var i=document.createElement('i'); i.className='sf4-mark'; g.appendChild(i);
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    unplace(); columns(false);
+    $$('.sf4-mark').forEach(function(n){ n.remove(); });
+    document.documentElement.removeAttribute('data-sf5');
+    document.documentElement.removeAttribute('data-sfw');
+    CUR=null;
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 33ORG builds first — the corrected card, the clean gutter, both
+         house titles, the realigned People columns */
+      try{ prev.apply&&prev.apply('33ORG'); }catch(e){}
+      var de=document.documentElement;
+      de.setAttribute('data-sf5','1');
+      de.setAttribute('data-sfw',v);
+      oneLine();
+      place(v);
+      if(v==='52') columns(true);
+      if(v==='46') later(leftMark,120);
+      later(function(){ oneLine(); place(v); if(v==='52') columns(true); },420);
+      later(function(){ oneLine(); place(v); if(v==='52') columns(true); },1400);
+      on(window,'resize',function(){
+        later(function(){ place(v); if(v==='52') columns(true); },180);
+      });
+    }
+  };
+})();
+</script>
