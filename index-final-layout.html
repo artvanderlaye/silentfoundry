@@ -23622,7 +23622,7 @@ html[data-sffix] #sf-lab-mount .u1{background-color:transparent !important;}
    The transform sits on .pvsk, which carries the drawing AND the six
    extraction traces, so the traces come with it and stay registered to the
    same features they were drawn against. */
-html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
+html[data-sf10] #sf-lab-mount .pvsk{
   transform-origin:0 0 !important;
   /* the last 10px came off the render, not the arithmetic: with the wheel
      midpoints matched the drawing still sat about 10px low and 5px left,
@@ -23668,7 +23668,19 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
   var HASH0=location.hash;
   var STATES=['ORG','01','02','03','04','05','06','07','08','09','10','08ORG','09ORG','10ORG'];
   /* both selection states share one CSS scope; 09ORG adds its corrections */
-  function isSel(v){ return v==='08ORG'||v==='09ORG'||v==='10ORG'; }
+  /* THREE NESTED SCOPES, not three lists.
+       data-sfsel  08ORG 09ORG 10ORG and 11-20   the selection block
+       data-sffix  09ORG 10ORG and 11-20         the four corrections
+       data-sf10   10ORG and 11-20               registration, drawing, tail
+     11-20 are 10ORG everywhere except the category transition, so they carry
+     all three and then add their own. EX is whatever the category layer
+     registered on window before this selector was built. */
+  var EX={};
+  function isCat(v){ return !!(EX.states&&EX.states.indexOf(v)>=0); }
+  function is10(v){ return v==='10ORG'||isCat(v); }
+  function isSel(v){ return v==='08ORG'||v==='09ORG'||is10(v); }
+  function isFix(v){ return v==='09ORG'||is10(v); }
+  function base(v){ return is10(v)?'10ORG':v; }
   var NOTE={
     '10ORG':'the SWITCH line drawing behind the section instead of the CAD screengrab · sketch and extraction traces scaled 0.717 and registered to the bike by wheel centres · portfolio → AS SEEN ON closed from 239 to 114, matched to the 114 below the black band, with nothing written to AS SEEN ON itself',
     '09ORG':'08ORG corrected · strip scrolls natively like the portfolio, no wheel hijack · photograph no longer cropped, bands closed to 40 · Marshall → SWITCH cut from 292 to ~128 at all three of its sources · .lb and .fb-host no longer paint over the CAD drawing',
@@ -23799,7 +23811,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
         .forEach(function(k){ s.style.removeProperty(k); });
       bikeField(false); return;
     }
-    if(v==='10ORG'){ bike(s); return; }
+    if(is10(v)){ bike(s); return; }
     bikeField(false);
     var img=getComputedStyle(s).backgroundImage;
     var url=(/url\((["']?)([^"')]+)\1\)/.exec(img)||[])[2]||'images/cad_texture_wide.jpg';
@@ -23870,7 +23882,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
       return k!==fs && k.style && /^\d+px$/.test(k.style.height||''); });
     if(!kids.length) return;
     if(BAND===null) BAND=kids.map(function(k){ return k.style.height; });
-    if(v!=='09ORG'&&v!=='10ORG'){ kids.forEach(function(k,i){ k.style.height=BAND[i]||k.style.height; }); return; }
+    if(!isFix(v)){ kids.forEach(function(k,i){ k.style.height=BAND[i]||k.style.height; }); return; }
     kids.forEach(function(k){ k.style.height='40px'; });
   }
 
@@ -23887,7 +23899,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     var stg=document.querySelector('#sf-lab-mount .pvstage'),
         sk=stg&&stg.querySelector('.pvsk');
     if(!stg||!sk) return;
-    if(v==='10ORG'){
+    if(is10(v)){
       [].forEach.call(stg.querySelectorAll(':scope > .anch'),function(a){ sk.appendChild(a); });
     }else{
       [].forEach.call(sk.querySelectorAll(':scope > .anch'),function(a){ stg.appendChild(a); });
@@ -23914,7 +23926,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     if(!m||!rb||!st||!lg) return;
     if(TAIL0===null) TAIL0=rb.style.height||'';
     rb.style.height=TAIL0; m.style.marginBottom='';
-    if(v!=='10ORG') return;
+    if(!is10(v)) return;
     var want=114;
     function have(){ return Math.round(lg.getBoundingClientRect().top-st.getBoundingClientRect().bottom); }
     var over=have()-want;
@@ -24044,7 +24056,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     var old=host.querySelector('.sf-bp');
     if(old) old.remove();
     if(bpState&&bpState.raf){ cancelAnimationFrame(bpState.raf); bpState=null; }
-    var cfg=BP[v]; if(!cfg) return;
+    var cfg=BP[v]||BP[base(v)]; if(!cfg) return;
     if(getComputedStyle(host).position==='static') host.style.position='relative';
     var box=document.createElement('div'); box.className='sf-bp';
     host.insertBefore(box,host.firstChild);
@@ -24163,7 +24175,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     var H=window.G3, r=document.getElementById('sf-lab-mount');
     if(!H||!r) return;
     var sec=r.querySelector('.g3'); if(!sec) return;
-    var cfg=HERO[v]; if(!cfg) return;
+    var cfg=HERO[v]||HERO[base(v)]; if(!cfg) return;
     var ln=r.querySelector('.pvline'); if(!ln) return;
     var host=r.querySelector('.split')||sec;
     var order=cfg.order, N=order.length;
@@ -24243,7 +24255,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     });
     if(v==='ORG') return;
     if(ORGH==null) return;
-    var want=Math.round(ORGH*(MTGT[v]||.88));
+    var want=Math.round(ORGH*(MTGT[v]||MTGT[base(v)]||.88));
     var guard=0;
     while(cs.offsetHeight>want && guard<24){
       var cut=Math.min(10,Math.ceil((cs.offsetHeight-want)/8));
@@ -24270,7 +24282,7 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     [].forEach.call(sp.querySelectorAll('[data-sfp]'),function(n){
       n.style.marginTop=''; n.removeAttribute('data-sfp'); });
     if(v==='ORG'||ORGP==null) return;
-    var want=Math.round(ORGP*(PTGT[v]||.83)), guard=0;
+    var want=Math.round(ORGP*(PTGT[v]||PTGT[base(v)]||.83)), guard=0;
     var rows=[].slice.call(sp.querySelectorAll('.dna9 .d9')).slice(3)
       .concat([].slice.call(sp.querySelectorAll('.rgt > div')).slice(1));
     while(sp.offsetHeight>want&&guard<20){
@@ -24310,8 +24322,10 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     else { document.documentElement.setAttribute('data-sfv',v); }
     if(isSel(v)) document.documentElement.setAttribute('data-sfsel','1');
     else document.documentElement.removeAttribute('data-sfsel');
-    if(v==='09ORG'||v==='10ORG') document.documentElement.setAttribute('data-sffix','1');
+    if(isFix(v)) document.documentElement.setAttribute('data-sffix','1');
     else document.documentElement.removeAttribute('data-sffix');
+    if(is10(v)) document.documentElement.setAttribute('data-sf10','1');
+    else document.documentElement.removeAttribute('data-sf10');
     if(v!=='ORG'){ cue(v); bars(); }
     hiw(v);
     blueprint(v);
@@ -24340,6 +24354,8 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
     setTimeout(function(){ fitFactory(v); },900);
     if(window.__sfHeroKill){ try{ window.__sfHeroKill(); }catch(e){} }
     if(v!=='ORG') setTimeout(function(){ hero(v); },60);
+    if(EX.off){ try{ EX.off(); }catch(e){} }
+    if(EX.apply){ try{ EX.apply(v); }catch(e){} }
     paint(v);
     window.scrollTo(0,y);
     try{ history.replaceState(null,'', v==='ORG'?'#v=ORG':'#v='+v); }catch(e){}
@@ -24354,6 +24370,9 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
   }
 
   function build(){
+    EX=window.__sfExtra||{};
+    if(EX.states&&EX.states.length) STATES=STATES.concat(EX.states);
+    if(EX.note) for(var k in EX.note) NOTE[k]=EX.note[k];
     box=document.createElement('div');
     box.id='sf-review';
     box.innerHTML='<span class="rvl">Layout review</span><span class="rvb"></span>'+
@@ -24377,6 +24396,674 @@ html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(build,4200); });
   else setTimeout(build,4200);
+})();
+</script>
+
+<style id="sf-cat-css">
+/* =========================================================================
+   SWITCH CATEGORY TRANSITION — VARIATIONS 11–20.
+
+   Base: 10ORG. Each of these carries data-sfsel, data-sffix and data-sf10,
+   so the hero, the registered sketch, the SWITCH drawing behind the section,
+   the portfolio ending and the AS SEEN ON interval are all 10ORG's, untouched.
+   The only thing that differs is the band that runs from the foot of the
+   black DNA panel to the top of the product carousel.
+
+   Everything below is scoped to html[data-sfcat="NN"], or html[data-sfcat]
+   for what all ten share. Nothing here can reach ORG, 01–10 or 08–10ORG.
+   ========================================================================= */
+
+/* --- shared ------------------------------------------------------------- */
+html[data-sfcat] #sf-lab-mount .fcats{position:relative;}
+/* the background or the tonal change is the division; the rule is not needed */
+html[data-sfcat] #sf-lab-mount .fcats{border-top:0 !important;padding-top:0 !important;}
+html[data-sfcat] #sf-lab-mount .fcats .bhead{border-top:0 !important;}
+/* concise: the band never returns to the height that was taken out of it */
+html[data-sfcat] #sf-lab-mount .fcats{margin-top:var(--sfcm,88px) !important;}
+html[data-sfcat] #sf-lab-mount .fstrip{margin-top:var(--sfsm,40px) !important;}
+/* every package centred */
+html[data-sfcat] #sf-lab-mount .tc{text-align:center;}
+html[data-sfcat] #sf-lab-mount .ci{margin-left:auto;margin-right:auto;}
+/* injected furniture, always clipped to this band */
+html[data-sfcat] .sfc{position:absolute;pointer-events:none;z-index:0;overflow:hidden;}
+html[data-sfcat] .sfc svg,html[data-sfcat] .sfc canvas{display:block;width:100%;height:100%;}
+html[data-sfcat] #sf-lab-mount .fcats .bhead,
+html[data-sfcat] #sf-lab-mount .crow{position:relative;z-index:2;}
+
+/* =========================================================================
+   11 · FULL-WIDTH SUBTLE CAD FIELD
+   One continuous drawing across the whole strip — one image, sized to cover
+   the band in a single piece, never repeated — under a cream veil heavy
+   enough that the symbols stay the loudest thing in the band.
+   ========================================================================= */
+html[data-sfcat="11"]{--sfcm:84px;--sfsm:40px;}
+html[data-sfcat="11"] .sfc-cad{left:calc(50% - 50vw);width:100vw;
+  top:calc(-1 * var(--sfcm,84px));bottom:calc(-1 * var(--sfsm,40px));
+  background-image:
+    linear-gradient(rgba(237,232,224,.91),rgba(237,232,224,.91)),
+    url('images/bike-side-sketch.png');
+  background-repeat:no-repeat,no-repeat;
+  background-size:auto,cover;
+  background-position:0 0,50% 42%;}
+/* a hairline top and bottom is all the division the band needs */
+html[data-sfcat="11"] .sfc-cad::before,html[data-sfcat="11"] .sfc-cad::after{
+  content:"";position:absolute;left:0;right:0;height:1px;background:rgba(10,127,153,.2);}
+html[data-sfcat="11"] .sfc-cad::before{top:0;}
+html[data-sfcat="11"] .sfc-cad::after{bottom:0;}
+
+/* =========================================================================
+   12 · CATEGORIES INSIDE BLACK
+   The black panel simply keeps going. The categories are the conclusion of
+   the extraction, not a new section, so nothing separates them from it and
+   the photographs start the moment the black stops.
+   ========================================================================= */
+html[data-sfcat="12"]{--sfcm:0px;--sfsm:0px;}
+html[data-sfcat="12"] .sfc-black{left:0;right:0;top:0;bottom:0;
+  background:#0d1013;}
+html[data-sfcat="12"] #sf-lab-mount .fcats{padding:46px 56px 52px !important;}
+html[data-sfcat="12"] #sf-lab-mount .fcats .bey{color:rgba(237,232,224,.5) !important;}
+html[data-sfcat="12"] #sf-lab-mount .cn{color:#ede8e0 !important;}
+html[data-sfcat="12"] #sf-lab-mount .cd{color:rgba(237,232,224,.42) !important;}
+html[data-sfcat="12"] #sf-lab-mount .ci svg *{stroke:#3ddcff !important;}
+html[data-sfcat="12"] #sf-lab-mount .tc::after{background:rgba(61,220,255,.3) !important;}
+html[data-sfcat="12"] #sf-lab-mount .otk{background:#E43C00 !important;}
+
+/* =========================================================================
+   13 · BLACK/CREAM THRESHOLD
+   The heading is set on the line where black becomes cream and is rendered
+   in difference, so the same white type reads dark on the cream half and
+   light on the black half. Each symbol keeps a narrow black plinth behind
+   its upper half, so the four of them stand across the threshold.
+   ========================================================================= */
+html[data-sfcat="13"]{--sfcm:0px;--sfsm:44px;}
+html[data-sfcat="13"] .sfc-th{left:0;right:0;top:0;background:#0d1013;overflow:visible;}
+html[data-sfcat="13"] .sfc-th i{position:absolute;bottom:0;width:var(--pw,62px);
+  background:#0d1013;transform:translateX(-50%);}
+html[data-sfcat="13"] #sf-lab-mount .fcats{padding-top:34px !important;}
+html[data-sfcat="13"] #sf-lab-mount .fcats .bey{
+  color:#fff !important;mix-blend-mode:difference;position:relative;z-index:3;
+  font-size:13.6px !important;letter-spacing:.34em !important;font-weight:400 !important;}
+/* the plinths are narrow and sit only behind the symbol, not the word */
+html[data-sfcat="13"] #sf-lab-mount .cn{margin-top:20px !important;}
+html[data-sfcat="13"] #sf-lab-mount .ci svg *{stroke:#3ddcff !important;}
+html[data-sfcat="13"] #sf-lab-mount .tc::after{background:rgba(61,220,255,.45) !important;}
+html[data-sfcat="13"] #sf-lab-mount .ci{position:relative;z-index:3;}
+html[data-sfcat="13"] #sf-lab-mount .cn,html[data-sfcat="13"] #sf-lab-mount .cd{
+  position:relative;z-index:3;}
+
+/* =========================================================================
+   14 · ACTIVE CAROUSEL INDEX
+   The strip stays as it is and starts doing something: it is the index for
+   the carousel, and the territory the visible product belongs to is lit.
+   ========================================================================= */
+html[data-sfcat="14"]{--sfcm:76px;--sfsm:34px;}
+html[data-sfcat="14"] #sf-lab-mount .tc{cursor:pointer;pointer-events:auto;
+  opacity:.4;transition:opacity .45s ease;}
+html[data-sfcat="14"] #sf-lab-mount .tc.sfc-on{opacity:1;}
+html[data-sfcat="14"] #sf-lab-mount .tc.sfc-on .ci svg *{stroke:#00b4d8 !important;}
+html[data-sfcat="14"] #sf-lab-mount .tc.sfc-on .cn{color:#0a0a0a !important;}
+html[data-sfcat="14"] #sf-lab-mount .tc.sfc-on::after{background:#00b4d8 !important;}
+html[data-sfcat="14"] #sf-lab-mount .tc .sfc-bar{position:absolute;left:50%;
+  transform:translateX(-50%);bottom:-16px;width:0;height:2px;background:#E43C00;
+  transition:width .5s cubic-bezier(.3,.8,.3,1);}
+html[data-sfcat="14"] #sf-lab-mount .tc.sfc-on .sfc-bar{width:58px;}
+
+/* =========================================================================
+   15 · CATEGORY RAIL OVER IMAGES
+   The cream interval goes entirely. The four territories run as a shallow
+   rail across the top edge of the photographs, on a controlled dark backer
+   so the imagery stays visible beneath.
+   ========================================================================= */
+html[data-sfcat="15"]{--sfsm:0px;}
+html[data-sfcat="15"] #sf-lab-mount .fcats{margin-top:0 !important;
+  position:absolute !important;left:0;right:0;top:0;z-index:6;
+  padding:0 !important;background:rgba(10,12,14,.66);
+  -webkit-backdrop-filter:saturate(.9);backdrop-filter:saturate(.9);}
+html[data-sfcat="15"] #sf-lab-mount .fcats .bhead{position:absolute;left:22px;top:15px;
+  width:auto !important;border:0 !important;z-index:3;}
+html[data-sfcat="15"] #sf-lab-mount .fcats .bey{color:rgba(237,232,224,.44) !important;
+  font-size:8.6px !important;letter-spacing:2.4px !important;}
+html[data-sfcat="15"] #sf-lab-mount .crow{display:flex !important;justify-content:center;
+  align-items:center;gap:56px !important;padding:11px 0 12px !important;}
+html[data-sfcat="15"] #sf-lab-mount .tc{display:flex !important;align-items:center;
+  gap:9px;width:auto !important;opacity:.46;transition:opacity .45s ease;}
+html[data-sfcat="15"] #sf-lab-mount .tc.sfc-on{opacity:1;}
+html[data-sfcat="15"] #sf-lab-mount .ci{width:19px !important;height:19px !important;
+  margin:0 !important;}
+html[data-sfcat="15"] #sf-lab-mount .ci svg *{stroke:rgba(237,232,224,.8) !important;}
+html[data-sfcat="15"] #sf-lab-mount .tc.sfc-on .ci svg *{stroke:#00b4d8 !important;}
+html[data-sfcat="15"] #sf-lab-mount .cn{margin:0 !important;color:#ede8e0 !important;
+  font-size:11px !important;letter-spacing:.2em !important;}
+html[data-sfcat="15"] #sf-lab-mount .cd{display:none !important;}
+html[data-sfcat="15"] #sf-lab-mount .tc::after,
+html[data-sfcat="15"] #sf-lab-mount .otk{display:none !important;}
+html[data-sfcat="15"] #sf-lab-mount .fstrip{position:relative;}
+
+/* =========================================================================
+   16 · FOUR TECHNICAL PORTALS
+   Four equal fields, each carrying its own SWITCH-derived construction
+   drawing at the same line weight, so they read as one system rather than
+   four cards. Each field drops a short datum into the photographs below.
+   ========================================================================= */
+html[data-sfcat="16"]{--sfcm:70px;--sfsm:0px;}
+html[data-sfcat="16"] #sf-lab-mount .crow{gap:0 !important;
+  grid-template-columns:repeat(4,1fr) !important;}
+html[data-sfcat="16"] #sf-lab-mount .tc{padding:36px 12px 40px !important;
+  position:relative;border-right:1px solid rgba(10,127,153,.16);}
+html[data-sfcat="16"] #sf-lab-mount .tc:first-child{border-left:1px solid rgba(10,127,153,.16);}
+html[data-sfcat="16"] #sf-lab-mount .tc::after{display:none !important;}
+html[data-sfcat="16"] #sf-lab-mount .otk{display:none !important;}
+/* the drawing sits behind the whole field, complete and contained, rather
+   than cropped into a band at the foot of it — one drawing per territory,
+   all four on the same grid and the same stroke, so they stay a system. */
+html[data-sfcat="16"] .sfc-portal{position:absolute;inset:0;
+  z-index:0;pointer-events:none;opacity:.17;overflow:hidden;}
+html[data-sfcat="16"] .sfc-portal svg{width:100%;height:100%;}
+html[data-sfcat="16"] .sfc-portal path,html[data-sfcat="16"] .sfc-portal circle,
+html[data-sfcat="16"] .sfc-portal line,html[data-sfcat="16"] .sfc-portal rect{
+  fill:none;stroke:#0a7f99;stroke-width:1;vector-effect:non-scaling-stroke;
+  stroke-linecap:round;stroke-linejoin:round;}
+html[data-sfcat="16"] #sf-lab-mount .ci,html[data-sfcat="16"] #sf-lab-mount .cn,
+html[data-sfcat="16"] #sf-lab-mount .cd{position:relative;z-index:2;}
+html[data-sfcat="16"] .sfc-drop{position:absolute;bottom:-1px;left:50%;width:1px;height:22px;
+  background:linear-gradient(rgba(10,127,153,.5),rgba(10,127,153,0));z-index:2;}
+
+/* =========================================================================
+   17 · BLUEPRINT TRANSLATION RAIL
+   One rail, read left to right: the DNA at one end, the four territories
+   along it, the new products at the other. Nodes, measurement ticks and
+   direction marks, all on cream.
+   ========================================================================= */
+html[data-sfcat="17"]{--sfcm:78px;--sfsm:38px;}
+html[data-sfcat="17"] #sf-lab-mount .fcats{padding:0 96px !important;}
+html[data-sfcat="17"] #sf-lab-mount .fcats .bhead{position:absolute;left:0;top:-26px;
+  width:auto !important;}
+html[data-sfcat="17"] #sf-lab-mount .crow{gap:0 44px !important;
+  grid-template-columns:repeat(4,1fr) !important;padding-top:38px !important;}
+html[data-sfcat="17"] #sf-lab-mount .tc::after{display:none !important;}
+html[data-sfcat="17"] #sf-lab-mount .otk{display:none !important;}
+html[data-sfcat="17"] .sfc-rail{left:0;right:0;top:0;bottom:0;overflow:visible;}
+html[data-sfcat="17"] .sfc-rail line,html[data-sfcat="17"] .sfc-rail path{
+  fill:none;stroke:#0a7f99;stroke-width:1;vector-effect:non-scaling-stroke;}
+html[data-sfcat="17"] .sfc-rail .tick{stroke:rgba(10,10,10,.28);}
+html[data-sfcat="17"] .sfc-rail circle{fill:#ede8e0;stroke:#0a7f99;stroke-width:1;}
+html[data-sfcat="17"] .sfc-rail text{font-family:'DM Sans',sans-serif;font-size:8px;
+  letter-spacing:2px;fill:rgba(10,10,10,.42);text-transform:uppercase;}
+html[data-sfcat="17"] .sfc-cap{position:absolute;top:24px;z-index:3;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.16em;
+  color:#8a6e3a;white-space:nowrap;}
+html[data-sfcat="17"] .sfc-cap i{display:block;font-style:normal;
+  font-family:'DM Sans',sans-serif;font-size:7.4px;letter-spacing:.22em;
+  color:rgba(10,10,10,.35);margin-top:3px;}
+html[data-sfcat="17"] .sfc-cap.l{left:0;text-align:left;}
+html[data-sfcat="17"] .sfc-cap.r{right:0;text-align:right;}
+
+/* =========================================================================
+   18 · OVERSIZED CATEGORY TYPOGRAPHY
+   The four words are the structure. The symbols and descriptors drop back
+   to annotations beside them, and the outer two words run past the edges.
+   ========================================================================= */
+html[data-sfcat="18"]{--sfcm:74px;--sfsm:34px;}
+html[data-sfcat="18"] #sf-lab-mount .fcats{overflow:hidden;}
+html[data-sfcat="18"] #sf-lab-mount .fcats .bhead{margin-bottom:10px !important;}
+html[data-sfcat="18"] #sf-lab-mount .crow{gap:0 8px !important;align-items:end !important;}
+html[data-sfcat="18"] #sf-lab-mount .tc{text-align:center;position:relative;}
+html[data-sfcat="18"] #sf-lab-mount .cn{
+  font-family:'Bebas Neue',sans-serif !important;
+  font-size:clamp(1.7rem,3.5vw,3.3rem) !important;line-height:.88 !important;
+  letter-spacing:.01em !important;color:rgba(10,10,10,.82) !important;
+  margin-top:0 !important;white-space:nowrap;}
+html[data-sfcat="18"] #sf-lab-mount .tc:nth-child(1) .cn{margin-left:-.14em;}
+html[data-sfcat="18"] #sf-lab-mount .tc:nth-child(4) .cn{margin-right:-.14em;}
+html[data-sfcat="18"] #sf-lab-mount .tc:nth-child(3) .cn{color:#0a7f99 !important;}
+html[data-sfcat="18"] #sf-lab-mount .ci{width:17px !important;height:17px !important;
+  position:absolute;left:50%;transform:translateX(-50%);top:-24px;margin:0 !important;}
+html[data-sfcat="18"] #sf-lab-mount .ci svg *{stroke:rgba(10,10,10,.45) !important;}
+html[data-sfcat="18"] #sf-lab-mount .tc:nth-child(4) .ci svg *{stroke:#E43C00 !important;}
+html[data-sfcat="18"] #sf-lab-mount .cd{margin-top:6px !important;font-size:8.4px !important;
+  letter-spacing:.22em !important;color:rgba(10,10,10,.4) !important;}
+html[data-sfcat="18"] #sf-lab-mount .tc::after{top:-16px !important;
+  background:rgba(10,10,10,.16) !important;}
+html[data-sfcat="18"] #sf-lab-mount .otk{display:none !important;}
+
+/* =========================================================================
+   19 · TRANSLUCENT ANALYSIS PLATE
+   The drawing keeps running behind. The category content sits on one wide
+   smoked plate that joins the foot of the black panel — an analytical
+   overlay laid on the page, with its own edge marks and coordinates.
+   ========================================================================= */
+html[data-sfcat="19"]{--sfcm:0px;--sfsm:38px;}
+html[data-sfcat="19"] .sfc-plate{left:-24px;right:-24px;top:0;bottom:0;
+  background:linear-gradient(180deg,rgba(18,22,28,.13),rgba(18,22,28,.07));
+  border-top:2px solid rgba(13,16,19,.85);
+  border-bottom:1px solid rgba(10,127,153,.28);overflow:visible;}
+html[data-sfcat="19"] .sfc-plate b{position:absolute;width:11px;height:11px;
+  border:1px solid rgba(10,127,153,.5);}
+html[data-sfcat="19"] .sfc-plate b.a{left:10px;top:10px;border-right:0;border-bottom:0;}
+html[data-sfcat="19"] .sfc-plate b.b{right:10px;top:10px;border-left:0;border-bottom:0;}
+html[data-sfcat="19"] .sfc-plate b.c{left:10px;bottom:10px;border-right:0;border-top:0;}
+html[data-sfcat="19"] .sfc-plate b.d{right:10px;bottom:10px;border-left:0;border-top:0;}
+html[data-sfcat="19"] .sfc-plate em{position:absolute;font-style:normal;
+  font-family:'DM Sans',sans-serif;font-size:7.4px;letter-spacing:.22em;
+  color:rgba(10,10,10,.4);text-transform:uppercase;white-space:nowrap;}
+html[data-sfcat="19"] #sf-lab-mount .fcats{padding:40px 44px 42px !important;}
+html[data-sfcat="19"] #sf-lab-mount .fcats .bey{color:#0a7f99 !important;}
+
+/* =========================================================================
+   20 · DNA-TO-PRODUCT MAPPING
+   The whole logic in one reading: the principles that came out of the bike,
+   the territories they open, and the products underneath. The connectors
+   draw themselves as the band comes up the screen.
+   ========================================================================= */
+html[data-sfcat="20"]{--sfcm:64px;--sfsm:30px;}
+html[data-sfcat="20"] #sf-lab-mount .fcats{padding-top:0 !important;}
+html[data-sfcat="20"] .sfc-map{left:0;right:0;top:0;bottom:calc(-1 * var(--sfsm,30px));
+  overflow:visible;z-index:1;}
+html[data-sfcat="20"] .sfc-map path{fill:none;stroke:rgba(10,127,153,.5);stroke-width:1;
+  vector-effect:non-scaling-stroke;}
+html[data-sfcat="20"] .sfc-map circle{fill:#0a7f99;}
+html[data-sfcat="20"] .sfc-dna{position:relative;z-index:2;display:grid;
+  grid-template-columns:repeat(4,1fr);gap:0 60px;margin-bottom:26px;}
+html[data-sfcat="20"] .sfc-dna span{text-align:center;font-family:'DM Sans',sans-serif;
+  font-size:8.8px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(10,10,10,.5);}
+html[data-sfcat="20"] .sfc-dna span::before{content:"";display:block;width:5px;height:5px;
+  border-radius:50%;background:#8a6e3a;margin:0 auto 9px;}
+html[data-sfcat="20"] #sf-lab-mount .fcats .bhead{margin-bottom:18px !important;}
+html[data-sfcat="20"] #sf-lab-mount .crow{padding-bottom:8px !important;}
+html[data-sfcat="20"] #sf-lab-mount .tc::after{display:none !important;}
+html[data-sfcat="20"] #sf-lab-mount .otk{display:none !important;}
+
+/* =========================================================================
+   RESPONSIVE — the band stays concise and legible at every width
+   ========================================================================= */
+@media(max-width:1100px){
+  html[data-sfcat]{--sfcm:60px;--sfsm:28px;}
+  html[data-sfcat="17"] #sf-lab-mount .fcats{padding:0 54px !important;}
+  html[data-sfcat="15"] #sf-lab-mount .crow{gap:30px !important;}
+}
+@media(max-width:900px){
+  html[data-sfcat] #sf-lab-mount .crow{grid-template-columns:repeat(2,1fr) !important;
+    gap:30px 30px !important;}
+  html[data-sfcat] #sf-lab-mount .tc::after{display:none !important;}
+  html[data-sfcat="12"] #sf-lab-mount .fcats{padding:34px 24px 38px !important;}
+  html[data-sfcat="16"] #sf-lab-mount .tc{border-right:0;}
+  html[data-sfcat="16"] #sf-lab-mount .tc:first-child{border-left:0;}
+  html[data-sfcat="17"] #sf-lab-mount .fcats{padding:0 24px !important;}
+  html[data-sfcat="17"] .sfc-rail,html[data-sfcat="17"] .sfc-cap{display:none;}
+  html[data-sfcat="18"] #sf-lab-mount .cn{font-size:clamp(1.4rem,6vw,2.2rem) !important;}
+  html[data-sfcat="19"] #sf-lab-mount .fcats{padding:30px 22px 32px !important;}
+  html[data-sfcat="20"] .sfc-dna{grid-template-columns:repeat(2,1fr);gap:14px 30px;}
+  html[data-sfcat="20"] .sfc-map{display:none;}
+  /* the rail becomes two rows rather than four cramped ones */
+  html[data-sfcat="15"] #sf-lab-mount .crow{display:flex !important;flex-wrap:wrap;
+    gap:14px 26px !important;padding:34px 14px 12px !important;}
+  html[data-sfcat="15"] #sf-lab-mount .fcats .bhead{top:11px;left:14px;}
+}
+@media(max-width:560px){
+  html[data-sfcat]{--sfcm:46px;--sfsm:22px;}
+  html[data-sfcat="13"] .sfc-th i{display:none;}
+  html[data-sfcat="16"] .sfc-portal{display:none;}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfcat] .sfc-bar,html[data-sfcat] #sf-lab-mount .tc{transition:none !important;}
+  html[data-sfcat="20"] .sfc-map path{stroke-dasharray:none !important;
+    stroke-dashoffset:0 !important;transition:none !important;}
+}
+</style>
+
+<script id="sf-cat-js">
+(function(){
+  /* =======================================================================
+     Registered on window before the review selector is built, so the
+     selector picks these up as ten more positions on the same rail.
+     ======================================================================= */
+  var V=['11','12','13','14','15','16','17','18','19','20'];
+  var NOTE={
+    '11':'full-width subtle CAD field — one continuous drawing across the whole strip under a cream veil, stopping cleanly where the carousel begins',
+    '12':'categories inside black — the DNA panel keeps going, cyan symbols and cream headings, the photographs starting the moment the black stops',
+    '13':'black / cream threshold — the heading set on the line where black becomes cream, the four symbols standing across it on their own plinths',
+    '14':'active carousel index — the strip becomes the index: the territory the visible product belongs to lights, the others hold at reduced opacity, and a territory can be clicked',
+    '15':'category rail over images — no cream interval at all, the four territories on a dark rail across the top edge of the photographs',
+    '16':'four technical portals — four equal fields, each with its own SWITCH-derived construction drawing at the same line weight, each dropping a datum into the carousel',
+    '17':'blueprint translation rail — one rail read left to right: DNA, the four territories, new products, with nodes, ticks and direction marks',
+    '18':'oversized category typography — the four words as the structure, symbols and descriptors reduced to annotations, the outer two running past the edges',
+    '19':'translucent analysis plate — the drawing continues behind, the content on one smoked plate joined to the foot of the black panel, with edge marks and coordinates',
+    '20':'DNA to product mapping — principles, territories and products in one reading, the connectors drawing themselves as the band comes up the screen'
+  };
+
+  /* territory order as it appears in the row */
+  var TERR=['ENERGY','MOTION','SIGNAL','UTILITY'];
+  /* which territory a product belongs to. Read off the slide's own tag, so
+     it stays correct if the portfolio is re-ordered. */
+  var MAP={AUDIO:2,ENERGY:0,PROFESSIONAL:0,LIFESTYLE:1,MOBILITY:1,WORKSPACE:3};
+  var NS='http://www.w3.org/2000/svg';
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function mount(){ return document.getElementById('sf-lab-mount'); }
+  function fcats(){ var m=mount(); return m&&m.querySelector('.fcats'); }
+  function strip(){ var m=mount(); return m&&m.querySelector('.fstrip'); }
+  function tcs(){ var m=mount(); return m?$$('.tc',m):[]; }
+  var REDUCED=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var listeners=[], timers=[], home=null;
+  function on(t,e,f,o){ t.addEventListener(e,f,o||{passive:true}); listeners.push([t,e,f]); }
+  function later(f,ms){ timers.push(setTimeout(f,ms)); }
+
+  function el(cls,tag){ var n=document.createElement(tag||'div'); n.className=cls; return n; }
+  function field(cls){ var n=el('sfc '+cls); var f=fcats(); if(f) f.insertBefore(n,f.firstChild); return n; }
+
+  /* =======================================================================
+     TEARDOWN.
+     Every version puts .fcats back where it found it before the next one
+     runs, so nothing can inherit a position, a padding or a parent.
+     ======================================================================= */
+  function off(){
+    listeners.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); });
+    listeners=[]; timers.forEach(clearTimeout); timers=[];
+    document.documentElement.removeAttribute('data-sfcat');
+    $$('.sfc,.sfc-portal,.sfc-drop,.sfc-cap,.sfc-dna,.sfc-bar').forEach(function(n){ n.remove(); });
+    $$('.tc.sfc-on').forEach(function(n){ n.classList.remove('sfc-on'); });
+    var f=fcats();
+    if(f&&home&&f.parentNode!==home.parent){
+      if(home.next&&home.next.parentNode===home.parent) home.parent.insertBefore(f,home.next);
+      else home.parent.appendChild(f);
+    }
+  }
+
+  /* =======================================================================
+     WHICH TERRITORY IS ON SCREEN.
+     Read from the carousel's own scrollLeft, so it is right in both
+     directions and adds no timeline of its own. Manual scrolling is never
+     intercepted — this only listens.
+     ======================================================================= */
+  function wrap(){ var s=strip(); return s&&s.querySelector('.fwrap'); }
+  function slides(){ var w=wrap(); return w?$$('.fslide',w):[]; }
+  function tagOf(s){
+    var t=s.querySelector('.fcap span')||s.querySelector('span');
+    return t?t.textContent.trim().toUpperCase():'';
+  }
+  function activeTerritory(){
+    var w=wrap(), sl=slides(); if(!w||!sl.length) return -1;
+    var mid=w.scrollLeft+w.clientWidth/2, best=-1, bd=1e9;
+    sl.forEach(function(s){
+      if(!s.offsetWidth) return;
+      var cx=s.offsetLeft+s.offsetWidth/2, d=Math.abs(cx-mid);
+      if(d<bd){ bd=d; var k=MAP[tagOf(s)]; best=(k===undefined?-1:k); }
+    });
+    return best;
+  }
+  function track(fn){
+    var w=wrap(); if(!w) return;
+    var last=-2, q=false;
+    function tick(){ q=false; var i=activeTerritory(); if(i!==last){ last=i; fn(i); } }
+    function ping(){ if(!q){ q=true; requestAnimationFrame(tick); } }
+    on(w,'scroll',ping); on(window,'resize',ping);
+    tick(); later(tick,600); later(tick,1600);
+  }
+  function lightTerritory(){
+    var cs=tcs();
+    track(function(i){ cs.forEach(function(c,j){ c.classList.toggle('sfc-on',j===i); }); });
+  }
+
+  /* =======================================================================
+     11 · FULL-WIDTH SUBTLE CAD FIELD
+     ======================================================================= */
+  function b11(){ field('sfc-cad'); }
+
+  /* =======================================================================
+     12 · CATEGORIES INSIDE BLACK
+     ======================================================================= */
+  function b12(){ field('sfc-black'); }
+
+  /* =======================================================================
+     13 · BLACK/CREAM THRESHOLD
+     ======================================================================= */
+  function b13(){
+    var f=fcats(); if(!f) return;
+    var th=field('sfc-th');
+    var cs=tcs();
+    cs.forEach(function(){ th.appendChild(document.createElement('i')); });
+    var lay=function(){
+      var fr=f.getBoundingClientRect();
+      var bey=$('.bey',f);
+      if(!bey) return;
+      var br=bey.getBoundingClientRect();
+      /* the line runs through the middle of the heading */
+      var line=Math.round(br.top-fr.top+br.height/2);
+      th.style.height=line+'px';
+      var plinths=$$('i',th);
+      cs.forEach(function(c,i){
+        var cr=c.getBoundingClientRect();
+        var ic=$('.ci',c);
+        var ir=ic?ic.getBoundingClientRect():cr;
+        var p=plinths[i]; if(!p) return;
+        p.style.left=Math.round(cr.left-fr.left+cr.width/2)+'px';
+        p.style.bottom=(-(Math.round(ir.top-fr.top+ir.height*0.55)-line))+'px';
+        p.style.height=Math.round(ir.top-fr.top+ir.height*0.55-line)+'px';
+      });
+    };
+    lay(); on(window,'resize',lay); later(lay,400); later(lay,1300);
+  }
+
+  /* =======================================================================
+     14 · ACTIVE CAROUSEL INDEX
+     ======================================================================= */
+  function b14(){
+    var cs=tcs(), w=wrap();
+    cs.forEach(function(c){ var b=el('sfc-bar'); c.appendChild(b); });
+    lightTerritory();
+    if(!w) return;
+    cs.forEach(function(c,i){
+      var go=function(){
+        var sl=slides(), target=null;
+        for(var k=0;k<sl.length;k++){
+          if(!sl[k].offsetWidth) continue;
+          if(MAP[tagOf(sl[k])]===i){ target=sl[k]; break; }
+        }
+        if(!target) return;
+        var x=Math.max(0,target.offsetLeft-(w.clientWidth-target.offsetWidth)/2);
+        /* a request, not a takeover: the browser keeps the scroll and the
+           user can grab it again at any point */
+        try{ w.scrollTo({left:x,behavior:REDUCED?'auto':'smooth'}); }
+        catch(e){ w.scrollLeft=x; }
+      };
+      on(c,'click',go);
+    });
+  }
+
+  /* =======================================================================
+     15 · CATEGORY RAIL OVER IMAGES
+     ======================================================================= */
+  function b15(){
+    var f=fcats(), s=strip(); if(!f||!s) return;
+    if(!home) home={parent:f.parentNode,next:f.nextSibling};
+    s.insertBefore(f,s.firstChild);
+    lightTerritory();
+  }
+
+  /* =======================================================================
+     16 · FOUR TECHNICAL PORTALS
+     A construction drawing for each territory, all on one 200 x 130 grid at
+     one stroke weight, so four fields still read as one system.
+     ======================================================================= */
+  var PORTAL=[
+    /* ENERGY — a cell stack in a case, with its terminal */
+    '<rect x="34" y="38" width="86" height="54" rx="6"/><line x1="48" y1="46" x2="48" y2="84"/>'+
+    '<line x1="62" y1="46" x2="62" y2="84"/><line x1="76" y1="46" x2="76" y2="84"/>'+
+    '<line x1="90" y1="46" x2="90" y2="84"/><rect x="120" y="54" width="12" height="22" rx="3"/>'+
+    '<circle cx="152" cy="65" r="16"/><circle cx="152" cy="65" r="6"/><line x1="24" y1="65" x2="34" y2="65"/>',
+    /* MOTION — wheel, fork and the repeated radii */
+    '<circle cx="58" cy="72" r="30"/><circle cx="58" cy="72" r="17"/><circle cx="58" cy="72" r="4"/>'+
+    '<circle cx="146" cy="72" r="22"/><circle cx="146" cy="72" r="11"/>'+
+    '<path d="M58 72 L104 40 L146 72"/><line x1="104" y1="40" x2="104" y2="24"/>'+
+    '<line x1="28" y1="102" x2="176" y2="102"/>',
+    /* SIGNAL — a mast on a bracket, three arcs emitted */
+    '<line x1="70" y1="98" x2="70" y2="40"/><path d="M56 98 h28"/><rect x="60" y="30" width="20" height="12" rx="3"/>'+
+    '<path d="M92 50 a30 30 0 0 1 0 42"/><path d="M108 40 a46 46 0 0 1 0 62"/>'+
+    '<path d="M124 30 a62 62 0 0 1 0 82"/><circle cx="70" cy="24" r="4"/>',
+    /* UTILITY — a stepped bracket with a slot and fixings */
+    '<path d="M40 96 V52 h26 V38 h48 v14 h26 v44"/><rect x="70" y="60" width="40" height="10" rx="5"/>'+
+    '<circle cx="52" cy="86" r="4"/><circle cx="128" cy="86" r="4"/>'+
+    '<line x1="40" y1="104" x2="140" y2="104"/><line x1="150" y1="52" x2="150" y2="96"/>'
+  ];
+  function b16(){
+    tcs().forEach(function(c,i){
+      var p=el('sfc-portal');
+      p.innerHTML='<svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+
+        (PORTAL[i]||'')+'</svg>';
+      c.insertBefore(p,c.firstChild);
+      var d=el('sfc-drop'); c.appendChild(d);
+    });
+  }
+
+  /* =======================================================================
+     17 · BLUEPRINT TRANSLATION RAIL
+     ======================================================================= */
+  function b17(){
+    var f=fcats(); if(!f) return;
+    var a=el('sfc-cap l'); a.innerHTML='DNA<i>Extracted</i>'; f.appendChild(a);
+    var b=el('sfc-cap r'); b.innerHTML='NEW PRODUCTS<i>Manufactured</i>'; f.appendChild(b);
+    var s=document.createElementNS(NS,'svg');
+    s.setAttribute('class','sfc sfc-rail'); s.setAttribute('preserveAspectRatio','none');
+    f.insertBefore(s,f.firstChild);
+    var lay=function(){
+      var fr=f.getBoundingClientRect();
+      var w=Math.round(fr.width), h=Math.round(fr.height);
+      if(!w||!h) return;
+      s.setAttribute('viewBox','0 0 '+w+' '+h);
+      while(s.firstChild) s.removeChild(s.firstChild);
+      var y=48;
+      var pts=tcs().map(function(c){ var r=c.getBoundingClientRect();
+        return Math.round(r.left-fr.left+r.width/2); });
+      if(!pts.length) return;
+      var x0=Math.round(a.getBoundingClientRect().right-fr.left+16);
+      var x1=Math.round(b.getBoundingClientRect().left-fr.left-16);
+      var ln=document.createElementNS(NS,'line');
+      ln.setAttribute('x1',x0); ln.setAttribute('y1',y);
+      ln.setAttribute('x2',x1); ln.setAttribute('y2',y); s.appendChild(ln);
+      /* measurement ticks every 40px along the rail */
+      for(var x=x0;x<=x1;x+=40){
+        var t=document.createElementNS(NS,'line'); t.setAttribute('class','tick');
+        t.setAttribute('x1',x); t.setAttribute('y1',y-4);
+        t.setAttribute('x2',x); t.setAttribute('y2',y+4); s.appendChild(t); }
+      /* the four territory nodes, and a direction mark between each pair */
+      pts.forEach(function(px,i){
+        var c=document.createElementNS(NS,'circle');
+        c.setAttribute('cx',px); c.setAttribute('cy',y); c.setAttribute('r','5');
+        s.appendChild(c);
+        var dn=document.createElementNS(NS,'line');
+        dn.setAttribute('x1',px); dn.setAttribute('y1',y+5);
+        dn.setAttribute('x2',px); dn.setAttribute('y2',y+22); s.appendChild(dn);
+        var nx=(i<pts.length-1)?pts[i+1]:x1;
+        var mx=Math.round((px+nx)/2);
+        var ar=document.createElementNS(NS,'path');
+        ar.setAttribute('d','M'+(mx-4)+' '+(y-4)+' L'+(mx+4)+' '+y+' L'+(mx-4)+' '+(y+4));
+        s.appendChild(ar);
+      });
+    };
+    lay(); on(window,'resize',lay); later(lay,400); later(lay,1300);
+  }
+
+  /* =======================================================================
+     18 · OVERSIZED CATEGORY TYPOGRAPHY  (all CSS)
+     ======================================================================= */
+  function b18(){}
+
+  /* =======================================================================
+     19 · TRANSLUCENT ANALYSIS PLATE
+     ======================================================================= */
+  function b19(){
+    var p=field('sfc-plate');
+    ['a','b','c','d'].forEach(function(k){ var i=document.createElement('b'); i.className=k; p.appendChild(i); });
+    var m1=document.createElement('em'); m1.textContent='PLATE 04 · TRANSLATION';
+    m1.style.cssText='left:30px;top:12px;'; p.appendChild(m1);
+    var m2=document.createElement('em'); m2.textContent='X 0.00 / Y 0.00 · REV C';
+    m2.style.cssText='right:30px;bottom:12px;'; p.appendChild(m2);
+  }
+
+  /* =======================================================================
+     20 · DNA TO PRODUCT MAPPING
+     Four principles, four territories, the carousel. The paths are drawn as
+     the band comes up the screen and undrawn on the way back — a position
+     mapping, so reverse scrolling takes it apart the same way.
+     ======================================================================= */
+  var DNA=['Mechanical honesty','Electric','Precise','Serviceable'];
+  function b20(){
+    var f=fcats(); if(!f) return;
+    var row=el('sfc-dna');
+    DNA.forEach(function(t){ var s=document.createElement('span'); s.textContent=t; row.appendChild(s); });
+    f.insertBefore(row,f.firstChild);
+    var s=document.createElementNS(NS,'svg');
+    s.setAttribute('class','sfc sfc-map'); s.setAttribute('preserveAspectRatio','none');
+    f.insertBefore(s,f.firstChild);
+    var paths=[];
+    var lay=function(){
+      var fr=f.getBoundingClientRect();
+      var w=Math.round(fr.width), h=Math.round(fr.height+40);
+      if(!w||!h) return;
+      s.setAttribute('viewBox','0 0 '+w+' '+h);
+      while(s.firstChild) s.removeChild(s.firstChild);
+      paths=[];
+      var tops=$$('span',row).map(function(n){ var r=n.getBoundingClientRect();
+        return [Math.round(r.left-fr.left+r.width/2),Math.round(r.bottom-fr.top-2)]; });
+      var mids=tcs().map(function(c){ var r=c.getBoundingClientRect();
+        return [Math.round(r.left-fr.left+r.width/2),Math.round(r.top-fr.top+8)]; });
+      var bots=tcs().map(function(c){ var r=c.getBoundingClientRect();
+        return [Math.round(r.left-fr.left+r.width/2),Math.round(r.bottom-fr.top)]; });
+      function curve(a,b){
+        var p=document.createElementNS(NS,'path');
+        var my=(a[1]+b[1])/2;
+        p.setAttribute('d','M'+a[0]+' '+a[1]+' C'+a[0]+' '+my+' '+b[0]+' '+my+' '+b[0]+' '+b[1]);
+        s.appendChild(p); paths.push(p); return p;
+      }
+      /* principle -> territory, then territory -> the photographs */
+      tops.forEach(function(t,i){ if(mids[i]) curve(t,mids[i]); });
+      /* the two crossings that keep it from reading as four parallel lanes */
+      if(tops[0]&&mids[2]) curve(tops[0],mids[2]);
+      if(tops[3]&&mids[1]) curve(tops[3],mids[1]);
+      bots.forEach(function(b){ curve(b,[b[0],h-2]); });
+      tops.concat(mids).forEach(function(q){
+        var c=document.createElementNS(NS,'circle');
+        c.setAttribute('cx',q[0]); c.setAttribute('cy',q[1]); c.setAttribute('r','2.2');
+        s.appendChild(c); });
+      paths.forEach(function(p){
+        var L=p.getTotalLength();
+        p.style.strokeDasharray=L;
+        p.style.strokeDashoffset=REDUCED?0:L;
+      });
+      draw();
+    };
+    function draw(){
+      if(REDUCED) return;
+      var fr=f.getBoundingClientRect(), vh=window.innerHeight||1;
+      /* how far the band has come up the screen, 0 to 1 */
+      var prog=Math.min(1,Math.max(0,(vh-fr.top)/(vh*0.72+fr.height)));
+      paths.forEach(function(p,i){
+        var start=i/(paths.length+2), k=Math.min(1,Math.max(0,(prog-start)/0.34));
+        var L=parseFloat(p.style.strokeDasharray)||0;
+        p.style.strokeDashoffset=String(L*(1-k));
+      });
+    }
+    lay(); on(window,'resize',lay); on(window,'scroll',draw);
+    later(lay,400); later(lay,1300);
+  }
+
+  var B={'11':b11,'12':b12,'13':b13,'14':b14,'15':b15,
+         '16':b16,'17':b17,'18':b18,'19':b19,'20':b20};
+
+  window.__sfExtra={
+    states:V, note:NOTE,
+    off:off,
+    apply:function(v){
+      if(V.indexOf(v)<0) return;
+      var f=fcats();
+      if(f&&!home) home={parent:f.parentNode,next:f.nextSibling};
+      document.documentElement.setAttribute('data-sfcat',v);
+      try{ B[v](); }catch(e){}
+    }
+  };
 })();
 </script>
 
