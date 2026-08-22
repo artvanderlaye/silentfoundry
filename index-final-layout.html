@@ -26004,6 +26004,9 @@ html[data-sf31] #sf-lab-mount .pvline{transition:opacity 1.05s ease !important;}
         if(p.__fit) return;
         var m=CIRC.exec((p.getAttribute('d')||'').trim());
         if(!m) return;
+        /* keep the pristine circle so a later layer can re-solve the radius
+           from the original rather than from an already-corrected one */
+        if(!p.dataset.d0) p.dataset.d0=p.getAttribute('d');
         var cx=+m[1], cy=+m[2], r=+m[3];
         var rx=+(r*RX).toFixed(2), ry=+(r*RY).toFixed(2);
         p.setAttribute('d','M'+cx+' '+cy+' m-'+rx+' 0 a'+rx+' '+ry+' 0 1 0 '+
@@ -26117,6 +26120,275 @@ html[data-sf31] #sf-lab-mount .pvline{transition:opacity 1.05s ease !important;}
       icons(); fitWheels();
       later(icons,320); later(icons,1200);
       later(fitWheels,320); later(fitWheels,1200); later(fitWheels,2600);
+    }
+  };
+})();
+</script>
+
+<style id="sf-f32-css">
+/* =========================================================================
+   32ORG — 31ORG WITH THE OVERLAY SOLVED FROM THE TWO IMAGES THEMSELVES.
+
+   WHAT WAS STILL WRONG IN 31ORG
+   The registration numbers were correct but they were FIXED percentages,
+   worked out at one window width against one assumed crop. .pvstage crops
+   its photograph with object-fit:cover, so how much of the 2000 x 1333 file
+   is actually on screen depends on the box it is given. A number that is
+   exact at one size is wrong at another. And the sketch was never measured
+   at all — it inherited 10ORG's 0.7764, which renders its wheelbase at 39.3%
+   of the stage against the photograph's 49.2%. The drawing was 20% too small.
+
+   WHAT 32ORG DOES INSTEAD
+   Nothing is a fixed percentage. Three sets of measurements are held, and
+   the frame is solved from them at runtime and again on resize.
+
+     THE PHOTOGRAPH   SWITCH_eSCRAMBLER_bike-6.jpg, 2000 x 1333
+       rear wheel   centre 524.5, 867.5   r 244.1
+       front wheel  centre 1508.0, 869.5  r 244.6
+       tyre ground  y 1115.5
+       Least-squares fits, refined against the tyre outline.
+
+     THE SKETCH       bike-side-sketch.png, 1800 x 1002
+       rear wheel   centre 320.9, 698.0   r 281.9   (9,304 points)
+       front wheel  centre 1466.8, 702.9  r 265.6   (9,139 points)
+       Fitted the same way, on the file's alpha channel.
+
+     THE TRACES       the build's own coordinates, viewBox -170 -100 1540 869
+       rear axle 216 · front axle 978 · axle line 472 · tyre radius 176
+
+   The sketch is placed so ITS wheel centres land on the photograph's wheel
+   centres at one uniform scale — so the drawing overlays the bike at very
+   nearly its own size, which is what it is for. The trace frame is solved
+   from the same two axles, so the extraction lands on the same features the
+   sketch does. Both are recomputed whenever the stage changes size.
+
+   The two machines are not identical — the sketch's wheels are r/wheelbase
+   0.2389, the bike's 0.2484 — so the tyre circles take one further
+   correction, also computed at runtime rather than typed in.
+
+   AND THE STRIP CYCLES
+   The FROM DNA TO NEW CATEGORIES strip ran to its end and stopped. It is now
+   continuous in both directions: the run is tripled and the scroll position
+   wraps at the seams, so it never reaches an edge. No autoplay, no wheel
+   handler — the same native scrolling, with no end to it.
+   ========================================================================= */
+
+/* the frame is written as inline pixels at runtime; these only make sure
+   nothing from an earlier layer is left standing underneath */
+html[data-sf32] #sf-lab-mount .pvsk{transform:none !important;}
+html[data-sf32] #sf-lab-mount .pvline{object-fit:fill !important;}
+
+/* the cloned run must be invisible to a reader and to the tab order */
+html[data-sf32] #sf-lab-mount [data-sfclone]{pointer-events:auto;}
+</style>
+
+<script id="sf-f32-js">
+(function(){
+
+  /* ---- the three measured sets ----------------------------------------- */
+  var PH={ w:2000, h:1333,
+           rear:[524.5,867.5], front:[1508.0,869.5],
+           r:(244.1+244.6)/2, ground:1115.5 };
+  var SK={ w:1800, h:1002,
+           rear:[320.9,698.0], front:[1466.8,702.9],
+           r:(281.9+265.6)/2 };
+  var TR={ vbx:-170, vby:-100, vbw:1540, vbh:869,
+           rearX:216, frontX:978, axleY:472, tyreR:176 };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  var TM=[],LS=[],RAFS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function raf(f){ var i=requestAnimationFrame(f); RAFS.push(i); return i; }
+
+  var CIRC=/^M(-?[\d.]+) (-?[\d.]+) m-([\d.]+) 0 a([\d.]+) ([\d.]+) 0 1 0 (-?[\d.]+) 0 a([\d.]+) ([\d.]+) 0 1 0 (-?[\d.]+) 0$/;
+
+  /* -----------------------------------------------------------------------
+     THE ONE FUNCTION THAT PLACES EVERYTHING.
+     Everything below is derived, nothing is typed in.
+     --------------------------------------------------------------------- */
+  function place(){
+    var stage=$('#sf-lab-mount .pvstage');
+    var pv=$('#sf-lab-mount .pvsk');
+    var ln=$('#sf-lab-mount .pvline');
+    if(!stage||!pv) return false;
+    var W=stage.clientWidth, H=stage.clientHeight;
+    if(W<40||H<40) return false;
+
+    /* where the photograph actually is, after object-fit:cover */
+    var s=Math.max(W/PH.w, H/PH.h);
+    var ox=(W-PH.w*s)/2, oy=(H-PH.h*s)/2;
+    var Xr=ox+PH.rear[0]*s,  Xf=ox+PH.front[0]*s;
+    var Ya=oy+((PH.rear[1]+PH.front[1])/2)*s;
+    var Yg=oy+PH.ground*s;
+    var R =PH.r*s;
+
+    /* the trace frame, solved from the two axles and the ground line */
+    var ur=(TR.rearX-TR.vbx)/TR.vbw, uf=(TR.frontX-TR.vbx)/TR.vbw;
+    var pw=(Xf-Xr)/(uf-ur), pl=Xr-ur*pw;
+    var va=(TR.axleY-TR.vby)/TR.vbh, vg=(TR.axleY+TR.tyreR-TR.vby)/TR.vbh;
+    var ph=(Yg-Ya)/(vg-va), pt=Ya-va*ph;
+    set(pv,{left:pl,top:pt,width:pw,height:ph});
+    pv.style.setProperty('transform','none','important');
+
+    /* the sketch, at ONE uniform scale, its wheels onto the bike's wheels */
+    if(ln){
+      var sx=(Xf-Xr)/(SK.front[0]-SK.rear[0]);
+      var lx=Xr-SK.rear[0]*sx;
+      var ly=Ya-((SK.rear[1]+SK.front[1])/2)*sx;
+      /* .pvline is positioned inside .pvsk, so shift into that frame */
+      set(ln,{left:lx-pl, top:ly-pt, width:SK.w*sx, height:SK.h*sx});
+    }
+
+    /* the tyre circles: the drawing's wheels are proportionally a little
+       bigger than the bike's, so the circles alone are re-solved to the
+       photograph's radius in both axes, from the pristine path each time */
+    var rxUser=TR.tyreR/TR.vbw*pw;      /* what one unit of r renders as */
+    var ryUser=TR.tyreR/TR.vbh*ph;
+    fitWheels(R/rxUser, R/ryUser);
+    return true;
+  }
+
+  function set(el,o){
+    for(var k in o) el.style.setProperty(k, o[k].toFixed(2)+'px', 'important');
+  }
+
+  function fitWheels(fx,fy){
+    ['whl','stnc','ctrs','circ','mass'].forEach(function(k){
+      $$('#sf-lab-mount .solo_'+k+' path').forEach(function(p){
+        var d0=p.dataset.d0||p.getAttribute('d')||'';
+        var m=CIRC.exec(d0.trim());
+        if(!m) return;
+        if(!p.dataset.d0) p.dataset.d0=d0;
+        var cx=+m[1], cy=+m[2], r=+m[3];
+        var rx=r*fx, ry=r*fy;
+        p.setAttribute('d','M'+cx+' '+cy+' m-'+rx.toFixed(2)+' 0 a'+rx.toFixed(2)+' '+
+          ry.toFixed(2)+' 0 1 0 '+(2*rx).toFixed(2)+' 0 a'+rx.toFixed(2)+' '+
+          ry.toFixed(2)+' 0 1 0 '+(-2*rx).toFixed(2)+' 0');
+      });
+    });
+  }
+
+  /* -----------------------------------------------------------------------
+     THE STRIP, MADE ENDLESS.
+     The run is tripled and the resting position put in the middle copy, so
+     there is a full run of headroom either way. When the scroll position
+     crosses a seam it is moved back by exactly one run — the content at that
+     point is identical, so nothing is seen to happen.
+     No timer, no wheel handler: this is the page's own native scrolling with
+     the ends taken off.
+     --------------------------------------------------------------------- */
+  var STRIPS=[];
+  function endless(){
+    /* the strip under the category row is .fwrap — the scroller — with one
+       .ftrack inside it carrying the .fslide cards. The cards are what gets
+       repeated; the track and the scroller are left alone. */
+    $$('#sf-lab-mount .fwrap').forEach(function(w){
+      if(w.__endless) return;
+      var track=$('.ftrack',w)||w;
+      var kids=[].slice.call(track.children).filter(function(n){
+        return !n.hasAttribute('data-sfclone'); });
+      if(kids.length<2) return;
+      if(w.scrollWidth<=w.clientWidth+8) return;   /* nothing to cycle */
+
+      var head=document.createDocumentFragment(), tail=document.createDocumentFragment();
+      kids.forEach(function(k){
+        [head,tail].forEach(function(frag){
+          var c=k.cloneNode(true);
+          c.setAttribute('data-sfclone','1');
+          c.setAttribute('aria-hidden','true');
+          if(c.id) c.removeAttribute('id');
+          $$('[id]',c).forEach(function(n){ n.removeAttribute('id'); });
+          $$('a,button,input,[tabindex]',c).forEach(function(n){ n.setAttribute('tabindex','-1'); });
+          frag.appendChild(c);
+        });
+      });
+      track.insertBefore(head, track.firstChild);
+      track.appendChild(tail);
+      w.__endless=1;
+
+      function runOf(){
+        var live=[].slice.call(track.children);
+        var n=kids.length;
+        if(live.length<n*3) return 0;
+        return live[n].offsetLeft-live[0].offsetLeft;   /* one full run */
+      }
+      var run=runOf();
+      if(run<8){ run=w.scrollWidth/3; }
+
+      /* wrap a little before the hard edge, so momentum never slams into it.
+         The content one run away is identical, so moving by exactly one run
+         cannot be seen — the cushion only decides when, not whether. */
+      var lock=false;
+      function norm(){
+        if(lock||run<8) return;
+        var pad=run*0.05, x=w.scrollLeft;
+        if(x>=2*run-pad){ lock=true; w.scrollLeft=x-run; raf(function(){lock=false;}); }
+        else if(x<=pad){ lock=true; w.scrollLeft=x+run; raf(function(){lock=false;}); }
+      }
+      on(w,'scroll',norm);
+      /* rest inside the middle run, so there is a whole run of travel each way
+         and neither end can be reached */
+      var seat=function(){ var r=runOf(); if(r>8) run=r; w.scrollLeft=run; };
+      seat(); later(seat,420); later(seat,1400);
+      on(window,'resize',function(){ later(seat,240); });
+      STRIPS.push({w:w,track:track,n:kids.length});
+    });
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    RAFS.forEach(cancelAnimationFrame); RAFS=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    /* put the strips back exactly as they were */
+    $$('#sf-lab-mount .fwrap').forEach(function(w){
+      $$('[data-sfclone]',w).forEach(function(n){ n.remove(); });
+      w.scrollLeft=0; w.__endless=0;
+    });
+    STRIPS=[];
+    ['pvsk','pvline'].forEach(function(c){
+      var e=$('#sf-lab-mount .'+c);
+      if(e) ['left','top','width','height','transform','object-fit']
+        .forEach(function(p){ e.style.removeProperty(p); });
+    });
+    /* the circles go back to the pristine paths */
+    $$('#sf-lab-mount [class*="solo_"] path').forEach(function(p){
+      if(p.dataset.d0){ p.setAttribute('d',p.dataset.d0); delete p.dataset.d0; p.__fit=0; }
+    });
+    document.documentElement.removeAttribute('data-sf32');
+  }
+
+  var NOTE={'32ORG':'31ORG with the overlay solved from the two images instead of typed in — the sketch’s own wheels fitted (320.9/698.0 r281.9 and 1466.8/702.9 r265.6) and laid onto the photograph’s (524.5/867.5 and 1508.0/869.5 r244.35) at one uniform scale, so the drawing sits over the bike at its own size; the trace frame solved from the same two axles and re-solved on every resize · the categories strip made endless in both directions'};
+
+  var prev=window.__sfExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfExtra={
+    states:(prev.states||[]).concat(['32ORG']),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(v!=='32ORG'){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 31ORG builds first — icons, eyebrow gap, cycling extraction */
+      try{ prev.apply&&prev.apply('31ORG'); }catch(e){}
+      document.documentElement.setAttribute('data-sf32','1');
+
+      /* the hero is assembled asynchronously, so keep trying until the
+         elements exist, then hold the placement against resize */
+      var tries=0;
+      (function settle(){
+        if(place()||++tries>26) {
+          if(tries<=26){ later(place,700); later(place,1800); later(place,3200); }
+          return;
+        }
+        later(settle,260);
+      })();
+      on(window,'resize',function(){ later(place,140); });
+
+      later(endless,500); later(endless,1600); later(endless,3000);
     }
   };
 })();
