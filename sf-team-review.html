@@ -4315,6 +4315,8 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
 (function(){
   var HASH0=location.hash;
   var STATES=['ORG','01','02','03','04','05','06','07','08','09','10'];
+  /* whatever a later layer registers is picked up when the selector is built */
+  var EX={};
   var NOTE={
     ORG:'the current page, untouched',
     '01':'warm section tinting — four shades of the same cream across hero, portrait band, People and Thesis, with a gold hairline where each becomes the next',
@@ -4458,6 +4460,8 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
     if(v==='ORG') document.documentElement.removeAttribute('data-sft');
     else document.documentElement.setAttribute('data-sft',v);
     if(B[v]){ try{ B[v](); }catch(e){} }
+    if(EX.off){ try{ EX.off(); }catch(e){} }
+    if(EX.apply){ try{ EX.apply(v); }catch(e){} }
     paint(v);
     window.scrollTo(0,y);
     try{ history.replaceState(null,'', '#v='+v); }catch(e){}
@@ -4471,6 +4475,9 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
   }
 
   function build(){
+    EX=window.__sfTeamExtra||{};
+    if(EX.states&&EX.states.length) STATES=STATES.concat(EX.states);
+    if(EX.note) for(var k in EX.note) NOTE[k]=EX.note[k];
     box=document.createElement('div'); box.id='sf-review';
     box.innerHTML='<span class="rvl">Team page</span><span class="rvb"></span><span class="rvn"></span>';
     var rb=$('.rvb',box);
@@ -4480,7 +4487,7 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
       b.addEventListener('click',function(){ apply(s); });
       rb.appendChild(b); });
     document.body.appendChild(box);
-    var m=/[#&]v=(ORG|\d\d)/i.exec(HASH0)||/[#&]v=(ORG|\d\d)/i.exec(location.hash);
+    var m=/[#&]v=(\d\dORG|ORG|\d\d)/i.exec(HASH0)||/[#&]v=(\d\dORG|ORG|\d\d)/i.exec(location.hash);
     var want=m?m[1].toUpperCase():'ORG';
     apply(STATES.indexOf(want)>=0?want:'ORG');
     /* the page composes itself late; re-measure once it has settled */
@@ -4490,5 +4497,556 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
   if(document.readyState==='loading')
     document.addEventListener('DOMContentLoaded',function(){ setTimeout(build,2600); });
   else setTimeout(build,2600);
+})();
+</script>
+
+<style id="sf-tm2-css">
+/* =========================================================================
+   TEAM PAGE — 11ORG AND 12–21.
+
+   Base: variation 03. 03 itself is not edited; 11ORG and 12–21 are their own
+   states, so 03's own CSS grid never reaches them and only one grid language
+   is ever active.
+
+   MEASURED REFERENCES
+
+   The homepage venture card (.fund-card / PROPRIETARY·BUILD):
+     card      rgba(10,10,10,.04)   no border, no radius, no shadow
+     label     DM Sans 14.4px / .22em / uppercase / ink 60% / w300, mb 12
+     heading   Bebas   15.84px / .14em / uppercase / ink 75% / w700, mb 16
+     copy      DM Sans 14.4 / 28.8 / ink 60%
+     symbol    a single glyph parked bottom-right, quiet
+
+   The team card as it stands:
+     card      #efece6, 360px, no border
+     rule      22 x 1.5px gold #8a6e3a, mb 14
+     name      DM Sans 15.2px w400 ink 82%
+     role      DM Sans 9.28px / .18em / uppercase / gold / w300
+     bio       DM Sans 9.92 / 18.35 / ink 48%
+     symbol    10.4px gold, bottom LEFT
+
+   The two already share an anatomy — rule, name, role, copy, symbol. What
+   the card system has and the team card does not is the ORDER: classification
+   first, heading second. That is what these versions translate, along with
+   the 4% wash and the parked symbol. The venture heading is Bebas; the team
+   name is not moved onto it, because a person's name set in an all-caps
+   condensed face reads as a poster headline, which the brief excludes. The
+   name is strengthened by weight and contrast instead.
+
+   COLOUR: warm cream, paper white, pale parchment, warm grey, stone,
+   graphite, soft black, Silent Foundry navy, muted gold. No SWITCH cyan,
+   blue or signal orange appears anywhere below.
+   ========================================================================= */
+
+:root{
+  --sfd-cream:#efece6; --sfd-paper:#f6f3ec; --sfd-parch:#ece7dc; --sfd-stone:#e5e1d8;
+  --sfd-grey:#dcd8d0; --sfd-graph:#2a2e33; --sfd-ink:#0a0a0a;
+  --sfd-navy:#1e2a4a; --sfd-gold:#8a6e3a; --sfd-gold2:#c8a96e;
+}
+
+/* ---- shared to 11ORG and 12–21 ----------------------------------------- */
+html[data-sfd] #pc > section:first-of-type,
+html[data-sfd] #pc > section:nth-of-type(2),
+html[data-sfd] #tm-close,
+html[data-sfd] #pc > section:last-of-type{position:relative;}
+html[data-sfd] #tm-head,html[data-sfd] .tm-ctr,html[data-sfd] .hs{position:relative;z-index:2;}
+/* the Marshall grid canvas, wherever it is placed */
+html[data-sfd] .sfd-bp{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+html[data-sfd] .sfd-bp canvas{position:absolute;inset:0;display:block;}
+/* it must never cross a face: inside a card it is masked to the text panel */
+html[data-sfd] .tc .sfd-bp{
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0,#000 12%,#000 100%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,0) 0,#000 12%,#000 100%);}
+html[data-sfd] .sfd-x{position:absolute;pointer-events:none;z-index:1;}
+
+/* =========================================================================
+   12 · VENTURE-CARD LABEL SYSTEM
+   The card's own parts, re-ordered into the homepage card's order:
+   classification, then name, then copy, with the symbol parked.
+   ========================================================================= */
+html[data-sfd="12"] .tc > div:nth-child(2){display:flex;flex-direction:column;}
+html[data-sfd="12"] .tc .a-rl{order:1;margin:0 0 7px !important;
+  color:rgba(10,10,10,.55) !important;letter-spacing:.2em !important;}
+html[data-sfd="12"] .tc .fmark{order:2;width:18px !important;margin-bottom:11px !important;}
+html[data-sfd="12"] .tc .u-name{order:3;margin-top:0 !important;
+  color:rgba(10,10,10,.9) !important;font-weight:500 !important;}
+html[data-sfd="12"] .tc .u-desc{order:4;margin-top:11px !important;}
+html[data-sfd="12"] .tc .bio{order:5;}
+html[data-sfd="12"] .tc > div:nth-child(2) > div:last-child{order:6;text-align:right;
+  padding-top:16px !important;}
+html[data-sfd="12"] .tc .sym{color:rgba(138,110,58,.7) !important;}
+
+/* =========================================================================
+   13 · TONAL TEAM CARDS
+   Four Silent Foundry tones in a fixed rotation — never a stripe, because
+   the sequence is longer than the number of cards on screen at once.
+   ========================================================================= */
+html[data-sfd="13"] .tc:nth-child(4n+1){background:var(--sfd-paper) !important;}
+html[data-sfd="13"] .tc:nth-child(4n+2){background:var(--sfd-cream) !important;}
+html[data-sfd="13"] .tc:nth-child(4n+3){background:var(--sfd-parch) !important;}
+html[data-sfd="13"] .tc:nth-child(4n+4){background:var(--sfd-stone) !important;}
+/* an inset shadow, not a border: a border would take a pixel off the card box
+   and therefore off the portrait, and the crops are locked. */
+html[data-sfd="13"] .tc{box-shadow:inset -1px 0 0 rgba(42,46,51,.11) !important;}
+html[data-sfd="13"] .tc .a-rl{color:var(--sfd-gold) !important;}
+html[data-sfd="13"] .tc .u-name{color:rgba(10,10,10,.88) !important;}
+
+/* =========================================================================
+   14 · PARTIAL TECHNICAL FRAMES
+   Rules and opposing brackets rather than boxes: the content is organised
+   and the card stays open on two sides.
+   ========================================================================= */
+html[data-sfd="14"] .tc > div:nth-child(2){position:relative;}
+html[data-sfd="14"] .tc > div:nth-child(2)::before{content:"";position:absolute;
+  left:0;right:0;top:0;height:1px;background:rgba(42,46,51,.16);}
+html[data-sfd="14"] .sfd-brk{position:absolute;width:15px;height:15px;z-index:2;}
+html[data-sfd="14"] .sfd-brk.a{left:9px;top:9px;
+  border-top:1px solid rgba(138,110,58,.6);border-left:1px solid rgba(138,110,58,.6);}
+html[data-sfd="14"] .sfd-brk.b{right:9px;bottom:9px;
+  border-bottom:1px solid rgba(138,110,58,.6);border-right:1px solid rgba(138,110,58,.6);}
+html[data-sfd="14"] .tc .u-name{padding-bottom:8px;
+  border-bottom:1px solid rgba(42,46,51,.12);}
+html[data-sfd="14"] .sfd-vr{position:absolute;top:0;bottom:0;width:1px;
+  background:rgba(42,46,51,.1);z-index:1;}
+
+/* =========================================================================
+   15 · CLASSIFICATION AND INDEXING
+   An index drawn out of the roles that are already written, not new titles.
+   ========================================================================= */
+/* the backer sits INSIDE the panel, not on the photograph: the portraits are
+   the dominant content and nothing is allowed to sit on top of one. */
+html[data-sfd="15"] .sfd-ix{position:absolute;left:22px;top:14px;z-index:3;
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sfd-gold);
+  background:rgba(200,169,110,.11);padding:5px 9px;white-space:nowrap;}
+html[data-sfd="15"] .tc > div:nth-child(2){position:relative;padding-top:46px !important;}
+html[data-sfd="15"] .tc .fmark{display:none !important;}
+html[data-sfd="15"] .tc .u-name{color:rgba(10,10,10,.9) !important;font-weight:500 !important;}
+html[data-sfd="15"] .tc .a-rl{color:rgba(10,10,10,.5) !important;}
+html[data-sfd="15"] .tm-brow{position:relative;padding-left:34px !important;}
+html[data-sfd="15"] .sfd-bix{position:absolute;left:0;top:14px;
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.18em;
+  color:var(--sfd-gold);}
+
+/* =========================================================================
+   16 · PEOPLE SECTION AS A REFINED PANEL SYSTEM
+   The cards are left exactly as 03 has them; all of the hierarchy is put
+   into the block below, in the card system's language.
+   ========================================================================= */
+html[data-sfd="16"] #tm-close{background:var(--sfd-paper);}
+html[data-sfd="16"] .tm-pair > div:first-child > div:first-child,
+html[data-sfd="16"] .tm-pair > div:first-child > div:nth-child(4){
+  display:inline-block;background:rgba(10,10,10,.04);padding:7px 13px !important;
+  color:rgba(10,10,10,.62) !important;}
+html[data-sfd="16"] .tm-brow{border-top:1px solid rgba(42,46,51,.14) !important;
+  padding:13px 12px !important;position:relative;}
+html[data-sfd="16"] .tm-brow:nth-child(odd){background:rgba(10,10,10,.028);}
+html[data-sfd="16"] .tm-brow span:first-child{color:rgba(10,10,10,.82) !important;}
+html[data-sfd="16"] .tm-pair > div:nth-child(2) > div{
+  padding:16px 0 18px !important;border-top:1px solid rgba(42,46,51,.13);}
+html[data-sfd="16"] .tm-pair > div:nth-child(2) > div:first-child{border-top:0;padding-top:0 !important;}
+html[data-sfd="16"] .tm-pair > div:nth-child(2) > div > div:first-child{
+  display:inline-block;background:rgba(10,10,10,.04);padding:6px 11px;}
+html[data-sfd="16"] .tm-cta{border-color:rgba(138,110,58,.55) !important;}
+
+/* =========================================================================
+   17 · GOLD INFORMATION MARKERS
+   Gold as punctuation. Most of the page stays cream and graphite; gold lands
+   only where the page is telling you what something is.
+   ========================================================================= */
+html[data-sfd="17"] #tm-head > div:first-child{display:inline-block;
+  background:rgba(200,169,110,.14);padding:6px 12px !important;
+  color:var(--sfd-gold) !important;}
+html[data-sfd="17"] #tm-head > div:nth-child(3){
+  background:linear-gradient(90deg,rgba(138,110,58,.55),rgba(138,110,58,.06)) !important;}
+html[data-sfd="17"] .tm-strip span{color:rgba(10,10,10,.5) !important;}
+html[data-sfd="17"] .tc .fmark{width:30px !important;background:var(--sfd-gold2) !important;}
+html[data-sfd="17"] .tm-pair > div:first-child > div:nth-child(4){display:inline-block;
+  background:rgba(200,169,110,.14);padding:6px 12px !important;}
+html[data-sfd="17"] .tm-brow{border-left:2px solid rgba(138,110,58,.45) !important;
+  padding-left:12px !important;}
+html[data-sfd="17"] .tm-pair > div:nth-child(2) > div > div:first-child span:first-child{
+  color:var(--sfd-gold2) !important;}
+html[data-sfd="17"] .tm-cta{border-color:var(--sfd-gold) !important;
+  box-shadow:inset 0 0 0 3px rgba(200,169,110,.1);}
+html[data-sfd="17"] .sfd-cnr{position:absolute;width:13px;height:13px;z-index:2;}
+html[data-sfd="17"] .sfd-cnr::before,html[data-sfd="17"] .sfd-cnr::after{
+  content:"";position:absolute;background:rgba(200,169,110,.7);}
+html[data-sfd="17"] .sfd-cnr::before{left:0;top:6px;width:13px;height:1px;}
+html[data-sfd="17"] .sfd-cnr::after{left:6px;top:0;width:1px;height:13px;}
+
+/* =========================================================================
+   18 · GRAPHITE CARD DEPTH
+   The information panel takes a graphite inflection — the card system's 4%
+   wash, read cool instead of warm — and the names come up with it.
+   ========================================================================= */
+html[data-sfd="18"] .tc > div:nth-child(2){background:rgba(42,46,51,.055);}
+html[data-sfd="18"] .tc .u-name{color:rgba(10,10,10,.92) !important;font-weight:500 !important;}
+html[data-sfd="18"] .tc .u-desc{color:rgba(10,10,10,.42) !important;}
+html[data-sfd="18"] .tc .a-rl{color:var(--sfd-gold) !important;}
+html[data-sfd="18"] .tc .fmark{background:var(--sfd-gold) !important;}
+html[data-sfd="18"] .tc > div:nth-child(2)::before{content:"";position:absolute;
+  left:0;right:0;top:0;height:1px;background:rgba(42,46,51,.18);}
+html[data-sfd="18"] .tc > div:nth-child(2){position:relative;}
+
+/* =========================================================================
+   19 · DEEP NAVY MICRO-PANELS
+   Navy only where a label sits, never as a field.
+   ========================================================================= */
+html[data-sfd="19"] .tc .a-rl{display:inline-block;background:var(--sfd-navy);
+  color:rgba(244,241,236,.9) !important;padding:4px 8px !important;
+  letter-spacing:.16em !important;}
+html[data-sfd="19"] .tc .fmark{display:none !important;}
+html[data-sfd="19"] .tc .u-name{color:rgba(10,10,10,.9) !important;font-weight:500 !important;}
+html[data-sfd="19"] .tm-pair > div:first-child > div:nth-child(4),
+html[data-sfd="19"] .tm-pair > div:nth-child(2) > div > div:first-child{
+  display:inline-block;background:var(--sfd-navy);padding:6px 12px !important;}
+html[data-sfd="19"] .tm-pair > div:first-child > div:nth-child(4){
+  color:rgba(200,169,110,.95) !important;}
+html[data-sfd="19"] .tm-pair > div:nth-child(2) > div > div:first-child span{
+  color:rgba(244,241,236,.92) !important;}
+html[data-sfd="19"] .tm-pair > div:nth-child(2) > div > div:first-child span:first-child{
+  color:rgba(200,169,110,.95) !important;}
+html[data-sfd="19"] .tm-cta{background:var(--sfd-navy) !important;
+  border-color:var(--sfd-navy) !important;color:rgba(200,169,110,.95) !important;}
+html[data-sfd="19"] .tm-cta:hover{background:var(--sfd-gold) !important;
+  border-color:var(--sfd-gold) !important;color:#f6f3ec !important;}
+html[data-sfd="19"] .sfd-nstrip{position:absolute;width:3px;background:var(--sfd-navy);
+  z-index:2;opacity:.85;}
+
+/* =========================================================================
+   20 · LAYERED TECHNICAL DOCUMENTS
+   Cream on a slightly different cream, with the grid running behind one
+   layer and stopped by the next. Flat — no shadow, no float.
+   ========================================================================= */
+html[data-sfd="20"] #pc > section:first-of-type{background:var(--sfd-paper);}
+html[data-sfd="20"] #pc > section:nth-of-type(2){background:var(--sfd-parch);}
+html[data-sfd="20"] #tm-close{background:var(--sfd-paper);}
+html[data-sfd="20"] .tm-ctr{position:relative;}
+html[data-sfd="20"] .tm-pair > div:first-child{position:relative;}
+html[data-sfd="20"] .tm-pair > div:first-child::before{content:"";position:absolute;
+  left:-24px;right:-24px;top:-20px;bottom:-20px;background:var(--sfd-cream);
+  border:1px solid rgba(42,46,51,.1);z-index:-1;}
+html[data-sfd="20"] .sfd-tab{position:absolute;z-index:3;
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.5);
+  background:var(--sfd-cream);border:1px solid rgba(42,46,51,.12);
+  border-bottom:0;padding:5px 11px 4px;white-space:nowrap;}
+html[data-sfd="20"] .sfd-reg{position:absolute;width:9px;height:9px;border-radius:50%;
+  border:1px solid rgba(138,110,58,.55);z-index:3;}
+html[data-sfd="20"] .sfd-reg::after{content:"";position:absolute;left:3px;top:3px;
+  width:3px;height:3px;border-radius:50%;background:rgba(138,110,58,.75);}
+html[data-sfd="20"] .tc{box-shadow:inset -1px 0 0 rgba(42,46,51,.09) !important;}
+
+/* =========================================================================
+   21 · PRODUCTION-READY COMBINATION
+   Only the parts that carried their weight: the card order from 12, one step
+   of tone from 13, the top rule from 14, quiet indexing from 15, the People
+   rows from 16, and gold used the way 17 uses it — no more than that.
+   ========================================================================= */
+html[data-sfd="21"] #pc > section:nth-of-type(2){background:var(--sfd-parch);}
+html[data-sfd="21"] #tm-close{background:var(--sfd-paper);}
+/* the card: classification, rule, name, copy, parked symbol */
+html[data-sfd="21"] .tc{background:var(--sfd-paper) !important;
+  box-shadow:inset -1px 0 0 rgba(42,46,51,.1) !important;}
+html[data-sfd="21"] .tc > div:nth-child(2){display:flex;flex-direction:column;
+  position:relative;background:rgba(10,10,10,.028);}
+html[data-sfd="21"] .tc > div:nth-child(2)::before{content:"";position:absolute;
+  left:0;right:0;top:0;height:1px;background:rgba(42,46,51,.15);}
+html[data-sfd="21"] .tc .a-rl{order:1;margin:0 0 7px !important;
+  color:rgba(10,10,10,.55) !important;letter-spacing:.2em !important;}
+html[data-sfd="21"] .tc .fmark{order:2;width:18px !important;margin-bottom:11px !important;
+  background:var(--sfd-gold) !important;}
+html[data-sfd="21"] .tc .u-name{order:3;margin-top:0 !important;
+  color:rgba(10,10,10,.9) !important;font-weight:500 !important;}
+html[data-sfd="21"] .tc .u-desc{order:4;margin-top:11px !important;}
+html[data-sfd="21"] .tc .bio{order:5;}
+html[data-sfd="21"] .tc > div:nth-child(2) > div:last-child{order:6;text-align:right;
+  padding-top:16px !important;}
+html[data-sfd="21"] .tc .sym{color:rgba(138,110,58,.7) !important;}
+html[data-sfd="21"] .sfd-ix{position:absolute;right:22px;top:14px;z-index:3;
+  font-family:'DM Sans',sans-serif;font-size:8.8px;letter-spacing:.2em;
+  color:rgba(138,110,58,.85);}
+/* the People block */
+html[data-sfd="21"] .tm-pair > div:first-child > div:first-child,
+html[data-sfd="21"] .tm-pair > div:first-child > div:nth-child(4){
+  display:inline-block;background:rgba(200,169,110,.13);padding:7px 13px !important;}
+html[data-sfd="21"] .tm-brow{border-top:1px solid rgba(42,46,51,.14) !important;
+  padding:13px 12px !important;position:relative;}
+html[data-sfd="21"] .tm-brow:nth-child(odd){background:rgba(10,10,10,.026);}
+html[data-sfd="21"] .tm-brow span:first-child{color:rgba(10,10,10,.84) !important;}
+html[data-sfd="21"] .tm-pair > div:nth-child(2) > div{
+  padding:15px 0 17px !important;border-top:1px solid rgba(42,46,51,.12);}
+html[data-sfd="21"] .tm-pair > div:nth-child(2) > div:first-child{
+  border-top:0;padding-top:0 !important;}
+html[data-sfd="21"] .tm-pair > div:nth-child(2) > div > div:first-child{
+  display:inline-block;background:rgba(10,10,10,.035);padding:6px 11px;}
+html[data-sfd="21"] .tm-cta{border-color:var(--sfd-gold) !important;
+  padding:14px 26px !important;box-shadow:inset 0 0 0 3px rgba(200,169,110,.09);}
+/* the threshold into the Thesis */
+html[data-sfd="21"] #pc > section:last-of-type::before{content:"";position:absolute;
+  left:0;right:0;top:0;height:1px;background:rgba(138,110,58,.4);z-index:3;}
+
+/* =========================================================================
+   RESPONSIVE — the grid must not gain strength on a small screen
+   ========================================================================= */
+@media(max-width:860px){
+  html[data-sfd] .sfd-bp{opacity:.62;}
+  html[data-sfd="14"] .sfd-vr,html[data-sfd="19"] .sfd-nstrip{display:none;}
+  html[data-sfd="20"] .sfd-tab{display:none;}
+  html[data-sfd="15"] .sfd-ix{left:14px;font-size:8.4px;}
+  html[data-sfd="20"] .tm-pair > div:first-child::before{left:-12px;right:-12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfd] .sfd-bp{transition:none !important;}
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script id="sf-tm2-js">
+(function(){
+  /* =======================================================================
+     THE MARSHALL GRID — the homepage's own code, not a version of it.
+
+     What follows between the markers is initV11Blueprint lifted verbatim out
+     of index.html. Four things are different and nothing else:
+       the host element is passed in, because the Team page has no .hero
+       the canvas carries a class rather than a page-unique id
+       the stop flag is the canvas's own rather than v11Active
+       spacing, colour, line opacity and canvas opacity are options
+     — which is the scale / position / colour / opacity the brief allows.
+     The geometry (60px, r*0.6, the orthographic camera), the delays
+     (|r|*80 and |c|*60+200) and the 1200ms ramp are the originals.
+
+     r128 of three.js is loaded from the same CDN the homepage uses. Where it
+     is unavailable the grid simply does not draw — nothing is substituted,
+     because an approximation is exactly what was ruled out.
+     ======================================================================= */
+/* ---- BEGIN index.html : initV11Blueprint ------------------------------- */
+  function initV11Blueprint(hero, opts) {
+    opts = opts || {};
+    if (!hero || !window.THREE) return;
+    /* one canvas per host rather than one on the page */
+    var canvas = document.createElement('canvas');
+    canvas.className = 'sfd-bpc';
+    canvas.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none;display:block;opacity:' + (opts.opacity===undefined?0.18:opts.opacity) + ';';
+    hero.appendChild(canvas);
+    var W = hero.offsetWidth, H = hero.offsetHeight;
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+    var scene = new THREE.Scene();
+    var camera = new THREE.OrthographicCamera(-W/100, W/100, H/100*0.8, -H/100*0.8, 0.1, 100);
+    camera.position.z = 5;
+    var mat = new THREE.LineBasicMaterial({ color: (opts.color===undefined?0xc8a96e:opts.color), transparent: true, opacity: (opts.lineOpacity===undefined?0.4:opts.lineOpacity) });
+    var group = new THREE.Group();
+    var S = opts.spacing || 60;
+    var cols = Math.ceil(W/S), rows = Math.ceil(H/S);
+    var lines = [];
+    for (var r = -rows; r <= rows; r++) {
+      var pts = [new THREE.Vector3(-cols, r*0.6, 0), new THREE.Vector3(cols, r*0.6, 0)];
+      var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat.clone());
+      line.scale.x = 0;
+      group.add(line);
+      lines.push({ mesh: line, delay: Math.abs(r) * 80, axis: 'x' });
+    }
+    for (var c = -cols; c <= cols; c++) {
+      var pts2 = [new THREE.Vector3(c, -rows*0.6, 0), new THREE.Vector3(c, rows*0.6, 0)];
+      var line2 = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts2), mat.clone());
+      line2.scale.y = 0;
+      group.add(line2);
+      lines.push({ mesh: line2, delay: Math.abs(c) * 60 + 200, axis: 'y' });
+    }
+    scene.add(group);
+    var startTime = Date.now();
+    function animateBp() {
+      if (canvas.__stop) return;
+      requestAnimationFrame(animateBp);
+      var elapsed = Date.now() - startTime;
+      lines.forEach(function(l) {
+        var progress = Math.min(1, (elapsed - l.delay) / 1200);
+        if (progress > 0) {
+          if (l.axis === 'x') l.mesh.scale.x = progress;
+          else l.mesh.scale.y = progress;
+        }
+      });
+      renderer.render(scene, camera);
+    }
+    animateBp();
+    return canvas;
+  }
+/* ---- END index.html ---------------------------------------------------- */
+
+  var STATES=['11ORG','12','13','14','15','16','17','18','19','20','21'];
+  var NOTE={
+    '11ORG':'variation 03 with its CSS grid replaced by the homepage\u2019s own Marshall blueprint \u2014 initV11Blueprint, verbatim, at its own 60px geometry and gold. The controlled reference for 12\u201321.',
+    '12':'venture-card label system \u2014 the card\u2019s parts put into the homepage card\u2019s order: classification, rule, name, copy, symbol parked bottom-right',
+    '13':'tonal team cards \u2014 four Silent Foundry tones in rotation across the carousel, with a fine warm-grey division between them',
+    '14':'partial technical frames \u2014 a top rule and opposing corner brackets rather than boxes, a rule under each name, fine vertical divisions in the People section',
+    '15':'classification and indexing \u2014 a two-part index drawn out of the roles already written, on a light gold backer, carried into the Board rows',
+    '16':'People section as a refined panel system \u2014 the cards left as 03 has them, all of the hierarchy put into the block below in the card system\u2019s language',
+    '17':'gold information markers \u2014 gold as punctuation: the section label, the rule, the card marks, the Board edge, the button. Most of the page stays cream and graphite',
+    '18':'graphite card depth \u2014 the information panel takes the card system\u2019s 4% wash read cool instead of warm, and the names come up with it',
+    '19':'deep navy micro-panels \u2014 navy only where a label sits: role tags, the Board heading, the Mission / Vision / Opportunities tabs, the button',
+    '20':'layered technical documents \u2014 cream on a slightly different cream, the grid running behind one layer and stopped by the next, with tabs and registration marks',
+    '21':'production-ready combination \u2014 the card order from 12, one step of tone from 13, the rule from 14, quiet indexing from 15, the People rows from 16, gold used as 17 uses it'
+  };
+
+  /* the grid's placement and strength per version — geometry never changes */
+  var GRID={
+    '11ORG':[['hero',.18],['close',.14]],
+    '12':[['panel',.20]],
+    '13':[['panel',.13]],
+    '14':[['hero',.20],['close',.16]],
+    '15':[['hero',.16],['close',.13]],
+    '16':[['close',.20]],
+    '17':[['hero',.15]],
+    '18':[['hero',.22],['close',.18],['panel',.10]],
+    '19':[['hero',.14]],
+    '20':[['hero',.20],['close',.10]],
+    '21':[['hero',.16],['close',.12],['panel',.09]]
+  };
+
+  /* the index, read out of the roles that are already on the page */
+  var CLASS=['Design','Venture','Strategy','Partnerships','Brand','Capital',
+             'Engineering','Digital','AI','Film'];
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function hero(){ return $('#pc > section:first-of-type'); }
+  function strip(){ return $('#pc > section:nth-of-type(2)'); }
+  function close_(){ return document.getElementById('tm-close'); }
+  function cards(){ return $$('#pc .hs .tc'); }
+  function panelOf(c){ return c.children[1]; }
+
+  var LS=[],TM=[];
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+
+  function off(){
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    TM.forEach(clearTimeout); TM=[];
+    document.documentElement.removeAttribute('data-sfd');
+    $$('.sfd-bpc').forEach(function(c){ c.__stop=1; });
+    $$('.sfd-bp,.sfd-x,.sfd-brk,.sfd-vr,.sfd-ix,.sfd-bix,.sfd-cnr,.sfd-nstrip,.sfd-tab,.sfd-reg')
+      .forEach(function(n){ n.remove(); });
+  }
+
+  /* one grid host, sized and placed, then the homepage function draws in it */
+  function grid(host,opacity){
+    if(!host) return;
+    var box=document.createElement('div'); box.className='sfd-bp';
+    host.insertBefore(box,host.firstChild);
+    var draw=function(){
+      $$('canvas',box).forEach(function(c){ c.__stop=1; c.remove(); });
+      if(box.offsetWidth<8||box.offsetHeight<8) return;
+      initV11Blueprint(box,{opacity:opacity});
+    };
+    later(draw,60); later(draw,900);
+    on(window,'resize',function(){ later(draw,220); });
+  }
+
+  function grids(v){
+    (GRID[v]||[]).forEach(function(g){
+      if(g[0]==='hero') grid(hero(),g[1]);
+      else if(g[0]==='close') grid(close_(),g[1]);
+      else if(g[0]==='panel') cards().forEach(function(c){
+        var p=panelOf(c); if(p){ p.style.position='relative'; grid(p,g[1]); } });
+    });
+  }
+
+  /* ---------------- per-version furniture ---------------- */
+  function brackets(){
+    cards().forEach(function(c){
+      var p=panelOf(c); if(!p) return; p.style.position='relative';
+      ['a','b'].forEach(function(k){
+        var i=document.createElement('i'); i.className='sfd-brk '+k; p.appendChild(i); });
+    });
+    var cl=close_(); if(!cl) return;
+    var pair=$('.tm-pair'); if(!pair) return;
+    var v=document.createElement('div'); v.className='sfd-vr'; cl.appendChild(v);
+    var lay=function(){
+      var a=pair.children[0], b=pair.children[1]; if(!a||!b) return;
+      var pr=cl.getBoundingClientRect(), ar=a.getBoundingClientRect(), br=b.getBoundingClientRect();
+      if(br.left<=ar.right){ v.style.display='none'; return; }
+      v.style.display='block';
+      v.style.left=Math.round((ar.right+br.left)/2-pr.left)+'px';
+      v.style.top=Math.round(ar.top-pr.top-12)+'px';
+      v.style.bottom=Math.round(pr.bottom-Math.max(ar.bottom,br.bottom)-12)+'px';
+    };
+    lay(); on(window,'resize',lay); later(lay,400); later(lay,1300);
+  }
+
+  function indices(mode){
+    cards().forEach(function(c,i){
+      var p=panelOf(c); if(!p) return; p.style.position='relative';
+      var n=document.createElement('div'); n.className='sfd-ix';
+      n.textContent=('0'+(i+1)).slice(-2)+(mode==='full'?(' / '+(CLASS[i]||'').toUpperCase()):'');
+      p.appendChild(n);
+    });
+    if(mode==='full') $$('.tm-brow').forEach(function(r,i){
+      r.style.position='relative';
+      var n=document.createElement('span'); n.className='sfd-bix';
+      n.textContent=('0'+(i+1)).slice(-2); r.appendChild(n); });
+  }
+
+  function corners(){
+    [hero(),close_()].forEach(function(h){
+      if(!h) return;
+      [['left:26px;top:24px;'],['right:26px;top:24px;'],
+       ['left:26px;bottom:24px;'],['right:26px;bottom:24px;']].forEach(function(p){
+        var i=document.createElement('i'); i.className='sfd-x sfd-cnr';
+        i.style.cssText='position:absolute;z-index:2;'+p[0]; h.appendChild(i); });
+    });
+  }
+
+  function navyStrips(){
+    var s=strip(); if(!s) return;
+    cards().forEach(function(c){
+      var p=panelOf(c); if(!p) return; p.style.position='relative';
+      var n=document.createElement('i'); n.className='sfd-nstrip';
+      n.style.cssText='left:0;top:0;bottom:0;'; p.appendChild(n); });
+  }
+
+  function docs(){
+    var cl=close_(); if(!cl) return;
+    var pair=$('.tm-pair'); if(!pair) return;
+    var t=document.createElement('div'); t.className='sfd-tab';
+    t.textContent='Sheet 02 \u00b7 Narrative'; cl.appendChild(t);
+    [['left:26px;top:22px;'],['right:26px;bottom:22px;']].forEach(function(p){
+      var r=document.createElement('i'); r.className='sfd-reg';
+      r.style.cssText=p[0]; cl.appendChild(r); });
+    var lay=function(){
+      var a=pair.children[0]; if(!a) return;
+      var pr=cl.getBoundingClientRect(), ar=a.getBoundingClientRect();
+      t.style.left=Math.round(ar.left-pr.left-24)+'px';
+      t.style.top=Math.round(ar.top-pr.top-20-25)+'px';
+    };
+    lay(); on(window,'resize',lay); later(lay,400); later(lay,1300);
+  }
+
+  var B={'14':brackets,
+         '15':function(){ indices('full'); },
+         '17':corners,
+         '19':navyStrips,
+         '20':docs,
+         '21':function(){ indices('short'); }};
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(STATES),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(STATES.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      document.documentElement.setAttribute('data-sfd',v);
+      grids(v);
+      if(B[v]){ try{ B[v](); }catch(e){} }
+    }
+  };
 })();
 </script>
