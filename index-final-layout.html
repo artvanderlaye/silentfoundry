@@ -24359,7 +24359,9 @@ html[data-sf10] #sf-lab-mount .pvsk{
     if(EX.apply){ try{ EX.apply(v); }catch(e){} }
     paint(v);
     window.scrollTo(0,y);
-    try{ history.replaceState(null,'', v==='ORG'?'#v=ORG':'#v='+v); }catch(e){}
+    if(!window.__SF_BAKE){
+      try{ history.replaceState(null,'', v==='ORG'?'#v=ORG':'#v='+v); }catch(e){}
+    }
   }
 
   var box;
@@ -24374,6 +24376,16 @@ html[data-sf10] #sf-lab-mount .pvsk{
     EX=window.__sfExtra||{};
     if(EX.states&&EX.states.length) STATES=STATES.concat(EX.states);
     if(EX.note) for(var k in EX.note) NOTE[k]=EX.note[k];
+    /* ---- BAKED PRODUCTION ------------------------------------------------
+       When a chosen state has been baked in, no selector is ever built and
+       that state is applied directly. The page then ships AS the design
+       rather than as the old design with a switcher on top of it. */
+    if(window.__SF_BAKE){
+      apply(window.__SF_BAKE);
+      window.addEventListener('resize',function(){ fitFactory(cur()); },{passive:true});
+      setTimeout(function(){ hiw(cur()); fitFactory(cur()); },2500);
+      return;
+    }
     box=document.createElement('div');
     box.id='sf-review';
     box.innerHTML='<span class="rvl">Layout review</span><span class="rvb"></span>'+
@@ -24395,6 +24407,13 @@ html[data-sf10] #sf-lab-mount .pvsk{
     setTimeout(function(){ hiw(cur()); fitFactory(cur()); },2500);
   }
 
+  /* THE 4.2s SETTLE IS NOT PADDING.
+     The page builds the DNA section twice — once at about 1.1s and again
+     when it settles on m=11 at about 3s — and the second build replaces the
+     DOM the first one made. Anything applied before that is wiped. This is
+     the tested value and the baked page uses it too; every rule that CSS can
+     carry is already true at first paint from the head, and the section it
+     waits for is a long way below the fold. */
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(build,4200); });
   else setTimeout(build,4200);
 })();
