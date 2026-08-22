@@ -2343,12 +2343,22 @@ body.v11-active nav * { cursor: none !important; }
 
 <script id="sf-bake-32org">
 /* =========================================================================
-   BAKED: 32ORG.
-   The chosen layout is the page. This runs in the head so every rule that
-   depends on a state attribute is true at first paint — there is no moment
-   where the previous layout is on screen. The attributes are the ones
-   32ORG resolves to, read off the rendered state rather than transcribed.
-   No review selector is built, and the address bar is left alone.
+   BAKED: 32ORG — and the address bar left alone.
+
+   The page carries several internal review labs that steer themselves by
+   writing c= and m= into location.hash. On a baked page that is wrong twice
+   over: the URL turns into silentfoundry.pages.dev/#c=29&m=11, and a reload
+   on that URL restores the scroll position and opens partway down the page.
+
+   So on the baked build every one of those writes goes to __SFH.h, a shadow
+   value the same labs read back, and location.hash is never touched. The
+   page steers itself exactly as before; the URL simply stops hearing about
+   it. Nothing about which concept is shown changes — it is still c=29, m=11,
+   which is what the page picks for itself.
+
+   Scroll restoration is set to manual and the page is put at the top, so it
+   always opens at the top. An old bookmark that still carries the lab hash
+   is cleaned on arrival.
    ========================================================================= */
 (function(){
   var de=document.documentElement;
@@ -2356,6 +2366,35 @@ body.v11-active nav * { cursor: none !important; }
          'data-sfvar':'21','data-sffin':'30ORG','data-sf31':'1','data-sf32':'1'};
   for(var k in A) de.setAttribute(k,A[k]);
   window.__SF_BAKE='32ORG';
+
+  /* the shadow the internal labs steer by */
+  window.__SF_HASH='#c=29&m=11';
+  function part(s,k){ var m=new RegExp('(?:^|&)'+k+'=([^&]*)').exec(s); return m?m[1]:null; }
+  window.__SFH={
+    /* the labs write c= and m= separately, so the two halves are merged
+       rather than overwritten — the same thing the URL used to do for them */
+    set h(v){
+      v=String(v).replace(/^#/,'');
+      var cur=String(window.__SF_HASH||'').replace(/^#/,'');
+      var c=part(v,'c')||part(cur,'c'), m=part(v,'m')||part(cur,'m');
+      window.__SF_HASH='#'+(c?'c='+c:'')+((c&&m)?'&':'')+(m?'m='+m:'');
+    },
+    get h(){ return window.__SF_HASH; }
+  };
+  /* the internal labs scroll their own anchor into view after building;
+     on a baked page that is what dragged the visitor down to the bike */
+  window.__SF_NOJUMP=1;
+
+  /* an inbound lab hash is not an anchor — clean it and stay at the top */
+  try{
+    if(/[#&](c|m)=\d+/.test(location.hash))
+      history.replaceState(null,'',location.pathname+location.search);
+  }catch(e){}
+  try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
+  function top(){ try{ window.scrollTo(0,0); }catch(e){} }
+  top();
+  window.addEventListener('DOMContentLoaded',top);
+  window.addEventListener('load',function(){ top(); setTimeout(top,0); });
 })();
 </script>
 <style id="sf-bake-css">#sf-review{display:none !important;}</style>
@@ -10325,8 +10364,8 @@ window.show=function(n){
     try{ c.build(m, ctxFactory()); }
     catch(e){ m.innerHTML='<p class="mono" style="padding:40px 0">concept '+n+' failed: '+e.message+'</p>'; }
   }
-  history.replaceState(null,'','#c='+((n<10?'0':'')+n));
-  if(JUMP){
+  window.__SFH.h='c='+((n<10?'0':'')+n);
+  if(JUMP&&!window.__SF_NOJUMP){
     var anchor = (n===0? w : document.getElementById('sf-lab-mount'));
     if(anchor){ var y=anchor.getBoundingClientRect().top+window.pageYOffset-140;
       window.scrollTo({top:Math.max(0,y),behavior:'auto'}); }
@@ -10996,7 +11035,7 @@ io.observe(r.querySelector('.feed'));
 
   function boot(){
     if(!document.getElementById('sf-dnawrap')){ return setTimeout(boot,150); }
-    var m=/[#&]c=(\d+)/.exec(location.hash);
+    var m=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
     show(m?Math.max(0,Math.min(window.NMAX||32,+m[1])):0);
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,900);});
@@ -12299,7 +12338,7 @@ C(24,'FULL HANDOFF','the whole sequence held on scroll, then handed to the portf
   pv.addEventListener('click',function(){show(CUR-1);});
   nx.addEventListener('click',function(){show(CUR+1);});
 
-  var m=/[#&]c=(\d+)/.exec(location.hash);
+  var m=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
   setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1500);
 })();
 </script>
@@ -13062,7 +13101,7 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
   pv.addEventListener('click',function(){show(CUR-1);});
   nx.addEventListener('click',function(){show(CUR+1);});
 
-  var m=/[#&]c=(\d+)/.exec(location.hash);
+  var m=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
   setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1600);
 })();
 </script>
@@ -13133,7 +13172,7 @@ C(44,'FULL EXTRACTION SEQUENCE','the whole method, held on scroll, ending in the
   pv.addEventListener('click',function(){show(CUR-1);});
   nx.addEventListener('click',function(){show(CUR+1);});
 
-  var m=/[#&]c=(\d+)/.exec(location.hash);
+  var m=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
   setTimeout(function(){ show(m?Math.max(0,Math.min(MAX,+m[1])):0); },1700);
 })();
 </script>
@@ -14165,7 +14204,7 @@ C(35,'SYNTHESIS','the whole method in one section: found · extracted · filed �
   syncPad(); setTimeout(syncPad,300); setTimeout(syncPad,1500);
 
   /* honour a deep link that points past the shortlist */
-  var m=/[#&]c=(\d+)/.exec(location.hash);
+  var m=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
   if(m) setTimeout(function(){ show(Math.max(0,Math.min(NEW_MAX,+m[1]))); },1750);
 })();
 </script>
@@ -14646,9 +14685,9 @@ window.mshow=function(n){
     catch(e){ m.innerHTML='<div class="mp"><div class="min"><p class="mtx" style="padding:40px 0">marshall concept '+n+' failed: '+e.message+'</p></div></div>'; }
   }
   /* keep the SWITCH hash key intact and carry our own alongside it */
-  var h=location.hash.replace(/[#&]?m=\d+/,'').replace(/^#?&?/,'');
-  location.hash = (h?h+'&':'')+'m='+((n<10?'0':'')+n);
-  if(MJUMP){
+  var h=(window.__SF_HASH||location.hash).replace(/[#&]?m=\d+/,'').replace(/^#?&?/,'');
+  window.__SFH.h = (h?h+'&':'')+'m='+((n<10?'0':'')+n);
+  if(MJUMP&&!window.__SF_NOJUMP){
     var anchor = (n===0? s.querySelector('.cs-wrap') : document.getElementById('sf-mlab-mount'));
     if(anchor){ var y=anchor.getBoundingClientRect().top+window.pageYOffset-120;
       window.scrollTo({top:Math.max(0,y),behavior:'auto'}); }
@@ -15767,13 +15806,13 @@ MC(30,'SYNTHESIS','the recommendation: the control’s structure, one gold-to-cy
   var swShow=window.show;
   window.show=function(n){
     swShow(n);
-    var c=/[#&]c=(\d+)/.exec(location.hash);
+    var c=/[#&]c=(\d+)/.exec(window.__SF_HASH||location.hash);
     var mm=(MCUR>0?MCUR:0);
-    location.hash='c='+(c?c[1]:'00')+'&m='+((mm<10?'0':'')+mm);
+    window.__SFH.h='c='+(c?c[1]:'00')+'&m='+((mm<10?'0':'')+mm);
   };
 
   /* ---- deep link: #c=NN drives SWITCH, &m=NN drives Marshall ---- */
-  var m=/[#&]m=(\d+)/.exec(location.hash);
+  var m=/[#&]m=(\d+)/.exec(window.__SF_HASH||location.hash);
   setTimeout(function(){ mshow(m?Math.max(0,Math.min(MMAX,+m[1])):0); }, 1900);
 })();
 </script>
@@ -16185,7 +16224,7 @@ function xpopulate(root,x,host,items,o){
 /* The earlier layers each run their own deep-link timer at ~1.7s and rewrite
    location.hash as they go, so by the time the final resolver runs the link
    the user actually arrived on is gone. Capture it now, during parse. */
-window.__labHash0=location.hash;
+window.__labHash0=(window.__SF_HASH||location.hash);
 
 var XORIG=[1,3,15,18,20,22,33], XODST=[2,4,5,6,7,8,9];
 XORIG.forEach(function(n,i){
@@ -16403,7 +16442,7 @@ C(33,'SOURCE / EXPRESSION','the piece you watched leave the machine is the piece
   window.labHash=function(){
     var c=(window.SLBL&&SLBL[CUR])||((CUR<10?'0':'')+CUR);
     var m=(window.MLBL&&MLBL[MCUR])||'00';
-    location.hash='c='+c+'&m='+m;
+    window.__SFH.h='c='+c+'&m='+m;
   };
   var swShow=window.show;
   window.show=function(n){
@@ -17651,12 +17690,12 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     base(n);
     var num=document.getElementById('labnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+    if(LBL[n]) window.__SFH.h='c='+LBL[n]+'&m='+mlab();
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
     if(num&&LBL[CUR]) num.textContent=LBL[CUR];
-    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+    if(LBL[CUR]) window.__SFH.h='c='+LBL[CUR]+'&m='+mlab();
   };
 
   /* The layers underneath each run their own deep-link timer and can leave CUR
@@ -18404,12 +18443,12 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     baseShow(n);
     var num=document.getElementById('labnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+    if(LBL[n]) window.__SFH.h='c='+LBL[n]+'&m='+mlab();
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
     if(num&&LBL[CUR]) num.textContent=LBL[CUR];
-    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+    if(LBL[CUR]) window.__SFH.h='c='+LBL[CUR]+'&m='+mlab();
   };
   function land(){
     var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
@@ -18790,12 +18829,12 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     baseShow(n);
     var num=document.getElementById('labnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+    if(LBL[n]) window.__SFH.h='c='+LBL[n]+'&m='+mlab();
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
     if(num&&LBL[CUR]) num.textContent=LBL[CUR];
-    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+    if(LBL[CUR]) window.__SFH.h='c='+LBL[CUR]+'&m='+mlab();
   };
   function land(){
     var h=(typeof window.__labHash0==='string')?window.__labHash0:location.hash;
@@ -18859,12 +18898,12 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     baseShow(n);
     var num=document.getElementById('labnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+    if(LBL[n]) window.__SFH.h='c='+LBL[n]+'&m='+mlab();
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
     if(num&&LBL[CUR]) num.textContent=LBL[CUR];
-    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+    if(LBL[CUR]) window.__SFH.h='c='+LBL[CUR]+'&m='+mlab();
   };
   function land(){
     /* Once lab14 exists this file is no longer the last word: its label map
@@ -19067,12 +19106,12 @@ C(23,'TRANSITION TO APPLICATION','the DNA field and the products share one grid,
     baseShow(n);
     var num=document.getElementById('labnum');
     if(num&&LBL[n]) num.textContent=LBL[n];
-    if(LBL[n]) location.hash='c='+LBL[n]+'&m='+mlab();
+    if(LBL[n]) window.__SFH.h='c='+LBL[n]+'&m='+mlab();
   };
   window.labHash=function(){
     var num=document.getElementById('labnum');
     if(num&&LBL[CUR]) num.textContent=LBL[CUR];
-    if(LBL[CUR]) location.hash='c='+LBL[CUR]+'&m='+mlab();
+    if(LBL[CUR]) window.__SFH.h='c='+LBL[CUR]+'&m='+mlab();
   };
 
   /* Every layer below runs its own deep-link timer against its own label map,
