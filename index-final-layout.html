@@ -23536,7 +23536,10 @@ html[data-sfsel] body #fv-stage{
     url('images/cad_texture_wide.jpg') !important;}
 
 /* =========================================================================
-   09ORG · THE FOUR CORRECTIONS
+   09ORG · THE FOUR CORRECTIONS — shared with 10ORG.
+   Scoped to html[data-sffix], set for 09ORG and 10ORG. A second flag rather
+   than a two-selector list: every rule here has a descendant part, and a
+   comma list of prefixes would silently apply the declaration to <html>.
    ========================================================================= */
 
 /* ---- A · THE APPLICATIONS STRIP, THE WAY THE PORTFOLIO DOES IT ----------
@@ -23552,14 +23555,14 @@ html[data-sfsel] body #fv-stage{
    inside an unbounded track resolves against nothing and runs away — the
    strip went from 7,117px to 28,084px wide the moment it was tried. The
    portfolio can use max-content because its slides are sized in vw. */
-html[data-sfv="09ORG"] #hiw-stage .ec2-wrap{overscroll-behavior-x:contain;}
+html[data-sffix] #hiw-stage .ec2-wrap{overscroll-behavior-x:contain;}
 
 /* ---- B · THE MANUFACTURING PHOTOGRAPH -----------------------------------
    .factory-solo is a fixed 720px box. Reframed to the SWITCH hero the
    picture is 793 tall, so its bottom 73px were being cut off and the 60px
    band beneath it read as a gap under a cropped photograph. The box now
    takes the picture's own height and the bands either side close to 40. */
-html[data-sfv="09ORG"] .factory-solo{height:auto !important;}
+html[data-sffix] .factory-solo{height:auto !important;}
 
 /* ---- C · MARSHALL -> THE SWITCH HERO ------------------------------------
    Measured at 292px, and it is three things stacked, not one:
@@ -23569,8 +23572,8 @@ html[data-sfv="09ORG"] .factory-solo{height:auto !important;}
    The gap variable only ever moved the first of the three, which is why
    180 -> 144 barely showed. Both of the first two now move: 96 + 40 + 12,
    which lands the interval at about 128px. */
-html[data-sfv="09ORG"] #sf-lab-mount{--sfgap:96px;}
-html[data-sfv="09ORG"] #sf-lab-mount .lb{padding-top:40px !important;}
+html[data-sffix] #sf-lab-mount{--sfgap:96px;}
+html[data-sffix] #sf-lab-mount .lb{padding-top:40px !important;}
 
 /* ---- D · THE CAD DRAWING, ACTUALLY BEHIND THE SECTION -------------------
    The veil was only half the story. .lb and .fb-host each paint an opaque
@@ -23580,9 +23583,70 @@ html[data-sfv="09ORG"] #sf-lab-mount .lb{padding-top:40px !important;}
    they were painting is the same cream #fv-stage already has underneath,
    so the ground does not change, the drawing simply stops being hidden.
    The black DNA panel stays opaque; it is meant to be. */
-html[data-sfv="09ORG"] #sf-lab-mount .lb,
-html[data-sfv="09ORG"] #sf-lab-mount .fb-host,
-html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important;}
+html[data-sffix] #sf-lab-mount .lb,
+html[data-sffix] #sf-lab-mount .fb-host,
+html[data-sffix] #sf-lab-mount .u1{background-color:transparent !important;}
+
+/* =========================================================================
+   10ORG · REGISTRATION, THE TAIL INTERVAL, AND THE SWITCH DRAWING
+   ========================================================================= */
+
+/* ---- A · THE SKETCH REGISTERED TO THE BIKE ------------------------------
+   Putting the drawing back over the photograph was only half of it — it was
+   still drawn about 40% larger than the bike underneath. Both are measured
+   off their own files rather than eyeballed:
+
+     photograph  SWITCH_eSCRAMBLER_bike-6.jpg  2000x1333, object-fit:cover
+                 rear wheel   centre 526,848  radius 240
+                 front wheel  centre 1512,862 radius 245
+     drawing     bike-side-sketch.png          1800x1002, object-fit:contain
+                 rear wheel   centre 319,697  radius 283
+                 front wheel  centre 1452,697 radius 283
+
+   Two ratios fall out, and they disagree slightly, as they will between a
+   photograph and a concept sketch:
+     by wheelbase   0.4930 / 0.62944 = 0.7832
+     by wheel size  0.1210 / 0.15722 = 0.7696
+   0.7764 is the mean, which leaves each about 0.9% out rather than either
+   one 1.8% out. The drawing is then moved until the midpoint between its
+   wheel centres sits on the midpoint between the photograph's.
+
+   Both media are sized by WIDTH in this frame — cover for the photograph,
+   contain for the drawing — so one percentage transform holds at every
+   width.
+
+   It is a concept sketch over a photograph: the wheels land, the frame and
+   the battery box land closely, the forks and the seat are near. That is
+   the intent, not a perfect trace.
+
+   The transform sits on .pvsk, which carries the drawing AND the six
+   extraction traces, so the traces come with it and stay registered to the
+   same features they were drawn against. */
+html[data-sfv="10ORG"] #sf-lab-mount .pvsk{
+  transform-origin:0 0 !important;
+  /* the last 10px came off the render, not the arithmetic: with the wheel
+     midpoints matched the drawing still sat about 10px low and 5px left,
+     measured on the doubled SWITCH wordmark where the two overlap. */
+  transform:translate(13.13%,11.57%) scale(0.7764) !important;}
+
+/* ---- B · THE SWITCH DRAWING BEHIND THE SECTION --------------------------
+   The CAD file was a screengrab of a CAD application showing a rendered
+   solid model, watermark and viewport furniture included, and the crop
+   behind SWITCH was its blank ribbed corner — which is why it read as
+   banding. This is the site's own SWITCH line drawing instead, very large
+   and very faint, so what shows is arcs and structure rather than a bike.
+   Written inline by cad() because the original is !important inside
+   @layer uwlab and nothing outside a layer can outrank that. */
+
+/* ---- C · THE INTERVAL INTO AS SEEN ON -----------------------------------
+   Matched to the interval on the other side of the black band: #funds
+   carries padding-top:114px between the black and VENTURE MODELS, so the
+   portfolio-to-black interval is closed from 239px to the same 114px.
+
+   NOTHING is written to .logos. The space is taken out of the SWITCH
+   section above it — its own tail spacer first, then a negative margin on
+   the mount — so the AS SEEN ON block keeps its exact height, padding,
+   background and internal spacing, and simply sits higher on the page. */
 
 @media(prefers-reduced-motion:reduce){
   html[data-sfv] .sf-cue{animation:none !important;}
@@ -23602,10 +23666,11 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
      and every deep link fell back to ORG. Captured here instead, before
      anything has had a chance to overwrite it. */
   var HASH0=location.hash;
-  var STATES=['ORG','01','02','03','04','05','06','07','08','09','10','08ORG','09ORG'];
+  var STATES=['ORG','01','02','03','04','05','06','07','08','09','10','08ORG','09ORG','10ORG'];
   /* both selection states share one CSS scope; 09ORG adds its corrections */
-  function isSel(v){ return v==='08ORG'||v==='09ORG'; }
+  function isSel(v){ return v==='08ORG'||v==='09ORG'||v==='10ORG'; }
   var NOTE={
+    '10ORG':'the SWITCH line drawing behind the section instead of the CAD screengrab · sketch and extraction traces scaled 0.717 and registered to the bike by wheel centres · portfolio → AS SEEN ON closed from 239 to 114, matched to the 114 below the black band, with nothing written to AS SEEN ON itself',
     '09ORG':'08ORG corrected · strip scrolls natively like the portfolio, no wheel hijack · photograph no longer cropped, bands closed to 40 · Marshall → SWITCH cut from 292 to ~128 at all three of its sources · .lb and .fb-host no longer paint over the CAD drawing',
     '08ORG':'the selection · Marshall 01 + air + stronger grid · sketch over the bike, held longer · panel 04 · categories 04 · portfolio 09 · original gap to AS SEEN ON · photo reframed to the SWITCH hero · SCROLL → restored · CAD drawing up behind SWITCH',
     ORG:'the current build, untouched',
@@ -23676,7 +23741,7 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
     /* 09ORG STOPS HERE. No drag handler, no wheel handler — the browser does
        the scrolling, which is precisely what the portfolio slider does and
        why that one behaves. 08ORG keeps the handlers it was shown with. */
-    if(v==='09ORG'||hiwDone) return;
+    if(v!=='08ORG'||hiwDone) return;
     hiwDone=true;
     var x0=null,l0=0;
     WRAP.addEventListener('mousedown',function(e){ x0=e.clientX; l0=WRAP.scrollLeft;
@@ -23729,13 +23794,66 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
      ======================================================================= */
   function cad(v){
     var s=document.getElementById('fv-stage'); if(!s) return;
-    if(!isSel(v)){ s.style.removeProperty('background-image'); return; }
+    if(!isSel(v)){
+      ['background-image','background-size','background-repeat','background-attachment','background-position']
+        .forEach(function(k){ s.style.removeProperty(k); });
+      bikeField(false); return;
+    }
+    if(v==='10ORG'){ bike(s); return; }
+    bikeField(false);
     var img=getComputedStyle(s).backgroundImage;
     var url=(/url\((["']?)([^"')]+)\1\)/.exec(img)||[])[2]||'images/cad_texture_wide.jpg';
     s.style.setProperty('background-image',
       'linear-gradient(rgba(237,232,224,0.86),rgba(237,232,224,0.86)), url("'+url+'")','important');
     if(window.__cadField){ try{ window.__cadField(true); }catch(e){} }
   }
+
+  /* =======================================================================
+     10ORG · THE SWITCH DRAWING BEHIND THE SECTION.
+     Same treatment the CAD sheet had — a cream veil, a fixed attachment and
+     a slow downward drift — with the site's own line drawing in place of the
+     borrowed render. Held very large so the crop reads as arcs and frame
+     lines rather than as a picture of a motorcycle.
+     ======================================================================= */
+  var BIKE={w:1800,h:1002,rate:0.16,veil:0.90,scale:'max(230vw,190vh)'};
+  function bike(s){
+    if(window.__cadField){ try{ window.__cadField(false); }catch(e){} }
+    s.style.setProperty('background-image',
+      'linear-gradient(rgba(237,232,224,'+BIKE.veil+'),rgba(237,232,224,'+BIKE.veil+')), '+
+      'url("images/bike-side-sketch.png")','important');
+    s.style.setProperty('background-size','auto, '+BIKE.scale+' auto','important');
+    s.style.setProperty('background-repeat','no-repeat, no-repeat','important');
+    s.style.setProperty('background-attachment','scroll, fixed','important');
+    bikeField(true);
+  }
+  /* the drift. sf-uw-cadfield does exactly this for the CAD sheet, but its
+     numbers are that file's (2560x1120 at max(240vw,340vh)); the drawing is
+     1800x1002 at a different scale, so the slack it may travel through is
+     different and has to be computed from these. Clamped inside the slack,
+     so the image can never wrap and no repeat is ever seen. */
+  var bfOn=false, bfRaf=0, bfPrev=null;
+  function bfPlace(){
+    bfRaf=0; if(!bfOn) return;
+    var s=document.getElementById('fv-stage'); if(!s) return;
+    var vw=document.documentElement.clientWidth, vh=document.documentElement.clientHeight;
+    var renderedW=Math.max(2.30*vw,1.90*vh);
+    var sc=renderedW/BIKE.w;
+    var slack=Math.max(0,BIKE.h*sc-vh);
+    var S=window.pageYOffset||document.documentElement.scrollTop||0;
+    var top=s.getBoundingClientRect().top+S;
+    var travelled=Math.max(0,S+vh-top);
+    var y=Math.min(slack,travelled*BIKE.rate);
+    var pos='0 0, 18% '+(-y).toFixed(1)+'px';
+    if(pos!==bfPrev){ s.style.setProperty('background-position',pos,'important'); bfPrev=pos; }
+  }
+  function bfTick(){ if(!bfRaf) bfRaf=requestAnimationFrame(bfPlace); }
+  function bikeField(on){
+    bfOn=!!on;
+    if(!bfOn){ bfPrev=null; return; }
+    bfPlace();
+  }
+  addEventListener('scroll',bfTick,{passive:true});
+  addEventListener('resize',function(){ bfPrev=null; bfTick(); },{passive:true});
 
   /* =======================================================================
      09ORG · THE BANDS EITHER SIDE OF THE MANUFACTURING PHOTOGRAPH.
@@ -23752,8 +23870,67 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
       return k!==fs && k.style && /^\d+px$/.test(k.style.height||''); });
     if(!kids.length) return;
     if(BAND===null) BAND=kids.map(function(k){ return k.style.height; });
-    if(v!=='09ORG'){ kids.forEach(function(k,i){ k.style.height=BAND[i]||k.style.height; }); return; }
+    if(v!=='09ORG'&&v!=='10ORG'){ kids.forEach(function(k,i){ k.style.height=BAND[i]||k.style.height; }); return; }
     kids.forEach(function(k){ k.style.height='40px'; });
+  }
+
+  /* =======================================================================
+     10ORG · THE ANCHOR DOTS TRAVEL WITH THE DRAWING.
+     The six .anch markers are positioned in .pvstage's coordinates, and the
+     transform that registers the drawing lives on .pvsk — so left where they
+     are they would drift off the features they point at. .pvsk is inset:0 at
+     100% x 100% of .pvstage, which means the two boxes share one coordinate
+     system exactly: moving the markers inside .pvsk changes none of their
+     numbers and lets the same transform carry them.
+     ======================================================================= */
+  function anchors(v){
+    var stg=document.querySelector('#sf-lab-mount .pvstage'),
+        sk=stg&&stg.querySelector('.pvsk');
+    if(!stg||!sk) return;
+    if(v==='10ORG'){
+      [].forEach.call(stg.querySelectorAll(':scope > .anch'),function(a){ sk.appendChild(a); });
+    }else{
+      [].forEach.call(sk.querySelectorAll(':scope > .anch'),function(a){ stg.appendChild(a); });
+    }
+  }
+
+  /* =======================================================================
+     10ORG · THE INTERVAL INTO AS SEEN ON.
+     Target: 114px, the same figure #funds uses between the black band and
+     VENTURE MODELS, so the block sits with equal air above and below.
+
+     .logos IS NEVER WRITTEN TO. Every pixel comes out of the SWITCH section
+     above it — the section's own tail spacer first, down to a floor of 40 so
+     it keeps a tail, then whatever is left as a negative margin on the mount.
+     The AS SEEN ON block keeps its height, its 80/80 padding, its background
+     and its internal spacing exactly; it only sits higher up the page.
+     ======================================================================= */
+  var TAIL0=null;
+  function fitTail(v){
+    var m=document.getElementById('sf-lab-mount');
+    var rb=m&&m.querySelector('.rbtm');
+    var st=m&&m.querySelector('.fstrip');
+    var lg=document.querySelector('.logos');
+    if(!m||!rb||!st||!lg) return;
+    if(TAIL0===null) TAIL0=rb.style.height||'';
+    rb.style.height=TAIL0; m.style.marginBottom='';
+    if(v!=='10ORG') return;
+    var want=114;
+    function have(){ return Math.round(lg.getBoundingClientRect().top-st.getBoundingClientRect().bottom); }
+    var over=have()-want;
+    if(over<=0) return;
+    /* first out of the section's own tail, never below 40 */
+    var h0=rb.getBoundingClientRect().height;
+    var cut=Math.min(over,Math.max(0,h0-40));
+    if(cut>0) rb.style.setProperty('height',(h0-cut)+'px','important');
+    /* the remainder as a negative margin on the mount — nothing below it is
+       restyled, it is simply pulled up into space that was empty */
+    for(var i=0;i<6;i++){
+      var d=have()-want;
+      if(Math.abs(d)<=1) break;
+      var cur=parseFloat(m.style.marginBottom)||0;
+      m.style.marginBottom=(cur-d)+'px';
+    }
   }
 
   function fitFactory(v){
@@ -23810,7 +23987,8 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
     '07':{col:0xc8a96e,mode:'scroll'}, '08':{col:0xc8a96e,mode:'static'},
     '09':{col:0x0a7f99,mode:'draw'},  '10':{col:0xc8a96e,mode:'minimal'},
     /* 08ORG — 01's grid, drawn the same way, carried a little further up */
-    '08ORG':{col:0xc8a96e,mode:'draw'}, '09ORG':{col:0xc8a96e,mode:'draw'}
+    '08ORG':{col:0xc8a96e,mode:'draw'}, '09ORG':{col:0xc8a96e,mode:'draw'},
+    '10ORG':{col:0xc8a96e,mode:'draw'}
   };
   var bpState=null;
 
@@ -23978,7 +24156,8 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
        Reverse scroll still takes it apart the same way: H.dir is a position
        mapping, so nothing here is a one-way timeline. */
     '08ORG':{order:K9,ink:0.06,peak:0.78,rest:0,tail:'hold',steppx:230},
-    '09ORG':{order:K9,ink:0.06,peak:0.78,rest:0,tail:'hold',steppx:230}
+    '09ORG':{order:K9,ink:0.06,peak:0.78,rest:0,tail:'hold',steppx:230},
+    '10ORG':{order:K9,ink:0.06,peak:0.78,rest:0,tail:'hold',steppx:230}
   };
   function hero(v){
     var H=window.G3, r=document.getElementById('sf-lab-mount');
@@ -24053,7 +24232,7 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
      above the copy has to survive the fit, or the fitter simply takes it
      straight back out of the margins below. */
   var MTGT={'01':.90,'02':.89,'03':.885,'04':.88,'05':.875,'06':.87,
-            '07':.868,'08':.865,'09':.86,'10':.855,'08ORG':.915,'09ORG':.915};
+            '07':.868,'08':.865,'09':.86,'10':.855,'08ORG':.915,'09ORG':.915,'10ORG':.915};
   var ORGH=null;
   function fitMarshall(v){
     var cs=document.querySelector('.case-study'); if(!cs) return;
@@ -24083,7 +24262,7 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
 
   /* the panel closes to its own target the same way */
   var PTGT={'01':.85,'02':.845,'03':.84,'04':.835,'05':.83,'06':.825,
-            '07':.82,'08':.815,'09':.81,'10':.80,'08ORG':.835,'09ORG':.835};
+            '07':.82,'08':.815,'09':.81,'10':.80,'08ORG':.835,'09ORG':.835,'10ORG':.835};
   var ORGP=null;
   function fitPanel(v){
     var m=document.getElementById('sf-lab-mount');
@@ -24131,6 +24310,8 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
     else { document.documentElement.setAttribute('data-sfv',v); }
     if(isSel(v)) document.documentElement.setAttribute('data-sfsel','1');
     else document.documentElement.removeAttribute('data-sfsel');
+    if(v==='09ORG'||v==='10ORG') document.documentElement.setAttribute('data-sffix','1');
+    else document.documentElement.removeAttribute('data-sffix');
     if(v!=='ORG'){ cue(v); bars(); }
     hiw(v);
     blueprint(v);
@@ -24146,6 +24327,15 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
        which is exactly the ask: the original interval into AS SEEN ON. */
     pfcue(v);
     bands(v);
+    anchors(v);
+    /* SYNCHRONOUS FIRST, and before fitGap runs at 140ms.
+       fitTail's opening move is to put the section's tail spacer and the
+       mount's margin back; if that happened after fitGap had measured, every
+       state leaving 10ORG would have its own interval computed against
+       10ORG's leftovers and land ~70px out. */
+    fitTail(v);
+    setTimeout(function(){ fitTail(v); },220);
+    setTimeout(function(){ fitTail(v); },1000);
     setTimeout(function(){ fitFactory(v); },180);
     setTimeout(function(){ fitFactory(v); },900);
     if(window.__sfHeroKill){ try{ window.__sfHeroKill(); }catch(e){} }
@@ -24176,7 +24366,7 @@ html[data-sfv="09ORG"] #sf-lab-mount .u1{background-color:transparent !important
       rb.appendChild(b);
     });
     document.body.appendChild(box);
-    var m=/[#&]v=(0[89]ORG|ORG|\d\d)/i.exec(HASH0)||/[#&]v=(0[89]ORG|ORG|\d\d)/i.exec(location.hash);
+    var m=/[#&]v=(\d\dORG|ORG|\d\d)/i.exec(HASH0)||/[#&]v=(\d\dORG|ORG|\d\d)/i.exec(location.hash);
     var want=m?m[1].toUpperCase():'ORG';
     apply(STATES.indexOf(want)>=0?want:'ORG');
     /* the strip and the photograph both live outside the state layer, so they
