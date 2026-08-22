@@ -26471,24 +26471,192 @@ html[data-sfw43="36"] #sf-m11{ max-width:none !important; }
 
 html[data-sfw43="34"] #sf-m11 .m11-min,
 html[data-sfw43="35"] #sf-m11 .m11-min,
-html[data-sfw43="36"] #sf-m11 .m11-min{
+html[data-sfw43="36"] #sf-m11 .m11-min,
+html[data-sfw43="37"] #sf-m11 .m11-min{
   width:100% !important; max-width:none !important;
   margin-left:0 !important; margin-right:0 !important;}
+
+/* =========================================================================
+   37 — MARSHALL ULTRA-WIDE CAP + TARGETED MOBILE PASS
+   34, 35 and 36 are not touched by anything below; every rule is scoped to
+   html[data-sfw43="37"].
+
+   PART 1 · THE ULTRA-WIDE CAP, IN CSS ONLY
+   #sfsec-dna's only in-flow child is #sf-m11 — .sf-bp, #sf-mwave and .f-br
+   are all absolutely positioned against its padding box, which equals its
+   border box. So the section's own side padding can be zeroed and given back
+   to the Marshall block as width, with no JS and nothing else affected.
+     up to 1920 : padding zeroed, #sf-m11 fills the window
+     1921 and up: #sf-m11 capped at 1600 and centred — the hero's own frame
+                  (.din carries max-width:1600px and measures 1600 at every
+                  width above 1696), so the two share their edges exactly.
+   The halves stay 50/50 because .m11-stage is a two-column grid INSIDE
+   #sf-m11 — only the parent is constrained, never the panels, and the centre
+   rule is .m11-line, which is a child of that same grid.
+
+   PART 2 · MOBILE
+   Everything mobile is at max-width:767px, NOT 768. 768 is in the approved
+   tablet set and has to come through untouched, so the breakpoint stops one
+   pixel short of it.
+   ========================================================================= */
+
+/* ---- 1 · the two-colour composition ------------------------------------ */
+@media(max-width:1920px){
+  html[data-sfw43="37"] #sfsec-dna{
+    padding-left:0 !important;padding-right:0 !important;}
+  html[data-sfw43="37"] #sf-m11{
+    max-width:none !important;width:auto !important;
+    margin-left:0 !important;margin-right:0 !important;}
+}
+@media(min-width:1921px){
+  html[data-sfw43="37"] #sfsec-dna{
+    padding-left:0 !important;padding-right:0 !important;}
+  html[data-sfw43="37"] #sf-m11{
+    max-width:1600px !important;width:auto !important;
+    margin-left:auto !important;margin-right:auto !important;}
+  /* The waveform comes in with the block so it stays on the black half.
+     `body` is in the selector deliberately: the page already carries
+     html[data-uw="13"] body #sf-mwave{width:min(50%,var(--sf-subject))
+     !important}, which out-specifies a two-part selector — the width stayed
+     at 960 and ran 160px onto the cream. Matching its specificity and coming
+     later in the cascade is what settles it. */
+  html[data-sfw43="37"] body #sf-mwave.sf-marshall-wave{
+    left:calc((100% - 1600px) / 2) !important;
+    width:800px !important;max-width:800px !important;}
+}
+
+/* ======================= MOBILE ONLY — 767 AND UNDER ==================== */
+
+/* ---- 1 · the factory image runs to the screen edges --------------------
+   .factory-solo carries an inline padding-left/right of 24px written by the
+   page's own script WITHOUT !important, so a stylesheet !important reaches
+   it. The image is already width:100% of the content box, so zeroing that
+   padding is the whole fix — nothing is stretched, the crop is untouched. */
+@media(max-width:767px){
+  html[data-sfw43="37"] .factory-solo{
+    padding-left:0 !important;padding-right:0 !important;}
+}
+
+/* ---- 2 · Marshall to Translation --------------------------------------
+   84px of cream between the black panel and the Translation eyebrow, halved,
+   which still leaves a deliberate transition. The black panel's own bottom
+   padding is left alone so nothing inside it moves. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #sf-m11 .m11-zone.m11-b{padding-top:40px !important;}
+}
+
+/* ---- 4 · the final two Marshall images become a swipe -----------------
+   .m11-pair is a one-column grid on a phone, so the two crops stack into
+   650px of scrolling. As a scroll-snap row it is one dominant image with the
+   next showing: swipeable, no library, no autoplay, order preserved. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #sf-m11 .m11-pair{
+    display:flex !important;grid-template-columns:none !important;
+    overflow-x:auto !important;overflow-y:hidden !important;
+    scroll-snap-type:x mandatory !important;
+    -webkit-overflow-scrolling:touch;
+    gap:10px !important;scrollbar-width:none;}
+  html[data-sfw43="37"] #sf-m11 .m11-pair::-webkit-scrollbar{
+    width:0 !important;height:0 !important;display:none !important;}
+  html[data-sfw43="37"] #sf-m11 .m11-pair > *{
+    flex:0 0 86% !important;scroll-snap-align:start !important;}
+}
+
+/* ---- 5 · the result block reads as a set ------------------------------
+   $1.1B / EXIT IN 2025 is the fourth cell of a 2x2 and was ranged left in a
+   column far wider than the figure, which is what left it looking stranded.
+   The four cells centre together so the block stays coherent around it. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #sf-m11 .m11-mets{text-align:center !important;}
+  html[data-sfw43="37"] #sf-m11 .m11-met{text-align:center !important;}
+}
+
+/* ---- 6 + 7 · the hero composition -------------------------------------
+   At 900 and under .ofcopy drops out of the frame, turns dark, and lands
+   hard against the bottom of the photograph. On the desktop it is
+   position:absolute, z-index:4, 55px down the frame, cyan eyebrow over cream
+   headline. That composition is restored. The eyebrow and the headline are
+   one block and go back together — which is also what removes item 6's gap
+   problem rather than papering over it. A gap is still added under the frame
+   so the black panel does not start on top of the photograph. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #sf-lab-mount .oneframe{
+    position:relative !important;margin-bottom:34px !important;}
+  html[data-sfw43="37"] #sf-lab-mount .oneframe::after{
+    content:"";position:absolute;left:0;right:0;top:0;height:56%;z-index:3;
+    background:linear-gradient(180deg,rgba(8,10,12,.62),rgba(8,10,12,0));
+    pointer-events:none;}
+  html[data-sfw43="37"] #sf-lab-mount .ofcopy{
+    position:absolute !important;z-index:4 !important;
+    top:18px !important;left:24px !important;right:24px !important;
+    bottom:auto !important;width:auto !important;max-width:none !important;}
+  html[data-sfw43="37"] #sf-lab-mount .ofcopy .mhey{color:#5fd8f2 !important;}
+  html[data-sfw43="37"] #sf-lab-mount .ofcopy .mhh{
+    color:rgba(244,241,236,.95) !important;
+    text-shadow:0 1px 20px rgba(0,0,0,.5) !important;}
+  html[data-sfw43="37"] #sf-lab-mount .ofcopy .mhh i{
+    color:#5fd8f2 !important;font-style:normal !important;}
+}
+
+/* ---- 8 · the SWITCH section runs to the screen edges -------------------
+   #fv-stage carries 24px of side padding on a phone — that is the white
+   inset around the whole black section. It is removed from the SECTION and
+   given back to the text containers, so the black field, the photograph and
+   the category strip go edge to edge while every line of type keeps its
+   24px. FROM PHYSICAL CHARACTER... lives inside .split, so it comes with it. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #fv-stage{
+    padding-left:0 !important;padding-right:0 !important;}
+  html[data-sfw43="37"] #sf-lab-mount .split{
+    padding-left:24px !important;padding-right:24px !important;}
+  html[data-sfw43="37"] #sf-lab-mount .fcats{
+    padding-left:24px !important;padding-right:24px !important;}
+  html[data-sfw43="37"] #sf-lab-mount .fcats .bhead{padding-left:0 !important;}
+  /* #fv-stage is not the only inset: the lab's own .lb wrapper carries a
+     second 24px, which is why zeroing the section alone left the black panel
+     still framed. Both come off, and the text containers keep their own. */
+  html[data-sfw43="37"] #sf-lab-mount > .lb{
+    padding-left:0 !important;padding-right:0 !important;}
+  /* .lft is a grid item with min-width:auto, so at 320 its content forced it
+     50px past the black panel. This is pre-existing — 36 does the same — but
+     it is one line to hold. */
+  html[data-sfw43="37"] #sf-lab-mount .split .lft,
+  html[data-sfw43="37"] #sf-lab-mount .split .dnai,
+  html[data-sfw43="37"] #sf-lab-mount .split .rgt{min-width:0 !important;}
+}
+
+/* ---- 9 · the four categories ------------------------------------------
+   The grid is held at two columns down to 360 and only stacks below that.
+   The artwork behind it is repositioned in the script — its size and
+   position are inline !important from the page's own code and a stylesheet
+   cannot outrank an inline !important. */
+@media(max-width:767px){
+  html[data-sfw43="37"] #sf-lab-mount .crow{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    column-gap:16px !important;row-gap:26px !important;}
+  html[data-sfw43="37"] #sf-lab-mount .crow .tc{min-width:0 !important;}
+}
+@media(max-width:359px){
+  html[data-sfw43="37"] #sf-lab-mount .crow{
+    grid-template-columns:minmax(0,1fr) !important;row-gap:22px !important;}
+}
 </style>
 
 <script id="sf-w43-js">
 (function(){
 
-  var V=['33ORG','34','35','36'];
+  var V=['33ORG','34','35','36','37'];
 
   var NOTE={
     '33ORG':'the Marshall block as it is now — 1440, inside the 1600 frame. The waveform is left alone here so you can see it running out across the cream before the black panel starts. FROM DNA TO NEW CATEGORIES is brought across to start where FORM & ARCHITECTURE starts',
     '34':'the house frame — the Marshall block takes the SWITCH hero’s box exactly, the same one the black SWITCH panel and the category band already sit on. Waveform pinned to the black panel',
     '35':'the factory image’s width — 2200 at a 2600 window, and full width at 1920 and under, because the factory image is min(2200, 100%). Waveform pinned to the black panel',
-    '36':'full screen — black and cream edge to edge, like HOW WE BUILD. The waveform is pinned to the black panel and then pulled in on the left to the factory image’s left edge, so it does not run to the very corner'
+    '36':'full screen — black and cream edge to edge, like HOW WE BUILD. The waveform is pinned to the black panel and then pulled in on the left to the factory image’s left edge, so it does not run to the very corner',
+    '37':'36 up to 1920, then capped: from 1921 the whole two-colour block centres on the hero’s own 1600 frame, in CSS only, halves still 50/50. Plus the mobile pass — factory image edge to edge, Marshall/Translation gap halved, the last two Marshall images on a swipe, the result block centred, FROM ACQUIRED ASSET put back on the bike, the SWITCH section full width, the category artwork recropped onto the rear of the bike, and 1.32MB of phone imagery down to 124KB'
   };
 
   function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
 
   var TM=[],LS=[];
   function later(f,ms){ TM.push(setTimeout(f,ms)); }
@@ -26524,7 +26692,7 @@ html[data-sfw43="36"] #sf-m11 .m11-min{
       }
       return null;
     }
-    return null;               /* 33ORG keeps the frame it has */
+    return null;               /* 33ORG and 37 keep the frame CSS gives them */
   }
 
   /* resize #sf-m11 — the element that actually clips. The left edge is closed
@@ -26552,7 +26720,8 @@ html[data-sfw43="36"] #sf-m11 .m11-min{
   function wave(v){
     var w=document.getElementById('sf-mwave');
     if(!w) return;
-    if(v==='33ORG'){
+    /* 33ORG is the untouched control; 37 does it in CSS */
+    if(v==='33ORG'||v==='37'){
       w.style.removeProperty('left'); w.style.removeProperty('width');
       return;
     }
@@ -26574,6 +26743,99 @@ html[data-sfw43="36"] #sf-m11 .m11-min{
     w.style.setProperty('width',(R-L).toFixed(1)+'px','important');
   }
 
+  /* ---------------- 37 · the parts CSS cannot reach ----------------------
+     Two things on this page are beyond a stylesheet. The category artwork's
+     background size and position are written by the page's own script as
+     INLINE !important, which nothing in a stylesheet can outrank; and the
+     responsive image candidates are markup, not style. Both are set here and
+     both are put back in off(). Neither computes a layout width — the browser
+     picks the image from srcset/sizes itself, and the artwork is sized in vw,
+     so nothing here has to re-run on resize. */
+
+  var IMG=[
+    ['.factory-solo img','images/frame_factory-431',
+     'images/frame_factory-431.jpg 2000w','100vw'],
+    ['#sf-m11 .m11-arch img','images/marshall-hero',
+     'images/marshall-hero.png 1536w','(max-width:767px) 100vw, 42vw'],
+    ['#sf-lab-mount .pvphoto','images/SWITCH_eSCRAMBLER_bike-6',
+     'images/SWITCH_eSCRAMBLER_bike-6.jpg 2000w','100vw']
+  ];
+
+  function shrink(){
+    IMG.forEach(function(r){
+      $$(r[0]).forEach(function(im){
+        if(im.dataset.sf37) return;
+        im.dataset.sf37='1';
+        im.dataset.sf37ss=im.getAttribute('srcset')||'';
+        im.dataset.sf37sz=im.getAttribute('sizes')||'';
+        im.setAttribute('srcset',
+          r[1]+'-480.webp 480w, '+r[1]+'-960.webp 960w, '+
+          r[1]+'-1440.webp 1440w, '+r[2]);
+        im.setAttribute('sizes',r[3]);
+        if(!im.getAttribute('decoding')) im.setAttribute('decoding','async');
+      });
+    });
+    /* the category strip carries ten photographs three times over and every
+       one of them was loading eagerly. All of them are off screen. */
+    $$('#sf-lab-mount .fslide img').forEach(function(im){
+      if(im.dataset.sf37l) return;
+      im.dataset.sf37l=im.getAttribute('loading')||'-';
+      im.setAttribute('loading','lazy');
+      im.setAttribute('decoding','async');
+    });
+  }
+
+  function unshrink(){
+    $$('img[data-sf37]').forEach(function(im){
+      if(im.dataset.sf37ss) im.setAttribute('srcset',im.dataset.sf37ss);
+      else im.removeAttribute('srcset');
+      if(im.dataset.sf37sz) im.setAttribute('sizes',im.dataset.sf37sz);
+      else im.removeAttribute('sizes');
+      delete im.dataset.sf37; delete im.dataset.sf37ss; delete im.dataset.sf37sz;
+    });
+    $$('img[data-sf37l]').forEach(function(im){
+      if(im.dataset.sf37l==='-') im.removeAttribute('loading');
+      else im.setAttribute('loading',im.dataset.sf37l);
+      delete im.dataset.sf37l;
+    });
+  }
+
+  /* The artwork behind the four categories. The bike faces right: its rear
+     axle sits at x=321 of 1800 and its front at x=1467. At 390 the drawing
+     was laid in 598px wide and then pulled 104px left to centre it, which cut
+     the rear wheel in half against the screen edge. Drawn a little smaller
+     and left aligned, the rear wheel and the rear structure come through
+     whole and the front runs off to the right — the same way the drawing is
+     cropped elsewhere on the page. */
+  var CADSZ='auto, 88px 88px, 88px 88px, 128vw';
+  var CADPS='0px 0px, 0px 0px, 0px 0px, 0px 42%';
+  function cad(v){
+    var e=$('#sf-lab-mount .sfc-cad'); if(!e) return;
+    if(v!=='37'||document.documentElement.clientWidth>767){
+      if(e.dataset.sf37c){
+        e.style.setProperty('background-size',e.dataset.sf37cs,'important');
+        e.style.setProperty('background-position',e.dataset.sf37cp,'important');
+        delete e.dataset.sf37c; delete e.dataset.sf37cs; delete e.dataset.sf37cp;
+      }
+      return;
+    }
+    if(!e.dataset.sf37c){
+      e.dataset.sf37c='1';
+      e.dataset.sf37cs=e.style.getPropertyValue('background-size');
+      e.dataset.sf37cp=e.style.getPropertyValue('background-position');
+    }
+    if(e.style.getPropertyValue('background-size')!==CADSZ)
+      e.style.setProperty('background-size',CADSZ,'important');
+    if(e.style.getPropertyValue('background-position')!==CADPS)
+      e.style.setProperty('background-position',CADPS,'important');
+    if(!CADMO && window.MutationObserver){
+      CADMO=new MutationObserver(function(){ if(!CADLOCK){ CADLOCK=1; cad('37'); CADLOCK=0; } });
+      CADMO.observe(e,{attributes:true,attributeFilter:['style']});
+    }
+  }
+  var CADMO=null, CADLOCK=0;
+  function cadStop(){ if(CADMO){ try{ CADMO.disconnect(); }catch(e){} CADMO=null; } }
+
   function align(){
     var fa=$('#sf-lab-mount .split .lft .bey');
     var dh=$('#sf-lab-mount .fcats .bhead');
@@ -26585,7 +26847,11 @@ html[data-sfw43="36"] #sf-m11 .m11-min{
     dh.style.setProperty('padding-left',Math.max(0,cur+d).toFixed(1)+'px','important');
   }
 
-  function pass(v){ vw(); frame(v); wave(v); align(); }
+  function pass(v){
+    vw(); frame(v); wave(v); align();
+    if(v==='37') shrink();
+    cad(v);
+  }
 
   function off(){
     TM.forEach(clearTimeout); TM=[];
@@ -26598,6 +26864,7 @@ html[data-sfw43="36"] #sf-m11 .m11-min{
     if(mm){ mm.style.removeProperty('width'); mm.style.removeProperty('margin-left'); }
     var w=document.getElementById('sf-mwave');
     if(w){ w.style.removeProperty('left'); w.style.removeProperty('width'); }
+    cadStop(); unshrink(); cad(null);
     document.documentElement.style.removeProperty('--sfw-vw');
     document.documentElement.removeAttribute('data-sfw43');
   }
