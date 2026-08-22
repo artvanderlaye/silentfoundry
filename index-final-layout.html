@@ -23098,6 +23098,7 @@ body.lab-on{padding-bottom:0 !important;}
   },300);
 })();
 </script>
+
 <style id="sf-rev-css">
 /* =========================================================================
    FINAL LAYOUT EXPLORATION — ELEVEN STATES.
@@ -25542,6 +25543,257 @@ html[data-sfvar="30"] .sfx-cad::after{content:"";position:absolute;left:0;right:
       if(v==='11ORG'||v==='18ORG') return;
       document.documentElement.setAttribute('data-sfvar',v);
       if(B[v]){ try{ B[v](); }catch(e){} }
+    }
+  };
+})();
+</script>
+
+<style id="sf-fin-css">
+/* =========================================================================
+   30ORG — THE FINAL REVIEW CANDIDATE.
+
+   Base: variation 21. 21 is not edited. 30ORG carries data-sfcat="11" and
+   data-sfvar="21", so every rule of 11 and then of 21 applies first, and
+   everything below is the delta.
+
+   MEASURED, NOT ESTIMATED
+     the drawing         bike-side-sketch.png, 1800 x 1002
+     rear tyre           outermost ink column  36
+     front tyre          outermost ink column  1735
+     visible span        1700px = 94.44% of the file
+                         (36px of transparent margin left, 64px right)
+     the black panel     1344px wide starting at x=48 (1440 viewport)
+     therefore           rendered drawing width 1423.06px at x=19.54px,
+                         putting the rear tyre at 48.00 and the front at
+                         1392.00 — the panel's own two edges.
+
+     21's veil           rgba(246,242,234,.86) -> the drawing reads at 14%
+     30ORG's veil        .888 -> 11.2%, which is 14% x 0.8: twenty per cent
+                         less prominent, taken proportionally.
+   ========================================================================= */
+
+/* ---- 2 · the drawing, twenty per cent quieter --------------------------
+   Only the veil moves. The line weight, the scale and the parallax are the
+   ones 21 and 10ORG already had. */
+html[data-sffin] .sfc-cad{
+  background-image:
+    linear-gradient(rgba(246,242,234,.888),rgba(246,242,234,.888)),
+    linear-gradient(rgba(10,127,153,.038) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(10,127,153,.038) 1px,transparent 1px),
+    url('images/bike-side-sketch.png') !important;}
+
+/* ---- 3 · the cyan hairline, and every other source of one --------------
+   21 draws it as .sfc-cad::before. It is removed here rather than recoloured,
+   and the matching rule at the foot of the field goes with it so nothing
+   separates the strip from the photographs. The field is also pulled one
+   pixel up under the black panel, so a fractional layout position can never
+   open a seam between the two. */
+html[data-sffin] .sfc-cad::before,
+html[data-sffin] .sfc-cad::after{display:none !important;content:none !important;}
+html[data-sffin] .sfc-cad{
+  top:calc(-1 * var(--sfcm,84px) - 1px) !important;
+  border:0 !important;box-shadow:none !important;}
+html[data-sffin] #sf-lab-mount .fcats,
+html[data-sffin] #sf-lab-mount .fcats .bhead,
+html[data-sffin] #sf-lab-mount .fstrip{
+  border-top:0 !important;border-bottom:0 !important;box-shadow:none !important;}
+html[data-sffin] #sf-lab-mount .split{border-bottom:0 !important;margin-bottom:0 !important;}
+
+/* ---- 5 · the linework, reduced to one short rule per category ----------
+   Gone: the two full-width construction lines, the connector that ran
+   through the row from icon to icon, and the run-out tick after UTILITY.
+   Kept: a single 56px rule under each icon, unattached to its neighbours. */
+html[data-sffin] .sfx-cl{display:none !important;}
+html[data-sffin] #sf-lab-mount .tc::after{display:none !important;}
+html[data-sffin] #sf-lab-mount .otk{display:none !important;}
+html[data-sffin] .sff-rule{display:block;width:var(--rw,56px);height:1px;
+  margin:6px auto 0;background:rgba(10,127,153,.34);}
+
+/* ---- 6 · the four packages, rebalanced ---------------------------------
+   A fixed icon block means the names sit on one baseline and the
+   descriptions on another, whatever each drawing's own height turns out
+   to be. Type size is 21's, unchanged. */
+html[data-sffin] #sf-lab-mount .crow{align-items:start !important;}
+html[data-sffin] #sf-lab-mount .tc{text-align:center;}
+html[data-sffin] #sf-lab-mount .ci{width:30px !important;height:30px !important;
+  margin:0 auto !important;display:flex;align-items:center;justify-content:center;}
+html[data-sffin] #sf-lab-mount .ci svg{width:100%;height:100%;display:block;}
+html[data-sffin] #sf-lab-mount .cn{margin-top:11px !important;}
+html[data-sffin] #sf-lab-mount .cd{margin-top:8px !important;}
+
+/* ---- 7 · colour --------------------------------------------------------
+   Graphite for the headings, soft grey for the descriptions, cyan for the
+   icon outlines and the short rules, and signal orange only inside an icon,
+   on the one detail that does something: the bolt, the shock, the antenna,
+   the serviceable fastener. No category is permanently highlighted. */
+html[data-sffin] #sf-lab-mount .cn{color:rgba(34,38,43,.84) !important;}
+html[data-sffin] #sf-lab-mount .cd{color:rgba(34,38,43,.5) !important;}
+html[data-sffin] #sf-lab-mount .fcats .bey{color:rgba(10,127,153,.8) !important;}
+
+/* ---- 8 · height --------------------------------------------------------
+   Taking the two long rules out leaves a little slack; the band closes by
+   that much and no more, and nothing is placed between it and the carousel. */
+html[data-sffin]{--sfcm:78px;--sfsm:36px;}
+
+/* ---- 9 · responsive ---------------------------------------------------- */
+@media(max-width:900px){
+  html[data-sffin] #sf-lab-mount .crow{grid-template-columns:repeat(2,1fr) !important;
+    gap:30px 26px !important;}
+  /* the rules collide with the two-up packages, so they come off */
+  html[data-sffin] .sff-rule{display:none !important;}
+  html[data-sffin] #sf-lab-mount .ci{width:30px !important;height:30px !important;}
+}
+@media(max-width:560px){
+  html[data-sffin]{--sfcm:56px;--sfsm:26px;}
+}
+</style>
+
+<script id="sf-fin-js">
+(function(){
+  var prev=window.__sfExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var V=['30ORG'];
+  var NOTE={'30ORG':'the final candidate — 21 with four SWITCH-derived icons, the drawing 20% quieter and aligned tyre-to-tyre with the black panel, the cyan hairline gone, the long rules replaced by one short rule per category'};
+
+  /* =======================================================================
+     1 · THE FOUR ICONS.
+     One 48x48 grid, one stroke weight, chamfered geometry, repeated radii,
+     exposed fasteners. Cyan is the structure; orange appears once in each
+     and only on something that does a job.
+       ENERGY   the chamfered battery enclosure, its cooling ribs, terminal
+                and fasteners, with the wordmark bolt cut through it
+       MOTION   wheel proportion and concentric radii, a smaller front
+                radius, the axle datum, the fork, the ground line, and the
+                rear shock in orange
+       SIGNAL   the upright SWITCH antenna on its chamfered mount, ribbed
+                base, exposed fasteners, two restrained emissions; the whip
+                itself is orange, as it is on the products
+       UTILITY  a stepped chamfered bracket: ribbed body, tool-access slot,
+                a replaceable module hung off the side, and one orange
+                serviceable fastener
+     ======================================================================= */
+  var C='#0a7f99', O='#E43C00';
+  var ICON={
+  ENERGY:
+   '<path d="M13 13 H36 L41 18 V30 L36 35 H13 L8 30 V18 Z"/>'+
+   '<path d="M12.5 19.5 H21"/><path d="M12.5 24 H21"/><path d="M12.5 28.5 H21"/>'+
+   '<path d="M41 21.5 H44.5 V26.5 H41"/>'+
+   '<circle cx="11.5" cy="16.5" r="1.15"/><circle cx="11.5" cy="31.5" r="1.15"/>'+
+   '<path d="M31 14.5 L24.5 24.5 H29 L26 33.5 L33.5 23 H29.2 Z" stroke="'+O+'"/>',
+  MOTION:
+   '<circle cx="16" cy="27" r="11"/><circle cx="16" cy="27" r="6.4"/>'+
+   '<circle cx="16" cy="27" r="1.7"/>'+
+   '<circle cx="37.5" cy="29" r="7"/><circle cx="37.5" cy="29" r="3.9"/>'+
+   '<path d="M16 27 H37.5"/><path d="M33 12 L37.5 22"/><path d="M26.5 11.5 V13"/>'+
+   '<path d="M8 40.5 H42"/>'+
+   '<path d="M24 13.5 l5 2 l-5 2 l5 2 l-5 2 l5 2 l-5 2" stroke="'+O+'"/>',
+  SIGNAL:
+   '<path d="M14 32 H27 L32 36.5 V41 H9 V36.5 Z"/>'+
+   '<path d="M12.5 38.5 H28.5"/>'+
+   '<circle cx="13" cy="35" r="1.15"/><circle cx="28" cy="35" r="1.15"/>'+
+   '<path d="M27.5 15.5 a8.5 8.5 0 0 1 0 13"/>'+
+   '<path d="M33 11.5 a13.5 13.5 0 0 1 0 21"/>'+
+   '<path d="M20.5 32 V9.5" stroke="'+O+'"/>'+
+   '<circle cx="20.5" cy="7.6" r="1.5" stroke="'+O+'"/>',
+  UTILITY:
+   '<path d="M9 14 H26 L31 19 V23 H36 V37 H9 Z"/>'+
+   '<path d="M13.5 27 V33 M17.5 27 V33 M21.5 27 V33"/>'+
+   '<path d="M14 20 H26"/>'+
+   '<path d="M39 25 H43.5 L45 26.5 V33.5 L43.5 35 H39"/>'+
+   '<circle cx="12" cy="17.5" r="1.15"/><circle cx="33" cy="34" r="1.15"/>'+
+   '<path d="M27 27.5 h5.5" stroke-width="3.4" stroke-linecap="round" stroke="'+O+'"/>'
+  };
+  function svg(k){
+    return '<svg viewBox="0 0 48 48" fill="none" aria-hidden="true" '+
+      'stroke="'+C+'" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+
+      ICON[k]+'</svg>';
+  }
+
+  /* the drawing's own measurements, taken off the file */
+  var IMG={w:1800,h:1002,left:36,right:1735};
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function mount(){ return document.getElementById('sf-lab-mount'); }
+
+  var LS=[],TM=[],ORIG=null;
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function off(){
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    TM.forEach(clearTimeout); TM=[];
+    document.documentElement.removeAttribute('data-sffin');
+    $$('.sff-rule').forEach(function(n){ n.remove(); });
+    /* the icons are put back exactly as they were found */
+    if(ORIG){ var cs=$$('.tc .ci',mount());
+      cs.forEach(function(c,i){ if(ORIG[i]!==undefined) c.innerHTML=ORIG[i]; }); ORIG=null; }
+    var cad=$('.sfc-cad');
+    if(cad){ cad.style.removeProperty('background-size');
+      cad.style.removeProperty('background-position'); }
+  }
+
+  function icons(){
+    var m=mount(); if(!m) return;
+    var cs=$$('.tc',m);
+    if(!ORIG) ORIG=cs.map(function(c){ var i=$('.ci',c); return i?i.innerHTML:undefined; });
+    cs.forEach(function(c){
+      var n=$('.cn',c), box=$('.ci',c); if(!n||!box) return;
+      var k=n.textContent.trim().toUpperCase();
+      if(ICON[k]) box.innerHTML=svg(k);
+      if(!$('.sff-rule',c)){
+        var r=document.createElement('span'); r.className='sff-rule';
+        if(box.nextSibling) c.insertBefore(r,box.nextSibling); else c.appendChild(r);
+      }
+    });
+  }
+
+  /* =======================================================================
+     4 · TYRE ALIGNMENT.
+     The drawing is sized and offset so its visible extremities land on the
+     black panel's own left and right edges — computed from the panel's live
+     rectangle, so it holds at every width and above 1601 where the section
+     takes the 1600 frame. Aspect ratio is preserved: only the width and the
+     horizontal offset move, never the height independently.
+     ======================================================================= */
+  function align(){
+    var m=mount(); if(!m) return;
+    var cad=$('.sfc-cad'), panel=m.querySelector('.split');
+    if(!cad||!panel) return;
+    var pr=panel.getBoundingClientRect(), cr=cad.getBoundingClientRect();
+    if(!pr.width||!cr.width) return;
+    var span=(IMG.right-IMG.left+1)/IMG.w;          /* 0.9444 of the file */
+    var W, X;
+    if(pr.width<700){
+      /* narrow: forcing the whole machine into a 340px panel would leave a
+         drawing nobody can read, so it is scaled up and centred instead —
+         same aspect, no stretch, still inside the field. */
+      W=pr.width*1.75;
+      X=(cr.width-W)/2;
+    }else{
+      W=pr.width/span;                              /* rendered file width  */
+      X=(pr.left-cr.left)-(IMG.left/IMG.w)*W;       /* so the rear tyre lands
+                                                       on the panel's left  */
+    }
+    cad.style.setProperty('background-size',
+      'auto, 88px 88px, 88px 88px, '+W.toFixed(2)+'px auto','important');
+    cad.style.setProperty('background-position',
+      '0 0, 0 0, 0 0, '+X.toFixed(2)+'px 42%','important');
+  }
+
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(v!=='30ORG'){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 21 is built first, by 21's own code */
+      try{ prev.apply&&prev.apply('21'); }catch(e){}
+      document.documentElement.setAttribute('data-sffin','30ORG');
+      icons();
+      align(); later(align,320); later(align,1200);
+      on(window,'resize',function(){ later(align,180); });
     }
   };
 })();
