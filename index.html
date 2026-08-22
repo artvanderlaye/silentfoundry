@@ -26955,5 +26955,133 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
 })();
 </script>
 
+<style id="sf-m46-css">
+/* =========================================================================
+   MOBILE FIX PASS — scoped to 37, scoped to the phone.
+
+   Every rule below is inside @media(max-width:767px) and every selector is
+   prefixed html[data-sfw43="37"]. 768 and up cannot see any of it, which is
+   how the approved tablet, desktop and ultra-wide states stay untouched.
+   767 rather than 768 deliberately: 768 is in the approved set.
+
+   Nothing here uses a global selector, changes copy, or touches a slider,
+   crop, type size or section height above 767.
+   ========================================================================= */
+
+@media(max-width:767px){
+
+/* ---- 1 · the two Marshall images ---------------------------------------
+   What it was: .m11-pair inset 24px inside the cream, each slide 86% wide on
+   an inline aspect-ratio:1.05/1 — a near-square portrait 283px tall with a
+   permanent 40px slice of the second slide showing, and both photographs
+   drawn by an inline width:285%/height:252% zoom that cropped them vertically.
+
+   What it is now: the row breaks out of the section's 24px padding with a
+   negative margin (not 100vw, which counts the scrollbar), each slide is a
+   full 100% of the screen on a 3/2 landscape, and the images are handed back
+   to object-fit:cover with their own mobile object-position. The inline zoom
+   carries no !important, so a stylesheet reaches it. Scroll-snap-align:start
+   with mandatory snapping gives one clean slide at a time; the order is
+   unchanged and nothing autoplays. */
+  html[data-sfw43="37"] #sf-m11 .m11-pair{
+    width:calc(100% + 48px) !important;
+    margin-left:-24px !important;margin-right:-24px !important;
+    gap:0 !important;
+    scroll-snap-type:x mandatory !important;
+    scroll-padding:0 !important;}
+  html[data-sfw43="37"] #sf-m11 .m11-pair > .m11-crop{
+    flex:0 0 100% !important;width:100% !important;
+    aspect-ratio:3 / 2 !important;height:auto !important;
+    scroll-snap-align:start !important;scroll-snap-stop:always !important;}
+  html[data-sfw43="37"] #sf-m11 .m11-pair > .m11-crop img{
+    position:absolute !important;
+    left:0 !important;top:0 !important;right:0 !important;bottom:0 !important;
+    width:100% !important;height:100% !important;
+    max-width:none !important;transform:none !important;
+    object-fit:cover !important;}
+  /* each photograph keeps its own subject: the cabinet front on the first,
+     the hand and the control panel on the second */
+  html[data-sfw43="37"] #sf-m11 .m11-pair > .m11-crop:nth-of-type(1) img{
+    object-position:50% 42% !important;}
+  html[data-sfw43="37"] #sf-m11 .m11-pair > .m11-crop:nth-of-type(2) img{
+    object-position:62% 46% !important;}
+
+/* ---- 2 · the top of the black SWITCH panel -----------------------------
+   30px above FROM PHYSICAL CHARACTER was not a deliberate interval, it was
+   the desktop's own top padding arriving on a phone. */
+  html[data-sfw43="37"] #sf-lab-mount .split{
+    padding-top:56px !important;}
+
+/*      the gold target. It is #v11-cursor-ring (with #v11-cursor inside it):
+        the site's custom CURSOR — position:fixed, z-index 99998, following
+        the pointer. A phone has no pointer, so the ring simply parks wherever
+        the last synthetic position was and rides the page: clipped against
+        the left edge at the top of the black panel in one screenshot, sitting
+        on top of HORIZONTAL STANCE in another. It cannot be "positioned"
+        because it is not positioned by the layout at all. It is removed on
+        the phone, which is also what fixes the target overlapping a label in
+        item 6. The desktop cursor is untouched. */
+  html[data-sfw43="37"] #v11-cursor,
+  html[data-sfw43="37"] #v11-cursor-ring{
+    display:none !important;}
+
+/* ---- 3 · the black intro panel ----------------------------------------
+   .dnai carried padding-bottom:44px AND margin-bottom:44px — 88px of empty
+   black between the paragraph and FORM & ARCHITECTURE. 28px total keeps a
+   clear break without the hole. Nothing is compressed: the heading, the
+   paragraph and the subsection keep their own type and leading. */
+  html[data-sfw43="37"] #sf-lab-mount .split .dnai{
+    padding-bottom:10px !important;margin-bottom:10px !important;}
+/*      .split is a grid, and on a phone its row-gap adds a third interval on
+        top of the two above — 88 was really 44 + 44, and closing only those
+        two still left 58. The gap is the rest of it. */
+  html[data-sfw43="37"] #sf-lab-mount .split{
+    row-gap:16px !important;}
+
+/*      the cyan rules. There are two of them and they are different elements.
+        The horizontal one — the one directly under the paragraph — is
+        .dnai's own border-bottom: 1px solid rgba(61,220,255,.22).
+        The vertical one is .split::before, a 1px line at
+        left:calc(56.5% + 3px): the divider between the panel's two DESKTOP
+        columns. On a phone the panel is one column, so it divides nothing and
+        simply floats down the middle. Both go; both stay on larger layouts. */
+  html[data-sfw43="37"] #sf-lab-mount .split .dnai{
+    border-bottom:0 !important;}
+  html[data-sfw43="37"] #sf-lab-mount .split::before{
+    display:none !important;content:none !important;}
+
+/* ---- 4 · MECHANICAL HONESTY, 56px beneath ------------------------------
+   Measured bottom edge of ELECTRIC · PRECISE · SERVICEABLE to bottom edge of
+   the black block: was 34px, now exactly 56 — the same interval the As Seen
+   On logos have beneath them. .rgt ends flush with the text, so the panel's
+   own bottom padding IS the measurement. */
+  html[data-sfw43="37"] #sf-lab-mount .split{
+    padding-bottom:56px !important;}
+
+/* ---- 6 · FORM & ARCHITECTURE ------------------------------------------
+   The grid is already three exactly equal 103px columns with icons and
+   labels both flush to their column's left edge and no label overflowing, so
+   it is left alone as briefed. Only its vertical position changes, and that
+   comes from 3 above. The heading's safe margin is asserted here because the
+   panel's padding is being rewritten immediately above. */
+  html[data-sfw43="37"] #sf-lab-mount .split .lft .bhead,
+  html[data-sfw43="37"] #sf-lab-mount .split .rgt .bhead{
+    padding-left:0 !important;}
+  html[data-sfw43="37"] #sf-lab-mount .split .dna9{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;}
+  html[data-sfw43="37"] #sf-lab-mount .split .dna9 .dl{
+    overflow-wrap:anywhere;}
+
+/* ---- 7 · the footer tagline -------------------------------------------
+   Hidden on the phone only, and the 19px it was holding open goes with it so
+   the logo block closes up instead of leaving its shape behind. The address
+   columns, the city headings, the logo and the copyright are untouched. */
+  html[data-sfw43="37"] .footer-logo-wrap .footer-tagline{
+    display:none !important;}
+  html[data-sfw43="37"] .footer-logo-wrap{
+    margin-bottom:0 !important;}
+}
+</style>
+
 </body>
 </html>
