@@ -23098,7 +23098,6 @@ body.lab-on{padding-bottom:0 !important;}
   },300);
 })();
 </script>
-
 <style id="sf-rev-css">
 /* =========================================================================
    FINAL LAYOUT EXPLORATION — ELEVEN STATES.
@@ -23146,7 +23145,7 @@ body{padding-bottom:46px;}
    cap, cyan. It sits beside the words, never above them in weight. The cue is
    shown at every width in 01-10; ORG keeps its current mobile-only behaviour.
    ========================================================================= */
-html[data-sfv] .u-swipe{display:flex !important;align-items:center;gap:10px;
+html[data-sfv]:not([data-sfv="08ORG"]) .u-swipe{display:flex !important;align-items:center;gap:10px;
   font-family:'DM Sans',sans-serif;font-size:9.6px;letter-spacing:2.4px;
   text-transform:uppercase;color:rgba(10,10,10,.34);margin:16px 0 0;}
 html[data-sfv] .sf-cue{display:inline-block;flex:0 0 auto;}
@@ -23419,10 +23418,116 @@ html[data-sfv="09"] #sf-lab-mount .rbtm{height:42px !important;}
 html[data-sfv="09"] .logos{padding-top:21px !important;}
 html[data-sfv="10"] #sf-lab-mount .rbtm{height:38px !important;}
 html[data-sfv="10"] .logos{padding-top:19px !important;}
-@media(max-width:1100px){ html[data-sfv] #sf-lab-mount .rbtm{height:44px !important;}
-  html[data-sfv] .logos{padding-top:26px !important;} }
-@media(max-width:768px){ html[data-sfv] #sf-lab-mount .rbtm{height:30px !important;}
-  html[data-sfv] .logos{padding-top:18px !important;} }
+/* 08ORG is excluded from both clamps — Matthew asked for the ORIGINAL interval
+   below the portfolio, so nothing in this block may reach it at any width. */
+@media(max-width:1100px){ html[data-sfv]:not([data-sfv="08ORG"]) #sf-lab-mount .rbtm{height:44px !important;}
+  html[data-sfv]:not([data-sfv="08ORG"]) .logos{padding-top:26px !important;} }
+@media(max-width:768px){ html[data-sfv]:not([data-sfv="08ORG"]) #sf-lab-mount .rbtm{height:30px !important;}
+  html[data-sfv]:not([data-sfv="08ORG"]) .logos{padding-top:18px !important;} }
+
+/* =========================================================================
+   08ORG · THE SELECTION
+   Marshall 01 (with more air under the bars and a stronger grid), panel 04,
+   categories 04, portfolio 09, the original interval into AS SEEN ON, the
+   manufacturing photograph reframed to the SWITCH hero, the recovered
+   "Scroll →" restored, and the CAD drawing brought up behind SWITCH.
+   ========================================================================= */
+
+/* ---- 1 · HOW WE BUILD — the recovered cue, bottom right -----------------
+   Not a new drawing: this is the site's own SCROLL →, the same one the team
+   page carries. Team metrics (DM Sans 0.52rem / 0.22em / 300, uppercase),
+   inverted for the dark ground, on the page's own 48px gutter. */
+html[data-sfv="08ORG"] #hiw-stage .u-swipe{
+  display:block !important;font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(244,241,236,0.34);margin:14px 0 0;text-align:right;
+  max-width:none !important;padding:0 48px 0 48px;}
+@media(max-width:480px){
+  html[data-sfv="08ORG"] #hiw-stage .u-swipe{padding:0 24px;}
+}
+/* the applications strip scrolls freely; the arrows come off */
+html[data-sfv="08ORG"] #hiw-stage .ec2-wrap{overflow-x:auto !important;overflow-y:hidden !important;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;scroll-snap-type:none;}
+html[data-sfv="08ORG"] #hiw-stage .ec2-wrap::-webkit-scrollbar{display:none;}
+html[data-sfv="08ORG"] #hiw-stage .ec2-track{transition:none !important;transform:none !important;animation:none !important;}
+html[data-sfv="08ORG"] #hiw-stage .ec2-btn{display:none !important;}
+
+/* ---- 1b · THE MANUFACTURING PHOTOGRAPH ---------------------------------
+   Not full screen. The same frame as the featured venture hero — the SWITCH
+   bike — which is the page's 48px gutter at an aspect of 2000/1180. The
+   exact width is copied off .pvstage at runtime so the two match at every
+   width, including above 1601 where the section takes the 1600 frame. */
+html[data-sfv="08ORG"] .factory-solo{padding-left:48px;padding-right:48px;}
+html[data-sfv="08ORG"] .factory-solo img{
+  width:100% !important;height:auto !important;aspect-ratio:2000/1180 !important;
+  max-width:none !important;margin-left:0 !important;
+  /* the image carries a permanent scale(1.02) so a full-bleed crop never
+     shows an edge. Inside a frame that overscale just breaks the frame, so
+     it comes off and the picture sits exactly on the gutter. */
+  transform:none !important;
+  object-fit:cover !important;object-position:center 46% !important;display:block;}
+@media(max-width:768px){
+  html[data-sfv="08ORG"] .factory-solo{padding-left:24px;padding-right:24px;}
+}
+
+/* ---- 2 · MARSHALL — 01, with more air and a stronger grid --------------- */
+html[data-sfv="08ORG"] .case-study{--mzp:58px;}
+html[data-sfv="08ORG"] .sf-marshall-wave{top:0;left:0;width:50%;height:30px;opacity:.9;}
+/* "a tad more space under it": 26px added to the TOP of both zones, so the
+   copy drops clear of the bars and the two columns stay on the same datum. */
+html[data-sfv="08ORG"] .m11-zone{padding-top:84px !important;}
+/* the drawing a little more present — .16 was 01's, this is .24 */
+html[data-sfv="08ORG"] .sf-bp{inset:0 0 0 50%;opacity:.24;}
+
+/* ---- 2b · MARSHALL -> SWITCH — 01's interval ---------------------------- */
+html[data-sfv="08ORG"] #sf-lab-mount{--sfgap:180px;}
+
+/* ---- 3 · THE SWITCH HERO — the sketch sits ON the photograph ------------
+   The offset is not on the drawing, it is on .pvsk, the layer that holds it:
+   that box was 1370x685 sitting 5px left of and 79px below the photograph,
+   and the drawing was then stretched to fill it (object-fit:fill). So the
+   sketch floated down and right of the bike and had the wrong proportions.
+   Both are put back: the layer takes the photograph's exact frame, and the
+   drawing keeps its own 1800x1002 ratio inside it (object-fit:contain).
+   Nothing about which lines are drawn, or how they fade, changes. */
+html[data-sfv="08ORG"] #sf-lab-mount .pvsk{
+  inset:0 !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;
+  width:100% !important;height:100% !important;margin:0 !important;transform:none !important;}
+html[data-sfv="08ORG"] #sf-lab-mount .pvline{
+  inset:0 !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;
+  width:100% !important;height:100% !important;
+  object-fit:contain !important;object-position:50% 50% !important;}
+
+/* ---- 4 · THE BLACK DNA PANEL — 04 --------------------------------------- */
+html[data-sfv="08ORG"] #sf-lab-mount .dna9{gap:16px 30px;}
+html[data-sfv="08ORG"] #sf-lab-mount .nw{height:calc(var(--sz,78px) * 1.12);}
+
+/* ---- 5 · FROM DNA TO NEW CATEGORIES — 04 -------------------------------- */
+html[data-sfv="08ORG"] #sf-lab-mount .fcats .bhead{border-top:0;}
+html[data-sfv="08ORG"] #sf-lab-mount .fcats{border-top:1px solid rgba(10,127,153,.22);padding-top:18px;}
+html[data-sfv="08ORG"] #sf-lab-mount .ci{width:30px;height:30px;}
+html[data-sfv="08ORG"] #sf-lab-mount .cn{margin-top:14px;}
+
+/* ---- 6 · THE PORTFOLIO — 09, ending at the carousel --------------------- */
+html[data-sfv="08ORG"] #sf-lab-mount .fstack > .fwrap:last-child{display:none !important;}
+/* the same recovered cue, on the cream ground this time */
+html[data-sfv="08ORG"] #sf-lab-mount .sf-pfcue{
+  display:block;font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(10,10,10,0.3);text-align:right;margin:14px 0 0;padding:0 48px;}
+@media(max-width:768px){
+  html[data-sfv="08ORG"] #sf-lab-mount .sf-pfcue{padding:0 24px;}
+}
+
+/* ---- 8 · THE CAD DRAWING BEHIND SWITCH ---------------------------------
+   The sheet, the fixed attachment and the drift were already there and
+   already correct — what was wrong is that a 94% cream veil sat on top of
+   them, so nothing read. Same drawing, same motion, veil opened to 86%.
+   This rule is unlayered, so it outranks the @layer uwlab original. */
+html[data-sfv="08ORG"] body #fv-stage{
+  background-image:
+    linear-gradient(rgba(237,232,224,0.86),rgba(237,232,224,0.86)),
+    url('images/cad_texture_wide.jpg') !important;}
 
 @media(prefers-reduced-motion:reduce){
   html[data-sfv] .sf-cue{animation:none !important;}
@@ -23435,8 +23540,16 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
   /* =======================================================================
      STATE
      ======================================================================= */
-  var STATES=['ORG','01','02','03','04','05','06','07','08','09','10'];
+  /* THE HASH IS READ AT PARSE TIME, NOT AT BUILD TIME.
+     The lab engine rewrites location.hash to its own "#c=29&m=11" about a
+     second after load, and this selector is not built until 4.2s — so by the
+     time build() looked, the address the reviewer actually opened was gone
+     and every deep link fell back to ORG. Captured here instead, before
+     anything has had a chance to overwrite it. */
+  var HASH0=location.hash;
+  var STATES=['ORG','01','02','03','04','05','06','07','08','09','10','08ORG'];
   var NOTE={
+    '08ORG':'the selection · Marshall 01 + air + stronger grid · sketch over the bike, held longer · panel 04 · categories 04 · portfolio 09 · original gap to AS SEEN ON · photo reframed to the SWITCH hero · SCROLL → restored · CAD drawing up behind SWITCH',
     ORG:'the current build, untouched',
     '01':'60vh factory · grid right · bars top-left · gap 180 · panel padding · all lower rows kept, shorter',
     '02':'58vh · grid left · bars under the photograph · gap 172 · intro tightened · snowboard panel removed',
@@ -23460,10 +23573,122 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
   var CUE='<span class="sf-cue" aria-hidden="true">'+
     '<svg viewBox="0 0 30 10" width="100%" height="10">'+
     '<path d="M0 5h20"/><path d="M17 1.5 21.5 5 17 8.5"/></svg></span>';
-  function cue(){
+  function cue(v){
+    /* 08ORG does not get the drawn chevron — it gets the site's own SCROLL →
+       back, which is what the team page has carried all along. */
+    if(v==='08ORG') return;
     var s=document.querySelector('.u-swipe');
     if(!s||s.querySelector('.sf-cue')) return;
     s.insertAdjacentHTML('beforeend',CUE);
+  }
+
+  /* =======================================================================
+     08ORG · THE RECOVERED "SCROLL →" AND THE STRIP THAT SHOULD SCROLL.
+
+     Neither of these is new work. index.html already contains the code that
+     frees the applications strip and writes "Scroll  →" into .u-swipe — it
+     is the NAV 3 block inside baked(). It has simply not been running:
+     build() waits for "#su .u-c" before it calls baked(), and #su now holds
+     the lab mount instead of the old portfolio cards, so that selector never
+     matches, build() gives up after fifteen tries, and the strip is left
+     with overflow:hidden and the placeholder sentence.
+
+     What follows is that same block, with the same values, run directly.
+     ======================================================================= */
+  var hiwDone=false, SWTXT=null, TRK0=null;
+  function hiw(v){
+    var SW=document.querySelector('#hiw-stage .u-swipe'),
+        WRAP=document.querySelector('#hiw-stage .ec2-wrap'),
+        TRACK=document.querySelector('#hiw-stage .ec2-track');
+    if(SW&&SWTXT===null) SWTXT=SW.textContent;
+    if(TRACK&&TRK0===null) TRK0={a:TRACK.style.animation,t:TRACK.style.transform};
+    /* ORG must stay ORG: everything written here is written back on the way
+       out, so leaving 08ORG leaves the strip and the sentence as they were. */
+    if(v!=='08ORG'){
+      if(SW&&SWTXT!==null) SW.textContent=SWTXT;
+      if(TRACK&&TRK0){ TRACK.style.animation=TRK0.a; TRACK.style.transform=TRK0.t; }
+      if(WRAP) WRAP.scrollLeft=0;
+      return;
+    }
+    if(SW) SW.textContent='Scroll  →';
+    if(hiwDone||!WRAP||!TRACK) return;
+    /* the track was being moved by transform; free scrolling replaces it.
+       margin-left is deliberately left alone so the images still bleed. */
+    TRACK.style.animation='none'; TRACK.style.transform='none';
+    var x0=null,l0=0;
+    WRAP.addEventListener('mousedown',function(e){ x0=e.clientX; l0=WRAP.scrollLeft;
+      WRAP.style.cursor='grabbing'; });
+    window.addEventListener('mouseup',function(){ x0=null; if(WRAP) WRAP.style.cursor='grab'; });
+    window.addEventListener('mousemove',function(e){ if(x0===null) return;
+      WRAP.scrollLeft=l0-(e.clientX-x0); });
+    /* a wheel over the strip scrolls it sideways rather than moving the page */
+    WRAP.addEventListener('wheel',function(e){
+      var d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+      if(!d) return;
+      var before=WRAP.scrollLeft;
+      WRAP.scrollLeft=before+d;
+      if(WRAP.scrollLeft!==before) e.preventDefault();
+    },{passive:false});
+  }
+
+  /* the same cue again, under the portfolio row, on the cream ground */
+  function pfcue(v){
+    var m=document.getElementById('sf-lab-mount'); if(!m) return;
+    var old=m.querySelector('.sf-pfcue'); if(old) old.remove();
+    if(v!=='08ORG') return;
+    var stack=m.querySelector('.fstack'); if(!stack) return;
+    var s=document.createElement('span');
+    s.className='sf-pfcue'; s.textContent='Scroll  →';
+    stack.parentNode.insertBefore(s,stack.nextSibling);
+  }
+
+  /* =======================================================================
+     08ORG · THE MANUFACTURING PHOTOGRAPH TAKES THE SWITCH HERO'S FRAME.
+     The CSS above already sets the gutter and the 2000/1180 aspect, which is
+     right at every width the two share. This closes the last case: above
+     1601 the sections take the video's 1600 frame, so the exact rendered
+     width of .pvstage is copied across rather than assumed.
+     ======================================================================= */
+  /* =======================================================================
+     08ORG · THE CAD DRAWING BEHIND SWITCH.
+
+     It was never missing. #fv-stage already carries cad_texture_wide.jpg on
+     a fixed attachment, and sf-uw-cadfield already drifts it at a fifth of
+     page speed. What made it invisible is the veil painted over it:
+     rgba(237,232,224,0.94) leaves 6% of a pale line drawing on a cream
+     ground, which is nothing.
+
+     The veil is written from a stylesheet inside @layer uwlab, and important
+     declarations in a layer beat important declarations from outside one --
+     no selector, however specific, can outrank it. An inline important can,
+     so the value is set on the element itself and removed again on the way
+     out. Same image, same crop, same drift; only the veil moves, 94% -> 86%.
+     ======================================================================= */
+  function cad(v){
+    var s=document.getElementById('fv-stage'); if(!s) return;
+    if(v!=='08ORG'){ s.style.removeProperty('background-image'); return; }
+    var img=getComputedStyle(s).backgroundImage;
+    var url=(/url\((["']?)([^"')]+)\1\)/.exec(img)||[])[2]||'images/cad_texture_wide.jpg';
+    s.style.setProperty('background-image',
+      'linear-gradient(rgba(237,232,224,0.86),rgba(237,232,224,0.86)), url("'+url+'")','important');
+    if(window.__cadField){ try{ window.__cadField(true); }catch(e){} }
+  }
+
+  function fitFactory(v){
+    var img=document.querySelector('.factory-solo img'),
+        box=document.querySelector('.factory-solo');
+    if(!img||!box) return;
+    img.style.width=''; img.style.height=''; img.style.marginLeft='';
+    box.style.paddingLeft=''; box.style.paddingRight='';
+    if(v!=='08ORG') return;
+    var st=document.querySelector('#sf-lab-mount .pvstage');
+    if(!st) return;
+    var w=Math.round(st.getBoundingClientRect().width);
+    if(!w) return;
+    var outer=box.getBoundingClientRect().width;
+    var pad=Math.max(0,Math.round((outer-w)/2));
+    box.style.paddingLeft=pad+'px';
+    box.style.paddingRight=pad+'px';
   }
 
   /* =======================================================================
@@ -23501,7 +23726,9 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
     '03':{col:0xc8a96e,mode:'draw',split:true}, '04':{col:0xc8a96e,mode:'draw'},
     '05':{col:0xc8a96e,mode:'draw'}, '06':{col:0xc8a96e,mode:'draw'},
     '07':{col:0xc8a96e,mode:'scroll'}, '08':{col:0xc8a96e,mode:'static'},
-    '09':{col:0x0a7f99,mode:'draw'},  '10':{col:0xc8a96e,mode:'minimal'}
+    '09':{col:0x0a7f99,mode:'draw'},  '10':{col:0xc8a96e,mode:'minimal'},
+    /* 08ORG — 01's grid, drawn the same way, carried a little further up */
+    '08ORG':{col:0xc8a96e,mode:'draw'}
   };
   var bpState=null;
 
@@ -23656,7 +23883,19 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
           ink:0.05,peak:0.7,rest:0,tail:'clear'},
     /* assembles from separate characteristics into the whole, then returns */
     '10':{order:['rad','fast','ribs','mod','encl','whl','axis','stnc','sil'],
-          ink:0.06,peak:0.8,rest:0,tail:'return'}
+          ink:0.06,peak:0.8,rest:0,tail:'return'},
+    /* 08ORG — 01's extraction, unchanged in which traces are used and in what
+       order. Two things differ, both about DURATION, not about design:
+         steppx  230 instead of 150 — every step of the assembly now needs
+                 half again as much scroll, so the whole sequence lasts
+                 longer instead of snapping through.
+         tail    'hold' instead of 'clear' — the sketch climbs to its peak
+                 over the first 42% of the travel, STAYS there through to
+                 88%, and only then eases off. Previously it began fading
+                 the instant it arrived, which is why it went away so fast.
+       Reverse scroll still takes it apart the same way: H.dir is a position
+       mapping, so nothing here is a one-way timeline. */
+    '08ORG':{order:K9,ink:0.06,peak:0.78,rest:0,tail:'hold',steppx:230}
   };
   function hero(v){
     var H=window.G3, r=document.getElementById('sf-lab-mount');
@@ -23673,6 +23912,9 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
        cannot leave a scroll handler behind. */
     var x=(window.ctxFactory?window.ctxFactory():null);
     if(!x) return;
+    /* how much scroll one step of the assembly costs. 150 is the build's own
+       value and every other state keeps it; 08ORG asks for 230. */
+    H.STEPPX=cfg.steppx||150;
     var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     function settle(){
       order.forEach(function(k){ H.on(r,k); });
@@ -23693,7 +23935,12 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
       });
       /* what the sketch itself is doing */
       var t=v0/N, ink;
-      if(cfg.tail==='ghost')      ink=cfg.ink+(cfg.peak-cfg.ink)*Math.sin(Math.PI*t)*0.9+0.04*t;
+      if(cfg.tail==='hold'){
+        /* up to 42%, hold to 88%, then ease down — a plateau, not a spike */
+        var up=Math.min(1,t/0.42), dn=t>0.88?Math.min(1,(t-0.88)/0.12):0;
+        ink=cfg.ink+(cfg.peak-cfg.ink)*Math.max(0,Math.min(up,1-dn));
+      }
+      else if(cfg.tail==='ghost') ink=cfg.ink+(cfg.peak-cfg.ink)*Math.sin(Math.PI*t)*0.9+0.04*t;
       else if(cfg.tail==='alt')   ink=cfg.ink+(cfg.peak-cfg.ink)*(0.5-0.5*Math.cos(Math.PI*2*t));
       else if(cfg.tail==='clear') ink=cfg.ink+(cfg.peak-cfg.ink)*Math.sin(Math.PI*t);
       else if(cfg.tail==='return')ink=cfg.ink+(cfg.peak-cfg.ink)*Math.sin(Math.PI*Math.min(1,t*1.15));
@@ -23719,8 +23966,11 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
      than guess a stack of paddings and hope the total lands, each one is
      measured after the state is applied and closed to the exact figure.
      ======================================================================= */
+  /* 08ORG sits at .915 rather than 01's .90 on purpose: the 26px of air added
+     above the copy has to survive the fit, or the fitter simply takes it
+     straight back out of the margins below. */
   var MTGT={'01':.90,'02':.89,'03':.885,'04':.88,'05':.875,'06':.87,
-            '07':.868,'08':.865,'09':.86,'10':.855};
+            '07':.868,'08':.865,'09':.86,'10':.855,'08ORG':.915};
   var ORGH=null;
   function fitMarshall(v){
     var cs=document.querySelector('.case-study'); if(!cs) return;
@@ -23750,7 +24000,7 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
 
   /* the panel closes to its own target the same way */
   var PTGT={'01':.85,'02':.845,'03':.84,'04':.835,'05':.83,'06':.825,
-            '07':.82,'08':.815,'09':.81,'10':.80};
+            '07':.82,'08':.815,'09':.81,'10':.80,'08ORG':.835};
   var ORGP=null;
   function fitPanel(v){
     var m=document.getElementById('sf-lab-mount');
@@ -23796,8 +24046,10 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
     var y=window.scrollY;
     if(v==='ORG'){ document.documentElement.removeAttribute('data-sfv'); }
     else { document.documentElement.setAttribute('data-sfv',v); }
-    if(v!=='ORG'){ cue(); bars(); }
+    if(v!=='ORG'){ cue(v); bars(); }
+    hiw(v);
     blueprint(v);
+    cad(v);
     var cs0=document.querySelector('.case-study');
     if(ORGH==null&&cs0&&v==='ORG') ORGH=cs0.offsetHeight;
     var sp0=document.querySelector('#sf-lab-mount .split');
@@ -23805,6 +24057,11 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
     fitMarshall(v);
     setTimeout(function(){ fitPanel(v); },100);
     setTimeout(function(){ fitGap(v); },140);
+    /* 08ORG has no GTGT entry, so fitGap clears its margin and returns —
+       which is exactly the ask: the original interval into AS SEEN ON. */
+    pfcue(v);
+    setTimeout(function(){ fitFactory(v); },180);
+    setTimeout(function(){ fitFactory(v); },900);
     if(window.__sfHeroKill){ try{ window.__sfHeroKill(); }catch(e){} }
     if(v!=='ORG') setTimeout(function(){ hero(v); },60);
     paint(v);
@@ -23833,13 +24090,19 @@ html[data-sfv="10"] .logos{padding-top:19px !important;}
       rb.appendChild(b);
     });
     document.body.appendChild(box);
-    var m=/[#&]v=(ORG|\d\d)/i.exec(location.hash);
-    apply(m?(m[1].toUpperCase()==='ORG'?'ORG':m[1]):'ORG');
+    var m=/[#&]v=(08ORG|ORG|\d\d)/i.exec(HASH0)||/[#&]v=(08ORG|ORG|\d\d)/i.exec(location.hash);
+    var want=m?m[1].toUpperCase():'ORG';
+    apply(STATES.indexOf(want)>=0?want:'ORG');
+    /* the strip and the photograph both live outside the state layer, so they
+       are re-fitted once the page has finished settling and again on resize */
+    window.addEventListener('resize',function(){ fitFactory(cur()); },{passive:true});
+    setTimeout(function(){ hiw(cur()); fitFactory(cur()); },2500);
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ setTimeout(build,4200); });
   else setTimeout(build,4200);
 })();
 </script>
+
 </body>
 </html>
