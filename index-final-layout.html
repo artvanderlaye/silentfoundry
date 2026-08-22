@@ -25799,5 +25799,328 @@ html[data-sffin]{--sfcm:78px;--sfsm:36px;}
 })();
 </script>
 
+<style id="sf-f31-css">
+/* =========================================================================
+   31ORG — 30ORG WITH THE DRAWINGS TAKEN OFF THE REAL MACHINE.
+
+   Four changes, nothing else. 30ORG is built first by 30ORG's own code and
+   every part of it that is not listed here is inherited untouched.
+
+   1 · THE FOUR CATEGORY ICONS ARE NOW MEASURED, NOT INVENTED
+       ENERGY   the battery enclosure's own outline, taken from the site's
+                measured ENCL polygon in index.html, with the rib field the
+                pack actually carries and the corner fastener bosses. The
+                orange is the HV lead, which is the one live part of it.
+       MOTION   the wheel, at the proportion measured off the photograph:
+                the tyre outer edge and the rim were fitted on
+                SWITCH_eSCRAMBLER_bike-6.jpg — rim 0.58 of tyre diameter,
+                front and rear within 0.2% of each other. That deep sidewall
+                is the proportion.
+       SIGNAL   the SWITCH bolt itself, traced off Switchlogowhite2.png. The
+                mark is two wedges, not a zigzag: the upper is a scalene
+                triangle 27/0 · 22/31 · 0/31 and the lower is 15/36 · 35/36 ·
+                9/67 in its own 36 x 68 box. Those numbers are read off the
+                file, and the outline here is that polygon at 1:1.
+       UTILITY  exposed fasteners as the bike shows them — a tapered lug with
+                a socket-head pivot bolt and two flange fasteners standing
+                proud, the arrangement in the swingarm-lug detail.
+
+   2 · THE GAP ABOVE THE EYEBROW
+       Measured: the black SWITCH panel ends and FROM DNA TO NEW CATEGORIES
+       begins 90px later. AS SEEN ON sits 80px below the top of its own black
+       band. The first is brought to the second.
+
+   3 · THE EXTRACTION IS REGISTERED TO THE PHOTOGRAPH AGAIN
+       10ORG put a transform on .pvsk to size the SKETCH to the bike. .pvsk
+       also carries the nine extraction traces, so they were carried off the
+       features they point at — which is why the sketch lined up and the
+       extraction did not. The transform comes off .pvsk entirely. The sketch
+       keeps its position because .pvline is given the equivalent box
+       directly, and .pvsk is re-registered to the photograph on measured
+       numbers: both wheel centres and the ground line were fitted on the
+       photograph and .pvsk's frame solved from them.
+
+   4 · THE EXTRACTION CYCLES
+       It was mapped onto scroll position, so it assembled once on the way
+       past and then sat still. It now runs on its own clock — assemble,
+       hold, take apart, pause, repeat — and stops when the section is off
+       screen or the viewer asks for reduced motion.
+   ========================================================================= */
+
+/* ---- 2 · the gap above the eyebrow -------------------------------------- */
+html[data-sf31]{--sfcm:68px;}
+
+/* ---- 3 · registration ---------------------------------------------------
+   The transform is removed, not overridden with another transform: a
+   transform on .pvsk moves the traces with it, which is the whole fault.
+   These four numbers are solved from the photograph — rear axle 26.225% /
+   67.036%, front axle 75.400% / 67.203%, tyre ground line 88.05% — against
+   the trace viewBox (-170 -100 1540 869) the SVGs already use. */
+html[data-sf31] #sf-lab-mount .pvsk{
+  transform:none !important;
+  left:1.315% !important; top:-0.903% !important;
+  width:99.382% !important; height:103.343% !important;}
+/* the sketch is put back exactly where 30ORG had it, measured in the new
+   frame instead of the old one, so nothing about the drawing moves */
+html[data-sf31] #sf-lab-mount .pvline{
+  left:20.532% !important; top:26.430% !important;
+  width:62.066% !important; height:49.923% !important;}
+
+/* ---- 4 · the cycle ------------------------------------------------------
+   The traces already carry their own opacity transitions; the loop only
+   needs the sketch to move at the same unhurried rate. */
+html[data-sf31] #sf-lab-mount .pvline{transition:opacity 1.05s ease !important;}
+@media(prefers-reduced-motion:reduce){
+  html[data-sf31] #sf-lab-mount .pvline{transition:none !important;}
+}
+</style>
+
+<script id="sf-f31-js">
+(function(){
+  var C='#0a7f99', O='#E43C00';
+  var HALF=' stroke-width="1.0"';
+
+  /* ---------------------------------------------------------------------
+     THE ENCLOSURE OUTLINE IS index.html's OWN.
+     ENCL in the build is
+       [[525,293],[549,270],[689,270],[713,293],[713,500],[700,525],
+        [568,525],[525,468]]
+     — 188 wide by 255 tall. Normalised and dropped into the 48-box at the
+     same aspect, so the icon's silhouette IS the enclosure's silhouette.
+     --------------------------------------------------------------------- */
+  var ENCL=[[525,293],[549,270],[689,270],[713,293],
+            [713,500],[700,525],[568,525],[525,468]];
+  function enclPath(){
+    var x0=525,y0=270,w=188,h=255, X0=11,Y0=6.5,W=26,H=35;
+    return ENCL.map(function(p,i){
+      var x=(X0+(p[0]-x0)/w*W).toFixed(2), y=(Y0+(p[1]-y0)/h*H).toFixed(2);
+      return (i?'L':'M')+x+' '+y;
+    }).join(' ')+' Z';
+  }
+  /* the rib field: the build has 20 ribs from y=322 at a 7.63 pitch inside a
+     255-tall enclosure. Five at the icon's size is the honest reduction —
+     the pitch is even and the field sits where the real one sits. */
+  function ribPaths(){
+    var s='';
+    for(var i=0;i<5;i++){
+      var v=0.34+i*0.105, y=(6.5+35*v).toFixed(2);
+      s+='<path d="M13.8 '+y+' H34.2"'+HALF+'/>';
+    }
+    return s;
+  }
+  /* the wheel, at the measured proportion. Fitted on the photograph:
+       rear  centre 26.225% / 67.036%   tyre r 12.204%
+       front centre 75.400% / 67.203%   tyre r 12.231%
+     rim/tyre 0.58, and the two wheels within 0.2% of one another. */
+  function wheel(){
+    var s='<circle cx="24" cy="24" r="17"/><circle cx="24" cy="24" r="9.9"/>';
+    for(var i=0;i<6;i++){
+      var a=i*Math.PI/3+Math.PI/6;
+      s+='<path d="M'+(24+2.2*Math.cos(a)).toFixed(2)+' '+(24+2.2*Math.sin(a)).toFixed(2)+
+         ' L'+(24+9.9*Math.cos(a)).toFixed(2)+' '+(24+9.9*Math.sin(a)).toFixed(2)+'"'+HALF+'/>';
+    }
+    s+='<circle cx="24" cy="24" r="4.0"'+HALF+'/>';
+    s+='<circle cx="24" cy="24" r="1.5" fill="'+O+'" stroke="'+O+'"/>';
+    return s;
+  }
+  function hexAt(cx,cy,r,col){
+    var p=[];
+    for(var i=0;i<6;i++){
+      var a=Math.PI/6+i*Math.PI/3;
+      p.push((cx+r*Math.cos(a)).toFixed(2)+' '+(cy+r*Math.sin(a)).toFixed(2));
+    }
+    return '<path d="M'+p.join(' L')+' Z" stroke="'+(col||C)+'"/>';
+  }
+
+  var ICONS={
+    ENERGY:
+      '<path d="'+enclPath()+'"/>'+
+      '<path d="M12.6 15.2 H35.4"'+HALF+'/>'+
+      ribPaths()+
+      '<circle cx="14.9" cy="10.9" r="1.0"'+HALF+'/>'+
+      '<circle cx="33.1" cy="10.9" r="1.0"'+HALF+'/>'+
+      '<circle cx="33.2" cy="37.2" r="1.0"'+HALF+'/>'+
+      '<circle cx="19.2" cy="38.2" r="1.0"'+HALF+'/>'+
+      '<path d="M11 12.4 C7 12.4 4.8 9.6 4.8 6.2" stroke="'+O+'"/>',
+    MOTION: wheel(),
+    SIGNAL:
+      /* traced off the logo file: the two wedges at 1:1 in their own box */
+      '<path d="M30.2 4.6 L27.35 22.3 L14.8 22.3 Z"/>'+
+      '<path d="M23.35 25.2 L34.75 25.2 L19.9 42.9 Z" stroke="'+O+'"/>',
+    UTILITY:
+      '<path d="M9.5 33.5 L9.5 20.5 L18 14 L34 14 L39.5 19 L39.5 30 L34.5 34.5 Z"/>'+
+      '<circle cx="19.5" cy="24" r="6.2"/>'+
+      hexAt(19.5,24,3.2,O)+
+      '<circle cx="33.5" cy="19.6" r="2.5"/>'+
+      '<circle cx="33.5" cy="19.6" r="0.6"'+HALF+'/>'+
+      '<circle cx="33.5" cy="28.6" r="2.5"/>'+
+      '<circle cx="33.5" cy="28.6" r="0.6"'+HALF+'/>'
+  };
+
+  function svg(k){
+    return '<svg viewBox="0 0 48 48" fill="none" aria-hidden="true" '+
+      'stroke="'+C+'" stroke-width="1.9" stroke-linecap="round" '+
+      'stroke-linejoin="round" style="width:100%;height:100%;display:block">'+
+      (ICONS[k]||'')+'</svg>';
+  }
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  var TM=[],RAF=[],LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+
+  /* ---- 1 · the icons ---------------------------------------------------- */
+  function icons(){
+    $$('#sf-lab-mount .fcats .tc, #sf-lab-mount .crow .tc').forEach(function(){});
+    $$('#sf-lab-mount .ci').forEach(function(box){
+      var cell=box.parentElement;
+      var n=cell&&cell.querySelector('.cn');
+      var k=n?n.textContent.trim().toUpperCase():'';
+      if(ICONS[k]) box.innerHTML=svg(k);
+    });
+  }
+
+  /* ---- 3b · the wheel traces, at the photograph's radius ----------------
+     Registering .pvsk on the axles and the ground line puts both wheel
+     CENTRES exactly on the photograph's — measured 26.225% / 75.400% / 67.12%
+     against fitted 26.225% / 75.399% / 67.120%. The radius is the one thing a
+     single frame cannot also solve, because the concept sketch's wheels are
+     proportionally smaller than the built bike's: the sketch is r/wheelbase
+     0.2310, the photograph 0.2481.
+
+     So the circles alone are corrected, in place, about their own centres:
+       rx  x 1.0744   ry  x 0.9881
+     which lands the tyre edge on the photograph's tyre edge in both axes.
+     Only paths that ARE circles are touched — the silhouette and the ground
+     line inside the same trace are left exactly as they are.
+     --------------------------------------------------------------------- */
+  var RX=1.0744, RY=0.9881;
+  var CIRC=/^M(-?[\d.]+) (-?[\d.]+) m-([\d.]+) 0 a\3 \3 0 1 0 ([\d.]+) 0 a\3 \3 0 1 0 (-[\d.]+) 0$/;
+  function fitWheels(){
+    ['whl','stnc','ctrs','circ','mass'].forEach(function(k){
+      $$('#sf-lab-mount .solo_'+k+' path').forEach(function(p){
+        if(p.__fit) return;
+        var m=CIRC.exec((p.getAttribute('d')||'').trim());
+        if(!m) return;
+        var cx=+m[1], cy=+m[2], r=+m[3];
+        var rx=+(r*RX).toFixed(2), ry=+(r*RY).toFixed(2);
+        p.setAttribute('d','M'+cx+' '+cy+' m-'+rx+' 0 a'+rx+' '+ry+' 0 1 0 '+
+          (2*rx).toFixed(2)+' 0 a'+rx+' '+ry+' 0 1 0 '+(-2*rx).toFixed(2)+' 0');
+        p.__fit=1;
+      });
+    });
+  }
+
+  /* ---- 4 · the cycling extraction --------------------------------------
+     10ORG's hero() ends by handing its step function to H.dir, which maps it
+     onto scroll travel. H.dir is stood aside for the length of that call so
+     the step function arrives here instead, and is then driven by a clock.
+     Nothing about which traces are used, in what order, or what the sketch
+     does at each step is changed — only what advances it.
+     --------------------------------------------------------------------- */
+  var LOOP=null;
+  function stopLoop(){
+    if(LOOP){ LOOP.dead=true; if(LOOP.raf) cancelAnimationFrame(LOOP.raf); LOOP=null; }
+    RAF.forEach(cancelAnimationFrame); RAF=[];
+  }
+  function cycle(cap){
+    /* the hero can be built more than once in a session; two clocks writing
+       the same traces every frame would cancel each other out and the strip
+       would look frozen. Only ever one loop. */
+    stopLoop();
+    var fn=cap.fn, N=cap.n-1, host=cap.host;
+    if(!fn||N<1) return;
+    var reduced=window.matchMedia&&
+      window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(reduced||!window.MOTION){ fn(N,1); return; }
+
+    /* one pass: build up, hold at the top, take apart, rest. Slow on purpose
+       — the assembly is meant to be readable, not a flicker. */
+    var UP=6200, HOLD=3000, DOWN=3400, REST=1400;
+    var TOTAL=UP+HOLD+DOWN+REST;
+    var vis=true, last=-1, t0=null;
+
+    /* watch the frame the animation is IN, not the scroll host it was given.
+       H.dir is handed .split — the black panel below — because that is what
+       scroll travel was measured against. A clock has to watch what the
+       viewer is actually looking at, or it pauses while the hero is on
+       screen and runs while it is not. */
+    var watch=document.querySelector('#sf-lab-mount .oneframe')||host;
+    try{
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){ vis=e.isIntersecting; });
+      },{threshold:0});
+      io.observe(watch);
+      LOOP={io:io};
+    }catch(e){ LOOP={}; }
+
+    LOOP.dead=false;
+    function frame(ts){
+      if(!LOOP||LOOP.dead) return;
+      LOOP.raf=requestAnimationFrame(frame);
+      RAF.push(LOOP.raf);
+      if(!vis){ t0=null; return; }        /* off screen: hold, do not advance */
+      if(t0===null) t0=ts;
+      var p=((ts-t0)%TOTAL);
+      var step;
+      if(p<UP)                 step=Math.round(N*(p/UP));
+      else if(p<UP+HOLD)       step=N;
+      else if(p<UP+HOLD+DOWN)  step=Math.round(N*(1-(p-UP-HOLD)/DOWN));
+      else                     step=0;
+      if(step!==last){ var d=step>last?1:-1; last=step; try{ fn(step,d); }catch(e){} }
+    }
+    LOOP.raf=requestAnimationFrame(frame);
+    RAF.push(LOOP.raf);
+  }
+
+  var ORIGDIR=null;
+  function off(){
+    stopLoop();
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    /* the scroll mapping goes back before any other state is built */
+    if(ORIGDIR&&window.G3){ window.G3.dir=ORIGDIR; ORIGDIR=null; }
+    document.documentElement.removeAttribute('data-sf31');
+  }
+
+  var NOTE={'31ORG':'30ORG with the drawings taken off the machine — the enclosure outline and rib field, the wheel at its measured proportion, the SWITCH bolt traced off the logo, and the swingarm lug’s fasteners · the eyebrow gap brought from 90 to 80 · the extraction traces re-registered to the photograph and cycling on their own clock'};
+
+  var prev=window.__sfExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfExtra={
+    states:(prev.states||[]).concat(['31ORG']),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(v!=='31ORG'){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 30ORG builds first, by 30ORG's own code.
+         The hero is built asynchronously — H.dir is called from inside a
+         timer well after apply() returns — so the substitution cannot be
+         wrapped around the call. It stays in place for as long as 31ORG is
+         the current state and is put back by off(), which the review engine
+         runs before every state change. Any other state therefore always
+         sees the original. */
+      var H=window.G3;
+      if(H&&!ORIGDIR){
+        ORIGDIR=H.dir;
+        H.dir=function(x,host,n,fn){
+          cycle({x:x,host:host,n:n,fn:fn});
+        };
+      }
+      try{ prev.apply&&prev.apply('30ORG'); }catch(e){}
+
+      document.documentElement.setAttribute('data-sf31','1');
+      icons(); fitWheels();
+      later(icons,320); later(icons,1200);
+      later(fitWheels,320); later(fitWheels,1200); later(fitWheels,2600);
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
