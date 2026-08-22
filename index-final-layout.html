@@ -26413,5 +26413,164 @@ html[data-sf32] #sf-lab-mount [data-sfclone]{pointer-events:auto;}
 })();
 </script>
 
+<style id="sf-w43-css">
+/* =========================================================================
+   MARSHALL WIDTH TEST — 33ORG · 34 · 35.
+
+   All three are 32ORG with one thing changed each, plus one fix that is in
+   all three.
+
+   WHAT THE PAGE ACTUALLY MEASURES
+   The Marshall block is held by .m11-min, which carries max-width:1440px and
+   centres. Every other reference on the page measures differently, and the
+   two the brief names as one are NOT the same width:
+
+                          2600 window     1920 window    1440 window
+     Marshall  .m11-min      1440            1440           1440
+     SWITCH hero / .din      1600            1600           1344
+     Factory image           2200            1920           1440
+     How We Build            2600            1920           1440
+
+   So "the same as the SWITCH hero and the factory image" is two different
+   answers above 1920. The SWITCH hero is the house frame — the same one the
+   black SWITCH panel and the category band already take — so that is what 34
+   matches. The factory image is the odd one out at 2200; if that is the one
+   you meant, say so and it is a one-line change.
+
+   33ORG   1440, as it is now
+   34      the house frame — .din's own measured box, at every width
+   35      full screen, like How We Build
+
+   THE FIX, IN ALL THREE
+   FROM DNA TO NEW CATEGORIES sat at the section's own left edge; FORM &
+   ARCHITECTURE sits inside the black panel, which carries padding:56px. So
+   the two eyebrows were 56px apart — the same 56px at 1440, 1920 and 2600,
+   because both boxes share a left edge and only one of them is padded. The
+   category eyebrow takes the same 56px, so the two labels start together at
+   every width. Only the label moves: the band, the rule and the category row
+   are where they were.
+   ========================================================================= */
+
+/* ---- the fix, shared by all three -------------------------------------- */
+html[data-sfw43] #sf-lab-mount .fcats .bhead{
+  padding-left:56px !important;}
+@media(max-width:900px){
+  html[data-sfw43] #sf-lab-mount .fcats .bhead{padding-left:40px !important;}
+}
+@media(max-width:560px){
+  html[data-sfw43] #sf-lab-mount .fcats .bhead{padding-left:22px !important;}
+}
+
+/* ---- 34 · the house frame ----------------------------------------------
+   .case-study carries the page's own side padding above 1600 but none below
+   it, while .din keeps its 48px inset all the way down — so simply filling
+   the parent matches the SWITCH hero at 2600 and 1920 and misses it by 48px
+   at 1440 and under. The box is therefore taken from .din itself, measured,
+   rather than reconstructed. It cannot drift at any width because it is not
+   a second copy of the rule; it is the same box. */
+html[data-sfw43="34"] .m11-min{
+  max-width:none !important;
+  margin-right:0 !important;}
+
+/* ---- 35 · full screen ---------------------------------------------------
+   Escaping the page padding needs a real breakout, and it is done on the
+   MEASURED window width rather than 100vw — 100vw counts the scrollbar and
+   would give the document a horizontal scroll. */
+html[data-sfw43="35"] .m11-min{
+  width:var(--sfw-vw,100%) !important;max-width:none !important;
+  margin-left:calc(50% - var(--sfw-vw,100%) / 2) !important;
+  margin-right:0 !important;}
+</style>
+
+<script id="sf-w43-js">
+(function(){
+
+  var V=['33ORG','34','35'];
+
+  var NOTE={
+    '33ORG':'the Marshall block at its current 1440 — with FROM DNA TO NEW CATEGORIES brought across to start where FORM & ARCHITECTURE starts. The eyebrows were 56px apart, which is the black panel’s own padding',
+    '34':'the Marshall block on the house frame — taken from .din’s own measured box, so it lines up exactly with the SWITCH hero, the black SWITCH panel and the category band at every width. Note the factory image is 2200 at a 2600 window, not 1600 — the two references in the brief are different widths',
+    '35':'the Marshall block full screen, edge to edge like How We Build. The widest of the three and the only one with no frame at all'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  /* the alignment is asserted from measurement as well as set in CSS, because
+     the category band is rebuilt by the layers below and a padding written
+     before that rebuild would be lost with it */
+  var TM=[],LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+
+  function vw(){
+    document.documentElement.style.setProperty('--sfw-vw',
+      document.documentElement.clientWidth+'px');
+  }
+
+  /* 34 · put the Marshall block on the SWITCH hero's box, measured off .din */
+  function frame(v){
+    var m=$('.m11-min');
+    if(!m) return;
+    if(v!=='34'){
+      m.style.removeProperty('width'); m.style.removeProperty('margin-left');
+      return;
+    }
+    var din=$('#sf-lab-mount .din');
+    if(!din) return;
+    var d=din.getBoundingClientRect(), par=m.parentElement.getBoundingClientRect();
+    m.style.setProperty('width',d.width.toFixed(1)+'px','important');
+    m.style.setProperty('margin-left',(d.left-par.left).toFixed(1)+'px','important');
+  }
+
+  function align(){
+    var fa=$('#sf-lab-mount .split .lft .bey');
+    var dh=$('#sf-lab-mount .fcats .bhead');
+    var dn=$('#sf-lab-mount .fcats .bey');
+    if(!fa||!dh||!dn) return;
+    /* measure the gap that is actually on screen and close exactly that. The
+       black panel's padding comes down on a narrow screen (56 -> 40 -> 22),
+       so measuring rather than typing a number keeps them together there
+       too — which is where they were still 22px apart before. */
+    var d=fa.getBoundingClientRect().left-dn.getBoundingClientRect().left;
+    if(Math.abs(d)<0.5) return;
+    var cur=parseFloat(getComputedStyle(dh).paddingLeft)||0;
+    dh.style.setProperty('padding-left',Math.max(0,cur+d).toFixed(1)+'px','important');
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    var dh=$('#sf-lab-mount .fcats .bhead');
+    if(dh) dh.style.removeProperty('padding-left');
+    var m=$('.m11-min');
+    if(m){ m.style.removeProperty('width'); m.style.removeProperty('margin-left'); }
+    document.documentElement.style.removeProperty('--sfw-vw');
+    document.documentElement.removeAttribute('data-sfw43');
+  }
+
+  var prev=window.__sfExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 32ORG builds first, by 32ORG's own code */
+      try{ prev.apply&&prev.apply('32ORG'); }catch(e){}
+      document.documentElement.setAttribute('data-sfw43',v);
+      vw(); frame(v); align();
+      later(function(){ vw(); frame(v); align(); },420);
+      later(function(){ vw(); frame(v); align(); },1200);
+      later(function(){ vw(); frame(v); align(); },2600);
+      on(window,'resize',function(){ later(function(){ vw(); frame(v); align(); },180); });
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
