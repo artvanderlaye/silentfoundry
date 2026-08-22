@@ -4878,6 +4878,10 @@ html[data-sfd="21"] #pc > section:last-of-type::before{content:"";position:absol
   }
 /* ---- END index.html ---------------------------------------------------- */
 
+  /* Published so later layers draw the SAME Marshall grid rather than a second
+     implementation of it. Nothing above is altered; this is one assignment. */
+  window.__sfMarshall = initV11Blueprint;
+
   var STATES=['11ORG','12','13','14','15','16','17','18','19','20','21'];
   var NOTE={
     '11ORG':'variation 03 with its CSS grid replaced by the homepage\u2019s own Marshall blueprint \u2014 initV11Blueprint, verbatim, at its own 60px geometry and gold. The controlled reference for 12\u201321.',
@@ -5046,6 +5050,836 @@ html[data-sfd="21"] #pc > section:last-of-type::before{content:"";position:absol
       document.documentElement.setAttribute('data-sfd',v);
       grids(v);
       if(B[v]){ try{ B[v](); }catch(e){} }
+    }
+  };
+})();
+</script>
+
+<style id="sf-tm3-css">
+/* =========================================================================
+   TEAM PAGE — 22ORG AND THE TWO-ROW COLLECTIVE STUDIES 23–32.
+
+   22ORG  is variation 18, unedited, plus one thing: the descriptor box from
+          variation 15, with the numbering and the slash taken out. It is the
+          locked reference every two-row study is built on.
+
+   23–32  are 22ORG laid out across two horizontal levels.
+
+   HOW THE ROWS ARE FILLED — the rule, not a list of positions.
+   The strip becomes a two-row grid with column flow, so member 1 goes to the
+   top of column 1, member 2 to the bottom of column 1, member 3 to the top of
+   column 2, and so on. Nothing is hard-coded to ten people: twenty members
+   fill ten columns by the same rule, and the approved order is preserved
+   exactly as read down-then-across. It also settles the hierarchy question by
+   itself — the three co-founders are members 1, 2 and 3, so they land top,
+   bottom, top. Neither row can read as the secondary team.
+
+   In CSS that makes odd children the upper row and even children the lower
+   row, at any roster size.
+
+   THE ONE MEASUREMENT THAT HAD TO MOVE.
+   The card is 360 x 671 with a 500px portrait. Two untouched rows are 1,368px
+   tall — half again as tall as the screen. Width, typography, panel, colours,
+   symbols and object-position are all left exactly as they are; the portrait
+   is cropped shorter, from 500 to 340. Same photograph, same focal point,
+   less headroom. That brings the carousel to about 1,060 — one screen. It is
+   one variable, --sfr-ph, so it can be dialled back at any time.
+
+   COLOUR: warm cream, paper white, parchment, stone, warm grey, graphite,
+   soft black, Silent Foundry navy, muted gold. No SWITCH cyan, blue or
+   signal orange appears anywhere in this file.
+   ========================================================================= */
+
+html[data-sfr]{
+  --sfr-w:360px;        /* card width — never changed */
+  --sfr-ph:340px;       /* two-row portrait height */
+  --sfr-g:26px;         /* gutter between the rows */
+  --sfr-cg:2px;         /* gap between columns — the page's own 2px */
+  --sfr-cream:#efece6; --sfr-paper:#f6f3ec; --sfr-parch:#ece7dc;
+  --sfr-stone:#e5e1d8; --sfr-warm:#dcd8d0; --sfr-graph:#2a2e33;
+  --sfr-navy:#1e2a4a;  --sfr-gold:#8a6e3a;  --sfr-gold2:#c8a96e;
+}
+
+/* =========================================================================
+   THE DESCRIPTOR BOX — variation 15's treatment, discipline only.
+   Background, border treatment, padding, face, size, letter-spacing and its
+   place at the head of the information panel are 15's. The number and the
+   slash are gone; nothing else about the box is touched.
+   ========================================================================= */
+/* not scoped to .hs — 25, 26 and 27 move the cards into their own tracks and
+   the box must open the same room for the name there */
+html[data-sfr] #pc .tc > div:nth-child(2){
+  position:relative;padding-top:46px !important;}
+html[data-sfr] .sfr-ix{
+  position:absolute;left:22px;top:14px;z-index:3;
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sfr-gold);line-height:1;
+  background:rgba(200,169,110,.11);padding:5px 9px;white-space:nowrap;}
+
+/* keyboard: every member reachable, focus visible, and the card is scrolled
+   into the track rather than jumping the page */
+html[data-sfr] #pc .hs .tc{scroll-margin:24px;}
+html[data-sfr] #pc .hs .tc:focus-visible{
+  outline:2px solid rgba(138,110,58,.85);outline-offset:-2px;}
+
+/* =========================================================================
+   THE TWO-ROW TRACK — one scroller, column flow, two rows.
+   ========================================================================= */
+html[data-sf2r] #pc .hs{
+  position:relative;
+  display:grid !important;
+  grid-auto-flow:column;
+  grid-auto-columns:var(--sfr-w);
+  grid-template-rows:auto auto;
+  row-gap:var(--sfr-g);
+  column-gap:var(--sfr-cg);
+  gap:var(--sfr-g) var(--sfr-cg) !important;
+  align-items:stretch;
+  overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;   /* the page never gets trapped */
+  overscroll-behavior-y:auto;}
+html[data-sf2r] #pc .hs > .tc{
+  flex:none !important;width:auto !important;max-width:none !important;
+  min-width:0;height:auto;}
+/* The mobile pass carries `#pc section > div{grid-template-columns:1fr}` and
+   `#pc section > div > *{grid-column:1 / -1}` for the text sections. .hs is a
+   direct child of its section, so once it becomes a grid those two rules make
+   every card span the whole width and the two rows collapse into ten. Both are
+   reset here — for the strip only, at every width. */
+html[data-sf2r] #pc .hs{grid-template-columns:none !important;}
+html[data-sf2r] #pc .hs > .tc{grid-column:auto !important;grid-row:auto !important;}
+html[data-sf2r] #pc .hs > .tc img.ph{
+  height:var(--sfr-ph) !important;}
+
+/* absolutely positioned furniture inside the scroller travels with the cards;
+   furniture outside it stays put against the viewport */
+html[data-sfr] .sfr-in{position:absolute;pointer-events:none;z-index:0;}
+html[data-sfr] .sfr-out{position:absolute;pointer-events:none;z-index:1;}
+html[data-sfr] .sfr-gridhost{position:absolute;overflow:hidden;pointer-events:none;}
+html[data-sfr] .sfr-gridhost canvas{position:absolute;inset:0;display:block;}
+
+/* the scroll cue and the shared progress indicator */
+html[data-sfr] .sfr-cue{
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.32);}
+html[data-sfr] .sfr-prog{position:relative;height:2px;
+  background:rgba(42,46,51,.11);margin:16px 0 0;}
+html[data-sfr] .sfr-prog i{position:absolute;left:0;top:0;bottom:0;
+  background:rgba(138,110,58,.72);display:block;}
+html[data-sfr] .sfr-progwrap{
+  display:flex;align-items:center;gap:18px;
+  padding:0 clamp(24px,5vw,64px);}
+html[data-sfr] .sfr-progwrap .sfr-prog{flex:1;}
+
+/* =========================================================================
+   23 · SYNCHRONIZED ALIGNED ROWS
+   One interaction, shared column boundaries, a cream gutter with a single
+   muted-gold hairline through the middle of it, one shared indicator.
+   ========================================================================= */
+html[data-sfr="23"]{--sfr-g:30px;}
+html[data-sfr="23"] .sfr-gut{background:var(--sfr-cream);}
+html[data-sfr="23"] .sfr-gutline{height:1px;background:rgba(138,110,58,.42);}
+
+/* =========================================================================
+   24 · SYNCHRONIZED STAGGERED ROWS
+   The lower row is offset by half a card, so the upper boundaries meet the
+   lower centres. No rule at all — spacing, and Marshall registration ticks
+   sitting in the gutter, travelling with the cards.
+   ========================================================================= */
+html[data-sfr="24"]{--sfr-g:30px;}
+html[data-sfr="24"] #pc .hs > .tc:nth-child(even){
+  transform:translateX(calc(var(--sfr-w) / 2 + var(--sfr-cg) / 2));}
+html[data-sfr="24"] .sfr-tick{position:absolute;width:9px;height:9px;}
+html[data-sfr="24"] .sfr-tick::before,html[data-sfr="24"] .sfr-tick::after{
+  content:"";position:absolute;background:rgba(42,46,51,.3);}
+html[data-sfr="24"] .sfr-tick::before{left:0;top:4px;width:9px;height:1px;}
+html[data-sfr="24"] .sfr-tick::after{left:4px;top:0;width:1px;height:9px;}
+
+/* =========================================================================
+   25 · INDEPENDENT TWIN TRACKS
+   Two scrollers, equal in every way, with the Marshall grid in a narrow band
+   between them and a restrained cue on each.
+   ========================================================================= */
+html[data-sfr="25"] .sfr-tt{display:block;}
+html[data-sfr="25"] .sfr-tr{
+  display:flex;gap:var(--sfr-cg);align-items:stretch;
+  overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;overscroll-behavior-y:auto;
+  cursor:grab;
+  scrollbar-width:thin;scrollbar-color:rgba(138,110,58,.4) transparent;}
+html[data-sfr="25"] .sfr-tr.grab{cursor:grabbing;}
+html[data-sfr="25"] .sfr-tr::-webkit-scrollbar{height:4px;}
+html[data-sfr="25"] .sfr-tr::-webkit-scrollbar-track{background:transparent;}
+html[data-sfr="25"] .sfr-tr::-webkit-scrollbar-thumb{
+  background:rgba(138,110,58,.38);}
+html[data-sfr="25"] .sfr-tr > .tc{
+  flex:0 0 var(--sfr-w) !important;width:var(--sfr-w) !important;
+  max-width:none !important;}
+html[data-sfr="25"] .sfr-tr > .tc img.ph{height:var(--sfr-ph) !important;}
+html[data-sfr="25"] .sfr-band{
+  position:relative;height:40px;margin:12px 0;background:var(--sfr-parch);
+  overflow:hidden;}
+html[data-sfr="25"] .sfr-rowcue{
+  display:flex;justify-content:flex-end;
+  padding:6px clamp(24px,5vw,64px) 0;}
+
+/* =========================================================================
+   26 · LINKED OFFSET MOTION
+   The rows move together at very slightly different rates. A soft warm-grey
+   field between them carries ticks that shift with the difference, so the
+   link is legible rather than mysterious.
+   ========================================================================= */
+html[data-sfr="26"] .sfr-tt{display:block;}
+html[data-sfr="26"] .sfr-tr{
+  display:flex;gap:var(--sfr-cg);align-items:stretch;
+  overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;overscroll-behavior-y:auto;cursor:grab;
+  scrollbar-width:none;}
+html[data-sfr="26"] .sfr-tr::-webkit-scrollbar{display:none;}
+html[data-sfr="26"] .sfr-tr.grab{cursor:grabbing;}
+html[data-sfr="26"] .sfr-tr > .tc{
+  flex:0 0 var(--sfr-w) !important;width:var(--sfr-w) !important;
+  max-width:none !important;}
+html[data-sfr="26"] .sfr-tr > .tc img.ph{height:var(--sfr-ph) !important;}
+html[data-sfr="26"] .sfr-band{
+  position:relative;height:34px;margin:13px 0;
+  background:var(--sfr-warm);overflow:hidden;}
+html[data-sfr="26"] .sfr-rt{position:absolute;top:50%;width:1px;height:11px;
+  margin-top:-5px;background:rgba(42,46,51,.34);}
+
+/* =========================================================================
+   27 · OPPOSING ENTRY, SHARED CONTROL
+   Both rows read left to right and both are driven by one control. What is
+   opposed is only where each row starts: the lower composition is entered
+   from the far side. A thin graphite rule, ends marked in muted gold.
+   ========================================================================= */
+html[data-sfr="27"] .sfr-tt{display:block;}
+html[data-sfr="27"] .sfr-tr{
+  display:flex;gap:var(--sfr-cg);align-items:stretch;
+  overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;overscroll-behavior-y:auto;cursor:grab;
+  scrollbar-width:none;}
+html[data-sfr="27"] .sfr-tr::-webkit-scrollbar{display:none;}
+html[data-sfr="27"] .sfr-tr.grab{cursor:grabbing;}
+html[data-sfr="27"] .sfr-tr > .tc{
+  flex:0 0 var(--sfr-w) !important;width:var(--sfr-w) !important;
+  max-width:none !important;}
+html[data-sfr="27"] .sfr-tr > .tc img.ph{height:var(--sfr-ph) !important;}
+html[data-sfr="27"] .sfr-band{position:relative;height:30px;margin:14px 0;}
+html[data-sfr="27"] .sfr-band::before{content:"";position:absolute;
+  left:clamp(24px,5vw,64px);right:clamp(24px,5vw,64px);top:50%;height:1px;
+  background:rgba(42,46,51,.4);}
+html[data-sfr="27"] .sfr-em{position:absolute;top:50%;width:7px;height:7px;
+  margin-top:-3.5px;border:1px solid rgba(138,110,58,.8);
+  background:var(--sfr-cream);}
+
+/* =========================================================================
+   28 · DISCIPLINE-BANDED ROWS
+   The cards are untouched. A narrow band between the rows carries a small
+   label for each column, drawn only from the descriptors already approved,
+   with the Marshall grid faint behind it.
+   ========================================================================= */
+html[data-sfr="28"]{--sfr-g:44px;}
+html[data-sfr="28"] .sfr-lb{position:absolute;top:50%;transform:translateY(-50%);
+  font-family:'DM Sans',sans-serif;font-size:8.4px;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(10,10,10,.42);white-space:nowrap;
+  text-align:center;}
+html[data-sfr="28"] .sfr-gut{background:var(--sfr-parch);}
+
+/* =========================================================================
+   29 · INTERLOCKED TECHNICAL GRID
+   The gutter is the Marshall grid itself. A few fine verticals cross it to
+   tie one column to its opposite number, with small gold indices where they
+   meet. It sits under everything.
+   ========================================================================= */
+html[data-sfr="29"]{--sfr-g:52px;}
+html[data-sfr="29"] .sfr-gut{background:var(--sfr-paper);}
+html[data-sfr="29"] .sfr-vt{position:absolute;width:1px;
+  background:rgba(42,46,51,.22);}
+html[data-sfr="29"] .sfr-node{position:absolute;width:5px;height:5px;
+  margin-left:-2px;background:rgba(138,110,58,.85);}
+
+/* =========================================================================
+   30 · TONAL ROW SEPARATION
+   No line. The lower row's information panels take one step of parchment
+   against the upper row's stone-grey. Portraits, boxes and type are the same
+   in both rows, and neither reads as the lead.
+   ========================================================================= */
+html[data-sfr="30"]{--sfr-g:22px;}
+html[data-sfr="30"] #pc .hs > .tc:nth-child(even) > div:nth-child(2){
+  background:rgba(200,169,110,.075) !important;}
+html[data-sfr="30"] #pc .hs > .tc:nth-child(even) > div:nth-child(2)::before{
+  background:rgba(138,110,58,.3) !important;}
+
+/* =========================================================================
+   31 · COMPACT COLLECTIVE WALL
+   Only slack is taken out — panel padding and the space above the symbol.
+   Portrait and type are untouched. The track is inset so the next column is
+   already visible at both edges.
+   ========================================================================= */
+html[data-sfr="31"]{--sfr-g:14px;--sfr-ph:318px;}
+html[data-sfr="31"] #pc .hs > .tc > div:nth-child(2){
+  padding:40px 22px 16px !important;}
+html[data-sfr="31"] #pc .hs > .tc > div:nth-child(2) > div:last-child{
+  padding-top:8px !important;}
+html[data-sfr="31"] #pc .hs{
+  padding-left:clamp(30px,6vw,86px) !important;
+  padding-right:clamp(30px,6vw,86px) !important;}
+html[data-sfr="31"] .sfr-gut{background:var(--sfr-cream);}
+html[data-sfr="31"] .sfr-cnr{position:absolute;width:12px;height:12px;}
+html[data-sfr="31"] .sfr-cnr::before,html[data-sfr="31"] .sfr-cnr::after{
+  content:"";position:absolute;background:rgba(138,110,58,.75);}
+html[data-sfr="31"] .sfr-cnr.l::before{left:0;top:0;width:12px;height:1px;}
+html[data-sfr="31"] .sfr-cnr.l::after{left:0;top:0;width:1px;height:12px;}
+html[data-sfr="31"] .sfr-cnr.r::before{right:0;top:0;width:12px;height:1px;}
+html[data-sfr="31"] .sfr-cnr.r::after{right:0;top:0;width:1px;height:12px;}
+
+/* =========================================================================
+   32 · PRODUCTION-READY TWO-ROW SYSTEM
+   One track, one control, a restrained half-card stagger, a narrow Marshall
+   gutter, a few gold registration marks, a clear cue and a shared indicator.
+   ========================================================================= */
+html[data-sfr="32"]{--sfr-g:34px;}
+html[data-sfr="32"] #pc .hs > .tc:nth-child(even){
+  transform:translateX(calc(var(--sfr-w) / 2 + var(--sfr-cg) / 2));}
+html[data-sfr="32"] .sfr-gut{background:var(--sfr-paper);}
+html[data-sfr="32"] .sfr-reg{position:absolute;width:7px;height:7px;}
+html[data-sfr="32"] .sfr-reg::before,html[data-sfr="32"] .sfr-reg::after{
+  content:"";position:absolute;background:rgba(138,110,58,.8);}
+html[data-sfr="32"] .sfr-reg::before{left:0;top:3px;width:7px;height:1px;}
+html[data-sfr="32"] .sfr-reg::after{left:3px;top:0;width:1px;height:7px;}
+
+/* =========================================================================
+   RESPONSIVE
+   Tablet keeps two rows and loses the separator detail. Below 700 the cards
+   go to one per row per screen — two rows, one card visible in each — which
+   tested more usable than a single continuous track, because the two levels
+   stay legible and the vertical page scroll is never fought for.
+   ========================================================================= */
+@media(max-width:1100px){
+  html[data-sfr]{--sfr-w:300px;--sfr-ph:300px;}
+  html[data-sfr="31"]{--sfr-ph:284px;}
+}
+@media(max-width:860px){
+  html[data-sfr]{--sfr-w:272px;--sfr-ph:272px;--sfr-g:20px;}
+  html[data-sfr="28"]{--sfr-g:34px;}
+  html[data-sfr="29"]{--sfr-g:36px;}
+  html[data-sfr="31"]{--sfr-ph:258px;--sfr-g:12px;}
+  html[data-sfr] .sfr-tick,html[data-sfr] .sfr-vt,
+  html[data-sfr] .sfr-node,html[data-sfr] .sfr-cnr,
+  html[data-sfr] .sfr-reg,html[data-sfr] .sfr-rt{display:none !important;}
+  html[data-sfr="28"] .sfr-lb{font-size:7.8px;letter-spacing:.16em;}
+}
+@media(max-width:700px){
+  /* the base file makes a single-row card fill the viewport; two rows must
+     undo that, or one card would be 100vw wide inside a two-row grid */
+  html[data-sfr]{--sfr-w:calc(100vw - 48px);--sfr-ph:230px;--sfr-g:16px;}
+  html[data-sfr="31"]{--sfr-ph:214px;}
+  html[data-sf2r] #pc .hs{
+    padding-left:24px !important;padding-right:24px !important;}
+  html[data-sf2r] #pc .hs > .tc{
+    flex:none !important;width:auto !important;max-width:none !important;}
+  html[data-sfr="25"] .sfr-tr > .tc,
+  html[data-sfr="26"] .sfr-tr > .tc,
+  html[data-sfr="27"] .sfr-tr > .tc{
+    flex:0 0 var(--sfr-w) !important;width:var(--sfr-w) !important;}
+  html[data-sfr="25"] .sfr-tr,html[data-sfr="26"] .sfr-tr,
+  html[data-sfr="27"] .sfr-tr{padding-left:24px;padding-right:24px;}
+  html[data-sf2r] #pc .hs > .tc img.ph,
+  html[data-sfr] .sfr-tr > .tc img.ph{
+    aspect-ratio:auto !important;height:var(--sfr-ph) !important;
+    width:calc(100% + 44px) !important;margin-left:-22px !important;
+    margin-right:-22px !important;object-fit:cover !important;}
+  /* the half-card stagger is not readable at one card per screen */
+  html[data-sfr="24"] #pc .hs > .tc:nth-child(even),
+  html[data-sfr="32"] #pc .hs > .tc:nth-child(even){transform:none !important;}
+  html[data-sfr="31"] #pc .hs{
+    padding-left:24px !important;padding-right:24px !important;}
+  html[data-sfr="27"] .sfr-band::before{left:24px;right:24px;}
+  html[data-sfr] .sfr-progwrap{padding:0 24px;}
+  html[data-sfr] .sfr-ix{font-size:8.6px;letter-spacing:.18em;left:22px;}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfr] #pc .hs,html[data-sfr] .sfr-tr{scroll-behavior:auto !important;}
+  html[data-sfr] .sfr-prog i{transition:none !important;}
+}
+</style>
+
+<script id="sf-tm3-js">
+(function(){
+  /* =======================================================================
+     22ORG and 23–32.
+
+     Everything below runs on top of variation 18: apply() calls the previous
+     layer with '18' first, so 18's own CSS, its Marshall grid placement and
+     its card treatment are what these states are built from — not a copy of
+     them. Only then does this layer add the descriptor box and the second row.
+     ======================================================================= */
+
+  var V=['22ORG','23','24','25','26','27','28','29','30','31','32'];
+  var TWO=V.slice(1);
+
+  var NOTE={
+    '22ORG':'the locked reference — variation 18 exactly as it is, with variation 15’s descriptor box at the head of each panel, numbering and slash removed so the box carries the discipline only. Single row.',
+    '23':'synchronized aligned rows — one horizontal interaction moves both levels, columns share their boundaries, a cream gutter with one muted-gold hairline through the centre, one shared indicator',
+    '24':'synchronized staggered rows — the same single interaction with the lower level offset half a card, so upper boundaries meet lower centres. No rule: spacing, and Marshall registration ticks that travel with the cards',
+    '25':'independent twin tracks — two equal scrollers, each with its own cue and its own restrained scrollbar, separated by a narrow band of the Marshall grid. Neither can move the other',
+    '26':'linked offset motion — both levels driven by one gesture at rates 4% apart, over a soft warm-grey field whose ticks shift by the difference. Stops the moment you stop',
+    '27':'opposing entry, shared control — both rows read left to right, but the lower composition is entered from the far side. One control, a thin graphite rule, muted-gold end markers',
+    '28':'discipline-banded rows — a narrow label band between the levels, each column named from the descriptors already approved, the Marshall grid faint behind it. Cards untouched',
+    '29':'interlocked technical grid — the gutter is the Marshall grid, with a few fine verticals tying a column to its opposite number and small gold indices where they meet',
+    '30':'tonal row separation — no line at all: the lower panels take one step of parchment against the upper stone-grey. Portraits and type identical in both rows',
+    '31':'compact collective wall — only slack removed, portrait and type intact, the track inset so the next column shows at both edges, gold corner marks on the gutter',
+    '32':'production-ready two-row system — one track, one control, a restrained half-card stagger, a narrow Marshall gutter, minimal gold registration marks, a clear cue and a shared indicator'
+  };
+
+  /* the approved descriptors, keyed by the name already on the card. A member
+     the map does not know keeps no box rather than being given an invented
+     one. Nothing here is a new discipline and nothing is a job title. */
+  var DISC={
+    'Michel Riis Eriksen':'DESIGN',
+    'Matthew Waddick':'VENTURE',
+    'James Cooper':'STRATEGY',
+    'Amanda Wang':'PARTNERSHIPS',
+    'James Terry':'BRAND',
+    'Mark Chennells':'FINANCE',
+    'Danny Zhang':'ENGINEERING',
+    'Anders Christiansen':'DIGITAL',
+    'Ian McKinlay':'AI',
+    'Will Rivers':'FILM'
+  };
+  /* 28's band groups the approved descriptors; it never rewrites one */
+  var GROUP={
+    DESIGN:'Product', ENGINEERING:'Product',
+    VENTURE:'Venture', FINANCE:'Venture',
+    STRATEGY:'Strategy', PARTNERSHIPS:'Strategy',
+    DIGITAL:'Operations', AI:'Operations',
+    BRAND:'Media', FILM:'Media'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function hs(){ return $('#pc .hs'); }
+  function strip(){ return $('#pc > section:nth-of-type(2)'); }
+  function cards(){ return $$('#pc .tc'); }
+
+  var LS=[],TM=[],RAF=[];
+  function on(t,e,f,opt){
+    t.addEventListener(e,f,opt||{passive:true}); LS.push([t,e,f,opt||{passive:true}]); }
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function raf(f){ var id=requestAnimationFrame(f); RAF.push(id); return id; }
+
+  /* ---- restoring the page ------------------------------------------------
+     25, 26 and 27 move the cards out of .hs into two tracks. The original
+     parent and the original order are recorded once, before anything moves,
+     and put back verbatim on the way out. */
+  var HOME=null;
+  function remember(){
+    var h=hs(); if(!h||HOME) return;
+    HOME={host:h,order:[].slice.call(h.children)};
+  }
+  function restore(){
+    if(!HOME) return;
+    HOME.order.forEach(function(n){ HOME.host.appendChild(n); });
+    HOME=null;
+  }
+
+  function off(){
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2],l[3]); }); LS=[];
+    TM.forEach(clearTimeout); TM=[];
+    RAF.forEach(cancelAnimationFrame); RAF=[];
+    restore();
+    $$('.sfr-gridhost canvas').forEach(function(c){ c.__stop=1; });
+    $$('.sfr-ix,.sfr-in,.sfr-out,.sfr-gridhost,.sfr-tt,.sfr-band,.sfr-progwrap,'+
+       '.sfr-rowcue,.sfr-gut,.sfr-gutline').forEach(function(n){ n.remove(); });
+    /* .hs is hidden by 25/26/27 while their own tracks are up, and given a
+       runway by 24/32. Both are inline, so both have to be taken off here or
+       every state after them inherits a hidden strip. */
+    var h=hs();
+    if(h){ h.style.removeProperty('display');
+           h.style.removeProperty('padding-right');
+           h.scrollLeft=0; }
+    var de=document.documentElement;
+    de.removeAttribute('data-sfr'); de.removeAttribute('data-sf2r');
+  }
+
+  /* ---- the descriptor box ------------------------------------------------ */
+  function boxes(){
+    cards().forEach(function(c){
+      var p=c.children[1]; if(!p) return;
+      var nameEl=$('.u-name',c); if(!nameEl) return;
+      var d=DISC[nameEl.textContent.trim()];
+      if(!d) return;                       /* never invent one */
+      var n=document.createElement('div');
+      n.className='sfr-ix'; n.textContent=d;
+      /* first, not last: the box is read before the name, which is the stated
+         hierarchy, and it keeps :last-child rules pointed at the symbol row */
+      p.insertBefore(n,p.firstChild);
+    });
+  }
+
+  /* ---- the Marshall grid, drawn by the homepage's own function ----------- */
+  function marshall(host,opacity){
+    if(!host||!window.__sfMarshall) return;
+    var draw=function(){
+      $$('canvas',host).forEach(function(c){ c.__stop=1; c.remove(); });
+      if(host.offsetWidth<8||host.offsetHeight<8) return;
+      window.__sfMarshall(host,{opacity:opacity});
+    };
+    later(draw,80); later(draw,900);
+    on(window,'resize',function(){ later(draw,240); });
+  }
+
+  /* ---- geometry ----------------------------------------------------------
+     Every piece of furniture is placed from the cards themselves, measured
+     after layout — never from a number that assumes ten people. */
+  function geom(){
+    var h=hs(); if(!h) return null;
+    var kids=$$('.tc',h);
+    if(kids.length<2) return null;
+    var hr=h.getBoundingClientRect();
+    var top=kids[0].getBoundingClientRect();
+    var bot=kids[1].getBoundingClientRect();
+    return {
+      host:h, hr:hr, kids:kids,
+      gutTop:top.bottom-hr.top+h.scrollTop,
+      gutBot:bot.top-hr.top+h.scrollTop,
+      colW:top.width, sw:h.scrollWidth, cw:h.clientWidth
+    };
+  }
+
+  function inHost(cls){
+    var h=hs(); if(!h) return null;
+    var n=document.createElement('div'); n.className='sfr-in '+(cls||'');
+    h.appendChild(n); return n;
+  }
+  function outHost(cls){
+    var s=strip(); if(!s) return null;
+    if(getComputedStyle(s).position==='static') s.style.position='relative';
+    var n=document.createElement('div'); n.className='sfr-out '+(cls||'');
+    s.appendChild(n); return n;
+  }
+
+  /* a band laid across the gutter, either travelling with the cards or not */
+  function gutter(cls,travels,cb){
+    var n=travels?inHost(cls):outHost(cls);
+    if(!n) return;
+    var lay=function(){
+      var g=geom(); if(!g){ n.style.display='none'; return; }
+      n.style.display='block';
+      if(travels){
+        n.style.left='0px'; n.style.width=g.sw+'px';
+        n.style.top=g.gutTop+'px'; n.style.height=Math.max(0,g.gutBot-g.gutTop)+'px';
+      } else {
+        var s=strip().getBoundingClientRect();
+        n.style.left='0px'; n.style.right='0px';
+        n.style.top=(g.hr.top-s.top+(g.gutTop))+'px';
+        n.style.height=Math.max(0,g.gutBot-g.gutTop)+'px';
+      }
+      if(cb) cb(n,g);
+    };
+    lay(); later(lay,260); later(lay,900); later(lay,1800);
+    on(window,'resize',function(){ later(lay,180); });
+    return lay;
+  }
+
+  /* ---- shared progress indicator ---------------------------------------- */
+  function progress(track,label,anchor){
+    var s=strip(); if(!s||!track) return;
+    anchor=anchor||track;
+    var w=document.createElement('div'); w.className='sfr-progwrap';
+    var cue=document.createElement('span'); cue.className='sfr-cue';
+    cue.textContent=label||'Scroll →';
+    var bar=document.createElement('div'); bar.className='sfr-prog';
+    var fill=document.createElement('i'); bar.appendChild(fill);
+    w.appendChild(bar); w.appendChild(cue);
+    if(anchor.parentNode===s) s.insertBefore(w,anchor.nextSibling);
+    else s.appendChild(w);
+    /* the fill is the window you are looking through: as wide a share of the
+       bar as the viewport is of the track, moved by how far along you are */
+    var upd=function(){
+      var sw=Math.max(1,track.scrollWidth);
+      var seen=Math.min(1,track.clientWidth/sw);
+      var w=Math.max(7,seen*100);
+      var max=Math.max(0,track.scrollWidth-track.clientWidth);
+      var f=max>0?Math.min(1,track.scrollLeft/max):0;
+      fill.style.width=w+'%';
+      fill.style.left=(f*(100-w))+'%';
+    };
+    upd(); on(track,'scroll',upd); on(window,'resize',function(){ later(upd,120); });
+    later(upd,400); later(upd,1200);
+  }
+
+  /* ---- two independent tracks (25, 26, 27) ------------------------------ */
+  function tracks(){
+    remember();
+    var h=hs(), s=strip(); if(!h||!s) return null;
+    var kids=$$('.tc',h);
+    var wrap=document.createElement('div'); wrap.className='sfr-tt';
+    var r0=document.createElement('div'); r0.className='sfr-tr'; r0.dataset.row='0';
+    var band=document.createElement('div'); band.className='sfr-band';
+    var r1=document.createElement('div'); r1.className='sfr-tr'; r1.dataset.row='1';
+    wrap.appendChild(r0); wrap.appendChild(band); wrap.appendChild(r1);
+    h.parentNode.insertBefore(wrap,h);
+    h.style.display='none';
+    /* the same allocation rule the grid uses: odd to the upper level, even to
+       the lower one, so the roster splits identically in every variation */
+    kids.forEach(function(c,i){ (i%2?r1:r0).appendChild(c); });
+    /* drag, matching the page's own feel, on each track independently */
+    [r0,r1].forEach(function(t){
+      var sx=0,sl=0,down=false,moved=false;
+      on(t,'pointerdown',function(e){
+        if(e.pointerType==='mouse'&&e.button!==0) return;
+        down=true;moved=false;sx=e.clientX;sl=t.scrollLeft;t.classList.add('grab');});
+      on(t,'pointermove',function(e){
+        if(!down) return;
+        if(Math.abs(e.clientX-sx)>3) moved=true;
+        t.scrollLeft=sl-(e.clientX-sx);});
+      ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
+        on(t,ev,function(){ down=false;t.classList.remove('grab'); });});
+      on(t,'click',function(e){ if(moved){ e.stopPropagation(); moved=false; } },true);
+    });
+    return {wrap:wrap,r0:r0,band:band,r1:r1,hs:h};
+  }
+
+  /* link two tracks; ratio 1 is exact, 1.04 is the 26 offset. A guard flag
+     stops the two scroll handlers driving each other in a loop. */
+  function link(a,b,ratio,offset){
+    var lock=false;
+    function maxOf(t){ return Math.max(0,t.scrollWidth-t.clientWidth); }
+    function sync(src,dst,r,o){
+      if(lock) return; lock=true;
+      var want=(src.scrollLeft-(o||0)*0)*r+(o||0);
+      dst.scrollLeft=Math.max(0,Math.min(maxOf(dst),want));
+      raf(function(){ lock=false; });
+    }
+    on(a,'scroll',function(){ sync(a,b,ratio,offset); });
+    on(b,'scroll',function(){ sync(b,a,1/ratio,offset?-offset/ratio:0); });
+  }
+
+  /* ---- per-variation furniture ------------------------------------------ */
+
+  function v23(){
+    gutter('sfr-gut',false,function(n,g){
+      var line=$('.sfr-gutline',n);
+      if(!line){ line=document.createElement('i'); line.className='sfr-gutline';
+        line.style.cssText='position:absolute;left:0;right:0;top:50%;display:block;';
+        n.appendChild(line); }
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  function v24(){
+    var h=hs(); if(h) h.style.paddingRight='calc(var(--sfr-w) / 2 + 24px)';
+    gutter('',true,function(n,g){
+      n.innerHTML='';
+      var step=g.colW+2, cols=Math.ceil(g.sw/step);
+      for(var i=0;i<=cols;i++){
+        var t=document.createElement('i'); t.className='sfr-tick';
+        t.style.left=Math.round(i*step-4)+'px';
+        t.style.top='50%'; t.style.marginTop='-4px';
+        n.appendChild(t);
+      }
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  function v25(){
+    var T=tracks(); if(!T) return;
+    marshall(function(){
+      var g=document.createElement('div'); g.className='sfr-gridhost';
+      g.style.cssText='inset:0;'; T.band.appendChild(g); return g; }(),0.3);
+    [[T.r0,'Upper level — scroll →'],[T.r1,'Lower level — scroll →']]
+      .forEach(function(p){
+        var c=document.createElement('div'); c.className='sfr-rowcue';
+        var s=document.createElement('span'); s.className='sfr-cue';
+        s.textContent=p[1]; c.appendChild(s);
+        p[0].parentNode.insertBefore(c,p[0].nextSibling);
+      });
+  }
+
+  function v26(){
+    var T=tracks(); if(!T) return;
+    link(T.r0,T.r1,1.04,0);
+    var ticks=[];
+    for(var i=0;i<26;i++){
+      var t=document.createElement('i'); t.className='sfr-rt';
+      T.band.appendChild(t); ticks.push(t);
+    }
+    var place=function(){
+      var w=T.band.clientWidth||1, step=w/25;
+      var max=Math.max(1,T.r0.scrollWidth-T.r0.clientWidth);
+      var d=(T.r0.scrollLeft/max)*step;
+      ticks.forEach(function(t,i){ t.style.left=Math.round(i*step-d)+'px'; });
+    };
+    place(); on(T.r0,'scroll',place); on(window,'resize',function(){ later(place,150); });
+    later(place,400);
+    progress(T.r0,'Both levels — scroll →',T.wrap);
+  }
+
+  function v27(){
+    var T=tracks(); if(!T) return;
+    link(T.r0,T.r1,1,0);
+    /* the lower composition is entered from the opposite side: it opens at its
+       far end. Reading order, text and card order are untouched. */
+    later(function(){
+      var max=Math.max(0,T.r1.scrollWidth-T.r1.clientWidth);
+      T.r1.scrollLeft=max;
+    },260);
+    ['left:clamp(24px,5vw,64px);','right:clamp(24px,5vw,64px);'].forEach(function(p,i){
+      var e=document.createElement('i'); e.className='sfr-em';
+      e.style.cssText=p+(i?'margin-right:-3.5px;':'margin-left:-3.5px;');
+      T.band.appendChild(e);
+    });
+    progress(T.r0,'One control, both levels — scroll →',T.wrap);
+  }
+
+  function v28(){
+    /* This is the one variation whose whole point is grouping, so it is the
+       one variation that reorders the columns. Nobody's descriptor changes —
+       the groups are read off the descriptors already approved. Members keep
+       their roster order inside a group, and alternate groups are flipped top
+       for bottom so the three co-founders do not all land in the upper row.
+       Any group size works: the list is simply flowed column-major as usual. */
+    remember();
+    var h=hs(); if(!h) return;
+    var kids=$$('.tc',h);
+    var seen=[],bucket={};
+    kids.forEach(function(c){
+      var e=$('.u-name',c);
+      var d=e?DISC[e.textContent.trim()]:null;
+      var gname=(d&&GROUP[d])||'Collective';
+      if(!bucket[gname]){ bucket[gname]=[]; seen.push(gname); }
+      bucket[gname].push(c);
+    });
+    var flat=[];
+    seen.forEach(function(gname,gi){
+      var list=bucket[gname].slice();
+      for(var i=0;i<list.length;i+=2){
+        var pair=list.slice(i,i+2);
+        if(gi%2===1) pair.reverse();
+        flat=flat.concat(pair);
+      }
+    });
+    flat.forEach(function(c){ h.appendChild(c); });
+
+    gutter('sfr-gut',false,function(n,g){
+      if(!$('.sfr-gridhost',n)){
+        var gh=document.createElement('div'); gh.className='sfr-gridhost';
+        gh.style.cssText='inset:0;'; n.appendChild(gh); marshall(gh,0.16);
+      }
+    });
+    /* the labels sit over the columns and travel with them */
+    gutter('',true,function(n,g){
+      n.innerHTML='';
+      var names=g.kids.map(function(c){
+        var e=$('.u-name',c); return e?DISC[e.textContent.trim()]:null; });
+      var step=g.colW+2, cols=Math.ceil(g.kids.length/2);
+      for(var i=0;i<cols;i++){
+        var a=names[i*2], b=names[i*2+1];
+        var ga=a?GROUP[a]:null, gb=b?GROUP[b]:null;
+        var txt=ga?(gb&&gb!==ga?ga+' · '+gb:ga):(gb||'');
+        if(!txt) continue;
+        var l=document.createElement('div'); l.className='sfr-lb';
+        l.textContent=txt;
+        l.style.left=Math.round(i*step)+'px';
+        l.style.width=Math.round(g.colW)+'px';
+        n.appendChild(l);
+      }
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  function v29(){
+    gutter('sfr-gut',false,function(n,g){
+      if(!$('.sfr-gridhost',n)){
+        var gh=document.createElement('div'); gh.className='sfr-gridhost';
+        gh.style.cssText='inset:0;'; n.appendChild(gh); marshall(gh,0.34);
+      }
+    });
+    /* only a few: every third column is tied to its opposite number */
+    gutter('',true,function(n,g){
+      n.innerHTML='';
+      var step=g.colW+2, cols=Math.ceil(g.kids.length/2);
+      for(var i=0;i<cols;i+=3){
+        var x=Math.round(i*step+g.colW*0.5);
+        var v=document.createElement('i'); v.className='sfr-vt';
+        v.style.cssText='left:'+x+'px;top:0;bottom:0;'; n.appendChild(v);
+        [0,1].forEach(function(e){
+          var d=document.createElement('i'); d.className='sfr-node';
+          d.style.cssText='left:'+x+'px;'+(e?'bottom:-2px;':'top:-2px;');
+          n.appendChild(d);
+        });
+      }
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  function v30(){ progress(hs(),'Scroll →'); }
+
+  function v31(){
+    gutter('sfr-gut',false,function(n,g){
+      if($('.sfr-cnr',n)) return;
+      ['l','r'].forEach(function(k){
+        var c=document.createElement('i'); c.className='sfr-cnr '+k;
+        c.style.cssText=(k==='l'?'left:clamp(18px,4vw,54px);':'right:clamp(18px,4vw,54px);')+'top:0;';
+        n.appendChild(c);
+        var c2=document.createElement('i'); c2.className='sfr-cnr '+k;
+        c2.style.cssText=(k==='l'?'left:clamp(18px,4vw,54px);':'right:clamp(18px,4vw,54px);')+
+          'bottom:0;transform:scaleY(-1);';
+        n.appendChild(c2);
+      });
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  function v32(){
+    var h=hs(); if(h) h.style.paddingRight='calc(var(--sfr-w) / 2 + 24px)';
+    gutter('sfr-gut',false,function(n,g){
+      if(!$('.sfr-gridhost',n)){
+        var gh=document.createElement('div'); gh.className='sfr-gridhost';
+        gh.style.cssText='inset:0;'; n.appendChild(gh); marshall(gh,0.22);
+      }
+    });
+    gutter('',true,function(n,g){
+      n.innerHTML='';
+      var step=g.colW+2, cols=Math.ceil(g.sw/step);
+      for(var i=0;i<=cols;i+=2){
+        var r=document.createElement('i'); r.className='sfr-reg';
+        r.style.left=Math.round(i*step-3)+'px';
+        r.style.top='50%'; r.style.marginTop='-3px';
+        n.appendChild(r);
+      }
+    });
+    progress(hs(),'Scroll →');
+  }
+
+  var B={'23':v23,'24':v24,'25':v25,'26':v26,'27':v27,
+         '28':v28,'29':v29,'30':v30,'31':v31,'32':v32};
+
+  /* keyboard: every card reachable in reading order, in either mechanism */
+  function keys(){
+    cards().forEach(function(c){ if(!c.hasAttribute('tabindex')) c.setAttribute('tabindex','0'); });
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ try{ prev.off&&prev.off(); }catch(e){} off(); },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* 18 builds first, by 18's own code */
+      try{ prev.apply&&prev.apply('18'); }catch(e){}
+      document.documentElement.setAttribute('data-sfr',v);
+      boxes(); keys();
+      if(TWO.indexOf(v)<0) return;
+      document.documentElement.setAttribute('data-sf2r','1');
+      remember();
+      if(B[v]) later(function(){ try{ B[v](); }catch(e){} },40);
     }
   };
 })();
