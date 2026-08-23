@@ -11759,3 +11759,1790 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
   };
 })();
 </script>
+
+<style id="sf-lab-css">
+/* =========================================================================
+   THE SECTION CONFIGURATOR — five independently variable sections.
+
+   Nothing here is a whole-page state. Each section owns a mount, a state
+   attribute and a renderer, and changing one selector re-renders only that
+   one mount. The ten people cards sit outside every mount and are never
+   touched by any of it.
+   ========================================================================= */
+html[data-lab] .sfl-hidden{display:none !important;}
+
+/* ---- shared vocabulary, inherited from BASE4 --------------------------- */
+.sfl{
+  --cream:#f6f3ec; --cream2:#efece6; --cream3:#e8e2d9; --clay:#e4ded3;
+  --navy:#1e2a4a; --navy2:#282b33; --navy3:#171a20; --navyup:#3f5a8f;
+  --ink:#12151a; --black:#0a0a0a;
+  --gold:#c8a96e; --gold2:#8a6e3a; --cyan:#00b4d8; --orange:#e43c00;
+  --alu:#b9bcc0;
+  --lgt:rgba(244,241,236,.92); --lgt2:rgba(244,241,236,.56);
+  --drk:rgba(10,10,10,.78); --drk2:rgba(10,10,10,.55);
+  --cap:1600px;
+  position:relative;width:100%;
+}
+.sfl .S{position:relative;width:100%;}
+.sfl .Sin{position:relative;z-index:2;max-width:var(--cap);margin-inline:auto;
+  padding-left:var(--Spad,24px);padding-right:var(--Spad,24px);}
+.sfl .pad{padding-top:var(--pt,clamp(52px,7vh,96px));
+          padding-bottom:var(--pb,clamp(52px,7vh,96px));}
+.sfl .tight{--pt:clamp(30px,4vh,54px);--pb:clamp(30px,4vh,54px);}
+.sfl .tall{--pt:clamp(64px,8vh,112px);--pb:clamp(64px,8vh,112px);}
+.sfl .f-cream{background:var(--cream2);} .sfl .f-cream3{background:var(--cream3);}
+.sfl .f-clay{background:var(--clay);}    .sfl .f-navy{background:var(--navy);}
+.sfl .f-ink{background:var(--ink);}      .sfl .f-black{background:var(--black);}
+.sfl .f-alu{background:var(--alu);}
+.sfl .dk,.sfl .dk *{color:var(--lgt2);}
+.sfl .dk .St,.sfl .dk .Sk,.sfl .dk .Sname{color:var(--lgt) !important;}
+.sfl .dk .Sey{color:var(--gold) !important;}
+
+/* type — never larger than the page already uses */
+.sfl .St{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);
+  font-weight:700;line-height:.94;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--drk);margin:0;display:block;}
+.sfl .St em{font-style:normal;letter-spacing:.14em;color:var(--gold2);}
+.sfl .dk .St em{color:var(--gold);}
+.sfl .Sey{font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;font-weight:400;color:var(--gold2);display:block;}
+.sfl .Sp{font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:2;
+  font-weight:300;color:var(--drk2);margin:0;max-width:min(100%,62ch);}
+.sfl .dk .Sp{color:var(--lgt2);}
+.sfl .Sk{font-family:'Bebas Neue',sans-serif;font-weight:700;
+  font-size:clamp(1rem,1.4vw,1.4rem);line-height:.96;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--drk);display:block;}
+.sfl .Ss{font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:300;color:var(--gold2);display:block;}
+.sfl .dk .Ss{color:var(--gold);}
+.sfl .Sname{font-family:'DM Sans',sans-serif;font-size:12.8px;letter-spacing:.12em;
+  font-weight:400;color:rgba(10,10,10,.7);display:block;}
+.sfl .Srole{font-family:'DM Sans',sans-serif;font-size:9.9px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.32);display:block;}
+.sfl .dk .Srole{color:rgba(200,169,110,.62);}
+.sfl .Ssym{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1;
+  color:var(--gold2);display:inline-block;}
+.sfl .dk .Ssym{color:var(--gold);}
+.sfl .Srule{height:1px;background:rgba(42,46,51,.16);width:100%;}
+.sfl .dk .Srule{background:rgba(244,241,236,.16);}
+.sfl .Srule.cy{background:rgba(0,180,216,.45);}
+.sfl .Srule.gd{background:rgba(200,169,110,.55);}
+.sfl .Scta{display:inline-flex;align-items:center;gap:10px;
+  font-family:'DM Sans',sans-serif;font-size:10.4px;letter-spacing:.26em;
+  text-transform:uppercase;font-weight:400;text-decoration:none;color:var(--drk);
+  border:1px solid rgba(138,110,58,.5);padding:14px 24px;
+  transition:border-color .3s ease,color .3s ease,background .3s ease;}
+.sfl .Scta:hover{border-color:var(--gold2);color:var(--gold2);}
+.sfl .dk .Scta{color:var(--lgt);border-color:rgba(200,169,110,.5);}
+.sfl .dk .Scta:hover{border-color:var(--gold);color:var(--gold);}
+.sfl .Slink{font-family:'DM Sans',sans-serif;font-size:10.4px;letter-spacing:.26em;
+  text-transform:uppercase;font-weight:400;text-decoration:none;
+  color:var(--gold);border-bottom:1px solid rgba(200,169,110,.45);
+  padding-bottom:6px;display:inline-block;transition:border-color .3s,color .3s;}
+.sfl .Slink:hover{color:var(--lgt);border-bottom-color:var(--gold);}
+.sfl .sp{height:18px;} .sfl .sp2{height:clamp(28px,3.6vh,48px);}
+.sfl .sp3{height:clamp(44px,6vh,80px);}
+.sfl .g{display:grid;gap:clamp(20px,3vw,52px);}
+.sfl .g12{grid-template-columns:minmax(0,1fr) minmax(0,2fr);}
+.sfl .g21{grid-template-columns:minmax(0,2fr) minmax(0,1fr);}
+.sfl .g11{grid-template-columns:repeat(2,minmax(0,1fr));}
+.sfl .g111{grid-template-columns:repeat(3,minmax(0,1fr));}
+.sfl .g75{grid-template-columns:minmax(0,7fr) minmax(0,5fr);}
+.sfl .g57{grid-template-columns:minmax(0,5fr) minmax(0,7fr);}
+@media(max-width:900px){
+  .sfl .g12,.sfl .g21,.sfl .g11,.sfl .g111,.sfl .g75,.sfl .g57{grid-template-columns:1fr;}
+}
+/* images */
+.sfl .Sim{position:relative;overflow:hidden;display:block;background:#0d1013;}
+.sfl .Sim img{display:block;width:100%;height:100%;object-fit:cover;
+  object-position:var(--ipos,50% 52%);}
+.sfl .Sim.duo img{filter:grayscale(1) contrast(1.06) brightness(1.03);mix-blend-mode:screen;}
+.sfl .Sim.duo::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:var(--duoB,#e6f0f2);mix-blend-mode:multiply;}
+.sfl .d-cyan{--duoB:#dceef2;background:#04222b;}
+.sfl .d-navy{--duoB:#e8eaf2;background:#141d33;}
+.sfl .d-gold{--duoB:#f4e9d3;background:#1a1408;}
+.sfl .d-alu {--duoB:#eef0f2;background:#171a1d;}
+.sfl .Sim.mono img{filter:grayscale(1) contrast(1.05);}
+.sfl .Sim.warm img{filter:saturate(.62) contrast(1.04) sepia(.08);}
+.sfl .Sim.alu  img{filter:grayscale(.72) contrast(1.05) brightness(1.02);}
+.sfl .Sim.colr img{filter:none;}
+.sfl .Sim.reg::before{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(rgba(0,180,216,.16) 1px,transparent 1px),
+             linear-gradient(90deg,rgba(0,180,216,.16) 1px,transparent 1px);
+  background-size:100% 37.5px,30px 100%;}
+.sfl .Sim.gdreg::before{content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(rgba(200,169,110,.14) 1px,transparent 1px),
+             linear-gradient(90deg,rgba(200,169,110,.14) 1px,transparent 1px);
+  background-size:100% 37.5px,30px 100%;}
+.sfl .Sim.hover-colr img{filter:grayscale(1) contrast(1.05);transition:filter .6s ease;}
+.sfl .Sim.hover-colr:hover img{filter:none;}
+.sfl .ar43{aspect-ratio:4 / 3;} .sfl .ar32{aspect-ratio:3 / 2;}
+.sfl .ar167{aspect-ratio:16 / 7;} .sfl .ar165{aspect-ratio:16 / 5;}
+.sfl .ar11{aspect-ratio:1 / 1;} .sfl .ar34{aspect-ratio:3 / 4;}
+.sfl .Scap{font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:300;color:rgba(244,241,236,.42);
+  display:block;margin-top:12px;}
+.sfl .dk .Scap{color:rgba(244,241,236,.42);}
+.sfl :not(.dk) > .Sfig .Scap,.sfl .Sfig .Scap.on-light{color:rgba(10,10,10,.34);}
+.sfl .Sfig{margin:0;}
+@media(max-width:760px){ .sfl .ar167,.sfl .ar165{aspect-ratio:3 / 2;} }
+/* accordion */
+.sfl .Sacc{border-top:1px solid rgba(42,46,51,.16);}
+.sfl .dk .Sacc{border-top-color:rgba(244,241,236,.16);}
+.sfl .Sacc .Sa{border-bottom:1px solid rgba(42,46,51,.16);}
+.sfl .dk .Sacc .Sa{border-bottom-color:rgba(244,241,236,.16);}
+.sfl .Sacc .Sah{display:grid;grid-template-columns:26px 1fr auto;gap:16px;
+  align-items:center;padding:16px 0;cursor:pointer;background:none;border:0;
+  width:100%;text-align:left;}
+.sfl .Sacc .Sah:hover .Ssym{color:var(--cyan);}
+.sfl .Sacc .Smk{font-family:'DM Sans',sans-serif;font-size:12px;
+  color:rgba(10,10,10,.3);transition:transform .4s ease,color .3s ease;}
+.sfl .dk .Sacc .Smk{color:rgba(244,241,236,.35);}
+.sfl .Sacc .Sa.on .Smk{transform:rotate(45deg);color:var(--gold);}
+.sfl .Sacc .Sab{overflow:hidden;max-height:0;
+  transition:max-height .55s cubic-bezier(.2,.7,.26,1);}
+.sfl .Sacc .Sa.on .Sab{max-height:460px;}
+.sfl .Sacc .Sab > div{padding:0 0 18px 42px;}
+@media(max-width:640px){ .sfl .Sacc .Sab > div{padding-left:0;} }
+/* motion */
+.sfl .an{opacity:0;transform:translateY(12px);
+  transition:opacity .85s ease,transform .85s cubic-bezier(.2,.7,.26,1);}
+.sfl .an.in{opacity:1;transform:none;}
+.sfl .dx{transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1.4s cubic-bezier(.2,.7,.26,1);}
+.sfl .dx.in{transform:scaleX(1);}
+@media(prefers-reduced-motion:reduce){
+  .sfl .an,.sfl .dx{opacity:1 !important;transform:none !important;transition:none !important;}
+  .sfl .Sacc .Sab{max-height:none !important;}
+}
+</style>
+<style id="sf-lab-css2">
+/* =========================================================================
+   SECTION STYLES — OPENING · PEOPLE · PLATFORM · ACADEMY · OPPORTUNITIES
+   Each block is scoped to its own mount, so one selector cannot reach
+   another section's markup.
+   ========================================================================= */
+
+/* ============================ OPENING ==================================== */
+/* The original page header is hidden and this mount replaces it. The nav
+   itself is left in the DOM and only re-coloured or re-framed, so every link
+   and the language controls keep working. */
+#sfo{position:relative;}
+#sfo .Ohead{position:relative;}
+#sfo .Otitle{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);
+  font-weight:700;line-height:.94;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(10,10,10,.78);margin:0;display:block;}
+#sfo .Ocity{font-family:'DM Sans',sans-serif;font-size:9.6px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:400;color:rgba(10,10,10,.5);display:block;}
+#sfo .Ocity b{font-weight:400;color:rgba(138,110,58,.9);}
+#sfo .Odk .Otitle{color:var(--lgt);}
+#sfo .Odk .Ocity{color:rgba(244,241,236,.62);}
+#sfo .Orule{height:1px;background:rgba(42,46,51,.16);width:100%;}
+#sfo .Orule.gd{background:rgba(200,169,110,.5);}
+#sfo .Orule.cy{background:rgba(0,180,216,.45);}
+#sfo .Orule.or{background:rgba(228,60,0,.55);}
+/* the cream engineering grid, at the index's own Marshall pitch */
+#sfo .Ogrid{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(10,60,80,.06) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(10,60,80,.06) 1px,transparent 1px);
+  background-size:100% 37.5px,30px 100%;}
+#sfo .Ogrid.gd{background-image:linear-gradient(rgba(200,169,110,.14) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(200,169,110,.14) 1px,transparent 1px);
+  background-size:104px 104px,104px 104px;}
+#sfo .Ogrid.fade{-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent);
+                 mask-image:linear-gradient(180deg,#000 40%,transparent);}
+#sfo .Oin{max-width:var(--cap,1600px);margin-inline:auto;
+  padding-left:var(--Spad,24px);padding-right:var(--Spad,24px);position:relative;z-index:2;}
+/* O02 · title left, cities right, one shared lower baseline */
+#sfo .O02{display:flex;align-items:baseline;justify-content:space-between;gap:24px;}
+/* O03 · a narrow navy field inside the cream */
+#sfo .O03{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(18px,2.4vw,38px);
+  align-items:end;}
+#sfo .O03 .Obar{width:clamp(52px,7vw,104px);background:var(--navy);
+  align-self:stretch;min-height:76px;position:relative;}
+#sfo .O03 .Obar::after{content:'';position:absolute;left:14px;right:14px;bottom:14px;height:1px;
+  background:rgba(200,169,110,.6);}
+/* O05 · one coordinate rule with the cities as points on it */
+#sfo .O05line{position:relative;padding-top:22px;}
+#sfo .O05line::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:rgba(42,46,51,.2);}
+#sfo .O05pts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;}
+#sfo .O05pts span{position:relative;font-family:'DM Sans',sans-serif;font-size:9.6px;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.55);padding-right:10px;}
+#sfo .O05pts span::before{content:'';position:absolute;left:0;top:-25px;width:7px;height:7px;
+  background:var(--gold);transform:rotate(45deg);}
+@media(max-width:700px){ #sfo .O05pts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px;} }
+/* O06 · a shallow dark cap behind the navigation */
+html[data-opening="O06"] #mn{background:rgba(10,10,10,.92) !important;}
+html[data-opening="O06"] #mn .nbtn{color:rgba(244,241,236,.72) !important;
+  border-color:rgba(244,241,236,.28) !important;}
+html[data-opening="O06"] #mn .nbtn-en{color:rgba(200,169,110,.9) !important;}
+html[data-opening="O06"] #mn .nav-logo svg text{fill:rgba(244,241,236,.9) !important;}
+/* O07 · the asymmetric grid zones */
+#sfo .O07{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:0 clamp(12px,1.6vw,24px);align-items:end;}
+#sfo .O07 .z1{grid-column:1 / span 5;}
+#sfo .O07 .z2{grid-column:8 / span 5;text-align:right;}
+@media(max-width:760px){ #sfo .O07 .z1,#sfo .O07 .z2{grid-column:1 / -1;text-align:left;} }
+/* O09 · one colour signal running into the card grid */
+#sfo .O09sig{height:3px;width:clamp(90px,16vw,220px);background:var(--cyan);}
+/* the transition rule into the portraits */
+#sfo .Oedge{height:1px;background:rgba(42,46,51,.14);}
+#sfo .Oedge.gd{background:rgba(200,169,110,.45);}
+#sfo .Oedge.or{height:2px;background:rgba(228,60,0,.7);}
+/* the CAD parallax, owned by OPENING and by nothing else */
+#sf-para{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:#ede8e0;}
+#sf-para img{width:100%;height:100%;object-fit:cover;display:block;}
+#sf-scrim{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:rgba(237,232,224,.94);transition:background .18s linear;}
+html[data-para="on"],html[data-para="on"] body{background:transparent !important;}
+html[data-para="on"] .sfl .f-black{background:rgba(10,10,10,.80) !important;}
+html[data-para="on"] .sfl .f-ink  {background:rgba(18,21,26,.74) !important;}
+html[data-para="on"] .sfl .f-navy {background:rgba(30,42,74,.76) !important;}
+@media(prefers-reduced-motion:reduce){ #sf-scrim{transition:none;} }
+
+/* ============================ PEOPLE ===================================== */
+#sfp .Pmain{padding-top:var(--Pdrop,0px);}
+#sfp .Pside{max-width:min(100%,52ch);}
+@media(max-width:900px){ #sfp .Pmain{padding-top:0 !important;} }
+/* PB04 · one rule down the left column */
+#sfp .P04{position:relative;padding-left:26px;}
+#sfp .P04::before{content:'';position:absolute;left:3px;top:6px;bottom:6px;width:1px;
+  background:rgba(200,169,110,.34);}
+#sfp .P04 > .Pn{position:relative;}
+#sfp .P04 > .Pn::before{content:'';position:absolute;left:-26px;top:9px;width:7px;height:7px;
+  border:1px solid rgba(200,169,110,.7);border-radius:50%;}
+/* PB05 · both bands open, ruled top and bottom */
+#sfp .P05 .Sacc .Sab{max-height:none;}
+#sfp .P05 .Sacc .Sah{cursor:default;}
+/* PB06 · the two statements as a pair */
+#sfp .P06{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(18px,2.4vw,38px);position:relative;}
+#sfp .P06::before{content:'';position:absolute;left:50%;top:-4px;bottom:-4px;width:1px;
+  background:rgba(200,169,110,.3);}
+@media(max-width:1100px){
+  #sfp .P06{grid-template-columns:1fr;gap:26px;}
+  #sfp .P06::before{display:none;}
+}
+/* PB08 · the gutter as an engineering divider */
+#sfp .P08w{position:relative;}
+#sfp .P08w .Pdiv{position:absolute;top:0;bottom:0;width:1px;
+  background:rgba(200,169,110,.3);left:calc(33.333% - clamp(10px,1.5vw,26px));}
+#sfp .P08w .Pdiv b{position:absolute;left:50%;top:44%;width:13px;height:13px;
+  transform:translate(-50%,-50%);border:1px solid rgba(200,169,110,.9);
+  border-radius:50%;background:var(--black);display:block;}
+@media(max-width:900px){ #sfp .P08w .Pdiv{display:none;} }
+/* the board register */
+#sfp .Pbd{border-top:1px solid rgba(244,241,236,.16);}
+#sfp .Pbd .Pb{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr);
+  gap:16px;align-items:baseline;padding:14px 0;
+  border-bottom:1px solid rgba(244,241,236,.13);}
+#sfp .Pbd .Pb .Srole{text-align:right;}
+#sfp .Pbd-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 clamp(18px,3vw,44px);}
+#sfp .Pbd-row .Pb{display:block;border:0;padding:0;}
+#sfp .Pbd-row .Srole{text-align:left;margin-top:7px;}
+@media(max-width:760px){
+  #sfp .Pbd .Pb{grid-template-columns:22px 1fr;}
+  #sfp .Pbd .Pb .Srole{grid-column:2;text-align:left;margin-top:6px;}
+  #sfp .Pbd-row{grid-template-columns:1fr;gap:16px 0;}
+}
+
+/* O06 · the dark cap is a real band in the composition */
+#sfo .Ocap{background:var(--black);padding:14px 0;}
+#sfo .Ocap .Ocity{color:rgba(244,241,236,.6);}
+#sfo .Ocap .Ocity b{color:rgba(200,169,110,.95);}
+/* O08 · a bounded CAD window with a hard lower edge */
+#sfo .O08w{position:relative;isolation:isolate;overflow:hidden;}
+#sfo .O08f{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.16;
+  background-image:url('images/cad_texture_wide.jpg');
+  background-size:cover;background-position:50% 40%;
+  -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent);
+  mask-image:linear-gradient(180deg,#000 62%,transparent);}
+/* O10 · title on a registration mark, cities as a right-hand register */
+#sfo .O10{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:clamp(20px,3vw,56px);align-items:end;}
+#sfo .O10 .Omark{font-family:'DM Sans',sans-serif;font-size:13px;line-height:1;
+  color:rgba(200,169,110,.9);display:block;margin-bottom:12px;}
+#sfo .O10b{display:flex;flex-direction:column;gap:5px;text-align:right;}
+@media(max-width:700px){
+  #sfo .O10{grid-template-columns:1fr;gap:18px;}
+  #sfo .O10b{text-align:left;flex-direction:row;flex-wrap:wrap;gap:4px 14px;}
+}
+/* PB03 · the heading spans the block above the two columns */
+#sfp .P03h{max-width:min(100%,72ch);}
+</style>
+<style id="sf-lab-css3">
+/* ============================ PLATFORM =================================== */
+#sfl-pl .Lwrap{position:relative;max-width:var(--cap,1600px);margin-inline:auto;}
+#sfl-pl .Lk{display:block;color:rgba(244,241,236,.84) !important;transition:color .4s ease;}
+#sfl-pl .Ls{display:block;color:rgba(200,169,110,.55) !important;transition:color .4s ease;}
+#sfl-pl .Lsym{color:rgba(200,169,110,.55);transition:color .4s ease;}
+#sfl-pl .on .Lk{color:var(--lgt) !important;}
+#sfl-pl .on .Ls{color:rgba(200,169,110,.95) !important;}
+#sfl-pl .on .Lsym{color:var(--cyan);}
+/* the single-line wordmark — the logo's own face and tracking, set as type */
+#sfl-pl .Lmark{font-family:'Josefin Sans','DM Sans',sans-serif;font-size:11px;
+  letter-spacing:.42em;text-transform:uppercase;font-weight:400;
+  color:rgba(244,241,236,.72);white-space:nowrap;display:inline-block;}
+#sfl-pl .Lmark.q{color:rgba(200,169,110,.8);}
+#sfl-pl .Lven{font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;font-weight:400;color:rgba(200,169,110,.95);white-space:nowrap;}
+#sfl-pl .Lring{width:13px;height:13px;border-radius:50%;
+  border:1px solid rgba(200,169,110,.9);display:block;}
+#sfl-pl .Lring.cy{border-color:rgba(0,180,216,.95);}
+#sfl-pl .Lcross{position:relative;width:15px;height:15px;display:block;}
+#sfl-pl .Lcross::before,#sfl-pl .Lcross::after{content:'';position:absolute;
+  background:rgba(0,180,216,.9);}
+#sfl-pl .Lcross::before{left:50%;top:0;bottom:0;width:1px;transform:translateX(-.5px);}
+#sfl-pl .Lcross::after{top:50%;left:0;right:0;height:1px;transform:translateY(-.5px);}
+
+/* PL01 · centre venture, capabilities on fine rules around it */
+#sfl-pl .L01{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-rows:auto 92px auto;align-items:end;position:relative;}
+#sfl-pl .L01 .Li:nth-child(1){grid-column:1;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L01 .Li:nth-child(2){grid-column:2;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L01 .Li:nth-child(3){grid-column:4;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L01 .Li:nth-child(4){grid-column:5;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L01 .Li:nth-child(5){grid-column:5;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L01 .Lhub{grid-column:3;grid-row:2;justify-self:center;align-self:center;
+  display:flex;flex-direction:column;align-items:center;gap:9px;z-index:3;}
+#sfl-pl .L01 .Li::after{content:'';position:absolute;left:0;width:1px;
+  background:rgba(200,169,110,.4);height:16px;}
+#sfl-pl .L01 .Li:nth-child(1)::after,#sfl-pl .L01 .Li:nth-child(3)::after,
+#sfl-pl .L01 .Li:nth-child(5)::after{bottom:0;}
+#sfl-pl .L01 .Li:nth-child(2)::after,#sfl-pl .L01 .Li:nth-child(4)::after{top:0;}
+
+/* PL02 · one continuous platform line, interrupted at the centre */
+#sfl-pl .L02{position:relative;display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto 82px auto;
+  align-items:end;}
+#sfl-pl .L02::before,#sfl-pl .L02::after{content:'';position:absolute;
+  top:calc(50% - .5px);height:1px;background:rgba(244,241,236,.2);}
+#sfl-pl .L02::before{left:0;width:calc(50% - var(--gap,96px));}
+#sfl-pl .L02::after {right:0;width:calc(50% - var(--gap,96px));}
+#sfl-pl .L02 .Li:nth-child(1){grid-column:1;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L02 .Li:nth-child(2){grid-column:2;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L02 .Li:nth-child(3){grid-column:3;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L02 .Li:nth-child(4){grid-column:4;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L02 .Li:nth-child(5){grid-column:5;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L02 .Lhub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:12px;z-index:3;}
+#sfl-pl .L02 .Li i{position:absolute;left:0;width:30px;height:2px;
+  background:rgba(185,188,192,.6);transition:background .4s ease,width .4s ease;}
+#sfl-pl .L02 .Li:nth-child(odd) i{bottom:-1px;} #sfl-pl .L02 .Li:nth-child(even) i{top:-1px;}
+#sfl-pl .L02 .Li.on i{background:var(--cyan);width:50px;}
+
+/* PL03 · a suggested orbit — partial arcs, no circular infographic */
+#sfl-pl .L03{position:relative;min-height:clamp(300px,34vw,430px);}
+#sfl-pl .L03 .Larc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  border:1px solid rgba(200,169,110,.16);border-radius:50%;pointer-events:none;}
+#sfl-pl .L03 .Larc.a1{width:min(46vw,560px);aspect-ratio:1;
+  clip-path:polygon(0 0,100% 0,100% 46%,0 46%);}
+#sfl-pl .L03 .Larc.a2{width:min(66vw,820px);aspect-ratio:1;
+  clip-path:polygon(0 54%,100% 54%,100% 100%,0 100%);border-color:rgba(0,180,216,.16);}
+#sfl-pl .L03 .Lhub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3;text-align:center;}
+#sfl-pl .L03 .Li{position:absolute;max-width:26%;}
+#sfl-pl .L03 .Li:nth-child(1){left:0;top:4%;}
+#sfl-pl .L03 .Li:nth-child(2){right:0;top:4%;text-align:right;}
+#sfl-pl .L03 .Li:nth-child(3){left:6%;bottom:2%;}
+#sfl-pl .L03 .Li:nth-child(4){right:6%;bottom:2%;text-align:right;}
+#sfl-pl .L03 .Li:nth-child(5){left:50%;transform:translateX(-50%);top:0;text-align:center;}
+@media(max-width:900px){
+  #sfl-pl .L03{min-height:0;}
+  #sfl-pl .L03 .Larc{display:none;}
+  #sfl-pl .L03 .Li,#sfl-pl .L03 .Lhub{position:static;transform:none;max-width:none;
+    text-align:left !important;padding:16px 0;border-bottom:1px solid rgba(244,241,236,.12);}
+}
+/* PL04 · an engineering cross-section on one datum */
+#sfl-pl .L04{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-rows:auto auto 60px auto auto;gap:0 clamp(10px,1.4vw,20px);}
+#sfl-pl .L04::before{content:'';position:absolute;left:0;right:0;top:calc(50% - .5px);
+  height:1px;background:rgba(200,169,110,.35);}
+#sfl-pl .L04 .Li{position:relative;}
+#sfl-pl .L04 .Li:nth-child(1){grid-column:1 / span 3;grid-row:1;}
+#sfl-pl .L04 .Li:nth-child(2){grid-column:5 / span 3;grid-row:2;}
+#sfl-pl .L04 .Li:nth-child(3){grid-column:9 / span 4;grid-row:1;}
+#sfl-pl .L04 .Li:nth-child(4){grid-column:2 / span 3;grid-row:4;}
+#sfl-pl .L04 .Li:nth-child(5){grid-column:8 / span 4;grid-row:5;}
+#sfl-pl .L04 .Lhub{grid-column:6 / span 3;grid-row:3;align-self:center;justify-self:center;
+  display:flex;align-items:center;gap:10px;background:var(--ink);padding:0 14px;z-index:3;}
+@media(max-width:900px){
+  #sfl-pl .L04{grid-template-columns:1fr;grid-template-rows:none;}
+  #sfl-pl .L04::before{display:none;}
+  #sfl-pl .L04 .Li,#sfl-pl .L04 .Lhub{grid-column:1 !important;grid-row:auto !important;
+    padding:16px 0;border-bottom:1px solid rgba(244,241,236,.12);justify-self:start;background:none;}
+}
+/* PL05 · five registers around a central marker */
+#sfl-pl .L05{border-top:1px solid rgba(244,241,236,.16);position:relative;}
+#sfl-pl .L05 .Li{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr) 46px;
+  gap:0 16px;align-items:baseline;padding:15px 0;
+  border-bottom:1px solid rgba(244,241,236,.13);}
+#sfl-pl .L05 .Li .Ls{text-align:right;}
+#sfl-pl .L05 .Li em{font-style:normal;justify-self:end;width:30px;height:1px;
+  background:rgba(200,169,110,.3);transition:background .4s ease,width .4s ease;align-self:center;}
+#sfl-pl .L05 .Li.on em{background:var(--cyan);}
+#sfl-pl .L05 .Lhub{display:flex;align-items:center;gap:12px;padding:18px 0 0;
+  justify-content:flex-end;}
+@media(max-width:760px){
+  #sfl-pl .L05 .Li{grid-template-columns:22px 1fr;}
+  #sfl-pl .L05 .Li .Ls{grid-column:2;text-align:left;margin-top:6px;}
+  #sfl-pl .L05 .Li em{display:none;}
+}
+/* PL06 · asymmetric, three one side and two the other */
+#sfl-pl .L06{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:clamp(20px,3vw,56px);align-items:center;}
+#sfl-pl .L06 .Lcol .Li{padding:14px 0;border-bottom:1px solid rgba(244,241,236,.13);}
+#sfl-pl .L06 .Lcol.r{text-align:right;}
+#sfl-pl .L06 .Lhub{display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:0 clamp(6px,1.4vw,20px);}
+#sfl-pl .L06 .Lhub .Lstem{width:1px;height:44px;background:rgba(200,169,110,.35);display:block;}
+@media(max-width:900px){
+  #sfl-pl .L06{grid-template-columns:1fr;}
+  #sfl-pl .L06 .Lcol.r{text-align:left;}
+  #sfl-pl .L06 .Lhub{flex-direction:row;padding:14px 0;}
+  #sfl-pl .L06 .Lhub .Lstem{display:none;}
+}
+/* PL07 · accordion infrastructure */
+#sfl-pl .L07 .Li{border-bottom:1px solid rgba(244,241,236,.13);}
+#sfl-pl .L07 .Li:first-child{border-top:1px solid rgba(244,241,236,.16);}
+#sfl-pl .L07 .Lh{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr) auto;
+  gap:0 16px;align-items:center;padding:16px 0;background:none;border:0;width:100%;
+  text-align:left;cursor:pointer;}
+#sfl-pl .L07 .Lh .Ls{text-align:right;}
+#sfl-pl .L07 .Lb{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.2,.7,.26,1);}
+#sfl-pl .L07 .Li.on .Lb{max-height:220px;}
+#sfl-pl .L07 .Lb > div{padding:0 0 18px 42px;}
+#sfl-pl .L07 .Ltie{height:1px;background:rgba(0,180,216,.5);width:0;
+  transition:width .6s cubic-bezier(.2,.7,.26,1);margin-bottom:12px;}
+#sfl-pl .L07 .Li.on .Ltie{width:min(100%,260px);}
+#sfl-pl .L07 .Lhub{display:flex;align-items:center;gap:12px;padding:20px 0 0;}
+@media(max-width:760px){
+  #sfl-pl .L07 .Lh{grid-template-columns:22px 1fr auto;}
+  #sfl-pl .L07 .Lh .Ls{grid-column:2;text-align:left;margin-top:6px;}
+  #sfl-pl .L07 .Lb > div{padding-left:0;}
+}
+/* PL08 · CMF — grey and gold at rest, the venture cyan, one orange endpoint */
+#sfl-pl .L08{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  padding-top:44px;}
+#sfl-pl .L08::before{content:'';position:absolute;left:0;right:0;top:0;height:2px;
+  background:linear-gradient(90deg,var(--alu) 0%,var(--alu) 38%,
+    rgba(0,180,216,.9) 46%,rgba(0,180,216,.9) 54%,var(--gold) 62%,var(--gold) 88%,
+    var(--orange) 100%);opacity:.55;}
+#sfl-pl .L08 .Li{position:relative;padding-right:clamp(12px,1.6vw,24px);}
+#sfl-pl .L08 .Li i{position:absolute;left:0;top:-44px;width:1px;height:14px;
+  background:rgba(185,188,192,.65);transition:height .4s ease,background .4s ease;}
+#sfl-pl .L08 .Li:last-child i{background:rgba(228,60,0,.85);}
+#sfl-pl .L08 .Li.on i{height:26px;background:var(--cyan);}
+#sfl-pl .L08 .Lhub{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);
+  z-index:3;display:flex;align-items:center;gap:10px;background:var(--ink);padding:0 14px;}
+@media(max-width:900px){
+  #sfl-pl .L08{grid-template-columns:1fr;padding-top:0;padding-left:30px;}
+  #sfl-pl .L08::before{left:4px;top:14px;bottom:8px;right:auto;width:2px;height:auto;
+    background:linear-gradient(180deg,var(--alu),rgba(0,180,216,.9),var(--gold),var(--orange));}
+  #sfl-pl .L08 .Li{padding:16px 0;border-bottom:1px solid rgba(244,241,236,.12);}
+  #sfl-pl .L08 .Li i{left:-30px;top:22px;width:14px;height:1px;}
+  #sfl-pl .L08 .Lhub{position:static;transform:none;background:none;padding:0 0 16px;}
+}
+/* PL09 · the venture establishes, the line resolves, capabilities appear */
+#sfl-pl .L09{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-rows:auto 78px auto;align-items:end;}
+#sfl-pl .L09 .Lbar{position:absolute;top:calc(50% - .5px);height:1px;
+  background:rgba(200,169,110,.4);width:0;left:50%;transform:translateX(-50%);
+  transition:width 1.5s cubic-bezier(.2,.7,.26,1) .35s;}
+#sfl-pl .L09.in .Lbar{width:100%;}
+#sfl-pl .L09 .Li{opacity:0;transform:translateY(9px);
+  transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.26,1);}
+#sfl-pl .L09.in .Li{opacity:1;transform:none;}
+#sfl-pl .L09.in .Li:nth-child(1){transition-delay:1.15s}
+#sfl-pl .L09.in .Li:nth-child(2){transition-delay:1.30s}
+#sfl-pl .L09.in .Li:nth-child(3){transition-delay:1.45s}
+#sfl-pl .L09.in .Li:nth-child(4){transition-delay:1.60s}
+#sfl-pl .L09.in .Li:nth-child(5){transition-delay:1.75s}
+#sfl-pl .L09 .Li:nth-child(1){grid-column:1;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L09 .Li:nth-child(2){grid-column:2;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L09 .Li:nth-child(3){grid-column:3;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L09 .Li:nth-child(4){grid-column:4;grid-row:3;padding-top:18px;align-self:start;}
+#sfl-pl .L09 .Li:nth-child(5){grid-column:5;grid-row:1;padding-bottom:18px;}
+#sfl-pl .L09 .Lhub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:3;display:flex;align-items:center;gap:12px;background:var(--ink);padding:0 16px;}
+@media(prefers-reduced-motion:reduce){
+  #sfl-pl .L09 .Lbar{width:100% !important;transition:none !important;}
+  #sfl-pl .L09 .Li{opacity:1 !important;transform:none !important;transition:none !important;}
+}
+/* PL10 · the recommended balance */
+#sfl-pl .L10{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-rows:auto 88px auto;align-items:end;}
+#sfl-pl .L10::before,#sfl-pl .L10::after{content:'';position:absolute;
+  top:calc(50% - .5px);height:1px;background:rgba(244,241,236,.18);}
+#sfl-pl .L10::before{left:0;width:calc(50% - var(--gap,104px));}
+#sfl-pl .L10::after {right:0;width:calc(50% - var(--gap,104px));}
+#sfl-pl .L10 .Li:nth-child(1){grid-column:1;grid-row:1;padding-bottom:20px;}
+#sfl-pl .L10 .Li:nth-child(2){grid-column:2;grid-row:3;padding-top:20px;align-self:start;}
+#sfl-pl .L10 .Li:nth-child(3){grid-column:3;grid-row:1;padding-bottom:20px;}
+#sfl-pl .L10 .Li:nth-child(4){grid-column:4;grid-row:3;padding-top:20px;align-self:start;}
+#sfl-pl .L10 .Li:nth-child(5){grid-column:5;grid-row:1;padding-bottom:20px;}
+#sfl-pl .L10 .Li i{position:absolute;left:0;width:34px;height:2px;
+  background:rgba(185,188,192,.55);transition:background .45s ease,width .45s ease;}
+#sfl-pl .L10 .Li:nth-child(odd) i{bottom:-1px;} #sfl-pl .L10 .Li:nth-child(even) i{top:-1px;}
+#sfl-pl .L10 .Li:last-child i{background:rgba(228,60,0,.7);}
+#sfl-pl .L10 .Li.on i{background:var(--cyan);width:58px;}
+#sfl-pl .L10 .Lhub{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:3;display:flex;flex-direction:column;align-items:center;gap:7px;
+  background:var(--ink);padding:6px 18px;}
+@media(max-width:900px){
+  #sfl-pl .L01,#sfl-pl .L02,#sfl-pl .L09,#sfl-pl .L10{
+    grid-template-columns:1fr;grid-template-rows:none;padding-left:30px;position:relative;}
+  #sfl-pl .L01::before,#sfl-pl .L02::before,#sfl-pl .L02::after,
+  #sfl-pl .L10::before,#sfl-pl .L10::after{display:none;}
+  #sfl-pl .L01 .Li,#sfl-pl .L02 .Li,#sfl-pl .L09 .Li,#sfl-pl .L10 .Li{
+    grid-column:1 !important;grid-row:auto !important;align-self:start !important;
+    padding:16px 0 !important;border-bottom:1px solid rgba(244,241,236,.12);}
+  #sfl-pl .L01 .Li::after{display:none;}
+  #sfl-pl .L02 .Li i,#sfl-pl .L10 .Li i{left:-30px;top:22px !important;bottom:auto !important;
+    width:3px !important;height:20px;}
+  #sfl-pl .L01 .Lhub,#sfl-pl .L02 .Lhub,#sfl-pl .L09 .Lhub,#sfl-pl .L10 .Lhub{
+    position:static;transform:none;background:none;padding:0 0 18px;
+    grid-column:1 !important;grid-row:auto !important;justify-self:start;
+    flex-direction:row;align-items:center;}
+  #sfl-pl .L09 .Lbar{display:none;}
+}
+</style>
+<style id="sf-lab-css4">
+/* ============================ ACADEMY ==================================== */
+#sfa .Awrap{position:relative;max-width:var(--cap,1600px);margin-inline:auto;}
+#sfa .Aaud{border-top:1px solid rgba(244,241,236,.16);}
+#sfa .Aaud.lt{border-top-color:rgba(42,46,51,.16);}
+#sfa .Aaud .Ai{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1.4fr);
+  gap:0 16px;align-items:baseline;padding:15px 0;
+  border-bottom:1px solid rgba(244,241,236,.13);}
+#sfa .Aaud.lt .Ai{border-bottom-color:rgba(42,46,51,.13);}
+#sfa .Aaud .Ai .Ss{text-align:right;}
+#sfa .Aaud-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 clamp(18px,3vw,48px);}
+#sfa .Aaud-row .Ai{display:block;border:0;padding:0;}
+#sfa .Aaud-row .Ai .Ss{text-align:left;margin-top:8px;}
+@media(max-width:820px){
+  #sfa .Aaud .Ai{grid-template-columns:22px 1fr;}
+  #sfa .Aaud .Ai .Ss{grid-column:2;text-align:left;margin-top:6px;}
+  #sfa .Aaud-row{grid-template-columns:1fr;gap:20px 0;}
+}
+/* formats */
+#sfa .Afmt{border-top:1px solid rgba(244,241,236,.16);}
+#sfa .Afmt.lt{border-top-color:rgba(42,46,51,.16);}
+#sfa .Afmt .Af{border-bottom:1px solid rgba(244,241,236,.13);}
+#sfa .Afmt.lt .Af{border-bottom-color:rgba(42,46,51,.13);}
+#sfa .Afmt .Afh{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:16px;
+  align-items:center;padding:15px 0;background:none;border:0;width:100%;
+  text-align:left;cursor:pointer;}
+#sfa .Afmt .Afb{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.2,.7,.26,1);}
+#sfa .Afmt .Af.on .Afb{max-height:200px;}
+#sfa .Afmt .Afb > div{padding:0 0 16px 42px;}
+#sfa .Afmt .Afmk{font-family:'DM Sans',sans-serif;font-size:12px;
+  color:rgba(244,241,236,.35);transition:transform .4s ease,color .3s ease;}
+#sfa .Afmt.lt .Afmk{color:rgba(10,10,10,.3);}
+#sfa .Afmt .Af.on .Afmk{transform:rotate(45deg);color:var(--gold);}
+@media(max-width:640px){ #sfa .Afmt .Afb > div{padding-left:0;} }
+/* AC02 · annotations around the table */
+#sfa .A02{position:relative;}
+#sfa .A02 .A02n{position:absolute;z-index:3;max-width:26%;}
+#sfa .A02 .A02n b{display:block;width:1px;height:26px;background:rgba(200,169,110,.7);
+  margin-bottom:9px;}
+#sfa .A02 .A02n.n1{left:4%;top:6%;}
+#sfa .A02 .A02n.n2{right:4%;top:6%;}
+#sfa .A02 .A02n.n3{left:38%;bottom:6%;}
+#sfa .A02 .A02n .Ss{color:rgba(244,241,236,.86) !important;}
+#sfa .A02 .A02n .Sk{font-size:clamp(.86rem,1.1vw,1.1rem);}
+#sfa .A02 .Ashade::after{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,10,13,.62),rgba(8,10,13,.24) 44%,rgba(8,10,13,.66));}
+@media(max-width:820px){
+  #sfa .A02 .A02n{position:static;max-width:none;padding:14px 0;
+    border-bottom:1px solid rgba(244,241,236,.12);}
+  #sfa .A02 .A02n b{display:none;}
+}
+/* AC03 · three audiences on one continuous rule */
+#sfa .A03{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(14px,2vw,32px);position:relative;padding-top:30px;}
+#sfa .A03::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:rgba(200,169,110,.45);}
+#sfa .A03 .Ac{position:relative;}
+#sfa .A03 .Ac::before{content:'';position:absolute;left:0;top:-33px;width:7px;height:7px;
+  background:var(--gold);transform:rotate(45deg);}
+@media(max-width:820px){ #sfa .A03{grid-template-columns:1fr;row-gap:26px;} }
+/* AC05 · the triptych */
+#sfa .A05{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);
+  gap:clamp(10px,1.4vw,20px);align-items:start;}
+#sfa .A05 .A05s{display:grid;gap:clamp(10px,1.4vw,20px);}
+@media(max-width:820px){ #sfa .A05{grid-template-columns:1fr;} }
+/* AC08 · one line through the knowledge platform */
+#sfa .A08{position:relative;padding-left:32px;}
+#sfa .A08::before{content:'';position:absolute;left:4px;top:8px;bottom:8px;width:1px;
+  background:rgba(200,169,110,.4);}
+#sfa .A08 .An{position:relative;padding:0 0 clamp(24px,3.4vh,44px);}
+#sfa .A08 .An::before{content:'';position:absolute;left:-32px;top:6px;width:9px;height:9px;
+  border:1px solid rgba(200,169,110,.85);border-radius:50%;}
+#sfa .A08 .An:last-child{padding-bottom:0;}
+/* AC09 · the briefing register */
+#sfa .A09{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(24px,3.4vw,64px);align-items:start;}
+@media(max-width:900px){ #sfa .A09{grid-template-columns:1fr;} }
+/* AC10 · the recommended chapter */
+#sfa .A10{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(24px,3.4vw,64px);align-items:end;}
+@media(max-width:900px){ #sfa .A10{grid-template-columns:1fr;} }
+
+/* ============================ OPPORTUNITIES ============================== */
+#sfq .Qwrap{position:relative;max-width:var(--cap,1600px);margin-inline:auto;}
+#sfq .Qp{max-width:min(100%,52ch);}
+#sfq .Qz{display:none;}
+/* OP02 · message left, action right */
+#sfq .Q02{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:clamp(24px,4vw,72px);align-items:end;}
+@media(max-width:760px){ #sfq .Q02{grid-template-columns:1fr;gap:26px;} }
+/* OP03 · three ways in, as a ruled register */
+#sfq .Q03{border-top:1px solid rgba(244,241,236,.16);}
+#sfq .Q03.lt{border-top-color:rgba(42,46,51,.16);}
+#sfq .Q03 .Qi{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);
+  gap:0 20px;align-items:baseline;padding:14px 0;
+  border-bottom:1px solid rgba(244,241,236,.13);}
+#sfq .Q03.lt .Qi{border-bottom-color:rgba(42,46,51,.13);}
+@media(max-width:700px){ #sfq .Q03 .Qi{grid-template-columns:1fr;row-gap:6px;} }
+/* OP04 · the audience accordion */
+#sfq .Q04 .Qa{border-bottom:1px solid rgba(244,241,236,.13);}
+#sfq .Q04 .Qa:first-child{border-top:1px solid rgba(244,241,236,.16);}
+#sfq .Q04 .Qh{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:16px;
+  align-items:center;padding:15px 0;background:none;border:0;width:100%;
+  text-align:left;cursor:pointer;}
+#sfq .Q04 .Qb{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.2,.7,.26,1);}
+#sfq .Q04 .Qa.on .Qb{max-height:180px;}
+#sfq .Q04 .Qb > div{padding:0 0 16px 42px;}
+#sfq .Q04 .Qmk{font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(244,241,236,.35);
+  transition:transform .4s ease,color .3s ease;}
+#sfq .Q04 .Qa.on .Qmk{transform:rotate(45deg);color:var(--gold);}
+@media(max-width:640px){ #sfq .Q04 .Qb > div{padding-left:0;} }
+/* OP05 · one connection line with a real node on it */
+#sfq .Q05{position:relative;padding-left:34px;}
+#sfq .Q05::before{content:'';position:absolute;left:5px;top:6px;bottom:34px;width:1px;
+  background:rgba(200,169,110,.4);}
+#sfq .Q05 .Qnode{position:absolute;left:5px;top:44%;width:11px;height:11px;
+  transform:translate(-5px,-50%);border:1px solid rgba(200,169,110,.9);
+  border-radius:50%;background:var(--black);}
+#sfq .Q05 .Qfoot{position:relative;}
+#sfq .Q05 .Qfoot::before{content:'';position:absolute;left:-34px;top:50%;width:28px;height:1px;
+  background:rgba(200,169,110,.5);}
+/* OP07 · the network field */
+#sfq .Q07{position:relative;min-height:clamp(220px,26vw,320px);}
+#sfq .Q07 .Qring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:17px;height:17px;border:1px solid rgba(200,169,110,.9);border-radius:50%;z-index:3;}
+#sfq .Q07 .Qspoke{position:absolute;left:50%;top:50%;height:1px;
+  background:rgba(200,169,110,.26);transform-origin:0 50%;}
+#sfq .Q07 .Qlab{position:absolute;z-index:3;}
+#sfq .Q07 .Qlab.l1{left:0;top:8%;}
+#sfq .Q07 .Qlab.l2{right:0;top:8%;text-align:right;}
+#sfq .Q07 .Qlab.l3{left:50%;transform:translateX(-50%);bottom:0;text-align:center;}
+#sfq .Q07 .Qmid{position:absolute;left:50%;top:calc(50% + 26px);transform:translateX(-50%);
+  text-align:center;z-index:3;white-space:nowrap;}
+@media(max-width:820px){
+  #sfq .Q07{min-height:0;}
+  #sfq .Q07 .Qspoke,#sfq .Q07 .Qring{display:none;}
+  #sfq .Q07 .Qlab,#sfq .Q07 .Qmid{position:static;transform:none;text-align:left !important;
+    padding:12px 0;border-bottom:1px solid rgba(244,241,236,.12);}
+}
+/* OP08 · the quiet editorial close */
+#sfq .Q08 .Qaud{font-family:'DM Sans',sans-serif;font-size:10.4px;letter-spacing:.2em;
+  text-transform:uppercase;font-weight:300;color:rgba(244,241,236,.6);line-height:2.1;}
+/* OP09 · the signal CTA */
+#sfq .Q09 .Qtrack{position:relative;height:1px;background:rgba(244,241,236,.14);
+  margin:0 0 22px;overflow:hidden;}
+#sfq .Q09 .Qtrack i{position:absolute;left:0;top:0;height:1px;width:0;
+  background:var(--orange);transition:width 1.3s cubic-bezier(.2,.7,.26,1);}
+#sfq .Q09.in .Qtrack i{width:min(100%,340px);}
+#sfq .Q09 .Scta{border-color:rgba(228,60,0,.55);}
+#sfq .Q09 .Scta:hover{border-color:var(--orange);color:#ff7a45;}
+@media(prefers-reduced-motion:reduce){
+  #sfq .Q09 .Qtrack i{width:min(100%,340px) !important;transition:none !important;}
+}
+/* OP10 · the recommended closing */
+#sfq .Q10{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(24px,4vw,72px);align-items:end;}
+@media(max-width:820px){ #sfq .Q10{grid-template-columns:1fr;gap:28px;} }
+</style>
+<style id="sf-lab-ui-css">
+/* =========================================================================
+   THE CONFIGURATOR UI
+   Two levels: section tabs, then only the active section's variations.
+   Every section keeps its own selection; switching tabs changes what the
+   panel shows and nothing about what the page is rendering.
+   ========================================================================= */
+#sfcfg{position:fixed;left:0;right:0;bottom:0;z-index:100000;
+  background:rgba(9,10,12,.96);backdrop-filter:blur(9px);
+  border-top:1px solid rgba(200,169,110,.3);
+  font-family:'DM Sans',sans-serif;color:rgba(244,241,236,.86);
+  transform:translateY(0);transition:transform .35s cubic-bezier(.2,.7,.26,1);}
+#sfcfg.off{transform:translateY(101%);}
+#sfcfg .c-in{max-width:1600px;margin-inline:auto;padding:10px clamp(12px,2vw,26px) 12px;}
+#sfcfg .c-row{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;}
+#sfcfg .c-row + .c-row{margin-top:9px;}
+#sfcfg .c-lab{font-size:8.6px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(200,169,110,.75);white-space:nowrap;flex:0 0 auto;min-width:62px;}
+#sfcfg .c-scroll{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;
+  flex:1 1 auto;padding-bottom:2px;}
+#sfcfg .c-scroll::-webkit-scrollbar{height:4px;}
+#sfcfg .c-scroll::-webkit-scrollbar-thumb{background:rgba(200,169,110,.35);}
+#sfcfg button{font-family:inherit;cursor:pointer;background:none;
+  border:1px solid rgba(244,241,236,.2);color:rgba(244,241,236,.72);
+  font-size:9.4px;letter-spacing:.16em;text-transform:uppercase;
+  padding:7px 11px;min-height:30px;white-space:nowrap;flex:0 0 auto;
+  transition:border-color .2s,color .2s,background .2s;}
+#sfcfg button:hover{border-color:rgba(200,169,110,.7);color:rgba(244,241,236,.95);}
+#sfcfg button.on{background:rgba(200,169,110,.9);border-color:rgba(200,169,110,.9);
+  color:#12151a;font-weight:500;}
+#sfcfg .c-tab.on{background:rgba(0,180,216,.9);border-color:rgba(0,180,216,.9);color:#08171c;}
+#sfcfg .c-mini{border-color:rgba(244,241,236,.14);color:rgba(244,241,236,.5);
+  font-size:8.6px;padding:6px 9px;min-height:26px;}
+#sfcfg .c-sum{font-size:8.8px;letter-spacing:.12em;color:rgba(244,241,236,.5);
+  white-space:nowrap;overflow-x:auto;flex:1 1 auto;padding-right:8px;}
+#sfcfg .c-sum b{color:rgba(200,169,110,.95);font-weight:400;}
+#sfcfg .c-sum .warn{color:#ff8a5c;}
+#sfcfg .c-code{font-size:9px;letter-spacing:.1em;color:rgba(0,180,216,.95);
+  border:1px solid rgba(0,180,216,.35);padding:5px 9px;white-space:nowrap;
+  background:none;user-select:all;}
+#sfcfg .c-note{font-size:9.2px;line-height:1.65;color:rgba(244,241,236,.45);
+  max-width:100%;margin-top:8px;border-top:1px solid rgba(244,241,236,.1);padding-top:8px;}
+#sfcfg .c-note b{color:rgba(200,169,110,.85);font-weight:400;}
+/* the restore tab, when the panel is hidden */
+#sfcfg-tab{position:fixed;right:14px;bottom:14px;z-index:100001;display:none;
+  font-family:'DM Sans',sans-serif;font-size:8.8px;letter-spacing:.2em;
+  text-transform:uppercase;padding:9px 13px;cursor:pointer;
+  background:rgba(9,10,12,.9);color:rgba(200,169,110,.9);
+  border:1px solid rgba(200,169,110,.45);}
+#sfcfg-tab.on{display:block;}
+@media(max-width:820px){
+  #sfcfg .c-in{padding:8px 10px 10px;}
+  #sfcfg .c-lab{min-width:0;font-size:8px;}
+  #sfcfg .c-note{display:none;}
+  #sfcfg button{font-size:9px;padding:8px 10px;min-height:34px;}
+  #sfcfg .c-sum{font-size:8.2px;}
+}
+@media(max-width:520px){
+  #sfcfg .c-row.c-meta{flex-wrap:wrap;}
+  #sfcfg .c-code{font-size:8.4px;}
+}
+</style>
+<script id="sf-lab-core">
+(function(){
+/* =========================================================================
+   THE MODEL — one harvest, five independent sections.
+
+   The page composes most of its own copy at runtime, so the content is read
+   once out of the rendered DOM and cached. After that no section ever needs
+   the page rebuilt again: each renderer draws from the same cached object,
+   which is what makes independent per-section swapping possible at all.
+   ========================================================================= */
+var D=null;
+function harvest(){
+  if(D) return D;
+  var h=window.__sfLharvest; if(!h) return null;
+  var r=h(); if(!r) return null;
+  D={
+    title:r.title, intro:r.intro,
+    mLab:r.mLab||'Mission', mTxt:r.mTxt,
+    vLab:r.vLab||'Vision',  vTxt:r.vTxt,
+    board:r.board||[], caps:(r.caps||[]).slice(0,5),
+    pTitle:r.pTitle, pText:r.pText,
+    oLab:r.oLab||'Opportunities', oText:r.oText,
+    ctaT:r.ctaT||'Get in Touch', ctaH:r.ctaH||'sf-contact.html'
+  };
+  return D;
+}
+
+/* the site's own marks. Nothing invented. */
+var SYM={mission:'⇕', vision:'⊕', opp:'∴', board:'△', reg:'⌖',
+         caps:['⌀','⊥','∠','⊞','∥'], aud:['△','⊕','⌀'], fmt:['⊞','∥','∠']};
+
+var IMG={ cnc:'images/cnc_1-14.jpg', shop:'images/frame_factory-285.jpg',
+          cut:'images/cnc-cutting.jpg', bench:'images/frame_factory-431.jpg',
+          cad:'images/cad_axle_wide.jpg', cadTex:'images/cad_texture_wide.jpg',
+          acPres:'images/academy-presentation.jpg',
+          acStud:'images/academy-studio.jpg',
+          acGrp :'images/academy-group.jpg' };
+
+/* ---- ACADEMY copy — supplied, and editable here without touching any
+        component. Nothing below is invented: no dates, no credentials, no
+        partner names, no outcomes, no numbers. --------------------------- */
+var AC={
+  eyebrow:'Silent Foundry Academy',
+  headA:'Learn by building', headB:'real things.',
+  para:'Silent Foundry Academy brings together emerging designers and engineers with founders, operators, investors and family offices around the practical work of building products and ventures. Through studios, workshops and briefings, participants move from brand DNA and opportunity through design, engineering, manufacturing and commercialisation.',
+  aud:[{k:'Emerging Talent', s:'Designers · Engineers · Strategists'},
+       {k:'Venture Builders',s:'Founders · Operators · Brand Owners'},
+       {k:'Capital Partners',s:'Investors · Family Offices'}],
+  fmt:[{k:'Studios',   s:'Applied work around real products and ventures.'},
+       {k:'Workshops', s:'Collaborative sessions led by experienced practitioners.'},
+       {k:'Briefings', s:'Focused exchanges for founders, operators and capital partners.'}],
+  ctaT:'Register Interest ⌙'
+};
+/* ---- OPPORTUNITIES audience groupings — design labels only. They never
+        replace the required paragraph, which appears in all eleven. ------ */
+var QG=[{k:'Build with us',  s:'Designers · Engineers · Operators'},
+        {k:'Partner with us',s:'Factory Partners · Brand Owners · Commercial Partners'},
+        {k:'Invest with us', s:'Investors'}];
+
+var CITIES=['Hong Kong','Shanghai','Melbourne','Copenhagen'];
+
+/* ---- the vocabulary every renderer is written in ---------------------- */
+function e(s){ return String(s==null?'':s); }
+function EY(x,c){ return '<span class="Sey '+(c||'')+'">'+e(x)+'</span>'; }
+function RULE(c){ return '<div class="Srule '+(c||'')+'"></div>'; }
+function SP(n){ return '<div class="'+(n||'sp')+'"></div>'; }
+function IM(src,treat,ar,cap,pos){
+  return '<figure class="Sfig"><span class="Sim '+(treat||'mono')+' '+(ar||'ar32')+'"'+
+    (pos?' style="--ipos:'+pos+'"':'')+'>'+
+    '<img loading="lazy" decoding="async" src="'+src+'" alt=""></span>'+
+    (cap?'<figcaption class="Scap">'+e(cap)+'</figcaption>':'')+'</figure>';
+}
+/* 04's photograph: same file, same 4:3, same 50% 54%. Only its treatment and
+   scale are allowed to vary, never its crop or its side of the page. */
+function PIC(treat,ar){ return IM(IMG.cnc,(treat||'colr')+' reg',ar||'ar43','Machine shop','50% 54%'); }
+function S(field,inner,extra){
+  return '<section class="S pad '+(field||'')+' '+(extra||'')+'"><div class="Sin">'+inner+'</div></section>';
+}
+function ACC(items,openAll,light){
+  return '<div class="Sacc'+(light?' lt':'')+'">'+items.map(function(x,i){
+    return '<div class="Sa'+(openAll||i===0?' on':'')+'">'+
+      '<button class="Sah" type="button"><span class="Ssym">'+x.s+'</span>'+
+      '<span class="Sey">'+e(x.t)+'</span><span class="Smk">+</span></button>'+
+      '<div class="Sab"><div><p class="Sp">'+e(x.b)+'</p></div></div></div>';
+  }).join('')+'</div>';
+}
+window.__sfLAB={D:function(){return D;},harvest:harvest,SYM:SYM,IMG:IMG,AC:AC,QG:QG,
+  CITIES:CITIES,e:e,EY:EY,RULE:RULE,SP:SP,IM:IM,PIC:PIC,S:S,ACC:ACC};
+})();
+</script>
+<script id="sf-lab-opening">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+var e=Q.e, EY=Q.EY, CITIES=Q.CITIES, IMG=Q.IMG;
+
+/* Each opening states its own CAD decision, so the treatment can never stay
+   accidentally attached to the independently controlled People section:
+     keep    — the front-axle drawing, index treatment, fixed behind the page
+     alt     — the index's own wide CAD sheet instead
+     grid    — no photograph; the cream engineering grid does the work
+     none    — removed entirely
+   'para' is what the engine acts on; nothing else may turn it on. */
+
+function TITLE(){ return '<h1 class="Otitle">The Team</h1>'; }
+function CITY(sep){ return '<span class="Ocity">'+CITIES.join(sep||' · ')+'</span>'; }
+function EDGE(c){ return '<div class="Oedge '+(c||'')+'"></div>'; }
+function WRAP(inner,pt,pb,cls){
+  return '<div class="Ohead '+(cls||'')+'" style="padding-top:'+pt+'px;padding-bottom:'+pb+'px">'+
+    '<div class="Oin">'+inner+'</div></div>';
+}
+var O={};
+
+/* BASE — what the page does today, untouched, for comparison. 307px. */
+O.BASE={para:'keep',src:IMG.cad,note:'the current opening, unchanged — 307px to the first card, city strip at 8px, the front-axle CAD fixed behind the whole page',
+  html:function(){ return WRAP(TITLE()+'<div class="sp"></div>'+CITY(),96,72); }};
+
+/* O01 — COMPACT EDITORIAL MASTHEAD. Height down ~25%, decoration removed. */
+O.O01={para:'none',note:'compact editorial masthead — the faint background comes off entirely, the title and cities become one masthead block and a single fine rule hands over to the portraits. The shortest credible correction',
+  html:function(){ return WRAP(TITLE()+'<div class="sp"></div>'+CITY()+
+    '<div class="sp2"></div>'+EDGE(),58,20); }};
+
+/* O02 — TITLE / CITIES DATUM. One shared lower baseline, empty centre kept. */
+O.O02={para:'none',note:'title left, cities right, sharing one lower baseline immediately above the cards. The centre is left deliberately empty rather than filled with decoration',
+  html:function(){ return WRAP('<div class="O02">'+TITLE()+CITY()+'</div>'+
+    '<div class="sp2"></div>'+EDGE(),64,18); }};
+
+/* O03 — NAVY ARCHITECTURAL EDGE. A narrow navy field, not a dark hero. */
+O.O03={para:'none',note:'a narrow Foundry-navy field anchors the locations inside the cream opening — structural weight and an index connection without becoming a second dark hero',
+  html:function(){ return WRAP('<div class="O03"><div class="Obar"></div>'+
+    '<div>'+TITLE()+'<div class="sp"></div>'+CITY()+'</div></div>'+
+    '<div class="sp2"></div>'+EDGE('gd'),58,20); }};
+
+/* O04 — LOWER-ANCHORED. Top space is branding and nav only. */
+O.O04={para:'grid',note:'everything page-specific drops to a compact band directly above the portraits; the upper area carries nothing but the logo and navigation. The cream engineering grid replaces the photograph',
+  html:function(){ return WRAP('<div style="min-height:clamp(26px,4vh,54px)"></div>'+
+    '<div class="O02">'+TITLE()+CITY()+'</div>'+'<div class="sp"></div>'+EDGE(),44,14,'Ogridhost'); }};
+
+/* O05 — ENGINEERING COORDINATE. Cities as points on one rule. */
+O.O05={para:'none',note:'one coordinate rule connects the title, the four locations and the top edge of the people grid; the cities sit on it as marked points rather than as a faint strip',
+  html:function(){ return WRAP(TITLE()+'<div class="sp2"></div>'+
+    '<div class="O05line"><div class="O05pts">'+
+      CITIES.map(function(c){ return '<span>'+e(c)+'</span>'; }).join('')+
+    '</div></div>',62,26); }};
+
+/* O06 — DARK NAVIGATION CAP. Also solves the black-on-black nav buttons. */
+O.O06={para:'none',note:'dark navigation cap — the logo and navigation sit in a shallow structural-black band that the page carries as a real element, then it returns to cream for the title, the cities and the handover to the portraits. It also fixes the nav buttons, which are otherwise black on black over the dark chapters',
+  html:function(){
+    return '<div class="Ocap Odk"><div class="Oin"><span class="Ocity"><b>Silent Foundry</b> — Hong Kong · Shanghai · Melbourne · Copenhagen</span></div></div>'+
+      WRAP(TITLE(),22,18)+'<div class="Oin">'+EDGE()+'</div>'; }};
+
+/* O07 — ASYMMETRIC GRID. No image at all; alignment carries it. */
+O.O07={para:'grid',note:'a twelve-column asymmetric composition — title in one zone, locations in another, no background photograph at all. The grid and the alignment provide the character',
+  html:function(){ return WRAP('<div class="O07"><div class="z1">'+TITLE()+'</div>'+
+    '<div class="z2">'+CITY('<br>')+'</div></div>'+
+    '<div class="sp2"></div>'+EDGE(),56,18,'Ogridhost'); }};
+
+/* O08 — FAINT INDUSTRIAL FIELD. The index's own CAD sheet, not the axle. */
+O.O08={para:'none',note:'faint industrial field — the ambiguous background is replaced by the index page’s own CAD sheet held inside a bounded window behind the title, very low contrast, cut off with a hard edge at the portrait boundary so it never bleeds into the nav or the cards',
+  html:function(){
+    return '<div class="O08w"><div class="O08f"></div><div class="Oin">'+
+      '<div style="padding:56px 0 22px">'+TITLE()+'<div class="sp"></div>'+CITY()+'</div>'+
+      '</div></div><div class="Oin">'+EDGE('gd')+'</div>'; }};
+
+/* O09 — COLOUR SIGNAL. One signal connecting title to the portrait grid. */
+O.O09={para:'none',note:'mostly cream and neutral with a single cyan signal running from the title down into the portrait grid. Colour connects, it does not decorate, and the four cities are not coloured separately',
+  html:function(){ return WRAP(TITLE()+'<div class="sp"></div>'+CITY()+
+    '<div class="sp2"></div><div class="O09sig"></div>'+'<div class="sp"></div>'+EDGE(),56,16); }};
+
+/* O10 — the recommended balance. Keeps the CAD, but quieter and shorter. */
+O.O10={para:'keep',src:IMG.cad,note:'the recommendation — the front-axle CAD kept behind the whole page but faded out before the portraits, the title carried on a registration mark with the four cities stacked against it as a right-hand register, a gold rule running only the width of the title, and roughly a quarter of the height taken out. Quieter than the index hero, and the portraits arrive sooner',
+  html:function(){
+    return WRAP('<div class="O10"><div class="O10a"><span class="Omark">⌖</span>'+TITLE()+
+      '<div class="sp"></div><div class="Orule gd" style="width:clamp(120px,18vw,260px)"></div></div>'+
+      '<div class="O10b">'+CITIES.map(function(c){ return '<span class="Ocity">'+e(c)+'</span>'; }).join('')+
+      '</div></div>',56,18); }};
+
+window.__sfLAB_O=O;
+})();
+</script>
+<script id="sf-lab-people">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+var e=Q.e, EY=Q.EY, RULE=Q.RULE, SP=Q.SP, PIC=Q.PIC, S=Q.S, ACC=Q.ACC, SYM=Q.SYM;
+
+function D(){ return Q.D(); }
+function T(){ return '<h2 class="St">'+D().title+'</h2>'; }
+function P(){ return '<p class="Sp">'+e(D().intro)+'</p>'; }
+/* Mission and Vision are open and visible in every one of the eleven. */
+function MV(mode){
+  var d=D();
+  var m={s:SYM.mission,t:d.mLab,b:d.mTxt}, v={s:SYM.vision,t:d.vLab,b:d.vTxt};
+  function pair(x){ return '<div><span class="Ssym">'+x.s+'</span> '+EY(x.t)+
+    SP()+'<p class="Sp">'+e(x.b)+'</p></div>'; }
+  if(mode==='acc')  return ACC([{s:m.s,t:m.t,b:m.b},{s:v.s,t:v.t,b:v.b}],true);
+  if(mode==='pair') return '<div class="P06">'+pair(m)+pair(v)+'</div>';
+  if(mode==='row')  return '<div class="g g11">'+pair(m)+pair(v)+'</div>';
+  return '<div>'+pair(m)+SP('sp2')+pair(v)+'</div>';
+}
+/* The Board is removed from this section entirely — the three directors are
+   marked on their own roster cards instead. Kept here only for the BASE
+   comparison, where it is still in the column. */
+function BD(mode){
+  var rows=D().board.map(function(x){
+    return '<div class="Pb">'+(mode==='reg'?'<span class="Ssym">'+SYM.board+'</span>':'')+
+      '<span class="Sname">'+e(x.n)+'</span><span class="Srole">'+e(x.r)+'</span></div>';
+  }).join('');
+  return '<div class="'+(mode==='row'?'Pbd-row':'Pbd')+'">'+rows+'</div>';
+}
+function n(x){ return '<div class="Pn">'+x+'</div>'; }
+/* drop: how far the photograph sits below the title datum, in px. 0 = shared
+   datum. Negative = the image is proud of the title. */
+function BLOCK(o){
+  var side='<div class="Pside">'+o.side+'</div>';
+  var main='<div class="Pmain"'+(o.drop!=null?' style="--Pdrop:'+o.drop+'px"':'')+'>'+
+    (o.pic||PIC('colr',o.ar||'ar43'))+'</div>';
+  var grid='<div class="g '+(o.cols||'g12')+' Pgrid">'+side+main+'</div>';
+  return S('f-black dk '+(o.pad||''), (o.wrap?o.wrap(grid):grid),'P-'+o.id);
+}
+var PB={};   /* the bank. P() is the intro paragraph. */
+
+PB.BASE={note:'the current section, unchanged — the photograph sitting 76px below the title, the Board still in the left column and Vision collapsed',
+  html:function(){ return BLOCK({id:'BASE',drop:76,pad:'tall',
+    side:T()+SP('sp2')+P()+SP('sp3')+
+      ACC([{s:SYM.mission,t:D().mLab,b:D().mTxt},{s:SYM.vision,t:D().vLab,b:D().vTxt}],false)+
+      SP('sp3')+EY('Board of Directors')+SP()+BD('reg')}); }};
+
+PB.PB01={note:'shared top datum — the top of the photograph aligns exactly with the top of THE PEOPLE, 60px of section top space, introduction under the heading, Mission and Vision open beneath it. The cleanest baseline correction',
+  html:function(){ return BLOCK({id:'PB01',drop:0,pad:'',
+    side:T()+SP('sp2')+P()+SP('sp3')+MV('acc')}); }};
+
+PB.PB02={note:'image slightly proud — the photograph begins 20px above the title and becomes the anchor, with the left column sitting fractionally lower. Restrained, not a stunt',
+  html:function(){ return BLOCK({id:'PB02',drop:-20,pad:'',
+    side:'<div style="padding-top:20px">'+T()+SP('sp2')+P()+SP('sp3')+MV('acc')+'</div>'}); }};
+
+PB.PB03={note:'complete heading datum — the heading breaks out of the column and spans the block, with one rule under it. The photograph then meets the lower edge of that whole heading band rather than the top of the first line, which is a quieter editorial relationship while still bringing the image well up the page',
+  html:function(){
+    return S('f-black dk','<div class="P03h">'+T()+SP('sp2')+RULE('gd')+'</div>'+
+      SP('sp2')+
+      '<div class="g g12 Pgrid"><div class="Pside">'+P()+SP('sp3')+MV('acc')+'</div>'+
+      '<div class="Pmain">'+PIC('colr','ar43')+'</div></div>','P-PB03'); }};
+
+PB.PB04={note:'ruled column — one hairline runs the whole left column with a ring at each station, tying heading, introduction, Mission and Vision into a single register. The image sits on the title datum',
+  html:function(){ return BLOCK({id:'PB04',drop:0,pad:'',
+    side:T()+SP('sp2')+'<div class="P04">'+n(P())+SP('sp2')+n(MV('stack'))+'</div>'}); }};
+
+PB.PB05={note:'open accordion stack — Mission and Vision as two permanently open index-inspired rows, each with its engineering mark, fine top and bottom rules and visible text. The introduction stays separate above them',
+  html:function(){ return BLOCK({id:'PB05',drop:0,pad:'',
+    side:T()+SP('sp2')+P()+SP('sp3')+'<div class="P05">'+MV('acc')+'</div>'}); }};
+
+PB.PB06={note:'mission / vision pair — the two statements set side by side beneath the introduction, divided by one gold hairline, collapsing to stacked registers as soon as the column stops being readable',
+  html:function(){ return BLOCK({id:'PB06',drop:0,pad:'',cols:'g11',ar:'ar43',
+    side:T()+SP('sp2')+P()+SP('sp3')+MV('pair')}); }};
+
+PB.PB07={note:'image-height match — the left column from heading through Vision is balanced against the visible height of the photograph through measured spacing and a taller image, never by stretching the text',
+  html:function(){ return BLOCK({id:'PB07',drop:0,pad:'',ar:'ar34',
+    side:T()+SP('sp3')+P()+SP('sp3')+MV('stack')}); }};
+
+PB.PB08={note:'engineering divider — the gutter between the columns becomes a precise divider with a ring on it, so the two halves read as one instrument rather than two blocks. Image and heading share the top datum',
+  html:function(){ return BLOCK({id:'PB08',drop:0,pad:'',
+    wrap:function(g){ return '<div class="P08w"><div class="Pdiv"><b></b></div>'+g+'</div>'; },
+    side:T()+SP('sp2')+P()+SP('sp3')+MV('acc')}); }};
+
+PB.PB09={note:'tight editorial — the most compact credible version: 48px of section top space, tighter heading-to-paragraph and paragraph-to-Mission gaps, both statements open, image on the title datum. Compact without being cramped',
+  html:function(){ return BLOCK({id:'PB09',drop:0,pad:'tight',
+    side:T()+SP()+P()+SP('sp2')+MV('acc')}); }};
+
+PB.PB10={note:'the recommendation — shared top datum, 60px of section space, the introduction dropped under the two-line heading, Mission and Vision as open ruled bands, and one gold hairline closing the column so it reads as a finished register rather than a stack that ran out',
+  html:function(){ return BLOCK({id:'PB10',drop:0,pad:'',
+    side:T()+SP('sp2')+P()+SP('sp3')+'<div class="P05">'+MV('acc')+'</div>'+
+      SP('sp2')+RULE('gd')}); }};
+
+window.__sfLAB_P=PB;
+})();
+</script>
+<script id="sf-lab-platform">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+var e=Q.e, EY=Q.EY, SP=Q.SP, S=Q.S, SYM=Q.SYM;
+function D(){ return Q.D(); }
+
+/* The heading breaks after BUILT, deliberately, rather than wherever the
+   column happens to run out. */
+function PT(){
+  var t=D().pTitle||'';
+  var b=t.replace(/(Built)\s+/i,'$1<br>');
+  return '<h2 class="St">'+b+'</h2>';
+}
+function PP(){ return '<p class="Sp">'+e(D().pText)+'</p>'; }
+function HEAD(){ return '<div class="Lwrap">'+PT()+SP('sp2')+PP()+'</div>'; }
+/* exactly five, never numbered, never an Academy */
+function caps(){ return D().caps.slice(0,5); }
+function MARK(cls){ return '<span class="Lmark '+(cls||'')+'">Silent Foundry</span>'; }
+function VEN(){ return '<span class="Lven">The Venture</span>'; }
+function RING(c){ return '<i class="Lring '+(c||'')+'"></i>'; }
+function CROSS(){ return '<i class="Lcross"></i>'; }
+/* a capability. `sym` is only passed where a symbol does structural work. */
+function CAP(x,i,sym,extra){
+  return '<div class="Li">'+(extra||'')+
+    (sym?'<span class="Lsym">'+SYM.caps[i]+'</span> ':'')+
+    '<span class="Sk Lk">'+x.k+'</span><span class="Ss Ls">'+e(x.s)+'</span></div>';
+}
+function BLOCK(id,inner,field){
+  return S((field||'f-ink')+' dk tall', HEAD()+SP('sp3')+
+    '<div class="Lwrap"><div class="'+id+'">'+inner+'</div></div>');
+}
+var L={};
+
+L.BASE={note:'the current platform — the stacked wordmark, six capabilities including Academy, and one colour assigned to each',
+  html:function(){
+    var c=D().caps.slice(0,5);
+    return BLOCK('L02', c.map(function(x,i){ return CAP(x,i,1,'<i></i>'); }).join('')+
+      '<div class="Lhub">'+RING()+VEN()+'</div>'); }};
+
+/* PL01 — clean central venture. Decorative symbols removed; the only marks
+   are the fine rules that actually connect a capability to the centre. */
+L.PL01={note:'clean central venture — the stacked wordmark becomes one small line, THE VENTURE takes the exact visual centre on a restrained ring, and the five capabilities connect to it by fine rules. Every decorative icon is gone; the only marks left are the connections themselves',
+  html:function(){
+    return BLOCK('L01', caps().map(function(x,i){ return CAP(x,i,0); }).join('')+
+      '<div class="Lhub">'+RING()+VEN()+MARK('q')+'</div>'); }};
+
+/* PL02 — one platform line, interrupted at the centre. */
+L.PL02={note:'one platform line — a single continuous rule runs the full width and is interrupted, not overlaid, by THE VENTURE at its centre. Capabilities hang above and below the same line so nothing reads left to right as a sequence. Grey and gold at rest, cyan only at the node',
+  html:function(){
+    return BLOCK('L02', caps().map(function(x,i){ return CAP(x,i,0,'<i></i>'); }).join('')+
+      '<div class="Lhub">'+RING('cy')+VEN()+MARK('q')+'</div>'); }};
+
+/* PL03 — subtle orbit, suggested by partial arcs. */
+L.PL03={note:'subtle orbit — the faint central geometry is made deliberate. Two partial arcs and the alignment of the five capabilities imply an orbit around THE VENTURE without ever drawing a circular infographic. The wordmark sits quietly beneath the central node',
+  html:function(){
+    return BLOCK('L03','<i class="Larc a1"></i><i class="Larc a2"></i>'+
+      caps().map(function(x,i){ return CAP(x,i,0); }).join('')+
+      '<div class="Lhub">'+RING()+VEN()+MARK('q')+'</div>'); }};
+
+/* PL04 — engineering cross-section on one datum. */
+L.PL04={note:'platform cross-section — the five capabilities occupy different structural positions around a single central datum, the way a section drawing places parts around an axis. Symbols appear only at the centre, where something actually joins',
+  html:function(){
+    return BLOCK('L04', caps().map(function(x,i){ return CAP(x,i,0); }).join('')+
+      '<div class="Lhub">'+CROSS()+VEN()+'</div>'); }};
+
+/* PL05 — corporate register with a centre. Colour only when active. */
+L.PL05={note:'corporate register with a centre — 31’s ruled institutional discipline, five capability registers, each terminating in a short rule that runs toward THE VENTURE. Entirely monochrome at rest; the connection turns cyan only on the row you are reading',
+  html:function(){
+    return BLOCK('L05', caps().map(function(x,i){ return CAP(x,i,1,'')
+        .replace('</div>','<em></em></div>'); }).join('')+
+      '<div class="Lhub">'+VEN()+RING()+MARK('q')+'</div>'); }};
+
+/* PL06 — asymmetric, three and two, balanced by the centre. */
+L.PL06={note:'asymmetric platform — three capabilities on one side and two on the other, with THE VENTURE providing the balance rather than a false symmetry. The heading and paragraph stay upper-left and the whole system hangs off one vertical stem',
+  html:function(){
+    var c=caps();
+    return BLOCK('L06','<div class="Lcol">'+c.slice(0,3).map(function(x,i){ return CAP(x,i,0); }).join('')+'</div>'+
+      '<div class="Lhub">'+MARK('q')+'<i class="Lstem"></i>'+RING()+VEN()+'</div>'+
+      '<div class="Lcol r">'+c.slice(3).map(function(x,i){ return CAP(x,i+3,0); }).join('')+'</div>'); }};
+
+/* PL07 — accordion infrastructure. Symbols are the controls. */
+L.PL07={note:'accordion infrastructure — all five titles stay visible and the architecture is never hidden. Selecting one draws a cyan rule from it toward THE VENTURE and opens a restrained descriptor. Here the engineering symbols earn their place: they are the controls',
+  html:function(){
+    var c=caps();
+    return BLOCK('L07', c.map(function(x,i){
+      return '<div class="Li"><button class="Lh" type="button">'+
+        '<span class="Lsym">'+SYM.caps[i]+'</span>'+
+        '<span class="Sk Lk">'+x.k+'</span><span class="Ss Ls">'+e(x.s)+'</span>'+
+        '<span class="Smk">+</span></button>'+
+        '<div class="Lb"><div><div class="Ltie"></div>'+
+        '<p class="Sp">'+e(D().pText)+'</p></div></div></div>';
+    }).join('')+'<div class="Lhub">'+RING('cy')+VEN()+MARK('q')+'</div>'); }};
+
+/* PL08 — CMF. Grey and gold at rest, the venture cyan, one orange endpoint. */
+L.PL08={note:'CMF platform — the site’s own material language explains the system. The infrastructure band runs aluminium into gold, THE VENTURE is the cyan moment at its centre, and one signal orange marks the single endpoint where value is realised. No capability is given a colour of its own',
+  html:function(){
+    return BLOCK('L08', caps().map(function(x,i){ return CAP(x,i,0,'<i></i>'); }).join('')+
+      '<div class="Lhub">'+RING('cy')+VEN()+'</div>'); }};
+
+/* PL09 — the venture establishes, then the platform assembles around it. */
+L.PL09={note:'expanding venture — the section states the business idea in the order it happens. THE VENTURE establishes first, Silent Foundry’s platform line resolves outward from it, and the five capabilities settle around it. One pass, on entry, and the finished composition is what renders on first paint',
+  html:function(){
+    return BLOCK('L09','<i class="Lbar"></i>'+
+      caps().map(function(x,i){ return CAP(x,i,0); }).join('')+
+      '<div class="Lhub">'+RING('cy')+VEN()+MARK('q')+'</div>'); }};
+
+/* PL10 — the recommendation. */
+L.PL10={note:'the recommendation — the broad horizontal presence of the current design, 31’s ruled restraint, a two-line heading breaking after BUILT, and the wordmark as one small line under THE VENTURE in a genuine break in the rule. Aluminium at rest, cyan on the capability you are reading, one orange terminal at Exits. Five capabilities, no numbers, no Academy, and not one symbol that is only there to fill a slot',
+  html:function(){
+    return BLOCK('L10', caps().map(function(x,i){ return CAP(x,i,0,'<i></i>'); }).join('')+
+      '<div class="Lhub">'+RING('cy')+VEN()+MARK('q')+'</div>'); }};
+
+window.__sfLAB_L=L;
+})();
+</script>
+<script id="sf-lab-academy">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+var e=Q.e, EY=Q.EY, SP=Q.SP, IM=Q.IM, S=Q.S, SYM=Q.SYM, IMG=Q.IMG, AC=Q.AC;
+
+function HEAD(dark){ return '<span class="Sey">'+AC.eyebrow+'</span>'+SP()+
+  '<h2 class="St">'+AC.headA+'<br><em>'+AC.headB+'</em></h2>'; }
+function PARA(){ return '<p class="Sp">'+AC.para+'</p>'; }
+function CTA(link){ return link
+  ? '<a class="Slink" href="'+Q.D().ctaH+'">'+AC.ctaT+'</a>'
+  : '<a class="Scta" href="'+Q.D().ctaH+'">'+AC.ctaT+'</a>'; }
+function AUD(mode,light){
+  var rows=AC.aud.map(function(x,i){
+    return '<div class="Ai"><span class="Ssym">'+SYM.aud[i]+'</span>'+
+      '<span class="Sk">'+x.k+'</span><span class="Ss">'+e(x.s)+'</span></div>'; }).join('');
+  return '<div class="'+(mode==='row'?'Aaud-row':'Aaud')+(light?' lt':'')+'">'+rows+'</div>';
+}
+function FMT(light,openAll){
+  return '<div class="Afmt'+(light?' lt':'')+'">'+AC.fmt.map(function(x,i){
+    return '<div class="Af'+(openAll||i===0?' on':'')+'" data-fmt="'+i+'">'+
+      '<button class="Afh" type="button"><span class="Ssym">'+SYM.fmt[i]+'</span>'+
+      '<span class="Sk">'+x.k+'</span><span class="Afmk">+</span></button>'+
+      '<div class="Afb"><div><p class="Sp">'+e(x.s)+'</p></div></div></div>';
+  }).join('')+'</div>';
+}
+function FMTFLAT(light){
+  return '<div class="Aaud'+(light?' lt':'')+'">'+AC.fmt.map(function(x,i){
+    return '<div class="Ai"><span class="Ssym">'+SYM.fmt[i]+'</span>'+
+      '<span class="Sk">'+x.k+'</span><span class="Ss">'+e(x.s)+'</span></div>'; }).join('')+'</div>';
+}
+var P=IMG.acPres, T=IMG.acStud, G=IMG.acGrp;
+function BLOCK(id,inner,field){
+  return S((field||'f-ink')+' dk tall','<div class="Awrap"><div class="'+id+'">'+inner+'</div></div>');
+}
+var A={};
+
+A.BASE={note:'the Academy section as first drafted — heading, paragraph, audiences and formats with the presentation photograph, before any of the ten directions',
+  html:function(){ return BLOCK('A00','<div class="g g12">'+
+    '<div>'+HEAD()+SP('sp2')+PARA()+'</div><div>'+IM(P,'warm','ar167','Academy session')+'</div></div>'+
+    SP('sp3')+AUD()+SP('sp3')+FMTFLAT()+SP('sp2')+CTA()); }};
+
+/* AC01 — practice-led editorial. The session photograph anchors it. */
+A.AC01={note:'practice-led editorial — the session photograph is the anchor and the thesis sits beside it, with the three audiences beneath as a ruled register and the studio and group frames used as supporting editorial crops. Talent, venture builders and capital appear as one list, on one rule, in one room',
+  html:function(){ return BLOCK('A01','<div class="g g57">'+
+    '<div>'+IM(P,'warm','ar43','Academy session')+'</div>'+
+    '<div>'+HEAD()+SP('sp2')+PARA()+SP('sp2')+CTA()+'</div></div>'+
+    SP('sp3')+AUD()+SP('sp3')+
+    '<div class="g g11">'+IM(T,'alu','ar32','Studio')+IM(G,'alu','ar32','Briefing')+'</div>'); }};
+
+/* AC02 — the studio table as the composition. */
+A.AC02={note:'studio table — the wide workshop table becomes the composition, with talent, operators and capital annotated around its edges rather than on the people in it. The table is the argument: three different disciplines meeting around one venture',
+  html:function(){ return BLOCK('A02',HEAD()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="A02 Ashade" style="position:relative">'+IM(T,'alu','ar167','Studio table')+
+      AC.aud.map(function(x,i){ return '<div class="A02n n'+(i+1)+'"><b></b>'+
+        '<span class="Sk">'+x.k+'</span><span class="Ss">'+e(x.s)+'</span></div>'; }).join('')+
+    '</div>'+SP('sp3')+FMTFLAT()+SP('sp2')+CTA()); }};
+
+/* AC03 — three audiences on one continuous rule. */
+A.AC03={note:'three audiences — the section is built on Emerging Talent, Venture Builders and Capital Partners, each given its own controlled crop, and all three hung off one continuous Foundry rule so they read as one constituency rather than three cards',
+  html:function(){ return BLOCK('A03w',HEAD()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="A03">'+
+      '<div class="Ac">'+IM(G,'alu','ar43')+SP()+'<span class="Sk">'+AC.aud[0].k+'</span><span class="Ss">'+AC.aud[0].s+'</span></div>'+
+      '<div class="Ac">'+IM(T,'alu','ar43')+SP()+'<span class="Sk">'+AC.aud[1].k+'</span><span class="Ss">'+AC.aud[1].s+'</span></div>'+
+      '<div class="Ac">'+IM(P,'alu','ar43')+SP()+'<span class="Sk">'+AC.aud[2].k+'</span><span class="Ss">'+AC.aud[2].s+'</span></div>'+
+    '</div>'+SP('sp3')+FMTFLAT()+SP('sp2')+CTA()); }};
+
+/* AC04 — organised by format, images responding to the selection. */
+A.AC04={note:'studios / workshops / briefings — the Academy organised by what actually happens in it. All three format names stay visible as index accordion rows and the photograph changes to the one that belongs to the selected format, so the image is evidence rather than decoration',
+  html:function(){ return BLOCK('A04','<div class="g g57">'+
+    '<div><span class="Afig">'+IM(T,'alu','ar43','Studios')+'</span></div>'+
+    '<div>'+HEAD()+SP('sp2')+PARA()+SP('sp2')+FMT(false,false)+SP('sp2')+CTA()+'</div></div>'+
+    SP('sp3')+AUD('row')); }};
+
+/* AC05 — the triptych. */
+A.AC05={note:'image triptych — one dominant frame and two supporting ones in a disciplined three-image composition, tied back to the copy by fine engineering rules. All three photographs earn a place and none of it reads as a gallery',
+  html:function(){ return BLOCK('A05w',HEAD()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="A05"><div>'+IM(P,'warm','ar43','Academy session')+'</div>'+
+    '<div class="A05s">'+IM(T,'alu','ar32','Studio')+IM(G,'alu','ar32','Briefing')+'</div></div>'+
+    SP('sp3')+AUD()+SP('sp3')+FMTFLAT()+SP('sp2')+CTA()); }};
+
+/* AC06 — the human navy chapter. */
+A.AC06={note:'human navy chapter — Foundry navy separates the Academy from the black platform above and the closing invitation below, and the photographs are graded to restrained natural colour so the section feels like people rather than infrastructure. Gold carries the structure, cyan marks only the active connection',
+  html:function(){ return BLOCK('A06','<div class="g g57">'+
+    '<div>'+IM(P,'warm','ar43','Academy session')+'</div>'+
+    '<div>'+HEAD()+SP('sp2')+PARA()+'</div></div>'+
+    SP('sp3')+AUD()+SP('sp3')+FMT(false,true)+SP('sp2')+CTA(),'f-navy'); }};
+
+/* AC07 — the light studio chapter. */
+A.AC07={note:'light studio — a warm cream chapter between two dark ones, using the workshop photography closer to its natural colour. The cream engineering grid and institutional type keep it Silent Foundry rather than a school brochure, and the page steps back down into the dark for the closing invitation',
+  html:function(){ return BLOCK('A07',HEAD()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="g g11">'+IM(T,'colr','ar32','Studio')+IM(G,'colr','ar32','Briefing')+'</div>'+
+    SP('sp3')+AUD('',true)+SP('sp3')+FMTFLAT(true)+SP('sp2')+CTA(),'f-cream3')
+    .replace('dk tall','tall'); }};
+
+/* AC08 — the knowledge platform, on one line. */
+A.AC08={note:'knowledge platform — the Academy read as the other half of what Silent Foundry operates. One restrained line runs from real practice through shared knowledge to talent, venture builders and capital partners, with the photographs as evidence along it. Deliberately drawn differently from the commercial platform above so the two are not confused',
+  html:function(){ return BLOCK('A08w',HEAD()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="A08">'+
+      '<div class="An"><span class="Sk">Real practice</span>'+SP()+IM(T,'alu','ar165','Studio')+'</div>'+
+      '<div class="An"><span class="Sk">Shared knowledge</span>'+SP()+FMTFLAT()+'</div>'+
+      '<div class="An"><span class="Sk">Who it is for</span>'+SP()+AUD('row')+'</div>'+
+    '</div>'+SP('sp3')+CTA()); }};
+
+/* AC09 — the practitioner briefing. */
+A.AC09={note:'practitioner briefing — weighted toward founders, operators and capital without shutting out emerging talent. The session photograph runs large, the audiences read as a focused register and the formats sit beneath as plain statements of what is on offer. An informed private briefing, not an investment brochure',
+  html:function(){ return BLOCK('A09w','<div class="A09">'+
+    '<div>'+IM(P,'warm','ar167','Academy session')+SP('sp2')+PARA()+'</div>'+
+    '<div>'+HEAD()+SP('sp2')+AUD()+SP('sp2')+CTA(true)+'</div></div>'+
+    SP('sp3')+FMTFLAT()); }};
+
+/* AC10 — the recommendation. */
+A.AC10={note:'the recommendation — a navy chapter that sits naturally between the black platform and the black closing invitation, the session photograph carrying the argument, the three audiences on one register so investors and family offices sit level with emerging talent, and the three formats open so nothing has to be clicked to understand what the Academy is. Practical, credible, human, and clearly not the closing CTA',
+  html:function(){ return BLOCK('A10w','<div class="A10">'+
+    '<div>'+HEAD()+SP('sp2')+PARA()+'</div>'+
+    '<div>'+IM(P,'warm','ar43','Academy session')+'</div></div>'+
+    SP('sp3')+AUD()+SP('sp3')+
+    '<div class="g g12"><div>'+FMT(false,true)+'</div>'+
+    '<div>'+IM(T,'alu','ar32','Studio')+'</div></div>'+
+    SP('sp2')+CTA(),'f-navy'); }};
+
+window.__sfLAB_A=A;
+})();
+</script>
+<script id="sf-lab-opps">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+var e=Q.e, EY=Q.EY, RULE=Q.RULE, SP=Q.SP, S=Q.S, SYM=Q.SYM, QG=Q.QG;
+function D(){ return Q.D(); }
+
+/* The page carries a design-system script that stamps any LEAF element
+   reading exactly "opportunities" with an inline 10.88px !important eyebrow,
+   which no stylesheet can beat. It skips elements that have a child, so the
+   heading carries one empty marker. */
+function TITLE(){ return '<h2 class="St">'+e(D().oLab)+'<i class="Qz"></i></h2>'; }
+function EYEB(){ return '<span class="Sey">'+e(D().oLab)+'<i class="Qz"></i></span>'; }
+function PARA(){ return '<p class="Sp Qp">'+e(D().oText)+'</p>'; }
+function CTA(){ return '<a class="Scta" href="'+D().ctaH+'">'+e(D().ctaT)+' ⌙</a>'; }
+function LINK(){ return '<a class="Slink" href="'+D().ctaH+'">'+e(D().ctaT)+' ⌙</a>'; }
+/* the three groupings are design labels — they never replace the paragraph,
+   which appears in every one of the eleven */
+function GRP(light){
+  return '<div class="Q03'+(light?' lt':'')+'">'+QG.map(function(x){
+    return '<div class="Qi"><span class="Sk">'+x.k+'</span>'+
+      '<span class="Ss">'+e(x.s)+'</span></div>'; }).join('')+'</div>';
+}
+function BLOCK(id,inner,field,pad){
+  return S((field||'f-black')+' dk '+(pad||'tight'),
+    '<div class="Qwrap"><div class="'+id+'">'+inner+'</div></div>');
+}
+var O={};
+
+O.BASE={note:'the current closing — a gold hairline, the heading, the paragraph and the button, on structural black eleven luminance points from the platform above it',
+  html:function(){ return BLOCK('Q00',RULE('gd')+TITLE()+SP('sp2')+PARA()+SP('sp2')+CTA()); }};
+
+O.OP01={note:'refined current — the same architecture with its measurements corrected: the paragraph brought back to a proper measure, the heading and the button aligned to one another, and the ring removed rather than left floating. The cleanest baseline correction',
+  html:function(){ return BLOCK('Q01',RULE('gd')+SP('sp2')+TITLE()+SP('sp2')+
+    PARA()+SP('sp2')+CTA()); }};
+
+O.OP02={note:'message and action split — the invitation on the left and Get in Touch on the right, both inside one capped and centred wrapper, so the button reads as attached to the message instead of drifting below it',
+  html:function(){ return BLOCK('Q02',RULE('gd')+SP('sp2')+
+    '<div class="Q02"><div>'+TITLE()+SP('sp2')+PARA()+'</div><div>'+CTA()+'</div></div>'); }};
+
+O.OP03={note:'three ways in — Build, Partner and Invest set as a quiet ruled register beneath the full paragraph, so the reader can find themselves in the list without it becoming three cards or three buttons. One action for the whole section',
+  html:function(){ return BLOCK('Q03w',RULE('gd')+SP('sp2')+TITLE()+SP('sp2')+PARA()+
+    SP('sp3')+GRP()+SP('sp2')+CTA()); }};
+
+O.OP04={note:'engineering accordion — the three groupings as compact index-style rows that open to name the audiences within them. The paragraph stays visible and Get in Touch never needs anything opened to be reached',
+  html:function(){ return BLOCK('Q04',RULE('gd')+SP('sp2')+TITLE()+SP('sp2')+PARA()+
+    SP('sp3')+'<div>'+QG.map(function(x,i){
+      return '<div class="Qa'+(i===0?' on':'')+'"><button class="Qh" type="button">'+
+        '<span class="Ssym">'+SYM.aud[i]+'</span><span class="Sk">'+x.k+'</span>'+
+        '<span class="Qmk">+</span></button><div class="Qb"><div>'+
+        '<p class="Sp">'+e(x.s)+'</p></div></div></div>'; }).join('')+'</div>'+
+    SP('sp2')+CTA()); }};
+
+O.OP05={note:'continuous connection line — one technical line runs from the heading, past a real ring set into it, and out along a short spur into Get in Touch. The section stops being a block of text with a button under it and becomes the last node on the network',
+  html:function(){ return BLOCK('Q05',TITLE()+SP('sp2')+
+    '<div class="Q05"><i class="Qnode"></i>'+PARA()+SP('sp3')+
+    '<div class="Qfoot">'+CTA()+'</div></div>'); }};
+
+O.OP06={note:'navy closing band — Foundry navy against the black platform, which is the one change that actually makes this read as a separate final chapter rather than more of the same dark field. Cream and grey type, gold rules, one cyan detail',
+  html:function(){ return BLOCK('Q06',RULE('cy')+SP('sp2')+TITLE()+SP('sp2')+PARA()+
+    SP('sp2')+CTA(),'f-navy'); }};
+
+O.OP07={note:'network field — the ring becomes the Foundry at the centre of a small field, with three restrained spokes reaching the three ways of taking part. Fine rules only, no glow and no radial diagram',
+  html:function(){ return BLOCK('Q07w',TITLE()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="Q07"><i class="Qring"></i>'+
+      '<i class="Qspoke" style="width:26%;transform:rotate(196deg)"></i>'+
+      '<i class="Qspoke" style="width:26%;transform:rotate(-16deg)"></i>'+
+      '<i class="Qspoke" style="width:20%;transform:rotate(90deg)"></i>'+
+      '<div class="Qmid"><span class="Ss">The Foundry</span></div>'+
+      QG.map(function(x,i){ return '<div class="Qlab l'+(i+1)+'">'+
+        '<span class="Sk">'+x.k+'</span><span class="Ss">'+e(x.s)+'</span></div>'; }).join('')+
+    '</div>'+SP('sp2')+CTA()); }};
+
+O.OP08={note:'editorial invitation — the quietest version. A small eyebrow rather than a display heading, the paragraph, the audiences set as two precise lines, and a text link instead of an outlined button. Restrained enough to end the page without reading as footer metadata',
+  html:function(){ return BLOCK('Q08',RULE('gd')+SP('sp2')+EYEB()+SP('sp2')+PARA()+
+    SP('sp2')+'<div class="Qaud">'+QG.map(function(x){ return e(x.s); }).join(' · ')+'</div>'+
+    SP('sp2')+LINK()); }};
+
+O.OP09={note:'signal CTA — monochrome and gold throughout, with the only colour on the page’s final action. A signal-orange rule draws once toward Get in Touch as the section arrives, so the button becomes the visual conclusion rather than a footnote',
+  html:function(){ return BLOCK('Q09',TITLE()+SP('sp2')+PARA()+SP('sp3')+
+    '<div class="Qtrack"><i></i></div>'+CTA()); }};
+
+O.OP10={note:'the recommendation — a navy chapter so it separates properly from the platform, the full paragraph kept at a readable measure, the three ways in as one quiet register beside it, and a single Get in Touch carrying a gold rule into the footer. Every audience named, nothing turned into a card, and it reads as an invitation rather than a job advert',
+  html:function(){ return BLOCK('Q10w',RULE('gd')+SP('sp2')+
+    '<div class="Q10"><div>'+TITLE()+SP('sp2')+PARA()+SP('sp2')+CTA()+'</div>'+
+    '<div>'+GRP()+'</div></div>','f-navy'); }};
+
+window.__sfLAB_Q=O;
+})();
+</script>
+<script id="sf-lab-engine">
+(function(){
+var Q=window.__sfLAB; if(!Q) return;
+
+var SEC=[
+ {id:'opening',      label:'Opening',       attr:'data-opening',      mount:'sfo',    code:'O',  bank:function(){return window.__sfLAB_O;}},
+ {id:'people',       label:'People',        attr:'data-people',       mount:'sfp',    code:'P',  bank:function(){return window.__sfLAB_P;}},
+ {id:'platform',     label:'Platform',      attr:'data-platform',     mount:'sfl-pl', code:'PL', bank:function(){return window.__sfLAB_L;}},
+ {id:'academy',      label:'Academy',       attr:'data-academy',      mount:'sfa',    code:'AC', bank:function(){return window.__sfLAB_A;}},
+ {id:'opportunities',label:'Opportunities', attr:'data-opportunities',mount:'sfq',    code:'OP', bank:function(){return window.__sfLAB_Q;}}
+];
+function order(id){
+  var b=SEC.filter(function(s){return s.id===id;})[0].bank()||{};
+  var k=Object.keys(b).filter(function(x){return x!=='BASE';}).sort();
+  return ['BASE'].concat(k);
+}
+var state={}, active='people', built=false, LS=[], TM=[], IO=null, uiOn=true;
+SEC.forEach(function(s){ state[s.id]='BASE'; });
+/* the page's own selector rewrites the address bar to #team=<state> the moment
+   it applies one, which wipes the combination before this layer can read it.
+   So the arrival hash is captured here, at load, and consulted first. */
+var HASH0=String(location.hash||'');
+
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+function bind(t,e,f,o){ t.addEventListener(e,f,o); LS.push([t,e,f]); }
+function later(f,ms){ TM.push(setTimeout(f,ms)); }
+
+/* ---- the URL carries the whole combination, so a refresh, a back button and
+        a pasted link all reproduce exactly what is on screen. -------------- */
+/* the hash keeps the page's own team=lab key as well as the combination, so a
+   refresh re-enters the lab through the same door it opened with — without it
+   the selector resolves to the dev state and the whole combination is lost. */
+function toHash(){
+  return '#team=lab&'+SEC.map(function(s){ return s.code.toLowerCase()+'='+state[s.id]; }).join('&');
+}
+function fromHash(){
+  var h=String(location.hash||'');
+  if(!/[#&][a-z]{1,2}=/i.test(h) && HASH0) h=HASH0;
+  if(!/[#&]team=lab(\b|&|$)/i.test(h) && !/[#&]team=lab/i.test(HASH0)) return false;
+  if(!/[#&]o=/i.test(h) && /[#&]o=/i.test(HASH0)) h=HASH0;
+  var any=false;
+  SEC.forEach(function(s){
+    var m=new RegExp('[#&]'+s.code.toLowerCase()+'=([A-Za-z0-9]+)','i').exec(h);
+    if(!m) return;
+    var want=m[1].toUpperCase(), list=order(s.id);
+    for(var i=0;i<list.length;i++) if(list[i].toUpperCase()===want){ state[s.id]=list[i]; any=true; break; }
+  });
+  return any||true;
+}
+function writeHash(push){
+  try{ if(push) history.pushState(null,'',toHash());
+       else history.replaceState(null,'',toHash()); }catch(e){}
+}
+function code(){
+  return SEC.map(function(s){
+    var v=state[s.id]; return s.code+'-'+(v==='BASE'?'BASE':v.replace(/^[A-Z]+/,'')||v);
+  }).join(' ');
+}
+function shortCode(){
+  return SEC.map(function(s){ return state[s.id]; }).join('-');
+}
+
+/* ---- the mounts. The ten cards sit outside every one of them. ---------- */
+function makeMount(id,before){
+  var m=document.getElementById(id);
+  if(m) return m;
+  m=document.createElement('div'); m.id=id; m.className='sfl';
+  before.parentNode.insertBefore(m, before);
+  return m;
+}
+function frame(){
+  var ref=$('#pc .tc')||$('#pc');
+  if(!ref) return;
+  SEC.forEach(function(s){
+    var m=document.getElementById(s.mount); if(!m) return;
+    var a=m.getBoundingClientRect(), b=ref.getBoundingClientRect();
+    if(a.width<40||b.width<40) return;
+    var v=Math.max(24,Math.round(b.left-a.left))+'px';
+    if(m.style.getPropertyValue('--Spad')!==v) m.style.setProperty('--Spad',v);
+  });
+}
+
+/* ---- the CAD parallax belongs to OPENING and to nothing else ----------- */
+var PARA=null,SCRIM=null,SCROLL=null;
+function paraOff(){
+  if(SCROLL){ window.removeEventListener('scroll',SCROLL);
+              window.removeEventListener('resize',SCROLL); SCROLL=null; }
+  [PARA,SCRIM].forEach(function(n){ if(n&&n.parentNode) n.parentNode.removeChild(n); });
+  PARA=SCRIM=null; document.documentElement.removeAttribute('data-para');
+}
+function paraOn(src){
+  paraOff();
+  document.documentElement.setAttribute('data-para','on');
+  PARA=document.createElement('div'); PARA.id='sf-para';
+  PARA.innerHTML='<img decoding="async" src="'+src+'" alt="">';
+  SCRIM=document.createElement('div'); SCRIM.id='sf-scrim';
+  document.body.appendChild(PARA); document.body.appendChild(SCRIM);
+  var C0=[237,232,224], C1=[10,12,15], A0=.94, A1=.88;
+  function tick(){
+    var vh=window.innerHeight||800;
+    var t=Math.max(0,Math.min(1,(window.pageYOffset||0)/(vh*1.15)));
+    var k=t*t*(3-2*t);
+    SCRIM.style.background='rgba('+
+      Math.round(C0[0]+(C1[0]-C0[0])*k)+','+Math.round(C0[1]+(C1[1]-C0[1])*k)+','+
+      Math.round(C0[2]+(C1[2]-C0[2])*k)+','+(A0+(A1-A0)*k).toFixed(3)+')';
+  }
+  SCROLL=function(){ window.requestAnimationFrame(tick); };
+  window.addEventListener('scroll',SCROLL,{passive:true});
+  window.addEventListener('resize',SCROLL,{passive:true});
+  tick();
+}
+
+/* ---- the three directors, marked on their own cards -------------------- */
+function markBoard(on){
+  $$('#pc .tc .Kbrd').forEach(function(n){ n.parentNode.removeChild(n); });
+  $$('#pc .tc.Kfdr').forEach(function(c){ c.classList.remove('Kfdr'); });
+  if(!on) return;
+  var D=Q.D(); if(!D||!D.board) return;
+  var names=D.board.map(function(b){ return (b.n||'').trim().toLowerCase(); });
+  $$('#pc .tc').forEach(function(c){
+    var nm=c.querySelector('.u-name'); if(!nm) return;
+    if(names.indexOf(nm.textContent.trim().toLowerCase())<0) return;
+    c.classList.add('Kfdr');
+    var role=c.querySelector('.a-rl')||nm;
+    var s=document.createElement('span'); s.className='Kbrd'; s.textContent='Board';
+    role.parentNode.insertBefore(s,role.nextSibling);
+  });
+}
+
+/* ---- render one section, and only that one ---------------------------- */
+function render(secId){
+  var s=SEC.filter(function(x){return x.id===secId;})[0];
+  var bank=s.bank()||{}, v=state[secId], def=bank[v]||bank.BASE;
+  var m=document.getElementById(s.mount); if(!m||!def) return;
+  document.documentElement.setAttribute(s.attr,v);
+  m.innerHTML=def.html();
+  $$('.S',m).forEach(function(n){ n.classList.add('an'); });
+  $$('.Srule',m).forEach(function(n){ n.classList.add('dx'); });
+  wire(m,secId);
+  observe(m);
+  frame();
+}
+function wire(m,secId){
+  /* accordions, wherever a section uses them */
+  $$('.Sacc .Sah,.Afmt .Afh,.Q04 .Qh,.L07 .Lh',m).forEach(function(b){
+    b.addEventListener('click',function(){
+      var row=b.parentNode;
+      row.classList.toggle('on');
+      var mk=b.querySelector('.Smk,.Afmk,.Qmk');
+      if(mk) mk.textContent=row.classList.contains('on')?'−':'+';
+      /* AC04 · the photograph follows the selected format */
+      var f=row.getAttribute('data-fmt');
+      if(f!=null&&row.classList.contains('on')){
+        var img=$('.Afig .Sim img',m);
+        if(img) img.setAttribute('src',[Q.IMG.acStud,Q.IMG.acStud,Q.IMG.acGrp][+f]||Q.IMG.acStud);
+        $$('.Afmt .Af',m).forEach(function(o){ if(o!==row){ o.classList.remove('on');
+          var k=o.querySelector('.Afmk'); if(k) k.textContent='+'; } });
+      }
+    });
+    /* both statements open means the marker must say so */
+    var row=b.parentNode, mk=b.querySelector('.Smk,.Afmk,.Qmk');
+    if(mk) mk.textContent=row.classList.contains('on')?'−':'+';
+  });
+  /* the capability you are reading resolves; nothing else moves */
+  var items=$$('.Li',m);
+  if(items.length){
+    items.forEach(function(el){
+      el.addEventListener('mouseenter',function(){
+        items.forEach(function(n){ n.classList.remove('on'); });
+        el.classList.add('on');
+      });
+    });
+    var host=$('.Lwrap',m);
+    if(host) host.addEventListener('mouseleave',function(){
+      items.forEach(function(n){ n.classList.remove('on'); }); });
+  }
+  /* PL02 / PL10 · the break in the rule is measured off the wordmark */
+  ['L02','L10'].forEach(function(k){
+    var ax=$('.'+k,m), hub=$('.'+k+' .Lhub',m);
+    if(!ax||!hub) return;
+    later(function(){
+      var w=hub.getBoundingClientRect().width;
+      if(w>20) ax.style.setProperty('--gap',Math.round(w/2+24)+'px');
+    },60);
+  });
+  /* PB03 · the photograph meets the LOWER edge of the two-line heading */
+  if(secId==='people'&&state.people==='PB03'){
+    later(function(){
+      var t=$('.Pside .St',m), main=$('.Pmain',m);
+      if(t&&main&&!matchMedia('(max-width:900px)').matches)
+        main.style.setProperty('--Pdrop',Math.round(t.getBoundingClientRect().height)+'px');
+    },90);
+  }
+}
+function observe(m){
+  var ns=$$('.an,.dx,.L09,.Q09',m); if(!ns.length) return;
+  if(!window.IntersectionObserver){ ns.forEach(function(n){ n.classList.add('in'); }); return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(!e.isIntersecting) return;
+      e.target.classList.add('in'); io.unobserve(e.target); }); },{threshold:.1});
+  ns.forEach(function(n){ io.observe(n); });
+}
+/* the opening also owns the page header, the nav treatment and the parallax */
+function renderOpening(){
+  var bank=window.__sfLAB_O||{}, v=state.opening, def=bank[v]||bank.BASE;
+  var m=document.getElementById('sfo'); if(!m||!def) return;
+  document.documentElement.setAttribute('data-opening',v);
+  var head=document.getElementById('tm-head');
+  if(head) head.classList.add('sfl-hidden');
+  m.innerHTML=(def.para==='grid'?'<div class="Ogrid fade"></div>':'')+def.html();
+  if(def.para==='keep')      paraOn(def.src||Q.IMG.cad);
+  else if(def.para==='alt')  paraOn(def.src||Q.IMG.cadTex);
+  else                       paraOff();
+  frame();
+}
+
+/* ---- tonal runs are surfaced, never auto-corrected -------------------- */
+function tone(secId){
+  var bank=SEC.filter(function(x){return x.id===secId;})[0].bank()||{};
+  var v=state[secId], def=bank[v]; if(!def) return '';
+  var h=''; try{ h=def.html(); }catch(e){ return ''; }
+  if(/f-navy/.test(h)) return 'navy';
+  if(/f-cream/.test(h)) return 'cream';
+  if(/f-ink/.test(h)) return 'ink';
+  if(/f-black/.test(h)) return 'black';
+  return '';
+}
+function warnings(){
+  var seq=['people','platform','academy','opportunities'].map(tone), w=[];
+  for(var i=1;i<seq.length;i++){
+    if(seq[i]&&seq[i]===seq[i-1]) w.push(seq[i]+' beside '+seq[i]);
+    else if((seq[i]==='ink'&&seq[i-1]==='black')||(seq[i]==='black'&&seq[i-1]==='ink'))
+      w.push('weak boundary');
+  }
+  return w;
+}
+
+/* ======================= THE CONFIGURATOR UI ============================ */
+var UI=null;
+function buildUI(){
+  if(UI) return;
+  UI=document.createElement('div'); UI.id='sfcfg';
+  UI.innerHTML=
+   '<div class="c-in">'+
+     '<div class="c-row"><span class="c-lab">Section</span>'+
+       '<span class="c-scroll" id="cfg-tabs"></span>'+
+       '<button class="c-mini" id="cfg-hide">Hide</button></div>'+
+     '<div class="c-row"><span class="c-lab" id="cfg-active">People</span>'+
+       '<button class="c-mini" id="cfg-prev">‹</button>'+
+       '<span class="c-scroll" id="cfg-vars"></span>'+
+       '<button class="c-mini" id="cfg-next">›</button></div>'+
+     '<div class="c-row c-meta"><span class="c-sum" id="cfg-sum"></span>'+
+       '<button class="c-code" id="cfg-code" title="click to select">—</button>'+
+       '<button class="c-mini" id="cfg-rs">Reset section</button>'+
+       '<button class="c-mini" id="cfg-ra">Reset all</button>'+
+       '<button class="c-mini" id="cfg-arch">Archive</button></div>'+
+     '<div class="c-note" id="cfg-note"></div>'+
+   '</div>';
+  document.body.appendChild(UI);
+  var tab=document.createElement('div'); tab.id='sfcfg-tab'; tab.textContent='Show controls';
+  document.body.appendChild(tab);
+  bind(tab,'click',function(){ showUI(true); });
+
+  var tabs=$('#cfg-tabs',UI);
+  SEC.forEach(function(s){
+    var b=document.createElement('button'); b.className='c-tab'; b.textContent=s.label;
+    b.setAttribute('data-sec',s.id);
+    b.addEventListener('click',function(){ active=s.id; paint(); });
+    tabs.appendChild(b);
+  });
+  bind($('#cfg-prev',UI),'click',function(){ step(-1); });
+  bind($('#cfg-next',UI),'click',function(){ step(1); });
+  bind($('#cfg-hide',UI),'click',function(){ showUI(false); });
+  bind($('#cfg-rs',UI),'click',function(){ set(active,'BASE',true); });
+  bind($('#cfg-ra',UI),'click',function(){
+    SEC.forEach(function(s){ state[s.id]='BASE'; });
+    SEC.forEach(function(s){ s.id==='opening'?renderOpening():render(s.id); });
+    markBoard(true); writeHash(true); paint();
+  });
+  bind($('#cfg-arch',UI),'click',function(){
+    try{ if(window.__sfTeamGo) window.__sfTeamGo('DEV'); }catch(e){}
+  });
+  bind($('#cfg-code',UI),'click',function(){
+    var t=$('#cfg-code',UI);
+    try{ if(navigator.clipboard) navigator.clipboard.writeText(t.textContent); }catch(e){}
+    var r=document.createRange(); r.selectNodeContents(t);
+    var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  });
+  /* The old review bar also listens for the arrows on document, and it moves
+     the WHOLE page to another historical state — which would tear the lab
+     down mid-keystroke. This runs in the capture phase and stops the event, so
+     an arrow key can only ever move the section that is active here. */
+  bind(document,'keydown',function(ev){
+    if(!built||ev.metaKey||ev.ctrlKey||ev.altKey) return;
+    var t=ev.target||{}; var tag=(t.tagName||'').toLowerCase();
+    if(tag==='input'||tag==='textarea'||t.isContentEditable) return;
+    if(ev.key==='ArrowLeft'||ev.key==='ArrowRight'){
+      step(ev.key==='ArrowRight'?1:-1);
+      ev.preventDefault(); ev.stopPropagation();
+      if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+    } else if(ev.key==='h'||ev.key==='H'){
+      showUI(!uiOn); ev.stopPropagation();
+      if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+    }
+  },true);
+}
+function showUI(on){
+  uiOn=!!on;
+  if(UI) UI.classList.toggle('off',!uiOn);
+  var t=document.getElementById('sfcfg-tab'); if(t) t.classList.toggle('on',!uiOn);
+  var r=document.getElementById('sf-review'); if(r) r.style.display='none';
+}
+function step(d){
+  var list=order(active), i=list.indexOf(state[active]);
+  if(i<0) i=0;
+  set(active,list[(i+d+list.length)%list.length],true);
+}
+function set(secId,v,push){
+  if(state[secId]===v){ paint(); return; }
+  state[secId]=v;
+  if(secId==='opening') renderOpening(); else render(secId);
+  writeHash(push); paint();
+}
+function paint(){
+  if(!UI) return;
+  $$('#cfg-tabs .c-tab',UI).forEach(function(b){
+    b.classList.toggle('on',b.getAttribute('data-sec')===active); });
+  var s=SEC.filter(function(x){return x.id===active;})[0];
+  $('#cfg-active',UI).textContent=s.label;
+  var wrap=$('#cfg-vars',UI); wrap.innerHTML='';
+  order(active).forEach(function(v){
+    var b=document.createElement('button');
+    b.textContent=v; b.className=(state[active]===v?'on':'');
+    b.addEventListener('click',function(){ set(active,v,true); });
+    wrap.appendChild(b);
+  });
+  var w=warnings();
+  $('#cfg-sum',UI).innerHTML=SEC.map(function(x){
+    return x.label.toUpperCase()+' <b>'+state[x.id]+'</b>'; }).join(' · ')+
+    (w.length?' <span class="warn">⚠ '+w.join(' · ')+'</span>':'');
+  $('#cfg-code',UI).textContent=shortCode();
+  var bank=s.bank()||{}, def=bank[state[active]];
+  $('#cfg-note',UI).innerHTML=def&&def.note?('<b>'+state[active]+'</b> — '+def.note):'';
+  var on=wrap.querySelector('.on'); if(on&&on.scrollIntoView) try{
+    on.scrollIntoView({block:'nearest',inline:'center'}); }catch(e){}
+}
+
+/* ======================= BUILD / TEARDOWN ============================== */
+function build(){
+  if(built) return true;
+  if(!Q.harvest()) return false;
+  var pc=document.getElementById('pc'); if(!pc) return false;
+  var head=document.getElementById('tm-head');
+  makeMount('sfo', head?head.nextSibling||pc:pc);
+  var after=pc.nextSibling;
+  ['sfp','sfl-pl','sfa','sfq'].forEach(function(id){
+    var m=document.createElement('div'); m.id=id; m.className='sfl';
+    pc.parentNode.insertBefore(m, after);
+  });
+  document.documentElement.setAttribute('data-lab','1');
+  built=true;
+  fromHash();
+  renderOpening();
+  ['people','platform','academy','opportunities'].forEach(render);
+  markBoard(true);
+  buildUI(); showUI(true); paint(); writeHash(false);
+  /* re-asserted after the page's own timers have finished with the address bar */
+  later(function(){ writeHash(false); },420);
+  later(function(){ writeHash(false); },1400);
+  later(frame,700); later(frame,1600);
+  bind(window,'resize',function(){ later(frame,180); },{passive:true});
+  bind(window,'popstate',function(){
+    if(!fromHash()) return;
+    renderOpening();
+    ['people','platform','academy','opportunities'].forEach(render);
+    paint();
+  });
+  return true;
+}
+function off(){
+  TM.forEach(clearTimeout); TM=[];
+  LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+  paraOff(); markBoard(false);
+  ['sfo','sfp','sfl-pl','sfa','sfq'].forEach(function(id){
+    var m=document.getElementById(id); if(m&&m.parentNode) m.parentNode.removeChild(m); });
+  ['sfcfg','sfcfg-tab'].forEach(function(id){
+    var m=document.getElementById(id); if(m&&m.parentNode) m.parentNode.removeChild(m); });
+  UI=null; built=false;
+  var head=document.getElementById('tm-head'); if(head) head.classList.remove('sfl-hidden');
+  var r=document.getElementById('sf-review'); if(r) r.style.display='';
+  document.documentElement.removeAttribute('data-lab');
+  SEC.forEach(function(s){ document.documentElement.removeAttribute(s.attr); });
+}
+
+/* ---- one entry on the old bar; every historical state stays where it was */
+var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+notes.LAB='the section configurator — five independently variable sections, fifty variations, one control. Every historical full-page state is still on this bar; the configurator does not touch them';
+window.__sfTeamExtra={
+  states:['LAB'].concat(prev.states||[]),
+  note:notes,
+  off:function(){ off(); try{ prev.off&&prev.off(); }catch(e){} },
+  apply:function(v){
+    if(v!=='LAB'){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+    try{ prev.apply&&prev.apply('DEV'); }catch(e){}
+    var tries=0;
+    (function go(){ if(build()) return;
+      if(++tries>60) return; later(go,150); })();
+  }
+};
+window.__sfLABgo=function(){ try{ window.__sfTeamGo&&window.__sfTeamGo('LAB'); }catch(e){} };
+})();
+</script>
