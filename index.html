@@ -26876,8 +26876,25 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
      and left aligned, the rear wheel and the rear structure come through
      whole and the front runs off to the right — the same way the drawing is
      cropped elsewhere on the page. */
-  var CADSZ='auto, 88px 88px, 88px 88px, 128vw';
-  var CADPS='0px 0px, 0px 0px, 0px 0px, 0px 42%';
+  /* AUG 2026 · the whole machine, inside the screen.
+     128vw and a left edge put the rear wheel on the screen but ran the front
+     wheel off the right — the drawing read as a fragment. The file is
+     1800x1002 and the machine occupies x=36..1735 of it, so the drawn width
+     that puts the visible extremities on a chosen pair of screen edges is
+     (screen * (1-2*inset)) / 0.94444, and the offset that lands the rear tyre
+     on the left inset is inset*screen - (36/1800)*W. 2% clear on each side.
+     Computed from the element's live width, never from vw, so the scrollbar
+     can never shift it. */
+  var CADSPAN=(1735-36+1)/1800;      /* 0.944444 of the file is machine */
+  var CADIN=0.02;                    /* clear screen each side          */
+  function cadVals(e){
+    var cw=e.getBoundingClientRect().width||document.documentElement.clientWidth;
+    if(!cw) return null;
+    var W=cw*(1-2*CADIN)/CADSPAN;
+    var X=cw*CADIN-(36/1800)*W;
+    return ['auto, 88px 88px, 88px 88px, '+W.toFixed(2)+'px auto',
+            '0px 0px, 0px 0px, 0px 0px, '+X.toFixed(2)+'px 42%'];
+  }
   function cad(v){
     var e=$('#sf-lab-mount .sfc-cad'); if(!e) return;
     if(v!=='37'||document.documentElement.clientWidth>767){
@@ -26893,10 +26910,11 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
       e.dataset.sf37cs=e.style.getPropertyValue('background-size');
       e.dataset.sf37cp=e.style.getPropertyValue('background-position');
     }
-    if(e.style.getPropertyValue('background-size')!==CADSZ)
-      e.style.setProperty('background-size',CADSZ,'important');
-    if(e.style.getPropertyValue('background-position')!==CADPS)
-      e.style.setProperty('background-position',CADPS,'important');
+    var V=cadVals(e); if(!V) return;
+    if(e.style.getPropertyValue('background-size')!==V[0])
+      e.style.setProperty('background-size',V[0],'important');
+    if(e.style.getPropertyValue('background-position')!==V[1])
+      e.style.setProperty('background-position',V[1],'important');
     if(!CADMO && window.MutationObserver){
       CADMO=new MutationObserver(function(){ if(!CADLOCK){ CADLOCK=1; cad('37'); CADLOCK=0; } });
       CADMO.observe(e,{attributes:true,attributeFilter:['style']});
@@ -27296,6 +27314,79 @@ html[data-sfw43="37"] #sfsec-dna .sf-bp{
     grid-column:1 / -1 !important;}
 }
 
+
+/* =========================================================================
+   AUGUST PASS — FILM CROP, TRANSITION, FOOTER
+   Everything below is inside @media(max-width:767px) and prefixed
+   html[data-sfw43="37"]. Nothing here can reach the desktop or an approved
+   state.
+   ========================================================================= */
+@media(max-width:767px){
+
+/* ---- the film, uncropped ----------------------------------------------
+   frame_factory-285.jpg is 2000 x 1333 — exactly 3:2. The frame was 16/9,
+   so object-fit:cover threw away 25% of the picture's height: at 320 the
+   panel was 180px tall and the mechanism sat hard against both edges.
+   At 3/2 the frame and the file are the same shape, so cover crops NOTHING
+   and the whole source is visible, top to bottom. It is also 33px taller at
+   320 (180 -> 213) and 41px taller at 393 (221 -> 262).
+   3/2 is not an arbitrary number: the factory image and the SWITCH hero on
+   this page are already 3/2 on a phone, so the three now read as one family.
+   Width is untouched — the film still runs edge to edge — and the play ring
+   and FILM COMING SOON are centred by their own flex box, so they stay
+   centred in the taller frame with no rule needed. */
+  html[data-sfw43="37"] .sf-video-frame{
+    aspect-ratio:3 / 2 !important;}
+  html[data-sfw43="37"] .sf-video-frame > img{
+    object-fit:cover !important;object-position:50% 50% !important;}
+
+/* ---- TRANSLATION, closer to the black --------------------------------
+   41px between the bottom of the black panel and the eyebrow read as a
+   break rather than a join. 26px keeps the seam legible and puts the copy
+   back with the section it belongs to. Bottom padding is untouched. */
+  html[data-sfw43="37"] #sf-m11 .m11-zone.m11-b{
+    padding-top:26px !important;}
+
+/* ---- metrics -> FEATURED VENTURE -------------------------------------
+   58px of cream under the four numbers plus 88px above the venture block is
+   146px of nothing — the biggest empty run on the phone. 32 + 48 = 80px is
+   still a clear section break at this width and gives back 66px. Neither
+   value exists above 767. */
+  html[data-sfw43="37"] #sf-m11 .m11-zone.m11-b{
+    padding-bottom:32px !important;}
+  html[data-sfw43="37"] #fv-stage{
+    padding-top:48px !important;}
+
+/* ---- the footer, three columns ---------------------------------------
+   SILENT FOUNDRY | HONG KONG | SHANGHAI at 28 / 36 / 36, all three centred.
+   The logo block stops spanning the row and takes the first cell; the mark
+   comes down from 160px to a 92px cap and loses the -13px pull that was
+   hanging it outside the page margin. The side padding drops 24 -> 12 so the
+   three columns have room; the addresses come down to 10px so the longest
+   line ("Kiu Fu Commercial Building") still sets in the narrower measure.
+   Navigate is already display:none on a phone, so it takes no cell. */
+  html[data-sfw43="37"] .footer-inner{
+    grid-template-columns:28% 36% 36% !important;
+    column-gap:0 !important;row-gap:0 !important;
+    padding-left:12px !important;padding-right:12px !important;
+    align-items:start !important;}
+  html[data-sfw43="37"] .footer-inner > .footer-logo-wrap{
+    grid-column:auto !important;}
+  html[data-sfw43="37"] .footer-inner > .footer-logo-wrap,
+  html[data-sfw43="37"] .footer-inner > .footer-col{
+    text-align:center !important;padding-left:0 !important;padding-right:0 !important;}
+  html[data-sfw43="37"] .footer-inner .footer-logo{
+    margin-left:auto !important;margin-right:auto !important;
+    width:100% !important;max-width:92px !important;height:auto !important;}
+  html[data-sfw43="37"] .footer-inner .footer-logo svg{
+    width:100% !important;height:auto !important;display:block !important;}
+  html[data-sfw43="37"] .footer-inner .footer-col address,
+  html[data-sfw43="37"] .footer-inner .footer-col p{
+    font-size:10px !important;line-height:1.75 !important;
+    letter-spacing:0.02em !important;}
+  html[data-sfw43="37"] .footer-inner .footer-col h5{
+    margin-bottom:8px !important;}
+}
 </style>
 
 </body>
