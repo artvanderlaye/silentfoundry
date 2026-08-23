@@ -27389,5 +27389,66 @@ html[data-sfw43="37"] #sfsec-dna .sf-bp{
 }
 </style>
 
+<style id="sf-d48-css">
+/* =========================================================================
+   DESKTOP-ONLY SPACING — the two bands around the manufacturing photograph.
+
+   THE REFERENCE, measured rather than assumed.
+   The film frame ends at 2098 and the blue HOW WE BUILD panel begins at 2158
+   at 1440: the interval is 60px, not 55. It is .sf-video's own padding-bottom
+   and nothing else sits in it. 60 is therefore the number to match.
+
+   WHAT WAS THERE.
+   The factory picture lives in a cream wrapper with a spacer div above it and
+   another below — a 40px band each side, so:
+       blue panel bottom  3261  ->  picture top     3300   = 39.4px
+       picture bottom     4095  ->  Marshall top    4134   = 39.4px
+   Both are now 60, so all three intervals down that run of the page are the
+   same 60px.
+
+   HOW.
+   The two spacers carry their height as an INLINE style, written by the
+   page's own script — 60px in the source, rewritten to 40px at runtime. An
+   inline value without !important is beaten by a stylesheet rule that has
+   one, so this is CSS, not another script fighting over the same property.
+   The spacers are tagged once with a class so they can be addressed without
+   :has() and without a selector that could match anything else on the page.
+
+   SCOPE.
+   1024 and up only. Below 1024 the bands stay at 40px exactly as they are
+   now, so the phone and tablet layouts shipped in the last pass are not
+   touched. Nothing else in this file changes a size, a crop, a colour, a
+   typeface, an animation or an order.
+   ========================================================================= */
+@media(min-width:1024px){
+  html[data-sfw43="37"] .sf-fband{height:60px !important;}
+}
+</style>
+
+<script id="sf-d48-js">
+(function(){
+  /* the two spacer divs either side of .factory-solo: siblings of the
+     picture that carry a plain pixel height inline. The same test the page's
+     own band code uses, so exactly the same two elements are found. */
+  function tag(){
+    var fs=document.querySelector('.factory-solo');
+    if(!fs||!fs.parentElement) return false;
+    var n=0;
+    [].slice.call(fs.parentElement.children).forEach(function(k){
+      if(k===fs||!k.style) return;
+      if(!/^\d+(\.\d+)?px$/.test(k.style.height||'')) return;
+      k.classList.add('sf-fband'); n++;
+    });
+    return n>0;
+  }
+  var tries=0;
+  (function poll(){
+    if(tag()&&++tries>1) return;      /* tag twice: once early, once settled */
+    if(tries>40) return;
+    tries++; setTimeout(poll,150);
+  })();
+})();
+</script>
+
 </body>
 </html>
