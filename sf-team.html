@@ -8744,14 +8744,17 @@ html[data-sfl] .drawy.cin{transform:scaleY(1);}
     var L=pair.children[0], R=pair.children[1];
     var t=L&&L.querySelector('.sf4-title'), p=L&&L.querySelector('p');
     if(!t||!p) return null;
-    var miss=null;
+    var miss=null, vis=null;
     [].slice.call(R?R.children:[]).forEach(function(k){
-      if(!miss&&/mission/i.test(k.textContent||'')) miss=k; });
-    var mLab='Mission', mTxt='';
-    if(miss&&miss.children.length>1){
-      mLab=(miss.children[0].textContent||'').replace(/[^A-Za-z ]/g,'').trim()||'Mission';
-      mTxt=(miss.children[1].textContent||'').trim();
+      if(!miss&&/mission/i.test(k.textContent||'')) miss=k;
+      if(!vis &&/vision/i.test(k.textContent||''))  vis=k; });
+    function pull(node,fallback){
+      if(!node||node.children.length<2) return ['',''];
+      return [(node.children[0].textContent||'').replace(/[^A-Za-z ]/g,'').trim()||fallback,
+              (node.children[1].textContent||'').trim()];
     }
+    var m=pull(miss,'Mission'), vv=pull(vis,'Vision');
+    var mLab=m[0], mTxt=m[1], vLab=vv[0]||'Vision', vTxt=vv[1];
     var board=[].slice.call(document.querySelectorAll('.zboard-rows .tm-brow, #tm-close .tm-brow'))
       .map(function(r){ var s=r.children;
         return {n:(s[0]?s[0].textContent:'').trim(), r:(s[1]?s[1].textContent:'').trim()}; });
@@ -8769,7 +8772,7 @@ html[data-sfl] .drawy.cin{transform:scaleY(1);}
        has finished composing. */
     if(!board.length||!caps.length||!opp) return null;
     C={ title:t.innerHTML, intro:p.textContent.trim(),
-        mLab:mLab, mTxt:mTxt, board:board, caps:caps,
+        mLab:mLab, mTxt:mTxt, vLab:vLab, vTxt:vTxt, board:board, caps:caps,
         pTitle:(document.querySelector('.sf6-t')||{}).innerHTML||'',
         pText:(document.querySelector('.sf6-p')||{}).textContent.trim()||'',
         oLab:oppEy, oText:opp||'',
@@ -8869,7 +8872,8 @@ html[data-sfl] .drawy.cin{transform:scaleY(1);}
   function BF(field,inner,extra){   /* full-bleed: no frame padding */
     return '<section class="L '+(field||'')+' '+(extra||'')+'"><div class="Lfull">'+inner+'</div></section>';
   }
-  window.__sfLharvest=function(){ var r=harvest(); if(r) window.__sfLC=r.caps; return r; };
+  window.__sfLharvest=function(){ var r=harvest();
+    if(r){ window.__sfLC=r.caps; window.__sfLdata=r; } return r; };
   window.__sfLparts={T:T,P:P,EY:EY,PT:PT,PP:PP,MI:MI,IMG:IMG,BD:BD,CAP:CAP,
                      OPP:OPP,RULE:RULE,CMF:CMF,B:B,BF:BF,IM:IM};
 })();
@@ -9335,7 +9339,9 @@ html[data-sfl] .L19 .Ley{color:rgba(10,10,10,.4);}
 
 <script id="sf-tml-eng">
 (function(){
-  var V=['01','02','03','04','05','06','07','08','09','10',
+  /* 04 is gone from here: it has been promoted to BASE2 and refined in the
+     next layer, and the brief asks for it to appear once, after 20. */
+  var V=['01','02','03','05','06','07','08','09','10',
          '11','12','13','14','15','16','17','18','19','20'];
   var NOTE={
 '01':'editorial spread — title and introduction on the left, the founders as a navy duotone trio on the right, Mission as a full-width manifesto, then the platform on ink with the capabilities drawn as a pathway',
@@ -9445,6 +9451,832 @@ html[data-sfl] .L19 .Ley{color:rgba(10,10,10,.4);}
         var C=(window.__sfLharvest||function(){})();
         if(C){
           document.documentElement.setAttribute('data-sfl',v);
+          build(v); return;
+        }
+        if(++tries>40) return;
+        later(go,150);
+      })();
+      later(frame,1200); later(frame,2600);
+      on(window,'resize',function(){ later(frame,200); });
+    }
+  };
+})();
+</script>
+
+<style id="sf-b2-css">
+/* =========================================================================
+   BASE2, AND 21 … 40.
+
+   BASE2 is direction 04 rebuilt. What survives from it: the structural black
+   field, the large manufacturing photograph, the cyan photographic treatment,
+   the move out of the cream roster into a darker industrial chapter, and
+   restrained gold and cyan. What is gone: the dossier header, the sheet
+   number, the SF-01/02/03 board codes and the 01–05 capability numbers —
+   invented notation that told the reader nothing.
+
+   WHAT REPLACES IT
+   Symbols the site already uses. The page's own footer strip carries
+   ⌀ ⊥ ∠ ⊞ ∥ ± ↧ ∇ △ ∴ ∫ ∵, and Mission, Vision and Opportunities already
+   carry ⇕, ⊕ and ∴ in the production markup. Those are the marks used here.
+   Nothing new is invented, and nothing stands in for information it does
+   not have.
+
+   THE SEQUENCE
+     THE PEOPLE BEHIND IT  →  introduction  →  the manufacturing photograph
+     →  Mission and Vision  →  Board of Directors  →  the Platform
+     →  Opportunities, as a separate closing chapter.
+   ========================================================================= */
+
+html[data-sfb2]{
+  --cream:#f6f3ec; --cream2:#efece6; --cream3:#e8e2d9; --clay:#e4ded3;
+  --navy:#1e2a4a; --navy2:#282b33; --navy3:#171a20;
+  --ink:#12151a; --black:#0a0a0a;
+  --gold:#c8a96e; --gold2:#8a6e3a; --cyan:#00b4d8; --orange:#e43c00;
+  --alu:#b9bcc0;
+  --lgt:rgba(244,241,236,.92); --lgt2:rgba(244,241,236,.56);
+  --drk:rgba(10,10,10,.78); --drk2:rgba(10,10,10,.55);
+}
+html[data-sfb2] #tm-close,
+html[data-sfb2] .sf6,
+html[data-sfb2] .zclose{display:none !important;}
+
+/* ---------------- fields and blocks ------------------------------------- */
+#sfb2 .K{position:relative;width:100%;}
+#sfb2 .Kin{position:relative;z-index:2;
+  padding-left:var(--Kpad,24px);padding-right:var(--Kpad,24px);}
+#sfb2 .Kfull{width:100%;}
+#sfb2 .pad{padding-top:var(--pt,clamp(52px,7vh,96px));
+           padding-bottom:var(--pb,clamp(52px,7vh,96px));}
+#sfb2 .tight{--pt:clamp(30px,4vh,54px);--pb:clamp(30px,4vh,54px);}
+#sfb2 .tall{--pt:clamp(70px,10vh,132px);--pb:clamp(70px,10vh,132px);}
+#sfb2 .k-cream{background:var(--cream2);} #sfb2 .k-cream3{background:var(--cream3);}
+#sfb2 .k-clay{background:var(--clay);}    #sfb2 .k-navy{background:var(--navy);}
+#sfb2 .k-navy2{background:var(--navy2);}  #sfb2 .k-ink{background:var(--ink);}
+#sfb2 .k-black{background:var(--black);}  #sfb2 .k-alu{background:var(--alu);}
+#sfb2 .dk,#sfb2 .dk *{color:var(--lgt2);}
+#sfb2 .dk .Kt,#sfb2 .dk .Kk,#sfb2 .dk .Kname{color:var(--lgt) !important;}
+#sfb2 .dk .Key{color:var(--gold) !important;}
+#sfb2 .dk .Krule{background:rgba(244,241,236,.16);}
+
+/* ---------------- typography — BASE's ceiling is never exceeded --------- */
+#sfb2 .Kt{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.6vw,1.8rem);
+  font-weight:700;line-height:.94;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--drk);margin:0;display:block;}
+#sfb2 .Kt em{font-style:normal;letter-spacing:.14em;color:var(--gold2);}
+#sfb2 .dk .Kt em{color:var(--gold);}
+#sfb2 .Key{font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;font-weight:400;color:var(--gold2);display:block;}
+#sfb2 .Kp{font-family:'DM Sans',sans-serif;font-size:.86rem;line-height:2;
+  font-weight:300;color:var(--drk2);margin:0;max-width:min(100%,62ch);}
+#sfb2 .dk .Kp{color:var(--lgt2);}
+#sfb2 .Kk{font-family:'Bebas Neue',sans-serif;font-weight:700;
+  font-size:clamp(1rem,1.4vw,1.4rem);line-height:.96;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--drk);display:block;}
+#sfb2 .Ks{font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:300;color:var(--gold2);display:block;}
+#sfb2 .dk .Ks{color:var(--gold);}
+#sfb2 .Kname{font-family:'DM Sans',sans-serif;font-size:12.8px;letter-spacing:.12em;
+  font-weight:400;color:rgba(10,10,10,.7);display:block;}
+#sfb2 .Krole{font-family:'DM Sans',sans-serif;font-size:9.9px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:300;color:rgba(10,10,10,.32);display:block;}
+#sfb2 .dk .Krole{color:rgba(200,169,110,.62);}
+#sfb2 .Ksym{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1;
+  color:var(--gold2);display:inline-block;}
+#sfb2 .dk .Ksym{color:var(--gold);}
+#sfb2 .Krule{height:1px;background:rgba(42,46,51,.16);width:100%;}
+#sfb2 .Krule.cy{background:rgba(0,180,216,.45);}
+#sfb2 .Krule.gd{background:rgba(200,169,110,.55);}
+#sfb2 .Kcta{display:inline-flex;align-items:center;gap:10px;
+  font-family:'DM Sans',sans-serif;font-size:10.4px;letter-spacing:.26em;
+  text-transform:uppercase;font-weight:400;text-decoration:none;color:var(--drk);
+  border:1px solid rgba(138,110,58,.5);padding:14px 24px;
+  transition:border-color .3s ease,color .3s ease,background .3s ease;}
+#sfb2 .Kcta:hover{border-color:var(--gold2);color:var(--gold2);}
+#sfb2 .dk .Kcta{color:var(--lgt);border-color:rgba(200,169,110,.5);}
+#sfb2 .dk .Kcta:hover{border-color:var(--gold);color:var(--gold);}
+#sfb2 .sp{height:18px;} #sfb2 .sp2{height:clamp(28px,3.6vh,48px);}
+#sfb2 .sp3{height:clamp(44px,6vh,80px);}
+
+/* ---------------- the manufacturing photograph -------------------------- */
+#sfb2 .Kim{position:relative;overflow:hidden;display:block;background:#0d1013;}
+#sfb2 .Kim img{display:block;width:100%;height:100%;object-fit:cover;
+  object-position:var(--ipos,50% 52%);}
+#sfb2 .Kim.duo img{filter:grayscale(1) contrast(1.06) brightness(1.03);
+  mix-blend-mode:screen;}
+#sfb2 .Kim.duo::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:var(--duoB,#e6f0f2);mix-blend-mode:multiply;}
+#sfb2 .d-cyan{--duoB:#dceef2;background:#04222b;}
+#sfb2 .d-navy{--duoB:#e8eaf2;background:#141d33;}
+#sfb2 .d-gold{--duoB:#f4e9d3;background:#1a1408;}
+#sfb2 .d-alu {--duoB:#eef0f2;background:#171a1d;}
+#sfb2 .Kim.mono img{filter:grayscale(1) contrast(1.05);}
+#sfb2 .Kim.colr img{filter:none;}
+#sfb2 .Kim.split img{filter:grayscale(1) contrast(1.08);}
+#sfb2 .Kim.split::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,rgba(0,180,216,.3),rgba(30,42,74,0) 55%,
+             rgba(228,60,0,.16));mix-blend-mode:screen;}
+#sfb2 .Kim.reg::before{content:'';position:absolute;left:0;right:0;top:0;bottom:0;
+  z-index:3;pointer-events:none;
+  background:
+    linear-gradient(rgba(0,180,216,.16) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,180,216,.16) 1px,transparent 1px);
+  background-size:100% 37.5px,30px 100%;}
+#sfb2 .Kim.wipe img{clip-path:inset(0 0 0 0);}
+#sfb2 .Kim.wipe.wi img{animation:none;}
+#sfb2 .Kbig{aspect-ratio:var(--iar,16 / 6);}
+#sfb2 .Kmid{aspect-ratio:var(--iar,3 / 2);}
+#sfb2 .Kcap{font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:.24em;
+  text-transform:uppercase;font-weight:300;color:rgba(244,241,236,.42);
+  display:block;margin-top:12px;}
+@media(max-width:760px){ #sfb2 .Kbig{aspect-ratio:3 / 2;} }
+
+/* ---------------- the accordion, adapted from the index ----------------- */
+#sfb2 .Kacc{border-top:1px solid rgba(42,46,51,.16);}
+#sfb2 .dk .Kacc{border-top-color:rgba(244,241,236,.16);}
+#sfb2 .Kacc .Ka{border-bottom:1px solid rgba(42,46,51,.16);}
+#sfb2 .dk .Kacc .Ka{border-bottom-color:rgba(244,241,236,.16);}
+#sfb2 .Kacc .Kah{display:grid;grid-template-columns:26px 1fr auto;gap:16px;
+  align-items:center;padding:18px 0;cursor:pointer;background:none;border:0;
+  width:100%;text-align:left;transition:color .3s ease;}
+#sfb2 .Kacc .Kah:hover .Ksym{color:var(--cyan);}
+#sfb2 .Kacc .Kah .Kmk{font-family:'DM Sans',sans-serif;font-size:11px;
+  color:rgba(10,10,10,.3);transition:transform .4s ease,color .3s ease;}
+#sfb2 .dk .Kacc .Kah .Kmk{color:rgba(244,241,236,.35);}
+#sfb2 .Kacc .Ka.on .Kah .Kmk{transform:rotate(45deg);color:var(--gold);}
+#sfb2 .Kacc .Kab{overflow:hidden;max-height:0;transition:max-height .55s cubic-bezier(.2,.7,.26,1);}
+#sfb2 .Kacc .Ka.on .Kab{max-height:420px;}
+#sfb2 .Kacc .Kab > div{padding:0 0 20px 42px;}
+@media(max-width:640px){ #sfb2 .Kacc .Kab > div{padding-left:0;} }
+
+/* ---------------- the board register ------------------------------------ */
+#sfb2 .Kbd{border-top:1px solid rgba(42,46,51,.16);}
+#sfb2 .dk .Kbd{border-top-color:rgba(244,241,236,.16);}
+#sfb2 .Kbd .Kb{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr);
+  gap:16px;align-items:baseline;padding:16px 0;
+  border-bottom:1px solid rgba(42,46,51,.13);}
+#sfb2 .dk .Kbd .Kb{border-bottom-color:rgba(244,241,236,.13);}
+#sfb2 .Kbd .Kb .Krole{text-align:right;}
+#sfb2 .Kbd-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 clamp(18px,3vw,44px);}
+#sfb2 .Kbd-row .Kb{display:block;border:0;padding:0;}
+#sfb2 .Kbd-row .Krole{text-align:left;margin-top:7px;}
+#sfb2 .Kbd-found{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;border-top:1px solid rgba(200,169,110,.5);}
+#sfb2 .Kbd-found .Kb{display:block;border:0;padding:20px clamp(14px,2vw,28px) 0 0;}
+@media(max-width:760px){
+  #sfb2 .Kbd .Kb{grid-template-columns:22px 1fr;}
+  #sfb2 .Kbd .Kb .Krole{grid-column:2;text-align:left;margin-top:6px;}
+  #sfb2 .Kbd-row,#sfb2 .Kbd-found{grid-template-columns:1fr;gap:16px 0;}
+}
+
+/* ---------------- the platform, seven architectures --------------------- */
+/* infra — one horizontal line, five stations, no numbers */
+#sfb2 .Kinf{position:relative;display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding-top:38px;}
+#sfb2 .Kinf::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:rgba(200,169,110,.55);}
+#sfb2 .Kinf .Ki{position:relative;padding-right:16px;}
+/* the mark belongs ON the line, not on the word: .Ki starts below the
+   container's 38px padding, so the offset has to carry it back up to 0. */
+#sfb2 .Kinf .Ki::before{content:'';position:absolute;left:0;top:-41px;width:7px;height:7px;
+  background:var(--gold);transform:rotate(45deg);}
+#sfb2 .Kinf .Ki .Ks{margin-top:8px;}
+/* spine — a vertical line with the five hung off it */
+#sfb2 .Kspine{position:relative;padding-left:34px;}
+#sfb2 .Kspine::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:1px;
+  background:rgba(200,169,110,.45);}
+#sfb2 .Kspine .Ki{position:relative;padding:16px 0;}
+#sfb2 .Kspine .Ki::before{content:'';position:absolute;left:-32px;top:22px;width:9px;height:9px;
+  border:1px solid var(--gold);border-radius:50%;background:transparent;}
+#sfb2 .Kspine .Ki .Ks{margin-top:7px;}
+/* centre — the venture at the middle, capabilities on one axis each side */
+#sfb2 .Kctr{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  gap:clamp(18px,3vw,48px);align-items:center;}
+#sfb2 .Kctr .Kcol{display:block;}
+#sfb2 .Kctr .Kcol .Ki{padding:14px 0;border-bottom:1px solid rgba(244,241,236,.13);}
+#sfb2 .Kctr .Kcol.r{text-align:right;}
+#sfb2 .Kctr .Khub{padding:26px 24px;text-align:center;
+  box-shadow:inset 0 0 0 1px rgba(200,169,110,.45);}
+/* reg — a narrow ruled capability register */
+#sfb2 .Kreg{border-top:1px solid rgba(42,46,51,.16);}
+#sfb2 .dk .Kreg{border-top-color:rgba(244,241,236,.16);}
+#sfb2 .Kreg .Ki{display:grid;grid-template-columns:26px minmax(0,1fr) minmax(0,1fr);
+  gap:16px;align-items:baseline;padding:15px 0;
+  border-bottom:1px solid rgba(42,46,51,.12);}
+#sfb2 .dk .Kreg .Ki{border-bottom-color:rgba(244,241,236,.12);}
+#sfb2 .Kreg .Ki .Ks{text-align:right;}
+/* band — one full-width strip, capabilities divided by hairlines */
+#sfb2 .Kband{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;}
+#sfb2 .Kband .Ki{padding:clamp(20px,2.6vw,34px) clamp(14px,1.8vw,24px);
+  box-shadow:inset 1px 0 0 rgba(244,241,236,.13);}
+#sfb2 .Kband .Ki:first-child{box-shadow:none;}
+#sfb2 .Kband .Ki .Ks{margin-top:9px;}
+/* gates — two columns either side of a rule */
+#sfb2 .Kgate{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 clamp(24px,4vw,64px);position:relative;}
+#sfb2 .Kgate::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;
+  background:rgba(200,169,110,.35);}
+#sfb2 .Kgate .Ki{padding:15px 0;border-bottom:1px solid rgba(42,46,51,.12);}
+#sfb2 .dk .Kgate .Ki{border-bottom-color:rgba(244,241,236,.13);}
+@media(max-width:900px){
+  #sfb2 .Kinf,#sfb2 .Kband{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:26px;}
+  #sfb2 .Kband .Ki{box-shadow:none;padding-left:0;}
+  #sfb2 .Kctr{grid-template-columns:1fr;}
+  #sfb2 .Kctr .Kcol.r{text-align:left;}
+  #sfb2 .Kgate{grid-template-columns:1fr;}
+  #sfb2 .Kgate::before{display:none;}
+  #sfb2 .Kreg .Ki{grid-template-columns:22px 1fr;}
+  #sfb2 .Kreg .Ki .Ks{grid-column:2;text-align:left;margin-top:6px;}
+}
+@media(max-width:560px){ #sfb2 .Kinf,#sfb2 .Kband{grid-template-columns:1fr;} }
+
+/* ---------------- the closing chapter ----------------------------------- */
+#sfb2 .Kop{position:relative;}
+#sfb2 .Kop-split{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:clamp(24px,4vw,64px);align-items:end;}
+#sfb2 .Kop-portal{box-shadow:inset 0 0 0 1px rgba(200,169,110,.4);
+  padding:clamp(28px,4vw,56px);}
+#sfb2 .Kop-img{position:relative;isolation:isolate;overflow:hidden;}
+#sfb2 .Kop-img .Kbackim{position:absolute;inset:0;z-index:0;}
+#sfb2 .Kop-img .Kbackim img{width:100%;height:100%;object-fit:cover;display:block;}
+#sfb2 .Kop-img .Kbackim::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(10,12,15,.93),rgba(10,12,15,.66));}
+@media(max-width:760px){ #sfb2 .Kop-split{grid-template-columns:1fr;gap:24px;} }
+
+/* ---------------- shared grids ------------------------------------------ */
+#sfb2 .Kg{display:grid;gap:clamp(20px,3vw,52px);}
+#sfb2 .g21{grid-template-columns:minmax(0,2fr) minmax(0,1fr);}
+#sfb2 .g12{grid-template-columns:minmax(0,1fr) minmax(0,2fr);}
+#sfb2 .g11{grid-template-columns:repeat(2,minmax(0,1fr));}
+#sfb2 .g111{grid-template-columns:repeat(3,minmax(0,1fr));}
+@media(max-width:900px){
+  #sfb2 .g21,#sfb2 .g12,#sfb2 .g11,#sfb2 .g111{grid-template-columns:1fr;}
+}
+
+/* ---------------- quiet motion ------------------------------------------ */
+#sfb2 .an{opacity:0;transform:translateY(12px);
+  transition:opacity .85s ease,transform .85s cubic-bezier(.2,.7,.26,1);}
+#sfb2 .an.in{opacity:1;transform:none;}
+#sfb2 .dx{transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1.4s cubic-bezier(.2,.7,.26,1);}
+#sfb2 .dx.in{transform:scaleX(1);}
+#sfb2 .rev .Kim img{clip-path:inset(0 100% 0 0);
+  transition:clip-path 1.6s cubic-bezier(.2,.7,.26,1);}
+#sfb2 .rev.in .Kim img{clip-path:inset(0 0 0 0);}
+@media(prefers-reduced-motion:reduce){
+  #sfb2 .an,#sfb2 .dx,#sfb2 .rev .Kim img{
+    opacity:1 !important;transform:none !important;clip-path:none !important;
+    transition:none !important;}
+  #sfb2 .Kacc .Kab{max-height:none !important;}
+}
+</style>
+
+<script id="sf-b2-js">
+(function(){
+  var V=['BASE2','21','22','23','24','25','26','27','28','29','30',
+         '31','32','33','34','35','36','37','38','39','40'];
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function esc(s){ return String(s==null?'':s); }
+
+  /* the site's own marks — from the footer strip and the production markup.
+     Nothing invented, nothing standing in for information it does not have. */
+  var SYM={mission:'⇕', vision:'⊕', opp:'∴', board:'△',
+           caps:['⌀','⊥','∠','⊞','∥']};
+  var IMG={ shop:'images/frame_factory-285.jpg', bench:'images/frame_factory-431.jpg',
+            cnc:'images/cnc_1-14.jpg', cut:'images/cnc-cutting.jpg',
+            bike:'images/eSCRAMBLER_dirt-13.jpg', prod:'images/china-1.jpg' };
+
+  var D=null;
+  function data(){ D=window.__sfLdata||null; return D; }
+
+  /* ---- the parts ------------------------------------------------------- */
+  function T(){ return '<h2 class="Kt">'+D.title+'</h2>'; }
+  function P(){ return '<p class="Kp">'+esc(D.intro)+'</p>'; }
+  function EY(x){ return '<span class="Key">'+esc(x)+'</span>'; }
+  function PT(){ return '<h2 class="Kt">'+D.pTitle+'</h2>'; }
+  function PP(){ return '<p class="Kp">'+esc(D.pText)+'</p>'; }
+  function RULE(c){ return '<div class="Krule '+(c||'')+'"></div>'; }
+
+  function IM(src,treat,cls,cap,pos,ar){
+    return '<figure class="Kfig" style="margin:0">'+
+      '<span class="Kim '+(treat||'mono')+' '+(cls||'Kbig')+'"'+
+      ' style="'+(pos?'--ipos:'+pos+';':'')+(ar?'--iar:'+ar+';':'')+'">'+
+      '<img loading="lazy" decoding="async" src="'+src+'" alt=""></span>'+
+      (cap?'<figcaption class="Kcap">'+esc(cap)+'</figcaption>':'')+'</figure>';
+  }
+
+  /* Mission and Vision — five treatments, none of them a card */
+  function MV(mode){
+    var m={l:D.mLab,t:D.mTxt,s:SYM.mission}, v={l:D.vLab,t:D.vTxt,s:SYM.vision};
+    function pair(x){ return '<div><span class="Ksym">'+x.s+'</span> '+EY(x.l)+
+      '<div class="sp"></div><p class="Kp">'+esc(x.t)+'</p></div>'; }
+    if(mode==='acc') return ACC([{s:m.s,t:m.l,b:m.t},{s:v.s,t:v.l,b:v.t}]);
+    if(mode==='stack') return '<div>'+pair(m)+'<div class="sp2"></div>'+pair(v)+'</div>';
+    if(mode==='gates') return '<div class="Kg g11 Kgates">'+pair(m)+pair(v)+'</div>';
+    if(mode==='inline') return '<div class="Kg g11">'+pair(m)+pair(v)+'</div>';
+    return '<div class="Kg g11">'+pair(m)+pair(v)+'</div>';
+  }
+
+  /* the index's accordion logic, adapted: a rule, the site's own symbol, a
+     precise title, and a controlled reveal. Bodies stay readable when closed
+     is not an option — the first one opens on load. */
+  function ACC(items){
+    return '<div class="Kacc">'+items.map(function(x,i){
+      return '<div class="Ka'+(i===0?' on':'')+'">'+
+        '<button class="Kah" type="button">'+
+          '<span class="Ksym">'+x.s+'</span>'+
+          '<span class="Key">'+esc(x.t)+'</span>'+
+          '<span class="Kmk">+</span>'+
+        '</button>'+
+        '<div class="Kab"><div><p class="Kp">'+esc(x.b)+'</p></div></div>'+
+      '</div>'; }).join('')+'</div>';
+  }
+
+  /* the Board — a ruled register, a row, or a foundation rule. No codes. */
+  function BD(mode){
+    var rows=D.board.map(function(x){
+      return '<div class="Kb">'+(mode==='reg'?'<span class="Ksym">'+SYM.board+'</span>':'')+
+        '<span class="Kname">'+esc(x.n)+'</span>'+
+        '<span class="Krole">'+esc(x.r)+'</span></div>'; }).join('');
+    if(mode==='row')   return '<div class="Kbd-row">'+rows+'</div>';
+    if(mode==='found') return '<div class="Kbd-found">'+rows+'</div>';
+    return '<div class="Kbd">'+rows+'</div>';
+  }
+
+  /* the Platform — seven architectures, never five cards, never numbered */
+  function CAP(mode){
+    var c=D.caps;
+    var one=function(x,i,sym){
+      return '<div class="Ki">'+(sym?'<span class="Ksym">'+SYM.caps[i]+'</span>':'')+
+        '<span class="Kk">'+x.k+'</span><span class="Ks">'+esc(x.s)+'</span></div>'; };
+    if(mode==='acc') return ACC(c.map(function(x,i){
+      return {s:SYM.caps[i], t:x.k.replace(/&amp;/g,'&')+' — '+x.s, b:D.pText}; }));
+    if(mode==='infra')  return '<div class="Kinf">'+c.map(function(x,i){return one(x,i,0);}).join('')+'</div>';
+    if(mode==='spine')  return '<div class="Kspine">'+c.map(function(x,i){return one(x,i,0);}).join('')+'</div>';
+    if(mode==='band')   return '<div class="Kband">'+c.map(function(x,i){return one(x,i,1);}).join('')+'</div>';
+    if(mode==='reg')    return '<div class="Kreg">'+c.map(function(x,i){return one(x,i,1);}).join('')+'</div>';
+    if(mode==='gate')   return '<div class="Kgate">'+c.map(function(x,i){return one(x,i,1);}).join('')+'</div>';
+    if(mode==='ctr'){
+      var a=c.slice(0,2), b=c.slice(2);
+      return '<div class="Kctr">'+
+        '<div class="Kcol">'+a.map(function(x,i){return one(x,i,0);}).join('')+'</div>'+
+        '<div class="Khub">'+EY('The Venture')+'<div class="sp"></div><span class="Kk">Silent Foundry</span></div>'+
+        '<div class="Kcol r">'+b.map(function(x,i){return one(x,i+2,0);}).join('')+'</div></div>';
+    }
+    return '<div class="Kinf">'+c.map(function(x,i){return one(x,i,0);}).join('')+'</div>';
+  }
+
+  /* Opportunities — always its own chapter, never a sixth capability */
+  function OP(mode){
+    var body='<span class="Ksym">'+SYM.opp+'</span> '+EY(D.oLab)+
+      '<div class="sp"></div><p class="Kp">'+esc(D.oText)+'</p>';
+    var cta='<a class="Kcta" href="'+D.ctaH+'">'+esc(D.ctaT)+'</a>';
+    if(mode==='split')  return '<div class="Kop Kop-split"><div>'+body+'</div><div>'+cta+'</div></div>';
+    if(mode==='portal') return '<div class="Kop Kop-portal">'+body+'<div class="sp2"></div>'+cta+'</div>';
+    return '<div class="Kop">'+body+'<div class="sp2"></div>'+cta+'</div>';
+  }
+  function K(field,inner,extra){
+    return '<section class="K pad '+(field||'')+' '+(extra||'')+'"><div class="Kin">'+inner+'</div></section>';
+  }
+  function KF(field,inner,extra){
+    return '<section class="K '+(field||'')+' '+(extra||'')+'"><div class="Kfull">'+inner+'</div></section>';
+  }
+
+  window.__sfB2={T:T,P:P,EY:EY,PT:PT,PP:PP,RULE:RULE,IM:IM,MV:MV,ACC:ACC,BD:BD,
+                 CAP:CAP,OP:OP,K:K,KF:KF,SYM:SYM,IMG:IMG,V:V,data:data,
+                 get D(){ return D; }};
+})();
+</script>
+
+<script id="sf-b2-arch">
+(function(){
+  var Q=window.__sfB2; if(!Q) return;
+  var T=Q.T,P=Q.P,EY=Q.EY,PT=Q.PT,PP=Q.PP,RULE=Q.RULE,IM=Q.IM,MV=Q.MV,ACC=Q.ACC,
+      BD=Q.BD,CAP=Q.CAP,OP=Q.OP,K=Q.K,KF=Q.KF,IMG=Q.IMG;
+  var A={};
+
+  /* =====================================================================
+     BASE2 — 04, rebuilt.
+     Sequence: title and introduction on black · the manufacturing photograph
+     full width and large · Mission and Vision as two accordion bands with the
+     page's own symbols · the Board as a ruled register with no codes · the
+     Platform as one horizontal infrastructure line, unnumbered · Opportunities
+     as a separate navy closing chapter.
+     ===================================================================== */
+  A['BASE2']=function(){ return [
+    K('k-black dk tall','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
+      '<div>'+RULE('cy')+'<div class="sp"></div>'+
+      '<span class="Kcap" style="color:rgba(244,241,236,.4)">Design · Strategy · Engineering · '+
+      'Manufacturing · Partnerships · Capital · Venture creation</span></div></div>'),
+    KF('k-black',IM(IMG.shop,'duo d-cyan reg','Kbig','','50% 56%','16 / 6'),'rev'),
+    K('k-black dk','<div class="Kg g21"><div>'+MV('acc')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
+    K('k-navy dk',OP('split'))
+  ].join(''); };
+
+  /* 21 REFINED BASE2 — the same argument, tightened: the photograph goes
+     wider and taller, the introduction and the disciplines sit against each
+     other, the Platform reads as a register rather than a line. */
+  A['21']=function(){ return [
+    K('k-black dk tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-black',IM(IMG.shop,'duo d-cyan','Kbig','','50% 56%','16 / 5'),'rev'),
+    K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-ink dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
+      '<div class="sp3"></div>'+CAP('reg')),
+    K('k-navy dk',OP('split'))
+  ].join(''); };
+
+  /* 22 INDEX ACCORDION — Mission, Vision and all five capabilities resolve
+     through ruled expandable bands with the site's own symbols. */
+  A['22']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
+    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 50%','16 / 5')),
+    K('k-cream3','<div class="Kg g11"><div>'+MV('acc')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('acc')),
+    K('k-cream tight',OP('split'))
+  ].join(''); };
+
+  /* 23 MANUFACTURING SPINE — the photograph runs down one side as a
+     continuous column and every institutional block attaches to it. */
+  A['23']=function(){ return [
+    '<section class="K k-black dk pad K23"><div class="Kin"><div class="Kg g12">'+
+      '<div class="K23i">'+IM(IMG.cnc,'duo d-alu','Kmid','','50% 50%','2 / 3')+'</div>'+
+      '<div>'+T()+'<div class="sp2"></div>'+P()+'<div class="sp3"></div>'+MV('stack')+
+      '<div class="sp3"></div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+
+      '</div></div></div></section>',
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
+    K('k-navy dk',OP('portal'))
+  ].join(''); };
+
+  /* 24 LIGHT / DARK / LIGHT — cream, through the dark manufacturing chapter,
+     back to cream for the closing invitation. */
+  A['24']=function(){ return [
+    K('k-cream',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-ink',IM(IMG.shop,'duo d-navy','Kbig','','50% 56%','16 / 6'),'rev'),
+    K('k-ink dk tall',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+
+      '<div class="sp3"></div>'+PT()+'<div class="sp2"></div>'+PP()+
+      '<div class="sp3"></div>'+CAP('band')),
+    K('k-cream tall',OP('split'))
+  ].join(''); };
+
+  /* 25 DARK / NAVY DESCENT — black at the people, navy at the platform, and
+     a contained gold-led invitation at the foot. */
+  A['25']=function(){ return [
+    K('k-black dk',T()+'<div class="sp2"></div>'+P()),
+    KF('k-black',IM(IMG.cut,'duo d-cyan','Kbig','','50% 50%','16 / 5')),
+    K('k-black dk tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
+    K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('gate')),
+    K('k-cream3 tall',OP('portal'))
+  ].join(''); };
+
+  /* 26 TWO REGISTERS — the Board records people, the Platform records
+     commercial capability, on identical rules. Nothing is a card. */
+  A['26']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 4')),
+    K('k-cream3',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-black dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
+      '<div class="sp3"></div>'+EY('Capabilities')+'<div class="sp"></div>'+CAP('reg')),
+    K('k-cream tight',OP('split'))
+  ].join(''); };
+
+  /* 27 IMAGE TRIPTYCH — three industrial crops carry people, physical making
+     and commercial realisation. */
+  A['27']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
+    '<section class="K k-cream K27"><div class="K27g">'+
+      IM(IMG.cnc,'duo d-alu','Kmid','Making','50% 50%','1 / 1')+
+      IM(IMG.shop,'colr','Kmid','Manufacturing','50% 56%','1 / 1')+
+      IM(IMG.prod,'colr','Kmid','Realisation','50% 50%','1 / 1')+
+    '</div></section>',
+    K('k-cream3 tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
+    K('k-navy dk',OP('split'))
+  ].join(''); };
+
+  /* 28 CENTRAL VENTURE LINE — the venture at the centre with the capabilities
+     ranged either side of it on one axis. No branches, no infographic. */
+  A['28']=function(){ return [
+    K('k-cream tight','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-cream',IM(IMG.shop,'duo d-gold','Kbig','','50% 56%','16 / 5')),
+    K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('ctr')),
+    K('k-cream tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('found')+
+      '<div class="sp3"></div>'+OP('split'))
+  ].join(''); };
+
+  /* 29 HORIZONTAL INFRASTRUCTURE — the five as one restrained commercial band
+     across the full width, on aluminium. */
+  A['29']=function(){ return [
+    K('k-black dk',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('acc')+'</div></div>'),
+    KF('k-black',IM(IMG.cut,'duo d-cyan reg','Kbig','','50% 50%','16 / 5'),'rev'),
+    K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-ink dk tight',PT()+'<div class="sp2"></div>'+PP()),
+    KF('k-navy dk','<div class="Kin">'+CAP('band')+'</div>','pad tight'),
+    K('k-cream tall',OP('split'))
+  ].join(''); };
+
+  /* 30 VERTICAL JOURNEY — one continuous technical line down the page with
+     every chapter hung off it. */
+  A['30']=function(){ return [
+    '<section class="K k-cream pad K30"><div class="Kin"><div class="K30s">'+
+      '<div class="K30i">'+EY('The People')+'<div class="sp"></div>'+T()+
+        '<div class="sp"></div>'+P()+'</div>'+
+      '<div class="K30i">'+MV('stack')+'</div>'+
+      '<div class="K30i">'+IM(IMG.shop,'colr','Kmid','Manufacturing','50% 56%','16 / 7')+'</div>'+
+      '<div class="K30i">'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div>'+
+    '</div></div></section>',
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
+    K('k-navy dk',OP('portal'))
+  ].join(''); };
+
+  /* 31 EDITORIAL SPREAD — title, paragraph and photograph as a strongly
+     asymmetric spread, the institutional content quiet beneath it. */
+  A['31']=function(){ return [
+    '<section class="K k-cream pad K31"><div class="Kin"><div class="K31g">'+
+      '<div class="K31t">'+T()+'<div class="sp2"></div>'+P()+'</div>'+
+      '<div class="K31i">'+IM(IMG.bench,'colr','Kmid','','50% 46%','4 / 5')+'</div>'+
+    '</div></div></section>',
+    K('k-cream3 tight','<div class="Kg g21"><div>'+MV('inline')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
+    K('k-black dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('reg')),
+    K('k-cream tight',OP('split'))
+  ].join(''); };
+
+  /* 32 CAD FIELD — a drawn engineering field organises the lower page; the
+     geometry is structural, not decorative. */
+  A['32']=function(){ return [
+    '<section class="K k-cream pad K32"><div class="K32f"></div><div class="Kin">'+
+      T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div></div></section>',
+    KF('k-cream',IM(IMG.cnc,'duo d-alu reg','Kbig','','50% 50%','16 / 5')),
+    '<section class="K k-cream3 pad K32"><div class="K32f"></div><div class="Kin">'+
+      EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></section>',
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('gate')),
+    K('k-cream tight',OP('split'))
+  ].join(''); };
+
+  /* 33 CMF SYSTEM — each chapter is identified by one material: cream, black,
+     aluminium, navy, gold. Colour as the organising device. */
+  A['33']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
+    K('k-black dk tight',MV('inline')),
+    KF('k-alu',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 5')),
+    K('k-alu tight K33a',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
+    K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('band')),
+    K('k-cream3 tall K33o',OP('portal'))
+  ].join(''); };
+
+  /* 34 MISSION / VISION GATES — the two statements stand either side of the
+     photograph as gateways into the industrial chapter. */
+  A['34']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
+    '<section class="K k-cream K34"><div class="Kin"><div class="K34g">'+
+      '<div class="K34s">'+MV('gates').replace('<div class="Kg g11 Kgates">','<div class="K34i">')+'</div>'+
+    '</div></div></section>',
+    KF('k-ink',IM(IMG.shop,'duo d-navy','Kbig','','50% 56%','16 / 6'),'rev'),
+    K('k-ink dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
+    K('k-cream tall',OP('split'))
+  ].join(''); };
+
+  /* 35 BOARD AS FOUNDATION — the three directors form the rule the rest of
+     the argument stands on, directly under the manufacturing story. */
+  A['35']=function(){ return [
+    K('k-black dk tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-black',IM(IMG.shop,'duo d-cyan','Kbig','','50% 56%','16 / 5'),'rev'),
+    K('k-black dk',EY('Board of Directors')+'<div class="sp2"></div>'+BD('found')),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('reg')),
+    K('k-navy dk',OP('split'))
+  ].join(''); };
+
+  /* 36 PLATFORM AS ACCORDION — everything above is held quiet so the Platform
+     can be the page's one interactive moment. */
+  A['36']=function(){ return [
+    K('k-cream tight','<div class="Kg g21"><div>'+T()+'<div class="sp"></div>'+P()+'</div>'+
+      '<div>'+MV('inline')+'</div></div>'),
+    KF('k-cream',IM(IMG.cnc,'mono','Kbig','','50% 50%','16 / 4')),
+    K('k-cream3 tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
+    K('k-black dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('acc')),
+    K('k-navy dk tall',OP('portal'))
+  ].join(''); };
+
+  /* 37 IMAGE MASK REVEAL — the photograph is the atmosphere: it wipes open on
+     entry under cyan registration lines, and the text stays plain. */
+  A['37']=function(){ return [
+    K('k-black dk tight',T()+'<div class="sp2"></div>'+P()),
+    KF('k-black',IM(IMG.cut,'duo d-cyan reg','Kbig','','50% 50%','16 / 6'),'rev'),
+    K('k-black dk tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
+      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
+    KF('k-ink',IM(IMG.bench,'duo d-alu','Kbig','','50% 48%','16 / 4'),'rev'),
+    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
+    K('k-cream tight',OP('split'))
+  ].join(''); };
+
+  /* 38 CONTINUOUS GRID — one evolving field from cream to ink with no boxed
+     sections at all; the reading order does the work. */
+  A['38']=function(){ return [
+    '<section class="K pad K38"><div class="Kin">'+
+      T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'+
+      '<div class="sp3"></div>'+IM(IMG.shop,'colr','Kbig','','50% 56%','16 / 6')+
+      '<div class="sp3"></div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+
+      '<div class="sp3"></div><div class="dk K38d">'+PT()+'<div class="sp2"></div>'+PP()+
+      '<div class="sp3"></div>'+CAP('infra')+'<div class="sp3"></div>'+RULE('gd')+
+      '<div class="sp3"></div>'+OP('split')+'</div>'+
+    '</div></section>'
+  ].join(''); };
+
+  /* 39 OPPORTUNITY PORTAL — the Platform is compressed to an institutional
+     register so the closing invitation can be the page's largest gesture. */
+  A['39']=function(){ return [
+    K('k-cream tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
+      '<div>'+MV('stack')+'</div></div>'),
+    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 4')),
+    K('k-cream3 tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-black dk tight',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp2"></div>'+CAP('reg')),
+    '<section class="K K39 k-ink dk tall Kop-img"><div class="Kbackim">'+
+      '<img loading="lazy" decoding="async" src="'+IMG.shop+'" alt=""></div>'+
+      '<div class="Kin">'+OP('portal')+'</div></section>'
+  ].join(''); };
+
+  /* 40 SHIPPABLE — the photograph kept large and in colour, Mission and
+     Vision as the accordion, the Board as a register, the Platform as one
+     infrastructure line on navy, and the invitation given its own cream
+     chapter. The one I would ship. */
+  A['40']=function(){ return [
+    K('k-black dk','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
+      '<div>'+MV('acc')+'</div></div>'),
+    KF('k-black',IM(IMG.shop,'colr','Kbig','','50% 56%','16 / 6'),'rev'),
+    K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
+    K('k-navy dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
+      '<div class="sp3"></div>'+CAP('infra')),
+    K('k-cream tall',OP('split'))
+  ].join(''); };
+
+  window.__sfB2arch=A;
+})();
+</script>
+
+<style id="sf-b2-arch-css">
+/* 23 — the photograph as a column beside the institutional content */
+#sfb2 .K23i .Kim{height:100%;}
+/* 27 — the triptych */
+#sfb2 .K27{padding:0;}
+#sfb2 .K27g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;}
+#sfb2 .K27g .Kcap{color:rgba(10,10,10,.34);padding:0 0 14px 4px;}
+@media(max-width:760px){ #sfb2 .K27g{grid-template-columns:1fr;} }
+/* 30 — one technical line down the page */
+#sfb2 .K30s{position:relative;padding-left:38px;}
+#sfb2 .K30s::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1px;
+  background:rgba(200,169,110,.5);}
+#sfb2 .K30i{position:relative;padding:0 0 clamp(30px,4vh,54px);}
+#sfb2 .K30i::before{content:'';position:absolute;left:-35px;top:6px;width:11px;height:11px;
+  border:1px solid rgba(200,169,110,.85);border-radius:50%;}
+#sfb2 .K30i:last-child{padding-bottom:0;}
+@media(max-width:640px){ #sfb2 .K30s{padding-left:26px;} #sfb2 .K30i::before{left:-25px;} }
+/* 31 — the asymmetric spread */
+#sfb2 .K31g{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(24px,4vw,72px);align-items:end;}
+@media(max-width:900px){ #sfb2 .K31g{grid-template-columns:1fr;} }
+/* 32 — the CAD field */
+#sfb2 .K32{isolation:isolate;}
+#sfb2 .K32f{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(10,60,80,.11) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(10,60,80,.11) 1px,transparent 1px);
+  background-size:104px 104px,104px 104px;}
+/* 33 — the aluminium chapter reads dark-on-light */
+#sfb2 .K33a .Kname{color:rgba(16,18,20,.85);}
+#sfb2 .K33a .Krole{color:rgba(16,18,20,.5);}
+#sfb2 .K33a .Key{color:#5c4a24;}
+/* 34 — the two gateways either side of a rule */
+#sfb2 .K34g{position:relative;}
+#sfb2 .K34i{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(24px,4vw,72px);position:relative;}
+#sfb2 .K34i::before{content:'';position:absolute;left:50%;top:-10px;bottom:-10px;width:1px;
+  background:rgba(200,169,110,.45);}
+@media(max-width:820px){
+  #sfb2 .K34i{grid-template-columns:1fr;gap:30px;}
+  #sfb2 .K34i::before{display:none;}
+}
+/* 38 — one evolving field, no boxed sections */
+#sfb2 .K38{background:linear-gradient(180deg,#f6f3ec 0%,#e8e2d9 34%,#3a3f47 58%,#12151a 100%);}
+#sfb2 .K38d{padding-top:10px;}
+/* 39 — the closing portal over a photograph */
+#sfb2 .K39{isolation:isolate;overflow:hidden;}
+#sfb2 .K39 .Kbackim{position:absolute;inset:0;z-index:0;}
+#sfb2 .K39 .Kbackim img{width:100%;height:100%;object-fit:cover;object-position:50% 56%;display:block;}
+#sfb2 .K39 .Kbackim::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(100deg,rgba(8,10,13,.94),rgba(8,10,13,.7));}
+</style>
+
+<script id="sf-b2-eng">
+(function(){
+  var Q=window.__sfB2; if(!Q) return;
+  var V=Q.V;
+  var NOTE={
+'BASE2':'the refined foundation — 04 rebuilt. The dossier header, the sheet number, the SF board codes and the 01–05 capability numbers are gone; the marks that remain are the site’s own ⇕ ⊕ ∴ △ ⌀ ⊥ ∠ ⊞ ∥. Sequence: title and introduction on black, the manufacturing photograph large and cyan, Mission and Vision as ruled accordion bands, the Board as a register, the Platform as one unnumbered infrastructure line, and Opportunities as a separate navy closing chapter',
+'21':'refined BASE2 — the same argument tightened: the photograph wider, the introduction and the two statements set against each other, and the Platform read as a ruled register rather than a line. The near-shipping option',
+'22':'index accordion — Mission, Vision and all five capabilities resolve through ruled expandable bands carrying the site’s own engineering symbols. Cream above, ink below',
+'23':'manufacturing spine — the photograph runs the full height of one column and every institutional block attaches to it; the Platform hangs off a vertical technical line',
+'24':'light / dark / light — cream at the people, through the dark manufacturing chapter, back to cream for the closing invitation. The background sequence tells the story',
+'25':'dark / navy descent — structural black at the people, deep Foundry navy for the Platform set as two gates, and a contained cream invitation at the foot',
+'26':'two registers — the Board records people and the Platform records commercial capability, on identical rules. No cards anywhere on the page',
+'27':'image triptych — three industrial crops carry making, manufacturing and realisation, the middle one in full colour',
+'28':'central venture line — the venture at the centre with the capabilities ranged either side of it on one axis, and the Board as the foundation rule beneath',
+'29':'horizontal infrastructure — the five as one restrained commercial band across the full width on navy, after a cyan-registered photograph',
+'30':'vertical journey — one continuous gold line down the page with people, mission, making, board and platform each hung off it by a ring',
+'31':'editorial spread — title, paragraph and a tall colour photograph as a strongly asymmetric spread, the institutional content quiet beneath it',
+'32':'CAD field — a 104px engineering field organises the lower page; the geometry places the content rather than decorating it',
+'33':'CMF system — each chapter identified by one material: cream, structural black, aluminium, Foundry navy, then cream again. Colour as the organising device',
+'34':'mission / vision gates — the two statements stand either side of a gold rule as gateways into the industrial chapter that follows',
+'35':'board as foundation — the three directors form the rule the rest of the argument stands on, directly under the manufacturing story',
+'36':'platform as accordion — everything above is held quiet so the Platform can be the page’s single interactive moment',
+'37':'image mask reveal — two photographs wipe open under cyan registration lines and the text stays plain. The image behaviour is the atmosphere',
+'38':'continuous grid — one evolving field from cream to ink with no boxed sections at all; the reading order does the work',
+'39':'opportunity portal — the Platform compressed to an institutional register so the closing invitation can be the page’s largest gesture, set into a photograph',
+'40':'shippable — the photograph large and in full colour, Mission and Vision as the accordion, the Board as a register, the Platform as one infrastructure line on navy, and the invitation given its own cream chapter'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  var MOUNT=null, IO=null, TM=[], LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+
+  function frame(){
+    if(!MOUNT) return;
+    var ref=$('#tm-head .sf4-title')||$('#tm-head'); if(!ref) return;
+    var h=MOUNT.getBoundingClientRect(), r=ref.getBoundingClientRect();
+    if(h.width<40||r.width<40) return;
+    var v=Math.max(24,Math.round(r.left-h.left))+'px';
+    if(MOUNT.style.getPropertyValue('--Kpad')!==v) MOUNT.style.setProperty('--Kpad',v);
+  }
+  function reveal(){
+    var ns=$$('.an,.dx,.rev',MOUNT); if(!ns.length) return;
+    if(!window.IntersectionObserver){ ns.forEach(function(n){ n.classList.add('in'); }); return; }
+    IO=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(!e.isIntersecting) return;
+        e.target.classList.add('in'); IO.unobserve(e.target); }); },{threshold:.12});
+    ns.forEach(function(n){ IO.observe(n); });
+  }
+  function accordions(){
+    $$('.Kacc .Kah',MOUNT).forEach(function(btn){
+      var f=function(){ var a=btn.parentNode; a.classList.toggle('on');
+        btn.querySelector('.Kmk').textContent=a.classList.contains('on')?'+':'+'; };
+      btn.addEventListener('click',f); LS.push([btn,'click',f]);
+    });
+  }
+  function build(v){
+    var A=window.__sfB2arch; if(!A||!A[v]) return false;
+    if(!Q.data()) return false;
+    var host=$('#pc > section:nth-of-type(2)'); if(!host||!host.parentNode) return false;
+    if(MOUNT) return true;
+    MOUNT=document.createElement('div'); MOUNT.id='sfb2';
+    MOUNT.innerHTML=A[v]();
+    host.parentNode.insertBefore(MOUNT,host.nextSibling);
+    $$('.K',MOUNT).forEach(function(n){ n.classList.add('an'); });
+    $$('.Krule',MOUNT).forEach(function(n){ n.classList.add('dx'); });
+    frame(); accordions(); reveal();
+    return true;
+  }
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    if(IO){ try{ IO.disconnect(); }catch(e){} IO=null; }
+    if(MOUNT&&MOUNT.parentNode) MOUNT.parentNode.removeChild(MOUNT);
+    MOUNT=null;
+    document.documentElement.removeAttribute('data-sfb2');
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ off(); try{ prev.off&&prev.off(); }catch(e){} },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      try{ prev.apply&&prev.apply('DEV'); }catch(e){}
+      var tries=0;
+      (function go(){
+        if((window.__sfLharvest||function(){})()){
+          document.documentElement.setAttribute('data-sfb2',v);
           build(v); return;
         }
         if(++tries>40) return;
