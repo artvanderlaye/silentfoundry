@@ -27156,20 +27156,18 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
    page's own.
    ========================================================================= */
 @media(max-width:1000px){
+  /* the panel reads LEFT — eyebrow, heading, paragraph, MECHANICAL HONESTY,
+     the material caption, all of it. The only thing that centres is the
+     nine cells, and they centre on their own column, not on the panel. */
   html[data-sfw43="37"] #sf-lab-mount .split .lft,
   html[data-sfw43="37"] #sf-lab-mount .split .rgt{
-    text-align:center !important;}
-  /* the three eyebrows are the exception, and they are the reason this is a
-     text-align rule per element rather than one on the panel */
-  html[data-sfw43="37"] #sf-lab-mount .split .lft .bhead,
-  html[data-sfw43="37"] #sf-lab-mount .split .rgt .bhead,
-  html[data-sfw43="37"] #sf-lab-mount .split .lft .bey,
-  html[data-sfw43="37"] #sf-lab-mount .split .rgt .bey{
     text-align:left !important;}
-  html[data-sfw43="37"] #sf-lab-mount .split .dna9 .d9 .nw{
-    margin-left:auto !important;margin-right:auto !important;}
-  html[data-sfw43="37"] #sf-lab-mount .split .dna9 .d9 .dl{
-    text-align:center !important;}
+  /* one interval under every eyebrow, so the three sub-blocks open the same
+     way instead of each inheriting whatever its own container had */
+  html[data-sfw43="37"] #sf-lab-mount .split .lft .bhead,
+  html[data-sfw43="37"] #sf-lab-mount .split .rgt .bhead{
+    margin-bottom:26px !important;}
+
 /*      the material strip. Four swatches shared the row by proportion, which
         left SIGNAL ORANGE about 10px wide and clipped against the panel edge
         at 393. Four equal columns instead, so all four are legible and the
@@ -27208,6 +27206,94 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
 @media(max-width:1000px){
   html[data-sfw43="37"] .wwd-section{
     padding-top:72px !important;padding-bottom:40px !important;}
+}
+
+/* =========================================================================
+   THE REST OF THE PASS — the parts that are NOT phone-only
+   ========================================================================= */
+
+/* ---- the nine DNA cells, at every width -------------------------------
+   Measured at 2560: the cell is 251 wide, the icon 101, and the icon sat at
+   the cell's left edge with the label ranged left under it — so on a wide
+   screen the icon floats 150px away from the middle of the words it belongs
+   to. Icon and label now share one axis, their own column's. The section
+   eyebrows are untouched and stay left. */
+html[data-sfw43="37"] #sf-lab-mount .split .dna9 .d9{
+  text-align:center !important;}
+html[data-sfw43="37"] #sf-lab-mount .split .dna9 .d9 .nw{
+  margin-left:auto !important;margin-right:auto !important;}
+html[data-sfw43="37"] #sf-lab-mount .split .dna9 .d9 .dl{
+  text-align:center !important;}
+
+/* ---- the film frame on an ultra-wide ----------------------------------
+   Measured at 2560: the film was 2200 x 1238 while the factory hero image
+   beside it is 1600 x 944 — the film was 600px wider than the frame every
+   other picture on the page uses. It takes the hero frame above 1600, which
+   is also exactly what it already does at 1440 and under. */
+/*      This is set as WIDTH, not max-width, and that is not a stylistic
+        choice. The 2200 comes from html[data-uw="13"] body .sf-video-frame,
+        html[data-uw="13"] body .factory-solo{max-width:var(--sf-media)
+        !important} and it refuses to lose the max-width cascade — I tried at
+        (0,3,2), (0,3,3) and (0,4,3) and even a rule injected last at runtime
+        still measured 2200. Width is uncontested and lands exactly.
+        min(1600, 100% - 96) is the hero frame's own formula, so the film and
+        the factory image share an edge at every width above 1600 rather than
+        only at 2560. */
+@media(min-width:1601px){
+  html[data-sfw43="37"] body .sf-video-frame{
+    width:min(1600px, calc(100% - 96px)) !important;
+    margin-left:auto !important;margin-right:auto !important;}
+}
+
+/* ---- the Marshall grid ------------------------------------------------
+   .sf-bp was inset:0 0 0 50% — the drawn grid covered only the CREAM half.
+   On a phone, where the two halves stack, that means it covers the right
+   half of the page from top to bottom and nothing else, which is the "half
+   the page" look. It now covers the whole section, black side and cream
+   side, at every width; and the section clips, so it can never read as
+   continuing into the SWITCH block below it. */
+html[data-sfw43="37"] #sfsec-dna{overflow:hidden !important;}
+html[data-sfw43="37"] #sfsec-dna .sf-bp{
+  inset:0 !important;left:0 !important;right:0 !important;width:auto !important;}
+
+/* ---- the two mobile pictures ------------------------------------------
+   Measured at 430: the factory image and the SWITCH hero were both 254px
+   tall on a 2000/1180 crop, while the partnership cards below them are 287
+   on a 3/2. The two pictures take the same 3/2, so the three read as one
+   family down the page. object-fit:cover keeps the subject; nothing is
+   stretched and the desktop crops are untouched. */
+@media(max-width:767px){
+  html[data-sfw43="37"] .factory-solo img{
+    aspect-ratio:3 / 2 !important;height:auto !important;
+    object-fit:cover !important;object-position:50% 46% !important;}
+  html[data-sfw43="37"] #sf-lab-mount .pvstage{
+    aspect-ratio:3 / 2 !important;height:auto !important;}
+}
+
+/* ---- AS SEEN ON, three up on a phone ----------------------------------
+   Twelve logos in two columns is six deep and reads as a list. Three columns
+   is four deep and reads as a press wall. The logo cap comes down from 90 to
+   72 so three fit inside the 24px margins with air between them. */
+@media(max-width:767px){
+  html[data-sfw43="37"] .logo-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    column-gap:12px !important;row-gap:30px !important;}
+  html[data-sfw43="37"] .logo-grid img{
+    max-width:72px !important;max-height:16px !important;
+    margin-left:auto !important;margin-right:auto !important;}
+}
+
+/* ---- the footer addresses, side by side --------------------------------
+   HONG KONG and SHANGHAI are two short blocks that were stacked in a single
+   column with the full page width each — most of it empty. They take one
+   half each; the logo block still spans both. Navigate is display:none on a
+   phone already, so it does not take a cell. */
+@media(max-width:767px){
+  html[data-sfw43="37"] .footer-inner{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    column-gap:20px !important;}
+  html[data-sfw43="37"] .footer-inner > .footer-logo-wrap{
+    grid-column:1 / -1 !important;}
 }
 
 </style>
