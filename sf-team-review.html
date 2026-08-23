@@ -4474,6 +4474,7 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
     var n=$('.rvn',box); if(n) n.textContent=NOTE[v]||'';
   }
 
+  var DEV='01';   /* THE TEAM DEV STATE — what the page opens on */
   function build(){
     window.__sfTeamGo=apply;   /* one code path for buttons, arrows and links */
     EX=window.__sfTeamExtra||{};
@@ -4491,11 +4492,11 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
     var want=(function(){
       var h=String(HASH0||'')+'&'+String(location.hash||'');
       var m=/[#&](?:team|v)=([A-Za-z0-9]+)/.exec(h);
-      if(!m) return 'BASE';                 /* BASE is the default state */
+      if(!m) return DEV;                    /* the dev state opens by default */
       var k=m[1].toUpperCase();
       for(var i=0;i<STATES.length;i++)
         if(String(STATES[i]).toUpperCase()===k) return STATES[i];
-      return 'BASE';                        /* a stale link resolves safely */
+      return DEV;                           /* a stale link resolves safely */
     })();
     apply(want);
     /* the page composes itself late; re-measure once it has settled */
@@ -7541,11 +7542,15 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
    SHARED PARTS — the vocabulary the twenty directions draw on.
    ========================================================================= */
 
-/* the roster, owned by this file for the directions that rearrange it */
-html[data-sfz] #pc .hs{
+/* the roster, owned by this file for the directions that rearrange it.
+   01 is excluded from every one of these rules: above THE PEOPLE BEHIND IT
+   it must be BASE to the pixel, and a shared row-gap or aspect-ratio default
+   — even one that happens to equal BASE's — is still this file writing the
+   card grid. It is left alone instead. */
+html[data-sfz]:not([data-sfz="01"]) #pc .hs{
   --z-cg:2px; --z-rg:26px;
   column-gap:var(--z-cg) !important; row-gap:var(--z-rg) !important;}
-html[data-sfz] #pc .hs > .tc img.ph{
+html[data-sfz]:not([data-sfz="01"]) #pc .hs > .tc img.ph{
   aspect-ratio:var(--z-ar,.72) !important;
   object-fit:cover !important;height:auto !important;width:100% !important;}
 
@@ -7553,8 +7558,12 @@ html[data-sfz] #pc .hs > .tc img.ph{
    first screen instead of waiting below the fold */
 html[data-sfz] .zstrip{
   display:flex;gap:2px;width:100%;overflow:hidden;margin-top:26px;}
+/* the base sheet sets .tc to flex:0 0 360px !important for the old slider —
+   which is why the lifted row ran off the right edge until it was beaten on
+   its own terms. The strip divides its width evenly instead. */
 html[data-sfz] .zstrip > .tc{
-  flex:1 1 0;min-width:0;width:auto !important;max-width:none !important;}
+  flex:1 1 0 !important;min-width:0 !important;
+  width:auto !important;max-width:none !important;}
 html[data-sfz] .zstrip > .tc img.ph{
   aspect-ratio:var(--z-sar,1.15) !important;width:100% !important;
   height:auto !important;object-fit:cover !important;}
@@ -7567,7 +7576,7 @@ html[data-sfz] .zix{
   font-family:'DM Sans',sans-serif;font-size:8.2px;letter-spacing:.24em;
   color:rgba(244,241,236,.66);font-weight:300;pointer-events:none;
   text-shadow:0 0 10px rgba(10,10,10,.55);}
-html[data-sfz] #pc .hs > .tc,
+html[data-sfz]:not([data-sfz="01"]) #pc .hs > .tc,
 html[data-sfz] .zstrip > .tc{position:relative;}
 
 /* a closing band: Opportunities and Get in Touch taken out of the middle of
@@ -7635,6 +7644,59 @@ html[data-sfz="01"] #tm-head{padding-bottom:0 !important;}
 html[data-sfz="01"]{--z-sar:1.05;--z-ar:.72;}
 html[data-sfz="01"] .zstrip{margin-top:20px;}
 html[data-sfz="01"] #pc > section:nth-of-type(2){padding-top:2px;}
+
+
+/* ============================ 01 · THE LOWER HALF ========================
+   THE BOUNDARY, STATED IN THE FILE.
+   Everything from the top of the page to the last people card is BASE and is
+   not touched by this direction — no strip, no thesis line, no reveal, no
+   change to the header, the location line, the opening spacing, the card
+   layout, the crops or the grid behaviour. 01 begins at THE PEOPLE BEHIND IT
+   and runs to the end of the page.
+
+   WHAT IT DOES BELOW THAT LINE
+   The institutional block was five messages competing at one level: the
+   introduction, the Board, Mission, Vision, Opportunities and a Get in Touch
+   button floating inside the middle of it. It becomes three moves instead:
+
+     1  introduction and Mission face each other — two statements, not five
+     2  the Board steps out to full width under a rule that draws itself in,
+        three names across, because a board is a row of people and not a
+        footnote in a column
+     3  Vision is folded away. Its argument — brands extracted from culture,
+        translated through design, made real through manufacturing — is
+        already made on the index page, and repeating it here is what made
+        this read like an annual report
+     4  Opportunities and Get in Touch leave the middle of the column and
+        become the last thing on the page: a deliberate closing action rather
+        than a button sitting in the middle of an information block
+     5  the Platform is numbered 01–05 and stays on the People's own frame
+   ========================================================================= */
+html[data-sfz="01"] .zboard{
+  margin-top:clamp(30px,4vh,48px);}
+html[data-sfz="01"] .zboard > .zrule{margin-bottom:20px;}
+html[data-sfz="01"] .zboard-rows{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 clamp(18px,3vw,44px);align-items:start;margin-top:14px;}
+/* the board row is a name and a role set against each other on one line,
+   written inline for a 464px column. In a 312px column it wraps unevenly —
+   one name keeps its role beside it, the next drops it under. Across the
+   page they stack instead: name, then role beneath it, identically in all
+   three columns. The rule that separated them in the column is not needed
+   now the band has its own. */
+html[data-sfz="01"] .zboard-rows .tm-brow{
+  border-top:0 !important;padding-top:0 !important;padding-bottom:0 !important;
+  margin:0 !important;display:block !important;}
+html[data-sfz="01"] .zboard-rows .tm-brow > span{display:block;}
+html[data-sfz="01"] .zboard-rows .tm-brow > span + span{margin-top:7px;}
+@media(max-width:820px){
+  html[data-sfz="01"] .zboard-rows{grid-template-columns:1fr;gap:14px 0;}
+}
+/* the introduction and Mission face each other; nothing else is in the pair */
+html[data-sfz="01"] #tm-close .tm-pair{align-items:start;}
+html[data-sfz="01"] .zclose{--z-closebg:#f2efe9;}
+html[data-sfz="01"] .sf6-five{padding-top:26px !important;}
+html[data-sfz="01"] .zpn{color:rgba(138,110,58,.55) !important;}
 
 /* ============================ 02 · EDITORIAL MASTHEAD ==================== */
 html[data-sfz="02"]{--z-ar:.78;--z-cg:6px;--z-rg:30px;}
@@ -7891,7 +7953,8 @@ html[data-sfz="20"] .zclose .tm-cta{
     padding:0 24px;scroll-padding-left:24px;}
   html[data-sfz] .zstrip::-webkit-scrollbar{display:none;}
   html[data-sfz] .zstrip > .tc{
-    flex:0 0 min(72vw,270px) !important;scroll-snap-align:start;}
+    flex:0 0 min(72vw,270px) !important;width:min(72vw,270px) !important;
+    scroll-snap-align:start;}
   html[data-sfz] .zstrip > .tc img.ph{aspect-ratio:1.25 !important;}
   html[data-sfz="03"] #tm-head{padding-left:24px !important;}
   html[data-sfz="03"] .zedge{width:100%;height:44px;bottom:auto;}
@@ -7914,7 +7977,7 @@ html[data-sfz="20"] .zclose .tm-cta{
          '11','12','13','14','15','16','17','18','19','20'];
 
   var NOTE={
-'01':'photographic threshold — the first five portraits enter the opening screen. The title, the rule and the locations become the threshold between the cream header and the photography rather than a header with nothing under it',
+'01':'the dev direction — everything above the last people card is BASE, untouched. From THE PEOPLE BEHIND IT down: introduction and Mission face each other, the Board steps out to full width under a rule that draws itself in, Vision is folded away, the Platform is numbered 01–05 on the People\u2019s frame, and Opportunities and Get in Touch become the page\u2019s closing action',
 '02':'editorial masthead — a publication opening: title and one-sentence thesis set against each other between two rules, locations on the lower rule, then a disciplined contact sheet with wider gutters and a shorter portrait',
 '03':'navy edge — the cream opening kept, with a narrow navy architectural field down the left carrying THE TEAM vertically. One deliberate borrowing from the index page and nothing else',
 '04':'single portrait anchor — one portrait opens the page at close to square, with the title and thesis set beside it; the remaining nine follow as a structured sequence beneath',
@@ -7938,7 +8001,7 @@ html[data-sfz="20"] .zclose .tm-cta{
 
   /* per direction: the structural decisions. Everything else is CSS above. */
   var D={
-'01':{hoist:5,thesis:1,rev:1},
+'01':{board:1,novis:1,close:1,plat:'num'},
 '02':{mast:1,thesis:1,idx:1,novis:1},
 '03':{edge:1,thesis:1},
 '04':{anchor:1,thesis:1},
@@ -7948,7 +8011,7 @@ html[data-sfz="20"] .zclose .tm-cta{
 '08':{two:1,thesis:1},
 '09':{},
 '10':{novis:1,close:1,plat:'num'},
-'11':{hoist:5,dark:1,thesis:1},
+'11':{hoistCols:1,dark:1,thesis:1},
 '12':{tech:1,idx:1,plat:'blue'},
 '13':{hseq:1,thesis:1,novis:1},
 '14':{band:1,novis:1},
@@ -7957,7 +8020,7 @@ html[data-sfz="20"] .zclose .tm-cta{
 '17':{idx:1,novis:1,close:1,plat:'num'},
 '18':{bp:1,plat:'blue'},
 '19':{rev:1,novis:1},
-'20':{hoist:5,mast:1,thesis:1,two:1,idx:1,novis:1,close:1,plat:'num',rev:1}
+'20':{hoistCols:1,mast:1,thesis:1,two:1,idx:1,novis:1,close:1,plat:'num',rev:1}
   };
 
   var THESIS='The people who carry a venture from brand DNA through design, engineering, manufacturing and commercial realisation.';
@@ -8010,16 +8073,44 @@ html[data-sfz="20"] .zclose .tm-cta{
     });
   }
 
-  /* ---- the opening: cards lifted into the header ------------------------ */
-  function hoist(n){
-    var h=head(), src=hs(); if(!h||!src) return;
-    var strip=made(el('div','zstrip'));
-    h.parentNode.insertBefore(strip,h.nextSibling);
-    $$('#pc .hs > .tc').slice(0,n).forEach(function(c){
+  /* ---- the opening: cards lifted into the header ------------------------
+     The lift is ONE ROW'S WORTH, not a fixed five. Five lifted out of ten
+     leaves five below, and five below a four-column grid is 4 + 1: a single
+     orphan card, which is exactly the shape we removed from BASE. Lifting
+     the column count instead — five at five columns, four at four — always
+     leaves whole rows underneath (5 -> 5, 6 -> 4 + 2 centred). The strip is
+     always exactly one row, at every width, by construction.
+     Each card's original position is recorded once, so re-syncing across a
+     breakpoint is free and teardown is still exact. */
+  var STRIP=null, HOME=null, LASTN=-1;
+  function roster(){
+    if(!HOME){
+      var list=$$('#pc .hs > .tc');
+      if(!list.length) return [];
+      HOME=list.map(function(c){ return [c,c.parentNode,c.nextSibling]; });
+      HOME.forEach(function(x){ MOVED.push(x); });
+    }
+    return HOME.map(function(x){ return x[0]; });
+  }
+  function ensureStrip(){
+    if(STRIP&&STRIP.parentNode) return STRIP;
+    var h=head(); if(!h) return null;
+    STRIP=made(el('div','zstrip'));
+    h.parentNode.insertBefore(STRIP,h.nextSibling);
+    return STRIP;
+  }
+  function syncStrip(n){
+    var all=roster(); if(all.length<2) return;
+    if(n===LASTN&&STRIP&&STRIP.parentNode) return;
+    var s=ensureStrip(), g=hs(); if(!s||!g) return;
+    LASTN=n;
+    all.forEach(function(c,i){
+      var want=(i<n)?s:g;
       c.style.removeProperty('grid-column'); c.style.removeProperty('grid-row');
-      move(c,strip);
+      want.appendChild(c);
     });
   }
+  function hoist(n){ syncStrip(n); }
   function anchor(){
     var h=head(); if(!h) return;
     var wrap=made(el('div','zanchor'));
@@ -8140,6 +8231,25 @@ html[data-sfz="20"] .zclose .tm-cta{
     m.setAttribute('data-zhid','1'); m.style.display='none';
   }
 
+  /* ---- the Board of Directors, out of the column and across the page ----- */
+  function boardRow(){
+    var pair=$('#tm-close .tm-pair'); if(!pair||$('.zboard')) return;
+    var L=pair.children[0]; if(!L) return;
+    var lab=null, rows=[];
+    [].slice.call(L.children).forEach(function(k){
+      if(k.classList&&k.classList.contains('tm-brow')){ rows.push(k); return; }
+      if(!lab&&/board of directors/i.test((k.textContent||''))) lab=k;
+    });
+    if(!lab||!rows.length) return;
+    var band=made(el('div','zboard'));
+    band.appendChild(made(el('div','zrule')));
+    pair.parentNode.insertBefore(band,pair.nextSibling);
+    move(lab,band);
+    var inn=made(el('div','zboard-rows'));
+    band.appendChild(inn);
+    rows.forEach(function(r){ move(r,inn); });
+  }
+
   /* ---- the platform ------------------------------------------------------ */
   function plat(kind){
     var five=$('.sf6-five'); if(!five) return;
@@ -8153,6 +8263,28 @@ html[data-sfz="20"] .zclose .tm-cta{
       five.style.position='relative';
       five.appendChild(made(el('div','zpath')));
     }
+  }
+
+  /* ---- the closing band takes the People's own frame ---------------------
+     .tm-ctr is scoped to #tm-close in the page's own sheet, so a copy of the
+     class outside that section inherits nothing. The band is measured against
+     the real column instead — the same way BASE puts the Platform on it — so
+     OPPORTUNITIES and GET IN TOUCH start on exactly the line THE PEOPLE
+     BEHIND IT starts on, at every width. */
+  function closeFrame(){
+    var band=$('.zclose'), ctr=$('#tm-close .tm-ctr');
+    if(!band||!ctr) return;
+    var b=band.getBoundingClientRect(), c=ctr.getBoundingClientRect();
+    if(b.width<40||c.width<40) return;
+    /* the band's BORDER box does not move when its padding changes, so the
+       gap is measured straight off it — adding the current padding back in
+       would compound on every pass */
+    var l=c.left-b.left, r=b.right-c.right;
+    if(l<0||r<0) return;
+    if(band.style.getPropertyValue('padding-left')!==l.toFixed(1)+'px')
+      band.style.setProperty('padding-left',l.toFixed(1)+'px','important');
+    if(band.style.getPropertyValue('padding-right')!==r.toFixed(1)+'px')
+      band.style.setProperty('padding-right',r.toFixed(1)+'px','important');
   }
 
   /* ---- the staged entry --------------------------------------------------- */
@@ -8186,7 +8318,10 @@ html[data-sfz="20"] .zclose .tm-cta{
   var CUR=null;
   function build(v){
     var c=D[v]||{};
-    if(c.hoist) hoist(c.hoist);
+    if(c.hoistCols){
+      var w=document.documentElement.clientWidth;
+      if(w>700) hoist(colsFor(w,[5,4]));
+    } else if(c.hoist) hoist(c.hoist);
     if(c.thesis) thesis();
     if(c.anchor) anchor();
     if(c.mast) mast();
@@ -8197,6 +8332,7 @@ html[data-sfz="20"] .zclose .tm-cta{
     if(c.seam) seam();
     if(c.idx) labels();
     if(c.tech) tech();
+    if(c.board) boardRow();
     if(c.novis) noVision();
     if(c.band) bands();
     if(c.close) closingBand();
@@ -8207,9 +8343,12 @@ html[data-sfz="20"] .zclose .tm-cta{
 
   function pass(v){
     var c=D[v]||{};
+    closeFrame();
     if(!OWN) return;
+    var w=document.documentElement.clientWidth;
+    if(c.hoistCols&&w>700) syncStrip(colsFor(w,[5,4]));
     if(c.hseq) return;                 /* 13 is a flex track, not a grid */
-    place({cols:c.two?[5,4]:[5,4]});
+    place({cols:[5,4]});
   }
 
   function watch(){
@@ -8233,6 +8372,9 @@ html[data-sfz="20"] .zclose .tm-cta{
     MADE.forEach(function(n){ if(n&&n.parentNode) n.parentNode.removeChild(n); }); MADE=[];
     $$('[data-zhid]').forEach(function(n){ n.style.removeProperty('display'); n.removeAttribute('data-zhid'); });
     $$('.zin').forEach(function(n){ n.classList.remove('zin'); });
+    var band=$('.zclose');
+    if(band){ band.style.removeProperty('padding-left'); band.style.removeProperty('padding-right'); }
+    STRIP=null; HOME=null; LASTN=-1;
     OWN=false; window.__sfzOwn=false; CUR=null;
     document.documentElement.removeAttribute('data-sfz');
     document.documentElement.removeAttribute('data-zrev');
@@ -8250,7 +8392,10 @@ html[data-sfz="20"] .zclose .tm-cta{
       if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
       /* BASE builds first, by BASE's own code */
       try{ prev.apply&&prev.apply('BASE'); }catch(e){}
-      CUR=v; OWN=true; window.__sfzOwn=true;
+      CUR=v; OWN=(v!=='01');
+      /* 01 leaves the roster entirely to BASE — same placer, same geometry,
+         same two mobile rows. This file only works below the people. */
+      window.__sfzOwn=OWN;
       document.documentElement.setAttribute('data-sfz',v);
       /* the page composes itself late; the structure is built once it has */
       later(function(){ build(v); pass(v); watch(); },240);
