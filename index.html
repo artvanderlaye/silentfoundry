@@ -27423,6 +27423,40 @@ html[data-sfw43="37"] #sfsec-dna .sf-bp{
 @media(min-width:1024px){
   html[data-sfw43="37"] .sf-fband{height:60px !important;}
 }
+
+/* =========================================================================
+   THE TWO GRID FIELDS, AND THE SIGNAL WAVE'S RIGHT EDGE
+   ========================================================================= */
+
+/* ---- 1 · the Marshall grid comes off the black -------------------------
+   The drawn grid covered the whole case-study section. It is now clipped to
+   the CREAM zone only — the black side is clear.
+
+   It is CLIPPED, not resized. The canvas bitmap is drawn once at the size of
+   its box; shrinking the box would stretch that bitmap and the 60px grid
+   would stop being 60px. clip-path hides part of the same drawing instead,
+   so every line keeps its true spacing and the animation is untouched. The
+   inset comes from the measured .m11-zone.m11-b, so it is exact on a desktop
+   (where the two zones are side by side) and on a phone (where they stack
+   and the cream is the lower band). */
+html[data-sfw43="37"] #sfsec-dna .sf-bp{
+  clip-path:inset(var(--sfz-t,0px) var(--sfz-r,0px) 0px var(--sfz-l,50%)) !important;}
+
+/* ---- 2 · a grid field on the black SWITCH panel ------------------------
+   FROM PHYSICAL CHARACTER / TO TRANSFERABLE DESIGN LANGUAGE gets the same
+   drawn grid, contained to its own black background and nothing above or
+   below it: the host is inset:0 inside .split, which IS the black box.
+   z-index:-1 with isolation on the panel puts the drawing above the black
+   fill and below every word on it — so it reads as the surface the type is
+   set on, not as an overlay. */
+html[data-sfw43="37"] #sf-lab-mount .split{isolation:isolate;}
+html[data-sfw43="37"] .sfz-bp{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+  opacity:.20;}
+html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfw43="37"] .sfz-bp{opacity:.12;}
+}
 </style>
 
 <script id="sf-d48-js">
@@ -27441,12 +27475,130 @@ html[data-sfw43="37"] #sfsec-dna .sf-bp{
     });
     return n>0;
   }
-  var tries=0;
-  (function poll(){
-    if(tag()&&++tries>1) return;      /* tag twice: once early, once settled */
-    if(tries>40) return;
-    tries++; setTimeout(poll,150);
+
+  /* =======================================================================
+     THE MARSHALL GRID, CLIPPED TO THE CREAM.
+     Measured from .m11-zone.m11-b against the section it sits in, so the
+     same code is correct side-by-side on a desktop and stacked on a phone.
+     ======================================================================= */
+  function clipBP(){
+    var sec=document.getElementById('sfsec-dna');
+    if(!sec) return;
+    var z=sec.querySelector('#sf-m11 .m11-zone.m11-b');
+    if(!z) return;
+    var s=sec.getBoundingClientRect(), r=z.getBoundingClientRect();
+    if(s.width<40||r.width<40) return;
+    var L=Math.max(0,r.left-s.left), R=Math.max(0,s.right-r.right),
+        T=Math.max(0,r.top-s.top);
+    var de=document.documentElement;
+    function set(k,v){ if(de.style.getPropertyValue(k)!==v) de.style.setProperty(k,v); }
+    set('--sfz-l',L.toFixed(1)+'px');
+    set('--sfz-r',R.toFixed(1)+'px');
+    set('--sfz-t',T.toFixed(1)+'px');
+  }
+
+  /* =======================================================================
+     THE GRID FIELD ON THE BLACK SWITCH PANEL.
+     The page's own blueprint is a Three.js grid with a 2D twin for when the
+     library is not there. Neither is reachable from here — both live inside
+     a closure — so the 2D twin is reproduced: the same 60px spacing, the
+     same |index| x 80ms draw-out from the centre, the same gold, the same
+     0.4 alpha and the same reduced-motion behaviour. It is a copy of that
+     drawing, not a new idea about what a grid should look like.
+     ======================================================================= */
+  var GRID=null;
+  function gridOn(host){
+    if(!host||host.querySelector('canvas')) return;
+    var canvas=document.createElement('canvas');
+    host.appendChild(canvas);
+    var g=canvas.getContext('2d'); if(!g) return;
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);
+    var reduced=false;
+    try{ reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches; }catch(e){}
+    function size(){
+      var w=host.offsetWidth,h=host.offsetHeight;
+      canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+      g.setTransform(dpr,0,0,dpr,0,0); return [w,h];
+    }
+    if(!size()[0]) return;
+    var t0=(window.performance&&performance.now)?performance.now():0;
+    function now(){ return (window.performance&&performance.now)?performance.now():t0; }
+    function draw(){
+      var w=host.offsetWidth,h=host.offsetHeight;
+      if(!w||!h){ GRID=requestAnimationFrame(draw); return; }
+      if(canvas.width!==Math.round(w*dpr)) size();
+      var t=now()-t0;
+      g.clearRect(0,0,w,h);
+      g.strokeStyle='#c8a96e'; g.lineWidth=1;
+      var cx=w/2, cy=h/2, S=60;
+      var rows=Math.ceil(h/S), cols=Math.ceil(w/S);
+      function k(delay){ return Math.min(1,Math.max(0,(t-delay)/900)); }
+      g.globalAlpha=0.4;
+      for(var r=-rows;r<=rows;r++){
+        var kk=reduced?1:k(Math.abs(r)*80); if(kk<=0) continue;
+        g.beginPath(); g.moveTo(cx-(w/2)*kk, cy+r*S); g.lineTo(cx+(w/2)*kk, cy+r*S); g.stroke();
+      }
+      for(var c=-cols;c<=cols;c++){
+        var kv=reduced?1:k(Math.abs(c)*80); if(kv<=0) continue;
+        g.beginPath(); g.moveTo(cx+c*S, cy-(h/2)*kv); g.lineTo(cx+c*S, cy+(h/2)*kv); g.stroke();
+      }
+      g.globalAlpha=1;
+      if(!reduced||t<1200) GRID=requestAnimationFrame(draw);
+    }
+    draw();
+  }
+  function blackGrid(){
+    var sp=document.querySelector('#sf-lab-mount .split');
+    if(!sp) return false;
+    var host=sp.querySelector(':scope > .sfz-bp');
+    if(!host){
+      host=document.createElement('div'); host.className='sfz-bp';
+      sp.insertBefore(host,sp.firstChild);
+    }
+    gridOn(host);
+    return !!host.querySelector('canvas');
+  }
+
+  /* =======================================================================
+     THE SIGNAL WAVE'S RIGHT EDGE.
+     #v11-sine-canvas is written inline at right:20px, so it sits 20px off
+     the WINDOW while the SWITCH hero stops at the page frame — 48px in at
+     1440, 480px in at 2560. The offset is measured from the hero against the
+     canvas's own containing block rather than assumed, so it is right at
+     every width and stays right if the hero's frame changes. Desktop only:
+     below 1024 the inline value is left exactly as it is.
+     ======================================================================= */
+  function sine(){
+    var c=document.getElementById('v11-sine-canvas');
+    if(!c) return false;
+    var w=document.documentElement.clientWidth;
+    if(w<1024){ c.style.removeProperty('right'); return true; }
+    var pv=document.querySelector('#sf-lab-mount .pvstage');
+    var host=c.offsetParent||c.parentNode;
+    if(!pv||!host||!host.getBoundingClientRect) return true;
+    var hr=host.getBoundingClientRect(), pr=pv.getBoundingClientRect();
+    if(hr.width<40||pr.width<40) return true;
+    var v=Math.max(0,hr.right-pr.right).toFixed(1)+'px';
+    if(c.style.getPropertyValue('right')!==v) c.style.setProperty('right',v,'important');
+    return true;
+  }
+
+  function pass(){ tag(); clipBP(); blackGrid(); sine(); }
+
+  var n=0;
+  (function beat(){
+    pass();
+    if(++n<40) setTimeout(beat, n<10?200:800);
   })();
+  window.addEventListener('resize',function(){ setTimeout(pass,180); },{passive:true});
+  /* the sine canvas is created by an IntersectionObserver the first time the
+     venture block is seen, which can be long after everything above has
+     settled — so its arrival is watched for rather than waited on. */
+  if(window.MutationObserver){
+    var fv=document.getElementById('fv-stage')||document.getElementById('featured');
+    if(fv) new MutationObserver(function(){ sine(); })
+      .observe(fv,{childList:true,subtree:true});
+  }
 })();
 </script>
 

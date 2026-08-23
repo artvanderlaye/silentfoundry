@@ -7310,6 +7310,10 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
     return ORDER&&ORDER.length ? ORDER : $$('#pc .hs > .tc');
   }
   function place(){
+    /* a later layer may own the roster geometry outright (the 20-direction
+       lab does, for the directions that rearrange the people). When it says
+       so, BASE stops writing grid positions rather than fighting it. */
+    if(window.__sfzOwn) return;
     var h=hs(); if(!h) return;
     var list=$$('#pc .hs > .tc');
     if(!list.length) return;                       /* row mode: nothing to do */
@@ -7341,6 +7345,7 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
      restore is exact. Nobody appears twice.
      ======================================================================= */
   function mobile(want){
+    if(window.__sfzOwn) return;
     var h=hs(); if(!h) return;
     var have=!!$('.sfb-row',h);
     var de=document.documentElement;
@@ -7472,15 +7477,21 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
      THE BAR — three states, previous / next, arrow keys, deep links.
      ORG -> 65ORG -> BASE -> ORG.
      ======================================================================= */
-  var ORDER3=['ORG','65ORG','BASE'];
+  /* the cycle is whatever the bar actually publishes, read off the bar
+     itself — so it stays correct when a later layer adds states. */
+  function order(){
+    var box=document.getElementById('sf-review');
+    var bs=box?$$('.rvb button[data-v]',box):[];
+    return bs.length?bs.map(function(b){ return b.dataset.v; }):['ORG','65ORG','BASE'];
+  }
   function go(v){ if(window.__sfTeamGo) window.__sfTeamGo(v); }
   function nowState(){
     return document.documentElement.getAttribute('data-sft')||'ORG';
   }
   function step(d){
-    var i=ORDER3.indexOf(nowState());
-    if(i<0) i=ORDER3.length-1;
-    go(ORDER3[(i+d+ORDER3.length)%ORDER3.length]);
+    var O=order(), i=O.indexOf(nowState());
+    if(i<0) i=O.length-1;
+    go(O[(i+d+O.length)%O.length]);
   }
   function controls(){
     var box=document.getElementById('sf-review');
@@ -7507,5 +7518,746 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
     if(++tries>60) return;
     setTimeout(poll,200);
   })();
+})();
+</script>
+
+<style id="sf-tmz-css">
+/* =========================================================================
+   TEAM PAGE — 20 DIRECTIONS ON TOP OF BASE.  01 … 20
+
+   Every state builds BASE first, by BASE's own code, then sets
+   html[data-sfz="NN"]. Every selector below is prefixed with that attribute,
+   so ORG, 65ORG and BASE are unreachable from this file.
+
+   THE ONE RULE THAT SHAPES ALL TWENTY
+   No type is larger than the largest type already in BASE. BASE's biggest is
+   .sf4-title — the house section title, clamp(1.1rem,1.6vw,1.8rem) Bebas at
+   0.22em. Nothing here exceeds it; several directions go smaller and denser.
+   Character comes from composition, cropping, rules, contrast, sequence and
+   restraint — never from scale.
+   ========================================================================= */
+
+/* =========================================================================
+   SHARED PARTS — the vocabulary the twenty directions draw on.
+   ========================================================================= */
+
+/* the roster, owned by this file for the directions that rearrange it */
+html[data-sfz] #pc .hs{
+  --z-cg:2px; --z-rg:26px;
+  column-gap:var(--z-cg) !important; row-gap:var(--z-rg) !important;}
+html[data-sfz] #pc .hs > .tc img.ph{
+  aspect-ratio:var(--z-ar,.72) !important;
+  object-fit:cover !important;height:auto !important;width:100% !important;}
+
+/* an opening strip: cards lifted into the header so photography reaches the
+   first screen instead of waiting below the fold */
+html[data-sfz] .zstrip{
+  display:flex;gap:2px;width:100%;overflow:hidden;margin-top:26px;}
+html[data-sfz] .zstrip > .tc{
+  flex:1 1 0;min-width:0;width:auto !important;max-width:none !important;}
+html[data-sfz] .zstrip > .tc img.ph{
+  aspect-ratio:var(--z-sar,1.15) !important;width:100% !important;
+  height:auto !important;object-fit:cover !important;}
+html[data-sfz] .zstrip > .tc > div:nth-child(2){
+  padding-top:14px !important;padding-bottom:16px !important;}
+
+/* the technical index label on a card */
+html[data-sfz] .zix{
+  position:absolute;top:10px;left:12px;z-index:3;
+  font-family:'DM Sans',sans-serif;font-size:8.2px;letter-spacing:.24em;
+  color:rgba(244,241,236,.66);font-weight:300;pointer-events:none;
+  text-shadow:0 0 10px rgba(10,10,10,.55);}
+html[data-sfz] #pc .hs > .tc,
+html[data-sfz] .zstrip > .tc{position:relative;}
+
+/* a closing band: Opportunities and Get in Touch taken out of the middle of
+   the institutional column and made into the page's last deliberate action */
+html[data-sfz] .zclose{
+  position:relative;padding:clamp(56px,7vh,88px) 0 clamp(60px,8vh,96px);
+  background:var(--z-closebg,#f2efe9);
+  box-shadow:inset 0 1px 0 rgba(42,46,51,.10);}
+html[data-sfz] .zclose-in{position:relative;z-index:2;}
+html[data-sfz] .zclose .zc-ey{
+  font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;font-weight:400;color:var(--z-closeey,#8a6e3a);
+  display:block;margin:0 0 16px;}
+html[data-sfz] .zclose p{
+  font-family:'DM Sans',sans-serif;font-size:.84rem;line-height:1.95;
+  font-weight:300;color:var(--z-closetx,rgba(10,10,10,.55));
+  margin:0;max-width:min(100%,62ch);}
+html[data-sfz] .zclose .tm-cta{margin-top:26px;display:inline-flex;}
+
+/* a rule that draws itself across a section on entry */
+html[data-sfz] .zrule{
+  height:1px;background:var(--z-rule,rgba(42,46,51,.16));
+  transform:scaleX(0);transform-origin:0 50%;
+  transition:transform 1.5s cubic-bezier(.2,.7,.26,1);}
+html[data-sfz] .zrule.in{transform:scaleX(1);}
+
+/* staged portrait entry — opacity only, no movement that delays reading */
+html[data-sfz][data-zrev] #pc .hs > .tc,
+html[data-sfz][data-zrev] .zstrip > .tc{
+  opacity:0;transition:opacity .8s ease;}
+html[data-sfz][data-zrev] #pc .hs > .tc.zin,
+html[data-sfz][data-zrev] .zstrip > .tc.zin{opacity:1;}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfz][data-zrev] #pc .hs > .tc,
+  html[data-sfz][data-zrev] .zstrip > .tc{opacity:1 !important;transition:none !important;}
+  html[data-sfz] .zrule{transform:none !important;transition:none !important;}
+}
+
+/* the platform row, restyled per direction */
+html[data-sfz] .zpn{
+  font-family:'DM Sans',sans-serif;font-size:8.2px;letter-spacing:.24em;
+  color:var(--z-pn,rgba(10,10,10,.3));display:block;margin-bottom:9px;}
+html[data-sfz] .zpath{
+  position:absolute;left:0;right:0;top:0;height:1px;
+  background:var(--z-rule,rgba(42,46,51,.16));}
+
+/* a header thesis line — one sentence, never a slogan */
+html[data-sfz] .zthesis{
+  font-family:'DM Sans',sans-serif;font-size:.8rem;line-height:1.9;
+  font-weight:300;color:rgba(10,10,10,.5);margin:14px 0 0;
+  max-width:min(100%,58ch);}
+html[data-sfz] .zmast{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:clamp(24px,4vw,64px);align-items:end;}
+@media(max-width:820px){
+  html[data-sfz] .zmast{grid-template-columns:1fr;gap:14px;align-items:start;}
+}
+
+/* ============================ 01 · PHOTOGRAPHIC THRESHOLD ================
+   The first five portraits enter the opening viewport. The header stops
+   being a quiet cream field and becomes the threshold between the title and
+   the photography — the rule that already ran across the page now sits under
+   the title with the locations on it, and the pictures start immediately. */
+html[data-sfz="01"] #tm-head{padding-bottom:0 !important;}
+html[data-sfz="01"]{--z-sar:1.05;--z-ar:.72;}
+html[data-sfz="01"] .zstrip{margin-top:20px;}
+html[data-sfz="01"] #pc > section:nth-of-type(2){padding-top:2px;}
+
+/* ============================ 02 · EDITORIAL MASTHEAD ==================== */
+html[data-sfz="02"]{--z-ar:.78;--z-cg:6px;--z-rg:30px;}
+html[data-sfz="02"] #tm-head{
+  border-top:1px solid rgba(42,46,51,.16);padding-top:26px !important;}
+html[data-sfz="02"] #tm-head .zmast{padding-bottom:22px;
+  border-bottom:1px solid rgba(42,46,51,.16);}
+html[data-sfz="02"] .tm-strip{margin-top:14px !important;}
+
+/* ============================ 03 · NAVY EDGE ============================= */
+html[data-sfz="03"] #pc > section:first-of-type{position:relative;}
+html[data-sfz="03"] .zedge{
+  position:absolute;left:0;top:0;bottom:0;width:clamp(56px,7vw,108px);
+  background:linear-gradient(160deg,#282b33,#171a20);z-index:1;}
+html[data-sfz="03"] .zedge span{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;
+  font-family:'DM Sans',sans-serif;font-size:9.6px;letter-spacing:.34em;
+  text-transform:uppercase;color:rgba(244,241,236,.62);}
+html[data-sfz="03"] #tm-head{
+  box-sizing:border-box !important;
+  padding-left:calc(clamp(56px,7vw,108px) + 40px) !important;}
+html[data-sfz="03"] #tm-head > div[style*="100vw"]{
+  width:100% !important;margin-left:0 !important;}
+html[data-sfz="03"]{--z-ar:.74;}
+
+/* ============================ 04 · SINGLE PORTRAIT ANCHOR ================ */
+html[data-sfz="04"] .zanchor{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  gap:clamp(20px,3vw,44px);align-items:end;margin-top:24px;}
+html[data-sfz="04"] .zanchor > .tc{width:auto !important;max-width:none !important;}
+html[data-sfz="04"] .zanchor > .tc img.ph{
+  aspect-ratio:1.02 !important;width:100% !important;height:auto !important;}
+html[data-sfz="04"] .zanchor-tx{padding-bottom:8px;}
+html[data-sfz="04"]{--z-ar:.72;}
+@media(max-width:820px){ html[data-sfz="04"] .zanchor{grid-template-columns:1fr;} }
+
+/* ============================ 05 · CINEMATIC STRIP ======================= */
+html[data-sfz="05"]{--z-ar:1.5;--z-cg:2px;--z-rg:18px;}
+html[data-sfz="05"] #pc .hs > .tc img.ph{object-position:50% 34% !important;}
+html[data-sfz="05"] #pc .hs > .tc > div:nth-child(2){
+  padding-top:16px !important;padding-bottom:18px !important;}
+html[data-sfz="05"] .u-desc{display:none !important;}
+
+/* ============================ 06 · WORKING CONTACT SHEET ================= */
+html[data-sfz="06"]{--z-ar:.8;--z-cg:10px;--z-rg:34px;}
+html[data-sfz="06"] #pc .hs > .tc{
+  box-shadow:inset 0 0 0 1px rgba(42,46,51,.10);}
+html[data-sfz="06"] #pc .hs > .tc::before,
+html[data-sfz="06"] #pc .hs > .tc::after{
+  content:'';position:absolute;width:9px;height:9px;z-index:4;
+  border-color:rgba(138,110,58,.5);}
+html[data-sfz="06"] #pc .hs > .tc::before{
+  left:0;top:0;border-left:1px solid;border-top:1px solid;}
+html[data-sfz="06"] #pc .hs > .tc::after{
+  right:0;bottom:0;border-right:1px solid;border-bottom:1px solid;}
+html[data-sfz="06"] .u-desc{display:none !important;}
+
+/* ============================ 07 · DISCIPLINES FIRST ===================== */
+html[data-sfz="07"]{--z-ar:.76;--z-rg:30px;}
+html[data-sfz="07"] .sfr-ix{
+  background:transparent !important;padding-left:0 !important;
+  color:rgba(138,110,58,.85) !important;letter-spacing:.26em !important;}
+html[data-sfz="07"] .u-desc{display:none !important;}
+html[data-sfz="07"] .zdisc{
+  display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:18px;
+  padding-top:14px;border-top:1px solid rgba(42,46,51,.14);}
+html[data-sfz="07"] .zdisc span{
+  font-family:'DM Sans',sans-serif;font-size:9.2px;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.34);}
+
+/* ============================ 08 · TWO-SPEED GRID ======================== */
+html[data-sfz="08"]{--z-ar:.72;--z-rg:30px;}
+html[data-sfz="08"] #pc .hs > .tc.fdr img.ph{aspect-ratio:.86 !important;}
+html[data-sfz="08"] #pc .hs > .tc:not(.fdr) img.ph{aspect-ratio:.68 !important;}
+html[data-sfz="08"] #pc .hs > .tc:not(.fdr) .u-desc{display:none !important;}
+
+/* ============================ 09 · CONTINUOUS IMAGE WALL ================= */
+html[data-sfz="09"]{--z-ar:.8;--z-cg:0px;--z-rg:0px;}
+html[data-sfz="09"] #pc .hs > .tc > div:nth-child(2){
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  background:linear-gradient(to top,rgba(10,10,10,.86),rgba(10,10,10,0)) !important;
+  padding:44px 16px 14px !important;}
+html[data-sfz="09"] #pc .hs > .tc{overflow:hidden;}
+html[data-sfz="09"] .u-name{color:rgba(244,241,236,.94) !important;}
+html[data-sfz="09"] .a-rl{color:rgba(200,169,110,.9) !important;}
+html[data-sfz="09"] .u-desc,html[data-sfz="09"] .sfr-ix{display:none !important;}
+html[data-sfz="09"] #pc .hs > .tc > div:nth-child(2) > div:last-child{display:none !important;}
+
+/* ============================ 10 · LIGHT TO DARK ========================= */
+html[data-sfz="10"]{--z-ar:.74;--z-closebg:#171a20;--z-closeey:rgba(200,169,110,.8);
+  --z-closetx:rgba(244,241,236,.6);}
+html[data-sfz="10"] .sf6{
+  background:linear-gradient(170deg,#282b33,#12151a) !important;}
+html[data-sfz="10"] .sf6-t{color:rgba(244,241,236,.9) !important;}
+html[data-sfz="10"] .sf6-t em{color:rgba(200,169,110,.8) !important;}
+html[data-sfz="10"] .sf6-p{color:rgba(244,241,236,.55) !important;}
+html[data-sfz="10"] .sf6-k{color:rgba(244,241,236,.88) !important;}
+html[data-sfz="10"] .sf6-s{color:rgba(200,169,110,.7) !important;}
+html[data-sfz="10"] .sf6-five{border-top-color:rgba(244,241,236,.16) !important;}
+html[data-sfz="10"] .zclose .tm-cta{
+  color:rgba(244,241,236,.9) !important;border-color:rgba(200,169,110,.5) !important;}
+
+/* ============================ 11 · DARK OPENING ========================== */
+html[data-sfz="11"] #pc > section:first-of-type{
+  background:linear-gradient(165deg,#1b1e24,#101317) !important;position:relative;}
+html[data-sfz="11"] #tm-head .sf4-title{color:rgba(200,169,110,.85) !important;}
+html[data-sfz="11"] #tm-head span{color:rgba(244,241,236,.42) !important;}
+html[data-sfz="11"] #tm-head .zthesis{color:rgba(244,241,236,.55) !important;}
+html[data-sfz="11"] #tm-head div[style*="background:rgba(10,10,10"]{
+  background:rgba(244,241,236,.16) !important;}
+html[data-sfz="11"] .zstrip > .tc{background:transparent !important;}
+html[data-sfz="11"] .zstrip > .tc > div:nth-child(2){display:none !important;}
+html[data-sfz="11"] .zstrip > .tc img.ph{
+  aspect-ratio:.62 !important;filter:grayscale(1) brightness(.72) contrast(1.1) !important;}
+html[data-sfz="11"]{--z-ar:.72;}
+
+/* ============================ 12 · TECHNICAL PORTRAIT SYSTEM ============= */
+html[data-sfz="12"]{--z-ar:.74;--z-cg:8px;--z-rg:32px;}
+html[data-sfz="12"] .ztech{
+  display:flex;justify-content:space-between;gap:10px;
+  margin:10px 0 0;padding-top:8px;border-top:1px solid rgba(42,46,51,.14);}
+html[data-sfz="12"] .ztech span{
+  font-family:'DM Sans',sans-serif;font-size:8px;letter-spacing:.2em;
+  text-transform:uppercase;color:rgba(10,10,10,.3);}
+html[data-sfz="12"] .u-desc{display:none !important;}
+
+/* ============================ 13 · HORIZONTAL PEOPLE SEQUENCE ============ */
+html[data-sfz="13"]{--z-ar:.78;}
+html[data-sfz="13"] #pc .hs{
+  display:flex !important;overflow-x:auto !important;
+  scroll-snap-type:x mandatory;scrollbar-width:none;
+  gap:8px !important;padding-left:0 !important;padding-right:0 !important;}
+html[data-sfz="13"] #pc .hs::-webkit-scrollbar{display:none;}
+html[data-sfz="13"] #pc .hs > .tc{
+  flex:0 0 clamp(220px,21vw,300px) !important;
+  width:clamp(220px,21vw,300px) !important;scroll-snap-align:start;}
+html[data-sfz="13"] .zhint{
+  display:flex;align-items:center;gap:10px;margin-top:16px;
+  font-family:'DM Sans',sans-serif;font-size:8.6px;letter-spacing:.24em;
+  text-transform:uppercase;color:rgba(10,10,10,.34);}
+html[data-sfz="13"] .zhint i{
+  display:block;height:1px;width:64px;background:rgba(42,46,51,.2);}
+
+/* ============================ 14 · PORTRAIT / TEXT COUNTERPOINT ========== */
+html[data-sfz="14"]{--z-ar:.72;--z-rg:34px;}
+html[data-sfz="14"] .zband{
+  padding:clamp(30px,4vh,52px) 0;
+  border-top:1px solid rgba(42,46,51,.13);}
+html[data-sfz="14"] .zband p{
+  font-family:'DM Sans',sans-serif;font-size:.84rem;line-height:2;
+  font-weight:300;color:rgba(10,10,10,.52);margin:12px 0 0;
+  max-width:min(100%,60ch);}
+html[data-sfz="14"] .zband .zc-ey{
+  font-family:'DM Sans',sans-serif;font-size:10.88px;letter-spacing:2.72px;
+  text-transform:uppercase;color:#8a6e3a;display:block;}
+
+/* ============================ 15 · FOUNDERS TO NETWORK =================== */
+html[data-sfz="15"]{--z-ar:.7;--z-sar:.92;--z-rg:28px;}
+html[data-sfz="15"] .zstrip > .tc img.ph{aspect-ratio:.92 !important;}
+html[data-sfz="15"] .sf6{
+  background:linear-gradient(175deg,#efece6 0%,#e4e1da 55%,#1b1e24 55.4%) !important;}
+html[data-sfz="15"] .sf6-five{
+  border-top-color:rgba(244,241,236,.18) !important;
+  padding-top:34px !important;}
+html[data-sfz="15"] .sf6-k{color:rgba(244,241,236,.88) !important;}
+html[data-sfz="15"] .sf6-s{color:rgba(200,169,110,.72) !important;}
+
+/* ============================ 16 · ONE CONTINUOUS FOUNDRY ================ */
+html[data-sfz="16"]{--z-ar:.74;--z-rg:26px;}
+html[data-sfz="16"] #pc > section:first-of-type,
+html[data-sfz="16"] #pc > section:nth-of-type(2),
+html[data-sfz="16"] #tm-close{background:transparent !important;}
+html[data-sfz="16"] #pc{
+  background:linear-gradient(180deg,#f6f3ec 0%,#efece6 34%,#e9e5dd 72%,#e2ded5 100%) !important;}
+html[data-sfz="16"] #tm-close,
+html[data-sfz="16"] .sf6{box-shadow:none !important;}
+html[data-sfz="16"] .sf6{background:transparent !important;}
+html[data-sfz="16"] .zseam{height:1px;background:rgba(42,46,51,.12);}
+
+/* ============================ 17 · INSTITUTIONAL INDEX =================== */
+html[data-sfz="17"]{--z-ar:.72;--z-cg:1px;--z-rg:22px;
+  --z-closebg:#0f1216;--z-closeey:rgba(200,169,110,.8);
+  --z-closetx:rgba(244,241,236,.58);}
+html[data-sfz="17"] #tm-head{border-bottom:1px solid rgba(42,46,51,.2);
+  padding-bottom:18px !important;}
+html[data-sfz="17"] .u-desc{display:none !important;}
+html[data-sfz="17"] .sf6{background:#12151a !important;}
+html[data-sfz="17"] .sf6-t{color:rgba(244,241,236,.9) !important;}
+html[data-sfz="17"] .sf6-t em{color:rgba(200,169,110,.82) !important;}
+html[data-sfz="17"] .sf6-p{color:rgba(244,241,236,.55) !important;}
+html[data-sfz="17"] .sf6-k{color:rgba(244,241,236,.9) !important;}
+html[data-sfz="17"] .sf6-s{color:rgba(200,169,110,.7) !important;}
+html[data-sfz="17"] .sf6-five{border-top-color:rgba(244,241,236,.18) !important;}
+html[data-sfz="17"] .zclose .tm-cta{
+  color:rgba(244,241,236,.9) !important;border-color:rgba(200,169,110,.5) !important;}
+
+/* ============================ 18 · QUIET BLUEPRINT ======================= */
+html[data-sfz="18"]{--z-ar:.74;--z-cg:4px;}
+html[data-sfz="18"] #pc > section:nth-of-type(2){position:relative;}
+html[data-sfz="18"] .zbp{
+  position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:
+    linear-gradient(rgba(10,127,153,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(10,127,153,.10) 1px,transparent 1px);
+  background-size:60px 60px,60px 60px;}
+html[data-sfz="18"] #pc .hs{position:relative;z-index:1;}
+html[data-sfz="18"] .sf6-five{position:relative;}
+html[data-sfz="18"] .sf6-f{position:relative;padding-top:20px;}
+html[data-sfz="18"] .sf6-f::before{
+  content:'';position:absolute;left:0;top:0;width:1px;height:12px;
+  background:rgba(10,127,153,.4);}
+
+/* ============================ 19 · PEOPLE IN MOTION ====================== */
+html[data-sfz="19"]{--z-ar:1.25;--z-cg:2px;--z-rg:20px;}
+html[data-sfz="19"] #pc .hs > .tc img.ph{
+  transition:transform 3.2s cubic-bezier(.2,.7,.26,1),filter .5s ease !important;}
+html[data-sfz="19"] #pc .hs > .tc:hover img.ph{transform:scale(1.045);}
+html[data-sfz="19"] .u-desc{display:none !important;}
+@media(prefers-reduced-motion:reduce){
+  html[data-sfz="19"] #pc .hs > .tc:hover img.ph{transform:none !important;}
+}
+
+/* ============================ 20 · RECOMMENDED =========================== */
+html[data-sfz="20"]{--z-ar:.72;--z-sar:1.02;--z-cg:2px;--z-rg:28px;
+  --z-closebg:#12151a;--z-closeey:rgba(200,169,110,.82);
+  --z-closetx:rgba(244,241,236,.58);}
+html[data-sfz="20"] #tm-head{padding-bottom:0 !important;}
+html[data-sfz="20"] #tm-head .zmast{padding-bottom:20px;
+  border-bottom:1px solid rgba(42,46,51,.16);}
+html[data-sfz="20"] .zstrip{margin-top:18px;}
+html[data-sfz="20"] #pc > section:nth-of-type(2){padding-top:2px;}
+html[data-sfz="20"] #pc .hs > .tc.fdr img.ph{aspect-ratio:.8 !important;}
+html[data-sfz="20"] .sf6{
+  background:linear-gradient(172deg,#1b1e24,#0f1216) !important;}
+html[data-sfz="20"] .sf6-t{color:rgba(244,241,236,.92) !important;}
+html[data-sfz="20"] .sf6-t em{color:rgba(200,169,110,.84) !important;}
+html[data-sfz="20"] .sf6-p{color:rgba(244,241,236,.56) !important;}
+html[data-sfz="20"] .sf6-k{color:rgba(244,241,236,.9) !important;}
+html[data-sfz="20"] .sf6-s{color:rgba(200,169,110,.72) !important;}
+html[data-sfz="20"] .sf6-five{border-top-color:rgba(244,241,236,.18) !important;}
+html[data-sfz="20"] .zpn{color:rgba(244,241,236,.3) !important;}
+html[data-sfz="20"] .zclose{box-shadow:none !important;}
+html[data-sfz="20"] .zclose .tm-cta{
+  color:rgba(244,241,236,.92) !important;border-color:rgba(200,169,110,.55) !important;}
+
+/* ---- responsive, shared -------------------------------------------------
+   No direction is allowed to become ten full-height portraits on a phone.
+   The opening strip becomes a snap row, the roster keeps BASE's two swipe
+   rows unless the direction owns its own, and nothing overflows. */
+@media(max-width:700px){
+  html[data-sfz] .zstrip{
+    overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+    padding:0 24px;scroll-padding-left:24px;}
+  html[data-sfz] .zstrip::-webkit-scrollbar{display:none;}
+  html[data-sfz] .zstrip > .tc{
+    flex:0 0 min(72vw,270px) !important;scroll-snap-align:start;}
+  html[data-sfz] .zstrip > .tc img.ph{aspect-ratio:1.25 !important;}
+  html[data-sfz="03"] #tm-head{padding-left:24px !important;}
+  html[data-sfz="03"] .zedge{width:100%;height:44px;bottom:auto;}
+  html[data-sfz="03"] .zedge span{transform:translate(-50%,-50%);}
+  html[data-sfz="13"] #pc .hs > .tc{
+    flex:0 0 min(78vw,300px) !important;width:min(78vw,300px) !important;}
+  html[data-sfz="09"] #pc .hs > .tc > div:nth-child(2){padding:40px 16px 14px !important;}
+  html[data-sfz="04"] .zanchor{grid-template-columns:1fr;}
+  html[data-sfz] .zmast{grid-template-columns:1fr;}
+}
+@media(max-width:1000px){
+  html[data-sfz] .zstrip > .tc > div:nth-child(2){padding-left:12px !important;padding-right:12px !important;}
+}
+</style>
+
+<script id="sf-tmz-js">
+(function(){
+
+  var V=['01','02','03','04','05','06','07','08','09','10',
+         '11','12','13','14','15','16','17','18','19','20'];
+
+  var NOTE={
+'01':'photographic threshold — the first five portraits enter the opening screen. The title, the rule and the locations become the threshold between the cream header and the photography rather than a header with nothing under it',
+'02':'editorial masthead — a publication opening: title and one-sentence thesis set against each other between two rules, locations on the lower rule, then a disciplined contact sheet with wider gutters and a shorter portrait',
+'03':'navy edge — the cream opening kept, with a narrow navy architectural field down the left carrying THE TEAM vertically. One deliberate borrowing from the index page and nothing else',
+'04':'single portrait anchor — one portrait opens the page at close to square, with the title and thesis set beside it; the remaining nine follow as a structured sequence beneath',
+'05':'cinematic strip — landscape 3:2 crops in two horizontal runs under a compact title. Descriptions drop away: the crop, the name and the role carry it',
+'06':'working contact sheet — the roster as an industrial sheet: crop ticks at opposing corners, a hairline frame, wide gutters and a 01–10 index printed on each portrait',
+'07':'disciplines first — the discipline is promoted above the name and set as a bare gold label, with the nine disciplines indexed as a rule under the introduction',
+'08':'two-speed grid — the three founders take a near-square crop and keep their descriptions; the wider team runs in a taller, tighter rhythm without them. Hierarchy without celebrity',
+'09':'continuous image wall — zero gutters, one photographic field, with names and roles reading out of a gradient at the foot of each frame instead of on a panel below it',
+'10':'light to dark — cream through the people, a concise institutional block, then the whole platform chapter in navy. The page darkens as it moves from who to what',
+'11':'dark opening — a restrained dark header with gold type and tall monochrome portrait fragments, resolving into the cream roster below',
+'12':'technical portrait system — every card carries a discipline coordinate and a sheet reference on a hairline, in the manufacturing notation the index page uses',
+'13':'horizontal people sequence — a controlled snap-scrolling run of the whole team on desktop as well as mobile, with a conventional rule-and-label hint rather than arrows',
+'14':'portrait / text counterpoint — image-led and information-led bands alternate: the roster, then a ruled statement band, then the platform, so nothing sits at one level',
+'15':'founders to network — three founders open at close to square, the operating team expands beneath them, and the platform expands again into a dark field at the foot of the section',
+'16':'one continuous foundry — no hard section breaks at all: one cream-to-parchment gradient carries people, institution and platform through a single evolving surface with hairline seams',
+'17':'institutional index — annual-report discipline in the roster, hairline gutters and no descriptions, ended decisively with a black platform chapter and a black closing invitation',
+'18':'quiet blueprint — a faint 60px CAD field behind the roster and a short cyan tick above each capability, so the drawing structurally connects the people to the platform',
+'19':'people in motion — landscape 5:4 working crops with a slow crop drift on hover. The page reads as a group building rather than a directory of headshots',
+'20':'recommended — the threshold opening and masthead thesis of 01 and 02, the two-speed hierarchy of 08, Vision folded away, Opportunities and Get in Touch moved out to a black closing invitation, and the platform as the dark final chapter'
+  };
+
+  /* per direction: the structural decisions. Everything else is CSS above. */
+  var D={
+'01':{hoist:5,thesis:1,rev:1},
+'02':{mast:1,thesis:1,idx:1,novis:1},
+'03':{edge:1,thesis:1},
+'04':{anchor:1,thesis:1},
+'05':{novis:1},
+'06':{idx:1,mast:1,plat:'num'},
+'07':{disc:1,novis:1,plat:'matrix'},
+'08':{two:1,thesis:1},
+'09':{},
+'10':{novis:1,close:1,plat:'num'},
+'11':{hoist:5,dark:1,thesis:1},
+'12':{tech:1,idx:1,plat:'blue'},
+'13':{hseq:1,thesis:1,novis:1},
+'14':{band:1,novis:1},
+'15':{hoist:3,thesis:1,plat:'num'},
+'16':{seam:1,novis:1},
+'17':{idx:1,novis:1,close:1,plat:'num'},
+'18':{bp:1,plat:'blue'},
+'19':{rev:1,novis:1},
+'20':{hoist:5,mast:1,thesis:1,two:1,idx:1,novis:1,close:1,plat:'num',rev:1}
+  };
+
+  var THESIS='The people who carry a venture from brand DNA through design, engineering, manufacturing and commercial realisation.';
+  var PN=['01','02','03','04','05'];
+  var DISC=['Design','Venture','Strategy','Partnerships','Brand',
+            'Finance','Engineering','Digital','AI','Film'];
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+  function el(t,c,h){ var n=document.createElement(t); if(c) n.className=c;
+    if(h!==undefined) n.innerHTML=h; return n; }
+  function hs(){ return $('#pc .hs'); }
+  function head(){ return document.getElementById('tm-head'); }
+
+  var TM=[], LS=[], MOVED=[], MADE=[], IO=null, MO=null, OWN=false;
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  /* every move is recorded with the exact place it came from, so teardown is
+     a replay backwards and never an approximation */
+  function move(n,to,before){
+    if(!n||!to) return;
+    MOVED.push([n,n.parentNode,n.nextSibling]);
+    if(before) to.insertBefore(n,before); else to.appendChild(n);
+  }
+  function made(n){ MADE.push(n); return n; }
+
+  /* ---- the roster, when a direction owns it ---------------------------- */
+  function colsFor(w,c){
+    if(w<=700) return 0;                    /* BASE's two swipe rows */
+    if(w>=1280) return c[0];
+    return c[1];
+  }
+  function place(cfg){
+    var h=hs(); if(!h) return;
+    var list=$$('#pc .hs > .tc'); if(!list.length) return;
+    var w=document.documentElement.clientWidth;
+    var cols=colsFor(w,cfg.cols||[5,4]);
+    if(!cols) return;
+    var n=list.length, per=2, units=cols*per, rows=Math.ceil(n/cols);
+    var last=n-(rows-1)*cols, lead=(last<cols)?Math.round((units-last*per)/2):0;
+    var de=document.documentElement;
+    if(de.style.getPropertyValue('--sf5-units')!==String(units))
+      de.style.setProperty('--sf5-units',String(units));
+    list.forEach(function(c,i){
+      var row=Math.floor(i/cols)+1, col=i%cols;
+      var start=((row===rows)?lead:0)+col*per+1;
+      var gc=start+' / span '+per, gr=row+' / span 1';
+      if(c.style.getPropertyValue('grid-column')!==gc) c.style.setProperty('grid-column',gc,'important');
+      if(c.style.getPropertyValue('grid-row')!==gr) c.style.setProperty('grid-row',gr,'important');
+    });
+  }
+
+  /* ---- the opening: cards lifted into the header ------------------------ */
+  function hoist(n){
+    var h=head(), src=hs(); if(!h||!src) return;
+    var strip=made(el('div','zstrip'));
+    h.parentNode.insertBefore(strip,h.nextSibling);
+    $$('#pc .hs > .tc').slice(0,n).forEach(function(c){
+      c.style.removeProperty('grid-column'); c.style.removeProperty('grid-row');
+      move(c,strip);
+    });
+  }
+  function anchor(){
+    var h=head(); if(!h) return;
+    var wrap=made(el('div','zanchor'));
+    var tx=made(el('div','zanchor-tx'));
+    var card=$('#pc .hs > .tc');
+    if(!card) return;
+    h.parentNode.insertBefore(wrap,h.nextSibling);
+    card.style.removeProperty('grid-column'); card.style.removeProperty('grid-row');
+    move(card,wrap);
+    wrap.appendChild(tx);
+    var t=$('.zthesis',h); if(t) move(t,tx);
+  }
+
+  /* ---- the header furniture --------------------------------------------- */
+  function thesis(){
+    var h=head(); if(!h||$('.zthesis',h)) return;
+    var p=made(el('p','zthesis',THESIS));
+    var strip=$('.tm-strip',h);
+    h.insertBefore(p, strip||null);
+  }
+  function mast(){
+    var h=head(); if(!h||$('.zmast',h)) return;
+    var t=$('.sf4-title',h), p=$('.zthesis',h);
+    if(!t) return;
+    var g=made(el('div','zmast'));
+    var a=made(el('div')), b=made(el('div'));
+    h.insertBefore(g,h.firstChild);
+    g.appendChild(a); g.appendChild(b);
+    move(t,a); if(p) move(p,b);
+  }
+  function edge(){
+    var sec=$('#pc > section:first-of-type'); if(!sec||$('.zedge',sec)) return;
+    var e=made(el('div','zedge','<span>The Team</span>'));
+    sec.insertBefore(e,sec.firstChild);
+  }
+  function discRow(){
+    var h=head(); if(!h||$('.zdisc',h)) return;
+    var d=made(el('div','zdisc',DISC.map(function(x){ return '<span>'+x+'</span>'; }).join('')));
+    h.appendChild(d);
+  }
+  function hint(){
+    var sec=$('#pc > section:nth-of-type(2)'); if(!sec||$('.zhint',sec)) return;
+    var n=made(el('div','zhint','<i></i><span>Drag or scroll the team</span>'));
+    sec.appendChild(n);
+  }
+  function bpField(){
+    var sec=$('#pc > section:nth-of-type(2)'); if(!sec||$('.zbp',sec)) return;
+    sec.insertBefore(made(el('div','zbp')),sec.firstChild);
+  }
+  function seam(){
+    ['#tm-close','.sf6'].forEach(function(s){
+      var n=$(s); if(!n||n.previousElementSibling&&n.previousElementSibling.className==='zseam') return;
+      n.parentNode.insertBefore(made(el('div','zseam')),n);
+    });
+  }
+
+  /* ---- per-card notation ------------------------------------------------ */
+  function labels(){
+    $$('#pc .hs .tc, .zstrip .tc').forEach(function(c,i){
+      if($('.zix',c)) return;
+      var n=made(el('div','zix',(i<9?'0':'')+(i+1)+' / 10'));
+      c.insertBefore(n,c.firstChild);
+    });
+  }
+  function tech(){
+    $$('#pc .hs .tc').forEach(function(c,i){
+      var body=c.children[1]; if(!body||$('.ztech',body)) return;
+      var d=(DISC[i]||'').toUpperCase();
+      var n=made(el('div','ztech',
+        '<span>'+d+'</span><span>SF-'+(i<9?'0':'')+(i+1)+'</span>'));
+      body.appendChild(n);
+    });
+  }
+
+  /* ---- the institutional block ------------------------------------------ */
+  function rightCol(){
+    var pair=$('#tm-close .tm-pair');
+    return pair?pair.children[1]:null;
+  }
+  function noVision(){
+    var R=rightCol(); if(!R) return;
+    var v=R.children[1];
+    if(v&&/Vision/.test(v.textContent||'')){ v.setAttribute('data-zhid','1'); v.style.display='none'; }
+  }
+  function closingBand(){
+    var R=rightCol(); if(!R) return;
+    var sf6=$('.sf6'); if(!sf6) return;
+    if($('.zclose')) return;
+    var band=made(el('section','zclose'));
+    var inn=made(el('div','zclose-in tm-ctr'));
+    band.appendChild(inn);
+    sf6.parentNode.insertBefore(band,sf6.nextSibling);
+    /* Opportunities out of the middle of the column and into the last word */
+    var op=null;
+    [].slice.call(R.children).forEach(function(c){
+      if(/Opportunities/.test(c.textContent||'')) op=c; });
+    if(op){
+      var txt=(op.textContent||'').replace(/^[^A-Za-z]*Opportunities/,'').trim();
+      inn.appendChild(made(el('span','zc-ey','Opportunities')));
+      inn.appendChild(made(el('p','',txt)));
+      op.setAttribute('data-zhid','1'); op.style.display='none';
+    }
+    var cta=$('#tm-close .tm-cta');
+    if(cta) move(cta,inn);
+  }
+  function bands(){
+    var close=document.getElementById('tm-close'); if(!close) return;
+    if($('.zband')) return;
+    var R=rightCol(); if(!R) return;
+    var m=R.children[0];
+    if(!m||!/Mission/.test(m.textContent||'')) return;
+    var sec=$('#pc > section:nth-of-type(2)'); if(!sec) return;
+    var band=made(el('section','zband tm-ctr'));
+    var txt=(m.textContent||'').replace(/^[^A-Za-z]*Mission/,'').trim();
+    band.appendChild(made(el('span','zc-ey','Mission')));
+    band.appendChild(made(el('p','',txt)));
+    sec.parentNode.insertBefore(band,sec.nextSibling);
+    m.setAttribute('data-zhid','1'); m.style.display='none';
+  }
+
+  /* ---- the platform ------------------------------------------------------ */
+  function plat(kind){
+    var five=$('.sf6-five'); if(!five) return;
+    $$('.sf6-f',five).forEach(function(f,i){
+      if(kind==='num'&&!$('.zpn',f))
+        f.insertBefore(made(el('span','zpn',PN[i]||'')),f.firstChild);
+      if(kind==='matrix'&&!$('.zpn',f))
+        f.insertBefore(made(el('span','zpn','—')),f.firstChild);
+    });
+    if(kind==='blue'&&!$('.zpath',five)){
+      five.style.position='relative';
+      five.appendChild(made(el('div','zpath')));
+    }
+  }
+
+  /* ---- the staged entry --------------------------------------------------- */
+  function reveal(){
+    var cards=$$('#pc .hs .tc, .zstrip .tc');
+    if(!cards.length) return;
+    document.documentElement.setAttribute('data-zrev','1');
+    if(!window.IntersectionObserver){
+      cards.forEach(function(c){ c.classList.add('zin'); }); return;
+    }
+    IO=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var i=cards.indexOf(e.target);
+        later(function(){ e.target.classList.add('zin'); }, Math.max(0,(i%5))*90);
+        IO.unobserve(e.target);
+      });
+    },{threshold:.12});
+    cards.forEach(function(c){ IO.observe(c); });
+  }
+  function rules(){
+    var ns=$$('.zrule');
+    if(!ns.length||!window.IntersectionObserver) { ns.forEach(function(n){n.classList.add('in');}); return; }
+    var o=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); o.unobserve(e.target); } });
+    },{threshold:.2});
+    ns.forEach(function(n){ o.observe(n); });
+  }
+
+  /* ---- assembly ---------------------------------------------------------- */
+  var CUR=null;
+  function build(v){
+    var c=D[v]||{};
+    if(c.hoist) hoist(c.hoist);
+    if(c.thesis) thesis();
+    if(c.anchor) anchor();
+    if(c.mast) mast();
+    if(c.edge) edge();
+    if(c.disc) discRow();
+    if(c.hseq) hint();
+    if(c.bp) bpField();
+    if(c.seam) seam();
+    if(c.idx) labels();
+    if(c.tech) tech();
+    if(c.novis) noVision();
+    if(c.band) bands();
+    if(c.close) closingBand();
+    if(c.plat) plat(c.plat);
+    if(c.rev) reveal();
+    rules();
+  }
+
+  function pass(v){
+    var c=D[v]||{};
+    if(!OWN) return;
+    if(c.hseq) return;                 /* 13 is a flex track, not a grid */
+    place({cols:c.two?[5,4]:[5,4]});
+  }
+
+  function watch(){
+    if(MO||!window.MutationObserver) return;
+    var h=hs(); if(!h) return;
+    MO=new MutationObserver(function(){ if(CUR) pass(CUR); });
+    MO.observe(h,{attributes:true,attributeFilter:['style'],subtree:true});
+  }
+
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    if(IO){ try{ IO.disconnect(); }catch(e){} IO=null; }
+    if(MO){ try{ MO.disconnect(); }catch(e){} MO=null; }
+    /* put every moved node back where it was, newest move first */
+    for(var i=MOVED.length-1;i>=0;i--){
+      var m=MOVED[i];
+      try{ m[1].insertBefore(m[0], m[2]&&m[2].parentNode===m[1]?m[2]:null); }catch(e){}
+    }
+    MOVED=[];
+    MADE.forEach(function(n){ if(n&&n.parentNode) n.parentNode.removeChild(n); }); MADE=[];
+    $$('[data-zhid]').forEach(function(n){ n.style.removeProperty('display'); n.removeAttribute('data-zhid'); });
+    $$('.zin').forEach(function(n){ n.classList.remove('zin'); });
+    OWN=false; window.__sfzOwn=false; CUR=null;
+    document.documentElement.removeAttribute('data-sfz');
+    document.documentElement.removeAttribute('data-zrev');
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:(prev.states||[]).concat(V),
+    note:notes,
+    off:function(){ off(); try{ prev.off&&prev.off(); }catch(e){} },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      /* BASE builds first, by BASE's own code */
+      try{ prev.apply&&prev.apply('BASE'); }catch(e){}
+      CUR=v; OWN=true; window.__sfzOwn=true;
+      document.documentElement.setAttribute('data-sfz',v);
+      /* the page composes itself late; the structure is built once it has */
+      later(function(){ build(v); pass(v); watch(); },240);
+      later(function(){ pass(v); },1200);
+      later(function(){ pass(v); },2600);
+      on(window,'resize',function(){ later(function(){ pass(v); },200); });
+    }
+  };
 })();
 </script>
