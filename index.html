@@ -26641,7 +26641,12 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
    one block and go back together — which is also what removes item 6's gap
    problem rather than papering over it. A gap is still added under the frame
    so the black panel does not start on top of the photograph. */
-@media(max-width:767px){
+/*      The band was audited afterwards and it is 900, not 767: .ofcopy is an
+        overlay from 901 up and again below 768 once this rule runs, but the
+        page drops it to STATIC between 768 and 900, so the eyebrow and the
+        headline land hard under the photograph in exactly that hundred-pixel
+        window. Same rule, wider band, no hole. */
+@media(max-width:900px){
   html[data-sfw43="37"] #sf-lab-mount .oneframe{
     position:relative !important;margin-bottom:34px !important;}
   html[data-sfw43="37"] #sf-lab-mount .oneframe::after{
@@ -26650,7 +26655,9 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
     pointer-events:none;}
   html[data-sfw43="37"] #sf-lab-mount .ofcopy{
     position:absolute !important;z-index:4 !important;
-    top:18px !important;left:24px !important;right:24px !important;
+    top:clamp(18px,2.6vw,32px) !important;
+    left:clamp(24px,4vw,48px) !important;
+    right:clamp(24px,4vw,48px) !important;
     bottom:auto !important;width:auto !important;max-width:none !important;}
   html[data-sfw43="37"] #sf-lab-mount .ofcopy .mhey{color:#5fd8f2 !important;}
   html[data-sfw43="37"] #sf-lab-mount .ofcopy .mhh{
@@ -27131,12 +27138,24 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
    panel's heading and paragraph above them, which is what stops the block
    turning into a centred poster.
 
-   And it runs to 900, not 767: the intermediate width where the Marshall
-   block is still stacked was getting the old left-flush grid while the phone
-   got the centred one, which is exactly the mismatch in the Safari
-   screenshots. One answer for the whole stacked range.
+   THE BOUNDARY, AUDITED RATHER THAN GUESSED
+   Four of the page's own breakpoints disagree with each other in this band,
+   which is why fixing one number kept leaving another gap:
+
+     768   #fv-stage padding returns · the cursor ring returns ·
+           the cyan .dnai rule returns · .wwd-section reverts
+     901   .m11-stage goes two-column — the Marshall block stops stacking
+     901   .ofcopy goes back to being an overlay
+     1001  .split goes two-column — the SWITCH panel stops stacking
+
+   So the panel is STACKED all the way to 1000 while being styled for the
+   desktop from 901: a hundred pixels of mobile-shaped layout wearing desktop
+   rules, which is precisely the width in the Safari screenshots. Every panel
+   rule below now follows .split's own breakpoint of 1000, and the Marshall
+   slider follows .m11-stage's 900. No number here is chosen; each one is the
+   page's own.
    ========================================================================= */
-@media(max-width:900px){
+@media(max-width:1000px){
   html[data-sfw43="37"] #sf-lab-mount .split .lft,
   html[data-sfw43="37"] #sf-lab-mount .split .rgt{
     text-align:center !important;}
@@ -27168,7 +27187,15 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
         768 and 900 — measured gap 0, against 40 on the phone. It gets the
         same interval as the rest of the panel's rhythm. The phone is left
         exactly as it is, because the phone was right. */
-@media(min-width:768px) and (max-width:900px){
+/*      and the same interval is stated from 521 up, not 768: the page's own
+        value collapses to 0 between 521 and 767 as well, so leaving the rule
+        at 768 simply moved the tight join rather than closing it. Below 521
+        the phone's own 40 is kept, because the phone was right. */
+@media(max-width:520px){
+  html[data-sfw43="37"] #sf-lab-mount .split .rgt .cblk{
+    margin-top:40px !important;}
+}
+@media(min-width:521px) and (max-width:1000px){
   html[data-sfw43="37"] #sf-lab-mount .split .rgt .cblk{
     margin-top:56px !important;}
 }
@@ -27178,7 +27205,7 @@ html[data-sfw43="37"] #sf-m11 .m11-min{
         34), so it sat 54px low in its own band. 72 above and 40 below puts
         the two gaps within 2px of each other. The section's total height is
         unchanged — 72 + 254 + 40 is the same 366 — so nothing below it moves. */
-@media(max-width:767px){
+@media(max-width:1000px){
   html[data-sfw43="37"] .wwd-section{
     padding-top:72px !important;padding-bottom:40px !important;}
 }
