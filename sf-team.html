@@ -5971,9 +5971,11 @@ html[data-sf33] .sfr-tick,
 html[data-sf33] .sfr-reg,
 html[data-sf33] .sfr-em{display:none !important;}
 
-/* ---- 9 · no decorative circular scroll / target markers ---------------- */
-html[data-sf33] #v11-cursor,
-html[data-sf33] #v11-cursor-ring,
+/* ---- 9 · no decorative circular scroll marker -------------------------- */
+/* #v11-cursor and #v11-cursor-ring are NOT decoration: they are the site's
+   own custom pointer. body.v11-active sets `cursor:none !important` on every
+   element, so hiding them left the page with no visible cursor at all.
+   They stay. Only the scroll marker goes. */
 html[data-sf33] #pc .tm-scroll{display:none !important;}
 /* 29's long progress line goes; a short one is added back only on overflow */
 html[data-sf33] .sfr-progwrap{display:none !important;}
@@ -10247,6 +10249,387 @@ html[data-sfb2] .zclose{display:none !important;}
       })();
       later(frame,1200); later(frame,2600);
       on(window,'resize',function(){ later(frame,200); });
+    }
+  };
+})();
+</script>
+
+<style id="sf-b3-css">
+/* =========================================================================
+   BASE3.
+
+   Built on BASE2's vocabulary — every #sfb2 rule still applies, because the
+   mount keeps the same id. What changes is three things:
+
+   1  THE PEOPLE BEHIND IT
+      One block instead of two. The left column now runs the whole way down:
+      title, then the introduction dropped below it, then Mission and Vision,
+      then the Board of Directors. The photograph sits in the right column,
+      dropped to the introduction's baseline so the two columns stagger.
+      04's picture is unchanged — same file, same 4:3 crop, same 50% 54%.
+
+   2  A PLATFORM BUILT AROUND THE VENTURE
+      20 and 31 combined. 20's broad horizontal composition, generous
+      footprint, continuous technical line and colour segments; 31's ruled
+      structure, engineering symbols, baseline discipline and quiet
+      institutional detailing. No numbers. THE VENTURE is a small ring
+      interrupting the line at its centre, with a restrained label above it.
+
+   3  OPPORTUNITIES
+      20's closing block, without the cyan rule, and the label promoted from
+      a 10.88px eyebrow to the same display size as the Platform's heading.
+   ========================================================================= */
+
+/* ---------------- 0 · ULTRA-WIDE CONTAINMENT ---------------------------- */
+/* The team page runs to a ~64px margin at any width, so above roughly 1700px
+   the composition stretches endlessly. BASE3 caps itself at the index's own
+   frame value — 1600px, centred. Below that the cap never bites and nothing
+   moves; the three blocks are capped together so they keep one edge. */
+#sfb2{--K3cap:1600px;}
+#sfb2 .K3open,#sfb2 .Kplat,#sfb2 .K3op{
+  max-width:var(--K3cap,1600px);margin-inline:auto;}
+
+/* ---------------- 1 · THE PEOPLE BEHIND IT ------------------------------ */
+#sfb2 .K3open{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+  gap:clamp(24px,3.4vw,64px);align-items:start;}
+#sfb2 .K3main{padding-top:var(--K3drop,0px);}
+#sfb2 .K3side > .Kacc{margin-top:0;}
+/* the left column is one continuous register: the accordion's top rule, the
+   board's top rule and the closing rule all sit on the same 1px value */
+#sfb2 .K3side .Kbd{border-top-color:rgba(244,241,236,.16);}
+@media(max-width:900px){
+  #sfb2 .K3open{grid-template-columns:1fr;}
+  #sfb2 .K3main{padding-top:0;--K3drop:0px;}
+}
+
+/* ---------------- 2 · THE PLATFORM -------------------------------------- */
+/* the five identities. Drawn from the index palette only. Foundry navy is
+   raised to #3f5a8f so it still reads as navy against the ink field — the
+   same hue, lifted for legibility, not a new colour. */
+#sfb2 .Kplat{--c1:#b9bcc0; --c2:#c8a96e; --c3:#3f5a8f; --c4:#00b4d8; --c5:#e43c00;
+  position:relative;}
+
+#sfb2 .Kplat-hub{position:relative;display:flex;flex-direction:column;
+  align-items:center;padding-bottom:16px;}
+#sfb2 .Kplat-hub .Key{color:rgba(200,169,110,.9) !important;}
+#sfb2 .Kplat-hub i{display:block;width:1px;height:14px;margin-top:9px;
+  background:rgba(200,169,110,.5);}
+
+#sfb2 .Kplat-body{position:relative;}
+/* the continuous technical line — 31's thin index rule, full width */
+#sfb2 .Kplat-body::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:rgba(244,241,236,.17);}
+/* THE VENTURE — a small ring interrupting the line at its centre. Not a box,
+   not a headline: an engineering node. */
+#sfb2 .Kplat-node{position:absolute;left:50%;top:0;width:11px;height:11px;
+  transform:translate(-50%,-50%);border:1px solid rgba(200,169,110,.9);
+  border-radius:50%;background:var(--ink);z-index:3;}
+/* the restrained connection, drawn only on hover */
+#sfb2 .Kplat-tie{position:absolute;top:0;height:1px;width:0;left:0;
+  background:rgba(200,169,110,.75);opacity:0;
+  transform:scaleX(0);transform-origin:var(--tieO,0) 50%;
+  transition:transform .5s cubic-bezier(.2,.7,.26,1),opacity .35s ease;z-index:2;}
+#sfb2 .Kplat-body.tied .Kplat-tie{opacity:1;transform:scaleX(1);}
+
+#sfb2 .Kplat-cols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:0;padding-top:34px;}
+#sfb2 .Kpi{position:relative;padding:0 clamp(14px,1.8vw,28px) 0 0;
+  transition:opacity .4s ease;}
+/* the colour segment IS the line: five bars, edge to edge, one per capability.
+   Together they read as one continuous band; apart they identify the five
+   parts of the infrastructure. */
+#sfb2 .Kpi .Kpseg{position:absolute;left:0;right:0;top:-34px;height:2px;
+  background:var(--cc);opacity:.6;
+  transition:opacity .4s ease,height .4s ease,top .4s ease;}
+#sfb2 .Kpi:nth-child(1){--cc:var(--c1);} #sfb2 .Kpi:nth-child(2){--cc:var(--c2);}
+#sfb2 .Kpi:nth-child(3){--cc:var(--c3);} #sfb2 .Kpi:nth-child(4){--cc:var(--c4);}
+#sfb2 .Kpi:nth-child(5){--cc:var(--c5);}
+#sfb2 .Kpi .Ksym{color:rgba(200,169,110,.5);
+  transition:color .4s ease,opacity .4s ease;}
+#sfb2 .Kpi .Kk{display:block;margin-top:14px;min-height:var(--K3kh,auto);
+  color:rgba(244,241,236,.82) !important;transition:color .4s ease;}
+#sfb2 .Kpi .Ks{display:block;margin-top:9px;color:rgba(200,169,110,.55) !important;
+  transition:color .4s ease;}
+/* the resting state is controlled; only the hovered one resolves */
+#sfb2 .Kplat-body.tied .Kpi{opacity:.55;}
+#sfb2 .Kplat-body.tied .Kpi.on{opacity:1;}
+#sfb2 .Kpi.on .Kpseg{opacity:1;height:3px;top:-34.5px;}
+#sfb2 .Kpi.on .Ksym{color:var(--cc);}
+#sfb2 .Kpi.on .Kk{color:var(--lgt) !important;}
+#sfb2 .Kpi.on .Ks{color:rgba(200,169,110,.95) !important;}
+/* the vertical riser that ties the hovered capability up to the line */
+#sfb2 .Kpi::before{content:'';position:absolute;left:0;top:-34px;width:1px;height:0;
+  background:rgba(200,169,110,.75);transition:height .4s ease;}
+#sfb2 .Kpi.on::before{height:12px;}
+
+/* ---- the platform on mobile: the same idea, turned upright -------------- */
+@media(max-width:900px){
+  #sfb2 .Kplat{padding-left:32px;}
+  #sfb2 .Kplat::before{content:'';position:absolute;left:5px;top:10px;bottom:14px;width:1px;
+    background:rgba(200,169,110,.4);}
+  #sfb2 .Kplat-hub{align-items:flex-start;padding-bottom:22px;}
+  #sfb2 .Kplat-hub i{display:none;}
+  #sfb2 .Kplat-hub::before{content:'';position:absolute;left:-32px;top:2px;width:11px;height:11px;
+    transform:translateX(-1px);border:1px solid rgba(200,169,110,.9);border-radius:50%;
+    background:var(--ink);}
+  #sfb2 .Kplat-body::before,#sfb2 .Kplat-node,#sfb2 .Kplat-tie{display:none;}
+  #sfb2 .Kplat-cols{grid-template-columns:1fr;padding-top:0;}
+  #sfb2 .Kpi{padding:18px 0;border-bottom:1px solid rgba(244,241,236,.12);}
+  #sfb2 .Kpi:last-child{border-bottom:0;}
+  #sfb2 .Kpi::before{display:none;}
+  /* the colour segment becomes the capability's tick on the spine */
+  /* the tick straddles the spine rather than sitting beside it */
+  #sfb2 .Kpi .Kpseg{left:-28px;right:auto;top:22px;width:3px;height:20px;opacity:.95;}
+  #sfb2 .Kpi .Kk{margin-top:10px;min-height:0 !important;}
+  #sfb2 .Kplat-body.tied .Kpi{opacity:1;}
+}
+
+/* ---------------- 3 · OPPORTUNITIES ------------------------------------- */
+/* 20's closing block. No cyan rule. The label carries the Platform's own
+   display size rather than the 10.88px eyebrow. */
+#sfb2 .K3z{display:none;}
+#sfb2 .K3op .Kt{color:var(--lgt) !important;}
+#sfb2 .K3op .Ksym{color:var(--gold);}
+#sfb2 .K3op .Kp{max-width:min(100%,64ch);}
+</style>
+
+<script id="sf-b3-arch">
+(function(){
+  var Q=window.__sfB2; if(!Q) return;
+  var T=Q.T,P=Q.P,EY=Q.EY,PT=Q.PT,PP=Q.PP,MV=Q.MV,BD=Q.BD,K=Q.K,IM=Q.IM,
+      IMG=Q.IMG,SYM=Q.SYM;
+  function esc(s){ return String(s==null?'':s); }
+
+  /* 04's photograph, unchanged: same file, same 4:3 crop, same 50% 54%
+     position, same cyan duotone with the cyan registration lines over it. */
+  function PIC(){
+    return IM(IMG.cnc,'duo d-cyan reg','Kmid','Machine shop','50% 54%','4 / 3');
+  }
+
+  /* ---- 1 · THE PEOPLE BEHIND IT --------------------------------------
+     One block. The left column carries the whole argument in order —
+     title, introduction, Mission, Vision, Board of Directors — and runs
+     the full height. The photograph sits opposite, dropped to the
+     introduction's line. */
+  function PEOPLE(){
+    return K('k-black dk tall',
+      '<div class="Kg K3open">'+
+        '<div class="K3side">'+
+          T()+
+          '<div class="sp2"></div>'+
+          P()+
+          '<div class="sp3"></div>'+
+          MV('acc')+
+          '<div class="sp3"></div>'+
+          EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+
+        '</div>'+
+        '<div class="K3main">'+PIC()+'</div>'+
+      '</div>');
+  }
+
+  /* ---- 2 · A PLATFORM BUILT AROUND THE VENTURE ------------------------
+     20's composition, 31's language. One horizontal system, five
+     capabilities across the width, no numbers, no timeline. THE VENTURE
+     is a node interrupting the line at its centre. */
+  function PLAT(){
+    var D=Q.D, c=D.caps;
+    var cols=c.map(function(x,i){
+      return '<div class="Kpi">'+
+        '<i class="Kpseg"></i>'+
+        '<span class="Ksym">'+SYM.caps[i]+'</span>'+
+        '<span class="Kk">'+x.k+'</span>'+
+        '<span class="Ks">'+esc(x.s)+'</span>'+
+      '</div>'; }).join('');
+    return '<div class="Kplat">'+
+      '<div class="Kplat-hub">'+EY('The Venture')+'<i></i></div>'+
+      '<div class="Kplat-body">'+
+        '<i class="Kplat-node"></i>'+
+        '<i class="Kplat-tie"></i>'+
+        '<div class="Kplat-cols">'+cols+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  function PLATFORM(){
+    return K('k-ink dk tall',
+      '<div class="K3op">'+PT()+'<div class="sp2"></div>'+PP()+'</div>'+
+      '<div class="sp3"></div>'+PLAT());
+  }
+
+  /* ---- 3 · OPPORTUNITIES ---------------------------------------------
+     20's closing block on structural black, the cyan rule removed, the
+     label at the Platform's display size. */
+  function OP3(){
+    var D=Q.D;
+    return K('k-black dk tight',
+      '<div class="K3op">'+
+        '<span class="Ksym">'+SYM.opp+'</span>'+
+        '<div class="sp"></div>'+
+        /* The page carries a design-system enforcer that stamps any LEAF
+           element reading exactly mission / vision / opportunities with an
+           inline `font-size:10.88px !important` eyebrow — and an inline
+           !important cannot be beaten by any stylesheet. It skips elements
+           that have a child, so the heading carries one empty marker. That
+           is the whole trick; nothing else about the rule changes. */
+        '<h2 class="Kt">'+esc(D.oLab)+'<i class="K3z"></i></h2>'+
+        '<div class="sp2"></div>'+
+        '<p class="Kp">'+esc(D.oText)+'</p>'+
+        '<div class="sp2"></div>'+
+        '<a class="Kcta" href="'+D.ctaH+'">'+esc(D.ctaT)+'</a>'+
+      '</div>');
+  }
+
+  window.__sfB3=function(){ return [PEOPLE(),PLATFORM(),OP3()].join(''); };
+})();
+</script>
+
+<script id="sf-b3-eng">
+(function(){
+  var Q=window.__sfB2; if(!Q) return;
+  var V=['BASE3'];
+  var NOTE={
+'BASE3':'BASE2 restructured. THE PEOPLE BEHIND IT becomes one block: the left column runs the whole way down — title, introduction, Mission, Vision, Board of Directors — with 04’s photograph opposite, dropped to the introduction’s line. A PLATFORM BUILT AROUND THE VENTURE combines 20 and 31: 20’s broad horizontal composition, generous footprint, continuous line and colour segments, with 31’s ruled structure, the site’s own engineering symbols and baseline discipline. No numbers, no timeline. THE VENTURE is a small ring interrupting the line at its centre; hovering a capability resolves its segment and draws a hairline back to it. OPPORTUNITIES keeps 20’s closing block without the cyan rule, its label promoted to the Platform’s display size'
+  };
+
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return [].slice.call((r||document).querySelectorAll(s)); }
+
+  var MOUNT=null, IO=null, TM=[], LS=[];
+  function later(f,ms){ TM.push(setTimeout(f,ms)); }
+  function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
+  function bind(t,e,f){ t.addEventListener(e,f); LS.push([t,e,f]); }
+
+  /* the frame: BASE2's own measurement, unchanged — the block's side padding
+     is the distance from the mount's left edge to the page title's left edge,
+     so every band lines up with the header above it. */
+  function frame(){
+    if(!MOUNT) return;
+    var ref=$('#tm-head .sf4-title')||$('#tm-head'); if(!ref) return;
+    var h=MOUNT.getBoundingClientRect(), r=ref.getBoundingClientRect();
+    if(h.width<40||r.width<40) return;
+    var v=Math.max(24,Math.round(r.left-h.left))+'px';
+    if(MOUNT.style.getPropertyValue('--Kpad')!==v) MOUNT.style.setProperty('--Kpad',v);
+  }
+
+  /* the photograph drops to the introduction's line rather than the title's,
+     so the two columns stagger. Measured, not guessed: the drop is the
+     rendered height of the title plus the spacer under it. */
+  function drop(){
+    if(!MOUNT) return;
+    var main=$('.K3main',MOUNT), t=$('.K3side .Kt',MOUNT), sp=$('.K3side .sp2',MOUNT);
+    if(!main||!t) return;
+    if(window.matchMedia&&window.matchMedia('(max-width:900px)').matches){
+      main.style.setProperty('--K3drop','0px'); return;
+    }
+    var d=Math.round(t.getBoundingClientRect().height +
+          (sp?sp.getBoundingClientRect().height:0));
+    if(d>0) main.style.setProperty('--K3drop',d+'px');
+  }
+
+  /* baseline discipline: all five descriptors start on the same line even if
+     one title wraps. The tallest title sets the row. */
+  function baselines(){
+    if(!MOUNT) return;
+    var ks=$$('.Kpi .Kk',MOUNT); if(!ks.length) return;
+    ks.forEach(function(k){ k.style.minHeight=''; });
+    if(window.matchMedia&&window.matchMedia('(max-width:900px)').matches) return;
+    var m=0; ks.forEach(function(k){ m=Math.max(m,k.getBoundingClientRect().height); });
+    if(m>0) ks.forEach(function(k){ k.style.minHeight=Math.ceil(m)+'px'; });
+  }
+
+  /* the connection to THE VENTURE. Hovering a capability draws one hairline
+     from its riser to the centre node and back — nothing glows, nothing
+     bounces, and the line is measured off the real geometry. */
+  function ties(){
+    if(!MOUNT) return;
+    var body=$('.Kplat-body',MOUNT), tie=$('.Kplat-tie',MOUNT),
+        cols=$('.Kplat-cols',MOUNT);
+    if(!body||!tie||!cols) return;
+    $$('.Kpi',MOUNT).forEach(function(el){
+      bind(el,'mouseenter',function(){
+        if(window.matchMedia&&window.matchMedia('(max-width:900px)').matches) return;
+        var b=body.getBoundingClientRect(), e=el.getBoundingClientRect();
+        var from=e.left-b.left, to=b.width/2;
+        tie.style.left=Math.min(from,to)+'px';
+        tie.style.width=Math.abs(to-from)+'px';
+        tie.style.setProperty('--tieO',from<to?'0':'100%');
+        $$('.Kpi',MOUNT).forEach(function(n){ n.classList.remove('on'); });
+        el.classList.add('on');
+        body.classList.add('tied');
+      });
+    });
+    bind(body,'mouseleave',function(){
+      body.classList.remove('tied');
+      $$('.Kpi',MOUNT).forEach(function(n){ n.classList.remove('on'); });
+    });
+  }
+
+  function accordions(){
+    $$('.Kacc .Kah',MOUNT).forEach(function(btn){
+      bind(btn,'click',function(){
+        var a=btn.parentNode; a.classList.toggle('on');
+        btn.querySelector('.Kmk').textContent=a.classList.contains('on')?'+':'+';
+      });
+    });
+  }
+  function reveal(){
+    var ns=$$('.an,.dx,.rev',MOUNT); if(!ns.length) return;
+    if(!window.IntersectionObserver){ ns.forEach(function(n){ n.classList.add('in'); }); return; }
+    IO=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(!e.isIntersecting) return;
+        e.target.classList.add('in'); IO.unobserve(e.target); }); },{threshold:.12});
+    ns.forEach(function(n){ IO.observe(n); });
+  }
+  function measure(){ frame(); drop(); baselines(); }
+
+  function build(){
+    var mk=window.__sfB3; if(!mk) return false;
+    if(!Q.data()) return false;
+    var host=$('#pc > section:nth-of-type(2)'); if(!host||!host.parentNode) return false;
+    if(MOUNT) return true;
+    /* BASE2 mounts under the same id; if a previous state left one behind it
+       goes before this one is inserted, so the id can never be duplicated. */
+    var stale=document.getElementById('sfb2');
+    if(stale&&stale.parentNode) stale.parentNode.removeChild(stale);
+    MOUNT=document.createElement('div'); MOUNT.id='sfb2';
+    MOUNT.innerHTML=mk();
+    host.parentNode.insertBefore(MOUNT,host.nextSibling);
+    $$('.K',MOUNT).forEach(function(n){ n.classList.add('an'); });
+    $$('.Krule',MOUNT).forEach(function(n){ n.classList.add('dx'); });
+    measure(); accordions(); ties(); reveal();
+    return true;
+  }
+  function off(){
+    TM.forEach(clearTimeout); TM=[];
+    LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
+    if(IO){ try{ IO.disconnect(); }catch(e){} IO=null; }
+    if(MOUNT&&MOUNT.parentNode) MOUNT.parentNode.removeChild(MOUNT);
+    MOUNT=null;
+    document.documentElement.removeAttribute('data-sfb2');
+  }
+
+  var prev=window.__sfTeamExtra||{states:[],note:{},off:function(){},apply:function(){}};
+  var notes={}; for(var k in (prev.note||{})) notes[k]=prev.note[k];
+  for(var k2 in NOTE) notes[k2]=NOTE[k2];
+
+  window.__sfTeamExtra={
+    states:V.concat(prev.states||[]),      /* BASE3 takes box 1 */
+    note:notes,
+    off:function(){ off(); try{ prev.off&&prev.off(); }catch(e){} },
+    apply:function(v){
+      if(V.indexOf(v)<0){ try{ prev.apply&&prev.apply(v); }catch(e){} return; }
+      try{ prev.apply&&prev.apply('DEV'); }catch(e){}
+      var tries=0;
+      (function go(){
+        if((window.__sfLharvest||function(){})()){
+          document.documentElement.setAttribute('data-sfb2',v);
+          build(); return;
+        }
+        if(++tries>40) return;
+        later(go,150);
+      })();
+      later(measure,1200); later(measure,2600);
+      on(window,'resize',function(){ later(measure,200); });
     }
   };
 })();
