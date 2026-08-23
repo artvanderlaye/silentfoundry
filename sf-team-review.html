@@ -9330,9 +9330,10 @@ html[data-sfl] .L19 .Ley{color:rgba(10,10,10,.4);}
 
 <script id="sf-tml-eng">
 (function(){
-  /* 04 is gone from here: it has been promoted to BASE2 and refined in the
-     next layer, and the brief asks for it to appear once, after 20. */
-  var V=['01','02','03','05','06','07','08','09','10',
+  /* 04 stays exactly where it was and exactly as it was: it is the true base
+     and the reference for the image. BASE2 is a copy of its picture treatment
+     with the text layout rebuilt — 04 itself is not modified. */
+  var V=['01','02','03','04','05','06','07','08','09','10',
          '11','12','13','14','15','16','17','18','19','20'];
   var NOTE={
 '01':'editorial spread — title and introduction on the left, the founders as a navy duotone trio on the right, Mission as a full-width manifesto, then the platform on ink with the capabilities drawn as a pathway',
@@ -9845,36 +9846,43 @@ html[data-sfb2] .zclose{display:none !important;}
 (function(){
   var Q=window.__sfB2; if(!Q) return;
   var T=Q.T,P=Q.P,EY=Q.EY,PT=Q.PT,PP=Q.PP,RULE=Q.RULE,IM=Q.IM,MV=Q.MV,ACC=Q.ACC,
-      BD=Q.BD,CAP=Q.CAP,OP=Q.OP,K=Q.K,KF=Q.KF,IMG=Q.IMG;
+      BD=Q.BD,CAP=Q.CAP,OP=Q.OP,K=Q.K,IMG=Q.IMG;
   var A={};
 
   /* =====================================================================
-     BASE2 — 04, rebuilt.
-     Sequence: title and introduction on black · the manufacturing photograph
-     full width and large · Mission and Vision as two accordion bands with the
-     page's own symbols · the Board as a ruled register with no codes · the
-     Platform as one horizontal infrastructure line, unnumbered · Opportunities
-     as a separate navy closing chapter.
+     THE PICTURE IS 04's PICTURE, AND IT IS NOT MODIFIED.
+     Same file, same 4:3 crop, same 50% 54% position, same cyan duotone with
+     the cyan registration lines over it, same caption — and, critically, the
+     same PLACE: inside the wider column of the opening block, under the
+     introduction. It is not full-bleed and it never was. Every direction
+     below uses this one call, unchanged, so the photograph reads identically
+     across all twenty-one and the variation lives entirely in the text
+     architecture beneath it.
      ===================================================================== */
+  function PIC(){
+    return IM(IMG.cnc,'duo d-cyan reg','Kmid','Machine shop','50% 54%','4 / 3');
+  }
+  /* the opening block, identical in geometry everywhere: a narrow column
+     carrying the title and one statement, a wider column carrying the
+     introduction and the photograph. 04's own 1fr / 2fr split. */
+  function OPEN(field,side){
+    return K(field,'<div class="Kg g12">'+
+      '<div>'+T()+(side?'<div class="sp2"></div>'+side:'')+'</div>'+
+      '<div>'+P()+'<div class="sp2"></div>'+PIC()+'</div></div>');
+  }
+
+  /* ---- BASE2 — 04 with the text rebuilt ------------------------------- */
   A['BASE2']=function(){ return [
-    K('k-black dk tall','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
-      '<div>'+RULE('cy')+'<div class="sp"></div>'+
-      '<span class="Kcap" style="color:rgba(244,241,236,.4)">Design · Strategy · Engineering · '+
-      'Manufacturing · Partnerships · Capital · Venture creation</span></div></div>'),
-    KF('k-black',IM(IMG.shop,'duo d-cyan reg','Kbig','','50% 56%','16 / 6'),'rev'),
-    K('k-black dk','<div class="Kg g21"><div>'+MV('acc')+'</div>'+
-      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
+    OPEN('k-black dk tall',MV('acc')),
+    K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
     K('k-navy dk',OP('split'))
   ].join(''); };
 
-  /* 21 REFINED BASE2 — the same argument, tightened: the photograph goes
-     wider and taller, the introduction and the disciplines sit against each
-     other, the Platform reads as a register rather than a line. */
+  /* 21 REFINED — the two statements stacked beside the title, the Platform
+     read as a ruled register. The near-shipping option. */
   A['21']=function(){ return [
-    K('k-black dk tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-black',IM(IMG.shop,'duo d-cyan','Kbig','','50% 56%','16 / 5'),'rev'),
+    OPEN('k-black dk tall',MV('stack')),
     K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-ink dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
       '<div class="sp3"></div>'+CAP('reg')),
@@ -9882,206 +9890,166 @@ html[data-sfb2] .zclose{display:none !important;}
   ].join(''); };
 
   /* 22 INDEX ACCORDION — Mission, Vision and all five capabilities resolve
-     through ruled expandable bands with the site's own symbols. */
+     through ruled expandable bands. Cream above, ink below. */
   A['22']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
-    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 50%','16 / 5')),
+    OPEN('k-cream',''),
     K('k-cream3','<div class="Kg g11"><div>'+MV('acc')+'</div>'+
       '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('acc')),
     K('k-cream tight',OP('split'))
   ].join(''); };
 
-  /* 23 MANUFACTURING SPINE — the photograph runs down one side as a
-     continuous column and every institutional block attaches to it. */
+  /* 23 SPINE — the Platform hangs off a vertical technical line. */
   A['23']=function(){ return [
-    '<section class="K k-black dk pad K23"><div class="Kin"><div class="Kg g12">'+
-      '<div class="K23i">'+IM(IMG.cnc,'duo d-alu','Kmid','','50% 50%','2 / 3')+'</div>'+
-      '<div>'+T()+'<div class="sp2"></div>'+P()+'<div class="sp3"></div>'+MV('stack')+
-      '<div class="sp3"></div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+
-      '</div></div></div></section>',
+    OPEN('k-black dk',MV('stack')),
+    K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
     K('k-navy dk',OP('portal'))
   ].join(''); };
 
-  /* 24 LIGHT / DARK / LIGHT — cream, through the dark manufacturing chapter,
-     back to cream for the closing invitation. */
+  /* 24 LIGHT / DARK / LIGHT — cream in, dark through the middle, cream out. */
   A['24']=function(){ return [
-    K('k-cream',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-ink',IM(IMG.shop,'duo d-navy','Kbig','','50% 56%','16 / 6'),'rev'),
+    OPEN('k-cream',MV('stack')),
     K('k-ink dk tall',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+
       '<div class="sp3"></div>'+PT()+'<div class="sp2"></div>'+PP()+
       '<div class="sp3"></div>'+CAP('band')),
     K('k-cream tall',OP('split'))
   ].join(''); };
 
-  /* 25 DARK / NAVY DESCENT — black at the people, navy at the platform, and
-     a contained gold-led invitation at the foot. */
+  /* 25 NAVY DESCENT — black, then Foundry navy for two capability gates,
+     then a contained cream invitation. */
   A['25']=function(){ return [
-    K('k-black dk',T()+'<div class="sp2"></div>'+P()),
-    KF('k-black',IM(IMG.cut,'duo d-cyan','Kbig','','50% 50%','16 / 5')),
+    OPEN('k-black dk',''),
     K('k-black dk tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
       '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
     K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('gate')),
     K('k-cream3 tall',OP('portal'))
   ].join(''); };
 
-  /* 26 TWO REGISTERS — the Board records people, the Platform records
-     commercial capability, on identical rules. Nothing is a card. */
+  /* 26 TWO REGISTERS — people and capability on identical rules. */
   A['26']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 4')),
+    OPEN('k-cream',MV('stack')),
     K('k-cream3',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-black dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
       '<div class="sp3"></div>'+EY('Capabilities')+'<div class="sp"></div>'+CAP('reg')),
     K('k-cream tight',OP('split'))
   ].join(''); };
 
-  /* 27 IMAGE TRIPTYCH — three industrial crops carry people, physical making
-     and commercial realisation. */
+  /* 27 MATERIAL CHAPTERS — cream, black, aluminium, ink. Colour marks the
+     changes; the photograph stays where it is. */
   A['27']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
-    '<section class="K k-cream K27"><div class="K27g">'+
-      IM(IMG.cnc,'duo d-alu','Kmid','Making','50% 50%','1 / 1')+
-      IM(IMG.shop,'colr','Kmid','Manufacturing','50% 56%','1 / 1')+
-      IM(IMG.prod,'colr','Kmid','Realisation','50% 50%','1 / 1')+
-    '</div></section>',
-    K('k-cream3 tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
-      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
+    OPEN('k-cream',''),
+    K('k-black dk tight',MV('inline')),
+    K('k-alu tight K33a',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
     K('k-navy dk',OP('split'))
   ].join(''); };
 
-  /* 28 CENTRAL VENTURE LINE — the venture at the centre with the capabilities
-     ranged either side of it on one axis. No branches, no infographic. */
+  /* 28 CENTRAL VENTURE — the venture at the centre, capabilities either side,
+     the Board as the foundation rule beneath. */
   A['28']=function(){ return [
-    K('k-cream tight','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-cream',IM(IMG.shop,'duo d-gold','Kbig','','50% 56%','16 / 5')),
+    OPEN('k-cream',MV('stack')),
     K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('ctr')),
     K('k-cream tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('found')+
       '<div class="sp3"></div>'+OP('split'))
   ].join(''); };
 
-  /* 29 HORIZONTAL INFRASTRUCTURE — the five as one restrained commercial band
-     across the full width, on aluminium. */
+  /* 29 INFRASTRUCTURE BAND — the five as one commercial band on navy. */
   A['29']=function(){ return [
-    K('k-black dk',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('acc')+'</div></div>'),
-    KF('k-black',IM(IMG.cut,'duo d-cyan reg','Kbig','','50% 50%','16 / 5'),'rev'),
+    OPEN('k-black dk',MV('acc')),
     K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-ink dk tight',PT()+'<div class="sp2"></div>'+PP()),
-    KF('k-navy dk','<div class="Kin">'+CAP('band')+'</div>','pad tight'),
+    K('k-navy dk tight',CAP('band')),
     K('k-cream tall',OP('split'))
   ].join(''); };
 
-  /* 30 VERTICAL JOURNEY — one continuous technical line down the page with
-     every chapter hung off it. */
+  /* 30 VERTICAL JOURNEY — one gold line down the page, every chapter hung
+     off it by a ring. */
   A['30']=function(){ return [
+    OPEN('k-cream',''),
     '<section class="K k-cream pad K30"><div class="Kin"><div class="K30s">'+
-      '<div class="K30i">'+EY('The People')+'<div class="sp"></div>'+T()+
-        '<div class="sp"></div>'+P()+'</div>'+
       '<div class="K30i">'+MV('stack')+'</div>'+
-      '<div class="K30i">'+IM(IMG.shop,'colr','Kmid','Manufacturing','50% 56%','16 / 7')+'</div>'+
       '<div class="K30i">'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div>'+
     '</div></div></section>',
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
     K('k-navy dk',OP('portal'))
   ].join(''); };
 
-  /* 31 EDITORIAL SPREAD — title, paragraph and photograph as a strongly
-     asymmetric spread, the institutional content quiet beneath it. */
+  /* 31 ASYMMETRIC — Mission and Vision as gates, then the institutional
+     content quiet beneath. */
   A['31']=function(){ return [
-    '<section class="K k-cream pad K31"><div class="Kin"><div class="K31g">'+
-      '<div class="K31t">'+T()+'<div class="sp2"></div>'+P()+'</div>'+
-      '<div class="K31i">'+IM(IMG.bench,'colr','Kmid','','50% 46%','4 / 5')+'</div>'+
+    OPEN('k-cream',''),
+    '<section class="K k-cream3 pad K34"><div class="Kin"><div class="K34g">'+
+      '<div class="K34s">'+MV('gates').replace('<div class="Kg g11 Kgates">','<div class="K34i">')+'</div>'+
     '</div></div></section>',
-    K('k-cream3 tight','<div class="Kg g21"><div>'+MV('inline')+'</div>'+
-      '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+'</div></div>'),
+    K('k-cream3 tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
     K('k-black dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('reg')),
     K('k-cream tight',OP('split'))
   ].join(''); };
 
-  /* 32 CAD FIELD — a drawn engineering field organises the lower page; the
-     geometry is structural, not decorative. */
+  /* 32 CAD FIELD — a 104px engineering field places the content. */
   A['32']=function(){ return [
     '<section class="K k-cream pad K32"><div class="K32f"></div><div class="Kin">'+
-      T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div></div></section>',
-    KF('k-cream',IM(IMG.cnc,'duo d-alu reg','Kbig','','50% 50%','16 / 5')),
+      '<div class="Kg g12"><div>'+T()+'<div class="sp2"></div>'+MV('stack')+'</div>'+
+      '<div>'+P()+'<div class="sp2"></div>'+PIC()+'</div></div></div></section>',
     '<section class="K k-cream3 pad K32"><div class="K32f"></div><div class="Kin">'+
       EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></section>',
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('gate')),
     K('k-cream tight',OP('split'))
   ].join(''); };
 
-  /* 33 CMF SYSTEM — each chapter is identified by one material: cream, black,
-     aluminium, navy, gold. Colour as the organising device. */
+  /* 33 BOARD FIRST — the directors are named before the argument is made. */
   A['33']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
-    K('k-black dk tight',MV('inline')),
-    KF('k-alu',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 5')),
-    K('k-alu tight K33a',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
+    OPEN('k-black dk',EY('Board of Directors')+'<div class="sp"></div>'+BD('col')),
+    K('k-black dk tight',MV('acc')),
     K('k-navy dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('band')),
-    K('k-cream3 tall K33o',OP('portal'))
+    K('k-cream3 tall',OP('portal'))
   ].join(''); };
 
-  /* 34 MISSION / VISION GATES — the two statements stand either side of the
-     photograph as gateways into the industrial chapter. */
+  /* 34 MISSION / VISION GATES on ink, the Platform as one line. */
   A['34']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div>'+P()),
-    '<section class="K k-cream K34"><div class="Kin"><div class="K34g">'+
-      '<div class="K34s">'+MV('gates').replace('<div class="Kg g11 Kgates">','<div class="K34i">')+'</div>'+
-    '</div></div></section>',
-    KF('k-ink',IM(IMG.shop,'duo d-navy','Kbig','','50% 56%','16 / 6'),'rev'),
+    OPEN('k-cream',''),
+    K('k-ink dk','<div class="K34i">'+
+      MV('gates').replace('<div class="Kg g11 Kgates">','<div class="Kg g11">')+'</div>'),
     K('k-ink dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('infra')),
     K('k-cream tall',OP('split'))
   ].join(''); };
 
-  /* 35 BOARD AS FOUNDATION — the three directors form the rule the rest of
-     the argument stands on, directly under the manufacturing story. */
+  /* 35 BOARD AS FOUNDATION — the three directors are the rule everything
+     else stands on. */
   A['35']=function(){ return [
-    K('k-black dk tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-black',IM(IMG.shop,'duo d-cyan','Kbig','','50% 56%','16 / 5'),'rev'),
+    OPEN('k-black dk',MV('stack')),
     K('k-black dk',EY('Board of Directors')+'<div class="sp2"></div>'+BD('found')),
     K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('reg')),
     K('k-navy dk',OP('split'))
   ].join(''); };
 
-  /* 36 PLATFORM AS ACCORDION — everything above is held quiet so the Platform
-     can be the page's one interactive moment. */
+  /* 36 PLATFORM AS ACCORDION — everything above held quiet so the Platform
+     is the page's single interactive moment. */
   A['36']=function(){ return [
-    K('k-cream tight','<div class="Kg g21"><div>'+T()+'<div class="sp"></div>'+P()+'</div>'+
-      '<div>'+MV('inline')+'</div></div>'),
-    KF('k-cream',IM(IMG.cnc,'mono','Kbig','','50% 50%','16 / 4')),
+    OPEN('k-cream',MV('inline')),
     K('k-cream3 tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('row')),
     K('k-black dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('acc')),
     K('k-navy dk tall',OP('portal'))
   ].join(''); };
 
-  /* 37 IMAGE MASK REVEAL — the photograph is the atmosphere: it wipes open on
-     entry under cyan registration lines, and the text stays plain. */
+  /* 37 REGISTERED — the photograph's cyan registration carried down into the
+     rules, gates and closing hairline. */
   A['37']=function(){ return [
-    K('k-black dk tight',T()+'<div class="sp2"></div>'+P()),
-    KF('k-black',IM(IMG.cut,'duo d-cyan reg','Kbig','','50% 50%','16 / 6'),'rev'),
+    OPEN('k-black dk',''),
     K('k-black dk tight','<div class="Kg g11"><div>'+MV('stack')+'</div>'+
       '<div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')+'</div></div>'),
-    KF('k-ink',IM(IMG.bench,'duo d-alu','Kbig','','50% 48%','16 / 4'),'rev'),
-    K('k-ink dk tall',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp3"></div>'+CAP('spine')),
-    K('k-cream tight',OP('split'))
+    K('k-ink dk tall',RULE('cy')+'<div class="sp2"></div>'+PT()+'<div class="sp2"></div>'+PP()+
+      '<div class="sp3"></div>'+CAP('spine')),
+    K('k-black dk tight',RULE('cy')+'<div class="sp2"></div>'+OP('split'))
   ].join(''); };
 
-  /* 38 CONTINUOUS GRID — one evolving field from cream to ink with no boxed
-     sections at all; the reading order does the work. */
+  /* 38 CONTINUOUS FIELD — one cream-to-ink gradient, no boxed sections. */
   A['38']=function(){ return [
     '<section class="K pad K38"><div class="Kin">'+
-      T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'+
-      '<div class="sp3"></div>'+IM(IMG.shop,'colr','Kbig','','50% 56%','16 / 6')+
+      '<div class="Kg g12"><div>'+T()+'<div class="sp2"></div>'+MV('stack')+'</div>'+
+      '<div>'+P()+'<div class="sp2"></div>'+PIC()+'</div></div>'+
       '<div class="sp3"></div>'+EY('Board of Directors')+'<div class="sp"></div>'+BD('row')+
       '<div class="sp3"></div><div class="dk K38d">'+PT()+'<div class="sp2"></div>'+PP()+
       '<div class="sp3"></div>'+CAP('infra')+'<div class="sp3"></div>'+RULE('gd')+
@@ -10089,27 +10057,22 @@ html[data-sfb2] .zclose{display:none !important;}
     '</div></section>'
   ].join(''); };
 
-  /* 39 OPPORTUNITY PORTAL — the Platform is compressed to an institutional
-     register so the closing invitation can be the page's largest gesture. */
+  /* 39 OPPORTUNITY PORTAL — the Platform compressed so the invitation can be
+     the page's largest gesture. */
   A['39']=function(){ return [
-    K('k-cream tight',T()+'<div class="sp2"></div><div class="Kg g21"><div>'+P()+'</div>'+
-      '<div>'+MV('stack')+'</div></div>'),
-    KF('k-cream',IM(IMG.bench,'mono','Kbig','','50% 48%','16 / 4')),
+    OPEN('k-cream',MV('stack')),
     K('k-cream3 tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-black dk tight',PT()+'<div class="sp2"></div>'+PP()+'<div class="sp2"></div>'+CAP('reg')),
     '<section class="K K39 k-ink dk tall Kop-img"><div class="Kbackim">'+
-      '<img loading="lazy" decoding="async" src="'+IMG.shop+'" alt=""></div>'+
+      '<img loading="lazy" decoding="async" src="'+IMG.cnc+'" alt=""></div>'+
       '<div class="Kin">'+OP('portal')+'</div></section>'
   ].join(''); };
 
-  /* 40 SHIPPABLE — the photograph kept large and in colour, Mission and
-     Vision as the accordion, the Board as a register, the Platform as one
-     infrastructure line on navy, and the invitation given its own cream
-     chapter. The one I would ship. */
+  /* 40 SHIPPABLE — 04's picture, Mission and Vision as the accordion, the
+     Board as a register, the Platform as one infrastructure line on navy,
+     and the invitation given its own cream chapter. */
   A['40']=function(){ return [
-    K('k-black dk','<div class="Kg g21"><div>'+T()+'<div class="sp2"></div>'+P()+'</div>'+
-      '<div>'+MV('acc')+'</div></div>'),
-    KF('k-black',IM(IMG.shop,'colr','Kbig','','50% 56%','16 / 6'),'rev'),
+    OPEN('k-black dk tall',MV('acc')),
     K('k-black dk tight',EY('Board of Directors')+'<div class="sp"></div>'+BD('reg')),
     K('k-navy dk tall','<div class="Kg g21"><div>'+PT()+'</div><div>'+PP()+'</div></div>'+
       '<div class="sp3"></div>'+CAP('infra')),
