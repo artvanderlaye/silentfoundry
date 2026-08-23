@@ -11762,6 +11762,34 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
    touched by any of it.
    ========================================================================= */
 html[data-lab] .sfl-hidden{display:none !important;}
+/* the page composes these itself; with the lab mounted they would render a
+   second time, in the wrong order, above the Thesis. */
+html[data-lab] #tm-close,
+html[data-lab] .sf6,
+html[data-lab] .zclose{display:none !important;}
+
+/* ---- the roster: colour, always ---------------------------------------
+   The portraits carry an inline greyscale filter written by the page's own
+   script. It has no !important, so a stylesheet takes it off. This is a
+   standing decision, not a per-variation one, so it is scoped to the lab
+   rather than to any single state. */
+html[data-lab] #pc .tc img.ph{filter:none !important;}
+
+/* ---- the three directors, named on their own cards --------------------
+   △ was not available: it is already James Cooper's own card mark, so it
+   would have meant two different things on one card. */
+html[data-lab] #pc .tc.Kfdr{position:relative;}
+html[data-lab] #pc .tc.Kfdr::before{content:'';position:absolute;
+  left:0;right:0;top:0;height:2px;background:rgba(200,169,110,.75);
+  z-index:4;pointer-events:none;}
+html[data-lab] #pc .tc .Kbrd{
+  font-family:'DM Sans',sans-serif !important;font-size:9.2px !important;
+  letter-spacing:.24em !important;text-transform:uppercase !important;
+  font-weight:400 !important;color:rgba(138,110,58,.9) !important;
+  display:block !important;margin-top:8px !important;line-height:1.6 !important;}
+html[data-lab] #pc .tc .Kbrd::before{content:'';display:inline-block;
+  width:14px;height:1px;background:rgba(200,169,110,.8);
+  vertical-align:middle;margin-right:9px;}
 
 /* ---- shared vocabulary, inherited from BASE4 --------------------------- */
 .sfl{
@@ -11964,6 +11992,10 @@ html[data-lab] .sfl-hidden{display:none !important;}
   letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.55);padding-right:10px;}
 #sfo .O05pts span::before{content:'';position:absolute;left:0;top:-25px;width:7px;height:7px;
   background:var(--gold);transform:rotate(45deg);}
+/* PL09 as chosen — no entry animation; the rule and the capabilities are
+   simply there, which is also what a reduced-motion visitor always saw. */
+#sfl-pl .L09.still .Lbar{width:100% !important;transition:none !important;}
+#sfl-pl .L09.still .Li{opacity:1 !important;transform:none !important;transition:none !important;}
 @media(max-width:700px){ #sfo .O05pts{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px;} }
 /* O06 · a shallow dark cap behind the navigation */
 html[data-opening="O06"] #mn{background:rgba(10,10,10,.92) !important;}
@@ -12041,10 +12073,18 @@ html[data-para="on"] .sfl .f-navy {background:rgba(30,42,74,.76) !important;}
   #sfp .Pbd-row{grid-template-columns:1fr;gap:16px 0;}
 }
 
-/* O06 · the dark cap is a real band in the composition */
-#sfo .Ocap{background:var(--black);padding:14px 0;}
-#sfo .Ocap .Ocity{color:rgba(244,241,236,.6);}
-#sfo .Ocap .Ocity b{color:rgba(200,169,110,.95);}
+/* O06 · the dark cap is a real band in the composition. It sits behind the
+   fixed nav, is ten pixels deeper than the first pass, and its colour is faded
+   out by the engine inside the first 90px of scroll. */
+#sfo .Ocap{background:var(--black);height:calc(var(--navh,138px) + 10px);}
+@media(max-width:820px){ #sfo .Ocap{height:calc(var(--navh,88px) + 10px);} }
+html[data-opening="O06"] #mn{
+  background:rgba(10,10,10,var(--capA,.94)) !important;
+  transition:background .35s ease;}
+/* the cities, at the index page's own eyebrow spec, above the title */
+#sfo .Oeyebrow{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
+  letter-spacing:2.72px;text-transform:uppercase;color:#c8a96e;
+  display:block;margin-bottom:34px;}
 /* O08 · a bounded CAD window with a hard lower edge */
 #sfo .O08w{position:relative;isolation:isolate;overflow:hidden;}
 #sfo .O08f{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.16;
@@ -12668,10 +12708,12 @@ O.O05={para:'none',note:'one coordinate rule connects the title, the four locati
     '</div></div>',62,26); }};
 
 /* O06 — DARK NAVIGATION CAP. Also solves the black-on-black nav buttons. */
-O.O06={para:'none',note:'dark navigation cap — the logo and navigation sit in a shallow structural-black band that the page carries as a real element, then it returns to cream for the title, the cities and the handover to the portraits. It also fixes the nav buttons, which are otherwise black on black over the dark chapters',
+O.O06={para:'none',note:'dark navigation cap — the logo and navigation sit in a structural-black band the page carries as a real element, and the band’s colour fades out inside the first 90px of scroll so the nav returns to transparent over the cream. The four cities are set as the index page’s own eyebrow — DM Sans 10.88px, weight 300, 2.72px tracking, gold — sitting above THE TEAM at the index’s standard 34px',
   html:function(){
-    return '<div class="Ocap Odk"><div class="Oin"><span class="Ocity"><b>Silent Foundry</b> — Hong Kong · Shanghai · Melbourne · Copenhagen</span></div></div>'+
-      WRAP(TITLE(),22,18)+'<div class="Oin">'+EDGE()+'</div>'; }};
+    return '<div class="Ocap"></div>'+
+      '<div class="Ohead" style="padding-top:26px;padding-bottom:18px"><div class="Oin">'+
+        '<span class="Oeyebrow">'+CITIES.join(' · ')+'</span>'+TITLE()+
+      '</div></div><div class="Oin">'+EDGE()+'</div>'; }};
 
 /* O07 — ASYMMETRIC GRID. No image at all; alignment carries it. */
 O.O07={para:'grid',note:'a twelve-column asymmetric composition — title in one zone, locations in another, no background photograph at all. The grid and the alignment provide the character',
@@ -12768,8 +12810,11 @@ PB.PB04={note:'ruled column — one hairline runs the whole left column with a r
   html:function(){ return BLOCK({id:'PB04',drop:0,pad:'',
     side:T()+SP('sp2')+'<div class="P04">'+n(P())+SP('sp2')+n(MV('stack'))+'</div>'}); }};
 
-PB.PB05={note:'open accordion stack — Mission and Vision as two permanently open index-inspired rows, each with its engineering mark, fine top and bottom rules and visible text. The introduction stays separate above them',
+PB.PB05={note:'the chosen people section — Mission and Vision as two permanently open index-inspired rows, each with its engineering mark, fine top and bottom rules and visible text, and the introduction separate above them. 04’s photograph in full colour on the title datum, now without the cyan registration grid over it',
   html:function(){ return BLOCK({id:'PB05',drop:0,pad:'',
+    pic:'<figure class="Sfig"><span class="Sim colr ar43" style="--ipos:50% 54%">'+
+      '<img loading="lazy" decoding="async" src="'+Q.IMG.cnc+'" alt=""></span>'+
+      '<figcaption class="Scap">Machine shop</figcaption></figure>',
     side:T()+SP('sp2')+P()+SP('sp3')+'<div class="P05">'+MV('acc')+'</div>'}); }};
 
 PB.PB06={note:'mission / vision pair — the two statements set side by side beneath the introduction, divided by one gold hairline, collapsing to stacked registers as soon as the column stops being readable',
@@ -12897,11 +12942,11 @@ L.PL08={note:'CMF platform — the site’s own material language explains the s
       '<div class="Lhub">'+RING('cy')+VEN()+'</div>'); }};
 
 /* PL09 — the venture establishes, then the platform assembles around it. */
-L.PL09={note:'expanding venture — the section states the business idea in the order it happens. THE VENTURE establishes first, Silent Foundry’s platform line resolves outward from it, and the five capabilities settle around it. One pass, on entry, and the finished composition is what renders on first paint',
+L.PL09={note:'the chosen platform — one gold rule the full width with the five capabilities alternating above and below it, and an unnamed ring at the centre with the wordmark beneath. The words THE VENTURE are gone: the ring is the venture and the heading carries the idea. No motion — the graphic is simply there on arrival',
   html:function(){
-    return BLOCK('L09','<i class="Lbar"></i>'+
+    return BLOCK('L09 still','<i class="Lbar"></i>'+
       caps().map(function(x,i){ return CAP(x,i,0); }).join('')+
-      '<div class="Lhub">'+RING('cy')+VEN()+MARK('q')+'</div>'); }};
+      '<div class="Lhub">'+RING('cy')+MARK('q')+'</div>'); }};
 
 /* PL10 — the recommendation. */
 L.PL10={note:'the recommendation — the broad horizontal presence of the current design, 31’s ruled restraint, a two-line heading breaking after BUILT, and the wordmark as one small line under THE VENTURE in a genuine break in the rule. Aluminium at rest, cyan on the capability you are reading, one orange terminal at Exits. Five capabilities, no numbers, no Academy, and not one symbol that is only there to fill a slot',
@@ -13327,17 +13372,49 @@ function observe(m){
       e.target.classList.add('in'); io.unobserve(e.target); }); },{threshold:.1});
   ns.forEach(function(n){ io.observe(n); });
 }
+/* O06's band: its real height is the nav's own, plus ten, and its colour is
+   faded out inside the first 90px of scroll so the nav returns to transparent
+   over the cream rather than carrying a black bar down the page. */
+var NAVFADE=null;
+function navFadeOff(){
+  if(NAVFADE){ window.removeEventListener('scroll',NAVFADE); NAVFADE=null; }
+  document.documentElement.style.removeProperty('--capA');
+  document.documentElement.style.removeProperty('--navh');
+}
+function navFadeOn(){
+  navFadeOff();
+  var nav=document.getElementById('mn'); if(!nav) return;
+  function h(){ var r=nav.getBoundingClientRect();
+    if(r.height>10) document.documentElement.style.setProperty('--navh',Math.round(r.height)+'px'); }
+  function tick(){
+    var y=window.pageYOffset||0;
+    var a=Math.max(0,Math.min(1,1-(y/90)));
+    document.documentElement.style.setProperty('--capA',(a*0.94).toFixed(3));
+  }
+  NAVFADE=function(){ window.requestAnimationFrame(tick); };
+  window.addEventListener('scroll',NAVFADE,{passive:true});
+  LS.push([window,'scroll',NAVFADE]);
+  h(); tick(); later(h,500);
+}
+
 /* the opening also owns the page header, the nav treatment and the parallax */
 function renderOpening(){
   var bank=window.__sfLAB_O||{}, v=state.opening, def=bank[v]||bank.BASE;
   var m=document.getElementById('sfo'); if(!m||!def) return;
   document.documentElement.setAttribute('data-opening',v);
+  /* hiding #tm-head alone left its section standing — 211px of empty cream
+     above the opening, which is most of what made the old header feel tall.
+     The whole section goes. */
   var head=document.getElementById('tm-head');
-  if(head) head.classList.add('sfl-hidden');
+  if(head){
+    var sec=head.closest?head.closest('section'):null;
+    (sec&&sec.parentElement&&sec.parentElement.id==='pc'?sec:head).classList.add('sfl-hidden');
+  }
   m.innerHTML=(def.para==='grid'?'<div class="Ogrid fade"></div>':'')+def.html();
   if(def.para==='keep')      paraOn(def.src||Q.IMG.cad);
   else if(def.para==='alt')  paraOn(def.src||Q.IMG.cadTex);
   else                       paraOff();
+  if(v==='O06') navFadeOn(); else navFadeOff();
   frame();
 }
 
@@ -13366,6 +13443,7 @@ function warnings(){
 var UI=null;
 function buildUI(){
   if(UI) return;
+  if(window.__SF_LAB_QUIET) return;   /* the page supplies its own control */
   UI=document.createElement('div'); UI.id='sfcfg';
   UI.innerHTML=
    '<div class="c-in">'+
@@ -13477,12 +13555,20 @@ function build(){
   if(built) return true;
   if(!Q.harvest()) return false;
   var pc=document.getElementById('pc'); if(!pc) return false;
-  var head=document.getElementById('tm-head');
-  makeMount('sfo', head?head.nextSibling||pc:pc);
-  var after=pc.nextSibling;
+  /* Every original section lives INSIDE #pc — the header, the cards, the
+     people block, the platform, the closing invitation and, last of all, the
+     symbol strip with THE FOUNDRY THESIS. So the mounts belong inside it too,
+     immediately after the cards. Inserting them after #pc put the whole page
+     below the Thesis and left the originals rendering as well. */
+  var kids=[].slice.call(pc.children);
+  var cards=null;
+  for(var i=0;i<kids.length;i++){ if(kids[i].querySelector('.tc')){ cards=kids[i]; break; } }
+  if(!cards) cards=kids[1]||kids[0];
+  makeMount('sfo', cards);                       /* the opening, above the cards */
+  var anchor=cards.nextSibling;
   ['sfp','sfl-pl','sfa','sfq'].forEach(function(id){
     var m=document.createElement('div'); m.id=id; m.className='sfl';
-    pc.parentNode.insertBefore(m, after);
+    pc.insertBefore(m, anchor);                  /* … the four chapters, in order */
   });
   document.documentElement.setAttribute('data-lab','1');
   built=true;
@@ -13490,7 +13576,7 @@ function build(){
   renderOpening();
   ['people','platform','academy','opportunities'].forEach(render);
   markBoard(true);
-  buildUI(); showUI(true); paint(); writeHash(false);
+  buildUI(); if(UI) showUI(true); paint(); writeHash(false);
   /* re-asserted after the page's own timers have finished with the address bar */
   later(function(){ writeHash(false); },420);
   later(function(){ writeHash(false); },1400);
@@ -13507,7 +13593,7 @@ function build(){
 function off(){
   TM.forEach(clearTimeout); TM=[];
   LS.forEach(function(l){ l[0].removeEventListener(l[1],l[2]); }); LS=[];
-  paraOff(); markBoard(false);
+  paraOff(); navFadeOff(); markBoard(false);
   ['sfo','sfp','sfl-pl','sfa','sfq'].forEach(function(id){
     var m=document.getElementById(id); if(m&&m.parentNode) m.parentNode.removeChild(m); });
   ['sfcfg','sfcfg-tab'].forEach(function(id){
@@ -13536,5 +13622,32 @@ window.__sfTeamExtra={
   }
 };
 window.__sfLABgo=function(){ try{ window.__sfTeamGo&&window.__sfTeamGo('LAB'); }catch(e){} };
+
+/* ---- the whole combination in one call -------------------------------
+   sf-team2.html drives the page through this rather than through the
+   configurator, so the same five renderers serve both the lab and the
+   finished page and there is no second copy of anything to keep in step. */
+window.__sfLABset=function(combo){
+  if(!built) return false;
+  var changed=false;
+  SEC.forEach(function(s){
+    var want=combo[s.id]; if(!want) return;
+    var list=order(s.id);
+    for(var i=0;i<list.length;i++)
+      if(String(list[i]).toUpperCase()===String(want).toUpperCase()){
+        if(state[s.id]!==list[i]){ state[s.id]=list[i]; changed=true; } break; }
+  });
+  renderOpening();
+  ['people','platform','academy','opportunities'].forEach(render);
+  writeHash(false);
+  if(UI) paint();
+  return true;
+};
+/* the finished page has its own slider, so the lab's control stays hidden */
+window.__sfLABquiet=function(){
+  var c=document.getElementById('sfcfg'); if(c) c.style.display='none';
+  var t=document.getElementById('sfcfg-tab'); if(t) t.style.display='none';
+  var r=document.getElementById('sf-review'); if(r) r.style.display='none';
+};
 })();
 </script>

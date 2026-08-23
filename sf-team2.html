@@ -89,12 +89,11 @@ body>footer{margin-top:auto;}
 @media(max-width:768px){.f-m6{display:none!important;}}
 </style>
 
-<script id="sf-team-bake">
-/* BAKED: BASE4. No selector, no hash, no state traversal, always at the top. */
+<script id="sf-v2-head">
+/* THE NEW PAGE. No historical selector, no hash steering, always at the top. */
 (function(){
-  window.__SF_TEAM_BAKE='BASE4';
+  window.__SF_TEAM_BAKE='V1';
   try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
-  /* an old lab link is not an anchor — it is cleaned on arrival */
   try{ if(/[#&](team|v)=/i.test(location.hash))
     history.replaceState(null,'',location.pathname+location.search); }catch(e){}
   function top(){ try{ window.scrollTo(0,0); }catch(e){} }
@@ -103,7 +102,7 @@ body>footer{margin-top:auto;}
   window.addEventListener('load',function(){ top(); setTimeout(top,0); });
 })();
 </script>
-<style id="sf-team-bake-css">#sf-review{display:none !important;}</style>
+<style id="sf-v2-head-css">#sf-review{display:none !important;}</style>
 </head>
 <body>
 <div class="mmenu" id="mmenu">
@@ -4480,7 +4479,7 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
     if(EX.apply){ try{ EX.apply(v); }catch(e){} }
     paint(v);
     window.scrollTo(0,y);
-    /* BAKED: the address bar is left alone */
+    /* THE NEW PAGE: the address bar is left alone */
   }
 
   var box;
@@ -4490,7 +4489,7 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
     var n=$('.rvn',box); if(n) n.textContent=NOTE[v]||'';
   }
 
-  var DEV='BASE4';   /* BAKED STATE — the team dev page */
+  var DEV='LAB';   /* THE NEW PAGE opens straight into the section lab */
   function build(){
     window.__sfTeamGo=apply;
     EX=window.__sfTeamExtra||{};
@@ -4505,7 +4504,7 @@ html[data-sft] .tc:hover img.ph{filter:grayscale(1) brightness(1) contrast(1.08)
       b.addEventListener('click',function(){ apply(s); });
       rb.appendChild(b); });
     document.body.appendChild(box);
-    /* BAKED: one state, and the hash is not consulted at all. */
+    /* THE NEW PAGE: the lab, always, and the hash is not consulted. */
     apply(DEV);
     /* the page composes itself late; re-measure once it has settled */
     later(function(){ var c=cur(); if(c!=='ORG') apply(c); },1800);
@@ -7517,7 +7516,7 @@ html[data-sfb]{--sf6-pt:clamp(52px,6vh,84px);--sf6-pb:clamp(60px,7vh,96px);
     return true;
   }
   document.addEventListener('keydown',function(e){
-    if(window.__SF_TEAM_BAKE) return;        /* BAKED: no state traversal */
+    if(window.__SF_TEAM_BAKE) return;        /* THE NEW PAGE: no state traversal */
     if(e.metaKey||e.ctrlKey||e.altKey) return;
     var t=e.target;
     if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable)) return;
@@ -13657,5 +13656,130 @@ window.__sfLABquiet=function(){
   var t=document.getElementById('sfcfg-tab'); if(t) t.style.display='none';
   var r=document.getElementById('sf-review'); if(r) r.style.display='none';
 };
+})();
+</script>
+
+<style id="sf-v2-css">
+/* =========================================================================
+   sf-team2.html — THE NEW PAGE.
+
+   One fixed reading order, and its own slider. Nothing here is a whole-page
+   duplicate: the page's own sections are suppressed and the five component
+   mounts render in their place, so each block appears exactly once.
+
+     OPENING   ·  the nav band, the cities as an eyebrow, THE TEAM
+     CARDS     ·  the ten people, untouched
+     PEOPLE    ·  THE PEOPLE BEHIND IT
+     PLATFORM  ·  A PLATFORM BUILT AROUND THE VENTURE
+     ACADEMY   ·  SILENT FOUNDRY ACADEMY
+     CLOSING   ·  OPPORTUNITIES
+     THESIS    ·  the symbol strip and THE FOUNDRY THESIS, as the page ends
+   ========================================================================= */
+#sf-v2{position:fixed;left:0;right:0;bottom:0;z-index:100000;
+  background:rgba(9,10,12,.96);backdrop-filter:blur(9px);
+  border-top:1px solid rgba(200,169,110,.3);
+  font-family:'DM Sans',sans-serif;color:rgba(244,241,236,.86);
+  transform:translateY(0);transition:transform .35s cubic-bezier(.2,.7,.26,1);}
+#sf-v2.off{transform:translateY(101%);}
+#sf-v2 .v-in{max-width:1600px;margin-inline:auto;
+  padding:10px clamp(12px,2vw,26px) 12px;display:flex;align-items:center;gap:10px;}
+#sf-v2 .v-lab{font-size:8.6px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(200,169,110,.75);white-space:nowrap;}
+#sf-v2 .v-row{display:flex;gap:6px;overflow-x:auto;flex:1 1 auto;}
+#sf-v2 button{font-family:inherit;cursor:pointer;background:none;
+  border:1px solid rgba(244,241,236,.2);color:rgba(244,241,236,.72);
+  font-size:9.4px;letter-spacing:.16em;text-transform:uppercase;
+  padding:7px 12px;min-height:30px;white-space:nowrap;flex:0 0 auto;
+  transition:border-color .2s,color .2s,background .2s;}
+#sf-v2 button:hover{border-color:rgba(200,169,110,.7);color:rgba(244,241,236,.95);}
+#sf-v2 button.on{background:rgba(200,169,110,.9);border-color:rgba(200,169,110,.9);
+  color:#12151a;font-weight:500;}
+#sf-v2 .v-code{font-size:9px;letter-spacing:.1em;color:rgba(0,180,216,.95);
+  border:1px solid rgba(0,180,216,.35);padding:5px 9px;white-space:nowrap;user-select:all;}
+#sf-v2-tab{position:fixed;right:14px;bottom:14px;z-index:100001;display:none;
+  font-family:'DM Sans',sans-serif;font-size:8.8px;letter-spacing:.2em;
+  text-transform:uppercase;padding:9px 13px;cursor:pointer;
+  background:rgba(9,10,12,.9);color:rgba(200,169,110,.9);
+  border:1px solid rgba(200,169,110,.45);}
+#sf-v2-tab.on{display:block;}
+@media(max-width:640px){
+  #sf-v2 .v-in{padding:8px 10px 10px;}
+  #sf-v2 .v-code{display:none;}
+}
+</style>
+
+<script id="sf-v2-js">
+/* Declared before the engine ever builds: this page carries its own slider,
+   so the lab's configurator is never constructed here rather than being
+   constructed and then hidden, which raced. */
+window.__SF_LAB_QUIET=1;
+(function(){
+/* =========================================================================
+   The page's own slider. V1 is the approved combination:
+   O06 · PB05 · PL09 · AC02 · OP01, with the five agreed modifications.
+   Adding V2 later is one line in this list.
+   ========================================================================= */
+var V=[
+  {id:'V1', name:'V1',
+   combo:{opening:'O06',people:'PB05',platform:'PL09',academy:'AC02',opportunities:'OP01'}}
+];
+var cur=0, UI=null, on=true;
+
+function apply(i){
+  var c=V[i].combo, go=window.__sfLABset;
+  if(!go) return false;
+  /* __sfLABset refuses until the lab's mounts exist. Its answer is the
+     retry signal — treating "the function is defined" as success stopped the
+     poll before the combination had actually been applied. */
+  if(!go(c)) return false;
+  cur=i; paint(); return true;
+}
+function paint(){
+  if(!UI) return;
+  [].slice.call(UI.querySelectorAll('.v-row button')).forEach(function(b,i){
+    b.className=(i===cur?'on':''); });
+  var code=UI.querySelector('.v-code');
+  var c=V[cur].combo;
+  if(code) code.textContent=[c.opening,c.people,c.platform,c.academy,c.opportunities].join('-');
+}
+function build(){
+  if(UI) return;
+  UI=document.createElement('div'); UI.id='sf-v2';
+  UI.innerHTML='<div class="v-in"><span class="v-lab">Page</span>'+
+    '<span class="v-row"></span>'+
+    '<span class="v-code"></span>'+
+    '<button class="v-hide">Hide</button></div>';
+  document.body.appendChild(UI);
+  var tab=document.createElement('div'); tab.id='sf-v2-tab'; tab.textContent='Show';
+  document.body.appendChild(tab);
+  var row=UI.querySelector('.v-row');
+  V.forEach(function(v,i){
+    var b=document.createElement('button'); b.textContent=v.name;
+    b.addEventListener('click',function(){ apply(i); });
+    row.appendChild(b);
+  });
+  UI.querySelector('.v-hide').addEventListener('click',function(){
+    on=false; UI.classList.add('off'); tab.classList.add('on'); });
+  tab.addEventListener('click',function(){
+    on=true; UI.classList.remove('off'); tab.classList.remove('on'); });
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==='h'||e.key==='H'){
+      on=!on; UI.classList.toggle('off',!on); tab.classList.toggle('on',!on); }
+  });
+  paint();
+}
+/* the page opens on V1 and stays there; the review page keeps the full lab */
+var tries=0;
+(function go(){
+  if(window.__sfLABset && apply(0)){
+    build();
+    try{ window.__sfLABquiet && window.__sfLABquiet(); }catch(e){}
+    setTimeout(function(){ try{ window.__sfLABquiet(); }catch(e){} },900);
+    return;
+  }
+  if(++tries>90) return;
+  setTimeout(go,150);
+})();
 })();
 </script>
