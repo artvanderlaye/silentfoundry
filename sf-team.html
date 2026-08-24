@@ -11589,7 +11589,10 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
       '</div>');
   }
 
-  window.__sfB5=function(){ return [PEOPLE(),PLATFORM(),OPP()].join(''); };
+  /* THE PEOPLE BEHIND IT and the opening now come from the lab — V1's O06
+     and PB05 — so this layer composes only the platform and the closing. */
+  window.__sfB5=function(){ return [PLATFORM(),OPP()].join(''); };
+  window.__sfB5people=PEOPLE;   /* kept, unused, for comparison */
 })();
 </script>
 
@@ -11742,6 +11745,17 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
     MOUNT=document.createElement('div'); MOUNT.id='sfb2';
     MOUNT.innerHTML=mk();
     host.parentNode.insertBefore(MOUNT,host.nextSibling);
+    /* V1's opening above the cards, V1's people block above the platform.
+       Both are the lab's own renderers, mounted through __sfLABsingle. */
+    try{
+      if(window.__sfLABsingle){
+        window.__sfLABsingle('people','PB05',MOUNT);
+        var pcx=document.getElementById('pc'), cards=null;
+        if(pcx){ var kk=[].slice.call(pcx.children);
+          for(var ci=0;ci<kk.length;ci++) if(kk[ci].querySelector('.tc')){ cards=kk[ci]; break; } }
+        if(cards) window.__sfLABsingle('opening','O06',cards);
+      }
+    }catch(e){}
     $$('.K',MOUNT).forEach(function(n){ n.classList.add('an'); });
     $$('.Krule',MOUNT).forEach(function(n){ n.classList.add('dx'); });
     markFounders(); parallax();
@@ -13665,6 +13679,29 @@ window.__sfTeamExtra={
   }
 };
 window.__sfLABgo=function(){ try{ window.__sfTeamGo&&window.__sfTeamGo('LAB'); }catch(e){} };
+
+/* ---- one section, on its own -----------------------------------------
+   The dev page runs BASE4 but takes its opening and its people block from
+   the lab. Rather than copy those two renderers into another layer, the
+   layer mounts them from here — one implementation, tested once, used by
+   both pages. */
+window.__sfLABsingle=function(secId,v,ref){
+  if(!Q.harvest()) return false;
+  var s=null;
+  for(var i=0;i<SEC.length;i++) if(SEC[i].id===secId) s=SEC[i];
+  if(!s||!ref||!ref.parentNode) return false;
+  var m=document.getElementById(s.mount);
+  if(!m){
+    m=document.createElement('div'); m.id=s.mount; m.className='sfl';
+    ref.parentNode.insertBefore(m, ref);
+  }
+  document.documentElement.setAttribute('data-lab','1');
+  state[secId]=v;
+  built=true;                 /* frame() and the measurements need it */
+  if(secId==='opening') renderOpening(); else render(secId);
+  later(frame,600); later(frame,1500);
+  return true;
+};
 
 /* ---- the whole combination in one call -------------------------------
    sf-team2.html drives the page through this rather than through the
