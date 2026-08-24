@@ -12763,7 +12763,7 @@ O.O05={para:'none',note:'one coordinate rule connects the title, the four locati
     '</div></div>',62,26); }};
 
 /* O06 — DARK NAVIGATION CAP. Also solves the black-on-black nav buttons. */
-O.O06={para:'none',note:'dark navigation cap — the logo and navigation sit in a structural-black band the page carries as a real element, and the band’s colour fades out inside the first 90px of scroll so the nav returns to transparent over the cream. The four cities are set as the index page’s own eyebrow — DM Sans 10.88px, weight 300, 2.72px tracking, gold — sitting above THE TEAM at the index’s standard 34px',
+O.O06={para:'none',nav:{c:'10,10,10',light:true,h:148},note:'dark navigation cap — the logo and navigation sit in a structural-black band the page carries as a real element, and the band’s colour fades out inside the first 90px of scroll so the nav returns to transparent over the cream. The four cities are set as the index page’s own eyebrow — DM Sans 10.88px, weight 300, 2.72px tracking, gold — sitting above THE TEAM at the index’s standard 34px',
   html:function(){
     return '<div class="Ocap"></div>'+
       '<div class="Ohead" style="padding-top:26px;padding-bottom:18px"><div class="Oin">'+
@@ -13433,12 +13433,20 @@ function observe(m){
 var NAVFADE=null;
 function navFadeOff(){
   if(NAVFADE){ window.removeEventListener('scroll',NAVFADE); NAVFADE=null; }
-  document.documentElement.style.removeProperty('--capA');
-  document.documentElement.style.removeProperty('--navh');
+  var d=document.documentElement;
+  d.style.removeProperty('--capA'); d.style.removeProperty('--navh');
+  d.style.removeProperty('--navC'); d.style.removeProperty('--navH');
+  d.removeAttribute('data-navband');
 }
-function navFadeOn(){
+function navFadeOn(cfg){
   navFadeOff();
   var nav=document.getElementById('mn'); if(!nav) return;
+  var d=document.documentElement;
+  if(cfg&&cfg.c){
+    d.setAttribute('data-navband',cfg.light===false?'dk':'lt');
+    d.style.setProperty('--navC',cfg.c);
+    if(cfg.h) d.style.setProperty('--navH',cfg.h+'px');
+  }
   function h(){ var r=nav.getBoundingClientRect();
     if(r.height>10) document.documentElement.style.setProperty('--navh',Math.round(r.height)+'px'); }
   function tick(){
@@ -13469,7 +13477,9 @@ function renderOpening(){
   if(def.para==='keep')      paraOn(def.src||Q.IMG.cad);
   else if(def.para==='alt')  paraOn(def.src||Q.IMG.cadTex);
   else                       paraOff();
-  if(v==='O06') navFadeOn(); else navFadeOff();
+  /* the band belongs to the variation, so any of them can carry one */
+  if(def.nav) navFadeOn(def.nav); else if(v==='O06') navFadeOn({c:'10,10,10',light:true});
+  else navFadeOff();
   frame();
 }
 
@@ -13729,5 +13739,250 @@ window.__sfLABquiet=function(){
   var t=document.getElementById('sfcfg-tab'); if(t) t.style.display='none';
   var r=document.getElementById('sf-review'); if(r) r.style.display='none';
 };
+})();
+</script>
+
+<style id="sf-n-css">
+/* =========================================================================
+   TWENTY OPENINGS — N01 … N20
+
+   All built on O06's thesis: the logo and navigation sit in a band the page
+   carries as a real element, and the band's colour fades out on scroll so the
+   nav returns to transparent. Everything else is open — height, material,
+   what the band contains, where the cities sit, what stands behind them.
+
+   The ten people cards are not touched by any of them.
+   ========================================================================= */
+
+/* the fixed nav takes the band's own colour, and its type flips with it.
+   The alpha is driven down to zero by the engine inside the first 90px of
+   scroll, so the bar returns to transparent over whatever follows. */
+html[data-navband] #mn{
+  background:rgba(var(--navC,10,10,10),var(--capA,.94)) !important;
+  transition:background .35s ease;}
+html[data-navband="lt"] #mn .nbtn{color:rgba(244,241,236,.75) !important;
+  border-color:rgba(244,241,236,.3) !important;}
+html[data-navband="lt"] #mn .nbtn-en{color:rgba(200,169,110,.92) !important;}
+html[data-navband="lt"] #mn .nav-logo svg text{fill:rgba(244,241,236,.92) !important;}
+html[data-navband="dk"] #mn .nbtn{color:rgba(10,10,10,.62) !important;
+  border-color:rgba(10,10,10,.26) !important;}
+html[data-navband="dk"] #mn .nbtn-en{color:rgba(138,110,58,.95) !important;}
+html[data-navband="dk"] #mn .nav-logo svg text{fill:rgba(10,10,10,.82) !important;}
+
+/* the band. Its colour and height are set per variation from JS, so the nav
+   itself can be re-coloured to match without twenty stylesheet rules. */
+#sfo .Ncap{position:relative;width:100%;}
+#sfo .Ncap-in{height:100%;display:flex;align-items:flex-end;padding-bottom:14px;}
+#sfo .Ncap.solid{background:rgb(var(--navC,10,10,10));}
+#sfo .Ncap.ink{background:#12151a;}
+#sfo .Ncap.navy{background:#1e2a4a;}
+#sfo .Ncap.clay{background:#e4ded3;}
+#sfo .Ncap.alu{background:#b9bcc0;}
+#sfo .Ncap.grad{background:linear-gradient(180deg,#0a0a0a 0%,#12151a 46%,#efece6 100%);}
+#sfo .Ncap.split{background:linear-gradient(90deg,#0a0a0a 0%,#0a0a0a 62%,#1e2a4a 62%,#1e2a4a 100%);}
+#sfo .Ncap.photo{overflow:hidden;background:#0a0a0a;}
+#sfo .Ncap.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 46%;filter:grayscale(1) contrast(1.04) brightness(.42);}
+#sfo .Ncap.cad{overflow:hidden;background:#0a0a0a;}
+#sfo .Ncap.cad i{position:absolute;inset:0;opacity:.22;
+  background:url('images/cad_axle_wide.jpg') center/cover;
+  filter:grayscale(1) invert(1) contrast(1.1);}
+#sfo .Ncap .Ncity{font-family:'DM Sans',sans-serif;font-size:10.88px;font-weight:300;
+  letter-spacing:2.72px;text-transform:uppercase;color:rgba(200,169,110,.92);}
+#sfo .Ncap.lt .Ncity{color:rgba(10,10,10,.55);}
+#sfo .Ncap .Ntitle{font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.1rem,1.6vw,1.8rem);font-weight:700;line-height:.94;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(244,241,236,.94);margin:0;}
+#sfo .Ncap.lt .Ntitle{color:rgba(10,10,10,.82);}
+#sfo .Ncap .Nsp{flex:1 1 auto;}
+/* a hairline sitting on the band's lower edge */
+#sfo .Ncap.rule::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:rgba(200,169,110,.6);}
+#sfo .Ncap.orule::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:rgba(228,60,0,.85);}
+#sfo .Ncap.cyrule::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:rgba(0,180,216,.65);}
+
+/* the cream block beneath it */
+#sfo .Nhead{position:relative;}
+#sfo .Nhead.field{background:#efece6;}
+#sfo .Nhead.clay{background:#e4ded3;}
+/* backgrounds that may stand behind THE TEAM and the cities */
+#sfo .Nbg{position:absolute;inset:0;z-index:0;pointer-events:none;}
+#sfo .Nbg.grid{background-image:
+   linear-gradient(rgba(10,60,80,.07) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(10,60,80,.07) 1px,transparent 1px);
+  background-size:100% 37.5px,30px 100%;}
+#sfo .Nbg.gridgold{background-image:
+   linear-gradient(rgba(200,169,110,.16) 1px,transparent 1px),
+   linear-gradient(90deg,rgba(200,169,110,.16) 1px,transparent 1px);
+  background-size:104px 104px,104px 104px;}
+#sfo .Nbg.cad{opacity:.15;background:url('images/cad_axle_wide.jpg') center/cover;
+  -webkit-mask-image:linear-gradient(180deg,#000 58%,transparent);
+  mask-image:linear-gradient(180deg,#000 58%,transparent);}
+#sfo .Nbg.cadtex{opacity:.13;background:url('images/cad_texture_wide.jpg') 30% 40%/cover;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);}
+#sfo .Nbg.wash{background:linear-gradient(180deg,rgba(30,42,74,.10),transparent 72%);}
+#sfo .Nbg.plate{left:auto;width:clamp(120px,22vw,340px);background:rgba(30,42,74,.10);}
+
+/* arrangements */
+#sfo .Nrow{display:flex;align-items:baseline;justify-content:space-between;gap:24px;}
+#sfo .Nstack{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:clamp(18px,3vw,56px);align-items:end;}
+#sfo .Ncol{display:flex;flex-direction:column;gap:5px;text-align:right;}
+#sfo .Nmark{font-family:'DM Sans',sans-serif;font-size:13px;line-height:1;
+  color:rgba(200,169,110,.9);display:block;margin-bottom:11px;}
+#sfo .Nticks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  position:relative;padding-top:20px;}
+#sfo .Nticks::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;
+  background:rgba(42,46,51,.2);}
+#sfo .Nticks span{position:relative;font-family:'DM Sans',sans-serif;font-size:9.6px;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.55);padding-right:10px;}
+#sfo .Nticks span::before{content:'';position:absolute;left:0;top:-23px;width:7px;height:7px;
+  background:#c8a96e;transform:rotate(45deg);}
+@media(max-width:700px){
+  #sfo .Nticks{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:18px;}
+  #sfo .Nstack{grid-template-columns:1fr;gap:16px;}
+  #sfo .Ncol{text-align:left;flex-direction:row;flex-wrap:wrap;gap:4px 14px;}
+  #sfo .Nrow{flex-direction:column;align-items:flex-start;gap:10px;}
+  #sfo .Ncap-in{padding-bottom:10px;}
+}
+/* the double rule */
+#sfo .Ndbl{position:relative;}
+#sfo .Ndbl::before,#sfo .Ndbl::after{content:'';position:absolute;left:0;right:0;height:1px;
+  background:rgba(42,46,51,.16);}
+#sfo .Ndbl::before{top:0;} #sfo .Ndbl::after{bottom:0;}
+/* one signal running into the cards */
+#sfo .Nsig{height:3px;width:clamp(90px,16vw,220px);background:#00b4d8;}
+#sfo .Nsig.or{background:#e43c00;}
+#sfo .Nsig.gd{background:#c8a96e;}
+</style>
+
+<script id="sf-n-js">
+(function(){
+var Q=window.__sfLAB, O=window.__sfLAB_O;
+if(!Q||!O) return;
+var CITIES=Q.CITIES, e=Q.e;
+
+function T(){ return '<h1 class="Otitle">The Team</h1>'; }
+function EY(){ return '<span class="Oeyebrow">'+CITIES.join(' · ')+'</span>'; }
+function CITY(){ return '<span class="Ncity">'+CITIES.join(' · ')+'</span>'; }
+function EDGE(c){ return '<div class="Oin"><div class="Oedge '+(c||'')+'"></div></div>'; }
+/* the band. h in px; cls picks its material; inner is what it carries. */
+function BAND(h,cls,inner){
+  return '<div class="Ncap '+(cls||'solid')+'" style="height:'+h+'px">'+
+    (cls&&cls.indexOf('photo')>=0?'<img src="'+Q.IMG.shop+'" alt="">':'')+
+    (cls&&cls.indexOf('cad')>=0?'<i></i>':'')+
+    (inner?'<div class="Oin Ncap-in">'+inner+'</div>':'')+'</div>';
+}
+function HEAD(pt,pb,inner,bg,cls){
+  return '<div class="Nhead '+(cls||'')+'" style="padding-top:'+pt+'px;padding-bottom:'+pb+'px">'+
+    (bg?'<div class="Nbg '+bg+'"></div>':'')+'<div class="Oin">'+inner+'</div></div>';
+}
+/* nav: the colour the fixed bar takes, whether its type is light, and the
+   band height the engine should mirror. */
+function nav(c,light,h){ return {c:c,light:light!==false,h:h}; }
+
+var N={};
+function add(id,note,cfg){ N[id]=cfg; cfg.note=note; O[id]=cfg; }
+
+add('N01','deep structural cap — a 190px black band, the tallest of the twenty, with the cities as the index eyebrow and THE TEAM given generous cream beneath it. Weight at the top, air below',
+ {para:'none',nav:nav('10,10,10',true,190),
+  html:function(){ return BAND(190,'solid')+HEAD(64,26,EY()+T())+EDGE(); }});
+
+add('N02','ink, tight — a shallow 118px ink band and the most compact head block in the set. The cities drop below the title as a hairline row so the portraits arrive almost immediately',
+ {para:'none',nav:nav('18,21,26',true,118),
+  html:function(){ return BAND(118,'ink')+HEAD(30,14,T()+'<div class="sp"></div>'+EY())+EDGE(); }});
+
+add('N03','Foundry navy — the band takes the index page\'s navy and carries the four cities itself, in gold, so the cream below holds nothing but the title',
+ {para:'none',nav:nav('30,42,74',true,148),
+  html:function(){ return BAND(148,'navy',CITY())+HEAD(38,22,T())+EDGE('gd'); }});
+
+add('N04','gold datum — a black band closed by one gold hairline along its full width, and the title dropped a deliberate 48px below it. The rule is the datum everything measures from',
+ {para:'none',nav:nav('10,10,10',true,152),
+  html:function(){ return BAND(152,'solid rule')+HEAD(48,20,EY()+T())+EDGE(); }});
+
+add('N05','inverted — THE TEAM sits inside the dark band in light type and the cities take the cream below it. The page title becomes part of the masthead rather than an announcement under it',
+ {para:'none',nav:nav('10,10,10',true,178),
+  html:function(){ return BAND(178,'solid','<h1 class="Ntitle">The Team</h1>')+
+    HEAD(24,18,EY())+EDGE(); }});
+
+add('N06','CAD window — the front-axle drawing stands behind the title inside a bounded field with a hard lower edge, so it never bleeds into the nav or the cards',
+ {para:'none',nav:nav('10,10,10',true,134),
+  html:function(){ return BAND(134,'solid')+HEAD(52,26,EY()+T(),'cad')+EDGE('gd'); }});
+
+add('N07','clay masthead — no dark band at all. The nav sits on the site\'s own clay, the title on cream, and one navy datum separates them. The lightest version in the set',
+ {para:'none',nav:nav('228,222,211',false,140),
+  html:function(){ return BAND(140,'clay lt',CITY())+HEAD(34,20,T())+
+    '<div class="Oin"><div class="Oedge" style="background:rgba(30,42,74,.5);height:2px"></div></div>'; }});
+
+add('N08','split band — the band is two materials meeting on the page\'s own column line, black to the left and Foundry navy to the right. A structural join rather than a colour change',
+ {para:'none',nav:nav('10,10,10',true,156),
+  html:function(){ return BAND(156,'split')+HEAD(42,22,EY()+T())+EDGE('gd'); }});
+
+add('N09','proportion — a 210px band against a 28px head block. The most extreme ratio in the set: almost everything above, almost nothing below, and the portraits immediately after',
+ {para:'none',nav:nav('10,10,10',true,210),
+  html:function(){ return BAND(210,'solid')+HEAD(28,12,'<div class="Nrow">'+T()+EY()+'</div>')+EDGE(); }});
+
+add('N10','cities on the band — the four locations are set into the dark band as a spaced register and THE TEAM stands alone on cream. The band states where, the cream states what',
+ {para:'none',nav:nav('10,10,10',true,168),
+  html:function(){ return BAND(168,'solid',CITY())+HEAD(40,24,T())+EDGE(); }});
+
+add('N11','engineering field — the cream carries the index page\'s own grid at the Marshall pitch, with the four cities marked on a coordinate rule by gold ticks',
+ {para:'none',nav:nav('10,10,10',true,128),
+  html:function(){ return BAND(128,'solid')+
+    HEAD(44,26,T()+'<div class="sp2"></div><div class="Nticks">'+
+      CITIES.map(function(c){ return '<span>'+e(c)+'</span>'; }).join('')+'</div>','grid')+EDGE(); }});
+
+add('N12','signal edge — a black band closed by a two-pixel signal-orange rule, with the head block held tight beneath it. The only orange on the page, and it marks the boundary',
+ {para:'none',nav:nav('10,10,10',true,140),
+  html:function(){ return BAND(140,'solid orule')+HEAD(32,16,EY()+T())+EDGE(); }});
+
+add('N13','cyan datum — a cyan hairline runs beneath the cities and continues as a short signal into the portrait grid, so the masthead and the cards are visibly one system',
+ {para:'none',nav:nav('10,10,10',true,144),
+  html:function(){ return BAND(144,'solid cyrule')+
+    HEAD(40,18,EY()+T()+'<div class="sp2"></div><div class="Nsig"></div>')+EDGE(); }});
+
+add('N14','photographic band — the machine shop inside the band itself, heavily graded down so the logo and the navigation sit over material rather than over black',
+ {para:'none',nav:nav('10,10,10',true,176),
+  html:function(){ return BAND(176,'photo')+HEAD(40,22,EY()+T())+EDGE('gd'); }});
+
+add('N15','stacked register — the title left, the four cities as a right-aligned column against it. The masthead reads as two aligned objects rather than one line of text',
+ {para:'none',nav:nav('10,10,10',true,138),
+  html:function(){ return BAND(138,'solid')+
+    HEAD(46,24,'<div class="Nstack"><div>'+T()+'</div><div class="Ncol">'+
+      CITIES.map(function(c){ return '<span class="Oeyebrow" style="margin:0">'+e(c)+'</span>'; }).join('')+
+    '</div></div>')+EDGE('gd'); }});
+
+add('N16','registration — ⌖, the site\'s own registration mark, sits above the title, and the cities run on a coordinate rule with diamond ticks. The most technical of the twenty',
+ {para:'none',nav:nav('10,10,10',true,158),
+  html:function(){ return BAND(158,'solid rule')+
+    HEAD(40,24,'<span class="Nmark">⌖</span>'+T()+'<div class="sp2"></div>'+
+      '<div class="Nticks">'+CITIES.map(function(c){ return '<span>'+e(c)+'</span>'; }).join('')+'</div>')+
+    EDGE(); }});
+
+add('N17','double rule — one hairline under the band and one above the portraits, with the title and the cities floating between them. The space is framed rather than filled',
+ {para:'none',nav:nav('10,10,10',true,132),
+  html:function(){ return BAND(132,'solid')+
+    '<div class="Nhead Ndbl" style="padding-top:40px;padding-bottom:36px"><div class="Oin">'+
+      '<div class="Nrow">'+T()+EY()+'</div></div></div>'; }});
+
+add('N18','aluminium — the band changes material rather than tone: brushed aluminium grey with dark type on it, then cream. A CMF decision, not a colour one',
+ {para:'none',nav:nav('185,188,192',false,146),
+  html:function(){ return BAND(146,'alu lt',CITY())+HEAD(36,20,T())+EDGE(); }});
+
+add('N19','gradient descent — the band has no lower edge at all. It graduates from structural black through ink into the cream, and the title emerges out of it',
+ {para:'none',nav:nav('10,10,10',true,196),
+  html:function(){ return BAND(196,'grad')+HEAD(18,22,EY()+T())+EDGE('gd'); }});
+
+add('N20','the recommendation — a 158px black band closed by a gold hairline, the cities as the index eyebrow above a title that sits on a registration mark, and one gold signal running down into the portraits. Enough weight at the top to feel deliberate, short enough that the people arrive quickly',
+ {para:'none',nav:nav('10,10,10',true,158),
+  html:function(){ return BAND(158,'solid rule')+
+    HEAD(46,22,'<span class="Nmark">⌖</span>'+EY()+T()+
+      '<div class="sp2"></div><div class="Nsig gd"></div>','gridgold')+
+    EDGE('gd'); }});
+
+window.__sfLAB_N=N;
 })();
 </script>
