@@ -89,6 +89,37 @@ body>footer{margin-top:auto;}
 @media(max-width:768px){.f-m6{display:none!important;}}
 </style>
 
+<style id="sf-cloak-css">
+/* The composition is assembled at runtime — the page's own DEV state has to
+   build first, because that is what the content is read out of. Until this
+   turn that meant roughly two seconds of the OLD design on screen before the
+   approved one replaced it. The page is now held back until the final state
+   is ready. Only the content is held: the nav, the logo and the language
+   controls paint immediately, so the page never looks broken. */
+html[data-boot="1"] #pc{opacity:0 !important;}
+html[data-boot="0"] #pc{opacity:1;transition:opacity .3s ease;}
+/* Belt and braces: the page's own people, platform and closing blocks are
+   replaced by the new composition, so they are suppressed from the first
+   parsed byte rather than from the moment the lab sets its attribute. Even
+   if everything below failed, the old design could not appear. */
+html[data-boot] #tm-close,
+html[data-boot] .sf6,
+html[data-boot] .zclose{display:none !important;}
+</style>
+<script id="sf-cloak">
+(function(){
+  var d=document.documentElement, done=false;
+  d.setAttribute('data-boot','1');
+  function show(){ if(done) return; done=true; d.setAttribute('data-boot','0'); }
+  window.__sfUncloak=show;
+  /* a hard ceiling, so a failure anywhere downstream can never leave the page
+     blank — it would simply show whatever did manage to render */
+  setTimeout(show,5000);
+  window.addEventListener('load',function(){ setTimeout(show,2500); });
+  window.addEventListener('error',show);
+})();
+</script>
+
 <script id="sf-team-bake">
 /* BAKED: BASE4. No selector, no hash, no state traversal, always at the top. */
 (function(){
@@ -11715,6 +11746,8 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
     $$('.Krule',MOUNT).forEach(function(n){ n.classList.add('dx'); });
     markFounders(); parallax();
     measure(); accordions(); hovers(); reveal();
+    /* the approved composition is on screen: let the page paint */
+    try{ window.__sfUncloak && window.__sfUncloak(); }catch(e){}
     later(measure,700); later(markFounders,900);
     return true;
   }
@@ -13585,6 +13618,8 @@ function build(){
   ['people','platform','academy','opportunities'].forEach(render);
   markBoard(true);
   buildUI(); if(UI) showUI(true); paint(); writeHash(false);
+  /* the approved composition is on screen: let the page paint */
+  try{ window.__sfUncloak && window.__sfUncloak(); }catch(e){}
   /* re-asserted after the page's own timers have finished with the address bar */
   later(function(){ writeHash(false); },420);
   later(function(){ writeHash(false); },1400);
@@ -13626,7 +13661,7 @@ window.__sfTeamExtra={
     try{ prev.apply&&prev.apply('DEV'); }catch(e){}
     var tries=0;
     (function go(){ if(build()) return;
-      if(++tries>60) return; later(go,150); })();
+      if(++tries>60) return; later(go,60); })();
   }
 };
 window.__sfLABgo=function(){ try{ window.__sfTeamGo&&window.__sfTeamGo('LAB'); }catch(e){} };

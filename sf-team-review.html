@@ -11707,6 +11707,8 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
     $$('.Krule',MOUNT).forEach(function(n){ n.classList.add('dx'); });
     markFounders(); parallax();
     measure(); accordions(); hovers(); reveal();
+    /* the approved composition is on screen: let the page paint */
+    try{ window.__sfUncloak && window.__sfUncloak(); }catch(e){}
     later(measure,700); later(markFounders,900);
     return true;
   }
@@ -13577,6 +13579,8 @@ function build(){
   ['people','platform','academy','opportunities'].forEach(render);
   markBoard(true);
   buildUI(); if(UI) showUI(true); paint(); writeHash(false);
+  /* the approved composition is on screen: let the page paint */
+  try{ window.__sfUncloak && window.__sfUncloak(); }catch(e){}
   /* re-asserted after the page's own timers have finished with the address bar */
   later(function(){ writeHash(false); },420);
   later(function(){ writeHash(false); },1400);
@@ -13618,7 +13622,7 @@ window.__sfTeamExtra={
     try{ prev.apply&&prev.apply('DEV'); }catch(e){}
     var tries=0;
     (function go(){ if(build()) return;
-      if(++tries>60) return; later(go,150); })();
+      if(++tries>60) return; later(go,60); })();
   }
 };
 window.__sfLABgo=function(){ try{ window.__sfTeamGo&&window.__sfTeamGo('LAB'); }catch(e){} };
