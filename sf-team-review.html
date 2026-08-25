@@ -9497,8 +9497,13 @@ html[data-sfb2] .zclose{display:none !important;}
 
 /* ---------------- fields and blocks ------------------------------------- */
 #sfb2 .K{position:relative;width:100%;}
+/* the same site inset as the lab sections. --KSITE is plain 48/24 because the
+   1600 cap here sits on the block INSIDE .Kin, so the centring is already done
+   one level down and the padding must not also subtract for it. */
 #sfb2 .Kin{position:relative;z-index:2;
-  padding-left:var(--Kpad,24px);padding-right:var(--Kpad,24px);}
+  padding-left:var(--Kpad,var(--KSITE,48px));padding-right:var(--Kpad,var(--KSITE,48px));}
+#sfb2{--KSITE:48px;}
+@media(max-width:768px){ #sfb2{--KSITE:0px;} }
 #sfb2 .Kfull{width:100%;}
 #sfb2 .pad{padding-top:var(--pt,clamp(52px,7vh,96px));
            padding-bottom:var(--pb,clamp(52px,7vh,96px));}
@@ -11573,13 +11578,14 @@ html[data-sfb2="BASE4"] #sfb2 .k-ink  {background:rgba(18,21,26,.74) !important;
   function on(t,e,f){ t.addEventListener(e,f,{passive:true}); LS.push([t,e,f]); }
   function bind(t,e,f){ t.addEventListener(e,f); LS.push([t,e,f]); }
 
+  /* The inset is no longer measured. #tm-head is removed by the opening, so the
+     old reference had a rect of zero and this returned early, leaving --Kpad at
+     24 while the opening and People moved to the site's own 48. It is now a
+     stylesheet rule (--KSITE), which also survives this layer being torn down.
+     Any inline value from an earlier build is cleared so the stylesheet wins. */
   function frame(){
     if(!MOUNT) return;
-    var ref=$('#tm-head .sf4-title')||$('#tm-head'); if(!ref) return;
-    var h=MOUNT.getBoundingClientRect(), r=ref.getBoundingClientRect();
-    if(h.width<40||r.width<40) return;
-    var v=Math.max(24,Math.round(r.left-h.left))+'px';
-    if(MOUNT.style.getPropertyValue('--Kpad')!==v) MOUNT.style.setProperty('--Kpad',v);
+    if(MOUNT.style.getPropertyValue('--Kpad')) MOUNT.style.removeProperty('--Kpad');
   }
   function drop(){
     if(!MOUNT) return;
@@ -11821,7 +11827,15 @@ html[data-lab] #pc .tc .Kbrd::before{content:'';display:inline-block;
 }
 .sfl .S{position:relative;width:100%;}
 .sfl .Sin{position:relative;z-index:2;max-width:var(--cap);margin-inline:auto;
-  padding-left:var(--Spad,24px);padding-right:var(--Spad,24px);}
+  padding-left:var(--Spad,var(--SITEPAD));padding-right:var(--Spad,var(--SITEPAD));}
+/* THE SITE'S OWN INSET, stated once, in CSS.
+   Measured off index.html: 24px at and below 768, 48px above it, and the 1600
+   frame beyond ~1696 — where the cap and the auto margin already supply the
+   whole inset, so the padding falls to zero rather than adding to it.
+   It is CSS and not JS on purpose: the lab's engine is torn down by the page's
+   own selector, so a measured value went stale the moment the window moved. */
+:root{--SITEPAD:max(0px,min(48px,calc(48px - (100vw - 1600px)/2)));}
+@media(max-width:768px){ :root{--SITEPAD:0px;} }
 .sfl .pad{padding-top:var(--pt,clamp(52px,7vh,96px));
           padding-bottom:var(--pb,clamp(52px,7vh,96px));}
 .sfl .tight{--pt:clamp(30px,4vh,54px);--pb:clamp(30px,4vh,54px);}
@@ -11989,7 +12003,8 @@ html[data-lab] #pc .tc .Kbrd::before{content:'';display:inline-block;
 #sfo .Ogrid.fade{-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent);
                  mask-image:linear-gradient(180deg,#000 40%,transparent);}
 #sfo .Oin{max-width:var(--cap,1600px);margin-inline:auto;
-  padding-left:var(--Spad,24px);padding-right:var(--Spad,24px);position:relative;z-index:2;}
+  padding-left:var(--Spad,var(--SITEPAD));padding-right:var(--Spad,var(--SITEPAD));
+  position:relative;z-index:2;}
 /* O02 · title left, cities right, one shared lower baseline */
 #sfo .O02{display:flex;align-items:baseline;justify-content:space-between;gap:24px;}
 /* O03 · a narrow navy field inside the cream */
@@ -13202,6 +13217,7 @@ function order(id){
   return ['BASE'].concat(k);
 }
 var state={}, active='people', built=false, LS=[], TM=[], IO=null, uiOn=true;
+var RESZ=null;   /* one resize binding, whichever entry point mounted the lab */
 SEC.forEach(function(s){ state[s.id]='BASE'; });
 /* the page's own selector rewrites the address bar to #team=<state> the moment
    it applies one, which wipes the combination before this layer can read it.
@@ -13256,15 +13272,21 @@ function makeMount(id,before){
   before.parentNode.insertBefore(m, before);
   return m;
 }
+/* The side inset is no longer measured here. The ten cards run full-bleed, so
+   they were the wrong reference — every lab section sat at 24px while the index
+   sets 48 — and, worse, a measured value cannot survive: the page's own
+   selector tears this layer's listeners down, so the number went stale the
+   moment the window was resized. The rule now lives in CSS as --SITEPAD.
+   What DOES have to be measured is the nav's real height, because the openings
+   carry a band behind it and their contents must start below it. Any inline
+   --Spad left over from an earlier build is cleared so the stylesheet governs. */
 function frame(){
-  var ref=$('#pc .tc')||$('#pc');
-  if(!ref) return;
+  var nav=document.getElementById('mn');
+  if(nav){ var nh=nav.getBoundingClientRect().height;
+           if(nh>10) document.documentElement.style.setProperty('--navPx',Math.round(nh)+'px'); }
   SEC.forEach(function(s){
-    var m=document.getElementById(s.mount); if(!m) return;
-    var a=m.getBoundingClientRect(), b=ref.getBoundingClientRect();
-    if(a.width<40||b.width<40) return;
-    var v=Math.max(24,Math.round(b.left-a.left))+'px';
-    if(m.style.getPropertyValue('--Spad')!==v) m.style.setProperty('--Spad',v);
+    var m=document.getElementById(s.mount);
+    if(m && m.style.getPropertyValue('--Spad')) m.style.removeProperty('--Spad');
   });
 }
 
@@ -13609,7 +13631,8 @@ function build(){
   later(function(){ writeHash(false); },420);
   later(function(){ writeHash(false); },1400);
   later(frame,700); later(frame,1600);
-  bind(window,'resize',function(){ later(frame,180); },{passive:true});
+  if(!RESZ){ RESZ=function(){ later(frame,180); };
+             bind(window,'resize',RESZ,{passive:true}); }
   bind(window,'popstate',function(){
     if(!fromHash()) return;
     renderOpening();
@@ -13671,6 +13694,11 @@ window.__sfLABsingle=function(secId,v,ref){
   built=true;                 /* frame() and the measurements need it */
   if(secId==='opening') renderOpening(); else render(secId);
   later(frame,600); later(frame,1500);
+  /* the baked page mounts through here and never runs build(), so it was never
+     getting build()'s resize binding — the inset was measured once and then
+     went stale the moment the window changed width. Bound once, here too. */
+  if(!RESZ){ RESZ=function(){ later(frame,180); };
+             bind(window,'resize',RESZ,{passive:true}); }
   return true;
 };
 
@@ -13733,7 +13761,11 @@ html[data-navband="dk"] #mn .nav-logo svg text{fill:rgba(10,10,10,.82) !importan
 /* the band. Its colour and height are set per variation from JS, so the nav
    itself can be re-coloured to match without twenty stylesheet rules. */
 #sfo .Ncap{position:relative;width:100%;}
-#sfo .Ncap-in{height:100%;display:flex;align-items:flex-end;padding-bottom:14px;}
+/* the nav is fixed and paints over the band, so anything the band carries has
+   to start below the nav's real measured height or it is printed underneath
+   the logo. --navPx is written by the engine and re-measured on resize. */
+#sfo .Ncap-in{height:100%;box-sizing:border-box;display:flex;align-items:flex-end;
+  padding-top:var(--navPx,138px);padding-bottom:14px;}
 #sfo .Ncap.solid{background:rgb(var(--navC,10,10,10));}
 #sfo .Ncap.ink{background:#12151a;}
 #sfo .Ncap.navy{background:#1e2a4a;}
@@ -13832,7 +13864,11 @@ function CITY(){ return '<span class="Ncity">'+CITIES.join(' · ')+'</span>'; }
 function EDGE(c){ return '<div class="Oin"><div class="Oedge '+(c||'')+'"></div></div>'; }
 /* the band. h in px; cls picks its material; inner is what it carries. */
 function BAND(h,cls,inner){
-  return '<div class="Ncap '+(cls||'solid')+'" style="height:'+h+'px">'+
+  /* a band that carries content must clear the fixed nav. The declared height
+     still wins wherever it is already tall enough, and the nav's own height is
+     measured, so this holds at mobile (88px) as well as desktop (138px). */
+  var H=inner?'max('+h+'px,calc(var(--navPx,138px) + 44px))':h+'px';
+  return '<div class="Ncap '+(cls||'solid')+'" style="height:'+H+'">'+
     (cls&&cls.indexOf('photo')>=0?'<img src="'+Q.IMG.shop+'" alt="">':'')+
     (cls&&cls.indexOf('cad')>=0?'<i></i>':'')+
     (inner?'<div class="Oin Ncap-in">'+inner+'</div>':'')+'</div>';
