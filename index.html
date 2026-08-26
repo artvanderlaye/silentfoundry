@@ -20340,8 +20340,13 @@ window.__L14=1;
      ATOMS
      ===================================================================== */
   B.sym=function(o,sz){ return '<span class="sym '+(sz||'')+'">'+rsvg(o.k,2.3)+'</span>'; };
-  B.head=function(t,quiet){
-    return '<div class="bhead'+(quiet?' q':'')+'"><span class="bey'+(quiet?' q':'')+'">'+t+'</span></div>'; };
+  B.head=function(t,quiet,h2){
+    /* h2 is optional and only FROM DNA TO NEW TERRITORIES passes it, so the
+       other three eyebrows render exactly as before. Inside .bhead, not
+       beside it, so the headline inherits the same 56px inset the eyebrow
+       already carries at every width. */
+    return '<div class="bhead'+(quiet?' q':'')+'"><span class="bey'+(quiet?' q':'')+'">'+t+'</span>'+
+      (h2?'<h4 class="fcats-h">'+h2+'</h4>':'')+'</div>'; };
   B.stmt=function(){
     return '<h3 class="disp">From physical character<br>to <em>transferable design language</em>.</h3>'; };
   B.lede=function(){
@@ -21329,7 +21334,7 @@ window.__L14=1;
       '<span class="p2">'+F.PR[1]+'</span><span class="p3">'+F.PR[2]+'</span></div>';
   };
   F.cats=function(){
-    return '<div class="fcats">'+B.head('From DNA to new categories')+
+    return '<div class="fcats">'+B.head('From DNA to new territories',false,'Same DNA.<br>New territory.')+
       '<div class="crow">'+F.CAT.map(function(c){
         return '<span class="tc">'+F.icon(c.i)+'<span class="cn">'+c.n+'</span>'+
           '<span class="cd">'+c.d+'</span><i class="otk"></i></span>'; }).join('')+
@@ -27629,6 +27634,25 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
   }
 })();
 </script>
+
+
+<style id="sf-fcats-h">
+/* =========================================================================
+   FROM DNA TO NEW TERRITORIES — the subsection had an eyebrow and no headline
+   while every other section on the page has both. This adds the headline at
+   the type already in use here: .glead h4's family, size, tracking, weight and
+   line-height, measured off the rendered page (23.04px / .22em / .92 / 300 at
+   desktop, 16.8px at 390). The only difference is colour — that h4 sits on the
+   dark panel, this one sits on cream, so it takes the ink the other cream
+   headings use. No new type enters the system.
+   ========================================================================= */
+#sf-lab-mount .fcats .fcats-h{
+  font-family:'Bebas Neue',sans-serif;font-weight:300;
+  font-size:clamp(1.05rem,2.25vw,1.44rem);line-height:.92;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(10,10,10,.86);
+  margin:16px 0 0;}
+</style>
 
 </body>
 </html>
