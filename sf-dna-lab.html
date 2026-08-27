@@ -27866,11 +27866,7 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
 #sf-lab-mount .pvstage #sf-dnaT g[data-k="ribs"].on{opacity:.78;}
 #sf-lab-mount .pvstage #sf-dnaT g[data-k="grnd"].on{opacity:.35;}
 #sf-lab-mount .pvstage #sf-dnaT g[data-k="axis"].on{opacity:.6;}
-/* the sketch, underneath everything — the drawing the extraction comes from.
-   It is placed in the same photo coordinate space as the lines, so it lands on
-   the machine line for line instead of being fitted at load. */
-#sf-lab-mount .pvstage #sf-dnaT g[data-k="sk"].on{opacity:.28;}
-#sf-lab-mount .pvstage #sf-dnaT image{filter:invert(1);}
+
 @media (prefers-reduced-motion:reduce){
   #sf-lab-mount .pvstage #sf-dnaT g{transition:none;}
 }
@@ -27895,15 +27891,6 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
      profile    the first sustained non-brick column, sampled every 10px
    --------------------------------------------------------------------- */
 var RW=[520.5,850.5], RWR=234.5, FW=[1497.5,857.5], FWR=232.5, GROUND=1078;
-/* the sketch, registered on the photograph by its own axles:
-   bike-side-sketch.png is 1800 x 1002 with its axles at (320.9,698.0) and
-   (1466.8,702.9). Matching those to the measured axles gives one uniform
-   scale of 0.85261 — no stretch, no per-element patching. */
-var SK={src:'images/bike-side-sketch.png', w:1800, h:1002,
-        rear:[320.9,698.0], front:[1466.8,702.9]};
-SK.s=(FW[0]-RW[0])/(SK.front[0]-SK.rear[0]);
-SK.x=RW[0]-SK.rear[0]*SK.s;
-SK.y=(RW[1]+FW[1])/2-((SK.rear[1]+SK.front[1])/2)*SK.s;
 var RAKE=0.4625;
 var AXIS=[[FW[0]-RAKE*(FW[1]-372),372], FW];
 var ENCL=[[918,668],[956,619],[1112,600],[1194,646],[1196,856],[1116,946],
@@ -27950,23 +27937,12 @@ function build(){
   svg.innerHTML=SETS.map(function(s){
     return '<g data-k="'+s[0]+'">'+s[1].map(function(d){
       return '<path d="'+d+'"/>'; }).join('')+'</g>'; }).join('');
-  /* the sketch goes in first so it paints under every line */
-  var NS='http://www.w3.org/2000/svg';
-  var gsk=document.createElementNS(NS,'g'); gsk.setAttribute('data-k','sk');
-  var im=document.createElementNS(NS,'image');
-  im.setAttribute('href',SK.src);
-  im.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',SK.src);
-  im.setAttribute('x',SK.x.toFixed(1)); im.setAttribute('y',SK.y.toFixed(1));
-  im.setAttribute('width',(SK.w*SK.s).toFixed(1));
-  im.setAttribute('height',(SK.h*SK.s).toFixed(1));
-  im.setAttribute('preserveAspectRatio','none');
-  im.setAttribute('decoding','async');
-  gsk.appendChild(im);
-  svg.insertBefore(gsk, svg.firstChild);
   stage.appendChild(svg);
-  /* the layer that could not be made to land */
-  var old=document.querySelector('#sf-lab-mount .pvsk');
-  if(old) old.style.setProperty('display','none','important');
+  /* Retire the old geometry ONLY. The sketch (.pvline) lives in the same
+     .pvsk container, so hiding the container took the drawing with it — it
+     stays exactly as it was, placed and faded by the page's own code. */
+  [].forEach.call(document.querySelectorAll('#sf-lab-mount .pvsk svg'),function(o){
+    o.style.setProperty('display','none','important'); });
   if(played) [].forEach.call(svg.querySelectorAll('g'),function(g){ g.classList.add('on'); });
   return true;
 }
@@ -27975,10 +27951,9 @@ function play(){
   if(played) return;
   played=true;
   var slow=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var STEP=['sk'].concat(SETS.map(function(s){ return s[0]; }));
-  STEP.forEach(function(k,i){
+  SETS.forEach(function(st,i){
     timers.push(setTimeout(function(){
-      var g=document.querySelector('#sf-dnaT g[data-k="'+k+'"]');
+      var g=document.querySelector('#sf-dnaT g[data-k="'+st[0]+'"]');
       if(g) g.classList.add('on');
     }, slow?0:(280+i*430)));
   });
@@ -28041,8 +28016,6 @@ else window.addEventListener('load',function(){ setTimeout(start,700); });
    ========================================================================= */
 window.DNA_GEO = (function(){
 
-  var SKI={src:'images/bike-side-sketch.png',w:1800,h:1002,
-           rear:[320.9,698.0],front:[1466.8,702.9]};
   var RW=[520.5,850.5], RWR=234.5,
       FW=[1497.5,857.5], FWR=232.5,
       GROUND=1078;
@@ -28084,11 +28057,7 @@ window.DNA_GEO = (function(){
 
   var RIM=0.6705, DISC=0.2045, HUB=0.034;
 
-  SKI.s=(FW[0]-RW[0])/(SKI.front[0]-SKI.rear[0]);
-  SKI.x=RW[0]-SKI.rear[0]*SKI.s;
-  SKI.y=(RW[1]+FW[1])/2-((SKI.rear[1]+SKI.front[1])/2)*SKI.s;
   return {
-    SKI:SKI,
     W:2000, H:1333, RW:RW, FW:FW, RWR:RWR, FWR:FWR, GROUND:GROUND,
     sets:{
       whl : [CIR(RW,RWR), CIR(FW,FWR), CIR(RW,RWR*RIM), CIR(FW,FWR*RIM),
@@ -28172,7 +28141,7 @@ var VARS=[
  ['10','SEQUENTIAL BUILD','The sets arrive in turn — wheels, axis, enclosure, ribs, fasteners, profile — then settle.']
 ];
 
-var ORDER=['sk','whl','axle','axis','grnd','encl','panl','ribs','fast','sil','swng','dim'];
+var ORDER=['whl','axle','axis','grnd','encl','panl','ribs','fast','sil','swng','dim'];
 var FULL=['whl','axle','axis','grnd','encl','panl','ribs','fast','sil','swng'];
 
 /* what each direction shows, and how it is drawn. Applied inline. */
@@ -28190,7 +28159,7 @@ var STY={
  '08':{sets:FULL, c:'#d8b87a', w:1.6, o:0.85,
        recolor:{encl:'#5fd8f2', panl:'#5fd8f2', ribs:'#5fd8f2', fast:'#5fd8f2'}},
  '09':{sets:FULL, c:'#f4f1ec', w:1.6, o:0.95, per:{ribs:0.75}, dim_photo:true},
- '10':{sets:['sk'].concat(FULL), c:'#d8b87a', w:1.6, o:0.90, seq:true, per:{sk:0.28}}
+ '10':{sets:FULL, c:'#d8b87a', w:1.6, o:0.90, seq:true}
 };
 
 function paint(v){
@@ -28198,8 +28167,8 @@ function paint(v){
   var ph=document.querySelector('#sf-lab-mount .pvphoto');
   if(ph) ph.style.removeProperty('filter');
   if(!svg) return;
-  var old=document.querySelector('#sf-lab-mount .pvsk');
-  if(old) old.style.setProperty('display', v==='00'?'':'none', 'important');
+  [].forEach.call(document.querySelectorAll('#sf-lab-mount .pvsk svg'),function(o){
+    o.style.setProperty('display', v==='00'?'':'none','important'); });
   if(v==='00'){ svg.style.setProperty('display','none','important'); return; }
   svg.style.setProperty('display','block','important');
   var S=STY[v]; if(!S) return;
@@ -28267,18 +28236,6 @@ function build(){
       return '<path d="'+d+'"/>'; }).join('')+'</g>';
   });
   svg.innerHTML=h;
-  var NS='http://www.w3.org/2000/svg', K=G.SKI;
-  var gsk=document.createElementNS(NS,'g'); gsk.setAttribute('data-k','sk');
-  var im=document.createElementNS(NS,'image');
-  im.setAttribute('href',K.src);
-  im.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',K.src);
-  im.setAttribute('x',K.x.toFixed(1)); im.setAttribute('y',K.y.toFixed(1));
-  im.setAttribute('width',(K.w*K.s).toFixed(1));
-  im.setAttribute('height',(K.h*K.s).toFixed(1));
-  im.setAttribute('preserveAspectRatio','none');
-  im.setAttribute('style','filter:invert(1)');
-  gsk.appendChild(im);
-  svg.insertBefore(gsk, svg.firstChild);
   stage.appendChild(svg);
   return true;
 }
@@ -28288,7 +28245,7 @@ var seq=[];
 function stopSeq(){ seq.forEach(clearTimeout); seq=[]; }
 function runSeq(){
   stopSeq();
-  var step=['sk','whl','axle','axis','grnd','encl','panl','ribs','fast','sil','swng'];
+  var step=['whl','axle','axis','grnd','encl','panl','ribs','fast','sil','swng'];
   step.forEach(function(k,i){
     seq.push(setTimeout(function(){
       var g=document.querySelector('#dnaT g[data-k="'+k+'"]');
