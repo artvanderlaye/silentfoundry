@@ -3030,14 +3030,16 @@ body.v11-active nav * { cursor: none !important; }
   function toggleFundCard(btn) {
     var card = btn.closest('.fund-card');
     card.classList.toggle('open');
-    btn.textContent = card.classList.contains('open') ? '−' : btn.getAttribute('data-glyph');
+    /* the mark never becomes a minus — the engineering symbol stays, and the
+       open state is carried by its colour (see #sf-vm-01) */
+    btn.textContent = btn.getAttribute('data-glyph') || btn.textContent;
   }
   document.querySelectorAll('.fund-card').forEach(function(card) {
     var btn = card.querySelector('.fund-toggle-btn');
     if (btn) btn.setAttribute('data-glyph', btn.textContent);
     card.addEventListener('click', function() {
       card.classList.toggle('open');
-      if (btn) btn.textContent = card.classList.contains('open') ? '−' : btn.getAttribute('data-glyph');
+      if (btn) btn.textContent = btn.getAttribute('data-glyph') || btn.textContent;
     });
   });
   </script>
@@ -27763,6 +27765,65 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
 </style>
 
 
+<style id="sf-vm-01">
+/* =========================================================================
+   VENTURE MODELS — SYMBOL REVEAL (lab variation 01), baked.
+
+   Always-on rules. No attribute, no switcher, no script that swaps the
+   design in after load: the first paint IS the approved state.
+
+   What changes
+     · the paragraph under each headline is hidden until the card is opened,
+       so the lower half of the section stops reading as a wall of text
+     · the engineering symbol leaves the bottom of the card and sits at the
+       right of the headline, on its line
+     · the symbol is an indicator, not a button — the CLICK TARGET IS THE
+       WHOLE CARD, exactly as it already was on the dev site. Nothing about
+       the click behaviour changes; the page's own listener still does it.
+     · the mark never turns into a minus. ∴ ⊕ ↗ stay put and the open state
+       is carried by colour.
+
+   Not changed: the three-column grid, the images, the type, the spacing,
+   the tags, the headlines, the symbols themselves.
+   ========================================================================= */
+
+/* ---- the headline row now carries the symbol -------------------------- */
+#funds .fund-body{
+  display:grid;
+  grid-template-columns:1fr auto;
+  column-gap:16px;
+  align-items:start;}
+#funds .fund-body > .fund-tag{grid-column:1 / -1;grid-row:1;}
+#funds .fund-body > h3{grid-column:1;grid-row:2;}
+#funds .fund-body > .fund-toggle{
+  grid-column:2;grid-row:2;
+  margin:0 !important;align-self:baseline;justify-content:flex-end;}
+#funds .fund-body > p:not(.fund-tag){grid-column:1 / -1;grid-row:3;}
+
+/* the symbol is a state indicator; the card is what you click, so it needs
+   no tap area of its own and must not take the pointer (the inline handler
+   and the card's own listener would otherwise both fire) */
+#funds .fund-toggle-btn{
+  margin:0 !important;padding:0 !important;
+  pointer-events:none !important;
+  color:rgba(10,10,10,0.35);
+  transition:color 0.3s ease;}
+#funds .fund-card:hover .fund-toggle-btn{color:#8a6e3a;}
+#funds .fund-card.open .fund-toggle-btn{color:rgba(10,10,10,0.75);}
+
+/* ---- the paragraph is what gets hidden -------------------------------- */
+#funds .fund-body > p:not(.fund-tag){
+  max-height:0;opacity:0;overflow:hidden;margin:0;
+  transition:max-height 0.5s cubic-bezier(.22,.61,.36,1),opacity 0.38s ease;}
+#funds .fund-card.open .fund-body > p:not(.fund-tag){
+  max-height:300px;opacity:1;}
+
+/* the second, deeper note stays out — one reveal, not two, which is the
+   whole point of the change */
+#funds .fund-expand{display:none !important;}
+</style>
+
+
 <style id="vm-lab-base">
 /* =========================================================================
    VENTURE MODELS — INTERACTION LAB
@@ -27824,7 +27885,8 @@ html[data-vm="01"] #funds .fund-body h3{display:flex;align-items:baseline;justif
 html[data-vm="01"] #funds .vm-hs{display:inline-block;}
 html[data-vm="01"] #funds .fund-toggle{display:none;}
 html[data-vm="01"] #funds .fund-card.vm-open .vm-hs{color:rgba(10,10,10,0.75);}
-html[data-vm="01"] #funds .vm-hs:hover{color:#8a6e3a;}
+html[data-vm="01"] #funds .fund-card{cursor:pointer;}
+html[data-vm="01"] #funds .fund-card:hover .vm-hs{color:#8a6e3a;}
 
 /* =========================================================================
    02 — WHOLE CARD REVEAL
@@ -28173,7 +28235,8 @@ function bind(v){
       setOpen(c, !c.classList.contains('vm-open'), false);
     };
 
-    if(v === '01'){ if(hs) on(hs, 'click', toggle); }
+    /* 01 uses the dev site's own click rule: the whole card */
+    if(v === '01'){ on(c, 'click', toggle); }
     else if(v === '02'){ on(body, 'click', toggle); }
     else if(v === '03'){
       if(desktopHover){
