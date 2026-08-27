@@ -27837,6 +27837,162 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
 </style>
 
 
+
+<style id="sf-dna-css">
+/* =========================================================================
+   SWITCH HERO — THE DNA EXTRACTION, SEQUENTIAL BUILD (lab variation 10)
+
+   One SVG in the photograph's own 2000 x 1333 coordinate space, sized to the
+   same box as the <img> and set to preserveAspectRatio "xMidYMid slice".
+   "slice" IS object-fit:cover — same box, same aspect, same crop — so the
+   drawing is locked to the photograph at every width by construction. There
+   is no runtime solver and nothing to re-measure on resize.
+
+   The old layer, which was traced in the sketch's coordinates and fitted to
+   the photo at load, is retired: it could not be made to land, because the
+   sketch's own proportions differ from the machine's.
+   ========================================================================= */
+#sf-lab-mount .pvstage #sf-dnaT{
+  position:absolute !important;left:0 !important;top:0 !important;
+  width:100% !important;height:100% !important;
+  z-index:3 !important;pointer-events:none !important;
+  overflow:hidden !important;display:block !important;}
+#sf-lab-mount .pvstage #sf-dnaT path{
+  fill:none;vector-effect:non-scaling-stroke;
+  stroke:#d8b87a;stroke-width:1.6px;
+  stroke-linecap:round;stroke-linejoin:round;}
+#sf-lab-mount .pvstage #sf-dnaT g{opacity:0;transition:opacity 1s ease;}
+#sf-lab-mount .pvstage #sf-dnaT g.on{opacity:.9;}
+#sf-lab-mount .pvstage #sf-dnaT g[data-k="ribs"].on{opacity:.78;}
+#sf-lab-mount .pvstage #sf-dnaT g[data-k="grnd"].on{opacity:.35;}
+#sf-lab-mount .pvstage #sf-dnaT g[data-k="axis"].on{opacity:.6;}
+@media (prefers-reduced-motion:reduce){
+  #sf-lab-mount .pvstage #sf-dnaT g{transition:none;}
+}
+</style>
+
+<script id="sf-dna-js">
+(function(){
+'use strict';
+
+/* ---- the geometry, measured on SWITCH_eSCRAMBLER_bike-6.jpg ------------
+   Every number is a pixel coordinate in the photograph's own 2000 x 1333
+   space, read off the file itself. Nothing here is converted from the
+   sketch and nothing is fitted at runtime.
+
+     wheels     tyre edge at the axle row, crown and contact
+     ribs       19 highlights, y 689 to 869, dead regular at a 10px pitch
+     enclosure  retraced by Matthew over the render, read back off his mark
+     fasteners  the screw heads themselves, at his marks
+     swingarm   a tapered oblong, rising toward the pivot
+     axis       the fork tube's highlight fitted over 160px: 24.8 degrees,
+                taken through the measured front axle
+     profile    the first sustained non-brick column, sampled every 10px
+   --------------------------------------------------------------------- */
+var RW=[520.5,850.5], RWR=234.5, FW=[1497.5,857.5], FWR=232.5, GROUND=1078;
+var RAKE=0.4625;
+var AXIS=[[FW[0]-RAKE*(FW[1]-372),372], FW];
+var ENCL=[[918,668],[956,619],[1112,600],[1194,646],[1196,856],[1116,946],
+          [1002,958],[920,906]];
+var PANEL=[[955,678],[1180,678],[1180,880],[955,880]];
+var BOLTS=[[987,614],[1097,610],[929,701],[930,790],[929,872],
+           [1183,688],[1182,787],[1181,869],[1086,941]];
+var SIL=[[560,536],[580,535],[592,496],[604,484],[640,494],[700,508],
+         [800,509],[900,510],[968,510],[982,500],[1000,476],[1020,464],
+         [1040,452],[1080,449],[1120,448],[1170,444]];
+var RIB=[]; for(var i=0;i<19;i++){ var ry=689+i*10; RIB.push([[955,ry],[1180,ry]]); }
+
+function CIR(c,r){ return 'M'+c[0]+' '+c[1]+' m-'+r+' 0 a'+r+' '+r+
+  ' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 '+(-2*r)+' 0'; }
+function P(pts,close){ return 'M'+pts.map(function(p){
+  return p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' L')+(close?' Z':''); }
+
+var RIM=0.6705, DISC=0.2045;
+var SETS=[
+  ['whl',  [CIR(RW,RWR),CIR(FW,FWR),CIR(RW,RWR*RIM),CIR(FW,FWR*RIM),
+            CIR(RW,RWR*DISC),CIR(FW,FWR*DISC)]],
+  ['axle', ['M'+RW[0]+' '+RW[1]+' L'+FW[0]+' '+FW[1]]],
+  ['axis', [P(AXIS)]],
+  ['grnd', ['M0 '+GROUND+' L2000 '+GROUND]],
+  ['encl', [P(ENCL,1)]],
+  ['panl', [P(PANEL,1)]],
+  ['ribs', RIB.map(function(s){ return P(s); })],
+  ['fast', BOLTS.map(function(b){ return CIR(b,7); })],
+  ['sil',  [P(SIL)]],
+  ['swng', ['M492 843 L866 817 Q892 836.5 866 856 L492 891 Q466 867 492 843 Z']]
+];
+
+var timers=[], played=false;
+
+function build(){
+  var stage=document.querySelector('#sf-lab-mount .pvstage');
+  if(!stage) return false;
+  if(document.getElementById('sf-dnaT')) return true;
+  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('id','sf-dnaT');
+  svg.setAttribute('viewBox','0 0 2000 1333');
+  svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+  svg.setAttribute('aria-hidden','true');
+  svg.innerHTML=SETS.map(function(s){
+    return '<g data-k="'+s[0]+'">'+s[1].map(function(d){
+      return '<path d="'+d+'"/>'; }).join('')+'</g>'; }).join('');
+  stage.appendChild(svg);
+  /* the layer that could not be made to land */
+  var old=document.querySelector('#sf-lab-mount .pvsk');
+  if(old) old.style.setProperty('display','none','important');
+  if(played) SETS.forEach(function(s){
+    var g=svg.querySelector('g[data-k="'+s[0]+'"]'); if(g) g.classList.add('on'); });
+  return true;
+}
+
+function play(){
+  if(played) return;
+  played=true;
+  var slow=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  SETS.forEach(function(s,i){
+    timers.push(setTimeout(function(){
+      var g=document.querySelector('#sf-dnaT g[data-k="'+s[0]+'"]');
+      if(g) g.classList.add('on');
+    }, slow?0:(280+i*430)));
+  });
+}
+
+/* The page rebuilds this section at runtime and throws the stage node away
+   with everything inside it, so the trace has to be re-attached whenever it
+   goes missing. Watching documentElement, not the stage: a stage-scoped
+   observer dies with the node it is watching. */
+function guard(){
+  function check(){ if(!document.getElementById('sf-dnaT')) build(); }
+  try{ new MutationObserver(check)
+        .observe(document.documentElement,{childList:true,subtree:true}); }catch(e){}
+  setInterval(check,900);
+}
+
+/* Visibility is polled against a FRESH query rather than watched with an
+   IntersectionObserver: the page replaces the stage node, and an observer
+   bound to the old node would never fire again. */
+function watch(){
+  var t=setInterval(function(){
+    if(played){ clearInterval(t); return; }
+    var stage=document.querySelector('#sf-lab-mount .pvstage');
+    if(!stage) return;
+    var b=stage.getBoundingClientRect();
+    var vh=window.innerHeight||document.documentElement.clientHeight;
+    if(b.top < vh*0.8 && b.bottom > vh*0.2){ play(); clearInterval(t); }
+  },200);
+}
+
+function start(){
+  if(!build()){ setTimeout(start,400); return; }
+  guard();
+  watch();
+}
+if(document.readyState==='complete') setTimeout(start,700);
+else window.addEventListener('load',function(){ setTimeout(start,700); });
+})();
+</script>
+
+
 <script id="dna-geo">
 /* =========================================================================
    THE GEOMETRY, TRACED ON THE PHOTOGRAPH.
@@ -27866,25 +28022,31 @@ window.DNA_GEO = (function(){
   var RAKE=0.4625;
   var AXIS=[[FW[0]-RAKE*(FW[1]-372), 372], FW];
 
-  /* the battery enclosure, its own octagon with the big bottom-left chamfer */
-  var ENCL=[[950,650],[978,612],[1160,612],[1200,652],[1200,862],[1170,912],
-            [1000,912],[950,872]];
+  /* the battery enclosure — retraced by Matthew over the render and read back
+     off his mark: it runs further left (918, not 950) and a good deal further
+     down (966, not 912) than the first pass had it. */
+  var ENCL=[[918,668],[956,619],[1112,600],[1194,646],[1196,856],[1116,946],
+            [1002,958],[920,906]];
   /* the recessed ribbed face inside it */
   var PANEL=[[955,678],[1180,678],[1180,880],[955,880]];
   /* 19 ribs at the measured pitch */
   var RIB=[]; for(var i=0;i<19;i++){ var y=689+i*10; RIB.push([[955,y],[1180,y]]); }
 
-  /* fasteners read off the lid and the flanks */
-  var BOLTS=[[974,632],[1136,628],[1192,668],[1192,760],[1190,858],
-             [962,700],[960,872],[1002,898],[1150,900]];
+  /* the fasteners, read off the photograph at Matthew's marks: two on the lid,
+     three down each flank, one on the bottom face */
+  var BOLTS=[[987,614],[1097,610],
+             [929,701],[930,790],[929,872],
+             [1183,688],[1182,787],[1181,869],
+             [1086,941]];
 
   /* the traced upper profile: tail, seat hump, seat run, tank shoulder, top */
   var SIL=[[560,536],[580,535],[592,496],[604,484],[640,494],
            [700,508],[800,509],[900,510],[968,510],[982,500],[1000,476],
            [1020,464],[1040,452],[1080,449],[1120,448],[1170,444]];
 
-  /* the swingarm as a closed tapered beam, axle to pivot */
-  var SWING=[[534,824],[880,846],[880,898],[534,884]];
+  /* the swingarm — a tapered oblong with rounded ends, and it RISES toward the
+     pivot. The first pass had it falling; Matthew's retrace has the angle. */
+  var SWING=[[492,843],[866,817],[866,856],[492,891]];
 
   function CIR(c,r){ return 'M'+c[0]+' '+c[1]+' m-'+r+' 0 a'+r+' '+r+
     ' 0 1 0 '+(2*r)+' 0 a'+r+' '+r+' 0 1 0 '+(-2*r)+' 0'; }
@@ -27906,7 +28068,7 @@ window.DNA_GEO = (function(){
       ribs: RIB.map(function(s){ return P(s); }),
       fast: BOLTS.map(function(b){ return CIR(b,7); }),
       sil : [P(SIL)],
-      swng: [P(SWING,1)]
+      swng: ['M492 843 L866 817 Q892 836.5 866 856 L492 891 Q466 867 492 843 Z']
     },
     ENCL:ENCL, RIB:RIB, BOLTS:BOLTS, SIL:SIL, AXIS:AXIS
   };
