@@ -27762,5 +27762,510 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
 }
 </style>
 
+
+<style id="vm-lab-base">
+/* =========================================================================
+   VENTURE MODELS — INTERACTION LAB
+   This page IS index.html with one layer appended. The cards, images,
+   typography, spacing and engineering symbols under test are the production
+   ones, not reproductions.
+
+   Variation 00 is the current approved base, untouched.
+   Variations 01-10 hide the paragraph copy by default and reveal it through
+   the section's own engineering symbols.
+   ========================================================================= */
+
+/* ---- structure added once, shared by every direction -------------------- */
+#funds .vm-slot{overflow:hidden;}
+#funds .vm-copy{margin:0;}
+#funds .vm-hs,
+#funds .vm-rule{display:none;}
+#funds .vm-hs{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.05em;
+  color:rgba(10,10,10,0.35);cursor:pointer;padding:10px 0 10px 16px;margin:-10px 0;
+  line-height:1;transition:color .3s ease,opacity .3s ease,transform .4s cubic-bezier(.22,.61,.36,1);}
+#funds .vm-rule{position:relative;align-items:center;gap:12px;margin:0 0 0 0;cursor:pointer;
+  padding:12px 0;}
+#funds .vm-rule i{flex:1 1 auto;height:1px;background:rgba(10,10,10,0.14);
+  transition:background .4s ease;}
+#funds .vm-rule .vm-rs{flex:0 0 auto;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;
+  letter-spacing:0.05em;color:rgba(10,10,10,0.35);line-height:1;
+  transition:color .3s ease,transform .45s cubic-bezier(.22,.61,.36,1);}
+
+/* ---- 01-10 : the paragraph is hidden by default ------------------------- */
+html[data-vm]:not([data-vm="00"]) #funds .fund-card{cursor:default;}
+html[data-vm]:not([data-vm="00"]) #funds .fund-expand{display:none !important;}
+html[data-vm]:not([data-vm="00"]) #funds .fund-toggle-btn{pointer-events:auto;cursor:pointer;
+  /* a real tap target on every width — the glyph does not move, the hit area
+     grows around it (12px, left/top/bottom only so the right edge stays on
+     the card's own inset) */
+  padding:14px 0 14px 14px !important;margin:-14px 0 -14px -14px !important;
+  transition:color .3s ease,opacity .3s ease,transform .45s cubic-bezier(.22,.61,.36,1);}
+html[data-vm]:not([data-vm="00"]) #funds .vm-slot{
+  max-height:0;opacity:0;
+  transition:max-height .5s cubic-bezier(.22,.61,.36,1),opacity .38s ease;}
+html[data-vm]:not([data-vm="00"]) #funds .fund-card.vm-open .vm-slot{
+  max-height:var(--vmH,200px);opacity:1;}
+
+/* the glyph brightens when its card is open — the shared state cue */
+html[data-vm]:not([data-vm="00"]) #funds .fund-card.vm-open .fund-toggle-btn{
+  color:rgba(10,10,10,0.75);}
+
+/* the toggle row keeps its place whether the copy is open or shut */
+html[data-vm]:not([data-vm="00"]) #funds .fund-toggle{margin-top:16px;}
+</style>
+<style id="vm-lab-vars">
+/* =========================================================================
+   01 — SYMBOL REVEAL
+   The engineering symbol leaves the bottom of the card and sits on the
+   headline line, at the right. It is the only control. The paragraph opens
+   directly beneath the title.
+   ========================================================================= */
+html[data-vm="01"] #funds .fund-body h3{display:flex;align-items:baseline;justify-content:space-between;gap:16px;}
+html[data-vm="01"] #funds .vm-hs{display:inline-block;}
+html[data-vm="01"] #funds .fund-toggle{display:none;}
+html[data-vm="01"] #funds .fund-card.vm-open .vm-hs{color:rgba(10,10,10,0.75);}
+html[data-vm="01"] #funds .vm-hs:hover{color:#8a6e3a;}
+
+/* =========================================================================
+   02 — WHOLE CARD REVEAL
+   The entire lower card is the control. The symbol stops being a button and
+   becomes a state indicator: dim when shut, full and widened when open, with
+   the card ground lifting a shade.
+   ========================================================================= */
+html[data-vm="02"] #funds .fund-body{cursor:pointer;transition:background .4s ease;}
+html[data-vm="02"] #funds .fund-toggle-btn{pointer-events:none;cursor:default;}
+html[data-vm="02"] #funds .fund-card.vm-open .fund-body{background:rgba(10,10,10,0.035);}
+html[data-vm="02"] #funds .fund-card.vm-open .fund-toggle-btn{letter-spacing:0.5em;color:#8a6e3a;}
+html[data-vm="02"] #funds .fund-card.vm-open .fund-tag{color:#8a6e3a;}
+html[data-vm="02"] #funds .fund-tag{transition:color .4s ease;}
+
+/* =========================================================================
+   03 — HOVER / TAP DISCLOSURE
+   Nothing is clicked on a desktop. The copy opens on hover and closes when
+   the pointer leaves, slowly enough that it reads as a settle rather than a
+   flick. Below 901, or on any touch device, it is a tap.
+   ========================================================================= */
+html[data-vm="03"] #funds .vm-slot{transition:max-height .6s cubic-bezier(.22,.61,.36,1),opacity .5s ease !important;}
+html[data-vm="03"] #funds .fund-toggle-btn{pointer-events:none;cursor:default;opacity:0.55;}
+html[data-vm="03"] #funds .fund-card.vm-open .fund-toggle-btn{opacity:1;color:#8a6e3a;}
+@media (hover:hover) and (min-width:901px){
+  html[data-vm="03"] #funds .fund-card{cursor:default;}
+}
+@media (max-width:900px){
+  html[data-vm="03"] #funds .fund-body{cursor:pointer;}
+}
+
+/* =========================================================================
+   04 — SLIDE-UP COPY
+   The space for the paragraph is always reserved, so the card never changes
+   height and the row of three never reflows. The copy is parked below its
+   own slot and rises into place.
+   ========================================================================= */
+html[data-vm="04"] #funds .vm-slot{max-height:none !important;height:var(--vmH,120px);opacity:1 !important;}
+html[data-vm="04"] #funds .vm-copy{display:block;transform:translateY(calc(var(--vmH,120px) + 10px));opacity:0;
+  transition:transform .58s cubic-bezier(.22,.61,.36,1),opacity .42s ease;}
+html[data-vm="04"] #funds .fund-card.vm-open .vm-copy{transform:translateY(0);opacity:1;}
+html[data-vm="04"] #funds .fund-toggle-btn:hover{color:#8a6e3a;}
+/* one column on a phone, so there is no row to keep level and reserving the
+   space would just leave a hole under every shut card — it collapses instead */
+@media (max-width:640px){
+  html[data-vm="04"] #funds .vm-slot{height:auto !important;max-height:0 !important;opacity:0 !important;}
+  html[data-vm="04"] #funds .fund-card.vm-open .vm-slot{max-height:var(--vmH,120px) !important;opacity:1 !important;}
+  html[data-vm="04"] #funds .vm-copy{transform:none;}
+}
+
+/* =========================================================================
+   05 — FADE / EXPAND
+   The card grows. The paragraph fades up into the space the card has just
+   made, a beat behind the height so the two movements do not fight.
+   ========================================================================= */
+html[data-vm="05"] #funds .fund-body{cursor:pointer;}
+html[data-vm="05"] #funds .vm-slot{transition:max-height .52s cubic-bezier(.22,.61,.36,1),opacity .3s ease !important;}
+html[data-vm="05"] #funds .vm-copy{opacity:0;transform:translateY(8px);
+  transition:opacity .45s ease .12s,transform .45s cubic-bezier(.22,.61,.36,1) .12s;}
+html[data-vm="05"] #funds .fund-card.vm-open .vm-copy{opacity:1;transform:none;}
+html[data-vm="05"] #funds .fund-toggle-btn{pointer-events:none;cursor:default;}
+
+/* =========================================================================
+   06 — SYMBOL MORPH
+   The symbol is the trigger and it changes state mechanically: it turns 45
+   degrees and its mark swaps to its counterpart — the site already does this
+   with the China icons, so nothing new is introduced.
+     the three dots turn over        the ring crosses out       the arrow turns down
+   ========================================================================= */
+html[data-vm="06"] #funds .fund-toggle-btn{font-size:1.15rem;color:rgba(10,10,10,0.32);}
+html[data-vm="06"] #funds .fund-card.vm-open .fund-toggle-btn{
+  transform:rotate(45deg);color:#8a6e3a;}
+html[data-vm="06"] #funds .fund-toggle-btn:hover{color:rgba(10,10,10,0.6);}
+
+/* =========================================================================
+   07 — ONE OPEN AT A TIME
+   Accordion logic without an accordion. One card is always open, so the row
+   height is set once and never jumps. The two shut cards step back: dimmer
+   tag, dimmer symbol, a slightly darker image.
+   ========================================================================= */
+html[data-vm="07"] #funds .fund-body{cursor:pointer;}
+html[data-vm="07"] #funds .fund-toggle-btn{pointer-events:none;cursor:default;}
+html[data-vm="07"] #funds .fund-card .fund-tag,
+html[data-vm="07"] #funds .fund-card .fund-body h3,
+html[data-vm="07"] #funds .fund-card .fund-img,
+html[data-vm="07"] #funds .fund-card .fund-toggle-btn{transition:color .45s ease,opacity .45s ease,filter .6s ease;}
+html[data-vm="07"] #funds .fund-card:not(.vm-open) .fund-tag{color:rgba(10,10,10,0.3);}
+html[data-vm="07"] #funds .fund-card:not(.vm-open) .fund-body h3{color:rgba(10,10,10,0.45);}
+html[data-vm="07"] #funds .fund-card:not(.vm-open) .fund-img{filter:brightness(0.72) grayscale(0.55);}
+html[data-vm="07"] #funds .fund-card:not(.vm-open) .fund-toggle-btn{opacity:0.25;}
+html[data-vm="07"] #funds .fund-card.vm-open .fund-toggle-btn{color:#8a6e3a;}
+
+/* =========================================================================
+   08 — IN-PLACE OVERLAY
+   The card height is fixed and the paragraph arrives as a layer inside the
+   lower card rather than pushing it open. The symbol moves to the top right
+   of the body so the layer never covers its own control.
+   ========================================================================= */
+html[data-vm="08"] #funds .fund-body{position:relative;
+  padding-bottom:calc(36px + var(--vmH,120px) + 36px) !important;}
+/* the layer keeps the paragraph's own measure — it is inset vertically only,
+   so the copy wraps exactly as it does everywhere else and the reserved
+   height is right to the pixel */
+html[data-vm="08"] #funds .vm-slot{position:absolute;left:32px;right:32px;bottom:36px;
+  height:var(--vmH,120px);max-height:none !important;padding:17px 0 0;
+  background:rgba(10,10,10,0.05);border-top:1px solid rgba(138,110,58,0.4);
+  box-sizing:content-box;
+  box-shadow:-14px 0 0 rgba(10,10,10,0.05), 14px 0 0 rgba(10,10,10,0.05);
+  opacity:0;transform:translateY(6px);
+  transition:opacity .42s ease,transform .42s cubic-bezier(.22,.61,.36,1);}
+html[data-vm="08"] #funds .fund-card.vm-open .vm-slot{opacity:1;transform:none;}
+html[data-vm="08"] #funds .fund-toggle{position:absolute;top:36px;right:32px;margin:0;}
+html[data-vm="08"] #funds .fund-toggle-btn:hover{color:#8a6e3a;}
+@media (max-width:900px){
+  html[data-vm="08"] #funds .fund-body{padding-bottom:calc(28px + var(--vmH,120px) + 36px) !important;}
+  html[data-vm="08"] #funds .vm-slot{left:24px;right:24px;bottom:28px;}
+  html[data-vm="08"] #funds .fund-toggle{top:24px;right:24px;}
+}
+
+/* =========================================================================
+   09 — PARTIAL PREVIEW
+   One line of the paragraph is left showing, faded out at its own baseline,
+   so the card admits there is more without spending the space. The symbol
+   opens the rest.
+   ========================================================================= */
+html[data-vm="09"] #funds .vm-slot{max-height:30px !important;opacity:1 !important;
+  -webkit-mask-image:linear-gradient(to bottom,#000 25%,rgba(0,0,0,0.15) 100%);
+  mask-image:linear-gradient(to bottom,#000 25%,rgba(0,0,0,0.15) 100%);
+  transition:max-height .55s cubic-bezier(.22,.61,.36,1) !important;}
+html[data-vm="09"] #funds .fund-card.vm-open .vm-slot{max-height:var(--vmH,120px) !important;
+  -webkit-mask-image:linear-gradient(to bottom,#000 100%,#000 100%);
+  mask-image:linear-gradient(to bottom,#000 100%,#000 100%);}
+html[data-vm="09"] #funds .fund-toggle-btn:hover{color:#8a6e3a;}
+
+/* =========================================================================
+   10 — THE RULE  (independent direction)
+   The control is the hairline the site already uses everywhere — under the
+   SWITCH acquisition paragraph, under the territories, through the team
+   page. Here it runs under the headline with the engineering symbol sitting
+   on its right end. Click the line and the paragraph wipes down into space
+   that was already reserved, so the card height never moves. The line dims
+   as the copy arrives, the symbol turns 45 degrees and goes gold.
+   No chevron, no plus, no box — the section's own drawn line does the work.
+   ========================================================================= */
+html[data-vm="10"] #funds .vm-rule{display:flex;}
+html[data-vm="10"] #funds .fund-body h3{margin-bottom:4px !important;}
+html[data-vm="10"] #funds .fund-toggle{display:none;}
+html[data-vm="10"] #funds .vm-slot{max-height:none !important;height:var(--vmH,120px);
+  opacity:1 !important;padding-top:12px;}
+html[data-vm="10"] #funds .vm-copy{
+  clip-path:inset(0 0 100% 0);opacity:0;
+  transition:clip-path .6s cubic-bezier(.22,.61,.36,1),opacity .45s ease;}
+html[data-vm="10"] #funds .fund-card.vm-open .vm-copy{clip-path:inset(0 0 0 0);opacity:1;}
+html[data-vm="10"] #funds .fund-card.vm-open .vm-rule i{background:rgba(10,10,10,0.07);}
+html[data-vm="10"] #funds .fund-card.vm-open .vm-rule .vm-rs{color:#8a6e3a;transform:rotate(45deg);}
+html[data-vm="10"] #funds .vm-rule:hover i{background:rgba(138,110,58,0.45);}
+html[data-vm="10"] #funds .vm-rule:hover .vm-rs{color:#8a6e3a;}
+/* same reasoning as 04 — one column, nothing to hold level, so the line
+   simply opens the card instead of holding empty space under it */
+@media (max-width:640px){
+  html[data-vm="10"] #funds .vm-slot{height:auto !important;max-height:0 !important;padding-top:0;}
+  html[data-vm="10"] #funds .fund-card.vm-open .vm-slot{
+    max-height:calc(var(--vmH,120px) + 16px) !important;padding-top:14px;}
+  html[data-vm="10"] #funds .vm-copy{clip-path:none;opacity:0;
+    transition:opacity .42s ease .1s;}
+  html[data-vm="10"] #funds .fund-card.vm-open .vm-copy{opacity:1;}
+}
+</style>
+<style id="vm-lab-bar-css">
+#vmbar{position:fixed;left:0;right:0;bottom:0;z-index:99999;
+  background:rgba(10,10,10,0.94);border-top:1px solid rgba(200,169,110,0.28);
+  padding:10px 20px 11px;font-family:'DM Sans',sans-serif;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);}
+#vmbar .vmb-name{display:flex;align-items:baseline;justify-content:center;gap:12px;
+  margin-bottom:6px;text-align:center;}
+#vmbar .vmb-num{font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.22em;
+  color:#c8a96e;}
+#vmbar .vmb-title{font-family:'Bebas Neue',sans-serif;font-size:0.95rem;letter-spacing:0.24em;
+  color:rgba(255,255,255,0.9);text-transform:uppercase;}
+#vmbar .vmb-note{font-size:0.66rem;line-height:1.45;color:rgba(255,255,255,0.42);
+  max-width:820px;margin:0 auto 8px;text-align:center;font-weight:300;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#vmbar .vmb-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;}
+#vmbar .vmb-box{width:34px;height:28px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.18);background:transparent;color:rgba(255,255,255,0.55);
+  font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.08em;cursor:pointer;
+  transition:background .18s ease,color .18s ease,border-color .18s ease;padding:0;}
+#vmbar .vmb-box:hover{border-color:rgba(200,169,110,0.6);color:#fff;}
+#vmbar .vmb-box.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a;}
+#vmbar .vmb-hint{text-align:center;font-size:0.62rem;letter-spacing:0.12em;
+  color:rgba(255,255,255,0.28);margin-top:7px;text-transform:uppercase;}
+body{padding-bottom:0;}
+@media(max-width:640px){
+  #vmbar{padding:10px 12px 12px;}
+  #vmbar .vmb-note{display:none;}
+  #vmbar .vmb-box{width:30px;height:28px;font-size:0.72rem;}
+}
+</style>
+<script id="vm-lab-js">
+(function(){
+'use strict';
+
+var VARS = [
+ ['00','CURRENT BASE','The approved section exactly as it is today. All paragraph copy visible, the deeper note behind a card click.'],
+ ['01','SYMBOL REVEAL','The symbol leaves the bottom of the card and sits at the right of the headline. It is the only control; the paragraph opens beneath the title.'],
+ ['02','WHOLE CARD REVEAL','The whole lower card is the control. The symbol stops being a button and becomes a state indicator: dim shut, gold and widened open.'],
+ ['03','HOVER / TAP DISCLOSURE','Desktop opens on hover and settles shut when the pointer leaves. Touch and anything under 901 is a tap.'],
+ ['04','SLIDE-UP COPY','The space is always reserved so the card never changes height. The copy is parked below its slot and rises into place.'],
+ ['05','FADE / EXPAND','The card grows and the paragraph fades up a beat behind the height, so the two movements do not fight.'],
+ ['06','SYMBOL MORPH','The symbol turns 45 degrees and its mark swaps to its counterpart. The site already does this with the China icons.'],
+ ['07','ONE OPEN AT A TIME','One card is always open, so the row height is set once and never jumps. The two shut cards step back: dimmer tag, dimmer symbol, darker image.'],
+ ['08','IN-PLACE OVERLAY','Fixed card height. The paragraph arrives as a layer inside the lower card instead of pushing it open; the symbol moves to the top right.'],
+ ['09','PARTIAL PREVIEW','One line is left showing, faded out at its own baseline, so the card admits there is more without spending the space.'],
+ ['10','THE RULE  ·  independent direction','The control is the hairline the site already uses everywhere. It runs under the headline with the symbol on its right end; click it and the copy wipes down into space already reserved. No chevron, no plus, no box.']
+];
+
+var MORPH = {'∴':'∵','⊕':'⊗','↗':'↘'};
+
+var cards = [];
+
+/* ---------------------------------------------------------------- prepare */
+function prepare(){
+  var funds = document.getElementById('funds');
+  if(!funds) return false;
+  var list = funds.querySelectorAll('.fund-card');
+  if(!list.length) return false;
+
+  cards = [];
+  Array.prototype.forEach.call(list, function(old){
+    /* cloning strips the page's own click listeners without touching its code */
+    var c = old.cloneNode(true);
+    old.parentNode.replaceChild(c, old);
+    c.style.opacity = '1';
+    c.style.transform = 'none';
+
+    var body = c.querySelector('.fund-body');
+    var h3   = c.querySelector('h3');
+    var btn  = c.querySelector('.fund-toggle-btn');
+    var copy = body.querySelector(':scope > p:not(.fund-tag)');
+    var exp  = c.querySelector('.fund-expand');
+
+    if(btn){ btn.removeAttribute('onclick'); btn.setAttribute('data-glyph', btn.textContent.trim()); }
+
+    /* one shared structure that every direction can use */
+    var slot = document.createElement('div');
+    slot.className = 'vm-slot';
+    if(copy){
+      copy.classList.add('vm-copy');
+      copy.parentNode.insertBefore(slot, copy);
+      slot.appendChild(copy);
+      if(exp) slot.appendChild(exp);
+    }
+
+    /* the glyph repeated inline on the headline (01) */
+    if(h3 && btn){
+      var hs = document.createElement('span');
+      hs.className = 'vm-hs';
+      hs.textContent = btn.getAttribute('data-glyph');
+      h3.appendChild(hs);
+    }
+
+    /* the hairline with the glyph on its end (10) */
+    if(h3 && btn){
+      var rule = document.createElement('div');
+      rule.className = 'vm-rule';
+      rule.innerHTML = '<i></i>';
+      var rs = document.createElement('span');
+      rs.className = 'vm-rs';
+      rs.textContent = btn.getAttribute('data-glyph');
+      rule.appendChild(rs);
+      h3.parentNode.insertBefore(rule, h3.nextSibling);
+    }
+
+    cards.push(c);
+  });
+  return true;
+}
+
+/* ------------------------------------------------------------- measure */
+function measure(){
+  var funds = document.getElementById('funds');
+  if(!funds || !cards.length) return;
+  var tallest = 0;
+  cards.forEach(function(c){
+    var slot = c.querySelector('.vm-slot');
+    var copy = c.querySelector('.vm-copy');
+    if(!slot || !copy) return;
+    var keep = slot.getAttribute('style') || '';
+    slot.setAttribute('style','max-height:none !important;height:auto !important;'+
+      'opacity:1 !important;position:static !important;overflow:visible !important;'+
+      'transform:none !important;transition:none !important;padding:0 !important;'+
+      'background:none !important;border:0 !important;-webkit-mask-image:none !important;'+
+      'mask-image:none !important;');
+    var ck = copy.getAttribute('style') || '';
+    copy.setAttribute('style','transform:none !important;opacity:1 !important;'+
+      'clip-path:none !important;transition:none !important;');
+    tallest = Math.max(tallest, copy.getBoundingClientRect().height);
+    if(keep) slot.setAttribute('style', keep); else slot.removeAttribute('style');
+    if(ck) copy.setAttribute('style', ck); else copy.removeAttribute('style');
+  });
+  if(tallest > 0) funds.style.setProperty('--vmH', Math.ceil(tallest) + 'px');
+}
+
+/* -------------------------------------------------------------- open/shut */
+function setOpen(card, on, solo){
+  if(solo){
+    cards.forEach(function(c){ if(c !== card) paint(c, false); });
+  }
+  paint(card, on);
+}
+function paint(card, on){
+  card.classList.toggle('vm-open', !!on);
+  var btn = card.querySelector('.fund-toggle-btn');
+  if(btn){
+    var g = btn.getAttribute('data-glyph');
+    var v = document.documentElement.getAttribute('data-vm');
+    btn.textContent = (v === '06' && on && MORPH[g]) ? MORPH[g] : g;
+  }
+}
+
+/* ------------------------------------------------------------ bind a mode */
+var bound = [];
+function unbind(){
+  bound.forEach(function(b){ b[0].removeEventListener(b[1], b[2]); });
+  bound = [];
+}
+function on(el, ev, fn){ el.addEventListener(ev, fn); bound.push([el, ev, fn]); }
+
+function bind(v){
+  unbind();
+  cards.forEach(function(c){ paint(c, false); });
+  if(v === '00') return;
+
+  var body, btn, rule, hs;
+  var desktopHover = window.matchMedia('(min-width:901px)').matches &&
+                     !window.matchMedia('(pointer:coarse)').matches;
+
+  cards.forEach(function(c){
+    body = c.querySelector('.fund-body');
+    btn  = c.querySelector('.fund-toggle-btn');
+    rule = c.querySelector('.vm-rule');
+    hs   = c.querySelector('.vm-hs');
+
+    var toggle = function(e){
+      if(e) e.stopPropagation();
+      if(v === '07'){ setOpen(c, true, true); return; }   /* one is always open */
+      setOpen(c, !c.classList.contains('vm-open'), false);
+    };
+
+    if(v === '01'){ if(hs) on(hs, 'click', toggle); }
+    else if(v === '02'){ on(body, 'click', toggle); }
+    else if(v === '03'){
+      if(desktopHover){
+        on(c, 'mouseenter', function(){ setOpen(c, true, false); });
+        on(c, 'mouseleave', function(){ setOpen(c, false, false); });
+      } else {
+        on(body, 'click', toggle);
+      }
+    }
+    else if(v === '04'){ if(btn) on(btn, 'click', toggle); }
+    else if(v === '05'){ on(body, 'click', toggle); }
+    else if(v === '06'){ if(btn) on(btn, 'click', toggle); }
+    else if(v === '07'){ on(body, 'click', toggle); }
+    else if(v === '08'){ if(btn) on(btn, 'click', toggle); }
+    else if(v === '09'){ if(btn) on(btn, 'click', toggle); }
+    else if(v === '10'){ if(rule) on(rule, 'click', toggle); }
+  });
+
+  /* 07 always keeps one card open, so the row height is set once */
+  if(v === '07' && cards.length) paint(cards[0], true);
+}
+
+/* -------------------------------------------------------------- the bar */
+var cur = 0;
+function apply(i, scroll){
+  cur = Math.max(0, Math.min(VARS.length - 1, i));
+  var v = VARS[cur][0];
+  document.documentElement.setAttribute('data-vm', v);
+  measure();
+  bind(v);
+  var bar = document.getElementById('vmbar');
+  if(bar){
+    bar.querySelector('.vmb-num').textContent = v;
+    bar.querySelector('.vmb-title').textContent = VARS[cur][1];
+    bar.querySelector('.vmb-note').textContent = VARS[cur][2];
+    Array.prototype.forEach.call(bar.querySelectorAll('.vmb-box'), function(b, n){
+      b.classList.toggle('on', n === cur);
+    });
+  }
+  try { history.replaceState(null, '', '#v=' + v); } catch(e){}
+  if(scroll){
+    var f = document.getElementById('funds');
+    if(f) window.scrollTo({ top: f.getBoundingClientRect().top + window.pageYOffset - 90, behavior:'auto' });
+  }
+}
+
+function buildBar(){
+  var bar = document.createElement('div');
+  bar.id = 'vmbar';
+  var html = '<div class="vmb-name"><span class="vmb-num">00</span>'+
+             '<span class="vmb-title"></span></div>'+
+             '<p class="vmb-note"></p><div class="vmb-row">';
+  VARS.forEach(function(x){ html += '<button class="vmb-box">' + x[0] + '</button>'; });
+  html += '</div><div class="vmb-hint">click a box &nbsp;·&nbsp; arrow keys step &nbsp;·&nbsp; 00 is the current site</div>';
+  bar.innerHTML = html;
+  document.body.appendChild(bar);
+  Array.prototype.forEach.call(bar.querySelectorAll('.vmb-box'), function(b, n){
+    b.addEventListener('click', function(){ apply(n, true); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){ apply(cur + 1, false); e.preventDefault(); }
+    if(e.key === 'ArrowLeft'  || e.key === 'ArrowUp'){   apply(cur - 1, false); e.preventDefault(); }
+  });
+  /* keep the bar clear of the page's own footer overlap */
+  var pad = bar.getBoundingClientRect().height;
+  document.body.style.paddingBottom = Math.ceil(pad) + 'px';
+}
+
+var rz = null;
+function start(){
+  if(!prepare()) { setTimeout(start, 400); return; }
+  buildBar();
+  var m = /[#&]v=(\d\d)/.exec(location.hash || '');
+  var want = 0;
+  if(m){ VARS.forEach(function(x, n){ if(x[0] === m[1]) want = n; }); }
+  apply(want, !!m);
+  window.addEventListener('resize', function(){
+    clearTimeout(rz);
+    rz = setTimeout(function(){
+      measure();
+      var pad = document.getElementById('vmbar');
+      if(pad) document.body.style.paddingBottom = Math.ceil(pad.getBoundingClientRect().height) + 'px';
+      bind(VARS[cur][0]);
+    }, 180);
+  });
+}
+
+if(document.readyState === 'complete') setTimeout(start, 600);
+else window.addEventListener('load', function(){ setTimeout(start, 600); });
+
+})();
+</script>
+
 </body>
 </html>
