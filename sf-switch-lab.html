@@ -28278,6 +28278,46 @@ html[data-swx="63"] #fv-stage .crow .sff-rule{display:none !important;}
 
 
 /* =========================================================================
+   64 — 63 with three corrections
+
+   1 · the mark is less faded: .16 -> .26
+   2 · and a little smaller: 84 -> 72px
+   3 · MOBILE ALIGNMENT. 63 centred each icon+label pair inside its own cell.
+       On one desktop row that reads evenly, but once the row wraps to two by
+       two the labels are different lengths, so every pair centred itself at a
+       different offset — the icons looked aligned and the words did not.
+       Below 900 the cell becomes a FIXED icon column plus a flexible label
+       column, left aligned, so every icon starts on one line and every label
+       starts on another.
+   ========================================================================= */
+html[data-swx="64"]{--g1:#c9c4bb;--cEy:#0a7f99;--cHd:rgba(10,10,10,.9);--cCat:rgba(10,10,10,.86);--cSub:rgba(10,127,153,.7);--cRule:rgba(10,127,153,.6);--ico:#0a7f99;--hl:rgba(10,127,153,.6);--cad:.18;}
+html[data-swx="64"] #fv-stage .crow{padding-left:var(--hlIn) !important;padding-right:var(--hlIn) !important;}
+html[data-swx="64"] #fv-stage .crow .tc{display:grid !important;grid-template-columns:auto auto;grid-template-areas:"i n" "i s";column-gap:12px;align-items:center;justify-content:center;}
+html[data-swx="64"] #fv-stage .crow .ci{grid-area:i;width:72px !important;height:72px !important;opacity:.26;}
+html[data-swx="64"] #fv-stage .crow .cn{grid-area:n;}
+html[data-swx="64"] #fv-stage .crow .cd{grid-area:s;}
+html[data-swx="64"] #fv-stage .crow .sff-rule{display:none !important;}
+@media(max-width:900px){
+  html[data-swx="64"] #fv-stage .crow .tc{grid-template-columns:56px minmax(0,1fr) !important;justify-content:start !important;justify-items:start;column-gap:14px;row-gap:2px;}
+  html[data-swx="64"] #fv-stage .crow .ci{width:56px !important;height:56px !important;}
+  html[data-swx="64"] #fv-stage .crow .cn,html[data-swx="64"] #fv-stage .crow .cd{width:100%;text-align:left;}
+}
+@media(max-width:640px){
+  html[data-swx="64"] #fv-stage .crow .tc{grid-template-columns:44px minmax(0,1fr) !important;column-gap:12px;}
+  html[data-swx="64"] #fv-stage .crow .ci{width:44px !important;height:44px !important;}
+}
+/* on a phone the two-up row leaves about 115px for the label, which breaks
+   MOBILITY · TERRAIN and AUDIO · CONNECTION over two lines and makes the two
+   rows different heights. Below 480 the four groups stack instead, so every
+   sub-line keeps to one line and all four icons sit on one edge. */
+@media(max-width:480px){
+  html[data-swx="64"] #fv-stage .crow{grid-template-columns:minmax(0,1fr) !important;row-gap:22px;}
+  html[data-swx="64"] #fv-stage .crow .tc{grid-template-columns:48px minmax(0,1fr) !important;column-gap:14px;}
+  html[data-swx="64"] #fv-stage .crow .ci{width:48px !important;height:48px !important;}
+}
+
+
+/* =========================================================================
    MOBILE VIABILITY
    Desktop first, but every direction has to hold on a phone. The panel edge
    at 390 is the viewport itself, so the inset directions drop their padding
@@ -28398,12 +28438,13 @@ var V=[
  ['60','DEEP INDIGO — the whole cell centres on its own axis — icon, rule, name and sub all on one centre line'],
  ['61','WARM GREY — the icon set inside a ruled box, the name and sub beside it — a plate rather than a label'],
  ['62','OXBLOOD — a two-column unit — icon holding the left, name, sub and rule stacked to the right of it'],
- ['63','WARM GREY GROUPS — 61’s ground with 55’s icon scale and opacity, the mark set beside the label rather than behind it, and the row rebuilt as four evenly distributed groups held inside the hairline’s own width']
+ ['63','WARM GREY GROUPS — 61’s ground with 55’s icon scale and opacity, the mark set beside the label rather than behind it, and the row rebuilt as four evenly distributed groups held inside the hairline’s own width'],
+ ['64','WARM GREY GROUPS, TUNED — 63 with the mark less faded (.26) and a little smaller (72px), and the mobile row rebuilt on a fixed icon column so the icons AND the words line up once it wraps']
 ];
 /* the directions that need a full-bleed ground and/or light type */
 var BLEED={'20':1}, DARK={'11':1,'17':1,'20':1};
 /* 23-62 are variations on 22 and share its geometry through .swx-v2 */
-function isV2(v){ var n=parseInt(v,10); return n>=23 && n<=63; }
+function isV2(v){ var n=parseInt(v,10); return n>=23 && n<=64; }
 var cur=0, UI=null, TAB=null, on=true;
 
 function apply(i,push){
