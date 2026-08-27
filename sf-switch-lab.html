@@ -27657,23 +27657,203 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
 
 <style id="sf-swx-css">
 /* =========================================================================
-   SWITCH PORTFOLIO INTEGRATION LAB — 00 BASE + 01…10
+   SWITCH PORTFOLIO INTEGRATION — ROUND TWO.  00 BASE + 11…20
 
-   The page below is the real homepage, unmodified. Every variation is CSS
-   only, scoped to html[data-swx="NN"], so the slider, the images, the
-   captions, the continuous scroll and the SWITCH design language are the
-   production ones rather than a rebuild of them.
+   TWO CORRECTIONS FROM ROUND ONE, applied to every direction:
 
-   The geometry the variations act on, measured off the rendered page at 1440:
-     .din        the page frame — 1344 wide, 48px inside the 1440 shell
-     .fcats      eyebrow + headline (.bhead) + four territories (.crow)
-     .sfc-cad    the bike drawing, absolute, 1440x324, top:-69 left:-48
-     .fstrip     THE PORTFOLIO — margin-left:-48; width:1440; margin-top:36
-                 i.e. it breaks out of the frame everything above obeys.
-                 That break-out is the detachment.
-     .fstack > .fwrap > .ftrack.r1   the continuous track (18142px)
-     .sf-pfcue   the "Scroll →" cue
+   1 · WIDTH FLOOR. Measured: the black FROM ACQUIRED ASSET / TO NEW VENTURE
+       panel is .split, and its box is exactly .din —
+         1440  48 → 1392   (1344 wide)
+         1920 160 → 1760   (1600)
+         2560 480 → 2080   (1600)
+          768  24 →  744   (720)
+          390   0 →  390   (390)
+       Round one framed the carousel to the TEXT edge (104 at 1440), which is
+       narrower than that panel. Every direction here puts the carousel on the
+       panel edge or wider — never inside it.
+
+   2 · ONE SECTION. The eyebrow, the headline, the four territories and the
+       carousel have to share a ground. Each direction gives all four the same
+       field and closes the gap between them, so nothing sits on its own.
+
+   The slider, the images, the captions and the continuous scroll are the
+   production ones — this page is the homepage with a CSS layer on top.
    ========================================================================= */
+
+/* ---- shared: the carousel never sits inside the black panel's edge ------ */
+html[data-swx] #fv-stage .fstrip{margin-left:0 !important;width:100% !important;}
+
+/* ---- shared: a full-bleed ground that still holds its content on the black
+        panel's edges. The box widens to the viewport and pads back in by the
+        same amount, so the ground bleeds and the content does not move.
+        (A z-index:-1 pseudo-element was tried first and painted BEHIND the
+        section's own ground, so the type ended up on cream.) ------------- */
+html[data-swx] #fv-stage .fcats,
+html[data-swx] #fv-stage .fstrip{position:relative;}
+html[data-swx].swx-bleed #fv-stage .fcats,
+html[data-swx].swx-bleed #fv-stage .fstrip{
+  margin-left:calc(50% - 50vw) !important;width:100vw !important;
+  padding-left:calc(50vw - 50%) !important;padding-right:calc(50vw - 50%) !important;
+  box-sizing:border-box !important;background:var(--swxG,transparent);}
+
+/* ---- shared: light type, for every direction that goes dark ------------- */
+html[data-swx].swx-dark #fv-stage .fcats-h{color:rgba(244,241,236,.94) !important;}
+html[data-swx].swx-dark #fv-stage .bey{color:rgba(200,169,110,.95) !important;}
+html[data-swx].swx-dark #fv-stage .crow .cn{color:rgba(244,241,236,.92) !important;}
+html[data-swx].swx-dark #fv-stage .crow .cd{color:rgba(244,241,236,.5) !important;}
+html[data-swx].swx-dark #fv-stage .crow .sff-rule{background:rgba(200,169,110,.55) !important;}
+html[data-swx].swx-dark #fv-stage .sf-pfcue{color:rgba(244,241,236,.45) !important;}
+html[data-swx].swx-dark #fv-stage .sfc-cad{opacity:.20 !important;filter:invert(1) !important;}
+
+/* =========================================================================
+   11 — BLACK CHAPTER
+   The territory block and the carousel take the panel's own near-black, so
+   the black chapter simply carries on rather than stopping and restarting.
+   ========================================================================= */
+html[data-swx="11"] #fv-stage .fcats{--swxG:#0d1013;background:#0d1013;
+  padding:56px 0 40px !important;margin-top:0 !important;}
+html[data-swx="11"] #fv-stage .fstrip{--swxG:#0d1013;background:#0d1013;
+  margin-top:0 !important;padding:0 0 44px !important;}
+
+/* =========================================================================
+   12 — CLAY FIELD
+   One clay field holds all four parts, edge to edge of the black panel,
+   with generous air. The group becomes a single object on its own ground.
+   ========================================================================= */
+html[data-swx="12"] #fv-stage .fcats{background:#e4ded3;
+  padding:54px 56px 34px !important;box-sizing:border-box !important;}
+html[data-swx="12"] #fv-stage .fstrip{background:#e4ded3;
+  margin-top:0 !important;padding:0 56px 46px !important;
+  box-sizing:border-box !important;}
+html[data-swx="12"] #fv-stage .sfc-cad{opacity:.35 !important;}
+
+/* =========================================================================
+   13 — RULED PLATE
+   Cream, but the whole group is closed top and bottom by a gold hairline at
+   the panel edge, with the territories sitting on their own rule inside it.
+   ========================================================================= */
+html[data-swx="13"] #fv-stage .fcats{
+  border-top:1px solid rgba(200,169,110,.85);padding:44px 0 0 !important;}
+html[data-swx="13"] #fv-stage .crow{
+  margin-top:34px;padding-top:26px;border-top:1px solid rgba(10,10,10,.14);}
+html[data-swx="13"] #fv-stage .fstrip{margin-top:34px !important;
+  padding-bottom:38px !important;border-bottom:1px solid rgba(200,169,110,.85);}
+
+/* =========================================================================
+   14 — TERRITORIES ON THE PRODUCTS
+   The four labels leave the cream and sit on the carousel itself, over a
+   dark scrim across its top edge. The labels index the products directly.
+   ========================================================================= */
+html[data-swx="14"] #fv-stage .fcats{padding-bottom:0 !important;}
+html[data-swx="14"] #fv-stage .crow{
+  position:relative;z-index:5;margin:26px 0 0;padding:22px 56px 20px;
+  background:linear-gradient(180deg,rgba(10,10,10,.92),rgba(10,10,10,.62));
+  box-sizing:border-box;}
+html[data-swx="14"] #fv-stage .crow .cn{color:rgba(244,241,236,.94) !important;}
+html[data-swx="14"] #fv-stage .crow .cd{color:rgba(244,241,236,.55) !important;}
+html[data-swx="14"] #fv-stage .crow .ci{display:none !important;}
+html[data-swx="14"] #fv-stage .crow .sff-rule{display:none !important;}
+html[data-swx="14"] #fv-stage .fstrip{margin-top:0 !important;}
+
+/* =========================================================================
+   15 — SPLIT GROUND
+   Cream above, ink below, and the boundary runs behind the territory row so
+   the row straddles both halves and stitches them together.
+   ========================================================================= */
+html[data-swx="15"] #fv-stage .fcats{
+  background:linear-gradient(180deg,#f6f2ea 0%,#f6f2ea 58%,#12151a 58%,#12151a 100%);
+  padding:48px 0 30px !important;}
+html[data-swx="15"] #fv-stage .crow .cn{color:rgba(244,241,236,.9) !important;}
+html[data-swx="15"] #fv-stage .crow .cd{color:rgba(244,241,236,.5) !important;}
+html[data-swx="15"] #fv-stage .fstrip{background:#12151a;margin-top:0 !important;
+  padding-bottom:42px !important;}
+html[data-swx="15"] #fv-stage .sf-pfcue{color:rgba(244,241,236,.45) !important;}
+
+/* =========================================================================
+   16 — DRAWING FIELD
+   The technical drawing becomes the ground for the whole group — behind the
+   headline, behind the territories and behind the carousel.
+   ========================================================================= */
+html[data-swx="16"] #fv-stage .fcats{overflow:visible !important;
+  padding:44px 0 26px !important;}
+html[data-swx="16"] #fv-stage .sfc-cad{height:900px !important;opacity:.55 !important;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 74%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,#000 74%,transparent 100%);}
+html[data-swx="16"] #fv-stage .fstrip{margin-top:0 !important;
+  padding:14px 0 44px !important;}
+html[data-swx="16"] #fv-stage .lb{overflow:visible !important;}
+
+/* =========================================================================
+   17 — NAVY CHAPTER
+   The group takes Foundry navy and becomes its own chapter, with the gold
+   eyebrow and cream type the dark chapters use elsewhere on the site.
+   ========================================================================= */
+html[data-swx="17"] #fv-stage .fcats{background:#1e2a4a;
+  padding:56px 56px 34px !important;box-sizing:border-box !important;}
+html[data-swx="17"] #fv-stage .fstrip{background:#1e2a4a;margin-top:0 !important;
+  padding:0 56px 46px !important;box-sizing:border-box !important;}
+
+/* =========================================================================
+   18 — STACKED PLATES
+   Three plates at the panel's width — headline, territories, carousel —
+   separated by hairline seams and stepped in tone, one built object.
+   ========================================================================= */
+html[data-swx="18"] #fv-stage .fcats{background:#f6f2ea;padding:46px 56px 0 !important;
+  box-sizing:border-box !important;}
+html[data-swx="18"] #fv-stage .crow{background:#efeae0;margin:32px -56px 0;
+  padding:28px 56px 26px;border-top:1px solid rgba(10,10,10,.12);
+  border-bottom:1px solid rgba(10,10,10,.12);}
+html[data-swx="18"] #fv-stage .fstrip{background:#e8e2d9;margin-top:0 !important;
+  padding:34px 56px 40px !important;box-sizing:border-box !important;}
+
+/* =========================================================================
+   19 — LEFT SPINE
+   One gold spine runs down the panel's left edge through all four parts and
+   physically connects them; everything is indented off the same spine.
+   ========================================================================= */
+html[data-swx="19"] #fv-stage .fcats{
+  border-left:2px solid rgba(200,169,110,.85);padding:44px 0 26px 54px !important;
+  box-sizing:border-box !important;}
+html[data-swx="19"] #fv-stage .fcats .bhead,
+html[data-swx="19"] #fv-stage .fcats .crow{padding-left:0 !important;}
+html[data-swx="19"] #fv-stage .fcats .bhead{margin-left:-56px;}
+html[data-swx="19"] #fv-stage .fstrip{
+  border-left:2px solid rgba(200,169,110,.85);margin-top:0 !important;
+  padding:16px 0 44px 54px !important;box-sizing:border-box !important;}
+
+/* =========================================================================
+   20 — ONE CHAPTER  (independent direction)
+   Everything goes onto one continuous ink ground that bleeds the full
+   viewport, with the content held on the black panel's own edges inside it.
+   Nothing in the group sits on a different ground from anything else, and
+   the chapter has one hard top edge and one hard bottom edge — the same
+   device the black panel above already uses, given a longer run.
+   ========================================================================= */
+html[data-swx="20"]{--swxG:#0d1013;}
+html[data-swx="20"] #fv-stage .fcats{padding-top:64px !important;padding-bottom:34px !important;}
+html[data-swx="20"] #fv-stage .fstrip{margin-top:0 !important;padding-bottom:60px !important;}
+html[data-swx="20"] #fv-stage .crow{margin-top:36px;}
+
+/* =========================================================================
+   MOBILE VIABILITY
+   Desktop first, but every direction has to hold on a phone. The panel edge
+   at 390 is the viewport itself, so the inset directions drop their padding
+   to the site's own 24px rather than keeping a desktop number.
+   ========================================================================= */
+@media(max-width:768px){
+  html[data-swx="12"] #fv-stage .fcats{padding:34px 24px 22px !important;}
+  html[data-swx="12"] #fv-stage .fstrip{padding:0 0 30px !important;}
+  html[data-swx="14"] #fv-stage .crow{padding:18px 24px 16px;}
+  html[data-swx="17"] #fv-stage .fcats{padding:36px 24px 22px !important;}
+  html[data-swx="17"] #fv-stage .fstrip{padding:0 0 32px !important;}
+  html[data-swx="18"] #fv-stage .fcats{padding:32px 24px 0 !important;}
+  html[data-swx="18"] #fv-stage .crow{margin:24px -24px 0;padding:22px 24px 20px;}
+  html[data-swx="18"] #fv-stage .fstrip{padding:24px 0 30px !important;}
+  html[data-swx="19"] #fv-stage .fcats{padding:32px 0 20px 22px !important;}
+  html[data-swx="19"] #fv-stage .fcats .bhead{margin-left:-24px;}
+  html[data-swx="19"] #fv-stage .fstrip{padding:12px 0 30px 22px !important;}
+  html[data-swx="16"] #fv-stage .sfc-cad{height:620px !important;}
+}
 
 /* ---- the control bar ---------------------------------------------------- */
 #swx-bar{position:fixed;left:0;right:0;bottom:0;z-index:100000;
@@ -27705,229 +27885,58 @@ html[data-sfw43="37"] .sfz-bp canvas{position:absolute;inset:0;display:block;}
   border:1px solid rgba(200,169,110,.45);}
 #swx-tab.on{display:block;}
 @media(max-width:640px){ #swx-bar .txt{display:none;} }
-
-/* =========================================================================
-   01 — FRAMED CONTINUATION
-   The portfolio stops breaking out. It takes the same 1344 frame as the
-   headline and the territories, so the whole area reads as one chapter.
-   ========================================================================= */
-html[data-swx="01"] #fv-stage .fstrip{margin-left:56px !important;
-  width:calc(100% - 112px) !important;}
-html[data-swx="01"] #fv-stage .sf-pfcue{padding-right:0 !important;}
-
-/* =========================================================================
-   02 — EMBEDDED PORTFOLIO
-   The cream NEW TERRITORY field continues down and the slider sits inside
-   it, with the field's own padding around it, rather than starting as its
-   own band against a colour change.
-   ========================================================================= */
-html[data-swx="02"] #fv-stage .fcats{background:#f6f2ea;
-  padding:0 0 0 0;margin-bottom:0 !important;}
-html[data-swx="02"] #fv-stage .fstrip{
-  margin-left:-48px !important;width:1440px !important;
-  background:#f6f2ea;padding:26px 104px 34px !important;
-  box-sizing:border-box !important;margin-top:0 !important;}
-html[data-swx="02"] #fv-stage .fstrip .fwrap{background:transparent;}
-
-/* =========================================================================
-   03 — OVERLAPPING TRANSITION
-   The first product row rises into the territory area and interrupts the
-   drawing. The transition is an overlap rather than a gap.
-   ========================================================================= */
-html[data-swx="03"] #fv-stage .fstrip{margin-top:-104px !important;z-index:3;}
-html[data-swx="03"] #fv-stage .fcats{padding-bottom:120px;}
-html[data-swx="03"] #fv-stage .crow{position:relative;z-index:4;}
-html[data-swx="03"] #fv-stage .fstrip .fstack{
-  box-shadow:0 -18px 40px -22px rgba(10,10,10,.28);}
-
-/* =========================================================================
-   04 — TERRITORY RAIL
-   The four territories are welded to the top edge of the slider and read as
-   the category logic for what is scrolling underneath.
-   ========================================================================= */
-html[data-swx="04"] #fv-stage .crow{
-  margin-top:34px;padding:0 0 16px;border-bottom:1px solid rgba(10,10,10,.22);}
-html[data-swx="04"] #fv-stage .crow .ci,
-html[data-swx="04"] #fv-stage .crow .sff-rule{display:none !important;}
-html[data-swx="04"] #fv-stage .crow .tc{padding-left:0;}
-html[data-swx="04"] #fv-stage .crow .cn{font-size:.92rem !important;letter-spacing:.2em !important;}
-html[data-swx="04"] #fv-stage .fstrip{margin-top:0 !important;}
-html[data-swx="04"] #fv-stage .fcats{padding-bottom:0 !important;}
-
-/* =========================================================================
-   05 — EDITORIAL FRAME
-   Headline, territories and slider share one controlled frame and one
-   alignment, held inside a hairline box.
-   ========================================================================= */
-html[data-swx="05"] #fv-stage .fcats{
-  border:1px solid rgba(10,10,10,.16);border-bottom:0;
-  padding:34px 0 0 !important;margin-left:0;}
-html[data-swx="05"] #fv-stage .fcats .sfc-cad{display:none !important;}
-html[data-swx="05"] #fv-stage .fstrip{
-  margin-left:0 !important;width:100% !important;margin-top:0 !important;
-  border:1px solid rgba(10,10,10,.16);border-top:0;
-  padding:30px 56px 26px !important;box-sizing:border-box !important;}
-html[data-swx="05"] #fv-stage .crow{padding-bottom:6px;}
-
-/* =========================================================================
-   06 — DEEP MARGIN / GALLERY
-   Stronger margins than the page frame around the whole portfolio, on its
-   own quiet ground, so it reads as a curated gallery inside the section.
-   The track keeps its own item size, so the images stay large.
-   ========================================================================= */
-html[data-swx="06"] #fv-stage .fstrip{
-  margin-left:56px !important;width:calc(100% - 112px) !important;
-  margin-top:64px !important;background:#efeae0;
-  padding:44px 44px 40px !important;box-sizing:border-box !important;}
-html[data-swx="06"] #fv-stage .sf-pfcue{margin-top:18px !important;}
-
-/* =========================================================================
-   07 — EDGE BREAK
-   Framed on the left with everything above, and deliberately broken on the
-   right — the imagery runs off one edge instead of both.
-   ========================================================================= */
-html[data-swx="07"] #fv-stage .fstrip{
-  margin-left:56px !important;width:calc(100% + 40px) !important;margin-top:44px !important;}
-html[data-swx="07"] #fv-stage .fcats::after{content:'';position:absolute;
-  left:56px;bottom:-22px;width:64px;height:1px;background:rgba(200,169,110,.8);}
-
-/* =========================================================================
-   08 — DRAWING TO PRODUCT
-   The technical drawing carries on down and dissolves into the portfolio,
-   so the bridge is the drawing itself rather than a gap.
-   ========================================================================= */
-html[data-swx="08"] #fv-stage .fcats{overflow:visible !important;}
-html[data-swx="08"] #fv-stage .fcats .sfc-cad{
-  height:640px !important;
-  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 42%,rgba(0,0,0,.45) 66%,transparent 96%);
-  mask-image:linear-gradient(180deg,#000 0%,#000 42%,rgba(0,0,0,.45) 66%,transparent 96%);}
-html[data-swx="08"] #fv-stage .fstrip{margin-top:-26px !important;z-index:2;}
-html[data-swx="08"] #fv-stage .lb{overflow:visible !important;}
-
-/* =========================================================================
-   09 — TITLE WITHIN SLIDER
-   The headline drops down and sits inside the portfolio composition, over
-   the top-left of the run, so the words and the products are one object.
-   ========================================================================= */
-html[data-swx="09"] #fv-stage .fcats{padding-bottom:0 !important;}
-html[data-swx="09"] #fv-stage .bhead{
-  position:relative;z-index:6;transform:translateY(196px);
-  pointer-events:none;}
-html[data-swx="09"] #fv-stage .bhead .fcats-h{
-  color:rgba(10,10,10,.92) !important;}
-html[data-swx="09"] #fv-stage .crow{margin-top:-58px;}
-html[data-swx="09"] #fv-stage .fstrip{margin-top:78px !important;}
-html[data-swx="09"] #fv-stage .fstrip .fwrap{
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 300px,#000 430px);
-  mask-image:linear-gradient(90deg,transparent 0,transparent 300px,#000 430px);}
-
-/* =========================================================================
-   10 — THE DATUM  (independent direction)
-   The portfolio keeps its full-bleed run — the energy of it is the point —
-   but it is bound to the section by the site's own device: one gold datum
-   line. The rule leaves the headline, runs the full width as the slider's
-   top edge, and the four territories hang off it as marked points. The
-   colour seam goes: the strip takes the same cream ground as the field
-   above, so nothing changes underfoot as the eye moves down.
-   ========================================================================= */
-html[data-swx="10"] #fv-stage .fcats{padding-bottom:0 !important;}
-html[data-swx="10"] #fv-stage .crow{
-  position:relative;margin-top:30px;padding-top:26px;}
-html[data-swx="10"] #fv-stage .crow::before{content:'';position:absolute;
-  left:-48px;width:1440px;top:0;height:1px;background:rgba(200,169,110,.85);}
-html[data-swx="10"] #fv-stage .crow .tc::before{content:'';position:absolute;
-  left:0;top:-26px;width:1px;height:26px;background:rgba(200,169,110,.55);}
-html[data-swx="10"] #fv-stage .crow .ci{display:none !important;}
-html[data-swx="10"] #fv-stage .crow .sff-rule{display:none !important;}
-html[data-swx="10"] #fv-stage .fstrip{
-  margin-top:30px !important;background:#f6f2ea;
-  padding-top:22px !important;padding-bottom:26px !important;}
-html[data-swx="10"] #fv-stage .bhead{padding-bottom:2px;}
-
-/* =========================================================================
-   MOBILE VIABILITY
-   Desktop first, as asked — but every direction has to stay structurally
-   sound on a phone rather than only surviving because a parent clips it.
-   The framed directions step their inset down to the site's own 24px, and
-   02's field stops using the desktop 1440/-48 break-out arithmetic.
-   ========================================================================= */
-@media(max-width:768px){
-  html[data-swx="01"] #fv-stage .fstrip,
-  html[data-swx="06"] #fv-stage .fstrip{
-    margin-left:0 !important;width:100% !important;}
-  html[data-swx="06"] #fv-stage .fstrip{padding:22px 0 20px !important;}
-  html[data-swx="02"] #fv-stage .fstrip{
-    margin-left:0 !important;width:100% !important;
-    padding:20px 0 24px !important;}
-  html[data-swx="05"] #fv-stage .fstrip{padding:22px 0 20px !important;}
-  html[data-swx="07"] #fv-stage .fstrip{
-    margin-left:0 !important;width:calc(100% + 24px) !important;}
-  html[data-swx="03"] #fv-stage .fstrip{margin-top:-52px !important;}
-  html[data-swx="03"] #fv-stage .fcats{padding-bottom:64px;}
-  html[data-swx="09"] #fv-stage .bhead{transform:translateY(150px);}
-  html[data-swx="09"] #fv-stage .fstrip .fwrap{
-    -webkit-mask-image:none;mask-image:none;}
-  html[data-swx="10"] #fv-stage .crow::before{left:0;width:100%;}
-}
 </style>
 
 <script id="sf-swx-js">
 (function(){
-/* =========================================================================
-   The control. Numbered boxes on the bar, one variation full size at a
-   time, arrow keys, and the address bar carries the variation so a link
-   reproduces exactly what is on screen.
-   ========================================================================= */
 var V=[
- ['00','BASE — the approved implementation, untouched. The portfolio breaks out of the 1344 page frame that everything above it obeys; that break-out is what reads as detachment'],
- ['01','FRAMED CONTINUATION — the portfolio stops breaking out and takes the same frame as the headline and the territories. One chapter, minimal intervention'],
- ['02','EMBEDDED PORTFOLIO — the cream field continues down and the slider sits inside it with the field’s own padding, rather than starting as its own band against a colour change'],
- ['03','OVERLAPPING TRANSITION — the first product row rises into the territory area and interrupts the drawing. The transition is an overlap rather than a gap'],
- ['04','TERRITORY RAIL — the four territories are welded to the top edge of the slider and read as the category logic for what is scrolling underneath'],
- ['05','EDITORIAL FRAME — headline, territories and slider share one controlled frame and one alignment, held inside a hairline box'],
- ['06','DEEP MARGIN / GALLERY — stronger margins than the page frame, on its own quiet ground, so the portfolio reads as a curated gallery. The track keeps its item size so the images stay large'],
- ['07','EDGE BREAK — framed on the left with everything above, deliberately broken on the right. The imagery runs off one edge instead of both'],
- ['08','DRAWING TO PRODUCT — the technical drawing carries on down and dissolves into the portfolio, so the bridge is the drawing itself'],
- ['09','TITLE WITHIN SLIDER — the headline drops into the portfolio composition and sits over the top-left of the run, so the words and the products are one object'],
- ['10','THE DATUM — the run stays full-bleed, but one gold datum line leaves the headline, becomes the slider’s top edge and carries the four territories as marked points. The strip takes the field’s own cream, so there is no seam underfoot']
+ ['00','BASE — the original, untouched. The carousel breaks out to the full viewport while everything above sits on the black panel’s edges, and it lands on its own grey ground'],
+ ['11','BLACK CHAPTER — the territories and the carousel take the panel’s own near-black, so the black chapter carries on instead of stopping and restarting'],
+ ['12','CLAY FIELD — one clay field holds all four parts on the panel’s edges with generous air. The group becomes a single object on its own ground'],
+ ['13','RULED PLATE — cream, closed top and bottom by a gold hairline at the panel edge, with the territories on their own rule inside it'],
+ ['14','TERRITORIES ON THE PRODUCTS — the four labels leave the cream and sit on the carousel itself, over a dark scrim across its top edge, indexing the products directly'],
+ ['15','SPLIT GROUND — cream above, ink below, and the boundary runs behind the territory row so the row straddles both halves and stitches them together'],
+ ['16','DRAWING FIELD — the technical drawing becomes the ground for the whole group: behind the headline, behind the territories and behind the carousel'],
+ ['17','NAVY CHAPTER — the group takes Foundry navy and becomes its own chapter, with the gold eyebrow and cream type the dark chapters use elsewhere on the site'],
+ ['18','STACKED PLATES — three plates at the panel’s width, headline, territories and carousel, separated by hairline seams and stepped in tone. One built object'],
+ ['19','LEFT SPINE — one gold spine runs down the panel’s left edge through all four parts and physically connects them'],
+ ['20','ONE CHAPTER — everything on one continuous ink ground bleeding the full viewport, content held on the black panel’s edges inside it. One hard top edge, one hard bottom edge']
 ];
+/* the directions that need a full-bleed ground and/or light type */
+var BLEED={'20':1}, DARK={'11':1,'17':1,'20':1};
 var cur=0, UI=null, TAB=null, on=true;
 
 function apply(i,push){
   cur=Math.max(0,Math.min(V.length-1,i));
-  var v=V[cur][0];
-  if(v==='00') document.documentElement.removeAttribute('data-swx');
-  else document.documentElement.setAttribute('data-swx',v);
+  var v=V[cur][0], d=document.documentElement;
+  if(v==='00') d.removeAttribute('data-swx'); else d.setAttribute('data-swx',v);
+  d.classList.toggle('swx-bleed',!!BLEED[v]);
+  d.classList.toggle('swx-dark',!!DARK[v]);
   paint();
   try{ history[push?'pushState':'replaceState'](null,'','#v='+v); }catch(e){}
 }
 function paint(){
   if(!UI) return;
   [].slice.call(UI.querySelectorAll('.row button[data-i]')).forEach(function(b){
-    b.className=(+b.getAttribute('data-i')===cur?'on':'');
-  });
+    b.className=(+b.getAttribute('data-i')===cur?'on':''); });
   var nm=UI.querySelector('.nm');
   if(nm) nm.innerHTML='<b>'+V[cur][0]+'</b> &nbsp;'+V[cur][1];
 }
 function build(){
   UI=document.createElement('div'); UI.id='swx-bar';
-  var row='';
-  V.forEach(function(v,i){ row+='<button data-i="'+i+'">'+v[0]+'</button>'; });
-  UI.innerHTML='<div class="in"><span class="nm"></span>'+
-    '<div class="row">'+row+'<span class="sp"></span>'+
-    '<span class="txt">← → to step · H to hide</span>'+
+  var row=''; V.forEach(function(v,i){ row+='<button data-i="'+i+'">'+v[0]+'</button>'; });
+  UI.innerHTML='<div class="in"><span class="nm"></span><div class="row">'+row+
+    '<span class="sp"></span><span class="txt">← → to step · H to hide</span>'+
     '<button class="hide">Hide</button></div></div>';
   document.body.appendChild(UI);
   TAB=document.createElement('div'); TAB.id='swx-tab'; TAB.textContent='Show';
   document.body.appendChild(TAB);
   [].slice.call(UI.querySelectorAll('.row button[data-i]')).forEach(function(b){
-    b.addEventListener('click',function(){ apply(+b.getAttribute('data-i'),true); });
-  });
+    b.addEventListener('click',function(){ apply(+b.getAttribute('data-i'),true); }); });
   UI.querySelector('.hide').addEventListener('click',function(){
     on=false; UI.classList.add('off'); TAB.classList.add('on'); });
   TAB.addEventListener('click',function(){
     on=true; UI.classList.remove('off'); TAB.classList.remove('on'); });
-  /* capture phase: the page below has its own key handlers */
   document.addEventListener('keydown',function(e){
     if(e.metaKey||e.ctrlKey||e.altKey) return;
     if(e.key==='ArrowRight'){ apply(cur+1,true); e.stopImmediatePropagation(); e.preventDefault(); }
@@ -27935,23 +27944,21 @@ function build(){
     else if(e.key==='h'||e.key==='H'){
       on=!on; UI.classList.toggle('off',!on); TAB.classList.toggle('on',!on); }
   },true);
-  window.addEventListener('popstate',function(){ fromHash(); });
+  window.addEventListener('popstate',fromHash);
 }
 function fromHash(){
-  var m=/[#&]v=(\d\d)/.exec(location.hash||'');
-  var want=m?m[1]:'00';
+  var m=/[#&]v=(\d\d)/.exec(location.hash||''); var want=m?m[1]:'00';
   for(var i=0;i<V.length;i++) if(V[i][0]===want){ apply(i,false); return; }
   apply(0,false);
 }
 function jump(){
-  /* open on the area under review rather than at the top of the page */
-  var el=document.querySelector('#fv-stage .fcats');
-  if(el) try{ el.scrollIntoView({block:'start'}); window.scrollBy(0,-120); }catch(e){}
+  var el=document.querySelector('#fv-stage .fcats'); if(!el) return;
+  try{ var y=el.getBoundingClientRect().top+window.pageYOffset;
+       window.scrollTo(0,Math.max(0,y-170)); }catch(e){}
 }
 function go(){
   if(!document.querySelector('#fv-stage .fstrip')) return false;
-  build(); fromHash();
-  setTimeout(jump,400);
+  build(); fromHash(); setTimeout(jump,400); setTimeout(jump,1200);
   return true;
 }
 var t=0;
