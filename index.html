@@ -27901,7 +27901,12 @@ var SETS={"l19":["M548.7 1088.8 C544.7 1089.1 540.8 1089.2 536.8 1089.3 C532.8 1
 var ORDER=['l19','l14','l0','l3','l1','l2','l4','l9','l8','l6','l10'];
 var BW={l10:0.9,l6:1.3,l4:1.8};                    /* the rest run at 2.4px */
 var OPF={l10:.52,l6:.70,l4:.88};                   /* and these sit back */
-var BASE=.30, UP=920, DOWN=1550, STEP=700;   /* slowed ~34% on 28 Aug */
+var BASE=.30, PEAK=.92, UP=1250, DOWN=2100, STEP=900;
+/* Slowed twice. The easing below is symmetric — the earlier curve
+   (.33,.05,.2,1) held back then rushed, which is what read as a snap. With
+   UP+DOWN (3350ms) far longer than STEP (900ms) the layers overlap three
+   deep, so the emphasis flows through them instead of blinking one at a
+   time. PEAK .92 rather than 1 takes the hard top off each rise. */
 var ALT=['l19','l18'];                             /* box 21, then box 20 */
 var ALTCOL=['#d8b87a','rgba(255,255,255,.92)'];
 
@@ -27910,13 +27915,13 @@ function at(ms,fn){ var t=tok; timers.push(setTimeout(function(){ if(t===tok) fn
 function G(k){ return document.querySelector('#sf-dnaT g[data-k="'+k+'"]'); }
 function setG(k,o,ms){
   var g=G(k); if(!g) return;
-  g.style.transition= ms===0 ? 'none' : 'opacity '+ms+'ms cubic-bezier(.33,.05,.2,1)';
+  g.style.transition= ms===0 ? 'none' : 'opacity '+ms+'ms cubic-bezier(.4,0,.6,1)';
   g.style.opacity= o<=0 ? 0 : (o*(OPF[k]||1)).toFixed(3);
 }
 function paint(k,col,ms){
   var g=G(k); if(!g) return;
   [].forEach.call(g.children,function(p){
-    p.style.transition='stroke '+ms+'ms ease'; p.style.stroke=col; });
+    p.style.transition='stroke '+ms+'ms cubic-bezier(.4,0,.6,1)'; p.style.stroke=col; });
 }
 
 function build(){
@@ -27966,7 +27971,7 @@ function play(){
   tyre(0);
   at(DOWN,function pulse(){
     var k=K[i];
-    setG(k,1,UP);
+    setG(k,PEAK,UP);
     at(UP,function(){ setG(k,BASE,DOWN); });
     i=(i+1)%K.length;
     if(i===0) tyre(++pass);
