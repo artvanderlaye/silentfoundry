@@ -35,7 +35,7 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
 #stage.sk #dna #sk{opacity:.26}
 #dna{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
 #dna path{fill:none;vector-effect:non-scaling-stroke;stroke:var(--line);
-  stroke-width:3.2px;stroke-linecap:round;stroke-linejoin:round;}
+  stroke-width:2.4px;stroke-linecap:round;stroke-linejoin:round;}
 #dna g{opacity:0;transition:opacity .7s ease;}
 #dna g.on{opacity:.92;}
 #dna g.on{opacity:.92}
@@ -44,9 +44,9 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
    the angle lines are full-frame and shout at 3.2px; the rubber isolation is
    small and clogs. These run light — in the static boxes and in every
    presentation, which reads the same numbers back out of JS. */
-#dna g[data-k="l10"] path{stroke-width:1px}
-#dna g[data-k="l6"]  path{stroke-width:1.5px}
-#dna g[data-k="l4"]  path{stroke-width:2.2px}
+#dna g[data-k="l10"] path{stroke-width:0.9px}
+#dna g[data-k="l6"]  path{stroke-width:1.3px}
+#dna g[data-k="l4"]  path{stroke-width:1.8px}
 #dna g[data-k="l10"].on{opacity:.48}
 #dna g[data-k="l6"].on{opacity:.64}
 #dna g[data-k="l4"].on{opacity:.81}
@@ -145,9 +145,9 @@ function keep(tyre){ return [tyre].concat(BASE); }
 /* per-layer line weight. The naughts-and-crosses grid and the angle lines
    are big and would shout at the common 3.2px, so they run light; the
    rubber isolation is small and clogs, so it runs a shade under. */
-var BW={l10:1.0,l6:1.5,l4:2.2};
+var BW={l10:0.9,l6:1.3,l4:1.8};   /* the rest run at 2.4px */
 var OPF={l10:.52,l6:.70,l4:.88};
-function bw(k){ return BW[k]||3.2; }
+function bw(k){ return BW[k]||2.4; }
 function of(k){ return OPF[k]||1; }
 
 var FAM={l0:'g',l3:'g',l2:'g',l14:'g',l8:'g',l6:'g',l9:'g',
@@ -237,16 +237,44 @@ solo:function(C){
 },
 
 wave:function(C){
-  var K=keep(C.tyre), i=0;
+  var K=keep(C.alt?C.alt[0]:C.tyre), i=0, pass=0;
   if(C.colour) K.forEach(function(k){ stroke(k,1,FCOL[FAM[k]||'g'],0); });
+  /* C.alt swaps the wheel between two readings on alternate passes — the
+     complete circle, then the rugged broken tread in white. K[0] IS the
+     tyre slot, so the swap is a substitution, never a second wheel drawn
+     on top of the first. */
+  function tyre(n){
+    var want=C.alt[n%C.alt.length], had=K[0];
+    if(had!==want) setG(had,0,C.down);
+    K[0]=want;
+    stroke(want,1,(C.altCol&&C.altCol[n%C.alt.length])||'#d8b87a',C.down);
+    setG(want,C.base,C.down);
+  }
+  if(C.alt) tyre(0);
   K.forEach(function(k){ setG(k,C.base,C.down); });
   at(C.down,function pulse(){
     var k=K[i];
     setG(k,1,C.up);
     at(C.up,function(){ setG(k,C.base,C.down); });
     i=(i+1)%K.length;
+    if(i===0 && C.alt) tyre(++pass);
     at(C.step,pulse);
   });
+},
+
+/* 41 with the fade-out put back on the end, so it breathes instead of
+   arriving once and stopping. */
+colourcycle:function(C){
+  var K=keep(C.tyre);
+  K.forEach(function(k){ stroke(k,1,FCOL[FAM[k]||'g'],0); });
+  (function cycle(){
+    K.forEach(function(k){ setG(k,0,0); });
+    K.forEach(function(k,i){ at(120+i*C.step,function(){ setG(k,.95,C.fade); }); });
+    var inMs=120+K.length*C.step+C.fade;
+    at(inMs+C.hold,function(){
+      K.forEach(function(k,i){ at(i*C.step*0.6,function(){ setG(k,0,C.out); }); }); });
+    at(inMs+C.hold+K.length*C.step*0.6+C.out+500,cycle);
+  })();
 },
 
 colour:function(C){
@@ -351,7 +379,9 @@ var B=[
  ['44','WEIGHT SHIFT — SLOW','Emphasis moving, and settling properly before the next. Tyre 21.','weight',{tyre:T21,step:1300,lead:1.6,rest:.7,morph:700,settle:900,hold:3600}],
  ['45','BREATHE — SLOW','The slowest of them. Tyre 20.','breathe',{tyre:T20,base:.18,up:1200,down:1500,step:1600}],
  ['46','BLACKOUT — SLOW','The photograph falling away over four seconds as the DNA draws on. Tyre 21.','blackout',{tyre:T21,per:1500,step:420,px:44,dark:4200,hold:4200}],
- ['47','PULSE — COLOUR','40 with the palette from 41: structure gold, fixings cyan, tyre white, axes dim, and the current still running through them. Tyre 21.','wave',{tyre:T21,colour:true,base:.30,up:700,down:1200,step:520}]
+ ['47','PULSE — COLOUR','40 with the palette from 41: structure gold, fixings cyan, tyre white, axes dim, and the current still running through them. Tyre 21.','wave',{tyre:T21,colour:true,base:.30,up:700,down:1200,step:520}],
+ ['48','PULSE — WHEEL SWAP','40, but the wheel changes every pass: the complete circle, then the rugged broken tread in white, and back.','wave',{alt:[T21,T20],altCol:['#d8b87a','rgba(255,255,255,.92)'],base:.30,up:700,down:1200,step:520}],
+ ['49','COLOUR CODED — CYCLED','41 with the fade-out put back on: the families arrive in order, hold, and leave in order. Tyre 20.','colourcycle',{tyre:T20,step:140,fade:2200,hold:2600,out:1400}]
 ];
 var PRESETS=A.concat(B);
 
