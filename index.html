@@ -28032,6 +28032,21 @@ else window.addEventListener('load',function(){ setTimeout(start,700); });
    never be trapped invisible.
    ========================================================================= */
 html[data-skhold] #sf-lab-mount .pvline{opacity:0 !important;}
+
+/* -------------------------------------------------------------------------
+   THE SKETCH, 15% BACK
+
+   Its opacity is not one number — the hero state machine writes it inline at
+   every step (rest 0.06, peak 0.78, and interpolated values in between) and
+   roughly thirty variant configs carry their own ink/peak/rest triples. Editing
+   those would mean picking one and hoping it is the live one.
+
+   The element already carries filter:invert(1). Adding opacity(.85) to the
+   filter multiplies the RENDERED alpha after the inline opacity has been
+   applied, so every state comes back by the same 15% and the state machine is
+   left completely alone. Peak 0.78 now reads as 0.66.
+   ------------------------------------------------------------------------- */
+#sf-lab-mount .pvline{filter:invert(1) opacity(.85) !important;}
 </style>
 
 <script id="sf-sk-hold-js">
