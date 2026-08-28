@@ -28012,5 +28012,44 @@ else window.addEventListener('load',function(){ setTimeout(start,700); });
 })();
 </script>
 
+
+
+<style id="sf-sk-hold-css">
+/* =========================================================================
+   THE SKETCH — DO NOT PAINT IT UNTIL IT HAS BEEN PLACED
+
+   .pvline starts at a percentage box written in CSS (20.532% / 26.430% /
+   62.066% / 49.923% of .pvsk) and is then re-placed in PIXELS by place() in
+   #sf-f32-js, which solves the drawing's own wheels onto the photograph's.
+   The two boxes are not the same — measured at 1440 the sketch renders
+   829x409 at (274,216) first, then snaps to 1038x578 at (150,135). That snap
+   is the jump on load.
+
+   The placement itself is correct and is not touched. The sketch is simply
+   held back until it has happened, so it arrives in the right box instead of
+   moving into it. Released the moment place() has written the same inline
+   box twice, or after 6s if place() never runs at all — the sketch must
+   never be trapped invisible.
+   ========================================================================= */
+html[data-skhold] #sf-lab-mount .pvline{opacity:0 !important;}
+</style>
+
+<script id="sf-sk-hold-js">
+(function(){
+'use strict';
+var R=document.documentElement;
+R.setAttribute('data-skhold','1');
+function release(){ R.removeAttribute('data-skhold'); }
+var last=null, t=setInterval(function(){
+  var ln=document.querySelector('#sf-lab-mount .pvline');
+  if(!ln || !ln.style.left){ last=null; return; }   /* place() has not run yet */
+  var box=ln.style.left+'|'+ln.style.top+'|'+ln.style.width+'|'+ln.style.height;
+  if(box===last){ release(); clearInterval(t); }    /* settled */
+  last=box;
+},110);
+setTimeout(function(){ release(); clearInterval(t); },6000);
+})();
+</script>
+
 </body>
 </html>
