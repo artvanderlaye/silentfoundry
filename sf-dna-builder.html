@@ -59,6 +59,9 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
   padding:0;transition:background .18s,color .18s,border-color .18s;}
 .box:hover{border-color:rgba(200,169,110,.6);color:#fff}
 .box.on{background:var(--gold);border-color:var(--gold);color:#0a0a0a}
+.box.pres{border-color:rgba(95,216,242,.30);color:rgba(95,216,242,.72)}
+.box.pres:hover{border-color:rgba(95,216,242,.75);color:#fff}
+.box.pres.on{background:var(--cy);border-color:var(--cy);color:#06222a}
 .hint{text-align:center;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
   color:rgba(237,232,224,.28);margin-top:12px;}
 @media(max-width:640px){
@@ -107,26 +110,240 @@ svg.innerHTML='<g id="sk"><image href="images/bike-side-sketch.png" '+
     return '<path d="'+d+'"'+(isFill?' fill-rule="evenodd"':'')+'/>'; }).join('')+'</g>';
   }).join('');
 
+/* =====================================================================
+   PRESENTATION MODE — boxes 25 to 35
+
+   Boxes 00-24 are unchanged: one reading, held still. From 25 the SAME
+   keeper set is played back eleven different ways. Everything below writes
+   INLINE styles and clears them again on the way out, so a preset can never
+   leave residue on the static boxes. Timers are cancelled by bumping a
+   token rather than by tracking ids, so a fast click-through can't leave a
+   dead animation running underneath the new one.
+   ===================================================================== */
+var KEEP=['l20','l14','l0','l3','l1','l2','l4','l9','l8','l6','l10'];
+var KNAME={l0:'Battery enclosure',l1:'Exposed fasteners',l2:'Side bit',
+  l3:'Rib structure',l4:'Rubber isolation',l6:'Lines',l8:'Top line',
+  l9:'Bend radius',l10:'Centre of mass',l14:'Swingarm',l20:'Tyre'};
+/* families, for the colour-coded reading */
+var FAM={l0:'g',l3:'g',l2:'g',l14:'g',l8:'g',l6:'g',l9:'g',
+         l1:'c',l4:'c', l20:'w', l10:'d'};
+var FCOL={g:'#d8b87a',c:'#5fd8f2',w:'rgba(255,255,255,.88)',d:'rgba(237,232,224,.34)'};
+
+var stage=document.getElementById('stage');
+var photo=document.getElementById('photo');
+var tok=0, timers=[];
+function at(ms,fn){ var t=tok; timers.push(setTimeout(function(){ if(t===tok) fn(); },ms)); }
+function G(k){ return svg.querySelector('g[data-k="'+k+'"]'); }
+function paths(k){ return [].slice.call(G(k).children); }
+
+function clearPreset(){
+  tok++; timers.forEach(clearTimeout); timers=[];
+  photo.style.transition='none'; photo.style.filter='';
+  svg.style.transition='none'; svg.style.clipPath='';
+  void svg.getBoundingClientRect();
+  photo.style.transition=''; svg.style.transition='';
+  [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
+    g.removeAttribute('style');
+    [].forEach.call(g.children,function(p){ p.removeAttribute('style'); });
+  });
+}
+function setG(k,o,ms,ease){
+  var g=G(k);
+  g.style.transition= ms===0 ? 'none' : 'opacity '+ms+'ms '+(ease||'cubic-bezier(.22,.61,.36,1)');
+  g.style.opacity=o;
+}
+function armDraw(k){
+  paths(k).forEach(function(p){
+    var L=0; try{ L=p.getTotalLength(); }catch(e){ L=2000; }
+    p.style.transition='none';
+    p.style.strokeDasharray=L+'px'; p.style.strokeDashoffset=L+'px';
+  });
+}
+function runDraw(k,ms,stagger){
+  paths(k).forEach(function(p,i){
+    at(i*(stagger||0),function(){
+      p.style.transition='stroke-dashoffset '+ms+'ms cubic-bezier(.33,.9,.35,1)';
+      p.style.strokeDashoffset='0px';
+    });
+  });
+}
+function stroke(k,w,c,o){
+  paths(k).forEach(function(p){
+    p.style.transition='stroke-width .5s ease,stroke .5s ease';
+    if(w) p.style.strokeWidth=w; if(c) p.style.stroke=c;
+  });
+  if(o!==undefined) setG(k,o,500);
+}
+function label(t){ document.getElementById('rNote').textContent=t; }
+
+/* ------------------------------------------------------------- players */
+var PLAY={
+/* 25 */ still:function(){ KEEP.forEach(function(k){ setG(k,.92,600); }); },
+
+/* 26 */ seq:function(){
+  var step=300, fade=900, hold=3400;
+  function cycle(){
+    KEEP.forEach(function(k){ setG(k,0,0); });
+    KEEP.forEach(function(k,i){ at(60+i*step,function(){ setG(k,.92,fade); }); });
+    at(60+KEEP.length*step+fade+hold,cycle);
+  }
+  cycle();
+},
+
+/* 27 */ draw:function(){
+  var per=820, step=170, hold=3200;
+  function cycle(){
+    KEEP.forEach(function(k){ setG(k,0,0); armDraw(k); });
+    KEEP.forEach(function(k,i){ at(60+i*step,function(){ setG(k,.92,220); runDraw(k,per,26); }); });
+    at(60+KEEP.length*step+per+hold,cycle);
+  }
+  cycle();
+},
+
+/* 28 */ solo:function(){
+  var dwell=1250, fade=420, i=0;
+  function next(){
+    KEEP.forEach(function(k,n){ setG(k,n===i?.95:0,fade); });
+    label(KNAME[KEEP[i]]);
+    i=(i+1)%KEEP.length;
+    at(dwell,next);
+  }
+  next();
+},
+
+/* 29 */ wave:function(){
+  var step=230;
+  KEEP.forEach(function(k){ setG(k,.26,600); });
+  var i=0;
+  function pulse(){
+    var k=KEEP[i];
+    setG(k,1,260);
+    at(420,function(){ setG(k,.26,700); });
+    i=(i+1)%KEEP.length;
+    at(step,pulse);
+  }
+  at(700,pulse);
+},
+
+/* 30 */ colour:function(){
+  KEEP.forEach(function(k){
+    stroke(k,null,FCOL[FAM[k]||'g']);
+    setG(k,0,0);
+  });
+  at(80,function(){ KEEP.forEach(function(k,i){ at(i*70,function(){ setG(k,.95,1400); }); }); });
+},
+
+/* 31 */ cut:function(){
+  var step=170, hold=1500, blank=520;
+  function cycle(){
+    KEEP.forEach(function(k){ setG(k,0,0); });
+    KEEP.forEach(function(k,i){ at(i*step,function(){ setG(k,.95,0); }); });
+    at(KEEP.length*step+hold,function(){ KEEP.forEach(function(k){ setG(k,0,0); }); });
+    at(KEEP.length*step+hold+blank,cycle);
+  }
+  cycle();
+},
+
+/* 32 */ sweep:function(){
+  var wipe=2400, hold=2600;
+  function cycle(){
+    svg.style.transition='none'; svg.style.clipPath='inset(0 100% 0 0)';
+    KEEP.forEach(function(k){ setG(k,.92,0); });
+    photo.style.transition='none'; photo.style.filter='brightness(.9)';
+    at(40,function(){
+      svg.style.transition='clip-path '+wipe+'ms cubic-bezier(.4,0,.2,1)';
+      svg.style.clipPath='inset(0 0% 0 0)';
+      photo.style.transition='filter '+wipe+'ms ease';
+      photo.style.filter='brightness(.52) saturate(.35)';
+    });
+    at(wipe+hold,cycle);
+  }
+  cycle();
+},
+
+/* 33 */ weight:function(){
+  var step=760;
+  function cycle(){
+    KEEP.forEach(function(k){ setG(k,0,0); stroke(k,'3.2px','#d8b87a'); });
+    KEEP.forEach(function(k,i){
+      at(80+i*step,function(){
+        stroke(k,'5.6px','rgba(255,255,255,.95)'); setG(k,1,320);
+        label(KNAME[k]);
+      });
+      at(80+i*step+520,function(){ stroke(k,'2.2px','#c8a96e'); setG(k,.6,600); });
+    });
+    at(80+KEEP.length*step+2600,cycle);
+  }
+  cycle();
+},
+
+/* 34 */ breathe:function(){
+  var step=900;
+  KEEP.forEach(function(k){ setG(k,.2,900); });
+  var i=0;
+  function br(){
+    var k=KEEP[i];
+    setG(k,.98,760);
+    at(760,function(){ setG(k,.2,900); });
+    i=(i+1)%KEEP.length;
+    at(step,br);
+  }
+  at(900,br);
+},
+
+/* 35 */ blackout:function(){
+  var per=820, step=200, hold=3200;
+  function cycle(){
+    photo.style.transition='none'; photo.style.filter='brightness(.9)';
+    KEEP.forEach(function(k){ setG(k,0,0); armDraw(k); stroke(k,'3.2px','#d8b87a'); });
+    at(60,function(){
+      photo.style.transition='filter 2600ms ease';
+      photo.style.filter='brightness(.13) saturate(.2)';
+    });
+    KEEP.forEach(function(k,i){ at(300+i*step,function(){ setG(k,1,220); runDraw(k,per,26); }); });
+    at(300+KEEP.length*step+per+hold,cycle);
+  }
+  cycle();
+}
+};
+
+var PRESETS=[
+ ['25','ALL KEEPERS — STILL','Every keeper at once, no movement. The reference.','still',0],
+ ['26','SEQUENTIAL FADE','One layer at a time, each staying. Calm, 300ms apart.','seq',1],
+ ['27','DRAW ON','Every line draws itself, in order. Nothing simply appears.','draw',1],
+ ['28','ONE AT A TIME','Only ever one reading on screen, cycling. The name changes with it.','solo',1],
+ ['29','TRAVELLING PULSE','All present but dim; brightness runs through them like a current.','wave',1],
+ ['30','COLOUR CODED','Everything together, each family its own colour: structure gold, fixings cyan, tyre white, axes dim.','colour',0],
+ ['31','FAST CUT','Hard snaps, no fade. Builds, holds, blanks, repeats.','cut',1],
+ ['32','SWEEP','A single wipe left to right reveals the whole reading, and the photograph falls back as it passes.','sweep',1],
+ ['33','WEIGHT SHIFT','The live layer is heavy and white; the ones behind it settle to thin gold.','weight',1],
+ ['34','BREATHE','Everything held at a whisper, each layer rising to full in turn. Slow.','breathe',1],
+ ['35','BLACKOUT','The photograph goes dark, the sketch comes up, and the DNA draws on over it.','blackout',1]
+];
+
 var boxes=document.getElementById('boxes');
-ITEMS.forEach(function(it,i){
+var ALL=ITEMS.concat(PRESETS);
+ALL.forEach(function(it,i){
   var b=document.createElement('button');
-  b.className='box'; b.textContent=it[0];
+  b.className='box'+(i>=ITEMS.length?' pres':''); b.textContent=it[0];
   b.addEventListener('click',function(){ show(i); });
   boxes.appendChild(b);
 });
 
 var cur=-1;
 function show(i){
-  cur=Math.max(0,Math.min(ITEMS.length-1,i));
-  var it=ITEMS[cur];
+  cur=Math.max(0,Math.min(ALL.length-1,i));
+  clearPreset();
+  var isP=cur>=ITEMS.length, it=ALL[cur];
   document.getElementById('rNum').textContent=it[0];
   document.getElementById('rName').textContent=it[1];
   var nt=document.getElementById('rNote');
   nt.textContent=it[2]; nt.style.display=it[2]?'':'none';
   [].forEach.call(boxes.children,function(b,n){ b.classList.toggle('on',n===cur); });
-  document.getElementById('stage').classList.toggle('sk', cur>=1);
+  stage.classList.toggle('sk', cur>=1);
   [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
-    g.classList.toggle('on', it[3].indexOf(g.dataset.k)>=0); });
+    g.classList.toggle('on', !isP && it[3].indexOf(g.dataset.k)>=0); });
+  if(isP) PLAY[it[3]]();
   try{ history.replaceState(null,'','#'+it[0]); }catch(e){}
 }
 document.addEventListener('keydown',function(e){
@@ -134,7 +351,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowLeft'||e.key==='ArrowUp'){ show(cur-1); e.preventDefault(); }
 });
 var m=/#(\d\d)/.exec(location.hash||''); var start=0;
-if(m) ITEMS.forEach(function(it,n){ if(it[0]===m[1]) start=n; });
+if(m) ALL.forEach(function(it,n){ if(it[0]===m[1]) start=n; });
 show(start);
 </script>
 </body></html>
