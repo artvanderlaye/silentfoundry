@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>SWITCH — DNA Builder — Silent Foundry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d1013;--cream:#ede8e0;--gold:#c8a96e;--line:#d8b87a;--cy:#5fd8f2;}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ink);color:var(--cream);
+  font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:inherit}
+.wrap{max-width:1600px;margin:0 auto;padding:34px 24px 0;}
+.head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+  padding-bottom:22px;border-bottom:1px solid rgba(95,216,242,.22);flex-wrap:wrap;}
+.ey{font-size:10.88px;letter-spacing:2.72px;text-transform:uppercase;font-weight:300;
+  color:var(--cy);}
+.back{font-size:10.88px;letter-spacing:2.2px;text-transform:uppercase;font-weight:300;
+  color:rgba(237,232,224,.45);text-decoration:none;transition:color .3s;}
+.back:hover{color:var(--cy)}
+h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
+  font-size:clamp(1.05rem,1.9vw,1.44rem);letter-spacing:.22em;margin:26px 0 0;
+  color:rgba(255,255,255,.92);}
+.sub{font-size:14.4px;line-height:28.5px;font-weight:300;color:rgba(237,232,224,.56);
+  max-width:min(100%,560px);margin:14px 0 26px;}
+/* the stage */
+#stage{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#000;}
+#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+#photo{filter:brightness(.9)}
+#dna image{filter:invert(1);}
+#dna #sk{opacity:0;transition:opacity 1s ease;}
+#stage.sk #dna #sk{opacity:.26}
+#dna{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+#dna path{fill:none;vector-effect:non-scaling-stroke;stroke:var(--line);
+  stroke-width:1.7px;stroke-linecap:round;stroke-linejoin:round;}
+#dna g{opacity:0;transition:opacity .7s ease;}
+#dna g.on{opacity:.92;}
+#dna g[data-k="ribs"].on{opacity:.72}
+#dna g[data-k="stance"].on{opacity:.5}
+#dna g[data-k="steer"].on{opacity:.7}
+/* the read-out */
+.read{display:grid;grid-template-columns:auto 1fr;gap:0 18px;align-items:baseline;
+  padding:26px 0 0;}
+.num{font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:.22em;color:var(--gold);}
+.name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,1.6vw,1.3rem);
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.92);}
+.note{grid-column:2;font-size:13.6px;line-height:26px;font-weight:300;
+  color:rgba(237,232,224,.5);max-width:min(100%,560px);margin-top:8px;}
+/* the bar */
+#bar{position:sticky;bottom:0;margin-top:30px;padding:16px 24px 22px;
+  background:linear-gradient(180deg,rgba(13,16,19,0) 0%,rgba(13,16,19,.94) 26%);}
+.boxes{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;}
+.box{width:36px;height:30px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(237,232,224,.18);background:transparent;color:rgba(237,232,224,.55);
+  font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:.06em;cursor:pointer;
+  padding:0;transition:background .18s,color .18s,border-color .18s;}
+.box:hover{border-color:rgba(200,169,110,.6);color:#fff}
+.box.on{background:var(--gold);border-color:var(--gold);color:#0a0a0a}
+.hint{text-align:center;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(237,232,224,.28);margin-top:12px;}
+@media(max-width:640px){
+  .wrap{padding:22px 16px 0}
+  #bar{padding:14px 16px 18px}
+  .box{width:31px;height:28px;font-size:.72rem}
+  .note{font-size:13px;line-height:24px}
+}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <span class="ey">SWITCH 2.0 &nbsp;·&nbsp; Form &amp; Architecture</span>
+    <a class="back" href="index.html">&larr; Silent Foundry</a>
+  </div>
+  <h1>DNA Builder</h1>
+  <p class="sub">The acquired machine, the drawing made from it, and the geometry read off
+    both — one line at a time. Every measurement below is taken from the photograph
+    itself, in its own pixel space, so nothing here is approximate.</p>
+
+  <div id="stage">
+    <img id="photo" src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="SWITCH eSCRAMBLER">
+    <svg id="dna" viewBox="0 0 2000 1333" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  </div>
+
+  <div class="read">
+    <span class="num" id="rNum">00</span>
+    <span class="name" id="rName"></span>
+    <p class="note" id="rNote"></p>
+  </div>
+</div>
+
+<div id="bar"><div class="boxes" id="boxes"></div>
+  <div class="hint">click a box &nbsp;·&nbsp; arrow keys step</div></div>
+
+<script>
+var SETS={"sil":["M560 536 L580 535 L592 496 L604 484 L640 494 L700 508 L800 509 L900 510 L968 510 L982 500 L1000 476 L1020 464 L1040 452 L1080 449 L1120 448 L1170 444"],"stance":["M520.5 850.5 L1497.5 857.5","M0 1078 L2000 1078","M520.5 850.5 L520.5 1118","M1497.5 857.5 L1497.5 1118"],"wheel":["M520.5 850.5 m-234.5 0 a234.5 234.5 0 1 0 469.0 0 a234.5 234.5 0 1 0 -469.0 0","M1497.5 857.5 m-232.5 0 a232.5 232.5 0 1 0 465.0 0 a232.5 232.5 0 1 0 -465.0 0"],"radii":["M520.5 850.5 m-157.2 0 a157.2 157.2 0 1 0 314.5 0 a157.2 157.2 0 1 0 -314.5 0","M1497.5 857.5 m-155.9 0 a155.9 155.9 0 1 0 311.8 0 a155.9 155.9 0 1 0 -311.8 0","M520.5 850.5 m-48.0 0 a48.0 48.0 0 1 0 95.9 0 a48.0 48.0 0 1 0 -95.9 0","M1497.5 857.5 m-47.5 0 a47.5 47.5 0 1 0 95.1 0 a47.5 47.5 0 1 0 -95.1 0"],"steer":["M1272.96 372 L1497.5 857.5"],"encl":["M1099.6 953.6 C1095.2 954.5 1090.6 954.3 1086.1 954.5 C1081.5 954.6 1077.0 954.5 1072.5 954.5 C1067.9 954.5 1063.4 954.5 1058.8 954.5 C1054.3 954.5 1049.8 954.5 1045.2 954.5 C1040.7 954.5 1036.2 954.5 1031.6 954.5 C1027.1 954.5 1022.6 954.5 1018.0 954.5 C1013.5 954.5 1009.0 954.5 1004.4 954.5 C999.9 954.5 995.4 954.6 990.8 954.5 C986.3 954.4 981.7 954.8 977.2 954.2 C972.8 953.5 968.2 952.5 964.2 950.6 C960.2 948.6 956.8 945.3 953.2 942.6 C949.6 939.9 946.1 937.0 942.5 934.2 C939.0 931.4 935.2 928.8 931.8 925.9 C928.4 922.9 924.3 920.1 922.1 916.4 C919.9 912.7 919.3 907.8 918.7 903.4 C918.1 899.0 918.5 894.3 918.5 889.8 C918.5 885.3 918.5 880.7 918.5 876.2 C918.5 871.7 918.5 867.1 918.5 862.6 C918.5 858.1 918.5 853.5 918.5 849.0 C918.5 844.5 918.5 839.9 918.5 835.4 C918.5 830.9 918.5 826.3 918.5 821.8 C918.5 817.2 918.5 812.7 918.5 808.2 C918.5 803.6 918.5 799.1 918.5 794.6 C918.5 790.0 918.5 785.5 918.5 781.0 C918.5 776.4 918.5 771.9 918.5 767.4 C918.5 762.8 918.5 758.3 918.5 753.8 C918.5 749.2 918.5 744.7 918.5 740.2 C918.5 735.6 918.5 731.1 918.5 726.5 C918.5 722.0 918.5 717.5 918.5 712.9 C918.5 708.4 918.5 703.9 918.5 699.3 C918.5 694.8 918.3 690.3 918.5 685.7 C918.7 681.2 918.9 676.6 919.7 672.2 C920.5 667.8 921.5 663.2 923.3 659.1 C925.1 655.0 928.0 651.4 930.6 647.6 C933.1 643.9 935.9 640.3 938.5 636.6 C941.1 632.9 943.5 629.0 946.4 625.5 C949.4 622.1 952.5 618.6 956.2 616.1 C959.9 613.7 964.3 611.9 968.7 611.0 C973.0 610.0 977.7 610.6 982.2 610.5 C986.8 610.4 991.3 610.5 995.8 610.5 C1000.4 610.5 1004.9 610.5 1009.4 610.5 C1014.0 610.5 1018.5 610.5 1023.0 610.5 C1027.6 610.5 1032.1 610.5 1036.7 610.5 C1041.2 610.5 1045.7 610.5 1050.3 610.5 C1054.8 610.5 1059.3 610.5 1063.9 610.5 C1068.4 610.5 1072.9 610.5 1077.5 610.5 C1082.0 610.5 1086.5 610.5 1091.1 610.5 C1095.6 610.5 1100.1 610.4 1104.7 610.5 C1109.2 610.6 1114.0 610.2 1118.2 611.3 C1122.5 612.4 1126.5 614.8 1130.3 617.2 C1134.2 619.6 1137.6 622.7 1141.2 625.5 C1144.7 628.3 1148.2 631.1 1151.8 633.9 C1155.4 636.8 1158.9 639.6 1162.5 642.3 C1166.1 645.1 1169.9 647.6 1173.5 650.4 C1177.0 653.2 1181.2 655.6 1183.9 659.1 C1186.6 662.5 1188.5 666.9 1189.6 671.2 C1190.7 675.5 1190.3 680.2 1190.5 684.8 C1190.6 689.3 1190.5 693.8 1190.5 698.4 C1190.5 702.9 1190.5 707.4 1190.5 712.0 C1190.5 716.5 1190.5 721.0 1190.5 725.6 C1190.5 730.1 1190.5 734.7 1190.5 739.2 C1190.5 743.7 1190.5 748.3 1190.5 752.8 C1190.5 757.3 1190.5 761.9 1190.5 766.4 C1190.5 770.9 1190.5 775.5 1190.5 780.0 C1190.5 784.5 1190.5 789.1 1190.5 793.6 C1190.5 798.1 1190.5 802.7 1190.5 807.2 C1190.5 811.7 1190.5 816.3 1190.5 820.8 C1190.5 825.3 1190.5 829.9 1190.5 834.4 C1190.5 839.0 1190.5 843.5 1190.5 848.0 C1190.5 852.6 1190.6 857.1 1190.5 861.6 C1190.4 866.2 1190.7 870.8 1189.8 875.2 C1188.8 879.5 1187.0 883.9 1184.7 887.8 C1182.5 891.6 1179.4 895.1 1176.4 898.5 C1173.3 901.8 1169.9 904.8 1166.4 907.7 C1163.0 910.7 1159.3 913.3 1155.7 916.1 C1152.1 918.9 1148.6 921.7 1145.0 924.4 C1141.4 927.2 1137.8 930.0 1134.2 932.7 C1130.6 935.5 1127.0 938.3 1123.4 941.0 C1119.7 943.7 1116.3 946.8 1112.3 948.9 C1108.4 951.0 1104.0 952.6 1099.6 953.6 Z"],"ribs":["M955 689 L1180 689","M955 699 L1180 699","M955 709 L1180 709","M955 719 L1180 719","M955 729 L1180 729","M955 739 L1180 739","M955 749 L1180 749","M955 759 L1180 759","M955 769 L1180 769","M955 779 L1180 779","M955 789 L1180 789","M955 799 L1180 799","M955 809 L1180 809","M955 819 L1180 819","M955 829 L1180 829","M955 839 L1180 839","M955 849 L1180 849","M955 859 L1180 859","M955 869 L1180 869"],"fast":["M987 619 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M1098.6 619 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M927.5 696.1 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M1179.2 698.4 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M927.5 775.7 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M1179.2 778.3 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M926.9 855.5 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M1179.3 858.4 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M1084.2 944.5 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0","M987 945.5 m-9.0 0 a9.0 9.0 0 1 0 18.0 0 a9.0 9.0 0 1 0 -18.0 0"],"hier":["M1099.6 953.6 C1095.2 954.5 1090.6 954.3 1086.1 954.5 C1081.5 954.6 1077.0 954.5 1072.5 954.5 C1067.9 954.5 1063.4 954.5 1058.8 954.5 C1054.3 954.5 1049.8 954.5 1045.2 954.5 C1040.7 954.5 1036.2 954.5 1031.6 954.5 C1027.1 954.5 1022.6 954.5 1018.0 954.5 C1013.5 954.5 1009.0 954.5 1004.4 954.5 C999.9 954.5 995.4 954.6 990.8 954.5 C986.3 954.4 981.7 954.8 977.2 954.2 C972.8 953.5 968.2 952.5 964.2 950.6 C960.2 948.6 956.8 945.3 953.2 942.6 C949.6 939.9 946.1 937.0 942.5 934.2 C939.0 931.4 935.2 928.8 931.8 925.9 C928.4 922.9 924.3 920.1 922.1 916.4 C919.9 912.7 919.3 907.8 918.7 903.4 C918.1 899.0 918.5 894.3 918.5 889.8 C918.5 885.3 918.5 880.7 918.5 876.2 C918.5 871.7 918.5 867.1 918.5 862.6 C918.5 858.1 918.5 853.5 918.5 849.0 C918.5 844.5 918.5 839.9 918.5 835.4 C918.5 830.9 918.5 826.3 918.5 821.8 C918.5 817.2 918.5 812.7 918.5 808.2 C918.5 803.6 918.5 799.1 918.5 794.6 C918.5 790.0 918.5 785.5 918.5 781.0 C918.5 776.4 918.5 771.9 918.5 767.4 C918.5 762.8 918.5 758.3 918.5 753.8 C918.5 749.2 918.5 744.7 918.5 740.2 C918.5 735.6 918.5 731.1 918.5 726.5 C918.5 722.0 918.5 717.5 918.5 712.9 C918.5 708.4 918.5 703.9 918.5 699.3 C918.5 694.8 918.3 690.3 918.5 685.7 C918.7 681.2 918.9 676.6 919.7 672.2 C920.5 667.8 921.5 663.2 923.3 659.1 C925.1 655.0 928.0 651.4 930.6 647.6 C933.1 643.9 935.9 640.3 938.5 636.6 C941.1 632.9 943.5 629.0 946.4 625.5 C949.4 622.1 952.5 618.6 956.2 616.1 C959.9 613.7 964.3 611.9 968.7 611.0 C973.0 610.0 977.7 610.6 982.2 610.5 C986.8 610.4 991.3 610.5 995.8 610.5 C1000.4 610.5 1004.9 610.5 1009.4 610.5 C1014.0 610.5 1018.5 610.5 1023.0 610.5 C1027.6 610.5 1032.1 610.5 1036.7 610.5 C1041.2 610.5 1045.7 610.5 1050.3 610.5 C1054.8 610.5 1059.3 610.5 1063.9 610.5 C1068.4 610.5 1072.9 610.5 1077.5 610.5 C1082.0 610.5 1086.5 610.5 1091.1 610.5 C1095.6 610.5 1100.1 610.4 1104.7 610.5 C1109.2 610.6 1114.0 610.2 1118.2 611.3 C1122.5 612.4 1126.5 614.8 1130.3 617.2 C1134.2 619.6 1137.6 622.7 1141.2 625.5 C1144.7 628.3 1148.2 631.1 1151.8 633.9 C1155.4 636.8 1158.9 639.6 1162.5 642.3 C1166.1 645.1 1169.9 647.6 1173.5 650.4 C1177.0 653.2 1181.2 655.6 1183.9 659.1 C1186.6 662.5 1188.5 666.9 1189.6 671.2 C1190.7 675.5 1190.3 680.2 1190.5 684.8 C1190.6 689.3 1190.5 693.8 1190.5 698.4 C1190.5 702.9 1190.5 707.4 1190.5 712.0 C1190.5 716.5 1190.5 721.0 1190.5 725.6 C1190.5 730.1 1190.5 734.7 1190.5 739.2 C1190.5 743.7 1190.5 748.3 1190.5 752.8 C1190.5 757.3 1190.5 761.9 1190.5 766.4 C1190.5 770.9 1190.5 775.5 1190.5 780.0 C1190.5 784.5 1190.5 789.1 1190.5 793.6 C1190.5 798.1 1190.5 802.7 1190.5 807.2 C1190.5 811.7 1190.5 816.3 1190.5 820.8 C1190.5 825.3 1190.5 829.9 1190.5 834.4 C1190.5 839.0 1190.5 843.5 1190.5 848.0 C1190.5 852.6 1190.6 857.1 1190.5 861.6 C1190.4 866.2 1190.7 870.8 1189.8 875.2 C1188.8 879.5 1187.0 883.9 1184.7 887.8 C1182.5 891.6 1179.4 895.1 1176.4 898.5 C1173.3 901.8 1169.9 904.8 1166.4 907.7 C1163.0 910.7 1159.3 913.3 1155.7 916.1 C1152.1 918.9 1148.6 921.7 1145.0 924.4 C1141.4 927.2 1137.8 930.0 1134.2 932.7 C1130.6 935.5 1127.0 938.3 1123.4 941.0 C1119.7 943.7 1116.3 946.8 1112.3 948.9 C1108.4 951.0 1104.0 952.6 1099.6 953.6 Z","M492 843 L866 817 Q892 836.5 866 856 L492 891 Q466 867 492 843 Z","M955 678 L1180 678 L1180 880 L955 880 Z"]};
+var ITEMS=[["00","PHOTOGRAPH","The acquired object, as it was found.",[]],["01","THE SKETCH","The drawing made from it. Everything below is read off this machine, not invented for it.",[]],["02","PRIMARY SILHOUETTE","The line over the tail, the seat and the tank \u2014 the shape you recognise from across a room.",["sil"]],["03","HORIZONTAL STANCE","Axle to axle, and the ground it stands on. The proportion that makes it read as a scrambler.",["stance"]],["04","WHEEL PROPORTION","Two wheels, near enough the same diameter, carrying the whole stance.",["wheel"]],["05","REPEATED RADII","Rim inside tyre, disc inside rim. The same circle, three times, at a fixed ratio.",["wheel","radii"]],["06","STEERING ACCESS","The fork axis, struck through the front axle at 24.8 degrees.",["steer"]],["07","BATTERY ENCLOSURE","The pack. Traced by hand off the machine \u2014 the octagon everything else is hung on.",["encl"]],["08","RIB STRUCTURE","Nineteen ribs at a dead 10px pitch. Cooling made into surface.",["encl","ribs"]],["09","EXPOSED FASTENERS","Ten screws, left visible. Serviceable by design, and it shows.",["encl","fast"]],["10","COMPONENT HIERARCHY","Pack, panel and swingarm \u2014 the parts that carry load, drawn as one family.",["hier"]],["11","THE FULL EXTRACTION","Everything at once. This is the DNA that travels into the next product.",["sil","stance","wheel","radii","steer","encl","ribs","fast"]]];
+var svg=document.getElementById('dna');
+svg.innerHTML='<g id="sk"><image href="images/bike-side-sketch.png" '+
+  'x="246.9" y="256.8" width="1534.7" height="854.3" preserveAspectRatio="none"/></g>'+
+  Object.keys(SETS).map(function(k){
+  return '<g data-k="'+k+'">'+SETS[k].map(function(d){
+    return '<path d="'+d+'"/>'; }).join('')+'</g>'; }).join('');
+
+var boxes=document.getElementById('boxes');
+ITEMS.forEach(function(it,i){
+  var b=document.createElement('button');
+  b.className='box'; b.textContent=it[0];
+  b.addEventListener('click',function(){ show(i); });
+  boxes.appendChild(b);
+});
+
+var cur=-1;
+function show(i){
+  cur=Math.max(0,Math.min(ITEMS.length-1,i));
+  var it=ITEMS[cur];
+  document.getElementById('rNum').textContent=it[0];
+  document.getElementById('rName').textContent=it[1];
+  document.getElementById('rNote').textContent=it[2];
+  [].forEach.call(boxes.children,function(b,n){ b.classList.toggle('on',n===cur); });
+  document.getElementById('stage').classList.toggle('sk', cur>=1);
+  [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
+    g.classList.toggle('on', it[3].indexOf(g.dataset.k)>=0); });
+  try{ history.replaceState(null,'','#'+it[0]); }catch(e){}
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){ show(cur+1); e.preventDefault(); }
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){ show(cur-1); e.preventDefault(); }
+});
+var m=/#(\d\d)/.exec(location.hash||''); var start=0;
+if(m) ITEMS.forEach(function(it,n){ if(it[0]===m[1]) start=n; });
+show(start);
+</script>
+</body></html>
