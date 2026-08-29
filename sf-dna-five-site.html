@@ -27951,9 +27951,11 @@ setTimeout(function(){ release(); clearInterval(t); },6000);
 #sfx-bar .box.on{background:#3ddcff;border-color:#3ddcff;color:#062028}
 #sfx-bar .hint{text-align:center;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;
   color:rgba(237,232,224,.3);margin-top:9px;}
+#sfx-bar .box.ref{border-color:rgba(200,169,110,.5);color:rgba(200,169,110,.9)}
+#sfx-bar .box.ref.on{background:#c8a96e;border-color:#c8a96e;color:#0a0a0a}
 </style>
 
-<div id="sfx-bar"><div class="read"><span class="num" id="rNum">01</span><span class="name" id="rName"></span><p class="note" id="rNote"></p></div><div id="phases"></div><div class="boxes" id="boxes"></div><div class="hint">scroll to the SWITCH section — it waits for you &nbsp;·&nbsp; click a box &nbsp;·&nbsp; arrow keys step &nbsp;·&nbsp; R replays</div></div>
+<div id="sfx-bar"><div class="read"><span class="num" id="rNum">01</span><span class="name" id="rName"></span><p class="note" id="rNote"></p></div><div id="phases"></div><div class="boxes" id="boxes"></div><div class="hint">00 is the live site for reference &nbsp;·&nbsp; scroll to the SWITCH section — it waits for you &nbsp;·&nbsp; arrow keys step &nbsp;·&nbsp; R replays</div></div>
 <script id="sfx-js">
 (function(){
 
@@ -28812,98 +28814,111 @@ VARS.sort(function(a,b){ return (+a[0])-(+b[0]); });
 
 
 /* =====================================================================
-   THE FIVE — 01 to 05
+   THE FIVE — 01 to 05, plus 00 as the reference
 
-   Every one of them now opens the same way, because that is what was
-   missing: the REAL PHOTOGRAPH, alone, for a beat. Long enough that a
-   viewer arriving at the section sees a motorcycle and knows what they
-   are looking at before anything is drawn on it or over it.
+   TWO THINGS ARE NOW CONSTANT ACROSS ALL FIVE.
 
-     LEAD    2200ms of the photograph and nothing else
-     then    each variation's own sequence, unchanged in character
+   1 · THE OPENING.  The real photograph, alone, for a beat — 2.2s on
+       01-03, 3.0s on 04 and 05 — before anything is drawn on it or over
+       it. On the site this is gated on scroll, so the beat is spent where
+       the viewer can see it.
 
-   On the full site this is gated on scroll: nothing starts until the hero
-   is actually in view, so the beat is spent where the viewer can see it
-   rather than while they are still three sections above it.
+   2 · HOW THE READINGS ARRIVE.  02's way, which is the one that works:
+       every reading fades up TOGETHER to its resting level over 750ms and
+       the pulse takes over. Nothing draws itself on, nothing traces, no
+       line crawls across the picture one at a time.
+
+   What still differs is the DRAWING — how it arrives and, more
+   importantly, how it leaves. That is the whole argument now:
+   feature by feature, in steps, on one travelling edge, or pushed out
+   from the middle.
    ===================================================================== */
 var LEAD=2200;
+/* 02's arrival, lifted out so all five share the identical call */
+function ARRIVE(t){ PULSE(t,{settle:750}); }
 
 var FIVE=[
 
-/* was 02 (from 56) — "photo first then into its full sequence" */
+['00','CURRENT DEV — REFERENCE',
+ 'What the homepage runs today, for comparison: the photograph, the drawing held at a constant whisper behind it, and the reading pulsing over both with the wheel swapping every pass. No sequence, no opening beat.  (production)',
+ {col:'rgba(237,232,224,.40)',mode:'fade'},
+ ['AS SHIPPED'],
+ function(){ SK(SKBASE,0); PH(1,0); P(0,0); PULSE(0); }],
+
+/* was 02 (from 56) */
 ['01','PHOTO FIRST — FEATURE HANDOFF',
- 'The machine alone for two seconds. The drawing then comes on over it, and each reading burns its own patch of drawing away as it lands, so the picture is cleared by being read.  (was 02 / 56)',
+ 'The machine alone for two seconds, then the drawing over it. The readings fade up together, and the drawing is then burned away one feature at a time beneath them.  (was 02 / 56)',
  {col:'rgba(10,10,10,.62)',mode:'snap'},
- ['THE MACHINE','THE DRAWING','READ AND CLEAR','THE READING'],
+ ['THE MACHINE','THE DRAWING','READINGS ARRIVE','CLEARED FEATURE BY FEATURE'],
  function(){
    PH(1,0); SK(0,0); P(0,0);
    at(LEAD,function(){ phase(1); SK(.85,900); });
-   at(LEAD+1400,function(){ phase(2);
-     ORDER.forEach(function(k){ ARM(k); });
-     ORDER.forEach(function(k,i){
-       at(i*620,function(){ DG(k,PEAK,420); DRAW(k,860,40); ER(RFOR[k],1,1000); }); });
-     var end=ORDER.length*620+860;
-     at(end,function(){ phase(3); SK(0,900); MB(0,900); });
-     PULSE(end+700,{settle:900});
+   at(LEAD+1400,function(){ phase(2); ARRIVE(0); });
+   at(LEAD+2300,function(){ phase(3);
+     ORDER.forEach(function(k,i){ at(i*620,function(){ ER(RFOR[k],1,1000); }); });
+     at(ORDER.length*620+300,function(){ SK(0,900); MB(0,900); });
    });
  }],
 
-/* was 04 (from 65) — fast, "make the sketch stronger" */
+/* was 04 (from 65) — the one the arrival is taken from */
 ['02','FAST — STRONG RESIDUE',
- 'The quickest of the five. The machine, then the drawing at full strength for a moment, then it settles back to a residue at 22% — nearly three times what it was — and stays there under the reading.  (was 04 / 65)',
+ 'The quickest of the five, and the reference for how the readings arrive. Machine, then the drawing at full strength, then it settles to a residue at 22% and stays there under the reading.  (was 04 / 65)',
  {col:'rgba(237,232,224,.34)',mode:'snap'},
  ['THE MACHINE','FULL DRAWING','RESIDUE + READING'],
  function(){
    PH(1,0); SK(0,0); P(0,0);
    at(LEAD,function(){ phase(1); SK(1,650); });
    at(LEAD+1250,function(){ phase(2); SK(.22,800); });
-   PULSE(LEAD+1700,{settle:700});
+   ARRIVE(LEAD+1700);
  }],
 
-/* was 12 (from 97) — unchanged in character */
-['03','EACH LINE PUSHES',
- 'Every reading taken pushes the drawing down one step. Eleven readings, eleven steps, and the drawing is gone on the last one.  (was 12 / 97)',
+/* was 12 (from 97) */
+['03','STEPPED RELEASE',
+ 'The readings arrive together, and the drawing then lets go in eleven even steps underneath them — the same rhythm as before, without anything drawing itself on.  (was 12 / 97)',
  {col:'#e43c00',mode:'snap'},
- ['THE MACHINE','THE DRAWING','EACH LINE PUSHES'],
+ ['THE MACHINE','THE DRAWING','READINGS ARRIVE','ELEVEN STEPS DOWN'],
  function(){
    PH(1,0); SK(0,0); P(0,0);
    at(LEAD,function(){ phase(1); SK(.9,1100); });
-   at(LEAD+1900,function(){ phase(2);
-     ORDER.forEach(function(k){ ARM(k); });
-     ORDER.forEach(function(k,i){
-       at(i*560,function(){ DG(k,PEAK,420); DRAW(k,800,40); SK(.9*(1-(i+1)/ORDER.length),900); }); });
-     PULSE(ORDER.length*560+700,{settle:900});
+   at(LEAD+1900,function(){ phase(2); ARRIVE(0); });
+   at(LEAD+2700,function(){ phase(3);
+     for(var i=0;i<ORDER.length;i++){ (function(i){
+       at(i*430,function(){ SK(.9*(1-(i+1)/ORDER.length),700); });
+     })(i); }
    });
  }],
 
-/* was 14 (from 100) — "leave on the initial main photo just a touch longer" */
+/* was 14 (from 100) */
 ['04','ONE EDGE',
- 'The strongest of the set. A single edge crosses the frame: it erases the drawing as it goes, and each reading draws itself the moment the edge reaches it. The machine is underneath the whole time. Held on the photograph for three seconds before anything happens.  (was 14 / 100)',
+ 'Held three seconds on the photograph. The readings arrive together, and a single edge then crosses the frame and takes the drawing with it — the machine underneath the whole time.  (was 14 / 100)',
  {col:'#8d918a',mode:'fade'},
- ['THE MACHINE','THE DRAWING','HELD','ONE EDGE'],
- function(){
-   PH(1,0); SK(0,0); P(0,0);
-   at(LEAD+800,function(){ phase(1); SK(.9,1200); });      /* 3.0s on the photo */
-   P(2,LEAD+2000);
-   at(LEAD+3000,function(){ phase(3); hoWipe({ms:3300,per:900}); });
- }],
-
-/* was 16 (from 105) — same, "a touch longer so viewers can see its a bike" */
-['05','PUSHED OUT',
- 'A soft front spreads from the middle of the machine, taking the drawing with it, and the readings follow it outward. Also held three seconds on the photograph first.  (was 16 / 105)',
- {col:'#0a0a0a',mode:'snap'},
- ['THE MACHINE','THE DRAWING','HELD','PUSHED OUT'],
+ ['THE MACHINE','THE DRAWING','READINGS ARRIVE','ONE EDGE'],
  function(){
    PH(1,0); SK(0,0); P(0,0);
    at(LEAD+800,function(){ phase(1); SK(.9,1200); });
    P(2,LEAD+2000);
-   at(LEAD+3000,function(){ phase(3);
+   at(LEAD+3000,function(){ phase(2); ARRIVE(0); });
+   at(LEAD+3800,function(){ phase(3);
+     WIPE(0,0);
+     at(20,function(){ WIPE(2000,3300,'linear'); });
+     at(3400,function(){ SK(0,700); MB(0,700); });
+   });
+ }],
+
+/* was 16 (from 105) */
+['05','PUSHED OUT',
+ 'Also held three seconds. The readings arrive together, then a soft front spreads from the middle of the machine and takes the drawing outward with it.  (was 16 / 105)',
+ {col:'#0a0a0a',mode:'snap'},
+ ['THE MACHINE','THE DRAWING','READINGS ARRIVE','PUSHED OUT'],
+ function(){
+   PH(1,0); SK(0,0); P(0,0);
+   at(LEAD+800,function(){ phase(1); SK(.9,1200); });
+   P(2,LEAD+2000);
+   at(LEAD+3000,function(){ phase(2); ARRIVE(0); });
+   at(LEAD+3800,function(){ phase(3);
      PUSH(0,0);
-     ORDER.forEach(function(k){ ARM(k); });
      at(20,function(){ PUSH(1,2800); });
-     ORDER.forEach(function(k,i){ at(300+i*260,function(){ DG(k,PEAK,420); DRAW(k,880,40); }); });
      at(2900,function(){ SK(0,800); });
-     PULSE(ORDER.length*260+1400,{settle:900});
    });
  }]
 ];
@@ -28913,25 +28928,17 @@ VARS=FIVE.map(function(f){
 });
 
 
-/* ---- the bar --------------------------------------------------------- */
 var boxes=document.getElementById('boxes');
 VARS.forEach(function(v,i){
   var b=document.createElement('button');
-  b.className='box'; b.textContent=v[0];
+  b.className='box'+(v[0]==='00'?' ref':''); b.textContent=v[0];
   b.addEventListener('click',function(){ show(i); });
   boxes.appendChild(b);
 });
-
-/* ---- THE SCROLL GATE --------------------------------------------------
-   Nothing runs until the hero is actually on screen. Until then the stage
-   holds the real photograph and nothing else, so the two-second beat is
-   spent where the viewer can see it rather than while they are still three
-   sections above it. Scroll away and it re-arms, so coming back plays it
-   again from the photograph. */
+/* nothing runs until the hero is on screen; scroll away and it re-arms */
 var armed=null, playing=false, cur=-1;
 function inView(){
-  var st=document.querySelector('#sf-lab-mount .pvstage');
-  if(!st) return false;
+  var st=document.querySelector('#sf-lab-mount .pvstage'); if(!st) return false;
   var b=st.getBoundingClientRect();
   var vh=window.innerHeight||document.documentElement.clientHeight;
   return b.top < vh*0.75 && b.bottom > vh*0.25;
@@ -28942,12 +28949,10 @@ setInterval(function(){
   if(v && !playing){ playing=true; armed(); }
   else if(!v && playing){ playing=false; reset(); }
 },180);
-
 function show(i){
   cur=Math.max(0,Math.min(VARS.length-1,i));
   var v=VARS[cur];
-  reset();                       /* the real photograph, and nothing else */
-  playing=false; armed=v[4];
+  reset(); playing=false; armed=v[4];
   document.getElementById('rNum').textContent=v[0];
   document.getElementById('rName').textContent=v[1];
   document.getElementById('rNote').textContent=v[2];
@@ -28967,7 +28972,7 @@ setInterval(function(){
     if(window.__sfxBuild()){ refresh(); paint(); if(cur>=0) show(cur); }
   }
 },900);
-var m=/#v(\d\d)/.exec(location.hash||''); var start0=0;
+var m=/#v(\d\d)/.exec(location.hash||''); var start0=1;   /* land on 01; 00 is the reference */
 if(m) VARS.forEach(function(v,n){ if(v[0]===m[1]) start0=n; });
 show(start0);
 
