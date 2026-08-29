@@ -686,6 +686,250 @@ VARS.push(
   DRAWIN(5900,1000,290);
 }]
 );
+
+/* =====================================================================
+   81-110 — THE SAME THIRTY IDEAS, ON THE FORMULA
+
+   Every one of these follows the shape Matthew picked out of 57 / 71 / 76,
+   with the piece that was missing from all of them put in:
+
+     1 · THE MACHINE      the photograph, complete, from the first frame
+     2 · THE DRAWING      the sketch comes over it — the photo NEVER dims
+     3 · HELD             both together, long enough to be read
+     4 · THE HANDOVER     the sketch dissolves WHILE the readings draw on
+     5 · THE READING      settles into 49's pulse
+
+   Step 4 is the change. In 57, 71 and 76 the sketch reaches zero and only
+   then does the extraction begin. Here they overlap, so the drawing appears
+   to hand over to the reading rather than getting out of its way first.
+
+   What differs between the thirty is HOW the drawing leaves and HOW the
+   readings arrive during that overlap — each one inherits the mechanic that
+   made its original distinctive (region, feature, wipe, collapse, steps,
+   cut, rhythm), re-cast inside the formula.
+   ===================================================================== */
+
+/* ---- handover mechanics, shared ---------------------------------------- */
+/* the plain one: the drawing dissolves globally while the readings draw on */
+function hoGlobal(o){
+  o=o||{};
+  var fade=o.fade||2600, per=o.per||900, step=o.step||o.stagger||240, end=o.end==null?0:o.end;
+  SK(end,fade);
+  ORDER.forEach(function(k){ ARM(k); });
+  ORDER.forEach(function(k,i){ at(i*step,function(){ DG(k,PEAK,step*0.6); DRAW(k,per,40); }); });
+  PULSE(ORDER.length*step+per+500,{settle:900});
+}
+/* the drawing leaves a band at a time, and the readings in that band draw
+   as it clears */
+function hoRegion(o){
+  o=o||{};
+  var bands=['b1','b2','b3','b4','b5'], step=o.step||620, per=o.per||900;
+  ORDER.forEach(function(k){ ARM(k); });
+  bands.forEach(function(r,i){ at(i*step,function(){ ER(r,1,o.erase||900); }); });
+  ORDER.forEach(function(k,i){
+    at(120+i*(step*bands.length/ORDER.length),function(){ DG(k,PEAK,420); DRAW(k,per,40); }); });
+  at(bands.length*step+400,function(){ SK(0,900); MB(0,900); });
+  PULSE(bands.length*step+per+900,{settle:900});
+}
+/* the drawing is burned away exactly where each reading lands */
+function hoFeature(o){
+  o=o||{};
+  var step=o.step||640, per=o.per||860;
+  ORDER.forEach(function(k){ ARM(k); });
+  ORDER.forEach(function(k,i){
+    at(i*step,function(){ DG(k,PEAK,400); DRAW(k,per,40); ER(RFOR[k],1,o.erase||1000); }); });
+  var end=ORDER.length*step+per;
+  at(end,function(){ SK(0,900); MB(0,900); });
+  PULSE(end+700,{settle:900});
+}
+/* one travelling edge: it erases the drawing and the readings follow it */
+function hoWipe(o){
+  o=o||{};
+  var ms=o.ms||3200, per=o.per||900;
+  WIPE(0,0);
+  ORDER.forEach(function(k){ ARM(k); });
+  at(20,function(){ WIPE(2000,ms,'linear'); });
+  /* each reading draws as the edge reaches it, left to right */
+  var byX=ORDER.slice().sort(function(a,b){
+    var A=G(a).getBBox(), B=G(b).getBBox(); return A.x-B.x; });
+  byX.forEach(function(k,i){
+    at(200+ (i/byX.length)*ms, function(){ DG(k,PEAK,420); DRAW(k,per,40); }); });
+  at(ms+200,function(){ SK(0,700); MB(0,700); });
+  PULSE(ms+per+700,{settle:900});
+}
+/* the drawing steps down, a group of readings per step */
+function hoSteps(o){
+  o=o||{};
+  var n=o.n||5, step=o.step||760, per=o.per||820;
+  ORDER.forEach(function(k){ ARM(k); });
+  var perStep=Math.ceil(ORDER.length/n);
+  for(var s=0;s<n;s++){ (function(s){
+    at(s*step,function(){
+      SK((1-(s+1)/n)*(o.from==null?.9:o.from), step*0.8);
+      ORDER.slice(s*perStep,(s+1)*perStep).forEach(function(k,j){
+        at(j*90,function(){ DG(k,PEAK,420); DRAW(k,per,40); }); });
+    });
+  })(s); }
+  PULSE(n*step+per+500,{settle:900});
+}
+/* the drawing contracts to its structural patches, and each patch is
+   replaced by the reading drawn over it */
+function hoCollapse(o){
+  o=o||{};
+  var keep=['rearw','frontw','batt','swing','fork'], per=o.per||900, step=o.step||300;
+  ORDER.forEach(function(k){ ARM(k); });
+  keep.forEach(function(r){ KP(r,1,0); });
+  MB(0,o.collapse||1400);
+  at((o.collapse||1400)+200,function(){
+    keep.forEach(function(r,i){ at(i*160,function(){ KP(r,0,1000); }); }); });
+  ORDER.forEach(function(k,i){
+    at((o.collapse||1400)+250+i*step,function(){ DG(k,PEAK,400); DRAW(k,per,40); }); });
+  at((o.collapse||1400)+ORDER.length*step+per,function(){ SK(0,800); });
+  PULSE((o.collapse||1400)+ORDER.length*step+per+600,{settle:900});
+}
+
+/* ---- the thirty --------------------------------------------------------- */
+[
+ ['81','ON THE FORMULA — CLEAN DISSOLVE','50 re-cast. The drawing comes over the machine, holds, and dissolves while every reading draws itself on. The plainest statement of the handover.',
+   {on:700,onMs:1100,hold:1100,ho:function(){ hoGlobal({fade:2800,per:900,step:250}); }}],
+ ['82','ON THE FORMULA — FAST','51 re-cast. The whole thing inside four seconds. The drawing is a glance and the handover is brisk.',
+   {on:400,onMs:600,hold:500,ho:function(){ hoGlobal({fade:1500,per:600,step:150}); }}],
+ ['83','ON THE FORMULA — LONG HOLD','52 re-cast. The combined state is held long enough to be studied before anything is taken from it.',
+   {on:800,onMs:1400,hold:2600,ho:function(){ hoGlobal({fade:3400,per:1200,step:330}); }}],
+ ['84','ON THE FORMULA — FIVE STEPS','53 re-cast. Not a fade — the drawing steps down in five beats, and a group of readings arrives on each one.',
+   {on:700,onMs:1000,hold:900,ho:function(){ hoSteps({n:5,step:780,per:820}); }}],
+ ['85','ON THE FORMULA — DRAWING STAYS LONGEST','54 re-cast, inverted. The drawing holds at full while every reading builds underneath it, and only lets go once they are all there.',
+   {on:700,onMs:1100,hold:800,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     ORDER.forEach(function(k,i){ at(i*300,function(){ DG(k,PEAK,420); DRAW(k,900,40); }); });
+     at(ORDER.length*300+700,function(){ SK(0,1600); });
+     PULSE(ORDER.length*300+1600,{settle:900}); }}],
+ ['86','ON THE FORMULA — BAND BY BAND','55 re-cast. The drawing leaves five bands at a time and the readings in each band draw as it clears.',
+   {on:700,onMs:1100,hold:900,ho:function(){ hoRegion({step:620,per:900}); }}],
+ ['87','ON THE FORMULA — BURNED AWAY','56 re-cast. Each reading burns its own patch of drawing away as it lands. The picture is cleared by being read.',
+   {on:700,onMs:1100,hold:900,ho:function(){ hoFeature({step:640,per:860}); }}],
+ ['88','ON THE FORMULA — FLASH','57 re-cast — the one you picked, with the overlap put in. The drawing passes over once, quickly, and hands straight over.',
+   {on:500,onMs:500,hold:600,ho:function(){ hoGlobal({fade:1800,per:760,step:190}); }}],
+ ['89','ON THE FORMULA — TWICE OVER','58 re-cast without dimming the machine. The drawing comes over twice, thinner the second time, and the readings arrive on the second visit.',
+   {on:600,onMs:800,hold:700,skPeak:.92,ho:function(){
+     SK(.15,700);
+     at(900,function(){ SK(.62,700); });
+     ORDER.forEach(function(k){ ARM(k); });
+     ORDER.forEach(function(k,i){ at(1000+i*280,function(){ DG(k,PEAK,420); DRAW(k,880,40); }); });
+     at(1000+ORDER.length*280,function(){ SK(0,1300); });
+     PULSE(1000+ORDER.length*280+900,{settle:900}); }}],
+ ['90','ON THE FORMULA — DOUBLE EXPOSURE','59 re-cast. A long held double exposure, then one decisive release in which the readings and the drawing cross.',
+   {on:600,onMs:1300,hold:2200,skPeak:1,ho:function(){ hoGlobal({fade:1300,per:800,step:170}); }}],
+ ['91','ON THE FORMULA — CUT','60 re-cast. No dissolve at all: the drawing is gone on the same frame the first reading lands.',
+   {on:700,onMs:900,hold:1200,ho:function(){
+     /* still a cut, not a dissolve — but it lands AFTER the first two
+        readings have started, so the drawing and the reading do overlap,
+        for about a third of a second, and then it is simply gone. */
+     ORDER.forEach(function(k){ ARM(k); });
+     ORDER.forEach(function(k,i){ at(i*220,function(){ DG(k,PEAK,240); DRAW(k,700,30); }); });
+     at(420,function(){ SK(0,90); });
+     PULSE(ORDER.length*220+900,{settle:900}); }}],
+ ['92','ON THE FORMULA — COLLAPSE','61 re-cast. The drawing contracts back to its structural patches, and each patch is replaced by the reading drawn over it.',
+   {on:700,onMs:1200,hold:900,ho:function(){ hoCollapse({collapse:1400,step:300}); }}],
+ ['93','ON THE FORMULA — WHITE TO GOLD','62 re-cast. The readings arrive in the drawing’s own white, thin and hand-made, as the drawing leaves — then turn gold and become measurements.',
+   {on:700,onMs:1200,hold:900,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); COL(k,'rgba(255,255,255,.92)',0); WID(k,.7,0); });
+     SK(0,2600);
+     ORDER.forEach(function(k,i){ at(i*230,function(){ DG(k,.88,320); DRAW(k,900,36); }); });
+     var end=ORDER.length*230+900;
+     at(end,function(){ ORDER.forEach(function(k){ COL(k,'#d8b87a',1100); WID(k,1,1100); }); });
+     PULSE(end+1200,{settle:900}); }}],
+ ['94','ON THE FORMULA — THREE TRACES','63 re-cast. Most of the drawing goes at once; three traces are held over the machine and swapped one at a time for their readings.',
+   {on:700,onMs:1200,hold:900,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     ['rearw','batt','swing'].forEach(function(r){ KP(r,1,0); });
+     MB(0,1300);
+     [['rearw','l19'],['batt','l0'],['swing','l14']].forEach(function(pr,i){
+       at(1400+i*720,function(){ KP(pr[0],0,850); DG(pr[1],PEAK,450); DRAW(pr[1],820,40); }); });
+     var rest=ORDER.filter(function(k){ return ['l19','l0','l14'].indexOf(k)<0; });
+     rest.forEach(function(k,i){ at(3400+i*230,function(){ DG(k,PEAK,320); DRAW(k,820,40); }); });
+     at(3400,function(){ SK(0,900); });
+     PULSE(3400+rest.length*230+900,{settle:900}); }}],
+ ['95','ON THE FORMULA — GONE BY HALFWAY','64 re-cast. The drawing is completely gone before the readings are halfway in, so the second half runs on nothing but the machine.',
+   {on:700,onMs:1200,hold:1000,ho:function(){ hoGlobal({fade:1500,per:900,step:300}); }}],
+ ['96','ON THE FORMULA — RESIDUE','65 re-cast. The drawing stops just short of nothing — eight per cent — and stays there under the reading.',
+   {on:700,onMs:1200,hold:1000,ho:function(){ hoGlobal({fade:2400,per:900,step:260,end:.08}); }}],
+ ['97','ON THE FORMULA — EACH LINE PUSHES','66 re-cast. Every reading taken pushes the drawing down one step. Eleven readings, eleven steps, and the drawing is gone on the last one.',
+   {on:700,onMs:1100,hold:800,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     ORDER.forEach(function(k,i){
+       at(i*560,function(){ DG(k,PEAK,420); DRAW(k,800,40); SK(.9*(1-(i+1)/ORDER.length),900); }); });
+     PULSE(ORDER.length*560+700,{settle:900}); }}],
+ ['98','ON THE FORMULA — READ AND CLEAR','67 re-cast. Slower than 87 and with the erase running well ahead of the line, so the clearing leads and the reading follows into it.',
+   {on:700,onMs:1200,hold:1100,ho:function(){ hoFeature({step:780,per:1000,erase:1400}); }}],
+ ['99','ON THE FORMULA — BEATS','68 re-cast. Machine. Silence. Drawing. Silence. Handover. Each stage given its own moment.',
+   {on:900,onMs:900,hold:1800,ho:function(){ hoGlobal({fade:2200,per:1000,step:380}); }}],
+ ['100','ON THE FORMULA — ONE EDGE','69 re-cast, and the strongest of the thirty. A single edge crosses the frame: it erases the drawing as it goes, and each reading draws itself the moment the edge reaches it. The machine is already there underneath, so nothing is ever empty.',
+   {on:700,onMs:1200,hold:1000,ho:function(){ hoWipe({ms:3300,per:900}); }}],
+ ['101','ON THE FORMULA — SIMPLE','70 re-cast. Considered rather than quick, and nothing in it but the handover itself.',
+   {on:800,onMs:1200,hold:1200,ho:function(){ hoGlobal({fade:2600,per:1000,step:270}); }}],
+ ['102','ON THE FORMULA — ANALYTICAL PASS','71 re-cast — the pace you liked, with the overlap. The drawing holds long enough to be read against the object before it hands over.',
+   {on:600,onMs:1300,hold:1400,ho:function(){ hoGlobal({fade:2800,per:1000,step:280}); }}],
+ ['103','ON THE FORMULA — OPENS COMBINED','72 re-cast. No arrival at all: the machine and the drawing are both there in the first frame, and the sequence is only the handover.',
+   {on:0,onMs:0,hold:1500,skPeak:.72,open:true,ho:function(){ hoGlobal({fade:2500,per:950,step:250}); }}],
+ ['104','ON THE FORMULA — PART BY PART','73 re-cast. The drawing leaves in the bike’s own order — wheels, enclosure, frame, upper body — and each part’s reading lands as it clears.',
+   {on:700,onMs:1200,hold:900,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     var seq=[['rearw','frontw'],['batt','ribs'],['swing','fork'],['tank','seat']];
+     seq.forEach(function(rs,i){ at(i*760,function(){ rs.forEach(function(r){ ER(r,1,950); }); }); });
+     ORDER.forEach(function(k,i){ at(150+i*280,function(){ DG(k,PEAK,420); DRAW(k,880,40); }); });
+     at(seq.length*760+300,function(){ SK(0,900); MB(0,900); });
+     PULSE(seq.length*760+1300,{settle:900}); }}],
+ ['105','ON THE FORMULA — PUSHED OUT','74 re-cast. A soft front spreads from the middle of the machine, taking the drawing with it, and the readings follow it outward.',
+   {on:700,onMs:1200,hold:900,ho:function(){
+     PUSH(0,0);
+     ORDER.forEach(function(k){ ARM(k); });
+     at(20,function(){ PUSH(1,2800); });
+     ORDER.forEach(function(k,i){ at(300+i*260,function(){ DG(k,PEAK,420); DRAW(k,880,40); }); });
+     at(2900,function(){ SK(0,800); });
+     PULSE(ORDER.length*260+1400,{settle:900}); }}],
+ ['106','ON THE FORMULA — KEY LINES','75 re-cast. Everything but the identity goes — silhouette, wheels, enclosure — and those survivors are handed directly to the readings drawn over them.',
+   {on:700,onMs:1200,hold:1000,ho:function(){ hoCollapse({collapse:1200,step:270}); }}],
+ ['107','ON THE FORMULA — GHOST','76 re-cast. The drawing is only ever faint. It strengthens once, as though something is being checked, and releases into the reading.',
+   {on:400,onMs:900,hold:1200,skPeak:.42,ho:function(){ hoGlobal({fade:2000,per:900,step:250}); }}],
+ ['108','ON THE FORMULA — TWO PASSES','77 re-cast. The drawing crosses the machine twice; the readings begin on the first pass and finish on the second.',
+   {on:600,onMs:800,hold:700,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     ORDER.slice(0,5).forEach(function(k,i){ at(i*300,function(){ DG(k,PEAK,420); DRAW(k,850,40); }); });
+     at(1500,function(){ SK(.12,700); });
+     at(2300,function(){ SK(.58,700); });
+     ORDER.slice(5).forEach(function(k,i){ at(3000+i*300,function(){ DG(k,PEAK,420); DRAW(k,850,40); }); });
+     at(3100,function(){ SK(0,1500); });
+     PULSE(3000+(ORDER.length-5)*300+900,{settle:900}); }}],
+ ['109','ON THE FORMULA — FINDINGS LEAD','78 re-cast. Nothing is on a clock: the drawing only retreats when a reading is taken, so the findings are what clear the picture.',
+   {on:700,onMs:1200,hold:900,ho:function(){ hoFeature({step:700,per:900,erase:1100}); }}],
+ ['110','ON THE FORMULA — DEVELOPING','79 re-cast. The drawing arrives soft and resolves onto the machine — grain, contrast, focus — then dissolves from its interior outward as the readings come up through it.',
+   {on:600,onMs:1500,hold:1100,skPeak:.95,ho:function(){
+     ORDER.forEach(function(k){ ARM(k); });
+     ['batt','ribs','swing','fork','tank'].forEach(function(r,i){
+       at(i*280,function(){ ER(r,1,1500); }); });
+     ORDER.forEach(function(k,i){ at(200+i*270,function(){ DG(k,PEAK,420); DRAW(k,1000,40); }); });
+     at(2200,function(){ SK(0,1400); MB(0,1400); });
+     PULSE(ORDER.length*270+1500,{settle:900}); }}]
+].forEach(function(e){
+  var num=e[0], name=e[1], note=e[2], C=e[3];
+  VARS.push([num,name,note,
+    ['THE MACHINE','THE DRAWING','HELD','HANDOVER — DRAWING ↔ READING'],
+    function(){
+      /* 1 · the machine, complete, in the first frame. The photograph never
+         dims in any of these — only the drawing comes and goes over it. */
+      PH(1,0);
+      SK(C.open ? (C.skPeak==null?.9:C.skPeak) : 0, 0);
+      P(0,0);
+      /* 2 · the drawing comes over it */
+      if(!C.open) at(C.on,function(){ phase(1); SK(C.skPeak==null?.9:C.skPeak, C.onMs); });
+      /* 3 · held together */
+      var held=(C.open?0:C.on+C.onMs);
+      P(2,held);
+      /* 4 · the handover — the drawing leaves WHILE the readings draw on */
+      at(held+C.hold,function(){ phase(3); C.ho(); });
+    }]);
+});
 VARS.sort(function(a,b){ return (+a[0])-(+b[0]); });
 /* ---- the bar, the read-out, and the replay ----------------------------- */
 var boxes=document.getElementById('boxes');
