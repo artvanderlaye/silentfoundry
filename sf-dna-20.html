@@ -142,36 +142,41 @@ var DIR=[
  {L:['v','u','q','t','c','f','d','e','i','j','k','o','n','l','s','p'],
   col:PAL.goldL, resid:.22,
   widf:function(k){ return {l:1.2,o:4.0,i:1.6,j:2.2,s:1.6,t:2.2,p:0.7}[k]||2.4; },
-  opf:{l:0.55,s:0.85}, gridHold:2400, gridOut:1400}],
-
-['03','TRUE HIERARCHY',
- 'Fifteen readings, weighted by what matters: silhouette heaviest, structure next, fixings light, the axes a hairline. Rubber shown with its ribs.',
- {L:K15,col:PAL.goldL,resid:.20,
-  widf:function(k){ return {v:4.5,x:3.6,c:3.2,y:3.2}[k]||{f:2.0,o:2.0,n:2.2,l:1.6,e:1.8,h:1.8,j:2.2,r:2.2}[k]||{d:1.2,s:1.2,t:1.4}[k]||0.7; }}],
-
-['07','SWITCH CYAN',
- 'Everything in the SWITCH blue. The most electric the set gets. Rubber as ribs only.',
- {L:K15.map(function(k){return k==='h'?'i':k;}),col:PAL.cy,wid:2.4,resid:.20}],
-
-['09','HEAT MAP',
- 'Colour by how deep the reading goes: silhouette cream, structure gold, materials orange, fixings cyan, axes black.',
- {L:K15,resid:.18,wid:2.4,colf:famCol({s:PAL.gold,x:PAL.cyP,m:PAL.orangeW,e:PAL.orange,z:PAL.ink})}],
-
-['13','HARD CONTRAST',
- 'Rest at 10%, peak at 100%, and a quick pulse — eased back a little from where it was. The reading almost disappears between beats, so the pulse becomes the whole event. Rubber with ribs.',
- {L:K15,col:PAL.goldL,wid:2.6,resid:.16,base:.10,peak:1,pulse:{up:820,down:1260,step:600}}],
-
-['16','HALF TIME',
- 'Every number in BASE halved — photograph for 1.1 seconds, then drawing, residue and readings, resolved in under two. Cream and lighter, so it reads differently as well as arriving faster.',
- {L:K11,col:PAL.creamW,wid:1.8,resid:.30,base:.36,peak:1,
-  t:{lead:1100,on:340,hold:300,drop:420,arrive:230,settle:380}}],
-
-['18','THREE WAVES',
- 'Still nothing draws itself on, but the families land in three quick waves 200ms apart, each in its own colour: structure gold, fixings cyan, materials black.',
- {L:K15,wid:2.6,resid:.18,
-  colf:famCol({s:PAL.goldL,x:PAL.cyB,m:PAL.ink,e:PAL.ink,z:PAL.grey}),
-  waves:[['s'],['x','e'],['m','z']]}]
+  opf:{l:0.55,s:0.85}, gridHold:2400, gridOut:1400}]
 ];
+
+/* ---- your sixteen, one at a time ---------------------------------------
+   The same sixteen readings BASE 2 is built from, each on its own box,
+   running BASE's exact cycle so the only variable is the reading itself.
+   Weights and opacities are the ones it carries INSIDE BASE 2, so what you
+   see here is what that piece contributes there. Numbers are the builder's
+   original layer numbers, kept so 21 is still 21. */
+var SIXTEEN=[
+ ['c','03','BATTERY SHAPE',   'The pack outline. The single biggest closed form on the machine.'],
+ ['d','04','SCREW HOLES',     'Every fixing point on the plate. Small, scattered, and read as a constellation.'],
+ ['e','05','SIDE BIT',        'The side panel break. One long line that sets where the body stops.'],
+ ['f','06','BATTERY RIBS',    'The cooling ribs. The densest reading in the set and the one you notice first.'],
+ ['i','09','RUBBER LINES',    'The tread lines on their own, without the tyre wall around them.'],
+ ['j','10','SPRING',          'The coil, traced from its silhouette so it reads as a spring and not a squiggle.'],
+ ['k','11','CHAMFERS',        'The cut edges. Where the machined faces meet.'],
+ ['l','12','LINES',           'The fork construction lines. Deliberately faint here, as they are in BASE 2.'],
+ ['n','14','TOP LINE',        'The single line across the top of the frame.'],
+ ['o','15','BEND RADIUS',     'The corners. Heavy, because it is the one thing that decides the stance.'],
+ ['p','16','THE GRID',        'The naughts-and-crosses axes. Thin, quiet, and gone before the rest settles.'],
+ ['q','17','CIRCLES',         'The wheel circles. The geometry the whole side view hangs off.'],
+ ['s','19','SCREWS',          'The fasteners themselves, held back so they never compete with the form.'],
+ ['t','20','CIRCLES SMALL',   'The hub circles. The inner set.'],
+ ['u','21','TYRE OUTLINE',    'The tyre wall, four arcs, with the tread kept in the geometry.'],
+ ['v','22','TYRE FULL',       'The complete tyre, two closed rings, bumps and all.']
+];
+var W16={l:1.2,o:4.0,i:1.6,j:2.2,s:1.6,t:2.2,p:0.7};
+var O16={l:0.55,s:0.85};
+SIXTEEN.forEach(function(r,n){
+  var k=r[0], C={L:[k],col:PAL.goldL,resid:.22,wid:W16[k]||2.4};
+  if(O16[k]!=null) C.opf=(function(){var o={};o[k]=O16[k];return o;})();
+  if(k==='p'){ C.gridHold=2400; C.gridOut=1400; }
+  DIR.push([ (n+1<10?'0':'')+(n+1), r[1]+' \u2014 '+r[2], r[3], C ]);
+});
 /* ---- the stage --------------------------------------------------------
    Same construction as everywhere else: one SVG in the photograph's own
    2000x1333 space, sized to the same box and sliced, so the readings are
@@ -268,6 +273,7 @@ function run(C){
   var P=(C.pulse&&C.pulse.up)?C.pulse:{up:1250,down:2100,step:900};
   at(A+ms+300,function pulse(){
     var PL=L.filter(function(k){ return k!=='p'; });   /* the grid never pulses */
+    if(!PL.length) return;                             /* ...so a grid-only box has nothing to beat */
     var i=0;
     (function beat(){
       var k=PL[i%PL.length];
