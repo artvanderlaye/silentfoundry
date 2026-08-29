@@ -31,6 +31,10 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
 #stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 #photo{filter:brightness(.9)}
 #dna image{filter:invert(1);}
+/* box 49 mirrors the live site, where .pvline carries filter:invert(1)
+   opacity(.85) — the same 15% is applied here rather than changing the
+   sketch's own opacity, so it is the identical operation. */
+#stage.sk85 #dna image{filter:invert(1) opacity(.85);}
 #dna #sk{opacity:0;transition:opacity 1s ease;}
 #stage.sk #dna #sk{opacity:.26}
 #dna{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
@@ -195,9 +199,10 @@ function runDraw(k,ms,stagger){
   });
 }
 /* f is a MULTIPLIER on the layer's own weight, never an absolute width */
-function stroke(k,f,c,ms){
+function stroke(k,f,c,ms,ease){
+  var e=ease||'ease';
   paths(k).forEach(function(p){
-    p.style.transition='stroke-width '+(ms||600)+'ms ease,stroke '+(ms||600)+'ms ease';
+    p.style.transition='stroke-width '+(ms||600)+'ms '+e+',stroke '+(ms||600)+'ms '+e;
     if(f) p.style.strokeWidth=(bw(k)*f).toFixed(2)+'px';
     if(c) p.style.stroke=c;
   });
@@ -245,17 +250,17 @@ wave:function(C){
      on top of the first. */
   function tyre(n){
     var want=C.alt[n%C.alt.length], had=K[0];
-    if(had!==want) setG(had,0,C.down);
+    if(had!==want) setG(had,0,C.down,C.ease);
     K[0]=want;
-    stroke(want,1,(C.altCol&&C.altCol[n%C.alt.length])||'#d8b87a',C.down);
-    setG(want,C.base,C.down);
+    stroke(want,1,(C.altCol&&C.altCol[n%C.alt.length])||'#d8b87a',C.down,C.ease);
+    setG(want,C.base,C.down,C.ease);
   }
   if(C.alt) tyre(0);
-  K.forEach(function(k){ setG(k,C.base,C.down); });
+  K.forEach(function(k){ setG(k,C.base,C.down,C.ease); });
   at(C.down,function pulse(){
     var k=K[i];
-    setG(k,1,C.up);
-    at(C.up,function(){ setG(k,C.base,C.down); });
+    setG(k,C.peak||1,C.up,C.ease);
+    at(C.up,function(){ setG(k,C.base,C.down,C.ease); });
     i=(i+1)%K.length;
     if(i===0 && C.alt) tyre(++pass);
     at(C.step,pulse);
@@ -381,7 +386,8 @@ var B=[
  ['46','BLACKOUT — SLOW','The photograph falling away over four seconds as the DNA draws on. Tyre 21.','blackout',{tyre:T21,per:1500,step:420,px:44,dark:4200,hold:4200}],
  ['47','PULSE — COLOUR','40 with the palette from 41: structure gold, fixings cyan, tyre white, axes dim, and the current still running through them. Tyre 21.','wave',{tyre:T21,colour:true,base:.30,up:700,down:1200,step:520}],
  ['48','PULSE — WHEEL SWAP','40, but the wheel changes every pass: the complete circle, then the rugged broken tread in white, and back.','wave',{alt:[T21,T20],altCol:['#d8b87a','rgba(255,255,255,.92)'],base:.30,up:1250,down:2100,step:900}],
- ['49','COLOUR CODED — CYCLED','41 with the fade-out put back on: the families arrive in order, hold, and leave in order. Tyre 20.','colourcycle',{tyre:T20,step:140,fade:2200,hold:2600,out:1400}]
+ ['49','AS BUILT — THE DEV SITE','Exactly what is running on the SWITCH hero: peak .92 rather than 1, symmetric easing, 900ms between layers, and the sketch pulled back the same 15%.','wave',{alt:[T21,T20],altCol:['#d8b87a','rgba(255,255,255,.92)'],base:.30,peak:.92,up:1250,down:2100,step:900,ease:'cubic-bezier(.4,0,.6,1)',sk85:true}],
+ ['50','COLOUR CODED — CYCLED','41 with the fade-out put back on: the families arrive in order, hold, and leave in order. Tyre 20.','colourcycle',{tyre:T20,step:140,fade:2200,hold:2600,out:1400}]
 ];
 var PRESETS=A.concat(B);
 
@@ -405,6 +411,7 @@ function show(i){
   nt.textContent=it[2]; nt.style.display=it[2]?'':'none';
   [].forEach.call(boxes.children,function(b,n){ b.classList.toggle('on',n===cur); });
   stage.classList.toggle('sk', cur>=1);
+  stage.classList.toggle('sk85', !!(isP && it[4] && it[4].sk85));
   [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
     g.classList.toggle('on', !isP && it[3].indexOf(g.dataset.k)>=0); });
   if(isP) PLAY[it[3]](it[4]);
