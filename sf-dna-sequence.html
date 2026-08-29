@@ -4,6 +4,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>SWITCH — DNA Extraction Sequence Lab — Silent Foundry</title>
+<link rel="preload" as="image" href="images/SWITCH_eSCRAMBLER_bike-6.jpg">
+<link rel="preload" as="image" href="images/bike-side-sketch.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -26,8 +28,25 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
   max-width:min(100%,620px);margin:14px 0 26px;}
 
 /* ---- the stage.  Ground is black, so photo opacity 0 IS absence. -------- */
-#stage{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#000;}
-#photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:1;}
+/* THE GROUND IS NEVER BLACK.
+
+   #ghost is the same photograph, always at full opacity, held back to a cold
+   monochrome. It is what "the machine is not here yet" now looks like: the
+   object present but withdrawn, rather than an empty canvas. #photo is the
+   live frame stacked over it and is what every sequence actually animates —
+   so PH(0) means "ghosted", not "gone", and no variation can open on black.
+   The five .rv layers are the same image again, each clipped to one region,
+   for the sequences that bring the machine back a part at a time. */
+#stage{position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#0d1013;}
+#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+#ghost{opacity:1;filter:grayscale(1) brightness(.44) contrast(1.06);}
+.rv{opacity:0;}
+.rv[data-r="rearw"] {clip-path:inset(40% 60% 8% 10%);}
+.rv[data-r="frontw"]{clip-path:inset(40% 8% 8% 60%);}
+.rv[data-r="batt"]  {clip-path:inset(42% 38% 26% 42%);}
+.rv[data-r="frame"] {clip-path:inset(26% 8% 42% 10%);}
+.rv[data-r="upper"] {clip-path:inset(0% 8% 74% 10%);}
+#photo{opacity:1;}
 #dna{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
 /* the sketch PNG is black line art on TRANSPARENT (mode LA), so invert(1)
    gives white lines over whatever is beneath — it never blacks out the photo.
@@ -99,6 +118,12 @@ h1{font-family:'Bebas Neue',sans-serif;font-weight:300;text-transform:uppercase;
     from it.</p>
 
   <div id="stage">
+    <img id="ghost" src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
+    <img class="rv" data-r="rearw"  src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
+    <img class="rv" data-r="frontw" src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
+    <img class="rv" data-r="batt"   src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
+    <img class="rv" data-r="frame"  src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
+    <img class="rv" data-r="upper"  src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="" aria-hidden="true">
     <img id="photo" src="images/SWITCH_eSCRAMBLER_bike-6.jpg" alt="SWITCH eSCRAMBLER">
     <svg id="dna" viewBox="0 0 2000 1333" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
   </div>
@@ -155,7 +180,8 @@ var RFOR={l19:'rearw',l18:'frontw',l14:'swing',l0:'batt',l3:'ribs',l1:'batt',
   l2:'batt',l4:'batt',l9:'fork',l8:'seat',l6:'fork',l10:'b3'};
 
 var svg=document.getElementById('dna'), photo=document.getElementById('photo'),
-    stage=document.getElementById('stage');
+    ghost=document.getElementById('ghost'), stage=document.getElementById('stage');
+function RVn(r){ return document.querySelector('.rv[data-r="'+r+'"]'); }
 
 /* ---- build ------------------------------------------------------------- */
 (function(){
@@ -178,6 +204,10 @@ var svg=document.getElementById('dna'), photo=document.getElementById('photo'),
           coincide exactly with the photograph's clip edge, and a blurred edge
           would not. */
        '<rect id="mwipe" x="-2100" y="-40" width="2100" height="1413" fill="#000"/>'+
+       /* 74's push-through: a disc that grows from the middle of the machine
+          and eats the drawing outward, so reality arrives from within it. */
+       '<circle id="mpush" cx="1010" cy="800" r="1400" fill="#000" '+
+         'style="transform:scale(0);transform-origin:1010px 800px" filter="url(#mblur)"/>'+
      '</mask>'+
    '</defs>'+
    '<g id="sk" mask="url(#skm)"><image href="images/bike-side-sketch.png" '+
@@ -187,7 +217,7 @@ var svg=document.getElementById('dna'), photo=document.getElementById('photo'),
        return '<path d="'+d+'"/>'; }).join('')+'</g>'; }).join('');
 })();
 var skg=document.getElementById('sk'), mbase=document.getElementById('mbase'),
-    mwipe=document.getElementById('mwipe');
+    mwipe=document.getElementById('mwipe'), mpush=document.getElementById('mpush');
 function G(k){ return svg.querySelector('g[data-k="'+k+'"]'); }
 function paths(k){ return [].slice.call(G(k).children); }
 function mer(r){ return svg.querySelector('.mer[data-r="'+r+'"]'); }
@@ -203,10 +233,17 @@ function tw(el,prop,val,ms,ease){
 }
 /* ---- the three layers -------------------------------------------------- */
 function SK(o,ms,e){ tw(skg,'opacity',String(o),ms,e); }
+/* PH is now "how present is the machine", 0-1. At 0 the live frame is gone
+   but the GHOST is still there, so the stage is never empty. */
 function PH(o,ms,e){ tw(photo,'opacity',String(o),ms,e); }
+function GH(f,ms,e){ tw(ghost,'filter',f,ms,e); }
+function RV(r,o,ms,e){ var n=RVn(r); if(n) tw(n,'opacity',String(o),ms,e); }
+function RVALL(o,ms,e){ ['rearw','frontw','batt','frame','upper'].forEach(function(r){ RV(r,o,ms,e); }); }
+function PUSH(s,ms,e){ tw(mpush,'transform','scale('+s+')',ms,e||'cubic-bezier(.4,0,.3,1)'); }
 function PHCLIP(v,ms,e){ tw(photo,'clip-path',v,ms,e); }
 function MB(o,ms,e){ tw(mbase,'opacity',String(o),ms,e); }
 function WIPE(x,ms,e){ tw(mwipe,'transform','translateX('+x+'px)',ms,e||'linear'); }
+var GHOSTF='grayscale(1) brightness(.44) contrast(1.06)';
 function ER(r,o,ms,e){ var n=mer(r); if(n) tw(n,'opacity',String(o),ms,e); }
 function KP(r,o,ms,e){ var n=mkp(r); if(n) tw(n,'opacity',String(o),ms,e); }
 function DG(k,o,ms,e){ var g=G(k); if(!g) return;
@@ -263,14 +300,16 @@ function DRAWIN(delay,per,step){
 /* ---- reset: the true initial state, every time ------------------------- */
 function reset(){
   tok++; TM.forEach(clearTimeout); TM=[];
-  [skg,photo,mbase].forEach(function(n){ n.removeAttribute('style'); });
+  [skg,photo,ghost,mbase,mwipe,mpush].forEach(function(n){ n.removeAttribute('style'); });
+  [].forEach.call(document.querySelectorAll('.rv'),function(n){ n.removeAttribute('style'); });
   [].forEach.call(svg.querySelectorAll('.mer,.mkp'),function(n){
     n.setAttribute('opacity','0'); n.removeAttribute('style'); });
   [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
     g.removeAttribute('style');
     [].forEach.call(g.children,function(p){ p.removeAttribute('style'); }); });
   void svg.getBoundingClientRect();
-  SK(0,0); PH(1,0); MB(1,0); PHCLIP('none',0); WIPE(0,0);
+  SK(0,0); PH(1,0); MB(1,0); PHCLIP('none',0); WIPE(0,0); PUSH(0,0);
+  GH(GHOSTF,0); RVALL(0,0);
   /* belt and braces: a group left mid-fade by the previous variation is
      written to zero with no transition rather than left to the stylesheet */
   [].forEach.call(svg.querySelectorAll('g[data-k]'),function(g){
@@ -513,7 +552,140 @@ var VARS=[
   PULSE(6600,{settle:700}); P(6,6600);
 }]
 ];
-/* keep the bar in numerical order however the ideas were grouped above */
+/* =====================================================================
+   70-79 — THE SKETCH / IMAGE RELATIONSHIP, ten ways.
+   Every one of these opens on something you can read: full drawing over
+   the ghosted machine, or the live machine itself. Never an empty frame.
+   ===================================================================== */
+VARS.push(
+['70','SKETCH FIRST / CLEAN DISSOLVE','The simplest statement of the idea. The drawing at full strength over the ghosted machine, a short hold, one dissolve, a clean beat, then the reading. Nothing clever.',
+ ['SKETCH','DISSOLVE','CLEAN','EXTRACTION'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  at(1300,function(){ phase(1); SK(0,2400); PH(1,2400); });
+  P(2,3700);
+  PULSE(5100); P(3,5100);
+}],
+
+['71','IMAGE FIRST / ANALYTICAL SKETCH PASS','The machine is there from frame one. The drawing arrives over it like an instrument pass, holds long enough to be read against the object, and leaves. The reading follows on a clean photograph.',
+ ['IMAGE','SKETCH PASSES OVER','COMBINED — HELD','CLEAN','EXTRACTION'],function(){
+  SK(0,0); PH(1,0); P(0,0);
+  at(600,function(){ phase(1); SK(.92,1300); });
+  P(2,1900);
+  at(3300,function(){ phase(3); SK(0,1200); });
+  PULSE(4800); P(4,4800);
+}],
+
+['72','50 / 50 INITIAL STATE','Opens already in double exposure — no fade in, no build. The drawing and the machine share the frame from the first instant, and the sequence is the resolve out of that into the photograph alone.',
+ ['50 / 50','RESOLVE','EXTRACTION'],function(){
+  SK(.72,0); PH(.5,0); P(0,0);
+  at(1600,function(){ phase(1); SK(0,2200); PH(1,2200); });
+  PULSE(4300); P(2,4300);
+}],
+
+['73','SKETCH REVEALS PHOTO LOCALLY','The machine does not arrive as one picture. It comes back a part at a time — wheels, enclosure, frame, upper body — each region resolving out of the ghost under the drawing before the drawing goes.',
+ ['SKETCH','WHEELS','ENCLOSURE','FRAME','UPPER BODY','CLEAN','EXTRACTION'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  var steps=[[['rearw','frontw'],1],[['batt'],2],[['frame'],3],[['upper'],4]];
+  steps.forEach(function(s,i){
+    at(1000+i*900,function(){ phase(s[1]); s[0].forEach(function(r){ RV(r,1,1000); }); }); });
+  at(4800,function(){ phase(5); PH(1,900); SK(0,1100); });
+  at(6100,function(){ RVALL(0,0); });
+  PULSE(6300); P(6,6300);
+}],
+
+['74','PHOTO PUSHES THROUGH SKETCH','Not a cross-fade. Reality arrives from inside the machine and pushes outward — a soft front spreading from the centre that consumes the drawing as it goes, so the sketch reads as a surface being replaced rather than dimmed.',
+ ['SKETCH','THE PUSH','CLEAN','EXTRACTION'],function(){
+  SK(1,0); PH(0,0); PUSH(0,0); P(0,0);
+  at(1100,function(){ phase(1); PUSH(1,3000); PH(1,3000,'cubic-bezier(.5,0,.35,1)'); });
+  at(4200,function(){ phase(2); SK(0,700); });
+  PULSE(5300); P(3,5300);
+}],
+
+['75','SKETCH REDUCES TO KEY LINES','Most of the drawing goes as the machine resolves, but the identity survives: silhouette, both wheel circles, the enclosure. Those held lines are then handed to the extraction, which draws over exactly where they were.',
+ ['SKETCH','MACHINE RESOLVES','KEY LINES ONLY','HANDED OVER'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  at(900,function(){ phase(1); PH(1,2000); });
+  at(2600,function(){ phase(2);
+    ['rearw','frontw','batt','seat'].forEach(function(r){ KP(r,1,0); });
+    MB(0,1500); });
+  ORDER.forEach(function(k){ ARM(k); });
+  at(4600,function(){ phase(3);
+    ['rearw','frontw','batt','seat'].forEach(function(r,i){
+      at(i*180,function(){ KP(r,0,1100); }); }); });
+  ORDER.forEach(function(k,i){ at(4700+i*240,function(){ DG(k,PEAK,320); DRAW(k,900,40); }); });
+  PULSE(4700+ORDER.length*240+900+400,{settle:900});
+}],
+
+['76','PHOTO WITH GHOST SKETCH','Opens on the machine with the drawing already faintly on it — fifteen per cent, the residue of having been designed. It strengthens once, briefly, as though something is being checked, then releases entirely before the reading.',
+ ['IMAGE + GHOST SKETCH','ANALYSING','RELEASE','EXTRACTION'],function(){
+  SK(.15,0); PH(1,0); P(0,0);
+  at(1100,function(){ phase(1); SK(.40,1100); });
+  at(2900,function(){ phase(2); SK(0,1400); });
+  PULSE(4300); P(3,4300);
+}],
+
+['77','ALTERNATING STATES','Design, reality, analysis, reality. The frame swaps twice before it settles, and the second visit to the drawing is deliberately thinner than the first, so the alternation reads as a narrowing rather than a loop.',
+ ['SKETCH','IMAGE','SKETCH AGAIN — THINNER','IMAGE','EXTRACTION'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  at(1000,function(){ phase(1); SK(0,900); PH(1,900); });
+  at(2400,function(){ phase(2); SK(.55,700); PH(.35,700); });
+  at(3700,function(){ phase(3); SK(0,900); PH(1,900); });
+  PULSE(5000); P(4,5000);
+}],
+
+['78','FEATURE-DRIVEN TRANSITION','The machine is not revealed by time, it is revealed by findings. Every reading taken pulls the photograph one step further out of the ghost and erases the drawing around itself. When the last reading lands the picture is complete.',
+ ['SKETCH','EACH FINDING REVEALS MORE','COMPLETE'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  ORDER.forEach(function(k){ ARM(k); });
+  ORDER.forEach(function(k,i){
+    var f=(i+1)/ORDER.length;
+    at(900+i*680,function(){
+      if(i===0) phase(1);
+      DG(k,PEAK,420); DRAW(k,800,40);
+      PH(f,1000); ER(RFOR[k],1,1100);
+    }); });
+  var end=900+ORDER.length*680+600;
+  at(end,function(){ phase(2); SK(0,900); MB(0,900); });
+  PULSE(end+700,{settle:900});
+}],
+
+['79','CLAUDE INDEPENDENT — THE DEVELOPING PRINT','The machine is not faded in, it is DEVELOPED. It starts flat, cold and soft under the drawing and resolves — grain, contrast, colour, focus — the way a print comes up. The drawing loses its interior first and holds its outline longest, so the last thing to go is the silhouette, and the reading begins on the beat it releases.',
+ ['DRAWING OVER A LATENT PRINT','DEVELOPING','ONLY THE OUTLINE LEFT','THE READING'],function(){
+  SK(1,0); PH(0,0); P(0,0);
+  GH('grayscale(1) brightness(.62) contrast(1.28) blur(2.6px)',0);
+  at(1200,function(){ phase(1);
+    /* the print comes up: grain, contrast, colour and focus together */
+    GH('grayscale(0) brightness(1) contrast(1) blur(0px)',3400,'cubic-bezier(.32,0,.3,1)');
+    PH(1,3400,'cubic-bezier(.32,0,.3,1)');
+    /* the drawing loses its middle first and keeps its outline */
+    ['batt','ribs','swing','fork','tank'].forEach(function(r,i){
+      at(400+i*300,function(){ ER(r,1,1400); }); });
+  });
+  at(4800,function(){ phase(2); SK(.55,900); });
+  at(5900,function(){ phase(3); SK(0,900); MB(0,900); });
+  DRAWIN(6100,1000,280);
+}],
+
+/* =====================================================================
+   80 — the synthesis. See the note.
+   ===================================================================== */
+['80','BEST SYNTHESIS','The best part of each: 72’s honest opening — drawing and machine both present from the first frame, nothing to wait for. 69’s single travelling edge for the handoff, because it is the only one that makes the change feel CAUSED rather than cross-faded, now running over the ghost so nothing is ever empty. 50’s one clean beat before anything is taken. 69’s draw-on so each reading arrives as a line being made. And it lands exactly where production lands — the live photograph, no drawing, 49’s pulse with the wheel swap — so this is a proposal the site could actually receive.',
+ ['DRAWING + MACHINE','ONE EDGE','CLEAN — ONE BEAT','THE READING'],function(){
+  /* opens already legible: the drawing at full strength, the machine present
+     but held back. No fade from nothing, no black. */
+  SK(1,0); PH(0,0); PHCLIP('inset(0 100% 0 0)',0); WIPE(0,0); MB(1,0); P(0,0);
+  at(1400,function(){ phase(1);
+    PH(1,0);
+    /* one edge, two layers, linear and identical: the drawing is gone exactly
+       where the machine has arrived and nowhere else. */
+    PHCLIP('inset(0 0% 0 0)',3400,'linear');
+    WIPE(2000,3400,'linear');
+  });
+  at(4900,function(){ phase(2); SK(0,600); MB(0,600); });
+  at(5700,function(){ phase(3); });
+  DRAWIN(5900,1000,290);
+}]
+);
 VARS.sort(function(a,b){ return (+a[0])-(+b[0]); });
 /* ---- the bar, the read-out, and the replay ----------------------------- */
 var boxes=document.getElementById('boxes');
