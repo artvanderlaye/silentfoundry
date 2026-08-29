@@ -133,12 +133,16 @@ function famCol(map){ return function(k){ return map[FAM[k]||'s']; }; }
 var T0={lead:2200,on:650,hold:600,drop:800,arrive:450,settle:750};
 
 var DIR=[
-['BASE','BASE — SIXTEEN READINGS',
- 'Your selection. Sixteen readings: battery shape, screw holes, side bit, ribs, rubber ribs, spring, chamfers, fork lines, top line, bend radius, the grid, wheel circles, screws, hub circles, and the tyre both ways. Weights are per reading — the fork lines sit back like construction marks, the bend radius is heavy because it is the corners, and the grid keeps its own rule.',
+['BASE','02 — AS CHOSEN',
+ 'The one you picked, untouched. Eleven readings, gold, 2.4px, the drawing settling to a 22% residue and then releasing. The only thing that has changed under it is the tyre geometry, which now keeps its tread.',
+ {L:K11,col:PAL.goldL,wid:2.4,resid:.22}],
+
+['BASE2','BASE 2 — YOUR SIXTEEN',
+ 'Built on BASE with your selection: battery shape, screw holes, side bit, ribs, rubber ribs, spring, chamfers, fork lines, top line, bend radius, the grid, wheel circles, screws, hub circles, and the tyre both ways. The fork lines sit back like construction marks, the bend radius is heavy because it is the corners, and the grid holds nearly twice as long before it goes.',
  {L:['v','u','q','t','c','f','d','e','i','j','k','o','n','l','s','p'],
   col:PAL.goldL, resid:.22,
   widf:function(k){ return {l:1.2,o:4.0,i:1.6,j:2.2,s:1.6,t:2.2,p:0.7}[k]||2.4; },
-  opf:{l:0.55,s:0.85}}],
+  opf:{l:0.55,s:0.85}, gridHold:2400, gridOut:1400}],
 
 ['03','TRUE HIERARCHY',
  'Fifteen readings, weighted by what matters: silhouette heaviest, structure next, fixings light, the axes a hairline. Rubber shown with its ribs.',
@@ -252,7 +256,8 @@ function run(C){
     at(A,function(){ L.forEach(function(k){ DG(k,lev(k),ms); }); });
   }
   /* and it leaves */
-  if(L.indexOf('p')>=0) at(A+ms+2400,function(){ DG('p',0,1400); });
+  var gHold=C.gridHold==null?1300:C.gridHold, gOut=C.gridOut==null?1000:C.gridOut;
+  if(L.indexOf('p')>=0) at(A+ms+gHold,function(){ DG('p',0,gOut); });
   /* SO DOES THE DRAWING. It was settling to its residue and staying there for
      good — the cycle never ended on the machine. It now releases once the
      readings are established, so the sequence finishes where it should: the
@@ -276,7 +281,7 @@ function run(C){
 var boxes=document.getElementById('boxes'), cur=-1;
 DIR.forEach(function(v,i){
   var b=document.createElement('button');
-  b.className='box'+(i===0?' base':''); b.textContent=v[0];
+  b.className='box'+(i<2?' base':''); b.textContent=v[0];
   b.addEventListener('click',function(){ show(i); });
   boxes.appendChild(b);
 });
