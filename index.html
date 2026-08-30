@@ -27982,6 +27982,12 @@ function play(){
     return;
   }
   var K=ORDER.filter(function(k){ return !NOPULSE[k]; }), i=0;
+  /* THE GRID IS A REFERENCE, NOT A FINDING — so it leaves.
+     It was painted at rest and never taken away, which left the axes on the
+     photograph permanently. BASE 4 holds it 1300ms after the readings settle
+     and then releases it over 1000ms, and that is what happens here: present
+     at first paint, gone by 4.4s, and it does not come back. */
+  at(DOWN+1300,function(){ setG('p',0,1000); });
   at(DOWN,function pulse(){
     var k=K[i];
     setG(k,PEAK,UP);
