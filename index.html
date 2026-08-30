@@ -28123,19 +28123,32 @@ setTimeout(function(){ release(); clearInterval(t); },6000);
    the stylesheet, which applies to whatever node happens to exist. A rebuild
    cannot steal it back.
 
-   The numbers are BASE 4's RESULT, not its raw values: the hero's sketch is
-   an inverted PNG and the builder's is not, so the same opacity does not put
-   the same ink on the photograph. Measured, the hero is 22% stronger per
-   unit (8.66 vs 7.10 mean levels), so 1.00 -> 0.82 and 0.22 -> 0.18.
+   THE POLARITY IS THE WHOLE PROBLEM, and it is why the same numbers do not
+   transfer. bike-side-sketch.png is an LA image: pure black, with the whole
+   drawing carried in the alpha channel (78.9% of it fully transparent, 0.2%
+   fully opaque). The builder draws it as-is, so BASE 4 shows a BLACK pencil
+   drawing on a photograph ghosted to luminance 92.8 — soft, low contrast.
+   The page's own CSS (line ~17994) puts filter:invert(1) on .pvline, which
+   turns that black into WHITE, over a photograph at luminance 65.
+
+   So per unit of alpha x opacity the hero lays down (255-65)=190 levels
+   where the builder lays down 92.8. The hero is 2.05x stronger, not 1.22x —
+   the earlier mean-delta reading was measuring a moving frame. That is the
+   flash: it arrived at twice the contrast BASE 4 arrives at, which also made
+   the residue that follows read as nothing.
+
+   Matched: peak 1.00 -> 0.49 and residue 0.22 -> 0.11, which put 93 and 20
+   levels on the photograph, the same as BASE 4's 93 and 20. Timing is
+   untouched, because it was already identical.
    ------------------------------------------------------------------------- */
 html[data-sk] #sf-lab-mount .pvline{transition:opacity 650ms cubic-bezier(.4,0,.6,1) !important;}
 html[data-sk="pre"] #sf-lab-mount .pvline{opacity:0 !important;transition:none !important;}
-html[data-sk="up"]  #sf-lab-mount .pvline{opacity:.82 !important;}
-html[data-sk="res"] #sf-lab-mount .pvline{opacity:.18 !important;transition:opacity 800ms cubic-bezier(.4,0,.6,1) !important;}
+html[data-sk="up"]  #sf-lab-mount .pvline{opacity:.49 !important;}
+html[data-sk="res"] #sf-lab-mount .pvline{opacity:.11 !important;transition:opacity 800ms cubic-bezier(.4,0,.6,1) !important;}
 html[data-sk="out"] #sf-lab-mount .pvline{opacity:0 !important;transition:opacity 1600ms cubic-bezier(.4,0,.6,1) !important;}
 @media(prefers-reduced-motion:reduce){
   html[data-sk] #sf-lab-mount .pvline{transition:none !important;}
-  html[data-sk="up"] #sf-lab-mount .pvline{opacity:.18 !important;}
+  html[data-sk="up"] #sf-lab-mount .pvline{opacity:.11 !important;}
 }
 </style>
 
