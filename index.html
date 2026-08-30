@@ -28301,5 +28301,86 @@ patchNine(); patchIcons(); sketch();
 })();
 </script>
 
+
+<style id="sf-mob-dna">
+/* =========================================================================
+   MOBILE — THE LINES HAVE TO SCALE WITH THE DRAWING
+
+   Every stroke in this section is vector-effect:non-scaling-stroke, which
+   pins it to an absolute pixel width however small the drawing renders.
+   Measured at 390 against 1440:
+
+     the nine   well 101x87 -> 73x63 (-28%), stroke 2.1px -> 2.1px
+                so the line is 1.38x heavier, proportionally
+     the hero   stage 1344 -> 390, scale 0.672 -> 0.195
+                fin pitch 6.72px -> 1.95px, stroke still 2.4px
+                — a 2.4px stroke on a 1.95px pitch, so the ribs overlap and
+                  the battery fills in as one solid block
+
+   Everything here is inside a mobile media query. Desktop is untouched.
+   ========================================================================= */
+
+@media(max-width:900px){
+  /* ---- the nine drawings: stroke scaled to the well, 2.1 x (73/101) ---- */
+  #sf-lab-mount .fd .dna9 .nt path{stroke-width:1.52 !important;}
+  #sf-lab-mount .fd .dna9 .nt_ribs path,
+  #sf-lab-mount .fd .dna9 .nt_rad path{stroke-width:1.12 !important;}
+  /* the labels are centred here, so the drawings are too. xMinYMid holds a
+     shared left datum, which is right for the 3x3 matrix on a wide screen
+     and wrong the moment the label centres under it. */
+  /* (the actual centring is done by the script below — preserveAspectRatio
+     is a markup attribute and no stylesheet can reach it) */
+
+  /* ---- the hero ------------------------------------------------------- */
+  #sf-lab-mount .pvstage #sf-dnaT path{stroke-width:1.7px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="o"] path{stroke-width:3.0px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="f"] path{stroke-width:1.5px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="u"] path{stroke-width:1.5px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="g"] path{stroke-width:1.2px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="t"] path{stroke-width:1.2px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="x"] path{stroke-width:1.0px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="i"] path{stroke-width:0.8px}
+  /* the proportion grid comes off entirely on a phone — it is a reference,
+     it spans the whole frame, and at this size it is just lines over the
+     machine */
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="p"]{display:none !important;}
+}
+
+@media(max-width:640px){
+  #sf-lab-mount .pvstage #sf-dnaT path{stroke-width:1.3px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="o"] path{stroke-width:2.2px}
+  /* the fins need real gaps: the pitch here is 1.95px */
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="f"] path{stroke-width:0.8px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="u"] path{stroke-width:1.1px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="g"] path{stroke-width:0.9px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="t"] path{stroke-width:0.9px}
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="x"] path{stroke-width:0.8px}
+  /* the rubber grille lines sit at a 0.94px pitch here. No stroke weight can
+     resolve that, so all they can add on a phone is a smudge. */
+  #sf-lab-mount .pvstage #sf-dnaT g[data-k="i"]{display:none !important;}
+}
+</style>
+
+<script id="sf-mob-dna-js">
+(function(){
+'use strict';
+/* preserveAspectRatio is a markup attribute, so CSS cannot touch it. fit()
+   writes xMinYMid — a shared left datum, which is right for the 3x3 matrix on
+   a wide screen and wrong the moment the label centres under the drawing.
+   Below 900 it becomes xMidYMid so the drawing sits over its own label. */
+function place(){
+  var mid=window.matchMedia('(max-width:900px)').matches;
+  var want=mid?'xMidYMid meet':'xMinYMid meet';
+  [].forEach.call(document.querySelectorAll('#sf-lab-mount .dna9 .nt'),function(n){
+    if(n.getAttribute('preserveAspectRatio')!==want)
+      n.setAttribute('preserveAspectRatio',want);
+  });
+}
+/* the section is rebuilt at runtime, so this is re-applied rather than run once */
+place();
+setInterval(place,600);
+window.addEventListener('resize',place);
+})();
+</script>
 </body>
 </html>
