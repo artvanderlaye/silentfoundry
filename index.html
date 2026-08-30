@@ -27982,17 +27982,38 @@ function play(){
     return;
   }
   var K=ORDER.filter(function(k){ return !NOPULSE[k]; }), i=0;
+  /* ---- THE SKETCH RUNS ON THE READINGS' OWN CLOCK ----------------------
+     It is not on a timer of its own, so it can never drift or land in a
+     random place: one sketch pass per pass of the readings. K.length beats
+     at STEP is 13 x 900 = 11700ms, and the sketch fills it —
+
+       0      up over 1200ms
+       3000   1.8s held at the peak, then down over 1400ms
+       8800   4.4s held at the residue, then out over 2000ms
+       10800  gone, and 900ms later the next pass begins
+
+     Written as an attribute on <html>, which is never replaced: the page
+     rebuilds the sketch node, and an inline style would die with it. */
+  function skPass(){
+    var R=document.documentElement;
+    if(R.hasAttribute('data-skhold')) return;      /* not placed yet — skip a pass */
+    R.setAttribute('data-sk','up');
+    at(3000,function(){ R.setAttribute('data-sk','res'); });
+    at(8800,function(){ R.setAttribute('data-sk','out'); });
+  }
   /* THE GRID IS A REFERENCE, NOT A FINDING — so it leaves.
      It was painted at rest and never taken away, which left the axes on the
      photograph permanently. BASE 4 holds it 1300ms after the readings settle
      and then releases it over 1000ms, and that is what happens here: present
      at first paint, gone by 4.4s, and it does not come back. */
   at(DOWN+1300,function(){ setG('p',0,1000); });
+  at(DOWN,skPass);                      /* the sketch leads the first pass */
   at(DOWN,function pulse(){
     var k=K[i];
     setG(k,PEAK,UP);
     at(UP,function(){ setG(k,BASE,DOWN); });
     i=(i+1)%K.length;
+    if(i===0) skPass();                 /* a new pass of the readings begins */
     at(STEP,pulse);
   });
 }
@@ -28108,7 +28129,12 @@ setTimeout(function(){ release(); clearInterval(t); },6000);
 /* the sketch is driven on BASE 4's own schedule now, so the 15% multiplier
    that pulled back the old permanent 0.78 resting state is retired — it
    would double up with BASE 4's residue and its release to zero. */
-#sf-lab-mount .pvline{filter:invert(1) !important;}
+/* 02, as chosen. bike-side-sketch.png is an LA image — pure black with the
+   drawing in its alpha — and the page's own CSS inverts it to white. Dropping
+   the invert gives the black pencil drawing BASE 4 actually shows, so peak and
+   residue go back to BASE 4's own 1.00 and 0.22 rather than the halved numbers
+   the white version needed. */
+#sf-lab-mount .pvline{filter:none !important;}
 
 /* -------------------------------------------------------------------------
    THE SKETCH IS OWNED HERE, NOT ON THE NODE.
@@ -28141,14 +28167,14 @@ setTimeout(function(){ release(); clearInterval(t); },6000);
    levels on the photograph, the same as BASE 4's 93 and 20. Timing is
    untouched, because it was already identical.
    ------------------------------------------------------------------------- */
-html[data-sk] #sf-lab-mount .pvline{transition:opacity 650ms cubic-bezier(.4,0,.6,1) !important;}
+html[data-sk] #sf-lab-mount .pvline{transition:opacity 1200ms cubic-bezier(.4,0,.6,1) !important;}
 html[data-sk="pre"] #sf-lab-mount .pvline{opacity:0 !important;transition:none !important;}
-html[data-sk="up"]  #sf-lab-mount .pvline{opacity:.49 !important;}
-html[data-sk="res"] #sf-lab-mount .pvline{opacity:.11 !important;transition:opacity 800ms cubic-bezier(.4,0,.6,1) !important;}
-html[data-sk="out"] #sf-lab-mount .pvline{opacity:0 !important;transition:opacity 1600ms cubic-bezier(.4,0,.6,1) !important;}
+html[data-sk="up"]  #sf-lab-mount .pvline{opacity:1 !important;}
+html[data-sk="res"] #sf-lab-mount .pvline{opacity:.22 !important;transition:opacity 1400ms cubic-bezier(.4,0,.6,1) !important;}
+html[data-sk="out"] #sf-lab-mount .pvline{opacity:0 !important;transition:opacity 2000ms cubic-bezier(.4,0,.6,1) !important;}
 @media(prefers-reduced-motion:reduce){
   html[data-sk] #sf-lab-mount .pvline{transition:none !important;}
-  html[data-sk="up"] #sf-lab-mount .pvline{opacity:.11 !important;}
+  html[data-sk="up"] #sf-lab-mount .pvline{opacity:.22 !important;}
 }
 </style>
 
@@ -28242,25 +28268,10 @@ function patchIcons(){
    started only once the sketch has been PLACED (data-skhold released), so
    it can never appear in the wrong box.
    ======================================================================= */
-/* BASE 4's schedule. The state is an attribute on <html>; the stylesheet
-   above turns it into opacity, so a rebuilt sketch node inherits the state
-   instead of escaping it. Armed once, and once only: BASE 4 shows the
-   drawing a single time and then lets it go. */
-var SK=[[0,'pre'],[2200,'up'],[3450,'res'],[6850,'out']];
-function sketch(){
-  var R=document.documentElement, armed=false;
-  var iv=setInterval(function(){
-    if(armed){ clearInterval(iv); return; }
-    var ln=document.querySelector('#sf-lab-mount .pvline');
-    if(!ln||R.hasAttribute('data-skhold')) return;
-    var st=document.querySelector('#sf-lab-mount .pvstage'); if(!st) return;
-    var bx=st.getBoundingClientRect(), vh=window.innerHeight||document.documentElement.clientHeight;
-    if(!(bx.top<vh*0.8&&bx.bottom>vh*0.2)) return;
-    armed=true; clearInterval(iv);
-    SK.forEach(function(p){ setTimeout(function(){ R.setAttribute('data-sk',p[1]); },p[0]); });
-  },140);
-  setTimeout(function(){ clearInterval(iv); },40000);
-}
+/* The sketch is armed by the hero's own pulse (see sf-dna-js), so it can
+   never drift out of step with the readings. All this does is make sure the
+   attribute starts clean. */
+function sketch(){ document.documentElement.setAttribute('data-sk','pre'); }
 
 /* the section is rebuilt at runtime, so the patches are re-applied until
    they take, and the marks are re-rendered if the row was already drawn */
