@@ -67,10 +67,10 @@ function SK(o,ms){sk.style.transition=ms===0?"none":"opacity "+ms+"ms "+E;sk.sty
 
 var DIR=[
 ["01","WHITE — AS IT IS ON DEV NOW",
- "The page inverts the sketch to white. Peak 0.49, residue 0.11 — halved from BASE 4's numbers so the ink on the photograph matches: 93 levels at the peak, 21 at the residue.",
+ "The page inverts the sketch to white. Peak 0.49, residue 0.11 — halved from BASE 4's numbers so the ink on the photograph matches: 93 levels at the peak, 21 at the residue. Now part of the cycle: one sketch pass per pass of the readings, present 9.8s of every 11.7s.",
  {inv:true,peak:.49,res:.11}],
 ["02","BLACK — EXACTLY AS BASE 4",
- "The invert dropped, so the drawing is the black pencil sketch the PNG actually contains, at BASE 4's own numbers: peak 1.00, residue 0.22. Same 93 and 20 levels, opposite polarity.",
+ "The invert dropped, so the drawing is the black pencil sketch the PNG actually contains, at BASE 4's own numbers: peak 1.00, residue 0.22. Same 93 and 20 levels, opposite polarity. Now part of the cycle: one sketch pass per pass of the readings, present 9.8s of every 11.7s.",
  {inv:false,peak:1,res:.22}]
 ];
 function reset(){tok++;TM.forEach(clearTimeout);TM=[];
@@ -80,9 +80,22 @@ function reset(){tok++;TM.forEach(clearTimeout);TM=[];
 function run(C){
  sk.setAttribute("class",C.inv?"inv":"");
  ORDER.forEach(function(k){setG(k,BASE,0);});
- at(2200,function(){SK(C.peak,650);});
- at(3450,function(){SK(C.res,800);});
- at(6850,function(){SK(0,1600);});
+
+ at(2200,function(){ /* THE SKETCH IS PART OF THE CYCLE, not an intro.
+      One sketch pass per full pass of the readings: 13 readings x 900ms STEP
+      = 11700ms. Inside that it is up for 0.65s, held at the peak 1.4s, eased
+      down to its residue over 0.8s, and the residue is held right through the
+      middle of the pass before releasing over 1.6s. It is absent for the last
+      1.9s, and then it comes back. Present 9.8s of every 11.7s, against the
+      3.4s it used to get before it left for good. */
+   var CYC=13*STEP;
+   (function pass(){
+     SK(C.peak,650);
+     at(2050,function(){SK(C.res,800);});
+     at(8200,function(){SK(0,1600);});
+     at(CYC,pass);
+   })();
+ });
  at(DOWN+1300,function(){setG("p",0,1000);});
  var K=ORDER.filter(function(k){return k!=="p";}),i=0;
  at(DOWN,function pulse(){var k=K[i];setG(k,PEAK,UP);
