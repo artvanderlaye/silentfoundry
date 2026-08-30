@@ -142,7 +142,15 @@ var DIR=[
  {L:['v','u','q','t','c','f','d','e','i','j','k','o','n','l','s','p'],
   col:PAL.goldL, resid:.22,
   widf:function(k){ return {l:1.2,o:4.0,i:1.6,j:2.2,s:1.6,t:2.2,p:0.7}[k]||2.4; },
-  opf:{l:0.55,s:0.85}, gridHold:2400, gridOut:1400}]
+  opf:{l:0.55,s:0.85}, gridHold:2400, gridOut:1400}],
+
+['BASE3','BASE 3 — BASE PLUS FOUR',
+ 'BASE exactly as it is, with four readings folded in where they belong rather than bolted on the end. The rubber lines follow the rubber. The tyre outline follows the tyre, in white so it sits over the gold. The hub circles sit with the screw holes, grey and held back. And the bend radius is now the heavy 4px corner weight, which is the change you can see from across the room.',
+ {L:['v','u','x','c','f','d','t','e','g','i','o','n','l','p'],
+  col:PAL.goldL, resid:.22,
+  colf:function(k){ return k==='u'?PAL.white : k==='t'?PAL.grey : null; },
+  widf:function(k){ return {o:4.0,u:2.0,i:1.6,t:1.6,p:0.7}[k]||2.4; },
+  opf:{t:0.45,u:0.88,i:0.85}}]
 ];
 
 /* ---- your sixteen, one at a time ---------------------------------------
@@ -192,6 +200,10 @@ svg.innerHTML='<g id="sk"><image href="images/bike-side-sketch.png" '+
   }).join('');
 var skg=document.getElementById('sk');
 function G(k){ return svg.querySelector('g[data-k="'+k+'"]'); }
+/* paint order is DOM order, so the tyre OUTLINE is moved above the tyre FULL.
+   Everywhere else the two are the same colour, so this is invisible; on
+   BASE 3 it is the difference between a white line and no white line. */
+svg.appendChild(G('u'));
 function paths(k){ var g=G(k); return g?[].slice.call(g.children):[]; }
 
 var EASE='cubic-bezier(.4,0,.6,1)';
@@ -287,7 +299,7 @@ function run(C){
 var boxes=document.getElementById('boxes'), cur=-1;
 DIR.forEach(function(v,i){
   var b=document.createElement('button');
-  b.className='box'+(i<2?' base':''); b.textContent=v[0];
+  b.className='box'+(i<3?' base':''); b.textContent=v[0];
   b.addEventListener('click',function(){ show(i); });
   boxes.appendChild(b);
 });
