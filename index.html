@@ -28412,5 +28412,89 @@ setInterval(place,600);
 window.addEventListener('resize',place);
 })();
 </script>
+
+<style id="sf-right-css">
+/* =========================================================================
+   THE RIGHT SIDE OF THE DNA BOARD
+
+   Materials above, construction below — CMF then process, one idea per line.
+   Then CHARACTER & PRINCIPLES becomes DESIGN LANGUAGE: what the object does,
+   not what it is. FORM & ARCHITECTURE draws the machine, so this section
+   deliberately does not — three pieces of drawing-office notation instead,
+   five strokes between them, nothing borrowed from the nine.
+
+   Appended and scoped to the block classes rather than to one layer's class,
+   because the live page renders this section through a different layer than
+   the one that defines it.
+   ========================================================================= */
+#sf-lab-mount .mblk .mcon{display:block;margin-top:7px;
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  font-size:9.2px;letter-spacing:1.4px;text-transform:uppercase;
+  color:rgba(255,255,255,.42);white-space:nowrap;}
+
+#sf-lab-mount .cblk .dlr{display:block;}
+#sf-lab-mount .cblk .dlr .r{display:grid;grid-template-columns:92px 1fr;
+  column-gap:22px;align-items:center;padding:14px 0;
+  border-top:1px solid rgba(61,220,255,.16);}
+#sf-lab-mount .cblk .dlr .r:last-child{border-bottom:1px solid rgba(61,220,255,.16);}
+#sf-lab-mount .cblk .dlr .fig{display:block;width:92px;height:66px;}
+#sf-lab-mount .cblk .dlr .fig svg{display:block;width:100%;height:100%;}
+#sf-lab-mount .cblk .dlr .fig path{fill:none;stroke:#3ddcff;stroke-width:2.1;
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round;}
+#sf-lab-mount .cblk .dlr .t1{display:block;font-family:'DM Sans',sans-serif;
+  font-weight:300;font-size:12.4px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,.88);}
+#sf-lab-mount .cblk .dlr .t2{display:block;margin-top:4px;font-family:'DM Sans',sans-serif;
+  font-weight:300;font-size:9.2px;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.40);}
+@media(max-width:900px){
+  #sf-lab-mount .cblk .dlr .r{grid-template-columns:74px 1fr;column-gap:16px;padding:12px 0;}
+  #sf-lab-mount .cblk .dlr .fig{width:74px;height:54px;}
+  #sf-lab-mount .cblk .dlr .fig path{stroke-width:1.5;}
+  #sf-lab-mount .cblk .dlr .t1{font-size:11px;letter-spacing:1.6px;}
+  #sf-lab-mount .mblk .mcon{font-size:8.4px;letter-spacing:1.1px;}
+}
+</style>
+
+<script id="sf-right-js">
+(function(){
+'use strict';
+var MAT='Brushed aluminium &nbsp;·&nbsp; Matte black &nbsp;·&nbsp; SWITCH blue &nbsp;·&nbsp; HV orange';
+var CON='TIG welds &nbsp;·&nbsp; Exposed fasteners &nbsp;·&nbsp; CNC chamfers &nbsp;·&nbsp; Ribbing';
+/* one idea, one or two strokes. Five paths across all three. */
+function fig(d){ return '<svg viewBox="0 0 100 68" fill="none" preserveAspectRatio="xMidYMid meet">'+
+  d.map(function(p){ return '<path d="'+p+'"/>'; }).join('')+'</svg>'; }
+var ROWS=[
+  ['GO ANYWHERE','terrain · route · movement',
+   fig(['M8 46 L38 46 L54 26 L70 36 L94 16'])],                          /* flat, then not */
+  ['CARRY / WORK / MOVE','load · use · transport',
+   fig(['M10 52 L90 52','M34 52 L34 24 L66 24 L66 52'])],                /* a load on the line it travels on */
+  ['MAINTAIN / MODIFY / KEEP','service · modularity · life',
+   fig(['M40 20 L18 20 L18 50 L40 50','M60 20 L82 20 L82 50 L60 50'])]   /* one part, taken apart */
+];
+function apply(){
+  var m=document.querySelector('#sf-lab-mount .mblk');
+  if(m && !m.dataset.sfr){
+    var nm=m.querySelector('.mnm');
+    if(nm){ nm.innerHTML=MAT;
+      var c=document.createElement('span'); c.className='mcon'; c.innerHTML=CON;
+      nm.parentNode.insertBefore(c,nm.nextSibling); m.dataset.sfr='1'; }
+  }
+  var c=document.querySelector('#sf-lab-mount .cblk');
+  if(c && !c.dataset.sfr){
+    var ey=c.querySelector('.bey'), pr=c.querySelector('.prn');
+    if(ey&&pr){ ey.textContent='Design language';
+      pr.className='dlr';
+      pr.innerHTML=ROWS.map(function(r){
+        return '<div class="r"><span class="fig">'+r[2]+'</span><span>'+
+               '<span class="t1">'+r[0]+'</span><span class="t2">'+r[1]+'</span></span></div>';
+      }).join('');
+      c.dataset.sfr='1'; }
+  }
+}
+/* the section is rebuilt at runtime, so this is re-applied rather than run once */
+apply(); setInterval(apply,500);
+})();
+</script>
 </body>
 </html>
