@@ -28495,6 +28495,75 @@ window.addEventListener('resize',place);
 #sf-lab-mount .cblk .dlr .t2{display:block;margin-top:3px;font-family:'DM Sans',sans-serif;
   font-weight:300;font-size:9.2px;letter-spacing:1.5px;text-transform:uppercase;
   color:rgba(255,255,255,.40);}
+
+/* ---- QUIET MATERIAL FIELDS ------------------------------------------------
+   CONSTRUCTION LANGUAGE stops being a numbered list and becomes a 2x2
+   material board, chosen from the Variation 11 lab (box 01).
+
+   Alignment: .cblk already sits on the column edges (measured 839 -> 1336 at
+   1440, identical to .mblk), so the grid takes no negative margin and its
+   left/right edges land exactly on MATERIALS & CONSTRUCTION above it.
+
+   Height: the block's bottom has to meet the bottom of EXPOSED FASTENERS in
+   the nine, which is a point INSIDE the left column, not its edge - no CSS
+   mechanism reaches it, so sf-q22-js measures both and sets the grid height.
+   The rows are 1fr 1fr, so they split whatever that measurement gives.
+
+   Four fields, no cyan or orange grounds: brushed graphite aluminium,
+   charcoal, near-black, cool grey. The accent survives only in the drawings.
+   -------------------------------------------------------------------------- */
+/* The swatch row above overflowed its own column by 16px: the inline bases
+   are 46+34+12+4 = 96% of 497 = 477.1, and the three 12px gaps add 36 on top
+   of that, so the HV orange chip finished at 1352 against a column edge of
+   1336. Re-expressed as grow ratios on a zero basis, the same proportions
+   now divide (497 - 36), and the right edge lands on 1336 with the board.
+   Scoped to .d29 - the live layer - so no other variation layer is touched. */
+#sf-lab-mount .d29 .mblk .msw i:nth-child(1){flex:46 1 0 !important;}
+#sf-lab-mount .d29 .mblk .msw i:nth-child(2){flex:34 1 0 !important;}
+#sf-lab-mount .d29 .mblk .msw i:nth-child(3){flex:12 1 0 !important;}
+#sf-lab-mount .d29 .mblk .msw i:nth-child(4){flex:4 1 0 !important;}
+
+#sf-lab-mount .cblk .dlr .q22{display:grid;grid-template-columns:1fr 1fr;
+  grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:2px;margin-top:10px;
+  height:var(--sfq-h,auto);}
+#sf-lab-mount .cblk .dlr .qz{display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:9px 16px;min-width:0;min-height:0;}
+#sf-lab-mount .cblk .dlr .qa{background:repeating-linear-gradient(90deg,
+  #adb2ac,#adb2ac 2px,#a2a7a1 2px,#a2a7a1 4px);}
+#sf-lab-mount .cblk .dlr .qb{background:linear-gradient(#2c3035,#232729);}
+#sf-lab-mount .cblk .dlr .qc{background:linear-gradient(#1a1e22,#141719);}
+#sf-lab-mount .cblk .dlr .qd{background:linear-gradient(#3b4248,#323940);}
+#sf-lab-mount .cblk .dlr .qg{display:block;width:100%;max-width:122px;
+  height:34px;margin:0 auto 8px;}
+#sf-lab-mount .cblk .dlr .qg svg{display:block;width:100%;height:100%;overflow:hidden;}
+#sf-lab-mount .cblk .dlr .qz .sl1{display:block;font-size:11px;letter-spacing:1.8px;
+  text-transform:uppercase;color:rgba(255,255,255,.88);line-height:1.3;}
+#sf-lab-mount .cblk .dlr .qz .sl2{display:block;margin-top:3px;font-size:8.2px;
+  letter-spacing:1.15px;text-transform:uppercase;color:rgba(255,255,255,.40);
+  line-height:1.45;}
+#sf-lab-mount .cblk .dlr .qa .cg path{stroke:#191c1f;}
+#sf-lab-mount .cblk .dlr .qa .sl1{color:rgba(12,14,16,.92);}
+#sf-lab-mount .cblk .dlr .qa .sl2{color:rgba(12,14,16,.66);}
+/* below 1300 the right column narrows enough to wrap the descriptors onto a
+   second line, which would push the board past the alignment - step the type
+   down so they stay on one. */
+@media(max-width:1300px){
+  #sf-lab-mount .cblk .dlr .qz{padding:9px 12px;}
+  #sf-lab-mount .cblk .dlr .qz .sl1{font-size:10.2px;letter-spacing:1.5px;}
+  #sf-lab-mount .cblk .dlr .qz .sl2{font-size:7.4px;letter-spacing:.9px;}
+  #sf-lab-mount .cblk .dlr .qg{max-width:112px;height:32px;}
+}
+@media(max-width:900px){
+  #sf-lab-mount .cblk .dlr .q22{height:auto !important;grid-template-rows:none;gap:3px;}
+  #sf-lab-mount .cblk .dlr .qz{padding:20px 18px;min-height:132px;}
+  #sf-lab-mount .cblk .dlr .qg{height:46px;max-width:140px;}
+  #sf-lab-mount .cblk .dlr .qg .cg path{stroke-width:1.5;}
+  #sf-lab-mount .cblk .dlr .qz .sl1{font-size:10.4px;letter-spacing:1.5px;}
+}
+@media(max-width:640px){
+  #sf-lab-mount .cblk .dlr .q22{grid-template-columns:1fr;}
+}
 @media(max-width:900px){
   #sf-lab-mount .cblk .dlr .stack .sr{grid-template-columns:18px 60px 1fr;column-gap:12px;padding:6px 0;}
   #sf-lab-mount .cblk .dlr .sf{width:60px;height:38px;}
@@ -28515,7 +28584,7 @@ var MAT='Brushed aluminium &nbsp;·&nbsp; Matte black &nbsp;·&nbsp; SWITCH blue
    real fastener spacing. This replaces the single weak line of process text
    and the three behaviour rows, which were saying what the section below
    already says. */
-var STACK="<div class=\"stack\"><div class=\"sr\"><span class=\"sn\">01</span><span class=\"sf\"><svg class=\"cg\" viewBox=\"0 0 96 100\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M6 20 L44 20 A34 34 0 0 1 78 54 L78 92\"/><path d=\"M6 40 L44 40 A14 14 0 0 1 58 54 L58 92\"/><g class=\"th\"><path d=\"M6 30 L44 30 A24 24 0 0 1 68 54 L68 92\"/><path d=\"M58 92 L78 92\"/></g></svg></span><span><span class=\"sl1\">TUBE BENDS</span><span class=\"sl2\">constant diameter \u00b7 controlled bend</span></span></div><div class=\"sr\"><span class=\"sn\">02</span><span class=\"sf\"><svg class=\"cg\" viewBox=\"905 597 150 150\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M1099.2 952.5 C1095.1 953.4 1090.8 953.8 1086.6 954.1 C1082.3 954.4 1078.1 954.4 1073.9 954.5 C1069.6 954.5 1065.4 954.5 1061.1 954.5 C1056.9 954.5 1052.7 954.5 1048.4 954.5 C1044.2 954.5 1039.9 954.5 1035.7 954.5 C1031.5 954.5 1027.2 954.5 1023.0 954.5 C1018.8 954.5 1014.5 954.5 1010.3 954.5 C1006.0 954.5 1001.8 954.5 997.6 954.4 C993.3 954.4 989.1 954.4 984.9 954.0 C980.7 953.6 976.4 953.2 972.3 952.0 C968.3 950.9 964.3 949.1 960.7 947.1 C957.0 945.1 953.6 942.5 950.1 940.0 C946.7 937.5 943.4 934.8 940.1 932.1 C936.9 929.4 933.4 926.8 930.6 923.8 C927.7 920.7 924.9 917.3 923.1 913.6 C921.2 909.9 920.3 905.6 919.5 901.4 C918.8 897.3 918.8 893.0 918.6 888.7 C918.5 884.5 918.5 880.3 918.5 876.0 C918.5 871.8 918.5 867.6 918.5 863.3 C918.5 859.1 918.5 854.8 918.5 850.6 C918.5 846.4 918.5 842.1 918.5 837.9 C918.5 833.6 918.5 829.4 918.5 825.2 C918.5 820.9 918.5 816.7 918.5 812.5 C918.5 808.2 918.5 804.0 918.5 799.7 C918.5 795.5 918.5 791.3 918.5 787.0 C918.5 782.8 918.5 778.6 918.5 774.3 C918.5 770.1 918.5 765.8 918.5 761.6 C918.5 757.4 918.5 753.1 918.5 748.9 C918.5 744.6 918.5 740.4 918.5 736.2 C918.5 731.9 918.5 727.7 918.5 723.5 C918.5 719.2 918.5 715.0 918.5 710.7 C918.5 706.5 918.5 702.3 918.6 698.0 C918.6 693.8 918.6 689.5 918.9 685.3 C919.2 681.1 919.5 676.8 920.3 672.7 C921.2 668.6 922.3 664.4 923.9 660.5 C925.5 656.6 927.7 652.9 929.8 649.3 C932.0 645.7 934.6 642.2 937.1 638.8 C939.6 635.4 942.0 631.9 944.8 628.8 C947.6 625.6 950.5 622.3 953.8 619.8 C957.2 617.3 961.0 615.1 964.9 613.7 C968.8 612.2 973.1 611.6 977.3 611.1 C981.5 610.6 985.8 610.7 990.0 610.6 C994.2 610.5 998.5 610.5 1002.7 610.5 C1007.0 610.5 1011.2 610.5 1015.4 610.5 C1019.7 610.5 1023.9 610.5 1028.2 610.5 C1032.4 610.5 1036.6 610.5 1040.9 610.5 C1045.1 610.5 1049.3 610.5 1053.6 610.5 C1057.8 610.5 1062.1 610.5 1066.3 610.5 C1070.5 610.5 1074.8 610.5 1079.0 610.5 C1083.2 610.5 1087.5 610.5 1091.7 610.5 C1096.0 610.6 1100.2 610.5 1104.4 610.9 C1108.6 611.2 1112.9 611.5 1117.0 612.6 C1121.1 613.7 1125.1 615.3 1128.8 617.3 C1132.5 619.2 1135.9 621.8 1139.4 624.3 C1142.8 626.7 1146.1 629.4 1149.5 632.0 C1152.8 634.6 1156.1 637.2 1159.5 639.9 C1162.8 642.5 1166.3 645.0 1169.5 647.7 C1172.8 650.4 1176.2 652.9 1179.0 656.1 C1181.8 659.2 1184.5 662.7 1186.2 666.5 C1188.0 670.2 1188.8 674.6 1189.5 678.7 C1190.2 682.9 1190.2 687.2 1190.4 691.4 C1190.5 695.6 1190.5 699.9 1190.5 704.1 C1190.5 708.3 1190.5 712.6 1190.5 716.8 C1190.5 721.1 1190.5 725.3 1190.5 729.5 C1190.5 733.8 1190.5 738.0 1190.5 742.3 C1190.5 746.5 1190.5 750.7 1190.5 755.0 C1190.5 759.2 1190.5 763.4 1190.5 767.7 C1190.5 771.9 1190.5 776.2 1190.5 780.4 C1190.5 784.6 1190.5 788.9 1190.5 793.1 C1190.5 797.3 1190.5 801.6 1190.5 805.8 C1190.5 810.1 1190.5 814.3 1190.5 818.5 C1190.5 822.8 1190.5 827.0 1190.5 831.3 C1190.5 835.5 1190.5 839.7 1190.5 844.0 C1190.5 848.2 1190.5 852.4 1190.4 856.7 C1190.2 860.9 1190.1 865.2 1189.5 869.4 C1188.8 873.5 1187.9 877.8 1186.4 881.7 C1184.8 885.6 1182.6 889.3 1180.2 892.7 C1177.8 896.2 1174.8 899.3 1171.8 902.3 C1168.8 905.2 1165.5 908.0 1162.3 910.7 C1159.1 913.4 1155.7 916.0 1152.4 918.6 C1149.1 921.3 1145.7 923.9 1142.3 926.4 C1139.0 929.0 1135.7 931.6 1132.3 934.2 C1128.9 936.7 1125.5 939.4 1122.0 941.7 C1118.5 944.1 1114.9 946.5 1111.1 948.2 C1107.3 950.0 1103.2 951.5 1099.2 952.5 Z\"/></svg></span><span><span class=\"sl1\">CONTROLLED RADII</span><span class=\"sl2\">planes \u00b7 macro radii \u00b7 consistency</span></span></div><div class=\"sr\"><span class=\"sn\">03</span><span class=\"sf\"><svg class=\"cg\" viewBox=\"468 815 400 81\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M849.8 827.0 C847.7 827.0 841.4 827.0 837.2 827.1 C833.0 827.2 828.8 827.3 824.6 827.4 C820.4 827.5 816.2 827.7 812.0 827.8 C807.8 827.9 803.6 827.9 799.4 828.0 C795.1 828.0 790.9 828.0 786.7 828.0 C782.5 828.0 778.3 828.0 774.1 828.0 C769.9 828.0 765.7 828.1 761.5 828.1 C757.3 828.2 753.1 828.3 748.9 828.5 C744.7 828.6 740.5 828.7 736.3 828.8 C732.1 828.9 727.9 828.9 723.7 829.0 C719.5 829.0 715.2 829.0 711.0 829.0 C706.8 829.1 702.6 829.1 698.4 829.2 C694.2 829.3 690.0 829.5 685.8 829.7 C681.6 829.9 677.4 830.1 673.2 830.3 C669.0 830.6 664.8 830.8 660.6 831.0 C656.4 831.3 652.2 831.5 648.0 831.7 C643.8 831.9 639.6 832.1 635.4 832.3 C631.2 832.6 627.0 832.8 622.8 833.0 C618.6 833.3 614.4 833.5 610.2 833.8 C606.0 834.0 601.8 834.2 597.6 834.5 C593.4 834.7 589.2 835.0 585.0 835.2 C580.8 835.5 576.6 835.8 572.4 836.1 C568.2 836.4 564.1 836.7 559.9 837.0 C555.7 837.4 551.5 837.7 547.3 838.1 C543.1 838.4 538.9 838.8 534.7 839.1 C530.5 839.5 526.3 839.8 522.1 840.2 C517.9 840.6 513.7 840.9 509.6 841.4 C505.4 841.9 501.1 842.1 497.1 843.3 C493.2 844.6 488.6 846.0 485.9 848.7 C483.2 851.5 481.4 856.0 480.7 859.9 C479.9 863.9 480.1 868.7 481.5 872.4 C482.9 876.1 485.7 880.0 489.0 882.0 C492.3 884.0 497.1 884.2 501.3 884.6 C505.4 885.0 509.7 884.6 513.9 884.5 C518.1 884.5 522.3 884.3 526.5 884.1 C530.7 884.0 534.9 883.9 539.1 883.7 C543.3 883.6 547.5 883.4 551.7 883.3 C555.9 883.1 560.1 883.0 564.3 882.8 C568.5 882.6 572.7 882.5 576.9 882.3 C581.1 882.1 585.3 881.9 589.5 881.7 C593.7 881.5 597.9 881.3 602.1 881.1 C606.3 880.9 610.5 880.7 614.7 880.5 C618.9 880.3 623.1 880.1 627.3 879.8 C631.5 879.6 635.7 879.4 639.9 879.2 C644.1 879.0 648.3 878.8 652.5 878.6 C656.7 878.4 660.9 878.2 665.1 878.0 C669.3 877.8 673.5 877.6 677.7 877.4 C682.0 877.2 686.2 877.0 690.4 876.8 C694.6 876.6 698.8 876.4 703.0 876.2 C707.2 876.0 711.4 875.8 715.6 875.6 C719.8 875.4 724.0 875.2 728.2 875.0 C732.4 874.8 736.6 874.6 740.8 874.4 C745.0 874.2 749.2 874.0 753.4 873.8 C757.6 873.5 761.8 873.3 766.0 873.0 C770.2 872.6 774.3 872.2 778.5 871.8 C782.7 871.4 786.9 870.9 791.1 870.4 C795.2 870.0 799.4 869.4 803.6 869.0 C807.8 868.5 811.9 868.0 816.1 867.4 C820.3 866.9 824.5 866.4 828.6 865.9 C832.8 865.4 837.0 864.9 841.2 864.3 C845.3 863.8 851.6 862.9 853.7 862.6\"/><path d=\"M858.7 841.0 C856.5 841.0 849.9 841.0 845.6 840.9 C841.2 840.9 836.8 840.9 832.5 840.9 C828.1 840.9 823.7 841.0 819.4 841.1 C815.0 841.3 810.7 841.5 806.3 841.8 C802.0 842.1 797.6 842.4 793.2 842.7 C788.9 843.0 784.5 843.3 780.2 843.7 C775.8 844.0 771.5 844.3 767.1 844.7 C762.8 845.0 758.4 845.3 754.1 845.6 C749.7 846.0 745.4 846.3 741.0 846.6 C736.7 846.9 732.3 847.2 728.0 847.5 C723.6 847.7 719.2 848.0 714.9 848.3 C710.5 848.5 706.2 848.8 701.8 849.0 C697.5 849.1 693.1 849.3 688.7 849.4 C684.4 849.6 680.0 849.8 675.7 850.1 C671.3 850.3 667.0 850.7 662.6 851.0 C658.2 851.3 653.9 851.6 649.5 852.0 C645.2 852.3 640.8 852.6 636.5 853.0 C632.1 853.3 627.8 853.6 623.4 853.9 C619.1 854.2 614.7 854.5 610.4 854.8 C606.0 855.1 601.7 855.4 597.3 855.7 C593.0 856.0 588.6 856.3 584.2 856.7 C579.9 857.0 573.4 857.5 571.2 857.6\"/><path d=\"M851.7 853.2 C849.4 853.3 842.8 853.7 838.3 853.9 C833.9 854.2 829.4 854.4 825.0 854.7 C820.5 854.9 816.1 855.2 811.6 855.4 C807.2 855.7 802.7 856.0 798.3 856.3 C793.8 856.6 789.4 856.8 784.9 857.1 C780.5 857.4 776.1 857.7 771.6 858.1 C767.2 858.4 762.7 858.7 758.3 859.0 C753.8 859.4 749.4 859.7 745.0 860.0 C740.5 860.4 736.1 860.7 731.6 861.0 C727.2 861.4 722.7 861.7 718.3 862.0 C713.8 862.4 709.4 862.7 705.0 863.0 C700.5 863.4 696.1 863.7 691.6 864.0 C687.2 864.3 682.7 864.6 678.3 864.8 C673.8 865.1 669.4 865.4 664.9 865.7 C660.5 866.0 656.1 866.3 651.6 866.5 C647.2 866.7 642.7 866.8 638.2 866.9 C633.8 867.1 629.3 867.2 624.9 867.3 C620.4 867.4 616.0 867.6 611.5 867.7 C607.1 867.8 602.6 867.9 598.2 867.9 C593.7 868.0 589.2 868.0 584.8 868.0 C580.3 868.0 573.6 868.0 571.4 868.0\"/></svg></span><span><span class=\"sl1\">CHAMFERED SURFACES</span><span class=\"sl2\">planes \u00b7 chamfers \u00b7 facets</span></span></div><div class=\"sr\"><span class=\"sn\">04</span><span class=\"sf\"><svg class=\"cg\" viewBox=\"0 0 96 96\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M8 20 L88 20 L88 76 L8 76 Z\"/><path d=\"M22 32 L74 32 L74 64 L22 64 Z\"/><g class=\"th\"><path d=\"M32 26 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M64 26 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M32 70 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M64 70 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M22 44 L74 44\"/><path d=\"M22 54 L74 54\"/></g></svg></span><span><span class=\"sl1\">MACHINED PARTS</span><span class=\"sl2\">CNC \u00b7 toolpaths \u00b7 fasteners</span></span></div><div class=\"sr\"><span class=\"sn\">05</span><span class=\"sf\"><svg class=\"cg\" viewBox=\"0 0 96 92\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M4 34 L44 34\"/><path d=\"M4 58 L44 58\"/><path d=\"M44 22 L86 22 L86 70 L44 70 Z\"/><g class=\"th\"><path d=\"M52 46 L78 46\"/><path d=\"M65 30 L65 38\"/><path d=\"M65 54 L65 62\"/><path d=\"M65 46 m-4 0 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0\"/></g></svg></span><span><span class=\"sl1\">MATERIAL JUNCTIONS</span><span class=\"sl2\">tube \u00b7 component \u00b7 connection</span></span></div></div></div>";
+var STACK="<div class=\"q22\"><div class=\"qz qa\"><span class=\"qg\"><svg class=\"cg\" viewBox=\"0 0 96 100\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M6 20 L44 20 A34 34 0 0 1 78 54 L78 92\"/><path d=\"M6 40 L44 40 A14 14 0 0 1 58 54 L58 92\"/><g class=\"th\"><path d=\"M6 30 L44 30 A24 24 0 0 1 68 54 L68 92\"/><path d=\"M58 92 L78 92\"/></g></svg></span><span class=\"sl1\">TUBE BENDS</span><span class=\"sl2\">constant diameter \u00b7 controlled bend</span></div><div class=\"qz qb\"><span class=\"qg\"><svg class=\"cg\" viewBox=\"905 597 150 150\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M1099.2 952.5 C1095.1 953.4 1090.8 953.8 1086.6 954.1 C1082.3 954.4 1078.1 954.4 1073.9 954.5 C1069.6 954.5 1065.4 954.5 1061.1 954.5 C1056.9 954.5 1052.7 954.5 1048.4 954.5 C1044.2 954.5 1039.9 954.5 1035.7 954.5 C1031.5 954.5 1027.2 954.5 1023.0 954.5 C1018.8 954.5 1014.5 954.5 1010.3 954.5 C1006.0 954.5 1001.8 954.5 997.6 954.4 C993.3 954.4 989.1 954.4 984.9 954.0 C980.7 953.6 976.4 953.2 972.3 952.0 C968.3 950.9 964.3 949.1 960.7 947.1 C957.0 945.1 953.6 942.5 950.1 940.0 C946.7 937.5 943.4 934.8 940.1 932.1 C936.9 929.4 933.4 926.8 930.6 923.8 C927.7 920.7 924.9 917.3 923.1 913.6 C921.2 909.9 920.3 905.6 919.5 901.4 C918.8 897.3 918.8 893.0 918.6 888.7 C918.5 884.5 918.5 880.3 918.5 876.0 C918.5 871.8 918.5 867.6 918.5 863.3 C918.5 859.1 918.5 854.8 918.5 850.6 C918.5 846.4 918.5 842.1 918.5 837.9 C918.5 833.6 918.5 829.4 918.5 825.2 C918.5 820.9 918.5 816.7 918.5 812.5 C918.5 808.2 918.5 804.0 918.5 799.7 C918.5 795.5 918.5 791.3 918.5 787.0 C918.5 782.8 918.5 778.6 918.5 774.3 C918.5 770.1 918.5 765.8 918.5 761.6 C918.5 757.4 918.5 753.1 918.5 748.9 C918.5 744.6 918.5 740.4 918.5 736.2 C918.5 731.9 918.5 727.7 918.5 723.5 C918.5 719.2 918.5 715.0 918.5 710.7 C918.5 706.5 918.5 702.3 918.6 698.0 C918.6 693.8 918.6 689.5 918.9 685.3 C919.2 681.1 919.5 676.8 920.3 672.7 C921.2 668.6 922.3 664.4 923.9 660.5 C925.5 656.6 927.7 652.9 929.8 649.3 C932.0 645.7 934.6 642.2 937.1 638.8 C939.6 635.4 942.0 631.9 944.8 628.8 C947.6 625.6 950.5 622.3 953.8 619.8 C957.2 617.3 961.0 615.1 964.9 613.7 C968.8 612.2 973.1 611.6 977.3 611.1 C981.5 610.6 985.8 610.7 990.0 610.6 C994.2 610.5 998.5 610.5 1002.7 610.5 C1007.0 610.5 1011.2 610.5 1015.4 610.5 C1019.7 610.5 1023.9 610.5 1028.2 610.5 C1032.4 610.5 1036.6 610.5 1040.9 610.5 C1045.1 610.5 1049.3 610.5 1053.6 610.5 C1057.8 610.5 1062.1 610.5 1066.3 610.5 C1070.5 610.5 1074.8 610.5 1079.0 610.5 C1083.2 610.5 1087.5 610.5 1091.7 610.5 C1096.0 610.6 1100.2 610.5 1104.4 610.9 C1108.6 611.2 1112.9 611.5 1117.0 612.6 C1121.1 613.7 1125.1 615.3 1128.8 617.3 C1132.5 619.2 1135.9 621.8 1139.4 624.3 C1142.8 626.7 1146.1 629.4 1149.5 632.0 C1152.8 634.6 1156.1 637.2 1159.5 639.9 C1162.8 642.5 1166.3 645.0 1169.5 647.7 C1172.8 650.4 1176.2 652.9 1179.0 656.1 C1181.8 659.2 1184.5 662.7 1186.2 666.5 C1188.0 670.2 1188.8 674.6 1189.5 678.7 C1190.2 682.9 1190.2 687.2 1190.4 691.4 C1190.5 695.6 1190.5 699.9 1190.5 704.1 C1190.5 708.3 1190.5 712.6 1190.5 716.8 C1190.5 721.1 1190.5 725.3 1190.5 729.5 C1190.5 733.8 1190.5 738.0 1190.5 742.3 C1190.5 746.5 1190.5 750.7 1190.5 755.0 C1190.5 759.2 1190.5 763.4 1190.5 767.7 C1190.5 771.9 1190.5 776.2 1190.5 780.4 C1190.5 784.6 1190.5 788.9 1190.5 793.1 C1190.5 797.3 1190.5 801.6 1190.5 805.8 C1190.5 810.1 1190.5 814.3 1190.5 818.5 C1190.5 822.8 1190.5 827.0 1190.5 831.3 C1190.5 835.5 1190.5 839.7 1190.5 844.0 C1190.5 848.2 1190.5 852.4 1190.4 856.7 C1190.2 860.9 1190.1 865.2 1189.5 869.4 C1188.8 873.5 1187.9 877.8 1186.4 881.7 C1184.8 885.6 1182.6 889.3 1180.2 892.7 C1177.8 896.2 1174.8 899.3 1171.8 902.3 C1168.8 905.2 1165.5 908.0 1162.3 910.7 C1159.1 913.4 1155.7 916.0 1152.4 918.6 C1149.1 921.3 1145.7 923.9 1142.3 926.4 C1139.0 929.0 1135.7 931.6 1132.3 934.2 C1128.9 936.7 1125.5 939.4 1122.0 941.7 C1118.5 944.1 1114.9 946.5 1111.1 948.2 C1107.3 950.0 1103.2 951.5 1099.2 952.5 Z\"/></svg></span><span class=\"sl1\">CONTROLLED RADII</span><span class=\"sl2\">planes \u00b7 macro radii \u00b7 consistency</span></div><div class=\"qz qc\"><span class=\"qg\"><svg class=\"cg\" viewBox=\"468 815 400 81\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M849.8 827.0 C847.7 827.0 841.4 827.0 837.2 827.1 C833.0 827.2 828.8 827.3 824.6 827.4 C820.4 827.5 816.2 827.7 812.0 827.8 C807.8 827.9 803.6 827.9 799.4 828.0 C795.1 828.0 790.9 828.0 786.7 828.0 C782.5 828.0 778.3 828.0 774.1 828.0 C769.9 828.0 765.7 828.1 761.5 828.1 C757.3 828.2 753.1 828.3 748.9 828.5 C744.7 828.6 740.5 828.7 736.3 828.8 C732.1 828.9 727.9 828.9 723.7 829.0 C719.5 829.0 715.2 829.0 711.0 829.0 C706.8 829.1 702.6 829.1 698.4 829.2 C694.2 829.3 690.0 829.5 685.8 829.7 C681.6 829.9 677.4 830.1 673.2 830.3 C669.0 830.6 664.8 830.8 660.6 831.0 C656.4 831.3 652.2 831.5 648.0 831.7 C643.8 831.9 639.6 832.1 635.4 832.3 C631.2 832.6 627.0 832.8 622.8 833.0 C618.6 833.3 614.4 833.5 610.2 833.8 C606.0 834.0 601.8 834.2 597.6 834.5 C593.4 834.7 589.2 835.0 585.0 835.2 C580.8 835.5 576.6 835.8 572.4 836.1 C568.2 836.4 564.1 836.7 559.9 837.0 C555.7 837.4 551.5 837.7 547.3 838.1 C543.1 838.4 538.9 838.8 534.7 839.1 C530.5 839.5 526.3 839.8 522.1 840.2 C517.9 840.6 513.7 840.9 509.6 841.4 C505.4 841.9 501.1 842.1 497.1 843.3 C493.2 844.6 488.6 846.0 485.9 848.7 C483.2 851.5 481.4 856.0 480.7 859.9 C479.9 863.9 480.1 868.7 481.5 872.4 C482.9 876.1 485.7 880.0 489.0 882.0 C492.3 884.0 497.1 884.2 501.3 884.6 C505.4 885.0 509.7 884.6 513.9 884.5 C518.1 884.5 522.3 884.3 526.5 884.1 C530.7 884.0 534.9 883.9 539.1 883.7 C543.3 883.6 547.5 883.4 551.7 883.3 C555.9 883.1 560.1 883.0 564.3 882.8 C568.5 882.6 572.7 882.5 576.9 882.3 C581.1 882.1 585.3 881.9 589.5 881.7 C593.7 881.5 597.9 881.3 602.1 881.1 C606.3 880.9 610.5 880.7 614.7 880.5 C618.9 880.3 623.1 880.1 627.3 879.8 C631.5 879.6 635.7 879.4 639.9 879.2 C644.1 879.0 648.3 878.8 652.5 878.6 C656.7 878.4 660.9 878.2 665.1 878.0 C669.3 877.8 673.5 877.6 677.7 877.4 C682.0 877.2 686.2 877.0 690.4 876.8 C694.6 876.6 698.8 876.4 703.0 876.2 C707.2 876.0 711.4 875.8 715.6 875.6 C719.8 875.4 724.0 875.2 728.2 875.0 C732.4 874.8 736.6 874.6 740.8 874.4 C745.0 874.2 749.2 874.0 753.4 873.8 C757.6 873.5 761.8 873.3 766.0 873.0 C770.2 872.6 774.3 872.2 778.5 871.8 C782.7 871.4 786.9 870.9 791.1 870.4 C795.2 870.0 799.4 869.4 803.6 869.0 C807.8 868.5 811.9 868.0 816.1 867.4 C820.3 866.9 824.5 866.4 828.6 865.9 C832.8 865.4 837.0 864.9 841.2 864.3 C845.3 863.8 851.6 862.9 853.7 862.6\"/><path d=\"M858.7 841.0 C856.5 841.0 849.9 841.0 845.6 840.9 C841.2 840.9 836.8 840.9 832.5 840.9 C828.1 840.9 823.7 841.0 819.4 841.1 C815.0 841.3 810.7 841.5 806.3 841.8 C802.0 842.1 797.6 842.4 793.2 842.7 C788.9 843.0 784.5 843.3 780.2 843.7 C775.8 844.0 771.5 844.3 767.1 844.7 C762.8 845.0 758.4 845.3 754.1 845.6 C749.7 846.0 745.4 846.3 741.0 846.6 C736.7 846.9 732.3 847.2 728.0 847.5 C723.6 847.7 719.2 848.0 714.9 848.3 C710.5 848.5 706.2 848.8 701.8 849.0 C697.5 849.1 693.1 849.3 688.7 849.4 C684.4 849.6 680.0 849.8 675.7 850.1 C671.3 850.3 667.0 850.7 662.6 851.0 C658.2 851.3 653.9 851.6 649.5 852.0 C645.2 852.3 640.8 852.6 636.5 853.0 C632.1 853.3 627.8 853.6 623.4 853.9 C619.1 854.2 614.7 854.5 610.4 854.8 C606.0 855.1 601.7 855.4 597.3 855.7 C593.0 856.0 588.6 856.3 584.2 856.7 C579.9 857.0 573.4 857.5 571.2 857.6\"/><path d=\"M851.7 853.2 C849.4 853.3 842.8 853.7 838.3 853.9 C833.9 854.2 829.4 854.4 825.0 854.7 C820.5 854.9 816.1 855.2 811.6 855.4 C807.2 855.7 802.7 856.0 798.3 856.3 C793.8 856.6 789.4 856.8 784.9 857.1 C780.5 857.4 776.1 857.7 771.6 858.1 C767.2 858.4 762.7 858.7 758.3 859.0 C753.8 859.4 749.4 859.7 745.0 860.0 C740.5 860.4 736.1 860.7 731.6 861.0 C727.2 861.4 722.7 861.7 718.3 862.0 C713.8 862.4 709.4 862.7 705.0 863.0 C700.5 863.4 696.1 863.7 691.6 864.0 C687.2 864.3 682.7 864.6 678.3 864.8 C673.8 865.1 669.4 865.4 664.9 865.7 C660.5 866.0 656.1 866.3 651.6 866.5 C647.2 866.7 642.7 866.8 638.2 866.9 C633.8 867.1 629.3 867.2 624.9 867.3 C620.4 867.4 616.0 867.6 611.5 867.7 C607.1 867.8 602.6 867.9 598.2 867.9 C593.7 868.0 589.2 868.0 584.8 868.0 C580.3 868.0 573.6 868.0 571.4 868.0\"/></svg></span><span class=\"sl1\">CHAMFERED SURFACES</span><span class=\"sl2\">planes \u00b7 chamfers \u00b7 facets</span></div><div class=\"qz qd\"><span class=\"qg\"><svg class=\"cg\" viewBox=\"0 0 96 96\" fill=\"none\" preserveAspectRatio=\"xMidYMid meet\"><path d=\"M8 20 L88 20 L88 76 L8 76 Z\"/><path d=\"M22 32 L74 32 L74 64 L22 64 Z\"/><g class=\"th\"><path d=\"M32 26 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M64 26 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M32 70 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M64 70 m-3.4 0 a3.4 3.4 0 1 0 6.8 0 a3.4 3.4 0 1 0 -6.8 0\"/><path d=\"M22 44 L74 44\"/><path d=\"M22 54 L74 54\"/></g></svg></span><span class=\"sl1\">MACHINED PARTS</span><span class=\"sl2\">CNC \u00b7 toolpaths \u00b7 fasteners</span></div></div>";
 
 function apply(){
   var m=document.querySelector('#sf-lab-mount .mblk');
@@ -28535,5 +28604,75 @@ function apply(){
 apply(); setInterval(apply,500);
 })();
 </script>
+
+<script id="sf-q22-js">
+(function(){
+'use strict';
+/* The construction board's bottom edge has to meet the bottom of the EXPOSED
+   FASTENERS *text* - the last label in the nine. That point sits inside the
+   left column, not on its edge, so no CSS rule can reach it: measure both and
+   publish the answer.
+
+   The measurement lives in a custom property on <html>, not as an inline
+   style on the grid. This section is rebuilt at runtime and a replacement
+   node drops any inline style it was given - the same trap the sketch pass
+   hit. A property on the root survives, and the stylesheet rule applies it to
+   whichever node currently exists.
+
+   .dl reserves min-height 2.6em for two lines and every label in the last row
+   is one line, so the element's own bottom hangs ~15px below the glyphs. A
+   Range over the text node gives the real line box. */
+var MIN=168, ROOT=document.documentElement, last=null;
+
+function textBottom(el){
+  try{
+    var r=document.createRange(); r.selectNodeContents(el);
+    var b=r.getBoundingClientRect();
+    if(b&&b.height) return b.bottom;
+  }catch(e){}
+  return el.getBoundingClientRect().bottom;
+}
+
+function fit(){
+  var q=document.querySelector('#sf-lab-mount .cblk .dlr .q22'),
+      L=document.querySelectorAll('#sf-lab-mount .dna9 .d9 .dl');
+  if(!q||!L.length) return;
+  if(window.innerWidth<=900){
+    if(last!==''){ ROOT.style.removeProperty('--sfq-h'); last=''; }
+    return;
+  }
+  ROOT.style.setProperty('--sfq-h','auto');
+  /* rects are viewport-relative, so these go negative once the section has
+     scrolled above the fold - seed from -Infinity, never from 0. */
+  var bot=-Infinity, n=L.length;
+  for(var k=n-1;k>=0&&k>=n-3;k--){ var t=textBottom(L[k]); if(t>bot) bot=t; }
+  if(!isFinite(bot)) return;
+  var h=Math.round(bot-q.getBoundingClientRect().top),
+      v=(h>=MIN)?h+'px':'auto';
+  /* always write: the probe above already put 'auto' on the root, so
+     short-circuiting on an unchanged value would leave it there. */
+  ROOT.style.setProperty('--sfq-h',v); last=v;
+}
+
+var t=null;
+function later(){ if(t) clearTimeout(t); t=setTimeout(fit,60); }
+if(document.readyState==='loading')
+  document.addEventListener('DOMContentLoaded',later);
+else later();
+window.addEventListener('load',later);
+window.addEventListener('resize',function(){ last=null; later(); });
+window.addEventListener('scroll',later,{passive:true});
+/* the section is rebuilt at runtime, so re-fit whenever the mount changes */
+var mo=new MutationObserver(later);
+function watch(){
+  var m=document.getElementById('sf-lab-mount');
+  if(m){ mo.observe(m,{childList:true,subtree:true}); later(); }
+  else setTimeout(watch,200);
+}
+watch();
+[400,900,1600,2600,4200,7000].forEach(function(d){ setTimeout(fit,d); });
+})();
+</script>
+
 </body>
 </html>
