@@ -1536,5 +1536,125 @@ document.addEventListener('DOMContentLoaded',function(){
    pointer-events:none and absolutely positioned, so nothing reflows. */
 html body .f-m6{display:none !important;}
 </style>
+
+<style id="sf-footer-order">
+/* =========================================================================
+   FOOTER — ORDER, HIERARCHY AND THE THREE-ZONE PHONE ROW
+   Site-wide: this block is identical on index, sf-team, sf-contact and legal.
+   Appended last so it beats the per-page footer rules each of those files
+   carries in its own head.
+
+   Nothing here changes the address copy, the logo treatment, the colours,
+   the grid background or the footer's height.
+   ========================================================================= */
+
+/* ---- DESKTOP / TABLET ---------------------------------------------------
+   The markup order is logo, Navigate, Hong Kong, Shanghai, so the utility
+   links were sitting between the brand and the locations and reading as the
+   second most important thing down here. Reordered with `order` rather than
+   by moving the markup, because the mobile rule that hides Navigate targets
+   it by DOM position (div:nth-of-type(2)) and would follow the wrong column
+   if the source moved.
+
+       brand  ->  locations  ->  utility
+   ------------------------------------------------------------------------- */
+@media(min-width:769px){
+  footer .footer-inner > .footer-logo-wrap{order:1 !important;}
+  footer .footer-inner > div:nth-of-type(2){order:4 !important;}  /* Navigate */
+  footer .footer-inner > div:nth-of-type(3){order:2 !important;}  /* Hong Kong */
+  footer .footer-inner > div:nth-of-type(4){order:3 !important;}  /* Shanghai */
+
+  /* Navigate is now last, and it reads as a quieter class of thing: the same
+     letterform and colour, a step smaller and held back to two thirds
+     strength, so the two city headings carry the row. */
+  footer .footer-inner > div:nth-of-type(2) h5{
+    font-size:0.60rem !important;opacity:.62 !important;}
+  footer .footer-inner > div:nth-of-type(2) a{opacity:.86 !important;}
+}
+
+/* ---- the brand column's empty half --------------------------------------
+   The template is 2fr 1fr 1fr 1fr, so at 1440 the brand takes 480px for a
+   160px mark and one line of tagline. That was hidden while Navigate sat in
+   the middle; with the locations moved up, 290px of nothing opened between
+   the tagline and HONG KONG. 1.5 / 1 / 1 / 0.85 keeps the brand the widest
+   zone by a clear margin, gives each city 36px more measure and lets the
+   quiet column be the narrowest. Height, padding and gap are untouched.
+
+   Held to 1025 and up: sf-contact runs a deliberate two-column footer in its
+   769-1024 tablet band, and this must not reach into it. */
+@media(min-width:1025px){
+  footer .footer-inner{grid-template-columns:1.5fr 1fr 1fr 0.85fr !important;}
+}
+
+/* ---- PHONE AND SMALL TABLET --------------------------------------------
+   768 was falling through a gap: the shared sheet drops the footer to one
+   column at max-width 768 while the three-column phone rule starts at 767,
+   so a 768-wide screen got the fully stacked footer at 436px tall. This
+   block runs the three-zone row from 768 down.
+
+   Three zones - logo, Hong Kong, Shanghai - on one row, tops aligned. The
+   mark keeps the 92px cap it already had; the two city blocks share what is
+   left, so the row is set by the logo rather than by arbitrary percentages.
+
+   .footer-inner is written twice on purpose. index.html carries an earlier
+   phone footer block prefixed html[data-sfw43="37"], which outspecifies a
+   plain `footer .footer-inner` even with !important on both - it was winning
+   below 767 and the new values only appeared at 768. Doubling the class and
+   rooting at `body footer` puts these rules one step above it, on every page.
+   ------------------------------------------------------------------------- */
+@media(max-width:768px){
+  body footer .footer-inner.footer-inner{
+    display:grid !important;
+    grid-template-columns:92px minmax(0,1fr) minmax(0,1fr) !important;
+    column-gap:16px !important;row-gap:0 !important;
+    padding-left:18px !important;padding-right:18px !important;
+    align-items:start !important;}
+  body footer .footer-inner.footer-inner > .footer-logo-wrap{
+    grid-column:auto !important;order:1 !important;
+    text-align:left !important;padding-left:0 !important;padding-right:0 !important;}
+  body footer .footer-inner.footer-inner > div:nth-of-type(2){display:none !important;order:4 !important;}
+  body footer .footer-inner.footer-inner > div:nth-of-type(3){order:2 !important;}
+  body footer .footer-inner.footer-inner > div:nth-of-type(4){order:3 !important;}
+  body footer .footer-inner.footer-inner > .footer-col{
+    text-align:left !important;padding-left:0 !important;padding-right:0 !important;}
+
+  /* the mark is unchanged in size - 92px cap, as it already was - it just
+     stops being centred in its column. */
+  body footer .footer-inner.footer-inner .footer-logo{
+    margin-left:0 !important;margin-right:0 !important;
+    width:100% !important;max-width:92px !important;height:auto !important;}
+  body footer .footer-inner.footer-inner .footer-logo svg{
+    width:100% !important;height:auto !important;display:block !important;}
+
+  /* tops: the mark's cap height starts a little inside its own box, so the
+     two city headings take a matching nudge and the three read off one line. */
+  body footer .footer-inner.footer-inner > .footer-col h5{
+    margin-top:2px !important;margin-bottom:7px !important;
+    font-size:0.52rem !important;letter-spacing:0.16em !important;
+    line-height:1.2 !important;}
+
+  /* the addresses sit back: smaller than they were and tighter, so they are
+     clearly lighter than the mark rather than the largest block on the row. */
+  body footer .footer-inner.footer-inner .footer-col address,
+  body footer .footer-inner.footer-inner .footer-col p{
+    font-size:8.4px !important;line-height:1.42 !important;
+    letter-spacing:0.015em !important;max-width:none !important;
+    overflow-wrap:break-word !important;}
+  footer .footer-tagline{display:none !important;}
+}
+
+/* very small phones: the logo zone gives back a little so the addresses keep
+   their measure. */
+@media(max-width:360px){
+  body footer .footer-inner.footer-inner{
+    grid-template-columns:78px minmax(0,1fr) minmax(0,1fr) !important;
+    column-gap:12px !important;
+    padding-left:14px !important;padding-right:14px !important;}
+  body footer .footer-inner.footer-inner .footer-logo{max-width:78px !important;}
+  body footer .footer-inner.footer-inner .footer-col address,
+  body footer .footer-inner.footer-inner .footer-col p{font-size:7.8px !important;}
+}
+</style>
+
 </body>
 </html>
