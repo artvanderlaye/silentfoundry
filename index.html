@@ -27918,9 +27918,15 @@ var SETS={"v":["M549.0 1089.4 C548.0 1089.6 547.0 1089.5 546.0 1089.5 C545.1 108
 
 /* BASE 4. The tyre leads, its white outline lands on top of it, then the
    machine outward, and the axes close it. */
-var ORDER=['v','u','x','c','f','d','t','e','g','i','o','n','l','p'];
-/* the grid is a reference, not a finding, so it never takes a beat */
-var NOPULSE={p:1};
+/* The naughts-and-crosses grid is OFF the machine entirely. It was a
+   reference, never a finding, and releasing it after a hold still meant five
+   seconds of axes drawn over the photograph. Its geometry stays in SETS but
+   nothing paints it. */
+var ORDER=['v','u','x','c','f','d','t','e','g','i','o','n','l'];
+/* The design lines are construction marks, not findings — they belong to the
+   drawing, so they arrive and leave WITH THE SKETCH rather than resting at the
+   same level as everything else forever. They take no beat of their own. */
+var NOPULSE={l:1};
 var OPF={t:.45,u:.88,i:.45,g:.50,x:.50,p:1.13};    /* the rest sit at 1 */
 var BASE=.30, PEAK=.92, UP=1250, DOWN=2100, STEP=900;
 /* The easing is symmetric — an earlier curve (.33,.05,.2,1) held back then
@@ -27970,8 +27976,9 @@ function build(){
      it stays exactly as it was, placed and faded by the page's own code. */
   [].forEach.call(document.querySelectorAll('#sf-lab-mount .pvsk svg'),function(o){
     o.style.setProperty('display','none','important'); });
-  /* first paint is the resting state, not blank */
-  ORDER.forEach(function(k){ setG(k,BASE,0); });
+  /* first paint is the resting state, not blank — except the design lines,
+     which are held back until the sketch brings them in */
+  ORDER.forEach(function(k){ setG(k, NOPULSE[k]?0:BASE, 0); });
   return true;
 }
 
@@ -27988,9 +27995,12 @@ function play(){
      at STEP is 13 x 900 = 11700ms, and the sketch fills it —
 
        0      up over 1200ms
-       3000   1.8s held at the peak, then down over 1400ms
-       8800   4.4s held at the residue, then out over 2000ms
-       10800  gone, and 900ms later the next pass begins
+       2800   1.6s held at the peak, then down over 1400ms
+       8100   3.9s held at the residue, then out over 2000ms
+       10100  gone, and 700ms later the next pass begins
+
+     The design lines ride the same envelope: in with the drawing, out with
+     it. Twelve readings pulse, so a pass is 12 x 900 = 10800ms.
 
      Written as an attribute on <html>, which is never replaced: the page
      rebuilds the sketch node, and an inline style would die with it. */
@@ -27998,15 +28008,15 @@ function play(){
     var R=document.documentElement;
     if(R.hasAttribute('data-skhold')) return;      /* not placed yet — skip a pass */
     R.setAttribute('data-sk','up');
-    at(3000,function(){ R.setAttribute('data-sk','res'); });
-    at(8800,function(){ R.setAttribute('data-sk','out'); });
+    setG('l',BASE,1200);
+    at(2800,function(){ R.setAttribute('data-sk','res'); });
+    at(8100,function(){ R.setAttribute('data-sk','out'); setG('l',0,2000); });
   }
   /* THE GRID IS A REFERENCE, NOT A FINDING — so it leaves.
      It was painted at rest and never taken away, which left the axes on the
      photograph permanently. BASE 4 holds it 1300ms after the readings settle
      and then releases it over 1000ms, and that is what happens here: present
      at first paint, gone by 4.4s, and it does not come back. */
-  at(DOWN+1300,function(){ setG('p',0,1000); });
   at(DOWN,skPass);                      /* the sketch leads the first pass */
   at(DOWN,function pulse(){
     var k=K[i];
