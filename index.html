@@ -2455,7 +2455,7 @@ body.v11-active nav * { cursor: none !important; }
   <section class="hero">
     <div class="hero-bg"></div>
     <p class="hero-eyebrow">CROSS-BORDER</p>
-    <h1 class="hero-headline" style="transform:skewX(-4deg);transform-origin:left center;display:inline-block;"><span class="hero-headline-top">PRODUCT</span><span class="hero-headline-bottom"><span class="hero-brand-word">VENTURES</span> <span class="hero-soul-word"></span></span></h1>
+    <h1 class="hero-headline" style="display:inline-block;"><span class="hero-headline-top">PRODUCT</span><span class="hero-headline-bottom"><span class="hero-brand-word">VENTURES</span> <span class="hero-soul-word"></span></span></h1>
 
     <div class="hero-scroll">
       <div class="scroll-line"></div>
@@ -3604,11 +3604,11 @@ body.v11-active #v11-badge {
   }
 }
 @media (min-width: 901px) {
-  .nav-logo { margin-left: -28px !important; }
+  .nav-logo { margin-left: 0 !important; }
   .footer-logo { margin-left: -18px !important; }
 }
 @media (max-width: 900px) {
-  .nav-logo { margin-left: -13px !important; }
+  .nav-logo { margin-left: 0 !important; }
   .footer-logo { margin-left: -13px !important; }
 }
 @media (max-width: 900px) {
@@ -5303,20 +5303,21 @@ body.v11-active:not(.v11-scrolled) .nav-logo svg{--logo-scale:1;}
   /* the phone keeps a smaller SVG instead of a scale, as it already did */
   body.v11-active.v11-scrolled .nav-logo svg{--logo-scale:1;}
 }
-/* ---- the wrapper's resting offset, rebased for the cropped viewBox --------
-   Cropping ten user units off the left of the box moves the wordmark left by
-   ten units x the render scale, so the old corrective margins - which existed
-   to cancel that same padding - are reduced by exactly that amount and the
-   logo lands where it has always sat. Nothing here changes between the
-   expanded and the collapsed state; only --logo-scale does.
-       phone   svg 120 wide / viewBox 111+10 -> 1.0 px per unit -> 10px
-       desktop svg 240 wide                  -> 2.0 px per unit -> 20px
-     <=768   -13 + 10 =  -3px
-     769-900 -13 + 20 =  +7px
-     >=901   -28 + 20 =  -8px                                              */
-@media(max-width:768px){ html body .nav-logo{margin-left:-3px!important;} }
-@media(min-width:769px) and (max-width:900px){ html body .nav-logo{margin-left:7px!important;} }
-@media(min-width:901px){ html body .nav-logo{margin-left:-8px!important;} }
+/* ---- NO WRAPPER OFFSET ---------------------------------------------------
+   The corrective margins are gone. They existed to cancel ten units of empty
+   canvas in the old viewBox; with the box cropped to the ink there is nothing
+   left to cancel, and keeping them only preserved the original misalignment.
+   The alignment chain is now unbroken and needs no measured correction:
+
+       nav's own horizontal padding
+         = .nav-logo wrapper left
+         = SVG viewport left            (preserveAspectRatio xMin)
+         = visible SILENT / FOUNDRY left edge   (viewBox x = text x = 10)
+         = hero content edge
+
+   The page's earlier -28 / -13 optical pulls are overridden to zero rather
+   than deleted, because they live in blocks shared with other rules.        */
+html body .nav-logo{margin-left:0!important;}
 </style>
 <div id="logo-switcher" style="display:none;"><span class="hsw-label">LOGO</span><div class="logo-btn-grid"><button class="hsw-btn" onclick="applyLogoOpt(0)">1</button><button class="hsw-btn active" onclick="applyLogoOpt(1)">2</button><button class="hsw-btn" onclick="applyLogoOpt(2)">3</button><button class="hsw-btn" onclick="applyLogoOpt(3)">4</button><button class="hsw-btn" onclick="applyLogoOpt(4)">5</button><button class="hsw-btn" onclick="applyLogoOpt(5)">6</button><button class="hsw-btn" onclick="applyLogoOpt(6)">7</button><button class="hsw-btn" onclick="applyLogoOpt(7)">8</button><button class="hsw-btn" onclick="applyLogoOpt(8)">9</button><button class="hsw-btn" onclick="applyLogoOpt(9)">10</button><button class="hsw-btn" onclick="applyLogoOpt(10)">11</button><button class="hsw-btn" onclick="applyLogoOpt(11)">12</button><button class="hsw-btn" onclick="applyLogoOpt(12)">13</button><button class="hsw-btn" onclick="applyLogoOpt(13)">14</button><button class="hsw-btn" onclick="applyLogoOpt(14)">15</button><button class="hsw-btn" onclick="applyLogoOpt(15)">16</button></div></div></div>
 <script id="logo-switcher-js">
@@ -29252,6 +29253,90 @@ html body #sf-m11 .m11-metv{font-size:clamp(1.32rem,2.64vw,2.02rem) !important;}
   html body #sf-lab-mount .fd.b19 .tc::after{left:17px !important;top:44px !important;}
   html body #sf-lab-mount .fd .cn{font-size:1.3rem !important;margin-top:10px !important;}
   html body #sf-lab-mount .fd .msw{height:38px !important;gap:6px !important;}
+}
+</style>
+
+
+<style id="sf-align-pass">
+/* =========================================================================
+   ALIGNMENT PASS — nav wordmark to the content edge, and the Marshall row
+   onto real anchors. Appended last so it beats the section blocks above.
+   ========================================================================= */
+
+/* ---- MARSHALL RESULTS — four anchors, not four boxes --------------------
+   The row was four equal cells with the outer two ranged to the frame. That
+   fixes the outside edges but leaves the middle two sitting at the centres of
+   their own variable-width cells, so 90+ and $4B+ bunched: the gap either
+   side of them was set by how wide "Years of Heritage" and "Expanded Market"
+   happen to be, not by the frame.
+
+   What is wanted is four ANCHORS on the frame:
+
+       0%            33.333%           66.667%            100%
+       60+             90+               $4B+             $1.1B
+       left edge     centred           centred          right edge
+
+   space-between cannot deliver that with unequal strings, and a four-column
+   grid puts the centres at 12.5 / 37.5 / 62.5 / 87.5 - the outer two land
+   inside the frame instead of on it.
+
+   A SIX-column grid does deliver it exactly, with no measured pixel anywhere:
+       item 1  column 1        justify-self:start   -> left edge  at 0/6
+       item 2  columns 2-3     justify-self:center  -> centre     at 2/6
+       item 3  columns 4-5     justify-self:center  -> centre     at 4/6
+       item 4  column 6        justify-self:end     -> right edge at 6/6
+   The number and its label stay inside one grid item, so they can never
+   separate and their spacing is untouched.
+   The three separators are drawn on the CONTAINER at 16.667 / 50 / 83.333 -
+   the midpoints between anchors - so their positions come from the frame and
+   not from the width of any statistic.                                     */
+@media(min-width:901px){
+  html body #sf-m11 .m11-mets{
+    position:relative !important;
+    display:grid !important;
+    grid-template-columns:repeat(6,1fr) !important;
+    column-gap:0 !important; row-gap:0 !important;
+    align-items:start !important;}
+  html body #sf-m11 .m11-met{
+    padding:0 !important; margin:0 !important; border-right:none !important;
+    min-width:0 !important;}
+  html body #sf-m11 .m11-met:nth-child(1){
+    grid-column:1 / 2 !important;justify-self:start !important;text-align:left !important;}
+  html body #sf-m11 .m11-met:nth-child(2){
+    grid-column:2 / 4 !important;justify-self:center !important;text-align:center !important;}
+  html body #sf-m11 .m11-met:nth-child(3){
+    grid-column:4 / 6 !important;justify-self:center !important;text-align:center !important;}
+  html body #sf-m11 .m11-met:nth-child(4){
+    grid-column:6 / 7 !important;justify-self:end !important;text-align:right !important;}
+  /* The three separators are painted ON THE CONTAINER as three 1px vertical
+     gradients. Three pseudo-elements would have meant hanging one off a
+     statistic - and .m11-met carries a transform during the reveal, which
+     would make that cell the containing block and drag the line with it.
+     Painted on the frame they cannot move, cannot inherit a text width, and
+     are guaranteed identical in height and opacity. */
+  /* One gradient across the full frame with three pairs of hard stops. Three
+     separate 1px images positioned by percentage would each land at
+     (frameWidth - 1px) x pct rather than on the anchor midpoint - up to 0.8px
+     out at 1440. Hard stops inside a full-width gradient resolve their
+     percentages against the frame itself, so the lines fall exactly on
+     16.6667 / 50 / 83.3333 and are identical in width, height and opacity. */
+  html body #sf-m11 .m11-mets{
+    background-image:linear-gradient(90deg,
+      transparent calc(16.6667% - .5px), rgba(10,10,10,.1) calc(16.6667% - .5px),
+      rgba(10,10,10,.1) calc(16.6667% + .5px), transparent calc(16.6667% + .5px),
+      transparent calc(50% - .5px),        rgba(10,10,10,.1) calc(50% - .5px),
+      rgba(10,10,10,.1) calc(50% + .5px),  transparent calc(50% + .5px),
+      transparent calc(83.3333% - .5px),   rgba(10,10,10,.1) calc(83.3333% - .5px),
+      rgba(10,10,10,.1) calc(83.3333% + .5px), transparent calc(83.3333% + .5px)) !important;
+    background-size:100% calc(100% - 8px) !important;
+    background-position:0 2px !important;
+    background-repeat:no-repeat !important;}
+  /* item 1 and item 4 own a single 1/6 track; let their labels use the room
+     either side of the anchor rather than clipping inside the track */
+  html body #sf-m11 .m11-met:nth-child(1),
+  html body #sf-m11 .m11-met:nth-child(4){white-space:nowrap !important;}
+  html body #sf-m11 .m11-met:nth-child(2),
+  html body #sf-m11 .m11-met:nth-child(3){white-space:nowrap !important;}
 }
 </style>
 
