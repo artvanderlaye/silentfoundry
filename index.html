@@ -29674,5 +29674,146 @@ html body .hero-headline .hero-headline-bottom{
 }
 </style>
 
+
+<style id="sf-footer-axis">
+/* =========================================================================
+   ONE FOOTER LEFT AXIS  +  LEGAL TYPE  +  MARSHALL METRIC BREAKPOINT
+
+   WHAT WAS CONFLICTING (measured, before this block)
+
+     w     header ink   footer ink   diff
+     390      24.00       31.25      +7.25
+     600      24.00       45.25     +21.25
+     768      24.00       49.50     +25.50
+     960      48.00       32.00     -16.00     <- footer LEFT of header
+    1024      48.00       48.00       0.00
+    1440      48.00      128.00     +80.00
+    1920      48.00      368.00    +320.00
+    2560     228.00      528.00    +300.00
+
+   THREE separate systems were disagreeing:
+
+   1  --sfink added 17.5 / 13.25px of extra left padding below 900. It existed
+      to push the footer text out to meet the wordmark's ink, back when the
+      footer SVG still carried ten units of blank canvas. That canvas was
+      cropped out two passes ago (viewBox 10 36 111 40), so the ink now sits
+      on the container edge and --sfink is pure surplus. It is zeroed here,
+      not counteracted.
+
+   2  The footer ran its own padding scale (48/32/18) while the nav runs
+      24 below 960 and 48 above. They were never going to agree.
+
+   3  Above 1280 the footer centred its own 1280 cap while the nav stays
+      pinned to the page inset - which is why the gap grew to 320px at 1920.
+
+   WHAT THE HEADER ACTUALLY USES, as asked:
+       nav max-width:var(--site-max), margins auto, padding-left 24 below 960
+       and 48 above; above 1920 html[data-uw="13"] gives it
+       padding-left:max(48px, calc(50vw - (var(--sf-heroframe)/2)))
+       - which is the 228px measured at 2560.
+   So the header does NOT use the footer's 1280 cap. Option A is taken: the
+   footer adopts the header's inset expression as its own, at every width.
+
+   The cap is kept as a MEASURE, not as a centring device - max-width is
+   1184px of content plus the inset on each side, so the three columns keep
+   the exact widths they have today and only the block's position changes.
+   The footer stops being centred above 1280 and sits on the page axis, which
+   is what the original option 23 note asked for before the lab's frame()
+   helper centred it.
+   ========================================================================= */
+
+/* ---- the single source of truth for the footer's horizontal inset ------- */
+html{--sfink:0px;}                       /* retired: the viewBox crop replaced it */
+html{--sfpad:24px;}                      /* mirrors the nav below 960          */
+@media(min-width:960px){ html{--sfpad:48px;} }
+@media(min-width:1921px){
+  html{--sfpad:max(48px, calc(50vw - (var(--sf-heroframe) / 2)));}
+}
+
+html body footer .footer-inner.footer-inner,
+html body .footer-bottom.footer-bottom{
+  max-width:calc(1184px + var(--sfpad) * 2) !important;
+  margin-left:0 !important; margin-right:auto !important;
+  padding-left:var(--sfpad) !important;
+  padding-right:var(--sfpad) !important;}
+
+/* the two historical pulls on the footer wordmark are retired outright, at
+   every width, rather than neutralised band by band */
+html body footer .footer-inner.footer-inner .footer-logo{
+  margin-left:0 !important; margin-right:0 !important;}
+
+/* Above 1920 the page's ultrawide canvas layer, html[data-uw="13"], gives
+   .footer-inner its own centred 1600 frame and .footer-bottom a 528px inset -
+   both at (0,3,x), which outranks the block above. Matching that attribute
+   takes these to (0,4,x) so the footer keeps the nav's axis at 2560 too.
+   This is the last of the competing systems, resolved rather than nudged.   */
+@media(min-width:1921px){
+  html[data-uw="13"] body footer .footer-inner.footer-inner,
+  html[data-uw="13"] body .footer-bottom.footer-bottom{
+    max-width:calc(1184px + var(--sfpad) * 2) !important;
+    margin-left:0 !important; margin-right:auto !important;
+    padding-left:var(--sfpad) !important;
+    padding-right:var(--sfpad) !important;}
+}
+
+/* ---- LEGAL ROW: one secondary system at EVERY width ---------------------
+   Below 768 sf-refine-pass already unified these. Above it the copyright was
+   still rgba(244,241,236,.42) against the links' #6b6560, and both carried
+   0.6px of tracking against the 0.19px the rest of the footer uses. Same
+   family, size, weight, line-height, tracking and ink now, everywhere.      */
+html body .footer-bottom.footer-bottom > .cr-full,
+html body .footer-bottom.footer-bottom .sf-util a{
+  font-family:'DM Sans',sans-serif !important;
+  font-weight:300 !important;
+  line-height:1.6 !important;
+  letter-spacing:0.19px !important;
+  color:#6b6560 !important;}
+html body .footer-bottom.footer-bottom .sf-util a:hover{
+  color:rgba(244,241,236,.72) !important;}
+
+/* ---- MARSHALL METRICS: four across down to 600 --------------------------
+   The 2x2 was starting at 1023, but the panel has room long before that.
+   Measured spare width (panel minus the four groups' own ink):
+
+       600  spare 258   ->  3 gaps of 86
+       768  spare 426   ->  3 gaps of 142
+       900  spare 551   ->  3 gaps of 184
+       960  spare  38   ->  3 gaps of 12.7    <- the real floor
+      1024  spare  65   ->  3 gaps of 21.8
+
+   The tightest point is 960, not 600: below 901 the section stacks and the
+   metrics get the FULL panel width, so 600-900 is actually the roomiest part
+   of the whole range - which is why the 2x2 looked so stretched there.
+   960 still clears 12.7px between groups with no label wrapping, so the
+   four-across treatment runs down to 600 and the balanced 2x2 is kept for
+   phones only.                                                              */
+@media(min-width:600px){
+  html body #sf-m11 .m11-mets{
+    display:flex !important; align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:0 !important; background-image:none !important;}
+  html body #sf-m11 .m11-met{
+    flex:0 0 auto !important; width:max-content !important; min-width:0 !important;
+    padding:0 !important; margin:0 !important; border:none !important;}
+  html body #sf-m11 .m11-met:nth-of-type(1){text-align:left !important;}
+  html body #sf-m11 .m11-met:nth-of-type(2),
+  html body #sf-m11 .m11-met:nth-of-type(3){text-align:center !important;}
+  html body #sf-m11 .m11-met:nth-of-type(4){text-align:right !important;}
+  html body #sf-m11 .m11-sep{
+    display:block !important; flex:1 1 0 !important; min-width:0 !important;
+    align-self:stretch !important; position:relative !important;
+    font-style:normal !important;}
+  html body #sf-m11 .m11-sep::before{
+    content:'';position:absolute;left:50%;top:2px;bottom:6px;width:1px;
+    transform:translateX(-.5px);background:rgba(10,10,10,.1);}
+}
+@media(max-width:599px){
+  html body #sf-m11 .m11-sep{display:none !important;}
+  html body #sf-m11 .m11-mets{
+    display:grid !important;grid-template-columns:repeat(2,1fr) !important;
+    gap:22px 0 !important;background-image:none !important;}
+}
+</style>
+
 </body>
 </html>
