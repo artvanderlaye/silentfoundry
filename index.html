@@ -2671,8 +2671,11 @@ body.v11-active nav * { cursor: none !important; }
               <p class="m11-tx">Marshall moved from guitar amplifiers into home and consumer audio. The result was a vastly expanded market, ultimately leading to a $1.1B acquisition.</p>
               <div class="m11-mets">
                 <div class="m11-met"><span class="m11-metv">60+</span><span class="m11-metl">Years of Heritage</span></div>
+                <i class="m11-sep" aria-hidden="true"></i>
                 <div class="m11-met"><span class="m11-metv">90+</span><span class="m11-metl">Global Markets</span></div>
+                <i class="m11-sep" aria-hidden="true"></i>
                 <div class="m11-met"><span class="m11-metv">$4B+</span><span class="m11-metl">Expanded Market</span></div>
+                <i class="m11-sep" aria-hidden="true"></i>
                 <div class="m11-met"><span class="m11-metv">$1.1B</span><span class="m11-metl">Exit in 2025</span></div>
               </div>
             </div>
@@ -3093,7 +3096,7 @@ body.v11-active nav * { cursor: none !important; }
     <div class="footer-inner">
     <div class="footer-logo-wrap">
       <a href="index.html" class="footer-logo" style="display:block;width:160px;height:50px;">
-        <svg viewBox="0 36 120 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg>
+        <svg viewBox="10 36 111 40" preserveAspectRatio="xMinYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" width="160" height="50"><g><text x="10" y="52" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">SILENT</text><text x="10" y="72" text-anchor="start" font-family="Josefin Sans,sans-serif" font-style="normal" font-size="14" font-weight="400" letter-spacing="6" fill="rgba(244,241,236,0.7)">FOUNDRY</text></g></svg>
       </a>
       <p class="footer-tagline" style="margin-top:19px;">Authentic brands premium products.</p>
     </div>
@@ -29263,80 +29266,123 @@ html body #sf-m11 .m11-metv{font-size:clamp(1.32rem,2.64vw,2.02rem) !important;}
    onto real anchors. Appended last so it beats the section blocks above.
    ========================================================================= */
 
-/* ---- MARSHALL RESULTS — four anchors, not four boxes --------------------
-   The row was four equal cells with the outer two ranged to the frame. That
-   fixes the outside edges but leaves the middle two sitting at the centres of
-   their own variable-width cells, so 90+ and $4B+ bunched: the gap either
-   side of them was set by how wide "Years of Heritage" and "Expanded Market"
-   happen to be, not by the frame.
+/* ---- MARSHALL RESULTS — EQUAL VISIBLE GAPS ------------------------------
+   The six-column anchor version put the four groups on mathematically equal
+   centres, but the strings are not equal widths, so the SPACE between them
+   was not equal - measured at 1440 it ran 53.5 / 96.4 / 41.6, and at 901 two
+   of the three gaps went NEGATIVE (-15.0 and -1.3), i.e. the groups
+   overlapped. Equal centres and equal gaps are different things, and it is
+   the gaps the eye reads.
 
-   What is wanted is four ANCHORS on the frame:
+   So the row is now four shrink-wrapped groups with three flexible tracks
+   between them:
 
-       0%            33.333%           66.667%            100%
-       60+             90+               $4B+             $1.1B
-       left edge     centred           centred          right edge
+       group - track - group - track - group - track - group
 
-   space-between cannot deliver that with unequal strings, and a four-column
-   grid puts the centres at 12.5 / 37.5 / 62.5 / 87.5 - the outer two land
-   inside the frame instead of on it.
+   Every track is flex:1 1 0, so the three of them always take an identical
+   share of whatever is left over. Because each group is width:max-content,
+   its border box IS its visible ink, and equal track widths therefore mean
+   equal VISIBLE gaps - no measurement, no corrective margin, and it re-solves
+   itself at every width and font size.
 
-   A SIX-column grid does deliver it exactly, with no measured pixel anywhere:
-       item 1  column 1        justify-self:start   -> left edge  at 0/6
-       item 2  columns 2-3     justify-self:center  -> centre     at 2/6
-       item 3  columns 4-5     justify-self:center  -> centre     at 4/6
-       item 4  column 6        justify-self:end     -> right edge at 6/6
-   The number and its label stay inside one grid item, so they can never
-   separate and their spacing is untouched.
-   The three separators are drawn on the CONTAINER at 16.667 / 50 / 83.333 -
-   the midpoints between anchors - so their positions come from the frame and
-   not from the width of any statistic.                                     */
-@media(min-width:901px){
+   The first group ranges left and the last ranges right, so the outer visible
+   edges still land on the frame. Each separator is drawn at the centre of its
+   own track, so it is by construction the midpoint of the real gap.
+   The number and its label stay inside one group and cannot separate.        */
+@media(min-width:1024px){
   html body #sf-m11 .m11-mets{
-    position:relative !important;
-    display:grid !important;
-    grid-template-columns:repeat(6,1fr) !important;
-    column-gap:0 !important; row-gap:0 !important;
-    align-items:start !important;}
+    display:flex !important; align-items:flex-start !important;
+    justify-content:flex-start !important;
+    gap:0 !important; background-image:none !important;}
   html body #sf-m11 .m11-met{
-    padding:0 !important; margin:0 !important; border-right:none !important;
-    min-width:0 !important;}
-  html body #sf-m11 .m11-met:nth-child(1){
-    grid-column:1 / 2 !important;justify-self:start !important;text-align:left !important;}
-  html body #sf-m11 .m11-met:nth-child(2){
-    grid-column:2 / 4 !important;justify-self:center !important;text-align:center !important;}
-  html body #sf-m11 .m11-met:nth-child(3){
-    grid-column:4 / 6 !important;justify-self:center !important;text-align:center !important;}
-  html body #sf-m11 .m11-met:nth-child(4){
-    grid-column:6 / 7 !important;justify-self:end !important;text-align:right !important;}
-  /* The three separators are painted ON THE CONTAINER as three 1px vertical
-     gradients. Three pseudo-elements would have meant hanging one off a
-     statistic - and .m11-met carries a transform during the reveal, which
-     would make that cell the containing block and drag the line with it.
-     Painted on the frame they cannot move, cannot inherit a text width, and
-     are guaranteed identical in height and opacity. */
-  /* One gradient across the full frame with three pairs of hard stops. Three
-     separate 1px images positioned by percentage would each land at
-     (frameWidth - 1px) x pct rather than on the anchor midpoint - up to 0.8px
-     out at 1440. Hard stops inside a full-width gradient resolve their
-     percentages against the frame itself, so the lines fall exactly on
-     16.6667 / 50 / 83.3333 and are identical in width, height and opacity. */
+    flex:0 0 auto !important; width:max-content !important; min-width:0 !important;
+    padding:0 !important; margin:0 !important; border:none !important;}
+  html body #sf-m11 .m11-met:nth-of-type(1){text-align:left !important;}
+  html body #sf-m11 .m11-met:nth-of-type(2),
+  html body #sf-m11 .m11-met:nth-of-type(3){text-align:center !important;}
+  html body #sf-m11 .m11-met:nth-of-type(4){text-align:right !important;}
+  html body #sf-m11 .m11-sep{
+    display:block !important; flex:1 1 0 !important; min-width:0 !important;
+    align-self:stretch !important; position:relative !important;
+    font-style:normal !important;}
+  html body #sf-m11 .m11-sep::before{
+    content:'';position:absolute;left:50%;top:2px;bottom:6px;width:1px;
+    transform:translateX(-.5px);background:rgba(10,10,10,.1);}
+}
+/* Below 1024 the four groups cannot hold a comfortable gap - at 1023 they
+   would have about 4px between them - so the row becomes the balanced two
+   column grid it already used on a phone, and the tracks drop out of it. */
+@media(max-width:1023px){
+  html body #sf-m11 .m11-sep{display:none !important;}
   html body #sf-m11 .m11-mets{
-    background-image:linear-gradient(90deg,
-      transparent calc(16.6667% - .5px), rgba(10,10,10,.1) calc(16.6667% - .5px),
-      rgba(10,10,10,.1) calc(16.6667% + .5px), transparent calc(16.6667% + .5px),
-      transparent calc(50% - .5px),        rgba(10,10,10,.1) calc(50% - .5px),
-      rgba(10,10,10,.1) calc(50% + .5px),  transparent calc(50% + .5px),
-      transparent calc(83.3333% - .5px),   rgba(10,10,10,.1) calc(83.3333% - .5px),
-      rgba(10,10,10,.1) calc(83.3333% + .5px), transparent calc(83.3333% + .5px)) !important;
-    background-size:100% calc(100% - 8px) !important;
-    background-position:0 2px !important;
-    background-repeat:no-repeat !important;}
-  /* item 1 and item 4 own a single 1/6 track; let their labels use the room
-     either side of the anchor rather than clipping inside the track */
-  html body #sf-m11 .m11-met:nth-child(1),
-  html body #sf-m11 .m11-met:nth-child(4){white-space:nowrap !important;}
-  html body #sf-m11 .m11-met:nth-child(2),
-  html body #sf-m11 .m11-met:nth-child(3){white-space:nowrap !important;}
+    display:grid !important;grid-template-columns:repeat(2,1fr) !important;
+    gap:22px 0 !important;background-image:none !important;}
+  html body #sf-m11 .m11-met{
+    padding:0 !important;margin:0 !important;border-right:none !important;}
+}
+</style>
+
+
+<style id="sf-footer-edge">
+/* =========================================================================
+   FOOTER — ONE VISIBLE LEFT EDGE  (small screens)
+
+   The footer containers already shared a padding edge, but the wordmark did
+   not sit on it: the SVG carried ten user units of blank canvas before the
+   text, so the ink was pushed inward while the tagline, HONG KONG, the legal
+   links and the copyright all started at the container. Measured:
+
+       <=767   svg 124x39  ink inset 13.25px   container 18 -> ink 31.25
+       768-900 svg 160x50  ink inset 17.50px   container 32 -> ink 49.50
+       >=901   svg 160x50, .footer-logo margin-left:-18px
+               ink 31.5 against a container of 32 - already aligned
+
+   The inset is not a guess. With viewBox 120x40 in a WxH box the browser
+   fits with `meet`, so s = min(W/120, H/40) and, centred by the default
+   xMidYMid, the ink lands at
+
+       (W - 120s)/2 + 10s
+
+       124x39 -> s=0.975 -> (124-117)/2 + 9.75  = 13.25
+       160x50 -> s=1.250 -> (160-150)/2 + 12.50 = 17.50
+
+   Cropping the box to `10 36 111 40` with xMinYMid puts the ink on the SVG's
+   own left edge. To hold the approved logo position, that same inset is then
+   given back ONCE, on the shared containers - not as four separate margins on
+   the tagline, the office, the links and the copyright.
+
+   Left only. Adding it to the right as well would take 26.5px out of the
+   phone measure, and the two office columns are already only 5.9px clear of
+   the widest address line at 360.
+   ========================================================================= */
+html{--sfink:17.5px;}
+@media(max-width:767px){ html{--sfink:13.25px;} }
+
+@media(max-width:900px){
+  html body footer .footer-inner.footer-inner{
+    padding-left:calc(var(--sfpad) + var(--sfink)) !important;}
+  html body .footer-bottom.footer-bottom{
+    padding-left:calc(var(--sfpad) + var(--sfink)) !important;}
+  /* the phone measure loses 13.25px to the rebase, and the two office columns
+     had 5.9px of slack at 360. Two pixels off the column gap gives it back:
+     (360 - 18 - 31.25 - 14) / 2 = 148.4 against a 148.1 measure. */
+  @media(max-width:599px){ html{--sfgx:14px;} }
+}
+
+/* >=901 was already aligned only because a -18px pull on the logo happened to
+   cancel the 17.5px inset. With the inset gone the pull would drag the ink
+   18px off the edge, so it is released here rather than left to fight the
+   new geometry. This is the conflicting rule resolved, not another override. */
+@media(min-width:901px){
+  html body footer .footer-inner.footer-inner .footer-logo{margin-left:0 !important;}
+}
+
+/* The page indents the tagline with `@media(max-width:768px){.footer-tagline
+   {padding-left:10px!important}}`, and the option 23 block only zeroed it up
+   to 767 - so 768 exactly, and nothing else, kept a 10px indent. Zeroed on the
+   same band the page uses, rather than papered over at one width. */
+@media(max-width:768px){
+  html body footer .footer-inner.footer-inner .footer-tagline{padding-left:0 !important;}
 }
 </style>
 
