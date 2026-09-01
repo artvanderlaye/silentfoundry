@@ -29386,5 +29386,138 @@ html{--sfink:17.5px;}
 }
 </style>
 
+
+<style id="sf-refine-pass">
+/* =========================================================================
+   REFINEMENT PASS — footer secondary type, footer brand divider,
+   SWITCH mobile density, and the Marshall image in a narrowed desktop window.
+   Appended last so it beats the section blocks above it.
+   ========================================================================= */
+
+/* ---- 1 · ONE SECONDARY TYPE SCALE IN THE FOOTER ------------------------
+   Measured on a phone before this rule, the five "secondary" items were on
+   three different sizes and three different trackings:
+
+       tagline     11.20px / 300 / 21.28 lh / normal   #6b6560
+       address      9.50px / 300 / 15.20 lh / 0.19px   #6b6560
+       copyright    9.60px / 300 / 15.36 lh / 0.60px   rgba(244,241,236,.42)
+       links        9.60px / 300 / 15.36 lh / 0.60px   #6b6560
+
+   The copyright reads heavier than the addresses not because it is bigger -
+   it is 0.1px bigger - but because it carries 0.6px of tracking against the
+   address's 0.19px, which opens the word out and makes it occupy more line.
+   Its colour is also a shade lighter (#6b6a68 against #6b6560), which on a
+   black ground reads as more weight, not less.
+
+   One scale for all five. The ADDRESS is the reference, because it is the
+   bulk of the copy and because matching upward would have enlarged the whole
+   footer to chase an oversized copyright rule. The city headings keep their
+   own treatment - they are headings, not body. The wordmark is untouched.    */
+@media(max-width:767px){
+  /* on the ROOT, not on <footer>: .footer-bottom is a sibling of <footer>,
+     so variables declared on the footer never reach it - the declarations
+     then computed to an invalid value and the !important reset the
+     copyright and the links to an unstyled 16px. */
+  html{
+    --f2-size:9.6px;
+    --f2-line:1.6;
+    --f2-track:0.19px;
+    --f2-ink:#6b6560;}
+  html body footer .footer-inner.footer-inner .footer-tagline,
+  html body footer .footer-inner.footer-inner .footer-col address,
+  html body .footer-bottom.footer-bottom span,
+  html body .footer-bottom.footer-bottom .sf-util a{
+    font-family:'DM Sans',sans-serif !important;
+    font-size:var(--f2-size) !important;
+    font-weight:300 !important;
+    line-height:var(--f2-line) !important;
+    letter-spacing:var(--f2-track) !important;
+    color:var(--f2-ink) !important;}
+  /* the tagline keeps its own breathing room above; only its scale changes */
+  html body footer .footer-inner.footer-inner .footer-tagline{
+    margin-top:14px !important;}
+}
+
+/* ---- 2 · THE BRAND DIVIDER --------------------------------------------
+   A hairline between the brand block and the two offices, in the footer's
+   own subdued gold. The space above it is the wrap's padding; the space
+   below it is the grid's row gap. Those are two different mechanisms, so
+   the gap is compensated rather than guessed at - margin-bottom carries the
+   difference so both sides land on exactly --f2-div, and the Hong Kong to
+   Shanghai gap in the single-column tier is left at its own value.          */
+@media(max-width:767px){
+  html{--f2-div:16px;}
+  html body footer .footer-inner.footer-inner > .footer-logo-wrap{
+    border-bottom:1px solid rgba(200,169,110,.10) !important;
+    padding-bottom:var(--f2-div) !important;
+    margin-bottom:calc(var(--f2-div) - var(--sfgy)) !important;}
+}
+
+/* ---- 3 · SWITCH ACQUIRED ASSET — a little tighter on a phone -----------
+   Only vertical air, and only where it was doing nothing. Type sizes, the
+   three-column symbol grid, the swatch widths and the two-column material
+   labels are all untouched.                                                 */
+@media(max-width:900px){
+  html body #sf-lab-mount .fd.b19 .split{padding:28px 24px 30px !important;gap:26px 0 !important;}
+  html body #sf-lab-mount .fd.b19 .fcats{margin-top:44px !important;}
+  html body #sf-lab-mount .fd .cblk{padding-top:6px !important;}
+  html body #sf-lab-mount .cblk .dlr .q22{margin-top:18px !important;}
+  html body #sf-lab-mount .fd .msw{margin-top:18px !important;}
+  html body #sf-lab-mount .fd .mnm{margin-top:10px !important;}
+}
+@media(max-width:600px){
+  html body #sf-lab-mount .fd.b19 .split{padding:24px 24px 26px !important;gap:24px 0 !important;}
+  html body #sf-lab-mount .fd.b19 .fcats{margin-top:36px !important;}
+}
+/* the four construction cards: 96px -> 86px, about 10% off the box, taken
+   from the padding and the icon rather than from the type. Both rows are
+   forced to one track height so a description that wraps to a third line
+   cannot make its card taller than the other three - that was happening at
+   320, where two cards ran 104.3 against the others' 96. */
+@media(max-width:900px){
+  html body #sf-lab-mount .cblk .dlr .q22{
+    grid-auto-rows:1fr !important;align-items:stretch !important;}
+  html body #sf-lab-mount .cblk .dlr .qz{
+    min-height:86px !important;padding:10px 10px !important;}
+  html body #sf-lab-mount .cblk .dlr .qg{
+    height:27px !important;margin-bottom:6px !important;}
+  html body #sf-lab-mount .cblk .dlr .qz .sl2{margin-top:2px !important;}
+}
+
+/* ---- 4 · MARSHALL IMAGE IN A NARROWED DESKTOP WINDOW -------------------
+   DIAGNOSIS. .m11-crop carries an inline aspect-ratio of 1.6/1, and at 900
+   and under .m11-pair drops to a single column - so each photograph becomes
+   FULL WIDTH at that ratio, and there are two of them stacked:
+
+       width   crop          pair (2 stacked + 16 gap)
+        768    720 x 450     916px
+        900    852 x 533     1082px
+
+   On a desktop window 800px tall that is 135% of the viewport for the images
+   alone. It is not a phone problem - at 390 the crop is 342 x 186 and the
+   pair is 388, which is the approved presentation.
+
+   The cause is the single-column pair rule surviving into a range where the
+   viewport is still wide. The fix is to let the pair stay two-up there, which
+   restores the intended crop and the frame alignment without touching the
+   ratio, the object-fit or the phone.
+
+   Gated on a fine pointer as well as width, so a coarse-pointer tablet or
+   phone in this range keeps the approved stacked layout.                     */
+@media(min-width:768px) and (max-width:900px) and (hover:hover) and (pointer:fine){
+  /* The crop keeps its shape and its snap behaviour; only its height is
+     bounded. aspect-ratio yields to max-height, so the box gets wider than
+     16/9 and the image - already inset with object-fit:cover - crops rather
+     than distorts. clamp() keeps it substantial on a tall window and stops it
+     running away on a short one, and cannot fail at a nearby size the way a
+     fixed height would. */
+  html[data-sfw43="37"] body #sf-m11 .m11-pair > .m11-crop{
+    height:auto !important;
+    max-height:clamp(240px, 40vh, 380px) !important;}
+  html[data-sfw43="37"] body #sf-m11 .m11-pair > .m11-crop img{
+    object-fit:cover !important;object-position:center !important;}
+}
+</style>
+
 </body>
 </html>
