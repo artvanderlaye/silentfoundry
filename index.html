@@ -29519,5 +29519,52 @@ html{--sfink:17.5px;}
 }
 </style>
 
+
+<style id="sf-hero-optical-x">
+/* =========================================================================
+   HERO — OPTICAL LEFT CORRECTION FOR PRODUCT / VENTURES
+
+   The boxes are already aligned. Measured, at every width:
+
+       eyebrow box   PRODUCT box   VENTURES box
+          24 / 48       24 / 48       24 / 48
+
+   So this is not padding, not margin and not the container - it is the left
+   side bearing of the Josefin Sans capitals. The headline is set 4-6x larger
+   than CROSS-BORDER, and side bearing scales with type size, so the same
+   typeface leaves visibly more air before a 63px V than before an 11.5px C.
+
+   WHY THIS IS NOT A TRANSFORM
+   Three separate things already write to `transform` on these elements:
+
+     1  applyStyle() sets el.style.transform = 'skewX(0deg)' inline, on every
+        call, including DOMContentLoaded and every hero-switcher click;
+     2  something earlier still writes an inline scaleX - measured live at
+        scaleX(1.70002) on .hero-headline-top - before DOMContentLoaded, not
+        through style.transform, setProperty or setAttribute;
+     3  #sf-hero-nostretch neutralises (2) with
+        `html body .hero-headline-top{transform:none !important}`.
+
+   A translateX() here would either be wiped by (1)/(2) or would have to beat
+   (3) with another !important - and beating (3) would re-admit the 1.7x
+   horizontal stretch that rule exists to kill. It would also be multiplied by
+   any scaleX still in the chain.
+
+   So the correction uses a DIFFERENT PROPERTY. Both elements already compute
+   position:relative with left:0, so a negative `left` moves the painted
+   glyphs and nothing else: it does not affect layout, it cannot be reached by
+   anything writing transforms, and it survives every switcher call.
+
+   ONE value, in px, for both lines - it does not scale with the viewport.
+   ========================================================================= */
+html{--hero-optical-x:-3px;}
+
+html body .hero-headline .hero-headline-top,
+html body .hero-headline .hero-headline-bottom{
+  position:relative;
+  left:var(--hero-optical-x);
+}
+</style>
+
 </body>
 </html>
