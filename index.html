@@ -3114,9 +3114,9 @@ body.v11-active nav * { cursor: none !important; }
   </div>
 </footer>
   <div class="footer-bottom">
-    <span>© 2026 Silent Foundry Group. All rights reserved.</span>
+    <span class="cr-full">© 2026 Silent Foundry Group. All rights reserved.</span>
     <div class="sf-util">
-      <a href="legal.html#privacy">Privacy Policy</a><i aria-hidden="true">·</i><a href="legal.html#terms">Terms of Use</a>
+      <a href="legal.html#privacy"><span class="u-full">Privacy Policy</span><span class="u-cmp">Privacy</span></a><i aria-hidden="true">·</i><a href="legal.html#terms"><span class="u-full">Terms of Use</span><span class="u-cmp">Terms</span></a><i class="u-cmp sep-cr" aria-hidden="true">·</i><span class="u-cmp cr-cmp">© 2026 Silent Foundry</span>
     </div>
   </div>
 
@@ -28996,7 +28996,7 @@ html body .footer-bottom.footer-bottom{
    mostly x-height, so caps read visibly larger at an identical font-size —
    matching the case is the only way to make them look equal as well as
    measure equal. */
-html body .footer-bottom.footer-bottom span{
+html body .footer-bottom.footer-bottom > .cr-full{
   font-family:'DM Sans',sans-serif !important;font-weight:300 !important;
   font-size:var(--sfutil) !important;line-height:1.6 !important;
   letter-spacing:.6px !important;text-transform:none !important;
@@ -29425,7 +29425,7 @@ html{--sfink:17.5px;}
     --f2-ink:#6b6560;}
   html body footer .footer-inner.footer-inner .footer-tagline,
   html body footer .footer-inner.footer-inner .footer-col address,
-  html body .footer-bottom.footer-bottom span,
+  html body .footer-bottom.footer-bottom > .cr-full,
   html body .footer-bottom.footer-bottom .sf-util a{
     font-family:'DM Sans',sans-serif !important;
     font-size:var(--f2-size) !important;
@@ -29563,6 +29563,114 @@ html body .hero-headline .hero-headline-top,
 html body .hero-headline .hero-headline-bottom{
   position:relative;
   left:var(--hero-optical-x);
+}
+</style>
+
+
+<style id="sf-footer-utility">
+/* =========================================================================
+   FOOTER BOTTOM UTILITY ROW  +  MARSHALL COMPACT-DESKTOP HEIGHT
+   ========================================================================= */
+
+/* ---- 1 · DESKTOP / TABLET: links LEFT, copyright RIGHT ------------------
+   The markup order stays copyright-then-links, so the source still reads
+   correctly with styles off and the mobile line below can reuse the same
+   nodes. row-reverse puts the LAST item first, which lands the links on the
+   left and the copyright on the right of the same row - no change to the
+   padding, the content boundaries, or the row's height.                     */
+@media(min-width:600px){
+  html body .footer-bottom.footer-bottom{
+    flex-direction:row-reverse !important;
+    justify-content:space-between !important;
+    align-items:baseline !important;
+    /* a real floor on the space between the two, so they can never touch at
+       an intermediate width before the mobile line takes over */
+    column-gap:32px !important;
+    flex-wrap:nowrap !important;}
+  html body .footer-bottom.footer-bottom > .cr-full{
+    text-align:right !important;flex:0 1 auto !important;}
+  html body .footer-bottom.footer-bottom .sf-util{
+    flex:0 0 auto !important;}
+  /* the compact forms are a phone treatment only */
+  html body .footer-bottom.footer-bottom .u-cmp{display:none !important;}
+  html body .footer-bottom.footer-bottom .u-full{display:inline !important;}
+}
+
+/* ---- 2 · NARROW MOBILE: one compact line -------------------------------
+       Privacy · Terms · © 2026 Silent Foundry
+   One row, left-aligned on the same footer content edge as everything else,
+   no wrap. The long copyright is dropped rather than shrunk, so the type can
+   stay on the footer's shared secondary scale instead of falling back to an
+   emergency size.                                                           */
+@media(max-width:599px){
+  html body .footer-bottom.footer-bottom{
+    flex-direction:row !important;
+    flex-wrap:nowrap !important;
+    justify-content:flex-start !important;
+    align-items:baseline !important;
+    gap:0 !important;
+    white-space:nowrap !important;}
+  html body .footer-bottom.footer-bottom > .cr-full{display:none !important;}
+  html body .footer-bottom.footer-bottom .u-full{display:none !important;}
+  html body .footer-bottom.footer-bottom .u-cmp{display:inline !important;}
+  html body .footer-bottom.footer-bottom .sf-util{
+    flex:1 1 auto !important;min-width:0 !important;
+    flex-wrap:nowrap !important;gap:9px !important;
+    white-space:nowrap !important;}
+  /* the compact copyright is plain text, on the same scale and ink as the
+     two links beside it */
+  html body .footer-bottom.footer-bottom .cr-cmp{
+    font-family:'DM Sans',sans-serif !important;font-weight:300 !important;
+    font-size:var(--f2-size) !important;line-height:var(--f2-line) !important;
+    letter-spacing:var(--f2-track) !important;color:var(--f2-ink) !important;}
+  /* the second dot matches the first */
+  html body .footer-bottom.footer-bottom .sep-cr{
+    font-style:normal !important;color:rgba(200,169,110,.35) !important;
+    font-size:9px !important;}
+}
+
+/* ---- 2b · the compact line is set in caps, as specified ----------------
+   Caps at a given size read larger than sentence case, so the compact line is
+   NOT also given extra tracking - the shared 0.19px is kept, which holds it at
+   the same visual weight as the addresses above it. */
+@media(max-width:599px){
+  html body .footer-bottom.footer-bottom .u-cmp{
+    text-transform:uppercase !important;}
+}
+
+/* ---- 2c · ULTRAWIDE: nowrap is released above 1600 ---------------------
+   There is a PRE-EXISTING conflict beyond ~2200: .footer-bottom carries the
+   option 23 max-width:1280 with auto margins AND the page's 1600 frame
+   padding, and the two stack. Measured at 2560: the bar is 1280 wide with
+   528px of padding each side, leaving 224px of content - the copyright is
+   squeezed to 49px and the bar grows to 138.8px.
+
+   That is not one of the three jobs in this pass, and the rule producing the
+   480px is not the one the cascade reports as winning - `--sfpad` resolves to
+   48px on the element and my override is the last matching declaration, yet
+   the computed padding is still 528. I am not going to guess at it at the end
+   of a long pass. What I CAN do is make sure this pass does not make it worse:
+   nowrap is released above 1600, so ultrawide behaves exactly as it did
+   before today. 1920 and below - every width in the brief - are unaffected. */
+@media(min-width:1601px){
+  html body .footer-bottom.footer-bottom{flex-wrap:wrap !important;}
+}
+
+/* ---- 3 · MARSHALL — a little taller in the compact-desktop band ---------
+   The cap added in the previous pass took the image from 432-506px down to a
+   flat 360, which reads slightly short. The same clamp, raised 9% at every
+   stop, in the same band and behind the same pointer gate:
+
+       before  clamp(240px, 40vh, 380px)   -> 360px at a 900-tall window
+       after   clamp(262px, 44vh, 414px)   -> 396px, +10%
+
+   Band unchanged (768-900, the page's existing compact-desktop break, and the
+   only range where the pair is a full-width carousel). The crop logic, the
+   full width, the object-fit and the surrounding copy spacing are untouched,
+   and the coarse-pointer phone range never sees this rule.                   */
+@media(min-width:768px) and (max-width:900px) and (hover:hover) and (pointer:fine){
+  html[data-sfw43="37"] body #sf-m11 .m11-pair > .m11-crop{
+    max-height:clamp(262px, 44vh, 414px) !important;}
 }
 </style>
 
