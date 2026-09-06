@@ -775,6 +775,296 @@ L.M=M; L.sec=sec;
 window.__LAB=L;
 })();
 
+/* SWITCH / DRAWERS LAB — variant mechanisms.
+   Injected into index.html by the lab shell. Adds mechanisms to the library
+   the dev page already ships; nothing here runs on the dev page itself. */
+(function(){
+  if(!window.__LAB || window.__DEVLAB) return;
+  window.__DEVLAB = 1;
+  var L = window.__LAB, M = L.M;
+  var D = document;
+  function $(s,c){ return (c||D).querySelector(s); }
+  function $$(s,c){ return [].slice.call((c||D).querySelectorAll(s)); }
+  function sec(){ return $('#sf-lab-mount .fd'); }
+
+  /* the library strips its own lab-* classes on reset; these are ours */
+  function mark(node, cls){
+    node.className += ' ' + cls;
+    L.mo.push(function(){
+      node.className = node.className.replace(/\bdl-[\w-]+/g,'').replace(/\s+/g,' ').trim();
+    });
+  }
+
+  /* ---- the drawer bank's design ------------------------------------- */
+  M.bank = function(o){
+    var s = sec(); if(!s) return;
+    mark(s, 'dl-bank ' + (o.v2 ? 'dl-b2 ' : '') + 'dl-bank-' + o.style);
+    if(o.num){
+      var i = 0;
+      $$('.lab-rh', s).forEach(function(h){ i++;
+        var n = D.createElement('i'); n.className = 'dl-num';
+        n.setAttribute('data-sflab','1');
+        n.textContent = (i<10?'0':'') + i;
+        h.insertBefore(n, h.firstChild); });
+    }
+  };
+
+  /* ---- the cream territories on a phone ------------------------------ */
+  M.mterr = function(o){ var s = sec(); if(s) mark(s, (o.pre || 'dl-mt-') + o.mode); };
+
+  /* ---- where the hero trace sits on a phone -------------------------- */
+  M.squig = function(o){
+    var s = sec(); var f = $('.oneframe', s); if(f) mark(f, 'dl-sq-' + o.mode);
+  };
+
+  /* ---- OWN / LICENSE / PARTNER ---------------------------------------
+     One family per variant: same 48-unit box, same stroke, same optical
+     weight. Drawn from the page's own line language, not an icon set. */
+  var SYM = {
+    /* 01 precision — tolerance: a form held, a form released, two forms met */
+    s1: [
+      '<path d="M8 12h32v24H8z"/><circle cx="24" cy="24" r="7"/>',
+      '<path d="M8 12h23v24H8z"/><circle cx="34" cy="24" r="7"/>',
+      '<circle cx="18" cy="24" r="9"/><circle cx="30" cy="24" r="9"/>'
+    ],
+    /* 02 assembly — fasteners: a fixed unit, a part drawn out, two parts joined */
+    s2: [
+      '<path d="M8 12h32v24H8z"/><circle cx="15" cy="19" r="2.8"/><circle cx="33" cy="29" r="2.8"/>',
+      '<path d="M8 12h20v24H8z"/><circle cx="16" cy="24" r="2.8"/><path d="M34 14v20"/><path d="M28 24h12"/>',
+      '<path d="M6 12h20v24H6z"/><path d="M22 12h20v24H22z"/><path d="M22 24h4"/>'
+    ],
+    /* 03 datum — axes: one origin, two datums apart, two datums shared */
+    s3: [
+      '<path d="M4 24h40"/><path d="M24 11v26"/>',
+      '<path d="M4 24h40"/><path d="M15 13v22"/><path d="M35 18v12"/>',
+      '<path d="M4 18h40"/><path d="M4 30h40"/><path d="M24 11v26"/>'
+    ],
+    /* 04 structural — frames: one divided, one carried out, two on a shared edge */
+    s4: [
+      '<path d="M8 12h32v24H8z"/><path d="M8 24h32"/><path d="M24 12v24"/>',
+      '<path d="M8 12h19v24H8z"/><path d="M8 24h19"/><path d="M33 16h11v16H33z"/>',
+      '<path d="M6 12h20v24H6z"/><path d="M22 12h20v24H22z"/>'
+    ],
+    /* 05 SF glyphs — brackets: a centre held, a centre propagated, a centre shared */
+    s5: [
+      '<path d="M13 11H6v26h7"/><path d="M35 11h7v26h-7"/><circle cx="24" cy="24" r="5"/>',
+      '<path d="M13 11H6v26h7"/><circle cx="18" cy="24" r="3.6"/><circle cx="30" cy="24" r="3.6"/><circle cx="42" cy="24" r="3.6"/>',
+      '<path d="M13 11H6v26h7"/><path d="M35 11h7v26h-7"/><path d="M24 13v22"/><path d="M15 24h18"/>'
+    ]
+    ,
+    /* 06 datum / control — a datum held, transferred, shared */
+    s6: [
+      '<circle cx="24" cy="24" r="8.5"/><circle cx="24" cy="24" r="1.5"/>',
+      '<path d="M8 12v24"/><path d="M40 12v24"/><path d="M13 24h13"/><circle cx="32" cy="24" r="3.4"/>',
+      '<path d="M5 24h38"/><circle cx="17" cy="24" r="4.2"/><circle cx="31" cy="24" r="4.2"/>'
+    ],
+    /* 07 assembly / interface — one assembly, a module released, a shared joint */
+    s7: [
+      '<path d="M10 14h28v20H10z"/><path d="M10 24h28"/>',
+      '<path d="M8 14h16v20H8z"/><path d="M8 24h16"/><path d="M30 18h12v12H30z"/><path d="M24 24h6"/>',
+      '<path d="M8 14h16v20H8z"/><path d="M24 14h16v20H24z"/><path d="M24 14v20"/>'
+    ],
+    /* 08 section / component — one profile, propagated, combined */
+    s8: [
+      '<rect x="9" y="16" width="30" height="16" rx="6"/>',
+      '<rect x="5" y="18" width="12" height="12" rx="4"/><rect x="20" y="18" width="12" height="12" rx="4"/><rect x="35" y="19.5" width="9" height="9" rx="3"/>',
+      '<rect x="7" y="15" width="34" height="18" rx="6"/><path d="M24 15v18"/>'
+    ],
+    /* 09 geometry / relationship — a centre, a translation, an overlap */
+    s9: [
+      '<circle cx="24" cy="24" r="9.5"/><circle cx="24" cy="24" r="3.2"/>',
+      '<circle cx="13" cy="24" r="7"/><circle cx="35" cy="24" r="7"/><path d="M24 13v22"/>',
+      '<circle cx="18" cy="24" r="8.6"/><circle cx="30" cy="24" r="8.6"/>'
+    ],
+    /* 10 SF glyphs — contained, propagated, shared structure */
+    s10: [
+      '<path d="M12 13H7v22h5"/><path d="M36 13h5v22h-5"/><circle cx="24" cy="24" r="5"/><circle cx="24" cy="24" r="1.3"/>',
+      '<path d="M12 13H7v22h5"/><circle cx="19" cy="24" r="4.2"/><circle cx="32" cy="24" r="4.2"/><path d="M41 17v14"/>',
+      '<path d="M12 13H7v22h5"/><path d="M36 13h5v22h-5"/><circle cx="18" cy="24" r="4.2"/><circle cx="30" cy="24" r="4.2"/>'
+    ]
+  };
+  M.vsym = function(o){
+    var set = SYM[o.set]; if(!set) return;
+    var syms = $$('.fund-tag .fund-sym svg');
+    syms.forEach(function(sv, i){
+      if(!sv.hasAttribute('data-lab-orig')){
+        sv.setAttribute('data-lab-orig', sv.innerHTML);
+        L.texts.push(sv);
+      }
+      sv.innerHTML = set[i % set.length];
+      var host = sv.parentNode;
+      host.className = 'fund-sym dl-sym dl-sym-' + o.set;
+      L.mo.push(function(){ host.className = 'fund-sym'; });
+    });
+  };
+
+  /* ---- the bespoke drawer pull ---------------------------------------
+     One cue per drawer front, drawn in CSS. Never a chevron. */
+  var CUE = {
+    /* one family, four meanings. Cyan, drawn, never an icon set. */
+    g11: [
+      /* COLORS & MATERIALS — layered planes seen on the section */
+      '<path d="M3 16h10"/><path d="M6.5 12h10"/><path d="M10 8h10"/>',
+      /* CONSTRUCTION LANGUAGE — one tube bend on a controlled radius */
+      '<path d="M3 20v-7a6 6 0 0 1 6-6h12"/>',
+      /* SIGNATURE DETAILS — the same datum, recurring */
+      '<path d="M4 12h16" opacity=".38"/><path d="M6 8.5v7"/><path d="M12 8.5v7"/><path d="M18 8.5v7"/>',
+      /* TRANSLATION — one form carried into another */
+      '<path d="M3 8h7v8H3z"/><path d="M17.5 8.4a3.6 3.6 0 1 1 0 7.2 3.6 3.6 0 0 1 0-7.2"/>'
+    ]
+  };
+  /* the CAPABILITIES glyph language, reused verbatim */
+  var CAPG = ['\u25C7','\u2220','\u2234','\u21D5'];
+  M.pull = function(o){
+    var s = sec(); if(!s) return;
+    var set = CUE[o.style];
+    $$('.lab-rh', s).forEach(function(h, i){
+      if($('.dl-cue', h)) return;
+      var n = D.createElement('i');
+      n.className = 'dl-cue dl-cue-' + o.style;
+      n.setAttribute('data-sflab','1');
+      n.setAttribute('aria-hidden','true');
+      if(o.style === 'cap' || o.style === 'swb'){
+        n.textContent = CAPG[i % CAPG.length];
+      }else if(set){
+        n.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' +
+                      set[i % set.length] + '</svg>';
+      }
+      h.appendChild(n);
+    });
+  };
+
+  /* ---- the blue sine squiggle in the SWITCH hero ----------------------
+     #v11-sine-canvas is built by the page's own three.js hero script and
+     parked in #fv-stage. On a phone we move that one node into the hero
+     frame and place it; nothing else in the hero is touched. */
+  M.sine = function(o){
+    var s = sec(); var f = $('.oneframe', s); if(!f) return;
+    mark(f, 'dl-sqh dl-sqh-' + o.mode);
+    var W = f.ownerDocument.defaultView;
+    var c = D.getElementById('v11-sine-canvas');
+    if(!c) return;
+    var home = c.parentNode, next = c.nextSibling;
+    function phone(){ try{ return W.matchMedia('(max-width:767px)').matches; }catch(e){ return false; } }
+    function place(){
+      if(phone()){
+        if(c.parentNode !== f){ f.appendChild(c); }
+        if(c.className.indexOf('dl-sq2') < 0) c.className += ' dl-sq2';
+      }else{
+        if(c.parentNode === f && home){ try{ home.insertBefore(c, next); }catch(e){ home.appendChild(c); } }
+        c.className = c.className.replace(/\bdl-sq2\b/g,'').trim();
+      }
+    }
+    place();
+    var rz = function(){ place(); };
+    W.addEventListener('resize', rz);
+    L.mo.push(function(){ W.removeEventListener('resize', rz);
+      c.className = c.className.replace(/\bdl-sq2\b/g,'').trim();
+      if(home && c.parentNode !== home){ try{ home.insertBefore(c, next); }catch(e){ home.appendChild(c); } } });
+  };
+
+  /* ---- the drawer bank sits on FORM & ARCHITECTURE --------------------
+     Measured, not guessed: the first drawer label's text box is put on the
+     same top as the left heading's, at whatever the row height is. */
+  M.balign = function(){
+    var s = sec(); if(!s) return;
+    var rgt = $('.rgt', s); if(!rgt) return;
+    var W = rgt.ownerDocument.defaultView;
+    function wide(){ try{ return W.matchMedia('(min-width:1001px)').matches; }catch(e){ return true; } }
+    function run(){
+      rgt.style.removeProperty('margin-top');
+      if(!wide()) return;                       /* stacked: nothing to align to */
+      var lh = $('.lft .bhead', s) || $('.lft .bey', s);
+      var rh = $('.lab-rh', s); if(!lh || !rh) return;
+      var lb = lh.getBoundingClientRect(), rb = rh.getBoundingClientRect();
+      if(Math.abs(lb.left - rb.left) < 40) return;   /* not side by side */
+      var rt = $('.bey', rh) || rh;
+      var cur = parseFloat(W.getComputedStyle(rgt).marginTop) || 0;
+      var d = Math.round(lb.top - rt.getBoundingClientRect().top);
+      if(d && Math.abs(d) < 120) rgt.style.setProperty('margin-top', (cur + d) + 'px', 'important');
+    }
+    W.requestAnimationFrame(function(){ W.requestAnimationFrame(run); });
+    var t = setTimeout(run, 420);
+    var rz = function(){ W.requestAnimationFrame(run); };
+    W.addEventListener('resize', rz);
+    L.mo.push(function(){ clearTimeout(t); W.removeEventListener('resize', rz);
+      rgt.style.removeProperty('margin-top'); });
+  };
+
+  /* ---- one shared content datum --------------------------------------
+     The open drawer's content starts on the top of the first FORM &
+     ARCHITECTURE graphic, and every drawer uses that same gap. */
+  M.cdatum = function(){
+    var s = sec(); if(!s) return;
+    var W = s.ownerDocument.defaultView;
+    function run(){
+      s.style.removeProperty('--dl-cgap');
+      if(!W.matchMedia('(min-width:1001px)').matches) return;
+      var g = $('.lft .nt', s) || $('.lft svg', s);
+      var h = $('.lab-rh', s); if(!g || !h) return;
+      var gap = Math.round(g.getBoundingClientRect().top - h.getBoundingClientRect().bottom);
+      if(gap > 0 && gap < 120) s.style.setProperty('--dl-cgap', gap + 'px');
+    }
+    W.requestAnimationFrame(function(){ W.requestAnimationFrame(run); });
+    var t = setTimeout(run, 480);
+    var rz = function(){ W.requestAnimationFrame(run); };
+    W.addEventListener('resize', rz);
+    L.mo.push(function(){ clearTimeout(t); W.removeEventListener('resize', rz);
+      s.style.removeProperty('--dl-cgap'); });
+  };
+
+  /* ---- OWN / LICENSE / PARTNER in the CAPABILITIES language ----------
+     The drawn marks are hidden and the capability glyph is set in their
+     place: same gold, same weight, same optical size, one fixed box. */
+  M.gsym = function(){
+    var G = ['\u2295','\u21A7','\u2225'];
+    $$('.fund-tag .fund-sym').forEach(function(host, i){
+      var sv = $('svg', host); if(!sv) return;
+      sv.style.display = 'none';
+      var n = D.createElement('i');
+      n.className = 'dl-gsym';
+      n.setAttribute('data-sflab','1');
+      n.setAttribute('aria-hidden','true');
+      n.textContent = G[i % G.length];
+      host.appendChild(n);
+      host.className = 'fund-sym dl-symhost';
+      L.mo.push(function(){ sv.style.removeProperty('display');
+        if(n.parentNode) n.parentNode.removeChild(n);
+        host.className = 'fund-sym'; });
+    });
+  };
+
+  /* ---- the drawer bank on the FORM & ARCHITECTURE datum, measured on
+     the rendered text rather than on the boxes around it --------------- */
+  M.balign2 = function(){
+    var s = sec(); if(!s) return;
+    var rgt = $('.rgt', s); if(!rgt) return;
+    var W = rgt.ownerDocument.defaultView, DD = rgt.ownerDocument;
+    function textTop(el){
+      try{ var r = DD.createRange(); r.selectNodeContents(el);
+        var b = r.getBoundingClientRect();
+        return b.height ? b.top : el.getBoundingClientRect().top;
+      }catch(e){ return el.getBoundingClientRect().top; }
+    }
+    function run(){
+      rgt.style.removeProperty('margin-top');
+      if(!W.matchMedia('(min-width:1001px)').matches) return;
+      var lh = $('.lft .bhead .bey', s) || $('.lft .bhead', s);
+      var rh = $('.lab-rh', s); if(!lh || !rh) return;
+      if(Math.abs(lh.getBoundingClientRect().left - rh.getBoundingClientRect().left) < 40) return;
+      var rt = $('.bey', rh) || rh;
+      var cur = parseFloat(W.getComputedStyle(rgt).marginTop) || 0;
+      var d = Math.round(textTop(lh) - textTop(rt));
+      if(d && Math.abs(d) < 140) rgt.style.setProperty('margin-top', (cur + d) + 'px', 'important');
+    }
+    W.requestAnimationFrame(function(){ W.requestAnimationFrame(run); });
+    var t = setTimeout(run, 460);
+    var rz = function(){ W.requestAnimationFrame(run); };
+    W.addEventListener('resize', rz);
+    L.mo.push(function(){ clearTimeout(t); W.removeEventListener('resize', rz);
+      rgt.style.removeProperty('margin-top'); });
+  };
+})();
 
 /* =======================================================================
    SWITCH DNA — the live section.
@@ -784,13 +1074,21 @@ window.__LAB=L;
    was; nothing above is modified.
    ======================================================================= */
 (function(){
-  var V={"id": "FINAL", "title": "SWITCH DNA", "thesis": "The extraction is 47A5 — four drawers on an inventory, the selected line taking space from its neighbours and underscoring itself. The design language is 47A1 — the technical grid dissolving into the cream, no rule above the territories, OBJECTS. in ink.", "m": [["chapters", {"names": ["THE PARENT", "THE EXTRACTION", "THE TRANSLATION"], "style": "bare", "hero": false, "cream": false}], ["intro", {"h4": "ACQUIRED <span class=\"sw-cy\">ASSET.</span>", "p": "SWITCH was acquired in 2025 out of liquidation. A strong product with clear DNA — the opportunity was to preserve it and build a new business around it. This is the preservation, done as engineers do it: read, measured, recorded.", "type": "quiet"}], ["grid", {"mode": "m16"}], ["board", {"mode": "tight"}], ["cmf", {"mode": "chip", "exact": true, "minimal": true, "head": "Colors &amp; materials", "labels": ["Aluminium", "Rubber", "SWITCH blue", "HV orange"]}], ["construction", {"mode": "two"}], ["rhythm", {"mode": "tight"}], ["cream", {"mode": "syn47k"}], ["dividers", {"mode": "few"}], ["bridge", {"type": "one", "row": 0, "place": "rgt", "anim": "none", "hold": false, "head": "Translation"}], ["boundary", {"mode": "flush"}], ["territories", {"mode": "typo"}], ["creamHead", {"html": "SAME PRINCIPLES.<br>NEW <span class=\"dl-hi\">OBJECTS.</span>"}], ["creamArt", {"mode": "reduce"}], ["extra", {"groups": ["sd"]}], ["rgrid", {"mode": "free"}], ["rint", {"mode": "drawer", "start": -1, "toggle": true}], ["drawer", {"style": "foundry", "hit": true}], ["seam", {"mode": "fade"}], ["tcolor", {"mode": "type"}], ["crule", {"mode": "none"}]], "notes": ""};
-  if(window.self!==window.top) return;
-  function boot(n){
-    if(!window.__LAB){ if(n<200) setTimeout(function(){boot(n+1);},120); return; }
-    if(!document.querySelector('#sf-lab-mount .fd .split')){ if(n<200) setTimeout(function(){boot(n+1);},120); return; }
-    try{ window.__LAB.apply(V); }catch(e){ console.warn('SWITCH DNA',e); }
+  var V={"id": "11", "title": "FINAL TBC", "thesis": "One quiet row repeated four times: same surface, same rule, same bounds, open or closed. Selection is carried by the SWITCH blue title and the symbol, which rotates 45 degrees on its own centre exactly as CAPABILITIES does. Heading on the FORM & ARCHITECTURE line, swatches on the extraction graphics datum, one gap for every drawer.", "m": [["chapters", {"names": ["THE PARENT", "THE EXTRACTION", "THE TRANSLATION"], "style": "bare", "hero": false, "cream": false}], ["intro", {"h4": "ACQUIRED <span class=\"sw-cy\">ASSET.</span>", "p": "SWITCH was acquired in 2025 out of liquidation. A strong product with clear DNA — the opportunity was to preserve it and build a new business around it. This is the preservation, done as engineers do it: read, measured, recorded.", "type": "quiet"}], ["grid", {"mode": "m16"}], ["board", {"mode": "tight"}], ["cmf", {"mode": "chip", "exact": true, "minimal": true, "head": "Colors &amp; materials", "labels": ["Aluminium", "Rubber", "SWITCH blue", "HV orange"]}], ["construction", {"mode": "two"}], ["rhythm", {"mode": "tight"}], ["cream", {"mode": "syn47k"}], ["dividers", {"mode": "few"}], ["bridge", {"type": "one", "row": 0, "place": "rgt", "anim": "none", "hold": false, "head": "Translation"}], ["boundary", {"mode": "flush"}], ["territories", {"mode": "typo"}], ["creamHead", {"html": "SAME PRINCIPLES.<br>NEW <span class=\"dl-hi\">OBJECTS.</span>"}], ["creamArt", {"mode": "reduce"}], ["extra", {"groups": ["sd"]}], ["rgrid", {"mode": "free"}], ["rint", {"mode": "drawer", "start": 0, "toggle": true}], ["drawer", {"style": "foundry", "hit": true}], ["bank", {"style": "w11", "num": false, "v2": true}], ["pull", {"style": "swb"}], ["seam", {"mode": "fade"}], ["tcolor", {"mode": "type"}], ["crule", {"mode": "none"}], ["mterr", {"mode": "n11", "pre": "dl-mt2-"}], ["sine", {"mode": "h11"}], ["vsym", {"set": "s9"}], ["balign2", {}], ["cdatum", {}]], "notes": ""}, CLS="dl-cr-faint";
+  if(window.self!==window.top) return;      /* the lab drives the section itself */
+  function stamp(){
+    var s=document.querySelector('#sf-lab-mount .fd');
+    if(s && CLS && s.className.indexOf(CLS.split(' ')[0])<0) s.className+=' '+CLS;
   }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){boot(0);});
+  function boot(n){
+    if(!window.__LAB || !document.querySelector('#sf-lab-mount .fd .split')){
+      if(n<300) setTimeout(function(){ boot(n+1); },120); return; }
+    try{
+      if(window.__LAB.applyWhenReady) window.__LAB.applyWhenReady(V);
+      else window.__LAB.apply(V);
+    }catch(e){ console.warn('SWITCH DNA',e); }
+    [260,700,1400,2600].forEach(function(ms){ setTimeout(stamp,ms); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){ boot(0); });
   else boot(0);
 })();
