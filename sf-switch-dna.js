@@ -297,6 +297,7 @@ M.extra=function(o){
 M.drawer=function(o){
   var s=sec(); if(!s) return;
   s.className+=' lab-m-dr-'+o.style;
+  if(o.hit) s.className+=' lab-m-drhit';
   if(o.num){
     var i=0;
     $$('.lab-rh',s).forEach(function(h){ i++;
@@ -340,7 +341,7 @@ M.rint=function(o){
     g[0].setAttribute('tabindex','0'); g[0].setAttribute('role','button');
     return {h:g[0], w:w, g:g[2], i:i};
   });
-  var start=(o.start||0), locked=start, shown=start, off=[];
+  var start=(o.start===undefined?0:o.start), locked=start, shown=start, off=[];
   function on(n,ev,fn,opt){ n.addEventListener(ev,fn,opt); off.push(function(){ n.removeEventListener(ev,fn,opt); }); }
 
   function paintOne(i){                       /* one open at a time */
@@ -371,9 +372,10 @@ M.rint=function(o){
                           if(disp.parentNode) disp.parentNode.removeChild(disp); });
   }
 
+  function choose(i){ locked=(o.toggle&&locked===i)?-1:i; paint(locked); }
   groups.forEach(function(x){
-    on(x.h,'click',function(){ locked=x.i; paint(locked); });
-    on(x.h,'keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); locked=x.i; paint(locked); } });
+    on(x.h,'click',function(){ choose(x.i); });
+    on(x.h,'keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); choose(x.i); } });
     if(o.mode==='hover'||o.mode==='focus'){
       on(x.h,'mouseenter',function(){ paint(x.i); });
     }
@@ -739,6 +741,16 @@ L.solve=function(){
 
 /* ----------------------------------------------------------------- apply */
 L.cur=null; L.lastSec=null; L.played={};
+/* The page builds .cblk .dlr .q22 a second or so after the board itself, and
+   re-mounts the section several times while it does. Applying to a half-built
+   section wires only the groups that exist yet — which is how CONSTRUCTION
+   LANGUAGE ended up outside the drawer system: never collapsed, never
+   clickable. Nothing is applied until the section is whole. */
+L.ready=function(){ var s=sec();
+  return !!(s && $('.split',s) && $('.cblk .dlr .q22',s) && $$('.crow .tc',s).length===4); };
+L.applyWhenReady=function(v,n){ n=n||0;
+  if(L.ready()){ L.apply(v); return; }
+  if(n<300) setTimeout(function(){ L.applyWhenReady(v,n+1); },100); };
 L.apply=function(v){
   L.reset(); L.cur=v; L.lastSec=sec(); if(!v||v.id==='BASE') return;
   var s=sec(); if(!s) return;
@@ -754,7 +766,7 @@ L.apply=function(v){
   var m=document.getElementById('sf-lab-mount');
   if(!m){ setTimeout(watch,300); return; }
   try{ new MutationObserver(function(){
-    if(L.cur&&L.cur.id!=='BASE'&&sec()&&sec()!==L.lastSec){ L.texts=[]; setTimeout(function(){ if(sec()!==L.lastSec) L.apply(L.cur); },40); }
+    if(L.cur&&L.cur.id!=='BASE'&&sec()&&sec()!==L.lastSec){ L.texts=[]; setTimeout(function(){ if(sec()!==L.lastSec) L.applyWhenReady(L.cur); },40); }
   }).observe(m,{childList:true}); }catch(e){}
 })();
 window.__SF_NOJUMP=true;
@@ -772,7 +784,7 @@ window.__LAB=L;
    was; nothing above is modified.
    ======================================================================= */
 (function(){
-  var V={"id": "FINAL", "title": "SWITCH DNA", "thesis": "The extraction is 47A5 — four drawers on an inventory, the selected line taking space from its neighbours and underscoring itself. The design language is 47A1 — the technical grid dissolving into the cream, no rule above the territories, OBJECTS. in ink.", "m": [["chapters", {"names": ["THE PARENT", "THE EXTRACTION", "THE TRANSLATION"], "style": "bare", "hero": false, "cream": false}], ["intro", {"h4": "ACQUIRED <span class=\"sw-cy\">ASSET.</span>", "p": "SWITCH was acquired in 2025 out of liquidation. A strong product with clear DNA — the opportunity was to preserve it and build a new business around it. This is the preservation, done as engineers do it: read, measured, recorded.", "type": "quiet"}], ["grid", {"mode": "m16"}], ["board", {"mode": "tight"}], ["cmf", {"mode": "chip", "exact": true, "minimal": true, "head": "Colors &amp; materials", "labels": ["Aluminium", "Rubber", "SWITCH blue", "HV orange"]}], ["construction", {"mode": "two"}], ["rhythm", {"mode": "tight"}], ["cream", {"mode": "syn47k"}], ["dividers", {"mode": "few"}], ["bridge", {"type": "one", "row": 0, "place": "rgt", "anim": "none", "hold": false, "head": "Translation"}], ["boundary", {"mode": "flush"}], ["territories", {"mode": "typo"}], ["creamHead", {"html": "SAME PRINCIPLES.<br>NEW <span class=\"dl-hi\">OBJECTS.</span>"}], ["creamArt", {"mode": "reduce"}], ["extra", {"groups": ["sd"]}], ["rgrid", {"mode": "free"}], ["rint", {"mode": "drawer"}], ["drawer", {"style": "foundry"}], ["seam", {"mode": "fade"}], ["tcolor", {"mode": "type"}], ["crule", {"mode": "none"}]], "notes": ""};
+  var V={"id": "FINAL", "title": "SWITCH DNA", "thesis": "The extraction is 47A5 — four drawers on an inventory, the selected line taking space from its neighbours and underscoring itself. The design language is 47A1 — the technical grid dissolving into the cream, no rule above the territories, OBJECTS. in ink.", "m": [["chapters", {"names": ["THE PARENT", "THE EXTRACTION", "THE TRANSLATION"], "style": "bare", "hero": false, "cream": false}], ["intro", {"h4": "ACQUIRED <span class=\"sw-cy\">ASSET.</span>", "p": "SWITCH was acquired in 2025 out of liquidation. A strong product with clear DNA — the opportunity was to preserve it and build a new business around it. This is the preservation, done as engineers do it: read, measured, recorded.", "type": "quiet"}], ["grid", {"mode": "m16"}], ["board", {"mode": "tight"}], ["cmf", {"mode": "chip", "exact": true, "minimal": true, "head": "Colors &amp; materials", "labels": ["Aluminium", "Rubber", "SWITCH blue", "HV orange"]}], ["construction", {"mode": "two"}], ["rhythm", {"mode": "tight"}], ["cream", {"mode": "syn47k"}], ["dividers", {"mode": "few"}], ["bridge", {"type": "one", "row": 0, "place": "rgt", "anim": "none", "hold": false, "head": "Translation"}], ["boundary", {"mode": "flush"}], ["territories", {"mode": "typo"}], ["creamHead", {"html": "SAME PRINCIPLES.<br>NEW <span class=\"dl-hi\">OBJECTS.</span>"}], ["creamArt", {"mode": "reduce"}], ["extra", {"groups": ["sd"]}], ["rgrid", {"mode": "free"}], ["rint", {"mode": "drawer", "start": -1, "toggle": true}], ["drawer", {"style": "foundry", "hit": true}], ["seam", {"mode": "fade"}], ["tcolor", {"mode": "type"}], ["crule", {"mode": "none"}]], "notes": ""};
   if(window.self!==window.top) return;
   function boot(n){
     if(!window.__LAB){ if(n<200) setTimeout(function(){boot(n+1);},120); return; }
