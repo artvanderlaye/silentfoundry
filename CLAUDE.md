@@ -3,6 +3,28 @@
 Standing preferences learned while working on this site. Follow these in addition
 to the project's configured instructions.
 
+## Cross-AI working context — 12 September 2026
+- The Silent Foundry Bridge v0.1.0 has been verified end to end from Claude's
+  side. Claude can publish a concise project briefing and receive ChatGPT change
+  notices. Use the bridge for handoffs; do not copy raw conversations into the
+  repo.
+- Current ownership/status: no Silent Foundry site, copy, Vault or document work
+  is active or approved. Claude remains the primary execution agent and ChatGPT
+  the conversation-first strategic observer. Only one AI should own the same
+  task or file set at a time; confirm the owner when Matthew starts the next
+  substantive task.
+- The 12 September ChatGPT sync introduced no new design, copy or product
+  decisions. It only requested that the current working context be reconciled
+  with this file. Do not infer approval for implementation from that sync.
+- SWITCH remains a separate future track. `SWITCH-DNA-ARCHITECTURES.md` and
+  `DNA-TO-PLATFORM-ARCHITECTURES.md` are exploration records, not selected
+  directions. Nothing in them is approved for production. The existing SWITCH
+  section and website should remain unchanged unless Matthew explicitly chooses
+  a direction and gives a go-ahead.
+- Open coordination decisions for Matthew: briefing cadence (after every
+  meaningful session vs material-change sessions only) and ownership of the
+  next substantive Silent Foundry task.
+
 ## Git is the user's to run
 - NEVER run git from the agent side (no `fetch` / `status` / `add` / `commit` /
   `push`). Git can leave a `.git/index.lock` the sandbox can't remove, which
